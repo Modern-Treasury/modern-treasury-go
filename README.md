@@ -36,15 +36,14 @@ import (
 	"fmt"
 	"github.com/Modern-Treasury/modern-treasury-go"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
-	"github.com/Modern-Treasury/modern-treasury-go/requests"
 )
 
 func main() {
-	modernTreasuryClient := moderntreasury.NewModernTreasury(
+	client := moderntreasury.NewClient(
 		option.WithOrganizationID("my-organization-ID"), // defaults to os.LookupEnv("MODERN_TREASURY_ORGANIZATION_ID")
 		option.WithAPIKey("my api key"),                 // defaults to os.LookupEnv("MODERN_TREASURY_API_KEY")
 	)
-	externalAccount, err := client.ExternalAccounts.New(context.TODO(), &requests.ExternalAccountNewParams{
+	externalAccount, err := client.ExternalAccounts.New(context.TODO(), moderntreasury.ExternalAccountNewParams{
 		CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),
 		Name:           moderntreasury.F("my bank"),
 	})
@@ -62,38 +61,38 @@ Types for requests look like the following:
 
 ```go
 type FooParams struct {
-	ID     fields.Field[string] `json:"id,required"`
-	Number fields.Field[int64]  `json:"number,required"`
-	Name   fields.Field[string] `json:"name"`
-	Other  fields.Field[Bar]    `json:"other"`
+	Type   field.Field[string] `json:"type,required"`
+	Number field.Field[int64]  `json:"number,required"`
+	Name   field.Field[string] `json:"name"`
+	Other  field.Field[Bar]    `json:"other"`
 }
 
 type Bar struct {
-	Number fields.Field[int64]  `json:"number"`
-	Name   fields.Field[string] `json:"name"`
+	Number field.Field[int64]  `json:"number"`
+	Name   field.Field[string] `json:"name"`
 }
 ```
 
 For each field, you can either supply a value field with
-`moderntreasury.F(...)`, a `null` value with `moderntreasury.NullField()`, or
-some raw JSON value with `moderntreasury.RawField(...)` that you specify as a
+`moderntreasury.F(...)`, a `null` value with `moderntreasury.Null()`, or
+some raw JSON value with `moderntreasury.Raw(...)` that you specify as a
 byte slice. We also provide convenient helpers `moderntreasury.Int(...)` and
-`moderntreasury.Str(...)`. If you do not supply a value, then we do not
+`moderntreasury.String(...)`. If you do not supply a value, then we do not
 populate the field. An example request may look like
 
 ```go
-params := &FooParams{
-	// Normally populates this field as `"id": "food_id"`
-	ID: moderntreasury.F("foo_id"),
+params := FooParams{
+	// Normally populates this field as `"type": "foo"`
+	Type: moderntreasury.F("foo"),
 
-	// Integer helper casts integer values and literals to fields.Field[int64]
+	// Integer helper casts integer values and literals to field.Field[int64]
 	Number: moderntreasury.Int(12),
 
 	// Explicitly sends this field as null, e.g., `"name": null`
-	Name: moderntreasury.NullField[string](),
+	Name: moderntreasury.Null[string](),
 
 	// Overrides this field as `"other": "ovveride_this_field"`
-	Other: moderntreasury.RawField[Bar]("override_this_field")
+	Other: moderntreasury.Raw[Bar]("override_this_field")
 }
 ```
 
@@ -113,7 +112,8 @@ res, err := client.Service.Foo(context.TODO())
 res.Name // is just some string value
 ```
 
-If null, not present, or invalid, all fields will simply be their empty values.
+If the value received is null, not present, or invalid, the corresponding field
+will simply be its empty value.
 
 If you want to be able to tell that the value is either `null`, not present, or
 invalid, we provide metadata in the `JSON` property of every response object.
@@ -126,13 +126,11 @@ res.JSON.Name.IsNull()
 res.JSON.Name.IsMissing()
 
 // This is true if `name` is present, but not coercable
-res.JSON.Name.IsMissing()
+res.JSON.Name.IsInvalid()
 
 // If needed, you can access the Raw JSON value of the field by accessing
 res.JSON.Name.Raw()
 ```
-
-You can also access the JSON value of the entire object with `res.JSON.Raw`.
 
 There may be instances where we provide experimental or private API features
 for some customers. In those cases, the related features will not be exposed to
@@ -145,14 +143,15 @@ body := res.JSON.Extras["extra_field"].Raw()
 
 // You can `Unmarshal` the JSON into a struct as needed
 custom := struct{A string, B int64}{}
-json.Unmarshal(body, &custom)
+json.Unmarshal([]byte(body), &custom)
 ```
 
 ### RequestOptions
 
-This library uses the functional options pattern. `RequestOptions` are closures
-that mutate a `RequestConfig`. These options can be supplied to the client or
-at individual requests, and they will cascade appropriately.
+This library uses the functional options pattern. Functions defined in the
+`option` package return a `RequestOption`, which is a closure that mutates a
+`RequestConfig`. These options can be supplied to the client or at individual
+requests, and they will cascade appropriately.
 
 At each request, these closures will be run in the order that they are
 supplied, after the defaults for that particular request.
@@ -160,7 +159,7 @@ supplied, after the defaults for that particular request.
 For example:
 
 ```go
-client := moderntreasury.NewModernTreasury(
+client := moderntreasury.NewClient(
 	// Adds header to every request made by client
 	option.WithHeader("X-Some-Header", "custom_header_info"),
 	// Adds query to every request made by client
@@ -191,10 +190,10 @@ client.ExternalAccounts.New(
 
 This library provides some conveniences for working with paginated list endpoints.
 
-You can use `.ListAutoPager()` methods to iterate through items across all pages:
+You can use `.ListAutoPaging()` methods to iterate through items across all pages:
 
 ```go
-iter := client.ExternalAccounts.ListAutoPager(context.TODO(), &requests.ExternalAccountListParams{})
+iter := client.ExternalAccounts.ListAutoPaging(context.TODO(), moderntreasury.ExternalAccountListParams{})
 // Automatically fetches more pages as needed.
 for iter.Next() {
 	externalAccount := iter.Current()
@@ -209,7 +208,7 @@ Or you can use simple `.List()` methods to fetch a single page and receive a sta
 with additional helper methods like `.GetNextPage()`, e.g.:
 
 ```go
-page, err := client.ExternalAccounts.List(context.TODO(), &requests.ExternalAccountListParams{})
+page, err := client.ExternalAccounts.List(context.TODO(), moderntreasury.ExternalAccountListParams{})
 for page != nil {
 	for _, externalAccount := range page.Items {
 		fmt.Printf("%+v\n", externalAccount)
@@ -223,7 +222,31 @@ if err != nil {
 
 ### Errors
 
-Errors are still WIP.
+When the API returns a non-success status code, we return an error with type
+`*moderntreasury.Error`. This contains the `StatusCode`, `*http.Request`, and
+`*http.Response` values of the request, as well as the JSON of the error body
+(much like other response objects in the SDK).
+
+To handle errors, we recommend that you use the `errors.As` pattern:
+
+```go
+_, err := client.ExternalAccounts.New(context.TODO(), moderntreasury.ExternalAccountNewParams{
+	CounterpartyID: moderntreasury.F("missing"),
+})
+if err != nil {
+	var apierr *moderntreasury.Error
+	if errors.As(err, &apierr) {
+		println(string(apierr.DumpRequest(true)))  // Prints the serialized HTTP request
+		println(string(apierr.DumpResponse(true))) // Prints the serialized HTTP response
+
+	}
+	panic(err.Error()) // GET "/api/external_accounts": 400 Bad Request { ... }
+}
+```
+
+When other errors occur, we return them unwrapped; for example, when HTTP
+transport returns an error, we return the `*url.Error` which could wrap
+`*net.OpError`.
 
 ## Retries
 
@@ -235,7 +258,7 @@ You can use the `WithMaxRetries` option to configure or disable this:
 
 ```go
 // Configure the default for all requests:
-modernTreasuryClient := moderntreasury.NewModernTreasury(
+client := moderntreasury.NewClient(
 	option.WithOrganizationID("my-organization-ID"), // defaults to os.LookupEnv("MODERN_TREASURY_ORGANIZATION_ID")
 	option.WithMaxRetries(0),                        // default is 2
 )
@@ -243,7 +266,7 @@ modernTreasuryClient := moderntreasury.NewModernTreasury(
 // Override per-request:
 client.ExternalAccounts.List(
 	context.TODO(),
-	&requests.ExternalAccountListParams{},
+	moderntreasury.ExternalAccountListParams{},
 	option.WithMaxRetries(5),
 )
 ```
