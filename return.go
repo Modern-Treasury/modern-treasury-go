@@ -9,16 +9,23 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// ReturnService contains methods and other services that help with interacting
+// with the Modern Treasury API. Note, unlike clients, this service does not read
+// variables from the environment automatically. You should not instantiate this
+// service directly, and instead use the [NewReturnService] method instead.
 type ReturnService struct {
 	Options []option.RequestOption
 }
 
+// NewReturnService generates a new service that applies the given options to each
+// request. These options are applied after the parent client's options (if there
+// is one), and before any request-specific options.
 func NewReturnService(opts ...option.RequestOption) (r *ReturnService) {
 	r = &ReturnService{}
 	r.Options = opts
@@ -112,39 +119,37 @@ type ReturnObject struct {
 	ReferenceNumbers []ReturnObjectReferenceNumbers `json:"reference_numbers,required"`
 	// The ID of the ledger transaction linked to the return.
 	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
-	JSON                ReturnObjectJSON
+	JSON                returnObjectJSON
 }
 
-type ReturnObjectJSON struct {
-	ID                    apijson.Metadata
-	Object                apijson.Metadata
-	LiveMode              apijson.Metadata
-	CreatedAt             apijson.Metadata
-	UpdatedAt             apijson.Metadata
-	ReturnableID          apijson.Metadata
-	ReturnableType        apijson.Metadata
-	Code                  apijson.Metadata
-	Reason                apijson.Metadata
-	DateOfDeath           apijson.Metadata
-	AdditionalInformation apijson.Metadata
-	Status                apijson.Metadata
-	TransactionLineItemID apijson.Metadata
-	TransactionID         apijson.Metadata
-	InternalAccountID     apijson.Metadata
-	Type                  apijson.Metadata
-	Amount                apijson.Metadata
-	Currency              apijson.Metadata
-	FailureReason         apijson.Metadata
-	Role                  apijson.Metadata
-	ReferenceNumbers      apijson.Metadata
-	LedgerTransactionID   apijson.Metadata
+// returnObjectJSON contains the JSON metadata for the struct [ReturnObject]
+type returnObjectJSON struct {
+	ID                    apijson.Field
+	Object                apijson.Field
+	LiveMode              apijson.Field
+	CreatedAt             apijson.Field
+	UpdatedAt             apijson.Field
+	ReturnableID          apijson.Field
+	ReturnableType        apijson.Field
+	Code                  apijson.Field
+	Reason                apijson.Field
+	DateOfDeath           apijson.Field
+	AdditionalInformation apijson.Field
+	Status                apijson.Field
+	TransactionLineItemID apijson.Field
+	TransactionID         apijson.Field
+	InternalAccountID     apijson.Field
+	Type                  apijson.Field
+	Amount                apijson.Field
+	Currency              apijson.Field
+	FailureReason         apijson.Field
+	Role                  apijson.Field
+	ReferenceNumbers      apijson.Field
+	LedgerTransactionID   apijson.Field
 	raw                   string
-	Extras                map[string]apijson.Metadata
+	Extras                map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into ReturnObject using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *ReturnObject) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -253,24 +258,23 @@ type ReturnObjectReferenceNumbers struct {
 	ReferenceNumber string `json:"reference_number,required"`
 	// The type of the reference number. Referring to the vendor payment id.
 	ReferenceNumberType ReturnObjectReferenceNumbersReferenceNumberType `json:"reference_number_type,required"`
-	JSON                ReturnObjectReferenceNumbersJSON
+	JSON                returnObjectReferenceNumbersJSON
 }
 
-type ReturnObjectReferenceNumbersJSON struct {
-	ID                  apijson.Metadata
-	Object              apijson.Metadata
-	LiveMode            apijson.Metadata
-	CreatedAt           apijson.Metadata
-	UpdatedAt           apijson.Metadata
-	ReferenceNumber     apijson.Metadata
-	ReferenceNumberType apijson.Metadata
+// returnObjectReferenceNumbersJSON contains the JSON metadata for the struct
+// [ReturnObjectReferenceNumbers]
+type returnObjectReferenceNumbersJSON struct {
+	ID                  apijson.Field
+	Object              apijson.Field
+	LiveMode            apijson.Field
+	CreatedAt           apijson.Field
+	UpdatedAt           apijson.Field
+	ReferenceNumber     apijson.Field
+	ReferenceNumberType apijson.Field
 	raw                 string
-	Extras              map[string]apijson.Metadata
+	Extras              map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into ReturnObjectReferenceNumbers
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *ReturnObjectReferenceNumbers) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -333,26 +337,23 @@ const (
 
 type ReturnNewParams struct {
 	// The ID of the object being returned or `null`.
-	ReturnableID field.Field[string] `json:"returnable_id,required,nullable" format:"uuid"`
+	ReturnableID param.Field[string] `json:"returnable_id,required,nullable" format:"uuid"`
 	// The return code. For ACH returns, this is the required ACH return code.
-	Code field.Field[ReturnNewParamsCode] `json:"code,nullable"`
+	Code param.Field[ReturnNewParamsCode] `json:"code,nullable"`
 	// An optional description of the reason for the return. This is for internal usage
 	// and will not be transmitted to the bank.”
-	Reason field.Field[string] `json:"reason,nullable"`
+	Reason param.Field[string] `json:"reason,nullable"`
 	// If the return code is `R14` or `R15` this is the date the deceased counterparty
 	// passed away.
-	DateOfDeath field.Field[time.Time] `json:"date_of_death,nullable" format:"date"`
+	DateOfDeath param.Field[time.Time] `json:"date_of_death,nullable" format:"date"`
 	// Some returns may include additional information from the bank. In these cases,
 	// this string will be present.
-	AdditionalInformation field.Field[string] `json:"additional_information,nullable"`
+	AdditionalInformation param.Field[string] `json:"additional_information,nullable"`
 	// The type of object being returned. Currently, this may only be
 	// incoming_payment_detail.
-	ReturnableType field.Field[ReturnNewParamsReturnableType] `json:"returnable_type,required"`
+	ReturnableType param.Field[ReturnNewParamsReturnableType] `json:"returnable_type,required"`
 }
 
-// MarshalJSON serializes ReturnNewParams into an array of bytes using the gjson
-// library. Members of the `jsonFields` field are serialized into the top-level,
-// and will overwrite known members of the same name.
 func (r ReturnNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -412,23 +413,22 @@ const (
 )
 
 type ReturnListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 	// Specify `internal_account_id` if you wish to see returns to/from a specific
 	// account.
-	InternalAccountID field.Field[string] `query:"internal_account_id"`
+	InternalAccountID param.Field[string] `query:"internal_account_id"`
 	// Specify `counterparty_id` if you wish to see returns that occurred with a
 	// specific counterparty.
-	CounterpartyID field.Field[string] `query:"counterparty_id"`
+	CounterpartyID param.Field[string] `query:"counterparty_id"`
 	// The ID of a valid returnable. Must be accompanied by `returnable_type`.
-	ReturnableID field.Field[string] `query:"returnable_id"`
+	ReturnableID param.Field[string] `query:"returnable_id"`
 	// One of `payment_order`, `paper_item`, `reversal`, or `incoming_payment_detail`.
 	// Must be accompanied by `returnable_id`.
-	ReturnableType field.Field[ReturnListParamsReturnableType] `query:"returnable_type"`
+	ReturnableType param.Field[ReturnListParamsReturnableType] `query:"returnable_type"`
 }
 
-// URLQuery serializes ReturnListParams into a url.Values of the query parameters
-// associated with this value
+// URLQuery serializes [ReturnListParams]'s query parameters as `url.Values`.
 func (r ReturnListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

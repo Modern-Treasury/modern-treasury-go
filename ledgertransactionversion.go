@@ -9,16 +9,24 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// LedgerTransactionVersionService contains methods and other services that help
+// with interacting with the Modern Treasury API. Note, unlike clients, this
+// service does not read variables from the environment automatically. You should
+// not instantiate this service directly, and instead use the
+// [NewLedgerTransactionVersionService] method instead.
 type LedgerTransactionVersionService struct {
 	Options []option.RequestOption
 }
 
+// NewLedgerTransactionVersionService generates a new service that applies the
+// given options to each request. These options are applied after the parent
+// client's options (if there is one), and before any request-specific options.
 func NewLedgerTransactionVersionService(opts ...option.RequestOption) (r *LedgerTransactionVersionService) {
 	r = &LedgerTransactionVersionService{}
 	r.Options = opts
@@ -86,33 +94,32 @@ type LedgerTransactionVersion struct {
 	ExternalID string `json:"external_id,required,nullable"`
 	// Version number of the ledger transaction.
 	Version int64 `json:"version,required"`
-	JSON    LedgerTransactionVersionJSON
+	JSON    ledgerTransactionVersionJSON
 }
 
-type LedgerTransactionVersionJSON struct {
-	ID                  apijson.Metadata
-	Object              apijson.Metadata
-	LiveMode            apijson.Metadata
-	CreatedAt           apijson.Metadata
-	LedgerTransactionID apijson.Metadata
-	Description         apijson.Metadata
-	Status              apijson.Metadata
-	Metadata            apijson.Metadata
-	EffectiveDate       apijson.Metadata
-	LedgerEntries       apijson.Metadata
-	PostedAt            apijson.Metadata
-	LedgerID            apijson.Metadata
-	LedgerableType      apijson.Metadata
-	LedgerableID        apijson.Metadata
-	ExternalID          apijson.Metadata
-	Version             apijson.Metadata
+// ledgerTransactionVersionJSON contains the JSON metadata for the struct
+// [LedgerTransactionVersion]
+type ledgerTransactionVersionJSON struct {
+	ID                  apijson.Field
+	Object              apijson.Field
+	LiveMode            apijson.Field
+	CreatedAt           apijson.Field
+	LedgerTransactionID apijson.Field
+	Description         apijson.Field
+	Status              apijson.Field
+	Metadata            apijson.Field
+	EffectiveDate       apijson.Field
+	LedgerEntries       apijson.Field
+	PostedAt            apijson.Field
+	LedgerID            apijson.Field
+	LedgerableType      apijson.Field
+	LedgerableID        apijson.Field
+	ExternalID          apijson.Field
+	Version             apijson.Field
 	raw                 string
-	Extras              map[string]apijson.Metadata
+	Extras              map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into LedgerTransactionVersion
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *LedgerTransactionVersion) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -164,30 +171,29 @@ type LedgerTransactionVersionLedgerEntries struct {
 	// https://docs.moderntreasury.com/docs/transaction-status-and-balances for more
 	// details.
 	ResultingLedgerAccountBalances LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalances `json:"resulting_ledger_account_balances,required,nullable"`
-	JSON                           LedgerTransactionVersionLedgerEntriesJSON
+	JSON                           ledgerTransactionVersionLedgerEntriesJSON
 }
 
-type LedgerTransactionVersionLedgerEntriesJSON struct {
-	ID                             apijson.Metadata
-	Object                         apijson.Metadata
-	LiveMode                       apijson.Metadata
-	CreatedAt                      apijson.Metadata
-	Amount                         apijson.Metadata
-	Direction                      apijson.Metadata
-	Status                         apijson.Metadata
-	LedgerAccountID                apijson.Metadata
-	LedgerAccountLockVersion       apijson.Metadata
-	LedgerAccountCurrency          apijson.Metadata
-	LedgerAccountCurrencyExponent  apijson.Metadata
-	LedgerTransactionID            apijson.Metadata
-	ResultingLedgerAccountBalances apijson.Metadata
+// ledgerTransactionVersionLedgerEntriesJSON contains the JSON metadata for the
+// struct [LedgerTransactionVersionLedgerEntries]
+type ledgerTransactionVersionLedgerEntriesJSON struct {
+	ID                             apijson.Field
+	Object                         apijson.Field
+	LiveMode                       apijson.Field
+	CreatedAt                      apijson.Field
+	Amount                         apijson.Field
+	Direction                      apijson.Field
+	Status                         apijson.Field
+	LedgerAccountID                apijson.Field
+	LedgerAccountLockVersion       apijson.Field
+	LedgerAccountCurrency          apijson.Field
+	LedgerAccountCurrencyExponent  apijson.Field
+	LedgerTransactionID            apijson.Field
+	ResultingLedgerAccountBalances apijson.Field
 	raw                            string
-	Extras                         map[string]apijson.Metadata
+	Extras                         map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// LedgerTransactionVersionLedgerEntries using the internal json library.
-// Unrecognized fields are stored in the `jsonFields` property.
 func (r *LedgerTransactionVersionLedgerEntries) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -207,6 +213,13 @@ const (
 	LedgerTransactionVersionLedgerEntriesStatusPosted   LedgerTransactionVersionLedgerEntriesStatus = "posted"
 )
 
+// The pending, posted, and available balances for this ledger entry's ledger
+// account. The posted balance is the sum of all posted entries on the account. The
+// pending balance is the sum of all pending and posted entries on the account. The
+// available balance is the posted incoming entries minus the sum of the pending
+// and posted outgoing amounts. Please see
+// https://docs.moderntreasury.com/docs/transaction-status-and-balances for more
+// details.
 type LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalances struct {
 	// The pending_balance is the sum of all pending and posted entries.
 	PendingBalance LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPendingBalance `json:"pending_balance,required"`
@@ -217,25 +230,25 @@ type LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalances struct 
 	// pending_debits; for debit normal, available_amount = posted_debits -
 	// pending_credits.
 	AvailableBalance LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesAvailableBalance `json:"available_balance,required"`
-	JSON             LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesJSON
+	JSON             ledgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesJSON
 }
 
-type LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesJSON struct {
-	PendingBalance   apijson.Metadata
-	PostedBalance    apijson.Metadata
-	AvailableBalance apijson.Metadata
+// ledgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesJSON contains
+// the JSON metadata for the struct
+// [LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalances]
+type ledgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesJSON struct {
+	PendingBalance   apijson.Field
+	PostedBalance    apijson.Field
+	AvailableBalance apijson.Field
 	raw              string
-	Extras           map[string]apijson.Metadata
+	Extras           map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalances using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalances) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The pending_balance is the sum of all pending and posted entries.
 type LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPendingBalance struct {
 	Credits int64 `json:"credits,required"`
 	Debits  int64 `json:"debits,required"`
@@ -244,27 +257,27 @@ type LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPendingB
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64 `json:"currency_exponent,required"`
-	JSON             LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPendingBalanceJSON
+	JSON             ledgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPendingBalanceJSON
 }
 
-type LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPendingBalanceJSON struct {
-	Credits          apijson.Metadata
-	Debits           apijson.Metadata
-	Amount           apijson.Metadata
-	Currency         apijson.Metadata
-	CurrencyExponent apijson.Metadata
+// ledgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPendingBalanceJSON
+// contains the JSON metadata for the struct
+// [LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPendingBalance]
+type ledgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPendingBalanceJSON struct {
+	Credits          apijson.Field
+	Debits           apijson.Field
+	Amount           apijson.Field
+	Currency         apijson.Field
+	CurrencyExponent apijson.Field
 	raw              string
-	Extras           map[string]apijson.Metadata
+	Extras           map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPendingBalance
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPendingBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The posted_balance is the sum of all posted entries.
 type LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPostedBalance struct {
 	Credits int64 `json:"credits,required"`
 	Debits  int64 `json:"debits,required"`
@@ -273,27 +286,30 @@ type LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPostedBa
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64 `json:"currency_exponent,required"`
-	JSON             LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPostedBalanceJSON
+	JSON             ledgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPostedBalanceJSON
 }
 
-type LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPostedBalanceJSON struct {
-	Credits          apijson.Metadata
-	Debits           apijson.Metadata
-	Amount           apijson.Metadata
-	Currency         apijson.Metadata
-	CurrencyExponent apijson.Metadata
+// ledgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPostedBalanceJSON
+// contains the JSON metadata for the struct
+// [LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPostedBalance]
+type ledgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPostedBalanceJSON struct {
+	Credits          apijson.Field
+	Debits           apijson.Field
+	Amount           apijson.Field
+	Currency         apijson.Field
+	CurrencyExponent apijson.Field
 	raw              string
-	Extras           map[string]apijson.Metadata
+	Extras           map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPostedBalance
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesPostedBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The available_balance is the sum of all posted inbound entries and pending
+// outbound entries. For credit normal, available_amount = posted_credits -
+// pending_debits; for debit normal, available_amount = posted_debits -
+// pending_credits.
 type LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesAvailableBalance struct {
 	Credits int64 `json:"credits,required"`
 	Debits  int64 `json:"debits,required"`
@@ -302,23 +318,22 @@ type LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesAvailabl
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64 `json:"currency_exponent,required"`
-	JSON             LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesAvailableBalanceJSON
+	JSON             ledgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesAvailableBalanceJSON
 }
 
-type LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesAvailableBalanceJSON struct {
-	Credits          apijson.Metadata
-	Debits           apijson.Metadata
-	Amount           apijson.Metadata
-	Currency         apijson.Metadata
-	CurrencyExponent apijson.Metadata
+// ledgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesAvailableBalanceJSON
+// contains the JSON metadata for the struct
+// [LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesAvailableBalance]
+type ledgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesAvailableBalanceJSON struct {
+	Credits          apijson.Field
+	Debits           apijson.Field
+	Amount           apijson.Field
+	Currency         apijson.Field
+	CurrencyExponent apijson.Field
 	raw              string
-	Extras           map[string]apijson.Metadata
+	Extras           map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesAvailableBalance
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesAvailableBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -339,19 +354,19 @@ const (
 )
 
 type LedgerTransactionVersionListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// created_at timestamp. For example, for all dates after Jan 1 2000 12:00 UTC, use
 	// created_at%5Bgt%5D=2000-01-01T12:00:00Z.
-	CreatedAt field.Field[map[string]time.Time] `query:"created_at" format:"date-time"`
+	CreatedAt param.Field[map[string]time.Time] `query:"created_at" format:"date-time"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// version. For example, for all versions after 2, use version%5Bgt%5D=2.
-	Version field.Field[map[string]int64] `query:"version"`
+	Version param.Field[map[string]int64] `query:"version"`
 }
 
-// URLQuery serializes LedgerTransactionVersionListParams into a url.Values of the
-// query parameters associated with this value
+// URLQuery serializes [LedgerTransactionVersionListParams]'s query parameters as
+// `url.Values`.
 func (r LedgerTransactionVersionListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

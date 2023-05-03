@@ -9,16 +9,24 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// ExpectedPaymentService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewExpectedPaymentService] method instead.
 type ExpectedPaymentService struct {
 	Options []option.RequestOption
 }
 
+// NewExpectedPaymentService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewExpectedPaymentService(opts ...option.RequestOption) (r *ExpectedPaymentService) {
 	r = &ExpectedPaymentService{}
 	r.Options = opts
@@ -136,40 +144,38 @@ type ExpectedPayment struct {
 	ReconciliationMethod ExpectedPaymentReconciliationMethod `json:"reconciliation_method,required,nullable"`
 	// The ID of the ledger transaction linked to the expected payment.
 	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
-	JSON                ExpectedPaymentJSON
+	JSON                expectedPaymentJSON
 }
 
-type ExpectedPaymentJSON struct {
-	ID                    apijson.Metadata
-	Object                apijson.Metadata
-	LiveMode              apijson.Metadata
-	CreatedAt             apijson.Metadata
-	UpdatedAt             apijson.Metadata
-	AmountUpperBound      apijson.Metadata
-	AmountLowerBound      apijson.Metadata
-	Direction             apijson.Metadata
-	InternalAccountID     apijson.Metadata
-	Type                  apijson.Metadata
-	Currency              apijson.Metadata
-	DateUpperBound        apijson.Metadata
-	DateLowerBound        apijson.Metadata
-	Description           apijson.Metadata
-	StatementDescriptor   apijson.Metadata
-	Metadata              apijson.Metadata
-	CounterpartyID        apijson.Metadata
-	RemittanceInformation apijson.Metadata
-	TransactionID         apijson.Metadata
-	TransactionLineItemID apijson.Metadata
-	Status                apijson.Metadata
-	ReconciliationMethod  apijson.Metadata
-	LedgerTransactionID   apijson.Metadata
+// expectedPaymentJSON contains the JSON metadata for the struct [ExpectedPayment]
+type expectedPaymentJSON struct {
+	ID                    apijson.Field
+	Object                apijson.Field
+	LiveMode              apijson.Field
+	CreatedAt             apijson.Field
+	UpdatedAt             apijson.Field
+	AmountUpperBound      apijson.Field
+	AmountLowerBound      apijson.Field
+	Direction             apijson.Field
+	InternalAccountID     apijson.Field
+	Type                  apijson.Field
+	Currency              apijson.Field
+	DateUpperBound        apijson.Field
+	DateLowerBound        apijson.Field
+	Description           apijson.Field
+	StatementDescriptor   apijson.Field
+	Metadata              apijson.Field
+	CounterpartyID        apijson.Field
+	RemittanceInformation apijson.Field
+	TransactionID         apijson.Field
+	TransactionLineItemID apijson.Field
+	Status                apijson.Field
+	ReconciliationMethod  apijson.Field
+	LedgerTransactionID   apijson.Field
 	raw                   string
-	Extras                map[string]apijson.Metadata
+	Extras                map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into ExpectedPayment using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *ExpectedPayment) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -221,46 +227,43 @@ const (
 type ExpectedPaymentNewParams struct {
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUpperBound field.Field[int64] `json:"amount_upper_bound,required"`
+	AmountUpperBound param.Field[int64] `json:"amount_upper_bound,required"`
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountLowerBound field.Field[int64] `json:"amount_lower_bound,required"`
+	AmountLowerBound param.Field[int64] `json:"amount_lower_bound,required"`
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
-	Direction field.Field[ExpectedPaymentNewParamsDirection] `json:"direction,required"`
+	Direction param.Field[ExpectedPaymentNewParamsDirection] `json:"direction,required"`
 	// The ID of the Internal Account for the expected payment.
-	InternalAccountID field.Field[string] `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID param.Field[string] `json:"internal_account_id,required" format:"uuid"`
 	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
 	// sepa, signet, wire.
-	Type field.Field[ExpectedPaymentType] `json:"type,nullable"`
+	Type param.Field[ExpectedPaymentType] `json:"type,nullable"`
 	// Must conform to ISO 4217. Defaults to the currency of the internal account.
-	Currency field.Field[shared.Currency] `json:"currency,nullable"`
+	Currency param.Field[shared.Currency] `json:"currency,nullable"`
 	// The latest date the payment may come in. Format: yyyy-mm-dd
-	DateUpperBound field.Field[time.Time] `json:"date_upper_bound,nullable" format:"date"`
+	DateUpperBound param.Field[time.Time] `json:"date_upper_bound,nullable" format:"date"`
 	// The earliest date the payment may come in. Format: yyyy-mm-dd
-	DateLowerBound field.Field[time.Time] `json:"date_lower_bound,nullable" format:"date"`
+	DateLowerBound param.Field[time.Time] `json:"date_lower_bound,nullable" format:"date"`
 	// An optional description for internal use.
-	Description field.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description,nullable"`
 	// The statement description you expect to see on the transaction. For ACH
 	// payments, this will be the full line item passed from the bank. For wire
 	// payments, this will be the OBI field on the wire. For check payments, this will
 	// be the memo field.
-	StatementDescriptor field.Field[string] `json:"statement_descriptor,nullable"`
+	StatementDescriptor param.Field[string] `json:"statement_descriptor,nullable"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 	// The ID of the counterparty you expect for this payment.
-	CounterpartyID field.Field[string] `json:"counterparty_id,nullable" format:"uuid"`
+	CounterpartyID param.Field[string] `json:"counterparty_id,nullable" format:"uuid"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation field.Field[string]                              `json:"remittance_information,nullable"`
-	LineItems             field.Field[[]ExpectedPaymentNewParamsLineItems] `json:"line_items"`
+	RemittanceInformation param.Field[string]                              `json:"remittance_information,nullable"`
+	LineItems             param.Field[[]ExpectedPaymentNewParamsLineItems] `json:"line_items"`
 }
 
-// MarshalJSON serializes ExpectedPaymentNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r ExpectedPaymentNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -275,59 +278,56 @@ const (
 type ExpectedPaymentNewParamsLineItems struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
-	Amount field.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 	// A free-form description of the line item.
-	Description field.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description,nullable"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
-	AccountingCategoryID field.Field[string] `json:"accounting_category_id,nullable"`
+	AccountingCategoryID param.Field[string] `json:"accounting_category_id,nullable"`
 }
 
 type ExpectedPaymentUpdateParams struct {
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUpperBound field.Field[int64] `json:"amount_upper_bound"`
+	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountLowerBound field.Field[int64] `json:"amount_lower_bound"`
+	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
-	Direction field.Field[ExpectedPaymentUpdateParamsDirection] `json:"direction"`
+	Direction param.Field[ExpectedPaymentUpdateParamsDirection] `json:"direction"`
 	// The ID of the Internal Account for the expected payment.
-	InternalAccountID field.Field[string] `json:"internal_account_id" format:"uuid"`
+	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
 	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
 	// sepa, signet, wire.
-	Type field.Field[ExpectedPaymentType] `json:"type,nullable"`
+	Type param.Field[ExpectedPaymentType] `json:"type,nullable"`
 	// Must conform to ISO 4217. Defaults to the currency of the internal account.
-	Currency field.Field[shared.Currency] `json:"currency,nullable"`
+	Currency param.Field[shared.Currency] `json:"currency,nullable"`
 	// The latest date the payment may come in. Format: yyyy-mm-dd
-	DateUpperBound field.Field[time.Time] `json:"date_upper_bound,nullable" format:"date"`
+	DateUpperBound param.Field[time.Time] `json:"date_upper_bound,nullable" format:"date"`
 	// The earliest date the payment may come in. Format: yyyy-mm-dd
-	DateLowerBound field.Field[time.Time] `json:"date_lower_bound,nullable" format:"date"`
+	DateLowerBound param.Field[time.Time] `json:"date_lower_bound,nullable" format:"date"`
 	// An optional description for internal use.
-	Description field.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description,nullable"`
 	// The statement description you expect to see on the transaction. For ACH
 	// payments, this will be the full line item passed from the bank. For wire
 	// payments, this will be the OBI field on the wire. For check payments, this will
 	// be the memo field.
-	StatementDescriptor field.Field[string] `json:"statement_descriptor,nullable"`
+	StatementDescriptor param.Field[string] `json:"statement_descriptor,nullable"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 	// The ID of the counterparty you expect for this payment.
-	CounterpartyID field.Field[string] `json:"counterparty_id,nullable" format:"uuid"`
+	CounterpartyID param.Field[string] `json:"counterparty_id,nullable" format:"uuid"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation field.Field[string] `json:"remittance_information,nullable"`
+	RemittanceInformation param.Field[string] `json:"remittance_information,nullable"`
 }
 
-// MarshalJSON serializes ExpectedPaymentUpdateParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r ExpectedPaymentUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -340,31 +340,31 @@ const (
 )
 
 type ExpectedPaymentListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 	// One of unreconciled, reconciled, or archived.
-	Status field.Field[ExpectedPaymentListParamsStatus] `query:"status"`
+	Status param.Field[ExpectedPaymentListParamsStatus] `query:"status"`
 	// Specify internal_account_id to see expected_payments for a specific account.
-	InternalAccountID field.Field[string] `query:"internal_account_id"`
+	InternalAccountID param.Field[string] `query:"internal_account_id"`
 	// One of credit, debit
-	Direction field.Field[ExpectedPaymentListParamsDirection] `query:"direction"`
+	Direction param.Field[ExpectedPaymentListParamsDirection] `query:"direction"`
 	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp,sen,
 	// sepa, signet, wire
-	Type field.Field[ExpectedPaymentListParamsType] `query:"type"`
+	Type param.Field[ExpectedPaymentListParamsType] `query:"type"`
 	// Specify counterparty_id to see expected_payments for a specific account.
-	CounterpartyID field.Field[string] `query:"counterparty_id"`
+	CounterpartyID param.Field[string] `query:"counterparty_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
-	Metadata field.Field[map[string]string] `query:"metadata"`
+	Metadata param.Field[map[string]string] `query:"metadata"`
 	// Used to return expected payments created after some datetime
-	CreatedAtLowerBound field.Field[time.Time] `query:"created_at_lower_bound" format:"date-time"`
+	CreatedAtLowerBound param.Field[time.Time] `query:"created_at_lower_bound" format:"date-time"`
 	// Used to return expected payments created before some datetime
-	CreatedAtUpperBound field.Field[time.Time] `query:"created_at_upper_bound" format:"date-time"`
+	CreatedAtUpperBound param.Field[time.Time] `query:"created_at_upper_bound" format:"date-time"`
 }
 
-// URLQuery serializes ExpectedPaymentListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [ExpectedPaymentListParams]'s query parameters as
+// `url.Values`.
 func (r ExpectedPaymentListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

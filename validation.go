@@ -7,15 +7,22 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// ValidationService contains methods and other services that help with interacting
+// with the Modern Treasury API. Note, unlike clients, this service does not read
+// variables from the environment automatically. You should not instantiate this
+// service directly, and instead use the [NewValidationService] method instead.
 type ValidationService struct {
 	Options []option.RequestOption
 }
 
+// NewValidationService generates a new service that applies the given options to
+// each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewValidationService(opts ...option.RequestOption) (r *ValidationService) {
 	r = &ValidationService{}
 	r.Options = opts
@@ -50,23 +57,22 @@ type RoutingNumberLookupRequest struct {
 	// a boolean value representing whether the bank is on that particular sanctions
 	// list. Currently, this includes eu_con, uk_hmt, us_ofac, and un sanctions lists.
 	Sanctions map[string]interface{} `json:"sanctions"`
-	JSON      RoutingNumberLookupRequestJSON
+	JSON      routingNumberLookupRequestJSON
 }
 
-type RoutingNumberLookupRequestJSON struct {
-	RoutingNumber         apijson.Metadata
-	RoutingNumberType     apijson.Metadata
-	SupportedPaymentTypes apijson.Metadata
-	BankName              apijson.Metadata
-	BankAddress           apijson.Metadata
-	Sanctions             apijson.Metadata
+// routingNumberLookupRequestJSON contains the JSON metadata for the struct
+// [RoutingNumberLookupRequest]
+type routingNumberLookupRequestJSON struct {
+	RoutingNumber         apijson.Field
+	RoutingNumberType     apijson.Field
+	SupportedPaymentTypes apijson.Field
+	BankName              apijson.Field
+	BankAddress           apijson.Field
+	Sanctions             apijson.Field
 	raw                   string
-	Extras                map[string]apijson.Metadata
+	Extras                map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into RoutingNumberLookupRequest
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *RoutingNumberLookupRequest) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -104,6 +110,7 @@ const (
 	RoutingNumberLookupRequestSupportedPaymentTypesWire        RoutingNumberLookupRequestSupportedPaymentTypes = "wire"
 )
 
+// The address of the bank.
 type RoutingNumberLookupRequestBankAddress struct {
 	Line1 string `json:"line1,nullable"`
 	Line2 string `json:"line2,nullable"`
@@ -115,39 +122,38 @@ type RoutingNumberLookupRequestBankAddress struct {
 	PostalCode string `json:"postal_code,nullable"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country,nullable"`
-	JSON    RoutingNumberLookupRequestBankAddressJSON
+	JSON    routingNumberLookupRequestBankAddressJSON
 }
 
-type RoutingNumberLookupRequestBankAddressJSON struct {
-	Line1      apijson.Metadata
-	Line2      apijson.Metadata
-	Locality   apijson.Metadata
-	Region     apijson.Metadata
-	PostalCode apijson.Metadata
-	Country    apijson.Metadata
+// routingNumberLookupRequestBankAddressJSON contains the JSON metadata for the
+// struct [RoutingNumberLookupRequestBankAddress]
+type routingNumberLookupRequestBankAddressJSON struct {
+	Line1      apijson.Field
+	Line2      apijson.Field
+	Locality   apijson.Field
+	Region     apijson.Field
+	PostalCode apijson.Field
+	Country    apijson.Field
 	raw        string
-	Extras     map[string]apijson.Metadata
+	Extras     map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// RoutingNumberLookupRequestBankAddress using the internal json library.
-// Unrecognized fields are stored in the `jsonFields` property.
 func (r *RoutingNumberLookupRequestBankAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 type ValidationValidateRoutingNumberParams struct {
 	// The routing number that is being validated.
-	RoutingNumber field.Field[string] `query:"routing_number,required"`
+	RoutingNumber param.Field[string] `query:"routing_number,required"`
 	// One of `aba`, `au_bsb`, `br_codigo`, `ca_cpa`, `cnaps`, `gb_sort_code`,
 	// `in_ifsc`, `my_branch_code`, or `swift`. In sandbox mode we currently only
 	// support `aba` and `swift` with routing numbers '123456789' and 'GRINUST0XXX'
 	// respectively.
-	RoutingNumberType field.Field[ValidationValidateRoutingNumberParamsRoutingNumberType] `query:"routing_number_type,required"`
+	RoutingNumberType param.Field[ValidationValidateRoutingNumberParamsRoutingNumberType] `query:"routing_number_type,required"`
 }
 
-// URLQuery serializes ValidationValidateRoutingNumberParams into a url.Values of
-// the query parameters associated with this value
+// URLQuery serializes [ValidationValidateRoutingNumberParams]'s query parameters
+// as `url.Values`.
 func (r ValidationValidateRoutingNumberParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

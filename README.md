@@ -2,13 +2,10 @@
 
 <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go"><img src="https://pkg.go.dev/badge/github.com/Modern-Treasury/modern-treasury-go.svg" alt="Go Reference"></a>
 
-The Modern Treasury Go library provides convenient access to the Modern Treasury REST
-API from applications written in Go.
+The Modern Treasury Go library provides convenient access to [the Modern Treasury REST
+API](https://docs.moderntreasury.com) from applications written in Go.
 
 ## Installation
-
-Within a Go module, you can just import this package and let the Go compiler
-resolve this module.
 
 ```go
 import (
@@ -16,15 +13,15 @@ import (
 )
 ```
 
-Or, explicitly import this package with
+Or to pin the version:
 
+```sh
+go get -u 'github.com/Modern-Treasury/modern-treasury-go@v0.0.1'
 ```
-go get -u 'github.com/Modern-Treasury/modern-treasury-go'
-```
 
-## Documentation
+## Requirements
 
-The API documentation can be found [here](https://docs.moderntreasury.com).
+This library requires Go 1.18+.
 
 ## Usage
 
@@ -57,93 +54,73 @@ func main() {
 
 ### Request Fields
 
-Types for requests look like the following:
+All request parameters are wrapped in a generic `Field` type,
+which we use to distinguish zero values from null or omitted fields.
 
-```go
-type FooParams struct {
-	Type   field.Field[string] `json:"type,required"`
-	Number field.Field[int64]  `json:"number,required"`
-	Name   field.Field[string] `json:"name"`
-	Other  field.Field[Bar]    `json:"other"`
-}
+This prevents accidentally sending a zero value if you forget a required parameter,
+and enables explicitly sending `null`, `false`, `''`, or `0` on optional parameters.
+Any field not specified is not sent.
 
-type Bar struct {
-	Number field.Field[int64]  `json:"number"`
-	Name   field.Field[string] `json:"name"`
-}
-```
-
-For each field, you can either supply a value field with
-`moderntreasury.F(...)`, a `null` value with `moderntreasury.Null()`, or
-some raw JSON value with `moderntreasury.Raw(...)` that you specify as a
-byte slice. We also provide convenient helpers `moderntreasury.Int(...)` and
-`moderntreasury.String(...)`. If you do not supply a value, then we do not
-populate the field. An example request may look like
+To construct fields with values, use the helpers `String()`, `Int()`, `Float()`, or most commonly, the generic `F[T]()`.
+To send a null, use `Null[T]()`, and to send a nonconforming value, use `Raw[T](any)`. For example:
 
 ```go
 params := FooParams{
-	// Normally populates this field as `"type": "foo"`
-	Type: moderntreasury.F("foo"),
+	Name: moderntreasury.F("hello"),
 
-	// Integer helper casts integer values and literals to field.Field[int64]
-	Number: moderntreasury.Int(12),
+	// Explicitly send `"description": null`
+	Description: moderntreasury.Null[string](),
 
-	// Explicitly sends this field as null, e.g., `"name": null`
-	Name: moderntreasury.Null[string](),
+	Point: moderntreasury.F(moderntreasury.Point{
+		X: moderntreasury.Int(0),
+		Y: moderntreasury.Int(1),
 
-	// Overrides this field as `"other": "ovveride_this_field"`
-	Other: moderntreasury.Raw[Bar]("override_this_field")
+		// In cases where the API specifies a given type,
+		// but you want to send something else, use `Raw`:
+		Z: moderntreasury.Raw[int64](0.01), // sends a float
+	}),
 }
 ```
 
-If you want to add or override a field in the JSON body, then you can use the
-`option.WithJSONSet(key string, value interface{})` RequestOption, which you
-can read more about [here](#requestoptions). Internally, this uses
-'github.com/tidwall/sjson' library, so you can compose complex access as seen
-[here](https://github.com/tidwall/sjson).
-
 ### Response Objects
 
-Response objects in this SDK have value type members. Accessing properties on
-response objects is as simple as:
+All fields in response structs are value types (not pointers or wrappers).
+
+If a given field is `null`, not present, or invalid, the corresponding field
+will simply be its zero value.
+
+All response structs also include a special `JSON` field, containing more detailed
+information about each property, which you can use like so:
 
 ```go
-res, err := client.Service.Foo(context.TODO())
-res.Name // is just some string value
+if res.Name == "" {
+	// true if `"name"` is either not present or explicitly null
+	res.JSON.Name.IsNull()
+
+	// true if the `"name"` key was not present in the repsonse JSON at all
+	res.JSON.Name.IsMissing()
+
+	// When the API returns data that cannot be coerced to the expected type:
+	if res.JSON.Name.IsInvalid() {
+		raw := res.JSON.Name.Raw()
+
+		legacyName := struct{
+			First string `json:"first"`
+			Last  string `json:"last"`
+		}{}
+		json.Unmarshal([]byte(raw), &legacyName)
+		name = legacyName.First + " " + legacyName.Last
+	}
+}
 ```
 
-If the value received is null, not present, or invalid, the corresponding field
-will simply be its empty value.
-
-If you want to be able to tell that the value is either `null`, not present, or
-invalid, we provide metadata in the `JSON` property of every response object.
-
-```go
-// This is true if `name` is _either_ not present or explicitly null
-res.JSON.Name.IsNull()
-
-// This is true if `name` is not present
-res.JSON.Name.IsMissing()
-
-// This is true if `name` is present, but not coercable
-res.JSON.Name.IsInvalid()
-
-// If needed, you can access the Raw JSON value of the field by accessing
-res.JSON.Name.Raw()
-```
-
-There may be instances where we provide experimental or private API features
-for some customers. In those cases, the related features will not be exposed to
-the SDK as typed fields, and are instead deserialized to an internal map. We
-provide methods to get and set these json fields in API objects.
+These `.JSON` structs also include an `Extras` map containing
+any properties in the json response that were not specified
+in the struct. This can be useful for API features not yet
+present in the SDK.
 
 ```go
-// Access the JSON value as
-body := res.JSON.Extras["extra_field"].Raw()
-
-// You can `Unmarshal` the JSON into a struct as needed
-custom := struct{A string, B int64}{}
-json.Unmarshal([]byte(body), &custom)
+body := res.JSON.Extras["my_unexpected_field"].Raw()
 ```
 
 ### RequestOptions
@@ -151,40 +128,23 @@ json.Unmarshal([]byte(body), &custom)
 This library uses the functional options pattern. Functions defined in the
 `option` package return a `RequestOption`, which is a closure that mutates a
 `RequestConfig`. These options can be supplied to the client or at individual
-requests, and they will cascade appropriately.
-
-At each request, these closures will be run in the order that they are
-supplied, after the defaults for that particular request.
-
-For example:
+requests. For example:
 
 ```go
 client := moderntreasury.NewClient(
-	// Adds header to every request made by client
+	// Adds a header to every request made by the client
 	option.WithHeader("X-Some-Header", "custom_header_info"),
-	// Adds query to every request made by client
-	option.WithQuery("test_token", "my_test_token"),
 )
 
-client.ExternalAccounts.New(
-	context.TODO(),
-	...,
-	// These options override the client options
+client.ExternalAccounts.New(context.TODO(), ...,
+	// Override the header
 	option.WithHeader("X-Some-Header", "some_other_custom_header_info"),
-	option.WithQuery("test_token", "some_other_test_token"),
-)
-
-client.ExternalAccounts.New(
-	context.TODO(),
-	...,
-	// WithHeaderDel removes the header set in the client
-	// from this request
-	option.WithHeaderDel("X-Some-Header"),
-	// WithQueryDel removes the query set in the client
-	// from this request
-	option.WithQueryDel("test_token"),
+	// Add an undocumented field to the request body, using sjson syntax
+	option.WithJSONSet("some.json.path", map[string]string{"my": "object"}),
 )
 ```
+
+The full list of request options is [here](https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/option).
 
 ### Pagination
 
@@ -244,9 +204,29 @@ if err != nil {
 }
 ```
 
-When other errors occur, we return them unwrapped; for example, when HTTP
-transport returns an error, we return the `*url.Error` which could wrap
-`*net.OpError`.
+When other errors occur, they are returned unwrapped; for example,
+if HTTP transport fails, you might receive `*url.Error` wrapping `*net.OpError`.
+
+### Timeouts
+
+Requests do not time out by default; use context to configure a timeout for a request lifecycle.
+
+Note that if a request is [retried](#retries), the context timeout does not start over.
+To set a per-retry timeout, use `option.WithRequestTimeout()`.
+
+```go
+// This sets the timeout for the request, including all the retries.
+ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+defer cancel()
+client.ExternalAccounts.List(
+	ctx,
+	moderntreasury.ExternalAccountListParams{
+		PartyName: moderntreasury.F("my bank"),
+	},
+	// This sets the per-retry timeout
+	option.WithRequestTimeout(20*time.Second),
+)
+```
 
 ## Retries
 
@@ -273,24 +253,31 @@ client.ExternalAccounts.List(
 
 ### Middleware
 
-You may apply any middleware you wish by overriding the `http.Client` with
-`option.WithClient(client)`. An example of a basic logging middleware is given
+You may apply any middleware you wish by replacing the default `http.Client` with
+`option.WithHTTPClient(client)`. An example of a basic logging middleware is given
 below:
 
 ```go
-TODO
+type requestLogger struct {}
+
+func (l *requestLogger) RoundTrip(req *http.Request) (*http.Response, error) {
+	b, _ := httputil.DumpRequest(req, true)
+	println(string(b))
+	res, err := http.DefaultClient.Do(req)
+	return res, err
+}
+
+client := moderntreasury.NewClient(
+	option.WithHTTPClient(&http.Client{Transport: &requestLogger{}}),
+)
 ```
 
 ## Status
 
 This package is in beta. Its internals and interfaces are not stable and
-subject to change without a major semver bump; please reach out if you rely on
+subject to change without a major version bump; please reach out if you rely on
 any undocumented behavior.
 
 We are keen for your feedback; please email us at
 [sdk-feedback@moderntreasury.com](mailto:sdk-feedback@moderntreasury.com) or open an issue with questions, bugs, or
 suggestions.
-
-## Requirements
-
-This library requires Go 1.18+.
