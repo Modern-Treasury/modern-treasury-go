@@ -8,6 +8,13 @@ type FieldLike interface {
 	field()
 }
 
+// Field is a wrapper used for all values sent to the API,
+// to distinguish zero values from null or omitted fields.
+//
+// It also allows sending arbitrary deserializable values.
+//
+// To instantiate a Field, use the helpers exported from
+// the package root: `F()`, `Null()`, `Raw()`, etc.
 type Field[T any] struct {
 	Value   T
 	Null    bool

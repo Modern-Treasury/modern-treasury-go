@@ -8,31 +8,20 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
-type SharedService struct {
-	Options []option.RequestOption
-}
-
-func NewSharedService(opts ...option.RequestOption) (r *SharedService) {
-	r = &SharedService{}
-	r.Options = opts
-	return
-}
-
 type Page[T any] struct {
 	Items []T `json:"items"`
-	JSON  PageJSON
+	JSON  pageJSON
 	cfg   *requestconfig.RequestConfig
 	res   *http.Response
 }
 
-type PageJSON struct {
-	Items  apijson.Metadata
+// pageJSON contains the JSON metadata for the struct [Page[T]]
+type pageJSON struct {
+	Items  apijson.Field
 	raw    string
-	Extras map[string]apijson.Metadata
+	Extras map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into Page[T] using the internal
-// json library. Unrecognized fields are stored in the `jsonFields` property.
 func (r *Page[T]) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -117,19 +106,17 @@ const (
 type AsyncResponse struct {
 	ID     string `json:"id,required" format:"uuid"`
 	Object string `json:"object,required"`
-	JSON   AsyncResponseJSON
+	JSON   asyncResponseJSON
 }
 
-type AsyncResponseJSON struct {
-	ID     apijson.Metadata
-	Object apijson.Metadata
+// asyncResponseJSON contains the JSON metadata for the struct [AsyncResponse]
+type asyncResponseJSON struct {
+	ID     apijson.Field
+	Object apijson.Field
 	raw    string
-	Extras map[string]apijson.Metadata
+	Extras map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into AsyncResponse using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *AsyncResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
