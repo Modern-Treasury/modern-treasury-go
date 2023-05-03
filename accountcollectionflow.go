@@ -15,10 +15,18 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// AccountCollectionFlowService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewAccountCollectionFlowService] method instead.
 type AccountCollectionFlowService struct {
 	Options []option.RequestOption
 }
 
+// NewAccountCollectionFlowService generates a new service that applies the given
+// options to each request. These options are applied after the parent client's
+// options (if there is one), and before any request-specific options.
 func NewAccountCollectionFlowService(opts ...option.RequestOption) (r *AccountCollectionFlowService) {
 	r = &AccountCollectionFlowService{}
 	r.Options = opts
@@ -92,27 +100,26 @@ type AccountConnectionFlow struct {
 	// If present, the ID of the external account created using this flow.
 	ExternalAccountID string                              `json:"external_account_id,nullable" format:"uuid"`
 	PaymentTypes      []AccountConnectionFlowPaymentTypes `json:"payment_types,required"`
-	JSON              AccountConnectionFlowJSON
+	JSON              accountConnectionFlowJSON
 }
 
-type AccountConnectionFlowJSON struct {
-	ID                apijson.Metadata
-	Object            apijson.Metadata
-	LiveMode          apijson.Metadata
-	CreatedAt         apijson.Metadata
-	UpdatedAt         apijson.Metadata
-	ClientToken       apijson.Metadata
-	Status            apijson.Metadata
-	CounterpartyID    apijson.Metadata
-	ExternalAccountID apijson.Metadata
-	PaymentTypes      apijson.Metadata
+// accountConnectionFlowJSON contains the JSON metadata for the struct
+// [AccountConnectionFlow]
+type accountConnectionFlowJSON struct {
+	ID                apijson.Field
+	Object            apijson.Field
+	LiveMode          apijson.Field
+	CreatedAt         apijson.Field
+	UpdatedAt         apijson.Field
+	ClientToken       apijson.Field
+	Status            apijson.Field
+	CounterpartyID    apijson.Field
+	ExternalAccountID apijson.Field
+	PaymentTypes      apijson.Field
 	raw               string
-	Extras            map[string]apijson.Metadata
+	Extras            map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into AccountConnectionFlow using
-// the internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *AccountConnectionFlow) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -139,9 +146,6 @@ type AccountCollectionFlowNewParams struct {
 	PaymentTypes   field.Field[[]string] `json:"payment_types,required"`
 }
 
-// MarshalJSON serializes AccountCollectionFlowNewParams into an array of bytes
-// using the gjson library. Members of the `jsonFields` field are serialized into
-// the top-level, and will overwrite known members of the same name.
 func (r AccountCollectionFlowNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -152,9 +156,6 @@ type AccountCollectionFlowUpdateParams struct {
 	Status field.Field[AccountCollectionFlowUpdateParamsStatus] `json:"status,required"`
 }
 
-// MarshalJSON serializes AccountCollectionFlowUpdateParams into an array of bytes
-// using the gjson library. Members of the `jsonFields` field are serialized into
-// the top-level, and will overwrite known members of the same name.
 func (r AccountCollectionFlowUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -174,8 +175,8 @@ type AccountCollectionFlowListParams struct {
 	ExternalAccountID field.Field[string] `query:"external_account_id"`
 }
 
-// URLQuery serializes AccountCollectionFlowListParams into a url.Values of the
-// query parameters associated with this value
+// URLQuery serializes [AccountCollectionFlowListParams]'s query parameters as
+// `url.Values`.
 func (r AccountCollectionFlowListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

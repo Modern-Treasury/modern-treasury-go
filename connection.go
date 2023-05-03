@@ -14,10 +14,17 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// ConnectionService contains methods and other services that help with interacting
+// with the Modern Treasury API. Note, unlike clients, this service does not read
+// variables from the environment automatically. You should not instantiate this
+// service directly, and instead use the [NewConnectionService] method instead.
 type ConnectionService struct {
 	Options []option.RequestOption
 }
 
+// NewConnectionService generates a new service that applies the given options to
+// each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewConnectionService(opts ...option.RequestOption) (r *ConnectionService) {
 	r = &ConnectionService{}
 	r.Options = opts
@@ -62,25 +69,24 @@ type Connection struct {
 	VendorCustomerID string `json:"vendor_customer_id,required,nullable" format:"uuid"`
 	// A human-friendly name for the bank or vendor.
 	VendorName string `json:"vendor_name,required"`
-	JSON       ConnectionJSON
+	JSON       connectionJSON
 }
 
-type ConnectionJSON struct {
-	ID               apijson.Metadata
-	Object           apijson.Metadata
-	LiveMode         apijson.Metadata
-	CreatedAt        apijson.Metadata
-	UpdatedAt        apijson.Metadata
-	DiscardedAt      apijson.Metadata
-	VendorID         apijson.Metadata
-	VendorCustomerID apijson.Metadata
-	VendorName       apijson.Metadata
+// connectionJSON contains the JSON metadata for the struct [Connection]
+type connectionJSON struct {
+	ID               apijson.Field
+	Object           apijson.Field
+	LiveMode         apijson.Field
+	CreatedAt        apijson.Field
+	UpdatedAt        apijson.Field
+	DiscardedAt      apijson.Field
+	VendorID         apijson.Field
+	VendorCustomerID apijson.Field
+	VendorName       apijson.Field
 	raw              string
-	Extras           map[string]apijson.Metadata
+	Extras           map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into Connection using the internal
-// json library. Unrecognized fields are stored in the `jsonFields` property.
 func (r *Connection) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -94,8 +100,7 @@ type ConnectionListParams struct {
 	Entity field.Field[string] `query:"entity"`
 }
 
-// URLQuery serializes ConnectionListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [ConnectionListParams]'s query parameters as `url.Values`.
 func (r ConnectionListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

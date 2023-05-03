@@ -15,10 +15,18 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// PaymentReferenceService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewPaymentReferenceService] method instead.
 type PaymentReferenceService struct {
 	Options []option.RequestOption
 }
 
+// NewPaymentReferenceService generates a new service that applies the given
+// options to each request. These options are applied after the parent client's
+// options (if there is one), and before any request-specific options.
 func NewPaymentReferenceService(opts ...option.RequestOption) (r *PaymentReferenceService) {
 	r = &PaymentReferenceService{}
 	r.Options = opts
@@ -74,26 +82,25 @@ type PaymentReference struct {
 	ReferenceNumber string `json:"reference_number,required"`
 	// The type of reference number.
 	ReferenceNumberType PaymentReferenceReferenceNumberType `json:"reference_number_type,required"`
-	JSON                PaymentReferenceJSON
+	JSON                paymentReferenceJSON
 }
 
-type PaymentReferenceJSON struct {
-	ID                  apijson.Metadata
-	Object              apijson.Metadata
-	LiveMode            apijson.Metadata
-	CreatedAt           apijson.Metadata
-	UpdatedAt           apijson.Metadata
-	ReferenceableID     apijson.Metadata
-	ReferenceableType   apijson.Metadata
-	ReferenceNumber     apijson.Metadata
-	ReferenceNumberType apijson.Metadata
+// paymentReferenceJSON contains the JSON metadata for the struct
+// [PaymentReference]
+type paymentReferenceJSON struct {
+	ID                  apijson.Field
+	Object              apijson.Field
+	LiveMode            apijson.Field
+	CreatedAt           apijson.Field
+	UpdatedAt           apijson.Field
+	ReferenceableID     apijson.Field
+	ReferenceableType   apijson.Field
+	ReferenceNumber     apijson.Field
+	ReferenceNumberType apijson.Field
 	raw                 string
-	Extras              map[string]apijson.Metadata
+	Extras              map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into PaymentReference using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *PaymentReference) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -175,8 +182,8 @@ type PaymentReferenceListParams struct {
 	ReferenceNumber field.Field[string] `query:"reference_number"`
 }
 
-// URLQuery serializes PaymentReferenceListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [PaymentReferenceListParams]'s query parameters as
+// `url.Values`.
 func (r PaymentReferenceListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

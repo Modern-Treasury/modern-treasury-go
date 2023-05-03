@@ -15,10 +15,18 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// LedgerAccountPayoutService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewLedgerAccountPayoutService] method instead.
 type LedgerAccountPayoutService struct {
 	Options []option.RequestOption
 }
 
+// NewLedgerAccountPayoutService generates a new service that applies the given
+// options to each request. These options are applied after the parent client's
+// options (if there is one), and before any request-specific options.
 func NewLedgerAccountPayoutService(opts ...option.RequestOption) (r *LedgerAccountPayoutService) {
 	r = &LedgerAccountPayoutService{}
 	r.Options = opts
@@ -106,32 +114,31 @@ type LedgerAccountPayout struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata map[string]string `json:"metadata,required"`
-	JSON     LedgerAccountPayoutJSON
+	JSON     ledgerAccountPayoutJSON
 }
 
-type LedgerAccountPayoutJSON struct {
-	ID                     apijson.Metadata
-	Object                 apijson.Metadata
-	LiveMode               apijson.Metadata
-	CreatedAt              apijson.Metadata
-	UpdatedAt              apijson.Metadata
-	Description            apijson.Metadata
-	Status                 apijson.Metadata
-	PayoutLedgerAccountID  apijson.Metadata
-	FundingLedgerAccountID apijson.Metadata
-	EffectiveAtUpperBound  apijson.Metadata
-	LedgerTransactionID    apijson.Metadata
-	Amount                 apijson.Metadata
-	Currency               apijson.Metadata
-	CurrencyExponent       apijson.Metadata
-	Metadata               apijson.Metadata
+// ledgerAccountPayoutJSON contains the JSON metadata for the struct
+// [LedgerAccountPayout]
+type ledgerAccountPayoutJSON struct {
+	ID                     apijson.Field
+	Object                 apijson.Field
+	LiveMode               apijson.Field
+	CreatedAt              apijson.Field
+	UpdatedAt              apijson.Field
+	Description            apijson.Field
+	Status                 apijson.Field
+	PayoutLedgerAccountID  apijson.Field
+	FundingLedgerAccountID apijson.Field
+	EffectiveAtUpperBound  apijson.Field
+	LedgerTransactionID    apijson.Field
+	Amount                 apijson.Field
+	Currency               apijson.Field
+	CurrencyExponent       apijson.Field
+	Metadata               apijson.Field
 	raw                    string
-	Extras                 map[string]apijson.Metadata
+	Extras                 map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into LedgerAccountPayout using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *LedgerAccountPayout) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -167,9 +174,6 @@ type LedgerAccountPayoutNewParams struct {
 	Metadata field.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes LedgerAccountPayoutNewParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r LedgerAccountPayoutNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -192,9 +196,6 @@ type LedgerAccountPayoutUpdateParams struct {
 	Metadata field.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes LedgerAccountPayoutUpdateParams into an array of bytes
-// using the gjson library. Members of the `jsonFields` field are serialized into
-// the top-level, and will overwrite known members of the same name.
 func (r LedgerAccountPayoutUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -212,8 +213,8 @@ type LedgerAccountPayoutListParams struct {
 	PayoutLedgerAccountID field.Field[string] `query:"payout_ledger_account_id"`
 }
 
-// URLQuery serializes LedgerAccountPayoutListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [LedgerAccountPayoutListParams]'s query parameters as
+// `url.Values`.
 func (r LedgerAccountPayoutListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

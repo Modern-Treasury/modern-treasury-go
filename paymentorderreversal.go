@@ -15,10 +15,18 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// PaymentOrderReversalService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewPaymentOrderReversalService] method instead.
 type PaymentOrderReversalService struct {
 	Options []option.RequestOption
 }
 
+// NewPaymentOrderReversalService generates a new service that applies the given
+// options to each request. These options are applied after the parent client's
+// options (if there is one), and before any request-specific options.
 func NewPaymentOrderReversalService(opts ...option.RequestOption) (r *PaymentOrderReversalService) {
 	r = &PaymentOrderReversalService{}
 	r.Options = opts
@@ -81,25 +89,24 @@ type Reversal struct {
 	Metadata map[string]string `json:"metadata,required"`
 	// The reason for the reversal.
 	Reason ReversalReason `json:"reason,required"`
-	JSON   ReversalJSON
+	JSON   reversalJSON
 }
 
-type ReversalJSON struct {
-	ID             apijson.Metadata
-	Object         apijson.Metadata
-	LiveMode       apijson.Metadata
-	CreatedAt      apijson.Metadata
-	UpdatedAt      apijson.Metadata
-	Status         apijson.Metadata
-	PaymentOrderID apijson.Metadata
-	Metadata       apijson.Metadata
-	Reason         apijson.Metadata
+// reversalJSON contains the JSON metadata for the struct [Reversal]
+type reversalJSON struct {
+	ID             apijson.Field
+	Object         apijson.Field
+	LiveMode       apijson.Field
+	CreatedAt      apijson.Field
+	UpdatedAt      apijson.Field
+	Status         apijson.Field
+	PaymentOrderID apijson.Field
+	Metadata       apijson.Field
+	Reason         apijson.Field
 	raw            string
-	Extras         map[string]apijson.Metadata
+	Extras         map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into Reversal using the internal
-// json library. Unrecognized fields are stored in the `jsonFields` property.
 func (r *Reversal) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -139,9 +146,6 @@ type PaymentOrderReversalNewParams struct {
 	LedgerTransaction field.Field[PaymentOrderReversalNewParamsLedgerTransaction] `json:"ledger_transaction"`
 }
 
-// MarshalJSON serializes PaymentOrderReversalNewParams into an array of bytes
-// using the gjson library. Members of the `jsonFields` field are serialized into
-// the top-level, and will overwrite known members of the same name.
 func (r PaymentOrderReversalNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -156,6 +160,9 @@ const (
 	PaymentOrderReversalNewParamsReasonDateLaterThanIntended     PaymentOrderReversalNewParamsReason = "date_later_than_intended"
 )
 
+// Specifies a ledger transaction object that will be created with the reversal. If
+// the ledger transaction cannot be created, then the reversal creation will fail.
+// The resulting ledger transaction will mirror the status of the reversal.
 type PaymentOrderReversalNewParamsLedgerTransaction struct {
 	// An optional description for internal use.
 	Description field.Field[string] `json:"description,nullable"`
@@ -249,8 +256,8 @@ type PaymentOrderReversalListParams struct {
 	PerPage     field.Field[int64]  `query:"per_page"`
 }
 
-// URLQuery serializes PaymentOrderReversalListParams into a url.Values of the
-// query parameters associated with this value
+// URLQuery serializes [PaymentOrderReversalListParams]'s query parameters as
+// `url.Values`.
 func (r PaymentOrderReversalListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
