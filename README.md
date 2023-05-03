@@ -22,6 +22,18 @@ Or, explicitly import this package with
 go get -u 'github.com/Modern-Treasury/modern-treasury-go'
 ```
 
+You can also explicitly set the version of the package to use by updating your `go.mod` file:
+
+```
+module your_project_name
+
+go 1.19
+
+require (
+        github.com/Modern-Treasury/modern-treasury-go v0.0.1
+)
+```
+
 ## Documentation
 
 The API documentation can be found [here](https://docs.moderntreasury.com).
@@ -95,6 +107,9 @@ params := FooParams{
 	Other: moderntreasury.Raw[Bar]("override_this_field")
 }
 ```
+
+Fields enable us to differentiate between zero-values, null values, empty
+values, and overriden values.
 
 If you want to add or override a field in the JSON body, then you can use the
 `option.WithJSONSet(key string, value interface{})` RequestOption, which you
@@ -247,6 +262,26 @@ if err != nil {
 When other errors occur, we return them unwrapped; for example, when HTTP
 transport returns an error, we return the `*url.Error` which could wrap
 `*net.OpError`.
+
+### Timeouts
+
+Requests do not time out by default; use context to configure a deadline for a request lifecycle.
+
+Note that if a request is [retried](#retries), the context timeout does not start over. To set a per-retry timeout, use `option.WithRequestTimeout()`.
+
+```go
+// This sets the timeout for the request, including all the retries.
+ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+defer cancel()
+client.ExternalAccounts.List(
+	ctx,
+	moderntreasury.ExternalAccountListParams{
+		PartyName: moderntreasury.F("my bank"),
+	},
+	// This sets the per-retry timeout
+	option.WithRequestTimeout("20 * time.Second"),
+)
+```
 
 ## Retries
 

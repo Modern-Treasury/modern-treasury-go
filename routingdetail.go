@@ -15,10 +15,18 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// RoutingDetailService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the [NewRoutingDetailService]
+// method instead.
 type RoutingDetailService struct {
 	Options []option.RequestOption
 }
 
+// NewRoutingDetailService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewRoutingDetailService(opts ...option.RequestOption) (r *RoutingDetailService) {
 	r = &RoutingDetailService{}
 	r.Options = opts
@@ -92,28 +100,26 @@ type RoutingDetail struct {
 	// The name of the bank.
 	BankName    string                   `json:"bank_name,required"`
 	BankAddress RoutingDetailBankAddress `json:"bank_address,required,nullable"`
-	JSON        RoutingDetailJSON
+	JSON        routingDetailJSON
 }
 
-type RoutingDetailJSON struct {
-	ID                apijson.Metadata
-	Object            apijson.Metadata
-	LiveMode          apijson.Metadata
-	CreatedAt         apijson.Metadata
-	UpdatedAt         apijson.Metadata
-	DiscardedAt       apijson.Metadata
-	RoutingNumber     apijson.Metadata
-	RoutingNumberType apijson.Metadata
-	PaymentType       apijson.Metadata
-	BankName          apijson.Metadata
-	BankAddress       apijson.Metadata
+// routingDetailJSON contains the JSON metadata for the struct [RoutingDetail]
+type routingDetailJSON struct {
+	ID                apijson.Field
+	Object            apijson.Field
+	LiveMode          apijson.Field
+	CreatedAt         apijson.Field
+	UpdatedAt         apijson.Field
+	DiscardedAt       apijson.Field
+	RoutingNumber     apijson.Field
+	RoutingNumberType apijson.Field
+	PaymentType       apijson.Field
+	BankName          apijson.Field
+	BankAddress       apijson.Field
 	raw               string
-	Extras            map[string]apijson.Metadata
+	Extras            map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into RoutingDetail using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *RoutingDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -139,9 +145,6 @@ type RoutingDetailParam struct {
 	BankAddress field.Field[RoutingDetailBankAddressParam] `json:"bank_address,required,nullable"`
 }
 
-// MarshalJSON serializes RoutingDetailParam into an array of bytes using the gjson
-// library. Members of the `jsonFields` field are serialized into the top-level,
-// and will overwrite known members of the same name.
 func (r RoutingDetailParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -201,28 +204,27 @@ type RoutingDetailBankAddress struct {
 	PostalCode string `json:"postal_code,required,nullable"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country,required,nullable"`
-	JSON    RoutingDetailBankAddressJSON
+	JSON    routingDetailBankAddressJSON
 }
 
-type RoutingDetailBankAddressJSON struct {
-	ID         apijson.Metadata
-	Object     apijson.Metadata
-	LiveMode   apijson.Metadata
-	CreatedAt  apijson.Metadata
-	UpdatedAt  apijson.Metadata
-	Line1      apijson.Metadata
-	Line2      apijson.Metadata
-	Locality   apijson.Metadata
-	Region     apijson.Metadata
-	PostalCode apijson.Metadata
-	Country    apijson.Metadata
+// routingDetailBankAddressJSON contains the JSON metadata for the struct
+// [RoutingDetailBankAddress]
+type routingDetailBankAddressJSON struct {
+	ID         apijson.Field
+	Object     apijson.Field
+	LiveMode   apijson.Field
+	CreatedAt  apijson.Field
+	UpdatedAt  apijson.Field
+	Line1      apijson.Field
+	Line2      apijson.Field
+	Locality   apijson.Field
+	Region     apijson.Field
+	PostalCode apijson.Field
+	Country    apijson.Field
 	raw        string
-	Extras     map[string]apijson.Metadata
+	Extras     map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into RoutingDetailBankAddress
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *RoutingDetailBankAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -247,9 +249,6 @@ type RoutingDetailBankAddressParam struct {
 	Country field.Field[string] `json:"country,required,nullable"`
 }
 
-// MarshalJSON serializes RoutingDetailBankAddressParam into an array of bytes
-// using the gjson library. Members of the `jsonFields` field are serialized into
-// the top-level, and will overwrite known members of the same name.
 func (r RoutingDetailBankAddressParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -264,9 +263,6 @@ type RoutingDetailNewParams struct {
 	PaymentType field.Field[RoutingDetailNewParamsPaymentType] `json:"payment_type,nullable"`
 }
 
-// MarshalJSON serializes RoutingDetailNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r RoutingDetailNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -319,8 +315,8 @@ type RoutingDetailListParams struct {
 	PerPage     field.Field[int64]  `query:"per_page"`
 }
 
-// URLQuery serializes RoutingDetailListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [RoutingDetailListParams]'s query parameters as
+// `url.Values`.
 func (r RoutingDetailListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

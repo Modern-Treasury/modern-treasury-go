@@ -16,11 +16,19 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// PaymentOrderService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the [NewPaymentOrderService]
+// method instead.
 type PaymentOrderService struct {
 	Options   []option.RequestOption
 	Reversals *PaymentOrderReversalService
 }
 
+// NewPaymentOrderService generates a new service that applies the given options to
+// each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewPaymentOrderService(opts ...option.RequestOption) (r *PaymentOrderService) {
 	r = &PaymentOrderService{}
 	r.Options = opts
@@ -208,61 +216,59 @@ type PaymentOrder struct {
 	// The ID of the compliance decision for the payment order, if transaction
 	// monitoring is enabled.
 	DecisionID string `json:"decision_id,required,nullable" format:"uuid"`
-	JSON       PaymentOrderJSON
+	JSON       paymentOrderJSON
 }
 
-type PaymentOrderJSON struct {
-	ID                                 apijson.Metadata
-	Object                             apijson.Metadata
-	LiveMode                           apijson.Metadata
-	CreatedAt                          apijson.Metadata
-	UpdatedAt                          apijson.Metadata
-	Type                               apijson.Metadata
-	Subtype                            apijson.Metadata
-	Amount                             apijson.Metadata
-	Direction                          apijson.Metadata
-	Priority                           apijson.Metadata
-	OriginatingAccountID               apijson.Metadata
-	ReceivingAccountID                 apijson.Metadata
-	Accounting                         apijson.Metadata
-	AccountingCategoryID               apijson.Metadata
-	AccountingLedgerClassID            apijson.Metadata
-	Currency                           apijson.Metadata
-	EffectiveDate                      apijson.Metadata
-	Description                        apijson.Metadata
-	StatementDescriptor                apijson.Metadata
-	RemittanceInformation              apijson.Metadata
-	Purpose                            apijson.Metadata
-	Metadata                           apijson.Metadata
-	ChargeBearer                       apijson.Metadata
-	ForeignExchangeIndicator           apijson.Metadata
-	ForeignExchangeContract            apijson.Metadata
-	NsfProtected                       apijson.Metadata
-	OriginatingPartyName               apijson.Metadata
-	UltimateOriginatingPartyName       apijson.Metadata
-	UltimateOriginatingPartyIdentifier apijson.Metadata
-	UltimateReceivingPartyName         apijson.Metadata
-	UltimateReceivingPartyIdentifier   apijson.Metadata
-	SendRemittanceAdvice               apijson.Metadata
-	ExpiresAt                          apijson.Metadata
-	Status                             apijson.Metadata
-	ReceivingAccountType               apijson.Metadata
-	CounterpartyID                     apijson.Metadata
-	TransactionIDs                     apijson.Metadata
-	LedgerTransactionID                apijson.Metadata
-	CurrentReturn                      apijson.Metadata
-	TransactionMonitoringEnabled       apijson.Metadata
-	ComplianceRuleMetadata             apijson.Metadata
-	ReferenceNumbers                   apijson.Metadata
-	VendorFailureReason                apijson.Metadata
-	DecisionID                         apijson.Metadata
+// paymentOrderJSON contains the JSON metadata for the struct [PaymentOrder]
+type paymentOrderJSON struct {
+	ID                                 apijson.Field
+	Object                             apijson.Field
+	LiveMode                           apijson.Field
+	CreatedAt                          apijson.Field
+	UpdatedAt                          apijson.Field
+	Type                               apijson.Field
+	Subtype                            apijson.Field
+	Amount                             apijson.Field
+	Direction                          apijson.Field
+	Priority                           apijson.Field
+	OriginatingAccountID               apijson.Field
+	ReceivingAccountID                 apijson.Field
+	Accounting                         apijson.Field
+	AccountingCategoryID               apijson.Field
+	AccountingLedgerClassID            apijson.Field
+	Currency                           apijson.Field
+	EffectiveDate                      apijson.Field
+	Description                        apijson.Field
+	StatementDescriptor                apijson.Field
+	RemittanceInformation              apijson.Field
+	Purpose                            apijson.Field
+	Metadata                           apijson.Field
+	ChargeBearer                       apijson.Field
+	ForeignExchangeIndicator           apijson.Field
+	ForeignExchangeContract            apijson.Field
+	NsfProtected                       apijson.Field
+	OriginatingPartyName               apijson.Field
+	UltimateOriginatingPartyName       apijson.Field
+	UltimateOriginatingPartyIdentifier apijson.Field
+	UltimateReceivingPartyName         apijson.Field
+	UltimateReceivingPartyIdentifier   apijson.Field
+	SendRemittanceAdvice               apijson.Field
+	ExpiresAt                          apijson.Field
+	Status                             apijson.Field
+	ReceivingAccountType               apijson.Field
+	CounterpartyID                     apijson.Field
+	TransactionIDs                     apijson.Field
+	LedgerTransactionID                apijson.Field
+	CurrentReturn                      apijson.Field
+	TransactionMonitoringEnabled       apijson.Field
+	ComplianceRuleMetadata             apijson.Field
+	ReferenceNumbers                   apijson.Field
+	VendorFailureReason                apijson.Field
+	DecisionID                         apijson.Field
 	raw                                string
-	Extras                             map[string]apijson.Metadata
+	Extras                             map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into PaymentOrder using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *PaymentOrder) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -323,19 +329,18 @@ type PaymentOrderAccounting struct {
 	// track segments of your business independent of client or project. Note that
 	// these will only be accessible if your accounting system has been connected.
 	ClassID string `json:"class_id,nullable" format:"uuid"`
-	JSON    PaymentOrderAccountingJSON
+	JSON    paymentOrderAccountingJSON
 }
 
-type PaymentOrderAccountingJSON struct {
-	AccountID apijson.Metadata
-	ClassID   apijson.Metadata
+// paymentOrderAccountingJSON contains the JSON metadata for the struct
+// [PaymentOrderAccounting]
+type paymentOrderAccountingJSON struct {
+	AccountID apijson.Field
+	ClassID   apijson.Field
 	raw       string
-	Extras    map[string]apijson.Metadata
+	Extras    map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into PaymentOrderAccounting using
-// the internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *PaymentOrderAccounting) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -390,24 +395,23 @@ type PaymentOrderReferenceNumbers struct {
 	ReferenceNumber string `json:"reference_number,required"`
 	// The type of the reference number. Referring to the vendor payment id.
 	ReferenceNumberType PaymentOrderReferenceNumbersReferenceNumberType `json:"reference_number_type,required"`
-	JSON                PaymentOrderReferenceNumbersJSON
+	JSON                paymentOrderReferenceNumbersJSON
 }
 
-type PaymentOrderReferenceNumbersJSON struct {
-	ID                  apijson.Metadata
-	Object              apijson.Metadata
-	LiveMode            apijson.Metadata
-	CreatedAt           apijson.Metadata
-	UpdatedAt           apijson.Metadata
-	ReferenceNumber     apijson.Metadata
-	ReferenceNumberType apijson.Metadata
+// paymentOrderReferenceNumbersJSON contains the JSON metadata for the struct
+// [PaymentOrderReferenceNumbers]
+type paymentOrderReferenceNumbersJSON struct {
+	ID                  apijson.Field
+	Object              apijson.Field
+	LiveMode            apijson.Field
+	CreatedAt           apijson.Field
+	UpdatedAt           apijson.Field
+	ReferenceNumber     apijson.Field
+	ReferenceNumberType apijson.Field
 	raw                 string
-	Extras              map[string]apijson.Metadata
+	Extras              map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into PaymentOrderReferenceNumbers
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *PaymentOrderReferenceNumbers) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -584,9 +588,6 @@ type PaymentOrderNewParams struct {
 	Documents field.Field[[]PaymentOrderNewParamsDocuments] `json:"documents"`
 }
 
-// MarshalJSON serializes PaymentOrderNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r PaymentOrderNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -636,6 +637,9 @@ const (
 	PaymentOrderNewParamsFallbackTypeACH PaymentOrderNewParamsFallbackType = "ach"
 )
 
+// Either `receiving_account` or `receiving_account_id` must be present. When using
+// `receiving_account_id`, you may pass the id of an external account or an
+// internal account.
 type PaymentOrderNewParamsReceivingAccount struct {
 	// Can be `checking`, `savings` or `other`.
 	AccountType field.Field[ExternalAccountType] `json:"account_type"`
@@ -667,6 +671,7 @@ const (
 	PaymentOrderNewParamsReceivingAccountPartyTypeIndividual PaymentOrderNewParamsReceivingAccountPartyType = "individual"
 )
 
+// Required if receiving wire payments.
 type PaymentOrderNewParamsReceivingAccountPartyAddress struct {
 	Line1 field.Field[string] `json:"line1,nullable"`
 	Line2 field.Field[string] `json:"line2,nullable"`
@@ -751,6 +756,10 @@ const (
 	PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite     PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType = "website"
 )
 
+// Specifies a ledger transaction object that will be created with the payment
+// order. If the ledger transaction cannot be created, then the payment order
+// creation will fail. The resulting ledger transaction will mirror the status of
+// the payment order.
 type PaymentOrderNewParamsLedgerTransaction struct {
 	// An optional description for internal use.
 	Description field.Field[string] `json:"description,nullable"`
@@ -978,9 +987,6 @@ type PaymentOrderUpdateParams struct {
 	LineItems field.Field[[]PaymentOrderUpdateParamsLineItems] `json:"line_items"`
 }
 
-// MarshalJSON serializes PaymentOrderUpdateParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r PaymentOrderUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -1046,6 +1052,9 @@ const (
 	PaymentOrderUpdateParamsFallbackTypeACH PaymentOrderUpdateParamsFallbackType = "ach"
 )
 
+// Either `receiving_account` or `receiving_account_id` must be present. When using
+// `receiving_account_id`, you may pass the id of an external account or an
+// internal account.
 type PaymentOrderUpdateParamsReceivingAccount struct {
 	// Can be `checking`, `savings` or `other`.
 	AccountType field.Field[ExternalAccountType] `json:"account_type"`
@@ -1077,6 +1086,7 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountPartyTypeIndividual PaymentOrderUpdateParamsReceivingAccountPartyType = "individual"
 )
 
+// Required if receiving wire payments.
 type PaymentOrderUpdateParamsReceivingAccountPartyAddress struct {
 	Line1 field.Field[string] `json:"line1,nullable"`
 	Line2 field.Field[string] `json:"line2,nullable"`
@@ -1201,8 +1211,7 @@ type PaymentOrderListParams struct {
 	Metadata field.Field[map[string]string] `query:"metadata"`
 }
 
-// URLQuery serializes PaymentOrderListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [PaymentOrderListParams]'s query parameters as `url.Values`.
 func (r PaymentOrderListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
@@ -1372,9 +1381,6 @@ type PaymentOrderNewAsyncParams struct {
 	TransactionMonitoringEnabled field.Field[bool] `json:"transaction_monitoring_enabled"`
 }
 
-// MarshalJSON serializes PaymentOrderNewAsyncParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r PaymentOrderNewAsyncParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -1424,6 +1430,9 @@ const (
 	PaymentOrderNewAsyncParamsFallbackTypeACH PaymentOrderNewAsyncParamsFallbackType = "ach"
 )
 
+// Either `receiving_account` or `receiving_account_id` must be present. When using
+// `receiving_account_id`, you may pass the id of an external account or an
+// internal account.
 type PaymentOrderNewAsyncParamsReceivingAccount struct {
 	// Can be `checking`, `savings` or `other`.
 	AccountType field.Field[ExternalAccountType] `json:"account_type"`
@@ -1455,6 +1464,7 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountPartyTypeIndividual PaymentOrderNewAsyncParamsReceivingAccountPartyType = "individual"
 )
 
+// Required if receiving wire payments.
 type PaymentOrderNewAsyncParamsReceivingAccountPartyAddress struct {
 	Line1 field.Field[string] `json:"line1,nullable"`
 	Line2 field.Field[string] `json:"line2,nullable"`
@@ -1539,6 +1549,10 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite     PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType = "website"
 )
 
+// Specifies a ledger transaction object that will be created with the payment
+// order. If the ledger transaction cannot be created, then the payment order
+// creation will fail. The resulting ledger transaction will mirror the status of
+// the payment order.
 type PaymentOrderNewAsyncParamsLedgerTransaction struct {
 	// An optional description for internal use.
 	Description field.Field[string] `json:"description,nullable"`

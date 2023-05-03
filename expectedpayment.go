@@ -15,10 +15,18 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// ExpectedPaymentService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewExpectedPaymentService] method instead.
 type ExpectedPaymentService struct {
 	Options []option.RequestOption
 }
 
+// NewExpectedPaymentService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewExpectedPaymentService(opts ...option.RequestOption) (r *ExpectedPaymentService) {
 	r = &ExpectedPaymentService{}
 	r.Options = opts
@@ -136,40 +144,38 @@ type ExpectedPayment struct {
 	ReconciliationMethod ExpectedPaymentReconciliationMethod `json:"reconciliation_method,required,nullable"`
 	// The ID of the ledger transaction linked to the expected payment.
 	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
-	JSON                ExpectedPaymentJSON
+	JSON                expectedPaymentJSON
 }
 
-type ExpectedPaymentJSON struct {
-	ID                    apijson.Metadata
-	Object                apijson.Metadata
-	LiveMode              apijson.Metadata
-	CreatedAt             apijson.Metadata
-	UpdatedAt             apijson.Metadata
-	AmountUpperBound      apijson.Metadata
-	AmountLowerBound      apijson.Metadata
-	Direction             apijson.Metadata
-	InternalAccountID     apijson.Metadata
-	Type                  apijson.Metadata
-	Currency              apijson.Metadata
-	DateUpperBound        apijson.Metadata
-	DateLowerBound        apijson.Metadata
-	Description           apijson.Metadata
-	StatementDescriptor   apijson.Metadata
-	Metadata              apijson.Metadata
-	CounterpartyID        apijson.Metadata
-	RemittanceInformation apijson.Metadata
-	TransactionID         apijson.Metadata
-	TransactionLineItemID apijson.Metadata
-	Status                apijson.Metadata
-	ReconciliationMethod  apijson.Metadata
-	LedgerTransactionID   apijson.Metadata
+// expectedPaymentJSON contains the JSON metadata for the struct [ExpectedPayment]
+type expectedPaymentJSON struct {
+	ID                    apijson.Field
+	Object                apijson.Field
+	LiveMode              apijson.Field
+	CreatedAt             apijson.Field
+	UpdatedAt             apijson.Field
+	AmountUpperBound      apijson.Field
+	AmountLowerBound      apijson.Field
+	Direction             apijson.Field
+	InternalAccountID     apijson.Field
+	Type                  apijson.Field
+	Currency              apijson.Field
+	DateUpperBound        apijson.Field
+	DateLowerBound        apijson.Field
+	Description           apijson.Field
+	StatementDescriptor   apijson.Field
+	Metadata              apijson.Field
+	CounterpartyID        apijson.Field
+	RemittanceInformation apijson.Field
+	TransactionID         apijson.Field
+	TransactionLineItemID apijson.Field
+	Status                apijson.Field
+	ReconciliationMethod  apijson.Field
+	LedgerTransactionID   apijson.Field
 	raw                   string
-	Extras                map[string]apijson.Metadata
+	Extras                map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into ExpectedPayment using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *ExpectedPayment) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -258,9 +264,6 @@ type ExpectedPaymentNewParams struct {
 	LineItems             field.Field[[]ExpectedPaymentNewParamsLineItems] `json:"line_items"`
 }
 
-// MarshalJSON serializes ExpectedPaymentNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r ExpectedPaymentNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -325,9 +328,6 @@ type ExpectedPaymentUpdateParams struct {
 	RemittanceInformation field.Field[string] `json:"remittance_information,nullable"`
 }
 
-// MarshalJSON serializes ExpectedPaymentUpdateParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r ExpectedPaymentUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -363,8 +363,8 @@ type ExpectedPaymentListParams struct {
 	CreatedAtUpperBound field.Field[time.Time] `query:"created_at_upper_bound" format:"date-time"`
 }
 
-// URLQuery serializes ExpectedPaymentListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [ExpectedPaymentListParams]'s query parameters as
+// `url.Values`.
 func (r ExpectedPaymentListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

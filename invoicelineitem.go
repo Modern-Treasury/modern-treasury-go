@@ -15,10 +15,18 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// InvoiceLineItemService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewInvoiceLineItemService] method instead.
 type InvoiceLineItemService struct {
 	Options []option.RequestOption
 }
 
+// NewInvoiceLineItemService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewInvoiceLineItemService(opts ...option.RequestOption) (r *InvoiceLineItemService) {
 	r = &InvoiceLineItemService{}
 	r.Options = opts
@@ -105,28 +113,26 @@ type InvoiceLineItem struct {
 	// The total amount for this line item specified in the invoice currency's smallest
 	// unit.
 	Amount int64 `json:"amount,required"`
-	JSON   InvoiceLineItemJSON
+	JSON   invoiceLineItemJSON
 }
 
-type InvoiceLineItemJSON struct {
-	ID          apijson.Metadata
-	Object      apijson.Metadata
-	LiveMode    apijson.Metadata
-	CreatedAt   apijson.Metadata
-	UpdatedAt   apijson.Metadata
-	Name        apijson.Metadata
-	Description apijson.Metadata
-	Quantity    apijson.Metadata
-	UnitAmount  apijson.Metadata
-	Direction   apijson.Metadata
-	Amount      apijson.Metadata
+// invoiceLineItemJSON contains the JSON metadata for the struct [InvoiceLineItem]
+type invoiceLineItemJSON struct {
+	ID          apijson.Field
+	Object      apijson.Field
+	LiveMode    apijson.Field
+	CreatedAt   apijson.Field
+	UpdatedAt   apijson.Field
+	Name        apijson.Field
+	Description apijson.Field
+	Quantity    apijson.Field
+	UnitAmount  apijson.Field
+	Direction   apijson.Field
+	Amount      apijson.Field
 	raw         string
-	Extras      map[string]apijson.Metadata
+	Extras      map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into InvoiceLineItem using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *InvoiceLineItem) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -148,9 +154,6 @@ type InvoiceLineItemNewParams struct {
 	Direction field.Field[string] `json:"direction"`
 }
 
-// MarshalJSON serializes InvoiceLineItemNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r InvoiceLineItemNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -176,9 +179,6 @@ type InvoiceLineItemUpdateParams struct {
 	OriginatingAccountID field.Field[string] `json:"originating_account_id"`
 }
 
-// MarshalJSON serializes InvoiceLineItemUpdateParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r InvoiceLineItemUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -204,6 +204,7 @@ const (
 	InvoiceLineItemUpdateParamsContactDetailsContactIdentifierTypeWebsite     InvoiceLineItemUpdateParamsContactDetailsContactIdentifierType = "website"
 )
 
+// The counterparty's billing address.
 type InvoiceLineItemUpdateParamsCounterpartyBillingAddress struct {
 	Line1 field.Field[string] `json:"line1,required"`
 	Line2 field.Field[string] `json:"line2"`
@@ -217,6 +218,7 @@ type InvoiceLineItemUpdateParamsCounterpartyBillingAddress struct {
 	Country field.Field[string] `json:"country,required"`
 }
 
+// The counterparty's shipping address where physical goods should be delivered.
 type InvoiceLineItemUpdateParamsCounterpartyShippingAddress struct {
 	Line1 field.Field[string] `json:"line1,required"`
 	Line2 field.Field[string] `json:"line2"`
@@ -230,6 +232,7 @@ type InvoiceLineItemUpdateParamsCounterpartyShippingAddress struct {
 	Country field.Field[string] `json:"country,required"`
 }
 
+// The invoice issuer's business address.
 type InvoiceLineItemUpdateParamsInvoicerAddress struct {
 	Line1 field.Field[string] `json:"line1,required"`
 	Line2 field.Field[string] `json:"line2"`
@@ -248,8 +251,8 @@ type InvoiceLineItemListParams struct {
 	PerPage     field.Field[int64]  `query:"per_page"`
 }
 
-// URLQuery serializes InvoiceLineItemListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [InvoiceLineItemListParams]'s query parameters as
+// `url.Values`.
 func (r InvoiceLineItemListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

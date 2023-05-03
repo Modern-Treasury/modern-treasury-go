@@ -15,10 +15,18 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// IncomingPaymentDetailService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewIncomingPaymentDetailService] method instead.
 type IncomingPaymentDetailService struct {
 	Options []option.RequestOption
 }
 
+// NewIncomingPaymentDetailService generates a new service that applies the given
+// options to each request. These options are applied after the parent client's
+// options (if there is one), and before any request-specific options.
 func NewIncomingPaymentDetailService(opts ...option.RequestOption) (r *IncomingPaymentDetailService) {
 	r = &IncomingPaymentDetailService{}
 	r.Options = opts
@@ -115,36 +123,35 @@ type IncomingPaymentDetail struct {
 	AsOfDate time.Time `json:"as_of_date,required" format:"date"`
 	// The identifier of the vendor bank.
 	VendorID string `json:"vendor_id,required,nullable" format:"uuid"`
-	JSON     IncomingPaymentDetailJSON
+	JSON     incomingPaymentDetailJSON
 }
 
-type IncomingPaymentDetailJSON struct {
-	ID                    apijson.Metadata
-	Object                apijson.Metadata
-	LiveMode              apijson.Metadata
-	CreatedAt             apijson.Metadata
-	UpdatedAt             apijson.Metadata
-	InternalAccountID     apijson.Metadata
-	VirtualAccountID      apijson.Metadata
-	VirtualAccount        apijson.Metadata
-	TransactionLineItemID apijson.Metadata
-	TransactionID         apijson.Metadata
-	Type                  apijson.Metadata
-	Data                  apijson.Metadata
-	Amount                apijson.Metadata
-	Currency              apijson.Metadata
-	Direction             apijson.Metadata
-	Status                apijson.Metadata
-	Metadata              apijson.Metadata
-	AsOfDate              apijson.Metadata
-	VendorID              apijson.Metadata
+// incomingPaymentDetailJSON contains the JSON metadata for the struct
+// [IncomingPaymentDetail]
+type incomingPaymentDetailJSON struct {
+	ID                    apijson.Field
+	Object                apijson.Field
+	LiveMode              apijson.Field
+	CreatedAt             apijson.Field
+	UpdatedAt             apijson.Field
+	InternalAccountID     apijson.Field
+	VirtualAccountID      apijson.Field
+	VirtualAccount        apijson.Field
+	TransactionLineItemID apijson.Field
+	TransactionID         apijson.Field
+	Type                  apijson.Field
+	Data                  apijson.Field
+	Amount                apijson.Field
+	Currency              apijson.Field
+	Direction             apijson.Field
+	Status                apijson.Field
+	Metadata              apijson.Field
+	AsOfDate              apijson.Field
+	VendorID              apijson.Field
 	raw                   string
-	Extras                map[string]apijson.Metadata
+	Extras                map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into IncomingPaymentDetail using
-// the internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *IncomingPaymentDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -184,9 +191,6 @@ type IncomingPaymentDetailUpdateParams struct {
 	Metadata field.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes IncomingPaymentDetailUpdateParams into an array of bytes
-// using the gjson library. Members of the `jsonFields` field are serialized into
-// the top-level, and will overwrite known members of the same name.
 func (r IncomingPaymentDetailUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -217,8 +221,8 @@ type IncomingPaymentDetailListParams struct {
 	VirtualAccountID field.Field[string] `query:"virtual_account_id"`
 }
 
-// URLQuery serializes IncomingPaymentDetailListParams into a url.Values of the
-// query parameters associated with this value
+// URLQuery serializes [IncomingPaymentDetailListParams]'s query parameters as
+// `url.Values`.
 func (r IncomingPaymentDetailListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
@@ -271,9 +275,6 @@ type IncomingPaymentDetailNewAsyncParams struct {
 	AsOfDate field.Field[time.Time] `json:"as_of_date,nullable" format:"date"`
 }
 
-// MarshalJSON serializes IncomingPaymentDetailNewAsyncParams into an array of
-// bytes using the gjson library. Members of the `jsonFields` field are serialized
-// into the top-level, and will overwrite known members of the same name.
 func (r IncomingPaymentDetailNewAsyncParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }

@@ -15,10 +15,18 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// VirtualAccountService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewVirtualAccountService] method instead.
 type VirtualAccountService struct {
 	Options []option.RequestOption
 }
 
+// NewVirtualAccountService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewVirtualAccountService(opts ...option.RequestOption) (r *VirtualAccountService) {
 	r = &VirtualAccountService{}
 	r.Options = opts
@@ -114,32 +122,30 @@ type VirtualAccount struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata map[string]string `json:"metadata,required"`
-	JSON     VirtualAccountJSON
+	JSON     virtualAccountJSON
 }
 
-type VirtualAccountJSON struct {
-	ID                    apijson.Metadata
-	Object                apijson.Metadata
-	LiveMode              apijson.Metadata
-	CreatedAt             apijson.Metadata
-	UpdatedAt             apijson.Metadata
-	DiscardedAt           apijson.Metadata
-	Name                  apijson.Metadata
-	Description           apijson.Metadata
-	CounterpartyID        apijson.Metadata
-	InternalAccountID     apijson.Metadata
-	AccountDetails        apijson.Metadata
-	RoutingDetails        apijson.Metadata
-	DebitLedgerAccountID  apijson.Metadata
-	CreditLedgerAccountID apijson.Metadata
-	Metadata              apijson.Metadata
+// virtualAccountJSON contains the JSON metadata for the struct [VirtualAccount]
+type virtualAccountJSON struct {
+	ID                    apijson.Field
+	Object                apijson.Field
+	LiveMode              apijson.Field
+	CreatedAt             apijson.Field
+	UpdatedAt             apijson.Field
+	DiscardedAt           apijson.Field
+	Name                  apijson.Field
+	Description           apijson.Field
+	CounterpartyID        apijson.Field
+	InternalAccountID     apijson.Field
+	AccountDetails        apijson.Field
+	RoutingDetails        apijson.Field
+	DebitLedgerAccountID  apijson.Field
+	CreditLedgerAccountID apijson.Field
+	Metadata              apijson.Field
 	raw                   string
-	Extras                map[string]apijson.Metadata
+	Extras                map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into VirtualAccount using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *VirtualAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -170,9 +176,6 @@ type VirtualAccountNewParams struct {
 	Metadata field.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes VirtualAccountNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r VirtualAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -183,9 +186,6 @@ type VirtualAccountUpdateParams struct {
 	Metadata       field.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes VirtualAccountUpdateParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r VirtualAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -201,8 +201,8 @@ type VirtualAccountListParams struct {
 	Metadata field.Field[map[string]string] `query:"metadata"`
 }
 
-// URLQuery serializes VirtualAccountListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [VirtualAccountListParams]'s query parameters as
+// `url.Values`.
 func (r VirtualAccountListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

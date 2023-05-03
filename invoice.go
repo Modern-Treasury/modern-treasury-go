@@ -15,11 +15,18 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// InvoiceService contains methods and other services that help with interacting
+// with the Modern Treasury API. Note, unlike clients, this service does not read
+// variables from the environment automatically. You should not instantiate this
+// service directly, and instead use the [NewInvoiceService] method instead.
 type InvoiceService struct {
 	Options   []option.RequestOption
 	LineItems *InvoiceLineItemService
 }
 
+// NewInvoiceService generates a new service that applies the given options to each
+// request. These options are applied after the parent client's options (if there
+// is one), and before any request-specific options.
 func NewInvoiceService(opts ...option.RequestOption) (r *InvoiceService) {
 	r = &InvoiceService{}
 	r.Options = opts
@@ -114,36 +121,35 @@ type Invoice struct {
 	// Total amount due in specified currency's smallest unit, e.g., $10 USD would be
 	// represented as 1000.
 	TotalAmount int64 `json:"total_amount,required"`
-	JSON        InvoiceJSON
+	JSON        invoiceJSON
 }
 
-type InvoiceJSON struct {
-	ID                          apijson.Metadata
-	Object                      apijson.Metadata
-	LiveMode                    apijson.Metadata
-	CreatedAt                   apijson.Metadata
-	UpdatedAt                   apijson.Metadata
-	ContactDetails              apijson.Metadata
-	CounterpartyID              apijson.Metadata
-	CounterpartyBillingAddress  apijson.Metadata
-	CounterpartyShippingAddress apijson.Metadata
-	Currency                    apijson.Metadata
-	Description                 apijson.Metadata
-	DueDate                     apijson.Metadata
-	InvoicerAddress             apijson.Metadata
-	OriginatingAccountID        apijson.Metadata
-	HostedURL                   apijson.Metadata
-	Number                      apijson.Metadata
-	PaymentOrders               apijson.Metadata
-	PdfURL                      apijson.Metadata
-	Status                      apijson.Metadata
-	TotalAmount                 apijson.Metadata
+// invoiceJSON contains the JSON metadata for the struct [Invoice]
+type invoiceJSON struct {
+	ID                          apijson.Field
+	Object                      apijson.Field
+	LiveMode                    apijson.Field
+	CreatedAt                   apijson.Field
+	UpdatedAt                   apijson.Field
+	ContactDetails              apijson.Field
+	CounterpartyID              apijson.Field
+	CounterpartyBillingAddress  apijson.Field
+	CounterpartyShippingAddress apijson.Field
+	Currency                    apijson.Field
+	Description                 apijson.Field
+	DueDate                     apijson.Field
+	InvoicerAddress             apijson.Field
+	OriginatingAccountID        apijson.Field
+	HostedURL                   apijson.Field
+	Number                      apijson.Field
+	PaymentOrders               apijson.Field
+	PdfURL                      apijson.Field
+	Status                      apijson.Field
+	TotalAmount                 apijson.Field
 	raw                         string
-	Extras                      map[string]apijson.Metadata
+	Extras                      map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into Invoice using the internal
-// json library. Unrecognized fields are stored in the `jsonFields` property.
 func (r *Invoice) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -159,25 +165,24 @@ type InvoiceContactDetails struct {
 	DiscardedAt           time.Time                                  `json:"discarded_at,required,nullable" format:"date-time"`
 	ContactIdentifier     string                                     `json:"contact_identifier,required"`
 	ContactIdentifierType InvoiceContactDetailsContactIdentifierType `json:"contact_identifier_type,required"`
-	JSON                  InvoiceContactDetailsJSON
+	JSON                  invoiceContactDetailsJSON
 }
 
-type InvoiceContactDetailsJSON struct {
-	ID                    apijson.Metadata
-	Object                apijson.Metadata
-	LiveMode              apijson.Metadata
-	CreatedAt             apijson.Metadata
-	UpdatedAt             apijson.Metadata
-	DiscardedAt           apijson.Metadata
-	ContactIdentifier     apijson.Metadata
-	ContactIdentifierType apijson.Metadata
+// invoiceContactDetailsJSON contains the JSON metadata for the struct
+// [InvoiceContactDetails]
+type invoiceContactDetailsJSON struct {
+	ID                    apijson.Field
+	Object                apijson.Field
+	LiveMode              apijson.Field
+	CreatedAt             apijson.Field
+	UpdatedAt             apijson.Field
+	DiscardedAt           apijson.Field
+	ContactIdentifier     apijson.Field
+	ContactIdentifierType apijson.Field
 	raw                   string
-	Extras                map[string]apijson.Metadata
+	Extras                map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into InvoiceContactDetails using
-// the internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *InvoiceContactDetails) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -190,6 +195,7 @@ const (
 	InvoiceContactDetailsContactIdentifierTypeWebsite     InvoiceContactDetailsContactIdentifierType = "website"
 )
 
+// The counterparty's billing address.
 type InvoiceCounterpartyBillingAddress struct {
 	Line1 string `json:"line1,required"`
 	Line2 string `json:"line2"`
@@ -201,27 +207,27 @@ type InvoiceCounterpartyBillingAddress struct {
 	PostalCode string `json:"postal_code,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country,required"`
-	JSON    InvoiceCounterpartyBillingAddressJSON
+	JSON    invoiceCounterpartyBillingAddressJSON
 }
 
-type InvoiceCounterpartyBillingAddressJSON struct {
-	Line1      apijson.Metadata
-	Line2      apijson.Metadata
-	Locality   apijson.Metadata
-	Region     apijson.Metadata
-	PostalCode apijson.Metadata
-	Country    apijson.Metadata
+// invoiceCounterpartyBillingAddressJSON contains the JSON metadata for the struct
+// [InvoiceCounterpartyBillingAddress]
+type invoiceCounterpartyBillingAddressJSON struct {
+	Line1      apijson.Field
+	Line2      apijson.Field
+	Locality   apijson.Field
+	Region     apijson.Field
+	PostalCode apijson.Field
+	Country    apijson.Field
 	raw        string
-	Extras     map[string]apijson.Metadata
+	Extras     map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// InvoiceCounterpartyBillingAddress using the internal json library. Unrecognized
-// fields are stored in the `jsonFields` property.
 func (r *InvoiceCounterpartyBillingAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The counterparty's shipping address where physical goods should be delivered.
 type InvoiceCounterpartyShippingAddress struct {
 	Line1 string `json:"line1,required"`
 	Line2 string `json:"line2"`
@@ -233,27 +239,27 @@ type InvoiceCounterpartyShippingAddress struct {
 	PostalCode string `json:"postal_code,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country,required"`
-	JSON    InvoiceCounterpartyShippingAddressJSON
+	JSON    invoiceCounterpartyShippingAddressJSON
 }
 
-type InvoiceCounterpartyShippingAddressJSON struct {
-	Line1      apijson.Metadata
-	Line2      apijson.Metadata
-	Locality   apijson.Metadata
-	Region     apijson.Metadata
-	PostalCode apijson.Metadata
-	Country    apijson.Metadata
+// invoiceCounterpartyShippingAddressJSON contains the JSON metadata for the struct
+// [InvoiceCounterpartyShippingAddress]
+type invoiceCounterpartyShippingAddressJSON struct {
+	Line1      apijson.Field
+	Line2      apijson.Field
+	Locality   apijson.Field
+	Region     apijson.Field
+	PostalCode apijson.Field
+	Country    apijson.Field
 	raw        string
-	Extras     map[string]apijson.Metadata
+	Extras     map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// InvoiceCounterpartyShippingAddress using the internal json library. Unrecognized
-// fields are stored in the `jsonFields` property.
 func (r *InvoiceCounterpartyShippingAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The invoice issuer's business address.
 type InvoiceInvoicerAddress struct {
 	Line1 string `json:"line1,required"`
 	Line2 string `json:"line2"`
@@ -265,23 +271,22 @@ type InvoiceInvoicerAddress struct {
 	PostalCode string `json:"postal_code,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country,required"`
-	JSON    InvoiceInvoicerAddressJSON
+	JSON    invoiceInvoicerAddressJSON
 }
 
-type InvoiceInvoicerAddressJSON struct {
-	Line1      apijson.Metadata
-	Line2      apijson.Metadata
-	Locality   apijson.Metadata
-	Region     apijson.Metadata
-	PostalCode apijson.Metadata
-	Country    apijson.Metadata
+// invoiceInvoicerAddressJSON contains the JSON metadata for the struct
+// [InvoiceInvoicerAddress]
+type invoiceInvoicerAddressJSON struct {
+	Line1      apijson.Field
+	Line2      apijson.Field
+	Locality   apijson.Field
+	Region     apijson.Field
+	PostalCode apijson.Field
+	Country    apijson.Field
 	raw        string
-	Extras     map[string]apijson.Metadata
+	Extras     map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into InvoiceInvoicerAddress using
-// the internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *InvoiceInvoicerAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -317,9 +322,6 @@ type InvoiceNewParams struct {
 	OriginatingAccountID field.Field[string] `json:"originating_account_id,required"`
 }
 
-// MarshalJSON serializes InvoiceNewParams into an array of bytes using the gjson
-// library. Members of the `jsonFields` field are serialized into the top-level,
-// and will overwrite known members of the same name.
 func (r InvoiceNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -345,6 +347,7 @@ const (
 	InvoiceNewParamsContactDetailsContactIdentifierTypeWebsite     InvoiceNewParamsContactDetailsContactIdentifierType = "website"
 )
 
+// The counterparty's billing address.
 type InvoiceNewParamsCounterpartyBillingAddress struct {
 	Line1 field.Field[string] `json:"line1,required"`
 	Line2 field.Field[string] `json:"line2"`
@@ -358,6 +361,7 @@ type InvoiceNewParamsCounterpartyBillingAddress struct {
 	Country field.Field[string] `json:"country,required"`
 }
 
+// The counterparty's shipping address where physical goods should be delivered.
 type InvoiceNewParamsCounterpartyShippingAddress struct {
 	Line1 field.Field[string] `json:"line1,required"`
 	Line2 field.Field[string] `json:"line2"`
@@ -371,6 +375,7 @@ type InvoiceNewParamsCounterpartyShippingAddress struct {
 	Country field.Field[string] `json:"country,required"`
 }
 
+// The invoice issuer's business address.
 type InvoiceNewParamsInvoicerAddress struct {
 	Line1 field.Field[string] `json:"line1,required"`
 	Line2 field.Field[string] `json:"line2"`
@@ -412,9 +417,6 @@ type InvoiceUpdateParams struct {
 	Status field.Field[string] `json:"status"`
 }
 
-// MarshalJSON serializes InvoiceUpdateParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r InvoiceUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -440,6 +442,7 @@ const (
 	InvoiceUpdateParamsContactDetailsContactIdentifierTypeWebsite     InvoiceUpdateParamsContactDetailsContactIdentifierType = "website"
 )
 
+// The counterparty's billing address.
 type InvoiceUpdateParamsCounterpartyBillingAddress struct {
 	Line1 field.Field[string] `json:"line1,required"`
 	Line2 field.Field[string] `json:"line2"`
@@ -453,6 +456,7 @@ type InvoiceUpdateParamsCounterpartyBillingAddress struct {
 	Country field.Field[string] `json:"country,required"`
 }
 
+// The counterparty's shipping address where physical goods should be delivered.
 type InvoiceUpdateParamsCounterpartyShippingAddress struct {
 	Line1 field.Field[string] `json:"line1,required"`
 	Line2 field.Field[string] `json:"line2"`
@@ -466,6 +470,7 @@ type InvoiceUpdateParamsCounterpartyShippingAddress struct {
 	Country field.Field[string] `json:"country,required"`
 }
 
+// The invoice issuer's business address.
 type InvoiceUpdateParamsInvoicerAddress struct {
 	Line1 field.Field[string] `json:"line1,required"`
 	Line2 field.Field[string] `json:"line2"`
@@ -484,8 +489,7 @@ type InvoiceListParams struct {
 	PerPage     field.Field[int64]  `query:"per_page"`
 }
 
-// URLQuery serializes InvoiceListParams into a url.Values of the query parameters
-// associated with this value
+// URLQuery serializes [InvoiceListParams]'s query parameters as `url.Values`.
 func (r InvoiceListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
