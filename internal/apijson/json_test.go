@@ -55,21 +55,21 @@ type Recursive struct {
 	Child *Recursive `json:"child"`
 }
 
-type MetadataStruct struct {
-	A      bool               `json:"a"`
-	B      int64              `json:"b"`
-	C      string             `json:"c"`
-	D      string             `json:"d"`
-	Extras map[string]int64   `json:"-,extras"`
-	JSON   MetadataStructJSON `json:"-,metadata"`
+type JSONFieldStruct struct {
+	A      bool                `json:"a"`
+	B      int64               `json:"b"`
+	C      string              `json:"c"`
+	D      string              `json:"d"`
+	Extras map[string]int64    `json:"-,extras"`
+	JSON   JSONFieldStructJSON `json:"-,metadata"`
 }
 
-type MetadataStructJSON struct {
-	A      Metadata
-	B      Metadata
-	C      Metadata
-	D      Metadata
-	Extras map[string]Metadata
+type JSONFieldStructJSON struct {
+	A      Field
+	B      Field
+	C      Field
+	D      Field
+	Extras map[string]Field
 	raw    string
 }
 
@@ -216,17 +216,17 @@ var tests = map[string]struct {
 
 	"metadata_coerce": {
 		`{"a":"12","b":"12","c":null,"extra_typed":12,"extra_untyped":{"foo":"bar"}}`,
-		MetadataStruct{
+		JSONFieldStruct{
 			A: false,
 			B: 12,
 			C: "",
-			JSON: MetadataStructJSON{
+			JSON: JSONFieldStructJSON{
 				raw: `{"a":"12","b":"12","c":null,"extra_typed":12,"extra_untyped":{"foo":"bar"}}`,
-				A:   Metadata{raw: `"12"`, status: invalid},
-				B:   Metadata{raw: `"12"`, status: valid},
-				C:   Metadata{raw: "null", status: null},
-				D:   Metadata{raw: "", status: missing},
-				Extras: map[string]Metadata{
+				A:   Field{raw: `"12"`, status: invalid},
+				B:   Field{raw: `"12"`, status: valid},
+				C:   Field{raw: "null", status: null},
+				D:   Field{raw: "", status: missing},
+				Extras: map[string]Field{
 					"extra_typed": {
 						raw:    "12",
 						status: valid,

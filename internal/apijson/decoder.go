@@ -294,14 +294,14 @@ func (d *decoder) newStructTypeDecoder(t reflect.Type) decoderFunc {
 			typedExtraType = value.FieldByIndex(extraDecoder.idx).Type()
 			typedExtraFields = reflect.MakeMap(typedExtraType)
 		}
-		untypedExtraFields := map[string]Metadata{}
+		untypedExtraFields := map[string]Field{}
 
 		for fieldName, itemNode := range node.Map() {
 			df, explicit := decoderFields[fieldName]
 			var (
 				dest reflect.Value
 				fn   decoderFunc
-				meta Metadata
+				meta Field
 			)
 			if explicit {
 				fn = df.fn
@@ -321,24 +321,24 @@ func (d *decoder) newStructTypeDecoder(t reflect.Type) decoderFunc {
 			}
 
 			if itemNode.Type == gjson.Null {
-				meta = Metadata{
+				meta = Field{
 					raw:    itemNode.Raw,
 					status: null,
 				}
 			} else if !isValid {
-				meta = Metadata{
+				meta = Field{
 					raw:    itemNode.Raw,
 					status: invalid,
 				}
 			} else if isValid {
-				meta = Metadata{
+				meta = Field{
 					raw:    itemNode.Raw,
 					status: valid,
 				}
 			}
 
 			if explicit {
-				if metadata := getMetadataField(value, df.idx, df.goname); metadata.IsValid() {
+				if metadata := getSubField(value, df.idx, df.goname); metadata.IsValid() {
 					metadata.Set(reflect.ValueOf(meta))
 				}
 			}
@@ -353,7 +353,7 @@ func (d *decoder) newStructTypeDecoder(t reflect.Type) decoderFunc {
 		if extraDecoder != nil && typedExtraFields.Len() > 0 {
 			value.FieldByIndex(extraDecoder.idx).Set(typedExtraFields)
 		}
-		if metadata := getMetadataField(value, []int{-1}, "Extras"); metadata.IsValid() && len(untypedExtraFields) > 0 {
+		if metadata := getSubField(value, []int{-1}, "Extras"); metadata.IsValid() && len(untypedExtraFields) > 0 {
 			metadata.Set(reflect.ValueOf(untypedExtraFields))
 		}
 		if field := value.FieldByName("JSON"); field.IsValid() {

@@ -15,10 +15,18 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// TransactionService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the [NewTransactionService]
+// method instead.
 type TransactionService struct {
 	Options []option.RequestOption
 }
 
+// NewTransactionService generates a new service that applies the given options to
+// each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewTransactionService(opts ...option.RequestOption) (r *TransactionService) {
 	r = &TransactionService{}
 	r.Options = opts
@@ -122,39 +130,37 @@ type Transaction struct {
 	// The type of the transaction. Can be one of `ach`, `wire`, `check`, `rtp`,
 	// `book`, or `sen`.
 	Type TransactionType `json:"type,required"`
-	JSON TransactionJSON
+	JSON transactionJSON
 }
 
-type TransactionJSON struct {
-	ID                apijson.Metadata
-	Object            apijson.Metadata
-	LiveMode          apijson.Metadata
-	CreatedAt         apijson.Metadata
-	UpdatedAt         apijson.Metadata
-	DiscardedAt       apijson.Metadata
-	Amount            apijson.Metadata
-	Currency          apijson.Metadata
-	Direction         apijson.Metadata
-	VendorDescription apijson.Metadata
-	VendorCode        apijson.Metadata
-	VendorCodeType    apijson.Metadata
-	VendorID          apijson.Metadata
-	AsOfDate          apijson.Metadata
-	AsOfTime          apijson.Metadata
-	InternalAccountID apijson.Metadata
-	Metadata          apijson.Metadata
-	Posted            apijson.Metadata
-	VendorCustomerID  apijson.Metadata
-	Reconciled        apijson.Metadata
-	Details           apijson.Metadata
-	Type              apijson.Metadata
+// transactionJSON contains the JSON metadata for the struct [Transaction]
+type transactionJSON struct {
+	ID                apijson.Field
+	Object            apijson.Field
+	LiveMode          apijson.Field
+	CreatedAt         apijson.Field
+	UpdatedAt         apijson.Field
+	DiscardedAt       apijson.Field
+	Amount            apijson.Field
+	Currency          apijson.Field
+	Direction         apijson.Field
+	VendorDescription apijson.Field
+	VendorCode        apijson.Field
+	VendorCodeType    apijson.Field
+	VendorID          apijson.Field
+	AsOfDate          apijson.Field
+	AsOfTime          apijson.Field
+	InternalAccountID apijson.Field
+	Metadata          apijson.Field
+	Posted            apijson.Field
+	VendorCustomerID  apijson.Field
+	Reconciled        apijson.Field
+	Details           apijson.Field
+	Type              apijson.Field
 	raw               string
-	Extras            map[string]apijson.Metadata
+	Extras            map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into Transaction using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *Transaction) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -212,9 +218,6 @@ type TransactionUpdateParams struct {
 	Metadata field.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes TransactionUpdateParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r TransactionUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -246,8 +249,7 @@ type TransactionListParams struct {
 	Metadata field.Field[map[string]string] `query:"metadata"`
 }
 
-// URLQuery serializes TransactionListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [TransactionListParams]'s query parameters as `url.Values`.
 func (r TransactionListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

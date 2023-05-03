@@ -15,10 +15,18 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// ExternalAccountService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewExternalAccountService] method instead.
 type ExternalAccountService struct {
 	Options []option.RequestOption
 }
 
+// NewExternalAccountService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewExternalAccountService(opts ...option.RequestOption) (r *ExternalAccountService) {
 	r = &ExternalAccountService{}
 	r.Options = opts
@@ -128,35 +136,33 @@ type ExternalAccount struct {
 	// the ledger account will be populated here.
 	LedgerAccountID    string                            `json:"ledger_account_id,required,nullable" format:"uuid"`
 	VerificationStatus ExternalAccountVerificationStatus `json:"verification_status,required"`
-	JSON               ExternalAccountJSON
+	JSON               externalAccountJSON
 }
 
-type ExternalAccountJSON struct {
-	ID                 apijson.Metadata
-	Object             apijson.Metadata
-	LiveMode           apijson.Metadata
-	CreatedAt          apijson.Metadata
-	UpdatedAt          apijson.Metadata
-	DiscardedAt        apijson.Metadata
-	AccountType        apijson.Metadata
-	PartyType          apijson.Metadata
-	PartyAddress       apijson.Metadata
-	Name               apijson.Metadata
-	CounterpartyID     apijson.Metadata
-	AccountDetails     apijson.Metadata
-	RoutingDetails     apijson.Metadata
-	Metadata           apijson.Metadata
-	PartyName          apijson.Metadata
-	ContactDetails     apijson.Metadata
-	LedgerAccountID    apijson.Metadata
-	VerificationStatus apijson.Metadata
+// externalAccountJSON contains the JSON metadata for the struct [ExternalAccount]
+type externalAccountJSON struct {
+	ID                 apijson.Field
+	Object             apijson.Field
+	LiveMode           apijson.Field
+	CreatedAt          apijson.Field
+	UpdatedAt          apijson.Field
+	DiscardedAt        apijson.Field
+	AccountType        apijson.Field
+	PartyType          apijson.Field
+	PartyAddress       apijson.Field
+	Name               apijson.Field
+	CounterpartyID     apijson.Field
+	AccountDetails     apijson.Field
+	RoutingDetails     apijson.Field
+	Metadata           apijson.Field
+	PartyName          apijson.Field
+	ContactDetails     apijson.Field
+	LedgerAccountID    apijson.Field
+	VerificationStatus apijson.Field
 	raw                string
-	Extras             map[string]apijson.Metadata
+	Extras             map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into ExternalAccount using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *ExternalAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -180,6 +186,7 @@ const (
 	ExternalAccountPartyTypeIndividual ExternalAccountPartyType = "individual"
 )
 
+// The address associated with the owner or `null`.
 type ExternalAccountPartyAddress struct {
 	ID     string `json:"id,required" format:"uuid"`
 	Object string `json:"object,required"`
@@ -198,28 +205,27 @@ type ExternalAccountPartyAddress struct {
 	PostalCode string `json:"postal_code,required,nullable"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country,required,nullable"`
-	JSON    ExternalAccountPartyAddressJSON
+	JSON    externalAccountPartyAddressJSON
 }
 
-type ExternalAccountPartyAddressJSON struct {
-	ID         apijson.Metadata
-	Object     apijson.Metadata
-	LiveMode   apijson.Metadata
-	CreatedAt  apijson.Metadata
-	UpdatedAt  apijson.Metadata
-	Line1      apijson.Metadata
-	Line2      apijson.Metadata
-	Locality   apijson.Metadata
-	Region     apijson.Metadata
-	PostalCode apijson.Metadata
-	Country    apijson.Metadata
+// externalAccountPartyAddressJSON contains the JSON metadata for the struct
+// [ExternalAccountPartyAddress]
+type externalAccountPartyAddressJSON struct {
+	ID         apijson.Field
+	Object     apijson.Field
+	LiveMode   apijson.Field
+	CreatedAt  apijson.Field
+	UpdatedAt  apijson.Field
+	Line1      apijson.Field
+	Line2      apijson.Field
+	Locality   apijson.Field
+	Region     apijson.Field
+	PostalCode apijson.Field
+	Country    apijson.Field
 	raw        string
-	Extras     map[string]apijson.Metadata
+	Extras     map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into ExternalAccountPartyAddress
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *ExternalAccountPartyAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -235,25 +241,24 @@ type ExternalAccountContactDetails struct {
 	DiscardedAt           time.Time                                          `json:"discarded_at,required,nullable" format:"date-time"`
 	ContactIdentifier     string                                             `json:"contact_identifier,required"`
 	ContactIdentifierType ExternalAccountContactDetailsContactIdentifierType `json:"contact_identifier_type,required"`
-	JSON                  ExternalAccountContactDetailsJSON
+	JSON                  externalAccountContactDetailsJSON
 }
 
-type ExternalAccountContactDetailsJSON struct {
-	ID                    apijson.Metadata
-	Object                apijson.Metadata
-	LiveMode              apijson.Metadata
-	CreatedAt             apijson.Metadata
-	UpdatedAt             apijson.Metadata
-	DiscardedAt           apijson.Metadata
-	ContactIdentifier     apijson.Metadata
-	ContactIdentifierType apijson.Metadata
+// externalAccountContactDetailsJSON contains the JSON metadata for the struct
+// [ExternalAccountContactDetails]
+type externalAccountContactDetailsJSON struct {
+	ID                    apijson.Field
+	Object                apijson.Field
+	LiveMode              apijson.Field
+	CreatedAt             apijson.Field
+	UpdatedAt             apijson.Field
+	DiscardedAt           apijson.Field
+	ContactIdentifier     apijson.Field
+	ContactIdentifierType apijson.Field
 	raw                   string
-	Extras                map[string]apijson.Metadata
+	Extras                map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into ExternalAccountContactDetails
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *ExternalAccountContactDetails) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -299,9 +304,6 @@ type ExternalAccountNewParams struct {
 	ContactDetails      field.Field[[]ExternalAccountNewParamsContactDetails] `json:"contact_details"`
 }
 
-// MarshalJSON serializes ExternalAccountNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r ExternalAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -313,6 +315,7 @@ const (
 	ExternalAccountNewParamsPartyTypeIndividual ExternalAccountNewParamsPartyType = "individual"
 )
 
+// Required if receiving wire payments.
 type ExternalAccountNewParamsPartyAddress struct {
 	Line1 field.Field[string] `json:"line1,nullable"`
 	Line2 field.Field[string] `json:"line2,nullable"`
@@ -414,9 +417,6 @@ type ExternalAccountUpdateParams struct {
 	Metadata field.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes ExternalAccountUpdateParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r ExternalAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -453,8 +453,8 @@ type ExternalAccountListParams struct {
 	Metadata field.Field[map[string]string] `query:"metadata"`
 }
 
-// URLQuery serializes ExternalAccountListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [ExternalAccountListParams]'s query parameters as
+// `url.Values`.
 func (r ExternalAccountListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
@@ -463,10 +463,6 @@ type ExternalAccountCompleteVerificationParams struct {
 	Amounts field.Field[[]int64] `json:"amounts"`
 }
 
-// MarshalJSON serializes ExternalAccountCompleteVerificationParams into an array
-// of bytes using the gjson library. Members of the `jsonFields` field are
-// serialized into the top-level, and will overwrite known members of the same
-// name.
 func (r ExternalAccountCompleteVerificationParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -481,9 +477,6 @@ type ExternalAccountVerifyParams struct {
 	Currency field.Field[shared.Currency] `json:"currency,nullable"`
 }
 
-// MarshalJSON serializes ExternalAccountVerifyParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r ExternalAccountVerifyParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }

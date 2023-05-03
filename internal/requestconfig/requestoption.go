@@ -117,13 +117,18 @@ func NewRequestConfig(ctx context.Context, method string, u string, body interfa
 	return &cfg, nil
 }
 
+// RequestConfigruation represents all the state related to one request.
+//
+// Editing the variables inside RequestConfig directly is unstable api. Prefer
+// composing [func(*RequestConfig) error] instead if possible.
 type RequestConfig struct {
-	MaxRetries int
-	Context    context.Context
-	Request    *http.Request
-	BaseURL    *url.URL
-	HTTPClient *http.Client
-	APIKey     string
+	MaxRetries     int
+	RequestTimeout time.Duration
+	Context        context.Context
+	Request        *http.Request
+	BaseURL        *url.URL
+	HTTPClient     *http.Client
+	APIKey         string
 	// If ResponseBodyInto not nil, then we will attempt to deserialize into
 	// ResponseBodyInto. If Destination is a []byte, then it will return the body as
 	// is.
@@ -152,7 +157,13 @@ func (cfg *RequestConfig) Execute() error {
 
 	var res *http.Response
 	for i := 0; i <= cfg.MaxRetries; i += 1 {
-		res, err = cfg.HTTPClient.Do(cfg.Request.Clone(cfg.Request.Context()))
+		ctx := cfg.Request.Context()
+		if cfg.RequestTimeout != time.Duration(0) {
+			nctx, cancel := context.WithTimeout(ctx, cfg.RequestTimeout)
+			ctx = nctx
+			defer cancel()
+		}
+		res, err = cfg.HTTPClient.Do(cfg.Request.Clone(ctx))
 
 		if i == cfg.MaxRetries || err == nil && res.StatusCode != http.StatusConflict && res.StatusCode != http.StatusTooManyRequests && res.StatusCode < http.StatusInternalServerError {
 			break

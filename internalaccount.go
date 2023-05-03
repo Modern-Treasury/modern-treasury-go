@@ -15,11 +15,19 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// InternalAccountService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewInternalAccountService] method instead.
 type InternalAccountService struct {
 	Options        []option.RequestOption
 	BalanceReports *InternalAccountBalanceReportService
 }
 
+// NewInternalAccountService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewInternalAccountService(opts ...option.RequestOption) (r *InternalAccountService) {
 	r = &InternalAccountService{}
 	r.Options = opts
@@ -110,35 +118,33 @@ type InternalAccount struct {
 	// If the internal account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
 	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
-	JSON            InternalAccountJSON
+	JSON            internalAccountJSON
 }
 
-type InternalAccountJSON struct {
-	ID              apijson.Metadata
-	Object          apijson.Metadata
-	LiveMode        apijson.Metadata
-	CreatedAt       apijson.Metadata
-	UpdatedAt       apijson.Metadata
-	AccountType     apijson.Metadata
-	PartyName       apijson.Metadata
-	PartyType       apijson.Metadata
-	PartyAddress    apijson.Metadata
-	Name            apijson.Metadata
-	AccountDetails  apijson.Metadata
-	RoutingDetails  apijson.Metadata
-	Connection      apijson.Metadata
-	Currency        apijson.Metadata
-	Metadata        apijson.Metadata
-	ParentAccountID apijson.Metadata
-	CounterpartyID  apijson.Metadata
-	LedgerAccountID apijson.Metadata
+// internalAccountJSON contains the JSON metadata for the struct [InternalAccount]
+type internalAccountJSON struct {
+	ID              apijson.Field
+	Object          apijson.Field
+	LiveMode        apijson.Field
+	CreatedAt       apijson.Field
+	UpdatedAt       apijson.Field
+	AccountType     apijson.Field
+	PartyName       apijson.Field
+	PartyType       apijson.Field
+	PartyAddress    apijson.Field
+	Name            apijson.Field
+	AccountDetails  apijson.Field
+	RoutingDetails  apijson.Field
+	Connection      apijson.Field
+	Currency        apijson.Field
+	Metadata        apijson.Field
+	ParentAccountID apijson.Field
+	CounterpartyID  apijson.Field
+	LedgerAccountID apijson.Field
 	raw             string
-	Extras          map[string]apijson.Metadata
+	Extras          map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into InternalAccount using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *InternalAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -162,6 +168,7 @@ const (
 	InternalAccountPartyTypeIndividual InternalAccountPartyType = "individual"
 )
 
+// The address associated with the owner or null.
 type InternalAccountPartyAddress struct {
 	ID     string `json:"id,required" format:"uuid"`
 	Object string `json:"object,required"`
@@ -180,28 +187,27 @@ type InternalAccountPartyAddress struct {
 	PostalCode string `json:"postal_code,required,nullable"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country,required,nullable"`
-	JSON    InternalAccountPartyAddressJSON
+	JSON    internalAccountPartyAddressJSON
 }
 
-type InternalAccountPartyAddressJSON struct {
-	ID         apijson.Metadata
-	Object     apijson.Metadata
-	LiveMode   apijson.Metadata
-	CreatedAt  apijson.Metadata
-	UpdatedAt  apijson.Metadata
-	Line1      apijson.Metadata
-	Line2      apijson.Metadata
-	Locality   apijson.Metadata
-	Region     apijson.Metadata
-	PostalCode apijson.Metadata
-	Country    apijson.Metadata
+// internalAccountPartyAddressJSON contains the JSON metadata for the struct
+// [InternalAccountPartyAddress]
+type internalAccountPartyAddressJSON struct {
+	ID         apijson.Field
+	Object     apijson.Field
+	LiveMode   apijson.Field
+	CreatedAt  apijson.Field
+	UpdatedAt  apijson.Field
+	Line1      apijson.Field
+	Line2      apijson.Field
+	Locality   apijson.Field
+	Region     apijson.Field
+	PostalCode apijson.Field
+	Country    apijson.Field
 	raw        string
-	Extras     map[string]apijson.Metadata
+	Extras     map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into InternalAccountPartyAddress
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *InternalAccountPartyAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -226,13 +232,11 @@ type InternalAccountNewParams struct {
 	CounterpartyID field.Field[string] `json:"counterparty_id"`
 }
 
-// MarshalJSON serializes InternalAccountNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r InternalAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// The address associated with the owner or null.
 type InternalAccountNewParamsPartyAddress struct {
 	Line1 field.Field[string] `json:"line1,required"`
 	Line2 field.Field[string] `json:"line2"`
@@ -265,9 +269,6 @@ type InternalAccountUpdateParams struct {
 	CounterpartyID field.Field[string] `json:"counterparty_id"`
 }
 
-// MarshalJSON serializes InternalAccountUpdateParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r InternalAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -289,8 +290,8 @@ type InternalAccountListParams struct {
 	Metadata field.Field[map[string]string] `query:"metadata"`
 }
 
-// URLQuery serializes InternalAccountListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [InternalAccountListParams]'s query parameters as
+// `url.Values`.
 func (r InternalAccountListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

@@ -18,10 +18,17 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// DocumentService contains methods and other services that help with interacting
+// with the Modern Treasury API. Note, unlike clients, this service does not read
+// variables from the environment automatically. You should not instantiate this
+// service directly, and instead use the [NewDocumentService] method instead.
 type DocumentService struct {
 	Options []option.RequestOption
 }
 
+// NewDocumentService generates a new service that applies the given options to
+// each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewDocumentService(opts ...option.RequestOption) (r *DocumentService) {
 	r = &DocumentService{}
 	r.Options = opts
@@ -86,27 +93,26 @@ type Document struct {
 	DocumentableType DocumentDocumentableType  `json:"documentable_type,required"`
 	DocumentDetails  []DocumentDocumentDetails `json:"document_details,required"`
 	File             DocumentFile              `json:"file,required"`
-	JSON             DocumentJSON
+	JSON             documentJSON
 }
 
-type DocumentJSON struct {
-	ID               apijson.Metadata
-	Object           apijson.Metadata
-	LiveMode         apijson.Metadata
-	CreatedAt        apijson.Metadata
-	UpdatedAt        apijson.Metadata
-	DiscardedAt      apijson.Metadata
-	DocumentType     apijson.Metadata
-	DocumentableID   apijson.Metadata
-	DocumentableType apijson.Metadata
-	DocumentDetails  apijson.Metadata
-	File             apijson.Metadata
+// documentJSON contains the JSON metadata for the struct [Document]
+type documentJSON struct {
+	ID               apijson.Field
+	Object           apijson.Field
+	LiveMode         apijson.Field
+	CreatedAt        apijson.Field
+	UpdatedAt        apijson.Field
+	DiscardedAt      apijson.Field
+	DocumentType     apijson.Field
+	DocumentableID   apijson.Field
+	DocumentableType apijson.Field
+	DocumentDetails  apijson.Field
+	File             apijson.Field
 	raw              string
-	Extras           map[string]apijson.Metadata
+	Extras           map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into Document using the internal
-// json library. Unrecognized fields are stored in the `jsonFields` property.
 func (r *Document) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -137,25 +143,24 @@ type DocumentDocumentDetails struct {
 	DiscardedAt            time.Time `json:"discarded_at,required,nullable" format:"date-time"`
 	DocumentIdentifierType string    `json:"document_identifier_type,required"`
 	DocumentIdentifier     string    `json:"document_identifier,required"`
-	JSON                   DocumentDocumentDetailsJSON
+	JSON                   documentDocumentDetailsJSON
 }
 
-type DocumentDocumentDetailsJSON struct {
-	ID                     apijson.Metadata
-	Object                 apijson.Metadata
-	LiveMode               apijson.Metadata
-	CreatedAt              apijson.Metadata
-	UpdatedAt              apijson.Metadata
-	DiscardedAt            apijson.Metadata
-	DocumentIdentifierType apijson.Metadata
-	DocumentIdentifier     apijson.Metadata
+// documentDocumentDetailsJSON contains the JSON metadata for the struct
+// [DocumentDocumentDetails]
+type documentDocumentDetailsJSON struct {
+	ID                     apijson.Field
+	Object                 apijson.Field
+	LiveMode               apijson.Field
+	CreatedAt              apijson.Field
+	UpdatedAt              apijson.Field
+	DiscardedAt            apijson.Field
+	DocumentIdentifierType apijson.Field
+	DocumentIdentifier     apijson.Field
 	raw                    string
-	Extras                 map[string]apijson.Metadata
+	Extras                 map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into DocumentDocumentDetails using
-// the internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *DocumentDocumentDetails) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -167,20 +172,18 @@ type DocumentFile struct {
 	Filename string `json:"filename"`
 	// The MIME content type of the document.
 	ContentType string `json:"content_type"`
-	JSON        DocumentFileJSON
+	JSON        documentFileJSON
 }
 
-type DocumentFileJSON struct {
-	Size        apijson.Metadata
-	Filename    apijson.Metadata
-	ContentType apijson.Metadata
+// documentFileJSON contains the JSON metadata for the struct [DocumentFile]
+type documentFileJSON struct {
+	Size        apijson.Field
+	Filename    apijson.Field
+	ContentType apijson.Field
 	raw         string
-	Extras      map[string]apijson.Metadata
+	Extras      map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into DocumentFile using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *DocumentFile) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -251,8 +254,7 @@ type DocumentListParams struct {
 	PerPage     field.Field[int64]  `query:"per_page"`
 }
 
-// URLQuery serializes DocumentListParams into a url.Values of the query parameters
-// associated with this value
+// URLQuery serializes [DocumentListParams]'s query parameters as `url.Values`.
 func (r DocumentListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
