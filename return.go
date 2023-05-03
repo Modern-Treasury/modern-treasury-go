@@ -15,10 +15,17 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// ReturnService contains methods and other services that help with interacting
+// with the Modern Treasury API. Note, unlike clients, this service does not read
+// variables from the environment automatically. You should not instantiate this
+// service directly, and instead use the [NewReturnService] method instead.
 type ReturnService struct {
 	Options []option.RequestOption
 }
 
+// NewReturnService generates a new service that applies the given options to each
+// request. These options are applied after the parent client's options (if there
+// is one), and before any request-specific options.
 func NewReturnService(opts ...option.RequestOption) (r *ReturnService) {
 	r = &ReturnService{}
 	r.Options = opts
@@ -112,39 +119,37 @@ type ReturnObject struct {
 	ReferenceNumbers []ReturnObjectReferenceNumbers `json:"reference_numbers,required"`
 	// The ID of the ledger transaction linked to the return.
 	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
-	JSON                ReturnObjectJSON
+	JSON                returnObjectJSON
 }
 
-type ReturnObjectJSON struct {
-	ID                    apijson.Metadata
-	Object                apijson.Metadata
-	LiveMode              apijson.Metadata
-	CreatedAt             apijson.Metadata
-	UpdatedAt             apijson.Metadata
-	ReturnableID          apijson.Metadata
-	ReturnableType        apijson.Metadata
-	Code                  apijson.Metadata
-	Reason                apijson.Metadata
-	DateOfDeath           apijson.Metadata
-	AdditionalInformation apijson.Metadata
-	Status                apijson.Metadata
-	TransactionLineItemID apijson.Metadata
-	TransactionID         apijson.Metadata
-	InternalAccountID     apijson.Metadata
-	Type                  apijson.Metadata
-	Amount                apijson.Metadata
-	Currency              apijson.Metadata
-	FailureReason         apijson.Metadata
-	Role                  apijson.Metadata
-	ReferenceNumbers      apijson.Metadata
-	LedgerTransactionID   apijson.Metadata
+// returnObjectJSON contains the JSON metadata for the struct [ReturnObject]
+type returnObjectJSON struct {
+	ID                    apijson.Field
+	Object                apijson.Field
+	LiveMode              apijson.Field
+	CreatedAt             apijson.Field
+	UpdatedAt             apijson.Field
+	ReturnableID          apijson.Field
+	ReturnableType        apijson.Field
+	Code                  apijson.Field
+	Reason                apijson.Field
+	DateOfDeath           apijson.Field
+	AdditionalInformation apijson.Field
+	Status                apijson.Field
+	TransactionLineItemID apijson.Field
+	TransactionID         apijson.Field
+	InternalAccountID     apijson.Field
+	Type                  apijson.Field
+	Amount                apijson.Field
+	Currency              apijson.Field
+	FailureReason         apijson.Field
+	Role                  apijson.Field
+	ReferenceNumbers      apijson.Field
+	LedgerTransactionID   apijson.Field
 	raw                   string
-	Extras                map[string]apijson.Metadata
+	Extras                map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into ReturnObject using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *ReturnObject) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -253,24 +258,23 @@ type ReturnObjectReferenceNumbers struct {
 	ReferenceNumber string `json:"reference_number,required"`
 	// The type of the reference number. Referring to the vendor payment id.
 	ReferenceNumberType ReturnObjectReferenceNumbersReferenceNumberType `json:"reference_number_type,required"`
-	JSON                ReturnObjectReferenceNumbersJSON
+	JSON                returnObjectReferenceNumbersJSON
 }
 
-type ReturnObjectReferenceNumbersJSON struct {
-	ID                  apijson.Metadata
-	Object              apijson.Metadata
-	LiveMode            apijson.Metadata
-	CreatedAt           apijson.Metadata
-	UpdatedAt           apijson.Metadata
-	ReferenceNumber     apijson.Metadata
-	ReferenceNumberType apijson.Metadata
+// returnObjectReferenceNumbersJSON contains the JSON metadata for the struct
+// [ReturnObjectReferenceNumbers]
+type returnObjectReferenceNumbersJSON struct {
+	ID                  apijson.Field
+	Object              apijson.Field
+	LiveMode            apijson.Field
+	CreatedAt           apijson.Field
+	UpdatedAt           apijson.Field
+	ReferenceNumber     apijson.Field
+	ReferenceNumberType apijson.Field
 	raw                 string
-	Extras              map[string]apijson.Metadata
+	Extras              map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into ReturnObjectReferenceNumbers
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *ReturnObjectReferenceNumbers) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -350,9 +354,6 @@ type ReturnNewParams struct {
 	ReturnableType field.Field[ReturnNewParamsReturnableType] `json:"returnable_type,required"`
 }
 
-// MarshalJSON serializes ReturnNewParams into an array of bytes using the gjson
-// library. Members of the `jsonFields` field are serialized into the top-level,
-// and will overwrite known members of the same name.
 func (r ReturnNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -427,8 +428,7 @@ type ReturnListParams struct {
 	ReturnableType field.Field[ReturnListParamsReturnableType] `query:"returnable_type"`
 }
 
-// URLQuery serializes ReturnListParams into a url.Values of the query parameters
-// associated with this value
+// URLQuery serializes [ReturnListParams]'s query parameters as `url.Values`.
 func (r ReturnListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

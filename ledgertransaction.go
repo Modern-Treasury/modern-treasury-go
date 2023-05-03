@@ -15,11 +15,19 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// LedgerTransactionService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewLedgerTransactionService] method instead.
 type LedgerTransactionService struct {
 	Options  []option.RequestOption
 	Versions *LedgerTransactionVersionService
 }
 
+// NewLedgerTransactionService generates a new service that applies the given
+// options to each request. These options are applied after the parent client's
+// options (if there is one), and before any request-specific options.
 func NewLedgerTransactionService(opts ...option.RequestOption) (r *LedgerTransactionService) {
 	r = &LedgerTransactionService{}
 	r.Options = opts
@@ -112,33 +120,32 @@ type LedgerTransaction struct {
 	// A unique string to represent the ledger transaction. Only one pending or posted
 	// ledger transaction may have this ID in the ledger.
 	ExternalID string `json:"external_id,required,nullable"`
-	JSON       LedgerTransactionJSON
+	JSON       ledgerTransactionJSON
 }
 
-type LedgerTransactionJSON struct {
-	ID             apijson.Metadata
-	Object         apijson.Metadata
-	LiveMode       apijson.Metadata
-	CreatedAt      apijson.Metadata
-	UpdatedAt      apijson.Metadata
-	Description    apijson.Metadata
-	Status         apijson.Metadata
-	Metadata       apijson.Metadata
-	EffectiveAt    apijson.Metadata
-	EffectiveDate  apijson.Metadata
-	LedgerEntries  apijson.Metadata
-	PostedAt       apijson.Metadata
-	LedgerID       apijson.Metadata
-	LedgerableType apijson.Metadata
-	LedgerableID   apijson.Metadata
-	ExternalID     apijson.Metadata
+// ledgerTransactionJSON contains the JSON metadata for the struct
+// [LedgerTransaction]
+type ledgerTransactionJSON struct {
+	ID             apijson.Field
+	Object         apijson.Field
+	LiveMode       apijson.Field
+	CreatedAt      apijson.Field
+	UpdatedAt      apijson.Field
+	Description    apijson.Field
+	Status         apijson.Field
+	Metadata       apijson.Field
+	EffectiveAt    apijson.Field
+	EffectiveDate  apijson.Field
+	LedgerEntries  apijson.Field
+	PostedAt       apijson.Field
+	LedgerID       apijson.Field
+	LedgerableType apijson.Field
+	LedgerableID   apijson.Field
+	ExternalID     apijson.Field
 	raw            string
-	Extras         map[string]apijson.Metadata
+	Extras         map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into LedgerTransaction using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *LedgerTransaction) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -191,9 +198,6 @@ type LedgerTransactionNewParams struct {
 	LedgerableID field.Field[string] `json:"ledgerable_id" format:"uuid"`
 }
 
-// MarshalJSON serializes LedgerTransactionNewParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r LedgerTransactionNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -273,9 +277,6 @@ type LedgerTransactionUpdateParams struct {
 	LedgerEntries field.Field[[]LedgerTransactionUpdateParamsLedgerEntries] `json:"ledger_entries"`
 }
 
-// MarshalJSON serializes LedgerTransactionUpdateParams into an array of bytes
-// using the gjson library. Members of the `jsonFields` field are serialized into
-// the top-level, and will overwrite known members of the same name.
 func (r LedgerTransactionUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -363,19 +364,22 @@ type LedgerTransactionListParams struct {
 	LedgerAccountCategoryID field.Field[string]                             `query:"ledger_account_category_id"`
 }
 
-// URLQuery serializes LedgerTransactionListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [LedgerTransactionListParams]'s query parameters as
+// `url.Values`.
 func (r LedgerTransactionListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
 
+// Order by `created_at` or `effective_at` in `asc` or `desc` order. For example,
+// to order by `effective_at asc`, use `order_by%5Beffective_at%5D=asc`. Ordering
+// by only one field at a time is supported.
 type LedgerTransactionListParamsOrderBy struct {
 	CreatedAt   field.Field[LedgerTransactionListParamsOrderByCreatedAt]   `query:"created_at"`
 	EffectiveAt field.Field[LedgerTransactionListParamsOrderByEffectiveAt] `query:"effective_at"`
 }
 
-// URLQuery serializes LedgerTransactionListParamsOrderBy into a url.Values of the
-// query parameters associated with this value
+// URLQuery serializes [LedgerTransactionListParamsOrderBy]'s query parameters as
+// `url.Values`.
 func (r LedgerTransactionListParamsOrderBy) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

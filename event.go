@@ -15,10 +15,17 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// EventService contains methods and other services that help with interacting with
+// the Modern Treasury API. Note, unlike clients, this service does not read
+// variables from the environment automatically. You should not instantiate this
+// service directly, and instead use the [NewEventService] method instead.
 type EventService struct {
 	Options []option.RequestOption
 }
 
+// NewEventService generates a new service that applies the given options to each
+// request. These options are applied after the parent client's options (if there
+// is one), and before any request-specific options.
 func NewEventService(opts ...option.RequestOption) (r *EventService) {
 	r = &EventService{}
 	r.Options = opts
@@ -74,26 +81,25 @@ type Event struct {
 	Data map[string]interface{} `json:"data,required"`
 	// The ID of the entity for the event.
 	EntityID string `json:"entity_id,required"`
-	JSON     EventJSON
+	JSON     eventJSON
 }
 
-type EventJSON struct {
-	ID        apijson.Metadata
-	Object    apijson.Metadata
-	LiveMode  apijson.Metadata
-	CreatedAt apijson.Metadata
-	UpdatedAt apijson.Metadata
-	Resource  apijson.Metadata
-	EventName apijson.Metadata
-	EventTime apijson.Metadata
-	Data      apijson.Metadata
-	EntityID  apijson.Metadata
+// eventJSON contains the JSON metadata for the struct [Event]
+type eventJSON struct {
+	ID        apijson.Field
+	Object    apijson.Field
+	LiveMode  apijson.Field
+	CreatedAt apijson.Field
+	UpdatedAt apijson.Field
+	Resource  apijson.Field
+	EventName apijson.Field
+	EventTime apijson.Field
+	Data      apijson.Field
+	EntityID  apijson.Field
 	raw       string
-	Extras    map[string]apijson.Metadata
+	Extras    map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into Event using the internal json
-// library. Unrecognized fields are stored in the `jsonFields` property.
 func (r *Event) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -110,8 +116,7 @@ type EventListParams struct {
 	EventName    field.Field[string]    `query:"event_name"`
 }
 
-// URLQuery serializes EventListParams into a url.Values of the query parameters
-// associated with this value
+// URLQuery serializes [EventListParams]'s query parameters as `url.Values`.
 func (r EventListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
