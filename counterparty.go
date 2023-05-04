@@ -9,16 +9,24 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// CounterpartyService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the [NewCounterpartyService]
+// method instead.
 type CounterpartyService struct {
 	Options []option.RequestOption
 }
 
+// NewCounterpartyService generates a new service that applies the given options to
+// each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewCounterpartyService(opts ...option.RequestOption) (r *CounterpartyService) {
 	r = &CounterpartyService{}
 	r.Options = opts
@@ -110,28 +118,26 @@ type Counterparty struct {
 	// Send an email to the counterparty whenever an associated payment order is sent
 	// to the bank.
 	SendRemittanceAdvice bool `json:"send_remittance_advice,required"`
-	JSON                 CounterpartyJSON
+	JSON                 counterpartyJSON
 }
 
-type CounterpartyJSON struct {
-	ID                   apijson.Metadata
-	Object               apijson.Metadata
-	LiveMode             apijson.Metadata
-	CreatedAt            apijson.Metadata
-	UpdatedAt            apijson.Metadata
-	DiscardedAt          apijson.Metadata
-	Name                 apijson.Metadata
-	Accounts             apijson.Metadata
-	Email                apijson.Metadata
-	Metadata             apijson.Metadata
-	SendRemittanceAdvice apijson.Metadata
+// counterpartyJSON contains the JSON metadata for the struct [Counterparty]
+type counterpartyJSON struct {
+	ID                   apijson.Field
+	Object               apijson.Field
+	LiveMode             apijson.Field
+	CreatedAt            apijson.Field
+	UpdatedAt            apijson.Field
+	DiscardedAt          apijson.Field
+	Name                 apijson.Field
+	Accounts             apijson.Field
+	Email                apijson.Field
+	Metadata             apijson.Field
+	SendRemittanceAdvice apijson.Field
 	raw                  string
-	Extras               map[string]apijson.Metadata
+	ExtraFields          map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into Counterparty using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *Counterparty) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -166,34 +172,33 @@ type CounterpartyAccounts struct {
 	// the ledger account will be populated here.
 	LedgerAccountID    string                                 `json:"ledger_account_id,nullable" format:"uuid"`
 	VerificationStatus CounterpartyAccountsVerificationStatus `json:"verification_status"`
-	JSON               CounterpartyAccountsJSON
+	JSON               counterpartyAccountsJSON
 }
 
-type CounterpartyAccountsJSON struct {
-	ID                 apijson.Metadata
-	Object             apijson.Metadata
-	LiveMode           apijson.Metadata
-	CreatedAt          apijson.Metadata
-	UpdatedAt          apijson.Metadata
-	DiscardedAt        apijson.Metadata
-	AccountType        apijson.Metadata
-	PartyType          apijson.Metadata
-	PartyAddress       apijson.Metadata
-	Name               apijson.Metadata
-	AccountDetails     apijson.Metadata
-	RoutingDetails     apijson.Metadata
-	Metadata           apijson.Metadata
-	PartyName          apijson.Metadata
-	ContactDetails     apijson.Metadata
-	LedgerAccountID    apijson.Metadata
-	VerificationStatus apijson.Metadata
+// counterpartyAccountsJSON contains the JSON metadata for the struct
+// [CounterpartyAccounts]
+type counterpartyAccountsJSON struct {
+	ID                 apijson.Field
+	Object             apijson.Field
+	LiveMode           apijson.Field
+	CreatedAt          apijson.Field
+	UpdatedAt          apijson.Field
+	DiscardedAt        apijson.Field
+	AccountType        apijson.Field
+	PartyType          apijson.Field
+	PartyAddress       apijson.Field
+	Name               apijson.Field
+	AccountDetails     apijson.Field
+	RoutingDetails     apijson.Field
+	Metadata           apijson.Field
+	PartyName          apijson.Field
+	ContactDetails     apijson.Field
+	LedgerAccountID    apijson.Field
+	VerificationStatus apijson.Field
 	raw                string
-	Extras             map[string]apijson.Metadata
+	ExtraFields        map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into CounterpartyAccounts using
-// the internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *CounterpartyAccounts) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -205,6 +210,7 @@ const (
 	CounterpartyAccountsPartyTypeIndividual CounterpartyAccountsPartyType = "individual"
 )
 
+// The address associated with the owner or `null`.
 type CounterpartyAccountsPartyAddress struct {
 	ID     string `json:"id,required" format:"uuid"`
 	Object string `json:"object,required"`
@@ -223,28 +229,27 @@ type CounterpartyAccountsPartyAddress struct {
 	PostalCode string `json:"postal_code,required,nullable"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country,required,nullable"`
-	JSON    CounterpartyAccountsPartyAddressJSON
+	JSON    counterpartyAccountsPartyAddressJSON
 }
 
-type CounterpartyAccountsPartyAddressJSON struct {
-	ID         apijson.Metadata
-	Object     apijson.Metadata
-	LiveMode   apijson.Metadata
-	CreatedAt  apijson.Metadata
-	UpdatedAt  apijson.Metadata
-	Line1      apijson.Metadata
-	Line2      apijson.Metadata
-	Locality   apijson.Metadata
-	Region     apijson.Metadata
-	PostalCode apijson.Metadata
-	Country    apijson.Metadata
-	raw        string
-	Extras     map[string]apijson.Metadata
+// counterpartyAccountsPartyAddressJSON contains the JSON metadata for the struct
+// [CounterpartyAccountsPartyAddress]
+type counterpartyAccountsPartyAddressJSON struct {
+	ID          apijson.Field
+	Object      apijson.Field
+	LiveMode    apijson.Field
+	CreatedAt   apijson.Field
+	UpdatedAt   apijson.Field
+	Line1       apijson.Field
+	Line2       apijson.Field
+	Locality    apijson.Field
+	Region      apijson.Field
+	PostalCode  apijson.Field
+	Country     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// CounterpartyAccountsPartyAddress using the internal json library. Unrecognized
-// fields are stored in the `jsonFields` property.
 func (r *CounterpartyAccountsPartyAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -260,25 +265,24 @@ type CounterpartyAccountsContactDetails struct {
 	DiscardedAt           time.Time                                               `json:"discarded_at,required,nullable" format:"date-time"`
 	ContactIdentifier     string                                                  `json:"contact_identifier,required"`
 	ContactIdentifierType CounterpartyAccountsContactDetailsContactIdentifierType `json:"contact_identifier_type,required"`
-	JSON                  CounterpartyAccountsContactDetailsJSON
+	JSON                  counterpartyAccountsContactDetailsJSON
 }
 
-type CounterpartyAccountsContactDetailsJSON struct {
-	ID                    apijson.Metadata
-	Object                apijson.Metadata
-	LiveMode              apijson.Metadata
-	CreatedAt             apijson.Metadata
-	UpdatedAt             apijson.Metadata
-	DiscardedAt           apijson.Metadata
-	ContactIdentifier     apijson.Metadata
-	ContactIdentifierType apijson.Metadata
+// counterpartyAccountsContactDetailsJSON contains the JSON metadata for the struct
+// [CounterpartyAccountsContactDetails]
+type counterpartyAccountsContactDetailsJSON struct {
+	ID                    apijson.Field
+	Object                apijson.Field
+	LiveMode              apijson.Field
+	CreatedAt             apijson.Field
+	UpdatedAt             apijson.Field
+	DiscardedAt           apijson.Field
+	ContactIdentifier     apijson.Field
+	ContactIdentifierType apijson.Field
 	raw                   string
-	Extras                map[string]apijson.Metadata
+	ExtraFields           map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// CounterpartyAccountsContactDetails using the internal json library. Unrecognized
-// fields are stored in the `jsonFields` property.
 func (r *CounterpartyAccountsContactDetails) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -310,74 +314,70 @@ type CounterpartyCollectAccountResponse struct {
 	// However, if `send_email` is passed as `false` in the body then Modern Treasury
 	// will not send the email and you can send it to the counterparty directly.
 	FormLink string `json:"form_link,required" format:"uri"`
-	JSON     CounterpartyCollectAccountResponseJSON
+	JSON     counterpartyCollectAccountResponseJSON
 }
 
-type CounterpartyCollectAccountResponseJSON struct {
-	ID       apijson.Metadata
-	IsResend apijson.Metadata
-	FormLink apijson.Metadata
-	raw      string
-	Extras   map[string]apijson.Metadata
+// counterpartyCollectAccountResponseJSON contains the JSON metadata for the struct
+// [CounterpartyCollectAccountResponse]
+type counterpartyCollectAccountResponseJSON struct {
+	ID          apijson.Field
+	IsResend    apijson.Field
+	FormLink    apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// CounterpartyCollectAccountResponse using the internal json library. Unrecognized
-// fields are stored in the `jsonFields` property.
 func (r *CounterpartyCollectAccountResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 type CounterpartyNewParams struct {
 	// A human friendly name for this counterparty.
-	Name field.Field[string] `json:"name,required,nullable"`
+	Name param.Field[string] `json:"name,required,nullable"`
 	// The accounts for this counterparty.
-	Accounts field.Field[[]CounterpartyNewParamsAccounts] `json:"accounts"`
+	Accounts param.Field[[]CounterpartyNewParamsAccounts] `json:"accounts"`
 	// The counterparty's email.
-	Email field.Field[string] `json:"email,nullable" format:"email"`
+	Email param.Field[string] `json:"email,nullable" format:"email"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 	// Send an email to the counterparty whenever an associated payment order is sent
 	// to the bank.
-	SendRemittanceAdvice field.Field[bool]                            `json:"send_remittance_advice"`
-	Accounting           field.Field[CounterpartyNewParamsAccounting] `json:"accounting"`
+	SendRemittanceAdvice param.Field[bool]                            `json:"send_remittance_advice"`
+	Accounting           param.Field[CounterpartyNewParamsAccounting] `json:"accounting"`
 	// An optional type to auto-sync the counterparty to your ledger. Either `customer`
 	// or `vendor`.
-	LedgerType field.Field[CounterpartyNewParamsLedgerType] `json:"ledger_type"`
+	LedgerType param.Field[CounterpartyNewParamsLedgerType] `json:"ledger_type"`
 	// Either a valid SSN or EIN.
-	TaxpayerIdentifier field.Field[string] `json:"taxpayer_identifier"`
+	TaxpayerIdentifier param.Field[string] `json:"taxpayer_identifier"`
 }
 
-// MarshalJSON serializes CounterpartyNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r CounterpartyNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 type CounterpartyNewParamsAccounts struct {
 	// Can be `checking`, `savings` or `other`.
-	AccountType field.Field[ExternalAccountType] `json:"account_type"`
+	AccountType param.Field[ExternalAccountType] `json:"account_type"`
 	// Either `individual` or `business`.
-	PartyType field.Field[CounterpartyNewParamsAccountsPartyType] `json:"party_type,nullable"`
+	PartyType param.Field[CounterpartyNewParamsAccountsPartyType] `json:"party_type,nullable"`
 	// Required if receiving wire payments.
-	PartyAddress field.Field[CounterpartyNewParamsAccountsPartyAddress] `json:"party_address"`
+	PartyAddress param.Field[CounterpartyNewParamsAccountsPartyAddress] `json:"party_address"`
 	// A nickname for the external account. This is only for internal usage and won't
 	// affect any payments
-	Name           field.Field[string]                                        `json:"name,nullable"`
-	AccountDetails field.Field[[]CounterpartyNewParamsAccountsAccountDetails] `json:"account_details"`
-	RoutingDetails field.Field[[]CounterpartyNewParamsAccountsRoutingDetails] `json:"routing_details"`
+	Name           param.Field[string]                                        `json:"name,nullable"`
+	AccountDetails param.Field[[]CounterpartyNewParamsAccountsAccountDetails] `json:"account_details"`
+	RoutingDetails param.Field[[]CounterpartyNewParamsAccountsRoutingDetails] `json:"routing_details"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 	// If this value isn't provided, it will be inherited from the counterparty's name.
-	PartyName       field.Field[string] `json:"party_name"`
-	PartyIdentifier field.Field[string] `json:"party_identifier"`
+	PartyName       param.Field[string] `json:"party_name"`
+	PartyIdentifier param.Field[string] `json:"party_identifier"`
 	// If you've enabled the Modern Treasury + Plaid integration in your Plaid account,
 	// you can pass the processor token in this field.
-	PlaidProcessorToken field.Field[string]                                        `json:"plaid_processor_token"`
-	ContactDetails      field.Field[[]CounterpartyNewParamsAccountsContactDetails] `json:"contact_details"`
+	PlaidProcessorToken param.Field[string]                                        `json:"plaid_processor_token"`
+	ContactDetails      param.Field[[]CounterpartyNewParamsAccountsContactDetails] `json:"contact_details"`
 }
 
 type CounterpartyNewParamsAccountsPartyType string
@@ -387,22 +387,23 @@ const (
 	CounterpartyNewParamsAccountsPartyTypeIndividual CounterpartyNewParamsAccountsPartyType = "individual"
 )
 
+// Required if receiving wire payments.
 type CounterpartyNewParamsAccountsPartyAddress struct {
-	Line1 field.Field[string] `json:"line1,nullable"`
-	Line2 field.Field[string] `json:"line2,nullable"`
+	Line1 param.Field[string] `json:"line1,nullable"`
+	Line2 param.Field[string] `json:"line2,nullable"`
 	// Locality or City.
-	Locality field.Field[string] `json:"locality,nullable"`
+	Locality param.Field[string] `json:"locality,nullable"`
 	// Region or State.
-	Region field.Field[string] `json:"region,nullable"`
+	Region param.Field[string] `json:"region,nullable"`
 	// The postal code of the address.
-	PostalCode field.Field[string] `json:"postal_code,nullable"`
+	PostalCode param.Field[string] `json:"postal_code,nullable"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country field.Field[string] `json:"country,nullable"`
+	Country param.Field[string] `json:"country,nullable"`
 }
 
 type CounterpartyNewParamsAccountsAccountDetails struct {
-	AccountNumber     field.Field[string]                                                       `json:"account_number,required"`
-	AccountNumberType field.Field[CounterpartyNewParamsAccountsAccountDetailsAccountNumberType] `json:"account_number_type"`
+	AccountNumber     param.Field[string]                                                       `json:"account_number,required"`
+	AccountNumberType param.Field[CounterpartyNewParamsAccountsAccountDetailsAccountNumberType] `json:"account_number_type"`
 }
 
 type CounterpartyNewParamsAccountsAccountDetailsAccountNumberType string
@@ -416,9 +417,9 @@ const (
 )
 
 type CounterpartyNewParamsAccountsRoutingDetails struct {
-	RoutingNumber     field.Field[string]                                                       `json:"routing_number,required"`
-	RoutingNumberType field.Field[CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
-	PaymentType       field.Field[CounterpartyNewParamsAccountsRoutingDetailsPaymentType]       `json:"payment_type"`
+	RoutingNumber     param.Field[string]                                                       `json:"routing_number,required"`
+	RoutingNumberType param.Field[CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
+	PaymentType       param.Field[CounterpartyNewParamsAccountsRoutingDetailsPaymentType]       `json:"payment_type"`
 }
 
 type CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType string
@@ -459,8 +460,8 @@ const (
 )
 
 type CounterpartyNewParamsAccountsContactDetails struct {
-	ContactIdentifier     field.Field[string]                                                           `json:"contact_identifier"`
-	ContactIdentifierType field.Field[CounterpartyNewParamsAccountsContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
+	ContactIdentifier     param.Field[string]                                                           `json:"contact_identifier"`
+	ContactIdentifierType param.Field[CounterpartyNewParamsAccountsContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
 }
 
 type CounterpartyNewParamsAccountsContactDetailsContactIdentifierType string
@@ -474,7 +475,7 @@ const (
 type CounterpartyNewParamsAccounting struct {
 	// An optional type to auto-sync the counterparty to your ledger. Either `customer`
 	// or `vendor`.
-	Type field.Field[CounterpartyNewParamsAccountingType] `json:"type"`
+	Type param.Field[CounterpartyNewParamsAccountingType] `json:"type"`
 }
 
 type CounterpartyNewParamsAccountingType string
@@ -493,47 +494,43 @@ const (
 
 type CounterpartyUpdateParams struct {
 	// A new name for the counterparty. Will only update if passed.
-	Name field.Field[string] `json:"name"`
+	Name param.Field[string] `json:"name"`
 	// A new email for the counterparty.
-	Email field.Field[string] `json:"email" format:"email"`
+	Email param.Field[string] `json:"email" format:"email"`
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
 	// an empty string or `null` as the value.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 	// If this is `true`, Modern Treasury will send an email to the counterparty
 	// whenever an associated payment order is sent to the bank.
-	SendRemittanceAdvice field.Field[bool] `json:"send_remittance_advice"`
+	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
 	// Either a valid SSN or EIN.
-	TaxpayerIdentifier field.Field[string] `json:"taxpayer_identifier"`
+	TaxpayerIdentifier param.Field[string] `json:"taxpayer_identifier"`
 }
 
-// MarshalJSON serializes CounterpartyUpdateParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r CounterpartyUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 type CounterpartyListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 	// Performs a partial string match of the name field. This is also case
 	// insensitive.
-	Name field.Field[string] `query:"name"`
+	Name param.Field[string] `query:"name"`
 	// Performs a partial string match of the email field. This is also case
 	// insensitive.
-	Email field.Field[string] `query:"email" format:"email"`
+	Email param.Field[string] `query:"email" format:"email"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
-	Metadata field.Field[map[string]string] `query:"metadata"`
+	Metadata param.Field[map[string]string] `query:"metadata"`
 	// Used to return counterparties created after some datetime.
-	CreatedAtLowerBound field.Field[time.Time] `query:"created_at_lower_bound" format:"date-time"`
+	CreatedAtLowerBound param.Field[time.Time] `query:"created_at_lower_bound" format:"date-time"`
 	// Used to return counterparties created before some datetime.
-	CreatedAtUpperBound field.Field[time.Time] `query:"created_at_upper_bound" format:"date-time"`
+	CreatedAtUpperBound param.Field[time.Time] `query:"created_at_upper_bound" format:"date-time"`
 }
 
-// URLQuery serializes CounterpartyListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [CounterpartyListParams]'s query parameters as `url.Values`.
 func (r CounterpartyListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
@@ -542,27 +539,24 @@ type CounterpartyCollectAccountParams struct {
 	// One of `credit` or `debit`. Use `credit` when you want to pay a counterparty.
 	// Use `debit` when you need to charge a counterparty. This field helps us send a
 	// more tailored email to your counterparties."
-	Direction field.Field[CounterpartyCollectAccountParamsDirection] `json:"direction,required"`
+	Direction param.Field[CounterpartyCollectAccountParamsDirection] `json:"direction,required"`
 	// By default, Modern Treasury will send an email to your counterparty that
 	// includes a link to the form they must fill out. However, if you would like to
 	// send the counterparty the link, you can set this parameter to `false`. The JSON
 	// body will include the link to the secure Modern Treasury form.
-	SendEmail field.Field[bool] `json:"send_email"`
+	SendEmail param.Field[bool] `json:"send_email"`
 	// The list of fields you want on the form. This field is optional and if it is not
 	// set, will default to [\"nameOnAccount\", \"accountType\", \"accountNumber\",
 	// \"routingNumber\", \"address\"]. The full list of options is [\"name\",
 	// \"nameOnAccount\", \"taxpayerIdentifier\", \"accountType\", \"accountNumber\",
 	// \"routingNumber\", \"address\", \"ibanNumber\", \"swiftCode\"].
-	Fields field.Field[[]CounterpartyCollectAccountParamsFields] `json:"fields"`
+	Fields param.Field[[]CounterpartyCollectAccountParamsFields] `json:"fields"`
 	// The URL you want your customer to visit upon filling out the form. By default,
 	// they will be sent to a Modern Treasury landing page. This must be a valid HTTPS
 	// URL if set.
-	CustomRedirect field.Field[string] `json:"custom_redirect" format:"uri"`
+	CustomRedirect param.Field[string] `json:"custom_redirect" format:"uri"`
 }
 
-// MarshalJSON serializes CounterpartyCollectAccountParams into an array of bytes
-// using the gjson library. Members of the `jsonFields` field are serialized into
-// the top-level, and will overwrite known members of the same name.
 func (r CounterpartyCollectAccountParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }

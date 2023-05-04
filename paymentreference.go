@@ -9,16 +9,24 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// PaymentReferenceService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewPaymentReferenceService] method instead.
 type PaymentReferenceService struct {
 	Options []option.RequestOption
 }
 
+// NewPaymentReferenceService generates a new service that applies the given
+// options to each request. These options are applied after the parent client's
+// options (if there is one), and before any request-specific options.
 func NewPaymentReferenceService(opts ...option.RequestOption) (r *PaymentReferenceService) {
 	r = &PaymentReferenceService{}
 	r.Options = opts
@@ -74,26 +82,25 @@ type PaymentReference struct {
 	ReferenceNumber string `json:"reference_number,required"`
 	// The type of reference number.
 	ReferenceNumberType PaymentReferenceReferenceNumberType `json:"reference_number_type,required"`
-	JSON                PaymentReferenceJSON
+	JSON                paymentReferenceJSON
 }
 
-type PaymentReferenceJSON struct {
-	ID                  apijson.Metadata
-	Object              apijson.Metadata
-	LiveMode            apijson.Metadata
-	CreatedAt           apijson.Metadata
-	UpdatedAt           apijson.Metadata
-	ReferenceableID     apijson.Metadata
-	ReferenceableType   apijson.Metadata
-	ReferenceNumber     apijson.Metadata
-	ReferenceNumberType apijson.Metadata
+// paymentReferenceJSON contains the JSON metadata for the struct
+// [PaymentReference]
+type paymentReferenceJSON struct {
+	ID                  apijson.Field
+	Object              apijson.Field
+	LiveMode            apijson.Field
+	CreatedAt           apijson.Field
+	UpdatedAt           apijson.Field
+	ReferenceableID     apijson.Field
+	ReferenceableType   apijson.Field
+	ReferenceNumber     apijson.Field
+	ReferenceNumberType apijson.Field
 	raw                 string
-	Extras              map[string]apijson.Metadata
+	ExtraFields         map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into PaymentReference using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *PaymentReference) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -163,20 +170,20 @@ const (
 )
 
 type PaymentReferenceListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 	// The id of the referenceable to search for. Must be accompanied by the
 	// referenceable_type or will return an error.
-	ReferenceableID field.Field[string] `query:"referenceable_id"`
+	ReferenceableID param.Field[string] `query:"referenceable_id"`
 	// One of the referenceable types. This must be accompanied by the id of the
 	// referenceable or will return an error.
-	ReferenceableType field.Field[PaymentReferenceListParamsReferenceableType] `query:"referenceable_type"`
+	ReferenceableType param.Field[PaymentReferenceListParamsReferenceableType] `query:"referenceable_type"`
 	// The actual reference number assigned by the bank.
-	ReferenceNumber field.Field[string] `query:"reference_number"`
+	ReferenceNumber param.Field[string] `query:"reference_number"`
 }
 
-// URLQuery serializes PaymentReferenceListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [PaymentReferenceListParams]'s query parameters as
+// `url.Values`.
 func (r PaymentReferenceListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

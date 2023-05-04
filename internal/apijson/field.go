@@ -11,7 +11,7 @@ const (
 	valid
 )
 
-type Metadata struct {
+type Field struct {
 	raw    string
 	status status
 }
@@ -19,12 +19,12 @@ type Metadata struct {
 // Returns true if the field is explicitly `null` _or_ if it is not present at all (ie, missing).
 // To check if the field's key is present in the JSON with an explicit null value,
 // you must check `f.IsNull() && !f.IsMissing()`.
-func (j Metadata) IsNull() bool    { return j.status <= null }
-func (j Metadata) IsMissing() bool { return j.status == missing }
-func (j Metadata) IsInvalid() bool { return j.status == invalid }
-func (j Metadata) Raw() string     { return j.raw }
+func (j Field) IsNull() bool    { return j.status <= null }
+func (j Field) IsMissing() bool { return j.status == missing }
+func (j Field) IsInvalid() bool { return j.status == invalid }
+func (j Field) Raw() string     { return j.raw }
 
-func getMetadataField(root reflect.Value, index []int, name string) reflect.Value {
+func getSubField(root reflect.Value, index []int, name string) reflect.Value {
 	strct := root.FieldByIndex(index[:len(index)-1])
 	if !strct.IsValid() {
 		panic("couldn't find encapsulating struct for field " + name)
