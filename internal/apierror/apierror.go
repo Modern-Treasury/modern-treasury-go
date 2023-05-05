@@ -9,20 +9,20 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 )
 
+// TODO
 type Error struct {
-	JSON       ErrorJSON
+	JSON       errorJSON
 	StatusCode int
 	Request    *http.Request
 	Response   *http.Response
 }
 
-type ErrorJSON struct {
-	raw    string
-	Extras map[string]apijson.Metadata
+// errorJSON contains the JSON metadata for the struct [Error]
+type errorJSON struct {
+	raw         string
+	ExtraFields map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into Error using the internal json
-// library. Unrecognized fields are stored in the `jsonFields` property.
 func (r *Error) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }

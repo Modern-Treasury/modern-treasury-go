@@ -9,16 +9,23 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// LineItemService contains methods and other services that help with interacting
+// with the Modern Treasury API. Note, unlike clients, this service does not read
+// variables from the environment automatically. You should not instantiate this
+// service directly, and instead use the [NewLineItemService] method instead.
 type LineItemService struct {
 	Options []option.RequestOption
 }
 
+// NewLineItemService generates a new service that applies the given options to
+// each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewLineItemService(opts ...option.RequestOption) (r *LineItemService) {
 	r = &LineItemService{}
 	r.Options = opts
@@ -92,29 +99,28 @@ type LineItem struct {
 	// track segments of your business independent of client or project. Note that
 	// these will only be accessible if your accounting system has been connected.
 	AccountingLedgerClassID string `json:"accounting_ledger_class_id,required,nullable" format:"uuid"`
-	JSON                    LineItemJSON
+	JSON                    lineItemJSON
 }
 
-type LineItemJSON struct {
-	ID                      apijson.Metadata
-	Object                  apijson.Metadata
-	LiveMode                apijson.Metadata
-	CreatedAt               apijson.Metadata
-	UpdatedAt               apijson.Metadata
-	ItemizableID            apijson.Metadata
-	ItemizableType          apijson.Metadata
-	Amount                  apijson.Metadata
-	Description             apijson.Metadata
-	Metadata                apijson.Metadata
-	Accounting              apijson.Metadata
-	AccountingCategoryID    apijson.Metadata
-	AccountingLedgerClassID apijson.Metadata
+// lineItemJSON contains the JSON metadata for the struct [LineItem]
+type lineItemJSON struct {
+	ID                      apijson.Field
+	Object                  apijson.Field
+	LiveMode                apijson.Field
+	CreatedAt               apijson.Field
+	UpdatedAt               apijson.Field
+	ItemizableID            apijson.Field
+	ItemizableType          apijson.Field
+	Amount                  apijson.Field
+	Description             apijson.Field
+	Metadata                apijson.Field
+	Accounting              apijson.Field
+	AccountingCategoryID    apijson.Field
+	AccountingLedgerClassID apijson.Field
 	raw                     string
-	Extras                  map[string]apijson.Metadata
+	ExtraFields             map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into LineItem using the internal
-// json library. Unrecognized fields are stored in the `jsonFields` property.
 func (r *LineItem) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -134,19 +140,18 @@ type LineItemAccounting struct {
 	// track segments of your business independent of client or project. Note that
 	// these will only be accessible if your accounting system has been connected.
 	ClassID string `json:"class_id,nullable" format:"uuid"`
-	JSON    LineItemAccountingJSON
+	JSON    lineItemAccountingJSON
 }
 
-type LineItemAccountingJSON struct {
-	AccountID apijson.Metadata
-	ClassID   apijson.Metadata
-	raw       string
-	Extras    map[string]apijson.Metadata
+// lineItemAccountingJSON contains the JSON metadata for the struct
+// [LineItemAccounting]
+type lineItemAccountingJSON struct {
+	AccountID   apijson.Field
+	ClassID     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into LineItemAccounting using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *LineItemAccounting) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -161,12 +166,9 @@ const (
 type LineItemUpdateParams struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes LineItemUpdateParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r LineItemUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -179,12 +181,11 @@ const (
 )
 
 type LineItemListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 }
 
-// URLQuery serializes LineItemListParams into a url.Values of the query parameters
-// associated with this value
+// URLQuery serializes [LineItemListParams]'s query parameters as `url.Values`.
 func (r LineItemListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

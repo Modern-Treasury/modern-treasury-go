@@ -9,16 +9,24 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// InternalAccountBalanceReportService contains methods and other services that
+// help with interacting with the Modern Treasury API. Note, unlike clients, this
+// service does not read variables from the environment automatically. You should
+// not instantiate this service directly, and instead use the
+// [NewInternalAccountBalanceReportService] method instead.
 type InternalAccountBalanceReportService struct {
 	Options []option.RequestOption
 }
 
+// NewInternalAccountBalanceReportService generates a new service that applies the
+// given options to each request. These options are applied after the parent
+// client's options (if there is one), and before any request-specific options.
 func NewInternalAccountBalanceReportService(opts ...option.RequestOption) (r *InternalAccountBalanceReportService) {
 	r = &InternalAccountBalanceReportService{}
 	r.Options = opts
@@ -75,27 +83,25 @@ type BalanceReport struct {
 	Balances []BalanceReportBalances `json:"balances,required"`
 	// The ID of one of your organization's Internal Accounts.
 	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
-	JSON              BalanceReportJSON
+	JSON              balanceReportJSON
 }
 
-type BalanceReportJSON struct {
-	ID                apijson.Metadata
-	Object            apijson.Metadata
-	LiveMode          apijson.Metadata
-	CreatedAt         apijson.Metadata
-	UpdatedAt         apijson.Metadata
-	BalanceReportType apijson.Metadata
-	AsOfDate          apijson.Metadata
-	AsOfTime          apijson.Metadata
-	Balances          apijson.Metadata
-	InternalAccountID apijson.Metadata
+// balanceReportJSON contains the JSON metadata for the struct [BalanceReport]
+type balanceReportJSON struct {
+	ID                apijson.Field
+	Object            apijson.Field
+	LiveMode          apijson.Field
+	CreatedAt         apijson.Field
+	UpdatedAt         apijson.Field
+	BalanceReportType apijson.Field
+	AsOfDate          apijson.Field
+	AsOfTime          apijson.Field
+	Balances          apijson.Field
+	InternalAccountID apijson.Field
 	raw               string
-	Extras            map[string]apijson.Metadata
+	ExtraFields       map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into BalanceReport using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *BalanceReport) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -130,27 +136,26 @@ type BalanceReportBalances struct {
 	VendorCode string `json:"vendor_code,required"`
 	// The code used by the bank when reporting this specific balance.
 	VendorCodeType BalanceReportBalancesVendorCodeType `json:"vendor_code_type,required,nullable"`
-	JSON           BalanceReportBalancesJSON
+	JSON           balanceReportBalancesJSON
 }
 
-type BalanceReportBalancesJSON struct {
-	ID             apijson.Metadata
-	Object         apijson.Metadata
-	LiveMode       apijson.Metadata
-	CreatedAt      apijson.Metadata
-	UpdatedAt      apijson.Metadata
-	Amount         apijson.Metadata
-	Currency       apijson.Metadata
-	BalanceType    apijson.Metadata
-	VendorCode     apijson.Metadata
-	VendorCodeType apijson.Metadata
+// balanceReportBalancesJSON contains the JSON metadata for the struct
+// [BalanceReportBalances]
+type balanceReportBalancesJSON struct {
+	ID             apijson.Field
+	Object         apijson.Field
+	LiveMode       apijson.Field
+	CreatedAt      apijson.Field
+	UpdatedAt      apijson.Field
+	Amount         apijson.Field
+	Currency       apijson.Field
+	BalanceType    apijson.Field
+	VendorCode     apijson.Field
+	VendorCodeType apijson.Field
 	raw            string
-	Extras         map[string]apijson.Metadata
+	ExtraFields    map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into BalanceReportBalances using
-// the internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *BalanceReportBalances) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -195,16 +200,16 @@ const (
 
 type BalanceReportListParams struct {
 	// The date of the balance report in local time.
-	AsOfDate field.Field[time.Time] `query:"as_of_date" format:"date"`
+	AsOfDate param.Field[time.Time] `query:"as_of_date" format:"date"`
 	// The specific type of balance report. One of `intraday`, `previous_day`,
 	// `real_time`, or `other`.
-	BalanceReportType field.Field[BalanceReportListParamsBalanceReportType] `query:"balance_report_type"`
-	AfterCursor       field.Field[string]                                   `query:"after_cursor,nullable"`
-	PerPage           field.Field[int64]                                    `query:"per_page"`
+	BalanceReportType param.Field[BalanceReportListParamsBalanceReportType] `query:"balance_report_type"`
+	AfterCursor       param.Field[string]                                   `query:"after_cursor,nullable"`
+	PerPage           param.Field[int64]                                    `query:"per_page"`
 }
 
-// URLQuery serializes BalanceReportListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [BalanceReportListParams]'s query parameters as
+// `url.Values`.
 func (r BalanceReportListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

@@ -9,16 +9,24 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// AccountDetailService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the [NewAccountDetailService]
+// method instead.
 type AccountDetailService struct {
 	Options []option.RequestOption
 }
 
+// NewAccountDetailService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewAccountDetailService(opts ...option.RequestOption) (r *AccountDetailService) {
 	r = &AccountDetailService{}
 	r.Options = opts
@@ -89,51 +97,46 @@ type AccountDetail struct {
 	AccountNumberType AccountDetailAccountNumberType `json:"account_number_type,required"`
 	// The last 4 digits of the account_number.
 	AccountNumberSafe string `json:"account_number_safe,required"`
-	JSON              AccountDetailJSON
+	JSON              accountDetailJSON
 }
 
-type AccountDetailJSON struct {
-	ID                apijson.Metadata
-	Object            apijson.Metadata
-	LiveMode          apijson.Metadata
-	CreatedAt         apijson.Metadata
-	UpdatedAt         apijson.Metadata
-	DiscardedAt       apijson.Metadata
-	AccountNumber     apijson.Metadata
-	AccountNumberType apijson.Metadata
-	AccountNumberSafe apijson.Metadata
+// accountDetailJSON contains the JSON metadata for the struct [AccountDetail]
+type accountDetailJSON struct {
+	ID                apijson.Field
+	Object            apijson.Field
+	LiveMode          apijson.Field
+	CreatedAt         apijson.Field
+	UpdatedAt         apijson.Field
+	DiscardedAt       apijson.Field
+	AccountNumber     apijson.Field
+	AccountNumberType apijson.Field
+	AccountNumberSafe apijson.Field
 	raw               string
-	Extras            map[string]apijson.Metadata
+	ExtraFields       map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into AccountDetail using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *AccountDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 type AccountDetailParam struct {
-	ID     field.Field[string] `json:"id,required" format:"uuid"`
-	Object field.Field[string] `json:"object,required"`
+	ID     param.Field[string] `json:"id,required" format:"uuid"`
+	Object param.Field[string] `json:"object,required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode    field.Field[bool]      `json:"live_mode,required"`
-	CreatedAt   field.Field[time.Time] `json:"created_at,required" format:"date-time"`
-	UpdatedAt   field.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-	DiscardedAt field.Field[time.Time] `json:"discarded_at,required,nullable" format:"date-time"`
+	LiveMode    param.Field[bool]      `json:"live_mode,required"`
+	CreatedAt   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
+	UpdatedAt   param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
+	DiscardedAt param.Field[time.Time] `json:"discarded_at,required,nullable" format:"date-time"`
 	// The account number for the bank account.
-	AccountNumber field.Field[string] `json:"account_number"`
+	AccountNumber param.Field[string] `json:"account_number"`
 	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
 	// account number is in a generic format.
-	AccountNumberType field.Field[AccountDetailAccountNumberType] `json:"account_number_type,required"`
+	AccountNumberType param.Field[AccountDetailAccountNumberType] `json:"account_number_type,required"`
 	// The last 4 digits of the account_number.
-	AccountNumberSafe field.Field[string] `json:"account_number_safe,required"`
+	AccountNumberSafe param.Field[string] `json:"account_number_safe,required"`
 }
 
-// MarshalJSON serializes AccountDetailParam into an array of bytes using the gjson
-// library. Members of the `jsonFields` field are serialized into the top-level,
-// and will overwrite known members of the same name.
 func (r AccountDetailParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -150,15 +153,12 @@ const (
 
 type AccountDetailNewParams struct {
 	// The account number for the bank account.
-	AccountNumber field.Field[string] `json:"account_number,required"`
+	AccountNumber param.Field[string] `json:"account_number,required"`
 	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
 	// account number is in a generic format.
-	AccountNumberType field.Field[AccountDetailNewParamsAccountNumberType] `json:"account_number_type"`
+	AccountNumberType param.Field[AccountDetailNewParamsAccountNumberType] `json:"account_number_type"`
 }
 
-// MarshalJSON serializes AccountDetailNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r AccountDetailNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -180,12 +180,12 @@ const (
 )
 
 type AccountDetailListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 }
 
-// URLQuery serializes AccountDetailListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [AccountDetailListParams]'s query parameters as
+// `url.Values`.
 func (r AccountDetailListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

@@ -9,16 +9,24 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// RoutingDetailService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the [NewRoutingDetailService]
+// method instead.
 type RoutingDetailService struct {
 	Options []option.RequestOption
 }
 
+// NewRoutingDetailService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewRoutingDetailService(opts ...option.RequestOption) (r *RoutingDetailService) {
 	r = &RoutingDetailService{}
 	r.Options = opts
@@ -92,56 +100,51 @@ type RoutingDetail struct {
 	// The name of the bank.
 	BankName    string                   `json:"bank_name,required"`
 	BankAddress RoutingDetailBankAddress `json:"bank_address,required,nullable"`
-	JSON        RoutingDetailJSON
+	JSON        routingDetailJSON
 }
 
-type RoutingDetailJSON struct {
-	ID                apijson.Metadata
-	Object            apijson.Metadata
-	LiveMode          apijson.Metadata
-	CreatedAt         apijson.Metadata
-	UpdatedAt         apijson.Metadata
-	DiscardedAt       apijson.Metadata
-	RoutingNumber     apijson.Metadata
-	RoutingNumberType apijson.Metadata
-	PaymentType       apijson.Metadata
-	BankName          apijson.Metadata
-	BankAddress       apijson.Metadata
+// routingDetailJSON contains the JSON metadata for the struct [RoutingDetail]
+type routingDetailJSON struct {
+	ID                apijson.Field
+	Object            apijson.Field
+	LiveMode          apijson.Field
+	CreatedAt         apijson.Field
+	UpdatedAt         apijson.Field
+	DiscardedAt       apijson.Field
+	RoutingNumber     apijson.Field
+	RoutingNumberType apijson.Field
+	PaymentType       apijson.Field
+	BankName          apijson.Field
+	BankAddress       apijson.Field
 	raw               string
-	Extras            map[string]apijson.Metadata
+	ExtraFields       map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into RoutingDetail using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *RoutingDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 type RoutingDetailParam struct {
-	ID     field.Field[string] `json:"id,required" format:"uuid"`
-	Object field.Field[string] `json:"object,required"`
+	ID     param.Field[string] `json:"id,required" format:"uuid"`
+	Object param.Field[string] `json:"object,required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode    field.Field[bool]      `json:"live_mode,required"`
-	CreatedAt   field.Field[time.Time] `json:"created_at,required" format:"date-time"`
-	UpdatedAt   field.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-	DiscardedAt field.Field[time.Time] `json:"discarded_at,required,nullable" format:"date-time"`
+	LiveMode    param.Field[bool]      `json:"live_mode,required"`
+	CreatedAt   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
+	UpdatedAt   param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
+	DiscardedAt param.Field[time.Time] `json:"discarded_at,required,nullable" format:"date-time"`
 	// The routing number of the bank.
-	RoutingNumber field.Field[string] `json:"routing_number,required"`
+	RoutingNumber param.Field[string] `json:"routing_number,required"`
 	// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
-	RoutingNumberType field.Field[RoutingDetailRoutingNumberType] `json:"routing_number_type,required"`
+	RoutingNumberType param.Field[RoutingDetailRoutingNumberType] `json:"routing_number_type,required"`
 	// If the routing detail is to be used for a specific payment type this field will
 	// be populated, otherwise null.
-	PaymentType field.Field[RoutingDetailPaymentType] `json:"payment_type,required,nullable"`
+	PaymentType param.Field[RoutingDetailPaymentType] `json:"payment_type,required,nullable"`
 	// The name of the bank.
-	BankName    field.Field[string]                        `json:"bank_name,required"`
-	BankAddress field.Field[RoutingDetailBankAddressParam] `json:"bank_address,required,nullable"`
+	BankName    param.Field[string]                        `json:"bank_name,required"`
+	BankAddress param.Field[RoutingDetailBankAddressParam] `json:"bank_address,required,nullable"`
 }
 
-// MarshalJSON serializes RoutingDetailParam into an array of bytes using the gjson
-// library. Members of the `jsonFields` field are serialized into the top-level,
-// and will overwrite known members of the same name.
 func (r RoutingDetailParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -201,72 +204,65 @@ type RoutingDetailBankAddress struct {
 	PostalCode string `json:"postal_code,required,nullable"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country,required,nullable"`
-	JSON    RoutingDetailBankAddressJSON
+	JSON    routingDetailBankAddressJSON
 }
 
-type RoutingDetailBankAddressJSON struct {
-	ID         apijson.Metadata
-	Object     apijson.Metadata
-	LiveMode   apijson.Metadata
-	CreatedAt  apijson.Metadata
-	UpdatedAt  apijson.Metadata
-	Line1      apijson.Metadata
-	Line2      apijson.Metadata
-	Locality   apijson.Metadata
-	Region     apijson.Metadata
-	PostalCode apijson.Metadata
-	Country    apijson.Metadata
-	raw        string
-	Extras     map[string]apijson.Metadata
+// routingDetailBankAddressJSON contains the JSON metadata for the struct
+// [RoutingDetailBankAddress]
+type routingDetailBankAddressJSON struct {
+	ID          apijson.Field
+	Object      apijson.Field
+	LiveMode    apijson.Field
+	CreatedAt   apijson.Field
+	UpdatedAt   apijson.Field
+	Line1       apijson.Field
+	Line2       apijson.Field
+	Locality    apijson.Field
+	Region      apijson.Field
+	PostalCode  apijson.Field
+	Country     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into RoutingDetailBankAddress
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *RoutingDetailBankAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 type RoutingDetailBankAddressParam struct {
-	ID     field.Field[string] `json:"id,required" format:"uuid"`
-	Object field.Field[string] `json:"object,required"`
+	ID     param.Field[string] `json:"id,required" format:"uuid"`
+	Object param.Field[string] `json:"object,required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  field.Field[bool]      `json:"live_mode,required"`
-	CreatedAt field.Field[time.Time] `json:"created_at,required" format:"date-time"`
-	UpdatedAt field.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-	Line1     field.Field[string]    `json:"line1,required,nullable"`
-	Line2     field.Field[string]    `json:"line2,required,nullable"`
+	LiveMode  param.Field[bool]      `json:"live_mode,required"`
+	CreatedAt param.Field[time.Time] `json:"created_at,required" format:"date-time"`
+	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
+	Line1     param.Field[string]    `json:"line1,required,nullable"`
+	Line2     param.Field[string]    `json:"line2,required,nullable"`
 	// Locality or City.
-	Locality field.Field[string] `json:"locality,required,nullable"`
+	Locality param.Field[string] `json:"locality,required,nullable"`
 	// Region or State.
-	Region field.Field[string] `json:"region,required,nullable"`
+	Region param.Field[string] `json:"region,required,nullable"`
 	// The postal code of the address.
-	PostalCode field.Field[string] `json:"postal_code,required,nullable"`
+	PostalCode param.Field[string] `json:"postal_code,required,nullable"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country field.Field[string] `json:"country,required,nullable"`
+	Country param.Field[string] `json:"country,required,nullable"`
 }
 
-// MarshalJSON serializes RoutingDetailBankAddressParam into an array of bytes
-// using the gjson library. Members of the `jsonFields` field are serialized into
-// the top-level, and will overwrite known members of the same name.
 func (r RoutingDetailBankAddressParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 type RoutingDetailNewParams struct {
 	// The routing number of the bank.
-	RoutingNumber field.Field[string] `json:"routing_number,required"`
+	RoutingNumber param.Field[string] `json:"routing_number,required"`
 	// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
-	RoutingNumberType field.Field[RoutingDetailNewParamsRoutingNumberType] `json:"routing_number_type,required"`
+	RoutingNumberType param.Field[RoutingDetailNewParamsRoutingNumberType] `json:"routing_number_type,required"`
 	// If the routing detail is to be used for a specific payment type this field will
 	// be populated, otherwise null.
-	PaymentType field.Field[RoutingDetailNewParamsPaymentType] `json:"payment_type,nullable"`
+	PaymentType param.Field[RoutingDetailNewParamsPaymentType] `json:"payment_type,nullable"`
 }
 
-// MarshalJSON serializes RoutingDetailNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r RoutingDetailNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -315,12 +311,12 @@ const (
 )
 
 type RoutingDetailListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 }
 
-// URLQuery serializes RoutingDetailListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [RoutingDetailListParams]'s query parameters as
+// `url.Values`.
 func (r RoutingDetailListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

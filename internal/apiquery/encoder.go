@@ -7,7 +7,7 @@ import (
 	"strings"
 	"sync"
 
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 )
 
 var encoders sync.Map // map[reflect.Type]encoderFunc
@@ -119,7 +119,7 @@ func (e *encoder) newTypeEncoder(t reflect.Type) encoderFunc {
 }
 
 func (e *encoder) newStructTypeEncoder(t reflect.Type) encoderFunc {
-	if t.Implements(reflect.TypeOf((*field.FieldLike)(nil)).Elem()) {
+	if t.Implements(reflect.TypeOf((*param.FieldLike)(nil)).Elem()) {
 		return e.newFieldTypeEncoder(t)
 	}
 

@@ -9,16 +9,24 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// InvoiceLineItemService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewInvoiceLineItemService] method instead.
 type InvoiceLineItemService struct {
 	Options []option.RequestOption
 }
 
+// NewInvoiceLineItemService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewInvoiceLineItemService(opts ...option.RequestOption) (r *InvoiceLineItemService) {
 	r = &InvoiceLineItemService{}
 	r.Options = opts
@@ -105,95 +113,87 @@ type InvoiceLineItem struct {
 	// The total amount for this line item specified in the invoice currency's smallest
 	// unit.
 	Amount int64 `json:"amount,required"`
-	JSON   InvoiceLineItemJSON
+	JSON   invoiceLineItemJSON
 }
 
-type InvoiceLineItemJSON struct {
-	ID          apijson.Metadata
-	Object      apijson.Metadata
-	LiveMode    apijson.Metadata
-	CreatedAt   apijson.Metadata
-	UpdatedAt   apijson.Metadata
-	Name        apijson.Metadata
-	Description apijson.Metadata
-	Quantity    apijson.Metadata
-	UnitAmount  apijson.Metadata
-	Direction   apijson.Metadata
-	Amount      apijson.Metadata
+// invoiceLineItemJSON contains the JSON metadata for the struct [InvoiceLineItem]
+type invoiceLineItemJSON struct {
+	ID          apijson.Field
+	Object      apijson.Field
+	LiveMode    apijson.Field
+	CreatedAt   apijson.Field
+	UpdatedAt   apijson.Field
+	Name        apijson.Field
+	Description apijson.Field
+	Quantity    apijson.Field
+	UnitAmount  apijson.Field
+	Direction   apijson.Field
+	Amount      apijson.Field
 	raw         string
-	Extras      map[string]apijson.Metadata
+	ExtraFields map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into InvoiceLineItem using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *InvoiceLineItem) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 type InvoiceLineItemNewParams struct {
 	// The name of the line item, typically a product or SKU name.
-	Name field.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name,required"`
 	// An optional free-form description of the line item.
-	Description field.Field[string] `json:"description"`
+	Description param.Field[string] `json:"description"`
 	// The number of units of a product or service that this line item is for. Must be
 	// a whole number. Defaults to 1 if not provided.
-	Quantity field.Field[int64] `json:"quantity"`
+	Quantity param.Field[int64] `json:"quantity"`
 	// The cost per unit of the product or service that this line item is for,
 	// specified in the invoice currency's smallest unit.
-	UnitAmount field.Field[int64] `json:"unit_amount,required"`
+	UnitAmount param.Field[int64] `json:"unit_amount,required"`
 	// Either `debit` or `credit`. `debit` indicates that a client owes the business
 	// money and increases the invoice's `total_amount` due. `credit` has the opposite
 	// intention and effect.
-	Direction field.Field[string] `json:"direction"`
+	Direction param.Field[string] `json:"direction"`
 }
 
-// MarshalJSON serializes InvoiceLineItemNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r InvoiceLineItemNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 type InvoiceLineItemUpdateParams struct {
 	// The invoicer's contact details displayed at the top of the invoice.
-	ContactDetails field.Field[[]InvoiceLineItemUpdateParamsContactDetails] `json:"contact_details"`
+	ContactDetails param.Field[[]InvoiceLineItemUpdateParamsContactDetails] `json:"contact_details"`
 	// The ID of the counterparty receiving the invoice.
-	CounterpartyID field.Field[string] `json:"counterparty_id"`
+	CounterpartyID param.Field[string] `json:"counterparty_id"`
 	// The counterparty's billing address.
-	CounterpartyBillingAddress field.Field[InvoiceLineItemUpdateParamsCounterpartyBillingAddress] `json:"counterparty_billing_address,nullable"`
+	CounterpartyBillingAddress param.Field[InvoiceLineItemUpdateParamsCounterpartyBillingAddress] `json:"counterparty_billing_address,nullable"`
 	// The counterparty's shipping address where physical goods should be delivered.
-	CounterpartyShippingAddress field.Field[InvoiceLineItemUpdateParamsCounterpartyShippingAddress] `json:"counterparty_shipping_address,nullable"`
+	CounterpartyShippingAddress param.Field[InvoiceLineItemUpdateParamsCounterpartyShippingAddress] `json:"counterparty_shipping_address,nullable"`
 	// Currency that the invoice is denominated in. Defaults to `USD` if not provided.
-	Currency field.Field[shared.Currency] `json:"currency,nullable"`
+	Currency param.Field[shared.Currency] `json:"currency,nullable"`
 	// A free-form description of the invoice.
-	Description field.Field[string] `json:"description"`
+	Description param.Field[string] `json:"description"`
 	// A future date by when the invoice needs to be paid.
-	DueDate field.Field[time.Time] `json:"due_date" format:"date-time"`
+	DueDate param.Field[time.Time] `json:"due_date" format:"date-time"`
 	// The invoice issuer's business address.
-	InvoicerAddress field.Field[InvoiceLineItemUpdateParamsInvoicerAddress] `json:"invoicer_address,nullable"`
+	InvoicerAddress param.Field[InvoiceLineItemUpdateParamsInvoicerAddress] `json:"invoicer_address,nullable"`
 	// The ID of the internal account the invoice should be paid to.
-	OriginatingAccountID field.Field[string] `json:"originating_account_id"`
+	OriginatingAccountID param.Field[string] `json:"originating_account_id"`
 }
 
-// MarshalJSON serializes InvoiceLineItemUpdateParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r InvoiceLineItemUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 type InvoiceLineItemUpdateParamsContactDetails struct {
-	ID     field.Field[string] `json:"id,required" format:"uuid"`
-	Object field.Field[string] `json:"object,required"`
+	ID     param.Field[string] `json:"id,required" format:"uuid"`
+	Object param.Field[string] `json:"object,required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode              field.Field[bool]                                                           `json:"live_mode,required"`
-	CreatedAt             field.Field[time.Time]                                                      `json:"created_at,required" format:"date-time"`
-	UpdatedAt             field.Field[time.Time]                                                      `json:"updated_at,required" format:"date-time"`
-	DiscardedAt           field.Field[time.Time]                                                      `json:"discarded_at,required,nullable" format:"date-time"`
-	ContactIdentifier     field.Field[string]                                                         `json:"contact_identifier,required"`
-	ContactIdentifierType field.Field[InvoiceLineItemUpdateParamsContactDetailsContactIdentifierType] `json:"contact_identifier_type,required"`
+	LiveMode              param.Field[bool]                                                           `json:"live_mode,required"`
+	CreatedAt             param.Field[time.Time]                                                      `json:"created_at,required" format:"date-time"`
+	UpdatedAt             param.Field[time.Time]                                                      `json:"updated_at,required" format:"date-time"`
+	DiscardedAt           param.Field[time.Time]                                                      `json:"discarded_at,required,nullable" format:"date-time"`
+	ContactIdentifier     param.Field[string]                                                         `json:"contact_identifier,required"`
+	ContactIdentifierType param.Field[InvoiceLineItemUpdateParamsContactDetailsContactIdentifierType] `json:"contact_identifier_type,required"`
 }
 
 type InvoiceLineItemUpdateParamsContactDetailsContactIdentifierType string
@@ -204,52 +204,55 @@ const (
 	InvoiceLineItemUpdateParamsContactDetailsContactIdentifierTypeWebsite     InvoiceLineItemUpdateParamsContactDetailsContactIdentifierType = "website"
 )
 
+// The counterparty's billing address.
 type InvoiceLineItemUpdateParamsCounterpartyBillingAddress struct {
-	Line1 field.Field[string] `json:"line1,required"`
-	Line2 field.Field[string] `json:"line2"`
+	Line1 param.Field[string] `json:"line1,required"`
+	Line2 param.Field[string] `json:"line2"`
 	// Locality or City.
-	Locality field.Field[string] `json:"locality,required"`
+	Locality param.Field[string] `json:"locality,required"`
 	// Region or State.
-	Region field.Field[string] `json:"region,required"`
+	Region param.Field[string] `json:"region,required"`
 	// The postal code of the address.
-	PostalCode field.Field[string] `json:"postal_code,required"`
+	PostalCode param.Field[string] `json:"postal_code,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country field.Field[string] `json:"country,required"`
+	Country param.Field[string] `json:"country,required"`
 }
 
+// The counterparty's shipping address where physical goods should be delivered.
 type InvoiceLineItemUpdateParamsCounterpartyShippingAddress struct {
-	Line1 field.Field[string] `json:"line1,required"`
-	Line2 field.Field[string] `json:"line2"`
+	Line1 param.Field[string] `json:"line1,required"`
+	Line2 param.Field[string] `json:"line2"`
 	// Locality or City.
-	Locality field.Field[string] `json:"locality,required"`
+	Locality param.Field[string] `json:"locality,required"`
 	// Region or State.
-	Region field.Field[string] `json:"region,required"`
+	Region param.Field[string] `json:"region,required"`
 	// The postal code of the address.
-	PostalCode field.Field[string] `json:"postal_code,required"`
+	PostalCode param.Field[string] `json:"postal_code,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country field.Field[string] `json:"country,required"`
+	Country param.Field[string] `json:"country,required"`
 }
 
+// The invoice issuer's business address.
 type InvoiceLineItemUpdateParamsInvoicerAddress struct {
-	Line1 field.Field[string] `json:"line1,required"`
-	Line2 field.Field[string] `json:"line2"`
+	Line1 param.Field[string] `json:"line1,required"`
+	Line2 param.Field[string] `json:"line2"`
 	// Locality or City.
-	Locality field.Field[string] `json:"locality,required"`
+	Locality param.Field[string] `json:"locality,required"`
 	// Region or State.
-	Region field.Field[string] `json:"region,required"`
+	Region param.Field[string] `json:"region,required"`
 	// The postal code of the address.
-	PostalCode field.Field[string] `json:"postal_code,required"`
+	PostalCode param.Field[string] `json:"postal_code,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country field.Field[string] `json:"country,required"`
+	Country param.Field[string] `json:"country,required"`
 }
 
 type InvoiceLineItemListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 }
 
-// URLQuery serializes InvoiceLineItemListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [InvoiceLineItemListParams]'s query parameters as
+// `url.Values`.
 func (r InvoiceLineItemListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

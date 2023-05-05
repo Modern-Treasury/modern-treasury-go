@@ -9,17 +9,25 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// InternalAccountService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewInternalAccountService] method instead.
 type InternalAccountService struct {
 	Options        []option.RequestOption
 	BalanceReports *InternalAccountBalanceReportService
 }
 
+// NewInternalAccountService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewInternalAccountService(opts ...option.RequestOption) (r *InternalAccountService) {
 	r = &InternalAccountService{}
 	r.Options = opts
@@ -110,35 +118,33 @@ type InternalAccount struct {
 	// If the internal account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
 	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
-	JSON            InternalAccountJSON
+	JSON            internalAccountJSON
 }
 
-type InternalAccountJSON struct {
-	ID              apijson.Metadata
-	Object          apijson.Metadata
-	LiveMode        apijson.Metadata
-	CreatedAt       apijson.Metadata
-	UpdatedAt       apijson.Metadata
-	AccountType     apijson.Metadata
-	PartyName       apijson.Metadata
-	PartyType       apijson.Metadata
-	PartyAddress    apijson.Metadata
-	Name            apijson.Metadata
-	AccountDetails  apijson.Metadata
-	RoutingDetails  apijson.Metadata
-	Connection      apijson.Metadata
-	Currency        apijson.Metadata
-	Metadata        apijson.Metadata
-	ParentAccountID apijson.Metadata
-	CounterpartyID  apijson.Metadata
-	LedgerAccountID apijson.Metadata
+// internalAccountJSON contains the JSON metadata for the struct [InternalAccount]
+type internalAccountJSON struct {
+	ID              apijson.Field
+	Object          apijson.Field
+	LiveMode        apijson.Field
+	CreatedAt       apijson.Field
+	UpdatedAt       apijson.Field
+	AccountType     apijson.Field
+	PartyName       apijson.Field
+	PartyType       apijson.Field
+	PartyAddress    apijson.Field
+	Name            apijson.Field
+	AccountDetails  apijson.Field
+	RoutingDetails  apijson.Field
+	Connection      apijson.Field
+	Currency        apijson.Field
+	Metadata        apijson.Field
+	ParentAccountID apijson.Field
+	CounterpartyID  apijson.Field
+	LedgerAccountID apijson.Field
 	raw             string
-	Extras          map[string]apijson.Metadata
+	ExtraFields     map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into InternalAccount using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *InternalAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -162,6 +168,7 @@ const (
 	InternalAccountPartyTypeIndividual InternalAccountPartyType = "individual"
 )
 
+// The address associated with the owner or null.
 type InternalAccountPartyAddress struct {
 	ID     string `json:"id,required" format:"uuid"`
 	Object string `json:"object,required"`
@@ -180,70 +187,67 @@ type InternalAccountPartyAddress struct {
 	PostalCode string `json:"postal_code,required,nullable"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country,required,nullable"`
-	JSON    InternalAccountPartyAddressJSON
+	JSON    internalAccountPartyAddressJSON
 }
 
-type InternalAccountPartyAddressJSON struct {
-	ID         apijson.Metadata
-	Object     apijson.Metadata
-	LiveMode   apijson.Metadata
-	CreatedAt  apijson.Metadata
-	UpdatedAt  apijson.Metadata
-	Line1      apijson.Metadata
-	Line2      apijson.Metadata
-	Locality   apijson.Metadata
-	Region     apijson.Metadata
-	PostalCode apijson.Metadata
-	Country    apijson.Metadata
-	raw        string
-	Extras     map[string]apijson.Metadata
+// internalAccountPartyAddressJSON contains the JSON metadata for the struct
+// [InternalAccountPartyAddress]
+type internalAccountPartyAddressJSON struct {
+	ID          apijson.Field
+	Object      apijson.Field
+	LiveMode    apijson.Field
+	CreatedAt   apijson.Field
+	UpdatedAt   apijson.Field
+	Line1       apijson.Field
+	Line2       apijson.Field
+	Locality    apijson.Field
+	Region      apijson.Field
+	PostalCode  apijson.Field
+	Country     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into InternalAccountPartyAddress
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *InternalAccountPartyAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 type InternalAccountNewParams struct {
 	// The identifier of the financial institution the account belongs to.
-	ConnectionID field.Field[string] `json:"connection_id,required"`
+	ConnectionID param.Field[string] `json:"connection_id,required"`
 	// The nickname of the account.
-	Name field.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name,required"`
 	// The legal name of the entity which owns the account.
-	PartyName field.Field[string] `json:"party_name,required"`
+	PartyName param.Field[string] `json:"party_name,required"`
 	// The address associated with the owner or null.
-	PartyAddress field.Field[InternalAccountNewParamsPartyAddress] `json:"party_address"`
+	PartyAddress param.Field[InternalAccountNewParamsPartyAddress] `json:"party_address"`
 	// Either "USD" or "CAD". Internal accounts created at Increase only supports
 	// "USD".
-	Currency field.Field[InternalAccountNewParamsCurrency] `json:"currency,required"`
+	Currency param.Field[InternalAccountNewParamsCurrency] `json:"currency,required"`
 	// The identifier of the entity at Increase which owns the account.
-	EntityID field.Field[string] `json:"entity_id"`
+	EntityID param.Field[string] `json:"entity_id"`
 	// The parent internal account of this new account.
-	ParentAccountID field.Field[string] `json:"parent_account_id"`
+	ParentAccountID param.Field[string] `json:"parent_account_id"`
 	// The Counterparty associated to this account.
-	CounterpartyID field.Field[string] `json:"counterparty_id"`
+	CounterpartyID param.Field[string] `json:"counterparty_id"`
 }
 
-// MarshalJSON serializes InternalAccountNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r InternalAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// The address associated with the owner or null.
 type InternalAccountNewParamsPartyAddress struct {
-	Line1 field.Field[string] `json:"line1,required"`
-	Line2 field.Field[string] `json:"line2"`
+	Line1 param.Field[string] `json:"line1,required"`
+	Line2 param.Field[string] `json:"line2"`
 	// Locality or City.
-	Locality field.Field[string] `json:"locality,required"`
+	Locality param.Field[string] `json:"locality,required"`
 	// Region or State.
-	Region field.Field[string] `json:"region,required"`
+	Region param.Field[string] `json:"region,required"`
 	// The postal code of the address.
-	PostalCode field.Field[string] `json:"postal_code,required"`
+	PostalCode param.Field[string] `json:"postal_code,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country field.Field[string] `json:"country,required"`
+	Country param.Field[string] `json:"country,required"`
 }
 
 type InternalAccountNewParamsCurrency string
@@ -255,42 +259,39 @@ const (
 
 type InternalAccountUpdateParams struct {
 	// The nickname for the internal account.
-	Name field.Field[string] `json:"name"`
+	Name param.Field[string] `json:"name"`
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
 	// an empty string or `null` as the value.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 	// The parent internal account for this account.
-	ParentAccountID field.Field[string] `json:"parent_account_id"`
+	ParentAccountID param.Field[string] `json:"parent_account_id"`
 	// The Counterparty associated to this account.
-	CounterpartyID field.Field[string] `json:"counterparty_id"`
+	CounterpartyID param.Field[string] `json:"counterparty_id"`
 }
 
-// MarshalJSON serializes InternalAccountUpdateParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r InternalAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 type InternalAccountListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 	// The currency associated with the internal account.
-	Currency field.Field[shared.Currency] `json:"currency,nullable"`
+	Currency param.Field[shared.Currency] `json:"currency,nullable"`
 	// The counterparty associated with the internal account.
-	CounterpartyID field.Field[string] `query:"counterparty_id"`
+	CounterpartyID param.Field[string] `query:"counterparty_id"`
 	// The type of payment that can be made by the internal account.
-	PaymentType field.Field[InternalAccountListParamsPaymentType] `query:"payment_type"`
+	PaymentType param.Field[InternalAccountListParamsPaymentType] `query:"payment_type"`
 	// The direction of payments that can be made by internal account.
-	PaymentDirection field.Field[InternalAccountListParamsPaymentDirection] `query:"payment_direction"`
+	PaymentDirection param.Field[InternalAccountListParamsPaymentDirection] `query:"payment_direction"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
-	Metadata field.Field[map[string]string] `query:"metadata"`
+	Metadata param.Field[map[string]string] `query:"metadata"`
 }
 
-// URLQuery serializes InternalAccountListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [InternalAccountListParams]'s query parameters as
+// `url.Values`.
 func (r InternalAccountListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

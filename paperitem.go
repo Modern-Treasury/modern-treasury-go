@@ -9,16 +9,23 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// PaperItemService contains methods and other services that help with interacting
+// with the Modern Treasury API. Note, unlike clients, this service does not read
+// variables from the environment automatically. You should not instantiate this
+// service directly, and instead use the [NewPaperItemService] method instead.
 type PaperItemService struct {
 	Options []option.RequestOption
 }
 
+// NewPaperItemService generates a new service that applies the given options to
+// each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewPaperItemService(opts ...option.RequestOption) (r *PaperItemService) {
 	r = &PaperItemService{}
 	r.Options = opts
@@ -91,34 +98,33 @@ type PaperItem struct {
 	RemitterName string `json:"remitter_name,required,nullable"`
 	// The memo field on the paper item.
 	MemoField string `json:"memo_field,required,nullable"`
-	JSON      PaperItemJSON
+	JSON      paperItemJSON
 }
 
-type PaperItemJSON struct {
-	ID                    apijson.Metadata
-	Object                apijson.Metadata
-	LiveMode              apijson.Metadata
-	CreatedAt             apijson.Metadata
-	UpdatedAt             apijson.Metadata
-	TransactionLineItemID apijson.Metadata
-	TransactionID         apijson.Metadata
-	Status                apijson.Metadata
-	LockboxNumber         apijson.Metadata
-	DepositDate           apijson.Metadata
-	Amount                apijson.Metadata
-	Currency              apijson.Metadata
-	AccountNumber         apijson.Metadata
-	AccountNumberSafe     apijson.Metadata
-	RoutingNumber         apijson.Metadata
-	CheckNumber           apijson.Metadata
-	RemitterName          apijson.Metadata
-	MemoField             apijson.Metadata
+// paperItemJSON contains the JSON metadata for the struct [PaperItem]
+type paperItemJSON struct {
+	ID                    apijson.Field
+	Object                apijson.Field
+	LiveMode              apijson.Field
+	CreatedAt             apijson.Field
+	UpdatedAt             apijson.Field
+	TransactionLineItemID apijson.Field
+	TransactionID         apijson.Field
+	Status                apijson.Field
+	LockboxNumber         apijson.Field
+	DepositDate           apijson.Field
+	Amount                apijson.Field
+	Currency              apijson.Field
+	AccountNumber         apijson.Field
+	AccountNumberSafe     apijson.Field
+	RoutingNumber         apijson.Field
+	CheckNumber           apijson.Field
+	RemitterName          apijson.Field
+	MemoField             apijson.Field
 	raw                   string
-	Extras                map[string]apijson.Metadata
+	ExtraFields           map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into PaperItem using the internal
-// json library. Unrecognized fields are stored in the `jsonFields` property.
 func (r *PaperItem) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -134,17 +140,16 @@ const (
 type PaperItemListParams struct {
 	// Specify `lockbox_number` if you wish to see paper items that are associated with
 	// a specific lockbox number.
-	LockboxNumber field.Field[string] `query:"lockbox_number"`
+	LockboxNumber param.Field[string] `query:"lockbox_number"`
 	// Specify an inclusive start date (YYYY-MM-DD) when filtering by deposit_date
-	DepositDateStart field.Field[time.Time] `query:"deposit_date_start" format:"date"`
+	DepositDateStart param.Field[time.Time] `query:"deposit_date_start" format:"date"`
 	// Specify an inclusive end date (YYYY-MM-DD) when filtering by deposit_date
-	DepositDateEnd field.Field[time.Time] `query:"deposit_date_end" format:"date"`
-	AfterCursor    field.Field[string]    `query:"after_cursor,nullable"`
-	PerPage        field.Field[int64]     `query:"per_page"`
+	DepositDateEnd param.Field[time.Time] `query:"deposit_date_end" format:"date"`
+	AfterCursor    param.Field[string]    `query:"after_cursor,nullable"`
+	PerPage        param.Field[int64]     `query:"per_page"`
 }
 
-// URLQuery serializes PaperItemListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [PaperItemListParams]'s query parameters as `url.Values`.
 func (r PaperItemListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
