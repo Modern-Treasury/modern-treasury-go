@@ -9,16 +9,24 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// ExternalAccountService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the
+// [NewExternalAccountService] method instead.
 type ExternalAccountService struct {
 	Options []option.RequestOption
 }
 
+// NewExternalAccountService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewExternalAccountService(opts ...option.RequestOption) (r *ExternalAccountService) {
 	r = &ExternalAccountService{}
 	r.Options = opts
@@ -128,35 +136,33 @@ type ExternalAccount struct {
 	// the ledger account will be populated here.
 	LedgerAccountID    string                            `json:"ledger_account_id,required,nullable" format:"uuid"`
 	VerificationStatus ExternalAccountVerificationStatus `json:"verification_status,required"`
-	JSON               ExternalAccountJSON
+	JSON               externalAccountJSON
 }
 
-type ExternalAccountJSON struct {
-	ID                 apijson.Metadata
-	Object             apijson.Metadata
-	LiveMode           apijson.Metadata
-	CreatedAt          apijson.Metadata
-	UpdatedAt          apijson.Metadata
-	DiscardedAt        apijson.Metadata
-	AccountType        apijson.Metadata
-	PartyType          apijson.Metadata
-	PartyAddress       apijson.Metadata
-	Name               apijson.Metadata
-	CounterpartyID     apijson.Metadata
-	AccountDetails     apijson.Metadata
-	RoutingDetails     apijson.Metadata
-	Metadata           apijson.Metadata
-	PartyName          apijson.Metadata
-	ContactDetails     apijson.Metadata
-	LedgerAccountID    apijson.Metadata
-	VerificationStatus apijson.Metadata
+// externalAccountJSON contains the JSON metadata for the struct [ExternalAccount]
+type externalAccountJSON struct {
+	ID                 apijson.Field
+	Object             apijson.Field
+	LiveMode           apijson.Field
+	CreatedAt          apijson.Field
+	UpdatedAt          apijson.Field
+	DiscardedAt        apijson.Field
+	AccountType        apijson.Field
+	PartyType          apijson.Field
+	PartyAddress       apijson.Field
+	Name               apijson.Field
+	CounterpartyID     apijson.Field
+	AccountDetails     apijson.Field
+	RoutingDetails     apijson.Field
+	Metadata           apijson.Field
+	PartyName          apijson.Field
+	ContactDetails     apijson.Field
+	LedgerAccountID    apijson.Field
+	VerificationStatus apijson.Field
 	raw                string
-	Extras             map[string]apijson.Metadata
+	ExtraFields        map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into ExternalAccount using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *ExternalAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -180,6 +186,7 @@ const (
 	ExternalAccountPartyTypeIndividual ExternalAccountPartyType = "individual"
 )
 
+// The address associated with the owner or `null`.
 type ExternalAccountPartyAddress struct {
 	ID     string `json:"id,required" format:"uuid"`
 	Object string `json:"object,required"`
@@ -198,28 +205,27 @@ type ExternalAccountPartyAddress struct {
 	PostalCode string `json:"postal_code,required,nullable"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country,required,nullable"`
-	JSON    ExternalAccountPartyAddressJSON
+	JSON    externalAccountPartyAddressJSON
 }
 
-type ExternalAccountPartyAddressJSON struct {
-	ID         apijson.Metadata
-	Object     apijson.Metadata
-	LiveMode   apijson.Metadata
-	CreatedAt  apijson.Metadata
-	UpdatedAt  apijson.Metadata
-	Line1      apijson.Metadata
-	Line2      apijson.Metadata
-	Locality   apijson.Metadata
-	Region     apijson.Metadata
-	PostalCode apijson.Metadata
-	Country    apijson.Metadata
-	raw        string
-	Extras     map[string]apijson.Metadata
+// externalAccountPartyAddressJSON contains the JSON metadata for the struct
+// [ExternalAccountPartyAddress]
+type externalAccountPartyAddressJSON struct {
+	ID          apijson.Field
+	Object      apijson.Field
+	LiveMode    apijson.Field
+	CreatedAt   apijson.Field
+	UpdatedAt   apijson.Field
+	Line1       apijson.Field
+	Line2       apijson.Field
+	Locality    apijson.Field
+	Region      apijson.Field
+	PostalCode  apijson.Field
+	Country     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into ExternalAccountPartyAddress
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *ExternalAccountPartyAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -235,25 +241,24 @@ type ExternalAccountContactDetails struct {
 	DiscardedAt           time.Time                                          `json:"discarded_at,required,nullable" format:"date-time"`
 	ContactIdentifier     string                                             `json:"contact_identifier,required"`
 	ContactIdentifierType ExternalAccountContactDetailsContactIdentifierType `json:"contact_identifier_type,required"`
-	JSON                  ExternalAccountContactDetailsJSON
+	JSON                  externalAccountContactDetailsJSON
 }
 
-type ExternalAccountContactDetailsJSON struct {
-	ID                    apijson.Metadata
-	Object                apijson.Metadata
-	LiveMode              apijson.Metadata
-	CreatedAt             apijson.Metadata
-	UpdatedAt             apijson.Metadata
-	DiscardedAt           apijson.Metadata
-	ContactIdentifier     apijson.Metadata
-	ContactIdentifierType apijson.Metadata
+// externalAccountContactDetailsJSON contains the JSON metadata for the struct
+// [ExternalAccountContactDetails]
+type externalAccountContactDetailsJSON struct {
+	ID                    apijson.Field
+	Object                apijson.Field
+	LiveMode              apijson.Field
+	CreatedAt             apijson.Field
+	UpdatedAt             apijson.Field
+	DiscardedAt           apijson.Field
+	ContactIdentifier     apijson.Field
+	ContactIdentifierType apijson.Field
 	raw                   string
-	Extras                map[string]apijson.Metadata
+	ExtraFields           map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into ExternalAccountContactDetails
-// using the internal json library. Unrecognized fields are stored in the
-// `jsonFields` property.
 func (r *ExternalAccountContactDetails) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -276,32 +281,35 @@ const (
 
 type ExternalAccountNewParams struct {
 	// Can be `checking`, `savings` or `other`.
-	AccountType field.Field[ExternalAccountType] `json:"account_type"`
+	AccountType param.Field[ExternalAccountType] `json:"account_type"`
 	// Either `individual` or `business`.
-	PartyType field.Field[ExternalAccountNewParamsPartyType] `json:"party_type,nullable"`
+	PartyType param.Field[ExternalAccountNewParamsPartyType] `json:"party_type,nullable"`
 	// Required if receiving wire payments.
-	PartyAddress field.Field[ExternalAccountNewParamsPartyAddress] `json:"party_address"`
+	PartyAddress param.Field[ExternalAccountNewParamsPartyAddress] `json:"party_address"`
 	// A nickname for the external account. This is only for internal usage and won't
 	// affect any payments
-	Name           field.Field[string]                                   `json:"name,nullable"`
-	CounterpartyID field.Field[string]                                   `json:"counterparty_id,required,nullable" format:"uuid"`
-	AccountDetails field.Field[[]ExternalAccountNewParamsAccountDetails] `json:"account_details"`
-	RoutingDetails field.Field[[]ExternalAccountNewParamsRoutingDetails] `json:"routing_details"`
+	Name           param.Field[string]                                   `json:"name,nullable"`
+	CounterpartyID param.Field[string]                                   `json:"counterparty_id,required,nullable" format:"uuid"`
+	AccountDetails param.Field[[]ExternalAccountNewParamsAccountDetails] `json:"account_details"`
+	RoutingDetails param.Field[[]ExternalAccountNewParamsRoutingDetails] `json:"routing_details"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 	// If this value isn't provided, it will be inherited from the counterparty's name.
-	PartyName       field.Field[string] `json:"party_name"`
-	PartyIdentifier field.Field[string] `json:"party_identifier"`
+	PartyName       param.Field[string] `json:"party_name"`
+	PartyIdentifier param.Field[string] `json:"party_identifier"`
+	// Specifies a ledger account object that will be created with the external
+	// account. The resulting ledger account is linked to the external account for
+	// auto-ledgering Payment objects. See
+	// https://dash.readme.com/project/modern-treasury/v1.1/docs/linking-to-other-modern-treasury-objects
+	// for more details.
+	LedgerAccount param.Field[ExternalAccountNewParamsLedgerAccount] `json:"ledger_account"`
 	// If you've enabled the Modern Treasury + Plaid integration in your Plaid account,
 	// you can pass the processor token in this field.
-	PlaidProcessorToken field.Field[string]                                   `json:"plaid_processor_token"`
-	ContactDetails      field.Field[[]ExternalAccountNewParamsContactDetails] `json:"contact_details"`
+	PlaidProcessorToken param.Field[string]                                   `json:"plaid_processor_token"`
+	ContactDetails      param.Field[[]ExternalAccountNewParamsContactDetails] `json:"contact_details"`
 }
 
-// MarshalJSON serializes ExternalAccountNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r ExternalAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -313,22 +321,23 @@ const (
 	ExternalAccountNewParamsPartyTypeIndividual ExternalAccountNewParamsPartyType = "individual"
 )
 
+// Required if receiving wire payments.
 type ExternalAccountNewParamsPartyAddress struct {
-	Line1 field.Field[string] `json:"line1,nullable"`
-	Line2 field.Field[string] `json:"line2,nullable"`
+	Line1 param.Field[string] `json:"line1,nullable"`
+	Line2 param.Field[string] `json:"line2,nullable"`
 	// Locality or City.
-	Locality field.Field[string] `json:"locality,nullable"`
+	Locality param.Field[string] `json:"locality,nullable"`
 	// Region or State.
-	Region field.Field[string] `json:"region,nullable"`
+	Region param.Field[string] `json:"region,nullable"`
 	// The postal code of the address.
-	PostalCode field.Field[string] `json:"postal_code,nullable"`
+	PostalCode param.Field[string] `json:"postal_code,nullable"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country field.Field[string] `json:"country,nullable"`
+	Country param.Field[string] `json:"country,nullable"`
 }
 
 type ExternalAccountNewParamsAccountDetails struct {
-	AccountNumber     field.Field[string]                                                  `json:"account_number,required"`
-	AccountNumberType field.Field[ExternalAccountNewParamsAccountDetailsAccountNumberType] `json:"account_number_type"`
+	AccountNumber     param.Field[string]                                                  `json:"account_number,required"`
+	AccountNumberType param.Field[ExternalAccountNewParamsAccountDetailsAccountNumberType] `json:"account_number_type"`
 }
 
 type ExternalAccountNewParamsAccountDetailsAccountNumberType string
@@ -342,9 +351,9 @@ const (
 )
 
 type ExternalAccountNewParamsRoutingDetails struct {
-	RoutingNumber     field.Field[string]                                                  `json:"routing_number,required"`
-	RoutingNumberType field.Field[ExternalAccountNewParamsRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
-	PaymentType       field.Field[ExternalAccountNewParamsRoutingDetailsPaymentType]       `json:"payment_type"`
+	RoutingNumber     param.Field[string]                                                  `json:"routing_number,required"`
+	RoutingNumberType param.Field[ExternalAccountNewParamsRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
+	PaymentType       param.Field[ExternalAccountNewParamsRoutingDetailsPaymentType]       `json:"payment_type"`
 }
 
 type ExternalAccountNewParamsRoutingDetailsRoutingNumberType string
@@ -384,9 +393,39 @@ const (
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeWire        ExternalAccountNewParamsRoutingDetailsPaymentType = "wire"
 )
 
+// Specifies a ledger account object that will be created with the external
+// account. The resulting ledger account is linked to the external account for
+// auto-ledgering Payment objects. See
+// https://dash.readme.com/project/modern-treasury/v1.1/docs/linking-to-other-modern-treasury-objects
+// for more details.
+type ExternalAccountNewParamsLedgerAccount struct {
+	// The name of the ledger account.
+	Name param.Field[string] `json:"name,required"`
+	// The description of the ledger account.
+	Description param.Field[string] `json:"description,nullable"`
+	// The normal balance of the ledger account.
+	NormalBalance param.Field[ExternalAccountNewParamsLedgerAccountNormalBalance] `json:"normal_balance,required"`
+	// The id of the ledger that this account belongs to.
+	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
+	// The currency of the ledger account.
+	Currency param.Field[string] `json:"currency,required"`
+	// The currency exponent of the ledger account.
+	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+}
+
+type ExternalAccountNewParamsLedgerAccountNormalBalance string
+
+const (
+	ExternalAccountNewParamsLedgerAccountNormalBalanceCredit ExternalAccountNewParamsLedgerAccountNormalBalance = "credit"
+	ExternalAccountNewParamsLedgerAccountNormalBalanceDebit  ExternalAccountNewParamsLedgerAccountNormalBalance = "debit"
+)
+
 type ExternalAccountNewParamsContactDetails struct {
-	ContactIdentifier     field.Field[string]                                                      `json:"contact_identifier"`
-	ContactIdentifierType field.Field[ExternalAccountNewParamsContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
+	ContactIdentifier     param.Field[string]                                                      `json:"contact_identifier"`
+	ContactIdentifierType param.Field[ExternalAccountNewParamsContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
 }
 
 type ExternalAccountNewParamsContactDetailsContactIdentifierType string
@@ -399,24 +438,21 @@ const (
 
 type ExternalAccountUpdateParams struct {
 	// Either `individual` or `business`.
-	PartyType field.Field[ExternalAccountUpdateParamsPartyType] `json:"party_type,nullable"`
+	PartyType param.Field[ExternalAccountUpdateParamsPartyType] `json:"party_type,nullable"`
 	// Can be `checking`, `savings` or `other`.
-	AccountType    field.Field[ExternalAccountType] `json:"account_type"`
-	CounterpartyID field.Field[string]              `json:"counterparty_id,nullable" format:"uuid"`
+	AccountType    param.Field[ExternalAccountType] `json:"account_type"`
+	CounterpartyID param.Field[string]              `json:"counterparty_id,nullable" format:"uuid"`
 	// A nickname for the external account. This is only for internal usage and won't
 	// affect any payments
-	Name field.Field[string] `json:"name,nullable"`
+	Name param.Field[string] `json:"name,nullable"`
 	// If this value isn't provided, it will be inherited from the counterparty's name.
-	PartyName    field.Field[string]                                  `json:"party_name"`
-	PartyAddress field.Field[ExternalAccountUpdateParamsPartyAddress] `json:"party_address"`
+	PartyName    param.Field[string]                                  `json:"party_name"`
+	PartyAddress param.Field[ExternalAccountUpdateParamsPartyAddress] `json:"party_address"`
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
 	// an empty string or `null` as the value.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes ExternalAccountUpdateParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r ExternalAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -429,44 +465,40 @@ const (
 )
 
 type ExternalAccountUpdateParamsPartyAddress struct {
-	Line1 field.Field[string] `json:"line1,nullable"`
-	Line2 field.Field[string] `json:"line2,nullable"`
+	Line1 param.Field[string] `json:"line1,nullable"`
+	Line2 param.Field[string] `json:"line2,nullable"`
 	// Locality or City.
-	Locality field.Field[string] `json:"locality,nullable"`
+	Locality param.Field[string] `json:"locality,nullable"`
 	// Region or State.
-	Region field.Field[string] `json:"region,nullable"`
+	Region param.Field[string] `json:"region,nullable"`
 	// The postal code of the address.
-	PostalCode field.Field[string] `json:"postal_code,nullable"`
+	PostalCode param.Field[string] `json:"postal_code,nullable"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country field.Field[string] `json:"country,nullable"`
+	Country param.Field[string] `json:"country,nullable"`
 }
 
 type ExternalAccountListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 	// Searches the ExternalAccount's party_name AND the Counterparty's party_name
-	PartyName      field.Field[string] `query:"party_name"`
-	CounterpartyID field.Field[string] `query:"counterparty_id"`
+	PartyName      param.Field[string] `query:"party_name"`
+	CounterpartyID param.Field[string] `query:"counterparty_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
-	Metadata field.Field[map[string]string] `query:"metadata"`
+	Metadata param.Field[map[string]string] `query:"metadata"`
 }
 
-// URLQuery serializes ExternalAccountListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [ExternalAccountListParams]'s query parameters as
+// `url.Values`.
 func (r ExternalAccountListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
 
 type ExternalAccountCompleteVerificationParams struct {
-	Amounts field.Field[[]int64] `json:"amounts"`
+	Amounts param.Field[[]int64] `json:"amounts"`
 }
 
-// MarshalJSON serializes ExternalAccountCompleteVerificationParams into an array
-// of bytes using the gjson library. Members of the `jsonFields` field are
-// serialized into the top-level, and will overwrite known members of the same
-// name.
 func (r ExternalAccountCompleteVerificationParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -474,16 +506,13 @@ func (r ExternalAccountCompleteVerificationParams) MarshalJSON() (data []byte, e
 type ExternalAccountVerifyParams struct {
 	// The ID of the internal account where the micro-deposits originate from. Both
 	// credit and debit capabilities must be enabled.
-	OriginatingAccountID field.Field[string] `json:"originating_account_id,required" format:"uuid"`
+	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
 	// Both ach and eft are supported payment types.
-	PaymentType field.Field[ExternalAccountVerifyParamsPaymentType] `json:"payment_type,required"`
+	PaymentType param.Field[ExternalAccountVerifyParamsPaymentType] `json:"payment_type,required"`
 	// Defaults to the currency of the originating account.
-	Currency field.Field[shared.Currency] `json:"currency,nullable"`
+	Currency param.Field[shared.Currency] `json:"currency,nullable"`
 }
 
-// MarshalJSON serializes ExternalAccountVerifyParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r ExternalAccountVerifyParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }

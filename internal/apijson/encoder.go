@@ -12,7 +12,7 @@ import (
 
 	"github.com/tidwall/sjson"
 
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 )
 
 var encoders sync.Map // map[encoderEntry]encoderFunc
@@ -200,7 +200,7 @@ func (e *encoder) newStructTypeEncoder(t reflect.Type) encoderFunc {
 	if t == reflect.TypeOf(time.Time{}) {
 		return e.newTimeTypeEncoder(t)
 	}
-	if t.Implements(reflect.TypeOf((*field.FieldLike)(nil)).Elem()) {
+	if t.Implements(reflect.TypeOf((*param.FieldLike)(nil)).Elem()) {
 		return e.newFieldTypeEncoder(t)
 	}
 

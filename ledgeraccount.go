@@ -9,16 +9,24 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// LedgerAccountService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the [NewLedgerAccountService]
+// method instead.
 type LedgerAccountService struct {
 	Options []option.RequestOption
 }
 
+// NewLedgerAccountService generates a new service that applies the given options
+// to each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewLedgerAccountService(opts ...option.RequestOption) (r *LedgerAccountService) {
 	r = &LedgerAccountService{}
 	r.Options = opts
@@ -115,32 +123,30 @@ type LedgerAccount struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata map[string]string `json:"metadata,required"`
-	JSON     LedgerAccountJSON
+	JSON     ledgerAccountJSON
 }
 
-type LedgerAccountJSON struct {
-	ID             apijson.Metadata
-	Object         apijson.Metadata
-	LiveMode       apijson.Metadata
-	CreatedAt      apijson.Metadata
-	UpdatedAt      apijson.Metadata
-	DiscardedAt    apijson.Metadata
-	Name           apijson.Metadata
-	Description    apijson.Metadata
-	NormalBalance  apijson.Metadata
-	Balances       apijson.Metadata
-	LockVersion    apijson.Metadata
-	LedgerID       apijson.Metadata
-	LedgerableID   apijson.Metadata
-	LedgerableType apijson.Metadata
-	Metadata       apijson.Metadata
+// ledgerAccountJSON contains the JSON metadata for the struct [LedgerAccount]
+type ledgerAccountJSON struct {
+	ID             apijson.Field
+	Object         apijson.Field
+	LiveMode       apijson.Field
+	CreatedAt      apijson.Field
+	UpdatedAt      apijson.Field
+	DiscardedAt    apijson.Field
+	Name           apijson.Field
+	Description    apijson.Field
+	NormalBalance  apijson.Field
+	Balances       apijson.Field
+	LockVersion    apijson.Field
+	LedgerID       apijson.Field
+	LedgerableID   apijson.Field
+	LedgerableType apijson.Field
+	Metadata       apijson.Field
 	raw            string
-	Extras         map[string]apijson.Metadata
+	ExtraFields    map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into LedgerAccount using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *LedgerAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -152,6 +158,11 @@ const (
 	LedgerAccountNormalBalanceDebit  LedgerAccountNormalBalance = "debit"
 )
 
+// The pending, posted, and available balances for this ledger account. The posted
+// balance is the sum of all posted entries on the account. The pending balance is
+// the sum of all pending and posted entries on the account. The available balance
+// is the posted incoming entries minus the sum of the pending and posted outgoing
+// amounts.
 type LedgerAccountBalances struct {
 	// The inclusive lower bound of the effective_at timestamp for the returned
 	// balances.
@@ -168,26 +179,26 @@ type LedgerAccountBalances struct {
 	// pending_debits; for debit normal, available_amount = posted_debits -
 	// pending_credits.
 	AvailableBalance LedgerAccountBalancesAvailableBalance `json:"available_balance,required"`
-	JSON             LedgerAccountBalancesJSON
+	JSON             ledgerAccountBalancesJSON
 }
 
-type LedgerAccountBalancesJSON struct {
-	EffectiveAtLowerBound apijson.Metadata
-	EffectiveAtUpperBound apijson.Metadata
-	PendingBalance        apijson.Metadata
-	PostedBalance         apijson.Metadata
-	AvailableBalance      apijson.Metadata
+// ledgerAccountBalancesJSON contains the JSON metadata for the struct
+// [LedgerAccountBalances]
+type ledgerAccountBalancesJSON struct {
+	EffectiveAtLowerBound apijson.Field
+	EffectiveAtUpperBound apijson.Field
+	PendingBalance        apijson.Field
+	PostedBalance         apijson.Field
+	AvailableBalance      apijson.Field
 	raw                   string
-	Extras                map[string]apijson.Metadata
+	ExtraFields           map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into LedgerAccountBalances using
-// the internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *LedgerAccountBalances) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The pending_balance is the sum of all pending and posted entries.
 type LedgerAccountBalancesPendingBalance struct {
 	Credits int64 `json:"credits,required"`
 	Debits  int64 `json:"debits,required"`
@@ -196,26 +207,26 @@ type LedgerAccountBalancesPendingBalance struct {
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64 `json:"currency_exponent,required"`
-	JSON             LedgerAccountBalancesPendingBalanceJSON
+	JSON             ledgerAccountBalancesPendingBalanceJSON
 }
 
-type LedgerAccountBalancesPendingBalanceJSON struct {
-	Credits          apijson.Metadata
-	Debits           apijson.Metadata
-	Amount           apijson.Metadata
-	Currency         apijson.Metadata
-	CurrencyExponent apijson.Metadata
+// ledgerAccountBalancesPendingBalanceJSON contains the JSON metadata for the
+// struct [LedgerAccountBalancesPendingBalance]
+type ledgerAccountBalancesPendingBalanceJSON struct {
+	Credits          apijson.Field
+	Debits           apijson.Field
+	Amount           apijson.Field
+	Currency         apijson.Field
+	CurrencyExponent apijson.Field
 	raw              string
-	Extras           map[string]apijson.Metadata
+	ExtraFields      map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// LedgerAccountBalancesPendingBalance using the internal json library.
-// Unrecognized fields are stored in the `jsonFields` property.
 func (r *LedgerAccountBalancesPendingBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The posted_balance is the sum of all posted entries.
 type LedgerAccountBalancesPostedBalance struct {
 	Credits int64 `json:"credits,required"`
 	Debits  int64 `json:"debits,required"`
@@ -224,26 +235,29 @@ type LedgerAccountBalancesPostedBalance struct {
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64 `json:"currency_exponent,required"`
-	JSON             LedgerAccountBalancesPostedBalanceJSON
+	JSON             ledgerAccountBalancesPostedBalanceJSON
 }
 
-type LedgerAccountBalancesPostedBalanceJSON struct {
-	Credits          apijson.Metadata
-	Debits           apijson.Metadata
-	Amount           apijson.Metadata
-	Currency         apijson.Metadata
-	CurrencyExponent apijson.Metadata
+// ledgerAccountBalancesPostedBalanceJSON contains the JSON metadata for the struct
+// [LedgerAccountBalancesPostedBalance]
+type ledgerAccountBalancesPostedBalanceJSON struct {
+	Credits          apijson.Field
+	Debits           apijson.Field
+	Amount           apijson.Field
+	Currency         apijson.Field
+	CurrencyExponent apijson.Field
 	raw              string
-	Extras           map[string]apijson.Metadata
+	ExtraFields      map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// LedgerAccountBalancesPostedBalance using the internal json library. Unrecognized
-// fields are stored in the `jsonFields` property.
 func (r *LedgerAccountBalancesPostedBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The available_balance is the sum of all posted inbound entries and pending
+// outbound entries. For credit normal, available_amount = posted_credits -
+// pending_debits; for debit normal, available_amount = posted_debits -
+// pending_credits.
 type LedgerAccountBalancesAvailableBalance struct {
 	Credits int64 `json:"credits,required"`
 	Debits  int64 `json:"debits,required"`
@@ -252,22 +266,21 @@ type LedgerAccountBalancesAvailableBalance struct {
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64 `json:"currency_exponent,required"`
-	JSON             LedgerAccountBalancesAvailableBalanceJSON
+	JSON             ledgerAccountBalancesAvailableBalanceJSON
 }
 
-type LedgerAccountBalancesAvailableBalanceJSON struct {
-	Credits          apijson.Metadata
-	Debits           apijson.Metadata
-	Amount           apijson.Metadata
-	Currency         apijson.Metadata
-	CurrencyExponent apijson.Metadata
+// ledgerAccountBalancesAvailableBalanceJSON contains the JSON metadata for the
+// struct [LedgerAccountBalancesAvailableBalance]
+type ledgerAccountBalancesAvailableBalanceJSON struct {
+	Credits          apijson.Field
+	Debits           apijson.Field
+	Amount           apijson.Field
+	Currency         apijson.Field
+	CurrencyExponent apijson.Field
 	raw              string
-	Extras           map[string]apijson.Metadata
+	ExtraFields      map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// LedgerAccountBalancesAvailableBalance using the internal json library.
-// Unrecognized fields are stored in the `jsonFields` property.
 func (r *LedgerAccountBalancesAvailableBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -275,31 +288,28 @@ func (r *LedgerAccountBalancesAvailableBalance) UnmarshalJSON(data []byte) (err 
 type LedgerAccountLedgerableType string
 
 const (
-	LedgerAccountLedgerableTypeExternalAccount LedgerAccountLedgerableType = "external_account"
-	LedgerAccountLedgerableTypeInternalAccount LedgerAccountLedgerableType = "internal_account"
+	LedgerAccountLedgerableTypeExternalAccount LedgerAccountLedgerableType = "ExternalAccount"
+	LedgerAccountLedgerableTypeInternalAccount LedgerAccountLedgerableType = "InternalAccount"
 )
 
 type LedgerAccountNewParams struct {
 	// The name of the ledger account.
-	Name field.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name,required"`
 	// The description of the ledger account.
-	Description field.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description,nullable"`
 	// The normal balance of the ledger account.
-	NormalBalance field.Field[LedgerAccountNewParamsNormalBalance] `json:"normal_balance,required"`
+	NormalBalance param.Field[LedgerAccountNewParamsNormalBalance] `json:"normal_balance,required"`
 	// The id of the ledger that this account belongs to.
-	LedgerID field.Field[string] `json:"ledger_id,required" format:"uuid"`
+	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
 	// The currency of the ledger account.
-	Currency field.Field[string] `json:"currency,required"`
+	Currency param.Field[string] `json:"currency,required"`
 	// The currency exponent of the ledger account.
-	CurrencyExponent field.Field[int64] `json:"currency_exponent,nullable"`
+	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes LedgerAccountNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r LedgerAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -316,82 +326,86 @@ type LedgerAccountGetParams struct {
 	// get the balances change between the two timestamps. The lower bound is inclusive
 	// while the upper bound is exclusive of the provided timestamps. If no value is
 	// supplied the balances will be retrieved not including that bound.
-	Balances field.Field[LedgerAccountGetParamsBalances] `query:"balances"`
+	Balances param.Field[LedgerAccountGetParamsBalances] `query:"balances"`
 }
 
-// URLQuery serializes LedgerAccountGetParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [LedgerAccountGetParams]'s query parameters as `url.Values`.
 func (r LedgerAccountGetParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
 
+// Use balances[effective_at_lower_bound] and balances[effective_at_upper_bound] to
+// get the balances change between the two timestamps. The lower bound is inclusive
+// while the upper bound is exclusive of the provided timestamps. If no value is
+// supplied the balances will be retrieved not including that bound.
 type LedgerAccountGetParamsBalances struct {
-	AsOfDate              field.Field[time.Time] `query:"as_of_date" format:"date"`
-	EffectiveAt           field.Field[time.Time] `query:"effective_at" format:"date-time"`
-	EffectiveAtLowerBound field.Field[time.Time] `query:"effective_at_lower_bound" format:"date-time"`
-	EffectiveAtUpperBound field.Field[time.Time] `query:"effective_at_upper_bound" format:"date-time"`
+	AsOfDate              param.Field[time.Time] `query:"as_of_date" format:"date"`
+	EffectiveAt           param.Field[time.Time] `query:"effective_at" format:"date-time"`
+	EffectiveAtLowerBound param.Field[time.Time] `query:"effective_at_lower_bound" format:"date-time"`
+	EffectiveAtUpperBound param.Field[time.Time] `query:"effective_at_upper_bound" format:"date-time"`
 }
 
-// URLQuery serializes LedgerAccountGetParamsBalances into a url.Values of the
-// query parameters associated with this value
+// URLQuery serializes [LedgerAccountGetParamsBalances]'s query parameters as
+// `url.Values`.
 func (r LedgerAccountGetParamsBalances) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
 
 type LedgerAccountUpdateParams struct {
 	// The name of the ledger account.
-	Name field.Field[string] `json:"name"`
+	Name param.Field[string] `json:"name"`
 	// The description of the ledger account.
-	Description field.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description,nullable"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes LedgerAccountUpdateParams into an array of bytes using
-// the gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r LedgerAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 type LedgerAccountListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
-	Metadata field.Field[map[string]string] `query:"metadata"`
-	ID       field.Field[string]            `query:"id"`
-	Name     field.Field[string]            `query:"name"`
-	LedgerID field.Field[string]            `query:"ledger_id"`
+	Metadata param.Field[map[string]string] `query:"metadata"`
+	ID       param.Field[string]            `query:"id"`
+	Name     param.Field[string]            `query:"name"`
+	LedgerID param.Field[string]            `query:"ledger_id"`
 	// Use balances[effective_at_lower_bound] and balances[effective_at_upper_bound] to
 	// get the balances change between the two timestamps. The lower bound is inclusive
 	// while the upper bound is exclusive of the provided timestamps. If no value is
 	// supplied the balances will be retrieved not including that bound.
-	Balances field.Field[LedgerAccountListParamsBalances] `query:"balances"`
+	Balances param.Field[LedgerAccountListParamsBalances] `query:"balances"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// updated_at%5Bgt%5D=2000-01-01T12:00:00Z.
-	UpdatedAt               field.Field[map[string]time.Time] `query:"updated_at" format:"date-time"`
-	LedgerAccountCategoryID field.Field[string]               `query:"ledger_account_category_id"`
+	UpdatedAt               param.Field[map[string]time.Time] `query:"updated_at" format:"date-time"`
+	LedgerAccountCategoryID param.Field[string]               `query:"ledger_account_category_id"`
 }
 
-// URLQuery serializes LedgerAccountListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [LedgerAccountListParams]'s query parameters as
+// `url.Values`.
 func (r LedgerAccountListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
 
+// Use balances[effective_at_lower_bound] and balances[effective_at_upper_bound] to
+// get the balances change between the two timestamps. The lower bound is inclusive
+// while the upper bound is exclusive of the provided timestamps. If no value is
+// supplied the balances will be retrieved not including that bound.
 type LedgerAccountListParamsBalances struct {
-	AsOfDate              field.Field[time.Time] `query:"as_of_date" format:"date"`
-	EffectiveAt           field.Field[time.Time] `query:"effective_at" format:"date-time"`
-	EffectiveAtLowerBound field.Field[time.Time] `query:"effective_at_lower_bound" format:"date-time"`
-	EffectiveAtUpperBound field.Field[time.Time] `query:"effective_at_upper_bound" format:"date-time"`
+	AsOfDate              param.Field[time.Time] `query:"as_of_date" format:"date"`
+	EffectiveAt           param.Field[time.Time] `query:"effective_at" format:"date-time"`
+	EffectiveAtLowerBound param.Field[time.Time] `query:"effective_at_lower_bound" format:"date-time"`
+	EffectiveAtUpperBound param.Field[time.Time] `query:"effective_at_upper_bound" format:"date-time"`
 }
 
-// URLQuery serializes LedgerAccountListParamsBalances into a url.Values of the
-// query parameters associated with this value
+// URLQuery serializes [LedgerAccountListParamsBalances]'s query parameters as
+// `url.Values`.
 func (r LedgerAccountListParamsBalances) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

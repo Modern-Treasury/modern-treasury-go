@@ -9,16 +9,24 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// PaymentFlowService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the [NewPaymentFlowService]
+// method instead.
 type PaymentFlowService struct {
 	Options []option.RequestOption
 }
 
+// NewPaymentFlowService generates a new service that applies the given options to
+// each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewPaymentFlowService(opts ...option.RequestOption) (r *PaymentFlowService) {
 	r = &PaymentFlowService{}
 	r.Options = opts
@@ -103,31 +111,29 @@ type PaymentFlow struct {
 	OriginatingAccountID string `json:"originating_account_id,nullable" format:"uuid"`
 	// If present, the ID of the payment order created using this flow.
 	PaymentOrderID string `json:"payment_order_id,nullable" format:"uuid"`
-	JSON           PaymentFlowJSON
+	JSON           paymentFlowJSON
 }
 
-type PaymentFlowJSON struct {
-	ID                   apijson.Metadata
-	Object               apijson.Metadata
-	LiveMode             apijson.Metadata
-	CreatedAt            apijson.Metadata
-	UpdatedAt            apijson.Metadata
-	ClientToken          apijson.Metadata
-	Status               apijson.Metadata
-	Amount               apijson.Metadata
-	Currency             apijson.Metadata
-	Direction            apijson.Metadata
-	CounterpartyID       apijson.Metadata
-	ReceivingAccountID   apijson.Metadata
-	OriginatingAccountID apijson.Metadata
-	PaymentOrderID       apijson.Metadata
+// paymentFlowJSON contains the JSON metadata for the struct [PaymentFlow]
+type paymentFlowJSON struct {
+	ID                   apijson.Field
+	Object               apijson.Field
+	LiveMode             apijson.Field
+	CreatedAt            apijson.Field
+	UpdatedAt            apijson.Field
+	ClientToken          apijson.Field
+	Status               apijson.Field
+	Amount               apijson.Field
+	Currency             apijson.Field
+	Direction            apijson.Field
+	CounterpartyID       apijson.Field
+	ReceivingAccountID   apijson.Field
+	OriginatingAccountID apijson.Field
+	PaymentOrderID       apijson.Field
 	raw                  string
-	Extras               map[string]apijson.Metadata
+	ExtraFields          map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into PaymentFlow using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *PaymentFlow) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -151,22 +157,19 @@ const (
 type PaymentFlowNewParams struct {
 	// Required. Value in specified currency's smallest unit. e.g. $10 would be
 	// represented as 1000. Can be any integer up to 36 digits.
-	Amount field.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount,required"`
 	// Required. The currency of the payment.
-	Currency field.Field[string] `json:"currency,required"`
+	Currency param.Field[string] `json:"currency,required"`
 	// Required. Describes the direction money is flowing in the transaction. Can only
 	// be `debit`. A `debit` pulls money from someone else's account to your own.
-	Direction field.Field[PaymentFlowNewParamsDirection] `json:"direction,required"`
+	Direction param.Field[PaymentFlowNewParamsDirection] `json:"direction,required"`
 	// Required. The ID of a counterparty associated with the payment. As part of the
 	// payment workflow an external account will be associated with this model.
-	CounterpartyID field.Field[string] `json:"counterparty_id,required" format:"uuid"`
+	CounterpartyID param.Field[string] `json:"counterparty_id,required" format:"uuid"`
 	// Required. The ID of one of your organization's internal accounts.
-	OriginatingAccountID field.Field[string] `json:"originating_account_id,required" format:"uuid"`
+	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
 }
 
-// MarshalJSON serializes PaymentFlowNewParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r PaymentFlowNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -181,12 +184,9 @@ const (
 type PaymentFlowUpdateParams struct {
 	// Required. The updated status of the payment flow. Can only be used to mark a
 	// flow as `cancelled`.
-	Status field.Field[PaymentFlowUpdateParamsStatus] `json:"status,required"`
+	Status param.Field[PaymentFlowUpdateParamsStatus] `json:"status,required"`
 }
 
-// MarshalJSON serializes PaymentFlowUpdateParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r PaymentFlowUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
@@ -198,18 +198,17 @@ const (
 )
 
 type PaymentFlowListParams struct {
-	AfterCursor          field.Field[string] `query:"after_cursor,nullable"`
-	PerPage              field.Field[int64]  `query:"per_page"`
-	ClientToken          field.Field[string] `query:"client_token"`
-	Status               field.Field[string] `query:"status"`
-	CounterpartyID       field.Field[string] `query:"counterparty_id"`
-	ReceivingAccountID   field.Field[string] `query:"receiving_account_id"`
-	OriginatingAccountID field.Field[string] `query:"originating_account_id"`
-	PaymentOrderID       field.Field[string] `query:"payment_order_id"`
+	AfterCursor          param.Field[string] `query:"after_cursor,nullable"`
+	PerPage              param.Field[int64]  `query:"per_page"`
+	ClientToken          param.Field[string] `query:"client_token"`
+	Status               param.Field[string] `query:"status"`
+	CounterpartyID       param.Field[string] `query:"counterparty_id"`
+	ReceivingAccountID   param.Field[string] `query:"receiving_account_id"`
+	OriginatingAccountID param.Field[string] `query:"originating_account_id"`
+	PaymentOrderID       param.Field[string] `query:"payment_order_id"`
 }
 
-// URLQuery serializes PaymentFlowListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [PaymentFlowListParams]'s query parameters as `url.Values`.
 func (r PaymentFlowListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

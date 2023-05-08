@@ -9,16 +9,24 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// TransactionService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the [NewTransactionService]
+// method instead.
 type TransactionService struct {
 	Options []option.RequestOption
 }
 
+// NewTransactionService generates a new service that applies the given options to
+// each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewTransactionService(opts ...option.RequestOption) (r *TransactionService) {
 	r = &TransactionService{}
 	r.Options = opts
@@ -122,39 +130,37 @@ type Transaction struct {
 	// The type of the transaction. Can be one of `ach`, `wire`, `check`, `rtp`,
 	// `book`, or `sen`.
 	Type TransactionType `json:"type,required"`
-	JSON TransactionJSON
+	JSON transactionJSON
 }
 
-type TransactionJSON struct {
-	ID                apijson.Metadata
-	Object            apijson.Metadata
-	LiveMode          apijson.Metadata
-	CreatedAt         apijson.Metadata
-	UpdatedAt         apijson.Metadata
-	DiscardedAt       apijson.Metadata
-	Amount            apijson.Metadata
-	Currency          apijson.Metadata
-	Direction         apijson.Metadata
-	VendorDescription apijson.Metadata
-	VendorCode        apijson.Metadata
-	VendorCodeType    apijson.Metadata
-	VendorID          apijson.Metadata
-	AsOfDate          apijson.Metadata
-	AsOfTime          apijson.Metadata
-	InternalAccountID apijson.Metadata
-	Metadata          apijson.Metadata
-	Posted            apijson.Metadata
-	VendorCustomerID  apijson.Metadata
-	Reconciled        apijson.Metadata
-	Details           apijson.Metadata
-	Type              apijson.Metadata
+// transactionJSON contains the JSON metadata for the struct [Transaction]
+type transactionJSON struct {
+	ID                apijson.Field
+	Object            apijson.Field
+	LiveMode          apijson.Field
+	CreatedAt         apijson.Field
+	UpdatedAt         apijson.Field
+	DiscardedAt       apijson.Field
+	Amount            apijson.Field
+	Currency          apijson.Field
+	Direction         apijson.Field
+	VendorDescription apijson.Field
+	VendorCode        apijson.Field
+	VendorCodeType    apijson.Field
+	VendorID          apijson.Field
+	AsOfDate          apijson.Field
+	AsOfTime          apijson.Field
+	InternalAccountID apijson.Field
+	Metadata          apijson.Field
+	Posted            apijson.Field
+	VendorCustomerID  apijson.Field
+	Reconciled        apijson.Field
+	Details           apijson.Field
+	Type              apijson.Field
 	raw               string
-	Extras            map[string]apijson.Metadata
+	ExtraFields       map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into Transaction using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *Transaction) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -209,45 +215,41 @@ const (
 type TransactionUpdateParams struct {
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
 	// an empty string or `null` as the value.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes TransactionUpdateParams into an array of bytes using the
-// gjson library. Members of the `jsonFields` field are serialized into the
-// top-level, and will overwrite known members of the same name.
 func (r TransactionUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 type TransactionListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 	// Specify `internal_account_id` if you wish to see transactions to/from a specific
 	// account.
-	InternalAccountID field.Field[string] `query:"internal_account_id" format:"uuid"`
-	VirtualAccountID  field.Field[string] `query:"virtual_account_id" format:"uuid"`
+	InternalAccountID param.Field[string] `query:"internal_account_id" format:"uuid"`
+	VirtualAccountID  param.Field[string] `query:"virtual_account_id" format:"uuid"`
 	// Either `true` or `false`.
-	Posted field.Field[bool] `query:"posted"`
+	Posted param.Field[bool] `query:"posted"`
 	// Filters transactions with an `as_of_date` starting on or after the specified
 	// date (YYYY-MM-DD).
-	AsOfDateStart field.Field[time.Time] `query:"as_of_date_start" format:"date"`
+	AsOfDateStart param.Field[time.Time] `query:"as_of_date_start" format:"date"`
 	// Filters transactions with an `as_of_date` starting on or before the specified
 	// date (YYYY-MM-DD).
-	AsOfDateEnd      field.Field[time.Time] `query:"as_of_date_end" format:"date"`
-	Direction        field.Field[string]    `query:"direction"`
-	CounterpartyID   field.Field[string]    `query:"counterparty_id" format:"uuid"`
-	PaymentType      field.Field[string]    `query:"payment_type"`
-	TransactableType field.Field[string]    `query:"transactable_type"`
+	AsOfDateEnd      param.Field[time.Time] `query:"as_of_date_end" format:"date"`
+	Direction        param.Field[string]    `query:"direction"`
+	CounterpartyID   param.Field[string]    `query:"counterparty_id" format:"uuid"`
+	PaymentType      param.Field[string]    `query:"payment_type"`
+	TransactableType param.Field[string]    `query:"transactable_type"`
 	// Filters for transactions including the queried string in the description.
-	Description field.Field[string] `query:"description"`
+	Description param.Field[string] `query:"description"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
-	Metadata field.Field[map[string]string] `query:"metadata"`
+	Metadata param.Field[map[string]string] `query:"metadata"`
 }
 
-// URLQuery serializes TransactionListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [TransactionListParams]'s query parameters as `url.Values`.
 func (r TransactionListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

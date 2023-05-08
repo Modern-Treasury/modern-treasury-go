@@ -9,16 +9,24 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// LedgerEntryService contains methods and other services that help with
+// interacting with the Modern Treasury API. Note, unlike clients, this service
+// does not read variables from the environment automatically. You should not
+// instantiate this service directly, and instead use the [NewLedgerEntryService]
+// method instead.
 type LedgerEntryService struct {
 	Options []option.RequestOption
 }
 
+// NewLedgerEntryService generates a new service that applies the given options to
+// each request. These options are applied after the parent client's options (if
+// there is one), and before any request-specific options.
 func NewLedgerEntryService(opts ...option.RequestOption) (r *LedgerEntryService) {
 	r = &LedgerEntryService{}
 	r.Options = opts
@@ -97,32 +105,30 @@ type LedgerEntry struct {
 	// https://docs.moderntreasury.com/docs/transaction-status-and-balances for more
 	// details.
 	ResultingLedgerAccountBalances LedgerEntryResultingLedgerAccountBalances `json:"resulting_ledger_account_balances,required,nullable"`
-	JSON                           LedgerEntryJSON
+	JSON                           ledgerEntryJSON
 }
 
-type LedgerEntryJSON struct {
-	ID                             apijson.Metadata
-	Object                         apijson.Metadata
-	LiveMode                       apijson.Metadata
-	CreatedAt                      apijson.Metadata
-	UpdatedAt                      apijson.Metadata
-	DiscardedAt                    apijson.Metadata
-	Amount                         apijson.Metadata
-	Direction                      apijson.Metadata
-	Status                         apijson.Metadata
-	LedgerAccountID                apijson.Metadata
-	LedgerAccountLockVersion       apijson.Metadata
-	LedgerAccountCurrency          apijson.Metadata
-	LedgerAccountCurrencyExponent  apijson.Metadata
-	LedgerTransactionID            apijson.Metadata
-	ResultingLedgerAccountBalances apijson.Metadata
+// ledgerEntryJSON contains the JSON metadata for the struct [LedgerEntry]
+type ledgerEntryJSON struct {
+	ID                             apijson.Field
+	Object                         apijson.Field
+	LiveMode                       apijson.Field
+	CreatedAt                      apijson.Field
+	UpdatedAt                      apijson.Field
+	DiscardedAt                    apijson.Field
+	Amount                         apijson.Field
+	Direction                      apijson.Field
+	Status                         apijson.Field
+	LedgerAccountID                apijson.Field
+	LedgerAccountLockVersion       apijson.Field
+	LedgerAccountCurrency          apijson.Field
+	LedgerAccountCurrencyExponent  apijson.Field
+	LedgerTransactionID            apijson.Field
+	ResultingLedgerAccountBalances apijson.Field
 	raw                            string
-	Extras                         map[string]apijson.Metadata
+	ExtraFields                    map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into LedgerEntry using the
-// internal json library. Unrecognized fields are stored in the `jsonFields`
-// property.
 func (r *LedgerEntry) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
@@ -142,6 +148,13 @@ const (
 	LedgerEntryStatusPosted   LedgerEntryStatus = "posted"
 )
 
+// The pending, posted, and available balances for this ledger entry's ledger
+// account. The posted balance is the sum of all posted entries on the account. The
+// pending balance is the sum of all pending and posted entries on the account. The
+// available balance is the posted incoming entries minus the sum of the pending
+// and posted outgoing amounts. Please see
+// https://docs.moderntreasury.com/docs/transaction-status-and-balances for more
+// details.
 type LedgerEntryResultingLedgerAccountBalances struct {
 	// The pending_balance is the sum of all pending and posted entries.
 	PendingBalance LedgerEntryResultingLedgerAccountBalancesPendingBalance `json:"pending_balance,required"`
@@ -152,24 +165,24 @@ type LedgerEntryResultingLedgerAccountBalances struct {
 	// pending_debits; for debit normal, available_amount = posted_debits -
 	// pending_credits.
 	AvailableBalance LedgerEntryResultingLedgerAccountBalancesAvailableBalance `json:"available_balance,required"`
-	JSON             LedgerEntryResultingLedgerAccountBalancesJSON
+	JSON             ledgerEntryResultingLedgerAccountBalancesJSON
 }
 
-type LedgerEntryResultingLedgerAccountBalancesJSON struct {
-	PendingBalance   apijson.Metadata
-	PostedBalance    apijson.Metadata
-	AvailableBalance apijson.Metadata
+// ledgerEntryResultingLedgerAccountBalancesJSON contains the JSON metadata for the
+// struct [LedgerEntryResultingLedgerAccountBalances]
+type ledgerEntryResultingLedgerAccountBalancesJSON struct {
+	PendingBalance   apijson.Field
+	PostedBalance    apijson.Field
+	AvailableBalance apijson.Field
 	raw              string
-	Extras           map[string]apijson.Metadata
+	ExtraFields      map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// LedgerEntryResultingLedgerAccountBalances using the internal json library.
-// Unrecognized fields are stored in the `jsonFields` property.
 func (r *LedgerEntryResultingLedgerAccountBalances) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The pending_balance is the sum of all pending and posted entries.
 type LedgerEntryResultingLedgerAccountBalancesPendingBalance struct {
 	Credits int64 `json:"credits,required"`
 	Debits  int64 `json:"debits,required"`
@@ -178,26 +191,27 @@ type LedgerEntryResultingLedgerAccountBalancesPendingBalance struct {
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64 `json:"currency_exponent,required"`
-	JSON             LedgerEntryResultingLedgerAccountBalancesPendingBalanceJSON
+	JSON             ledgerEntryResultingLedgerAccountBalancesPendingBalanceJSON
 }
 
-type LedgerEntryResultingLedgerAccountBalancesPendingBalanceJSON struct {
-	Credits          apijson.Metadata
-	Debits           apijson.Metadata
-	Amount           apijson.Metadata
-	Currency         apijson.Metadata
-	CurrencyExponent apijson.Metadata
+// ledgerEntryResultingLedgerAccountBalancesPendingBalanceJSON contains the JSON
+// metadata for the struct
+// [LedgerEntryResultingLedgerAccountBalancesPendingBalance]
+type ledgerEntryResultingLedgerAccountBalancesPendingBalanceJSON struct {
+	Credits          apijson.Field
+	Debits           apijson.Field
+	Amount           apijson.Field
+	Currency         apijson.Field
+	CurrencyExponent apijson.Field
 	raw              string
-	Extras           map[string]apijson.Metadata
+	ExtraFields      map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// LedgerEntryResultingLedgerAccountBalancesPendingBalance using the internal json
-// library. Unrecognized fields are stored in the `jsonFields` property.
 func (r *LedgerEntryResultingLedgerAccountBalancesPendingBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The posted_balance is the sum of all posted entries.
 type LedgerEntryResultingLedgerAccountBalancesPostedBalance struct {
 	Credits int64 `json:"credits,required"`
 	Debits  int64 `json:"debits,required"`
@@ -206,26 +220,29 @@ type LedgerEntryResultingLedgerAccountBalancesPostedBalance struct {
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64 `json:"currency_exponent,required"`
-	JSON             LedgerEntryResultingLedgerAccountBalancesPostedBalanceJSON
+	JSON             ledgerEntryResultingLedgerAccountBalancesPostedBalanceJSON
 }
 
-type LedgerEntryResultingLedgerAccountBalancesPostedBalanceJSON struct {
-	Credits          apijson.Metadata
-	Debits           apijson.Metadata
-	Amount           apijson.Metadata
-	Currency         apijson.Metadata
-	CurrencyExponent apijson.Metadata
+// ledgerEntryResultingLedgerAccountBalancesPostedBalanceJSON contains the JSON
+// metadata for the struct [LedgerEntryResultingLedgerAccountBalancesPostedBalance]
+type ledgerEntryResultingLedgerAccountBalancesPostedBalanceJSON struct {
+	Credits          apijson.Field
+	Debits           apijson.Field
+	Amount           apijson.Field
+	Currency         apijson.Field
+	CurrencyExponent apijson.Field
 	raw              string
-	Extras           map[string]apijson.Metadata
+	ExtraFields      map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// LedgerEntryResultingLedgerAccountBalancesPostedBalance using the internal json
-// library. Unrecognized fields are stored in the `jsonFields` property.
 func (r *LedgerEntryResultingLedgerAccountBalancesPostedBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The available_balance is the sum of all posted inbound entries and pending
+// outbound entries. For credit normal, available_amount = posted_credits -
+// pending_debits; for debit normal, available_amount = posted_debits -
+// pending_credits.
 type LedgerEntryResultingLedgerAccountBalancesAvailableBalance struct {
 	Credits int64 `json:"credits,required"`
 	Debits  int64 `json:"debits,required"`
@@ -234,72 +251,71 @@ type LedgerEntryResultingLedgerAccountBalancesAvailableBalance struct {
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64 `json:"currency_exponent,required"`
-	JSON             LedgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON
+	JSON             ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON
 }
 
-type LedgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON struct {
-	Credits          apijson.Metadata
-	Debits           apijson.Metadata
-	Amount           apijson.Metadata
-	Currency         apijson.Metadata
-	CurrencyExponent apijson.Metadata
+// ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON contains the JSON
+// metadata for the struct
+// [LedgerEntryResultingLedgerAccountBalancesAvailableBalance]
+type ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON struct {
+	Credits          apijson.Field
+	Debits           apijson.Field
+	Amount           apijson.Field
+	Currency         apijson.Field
+	CurrencyExponent apijson.Field
 	raw              string
-	Extras           map[string]apijson.Metadata
+	ExtraFields      map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into
-// LedgerEntryResultingLedgerAccountBalancesAvailableBalance using the internal
-// json library. Unrecognized fields are stored in the `jsonFields` property.
 func (r *LedgerEntryResultingLedgerAccountBalancesAvailableBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 type LedgerEntryListParams struct {
-	AfterCursor         field.Field[string]            `query:"after_cursor,nullable"`
-	PerPage             field.Field[int64]             `query:"per_page"`
-	ID                  field.Field[map[string]string] `query:"id"`
-	LedgerAccountID     field.Field[string]            `query:"ledger_account_id"`
-	LedgerTransactionID field.Field[string]            `query:"ledger_transaction_id"`
+	AfterCursor         param.Field[string]            `query:"after_cursor,nullable"`
+	PerPage             param.Field[int64]             `query:"per_page"`
+	ID                  param.Field[map[string]string] `query:"id"`
+	LedgerAccountID     param.Field[string]            `query:"ledger_account_id"`
+	LedgerTransactionID param.Field[string]            `query:"ledger_transaction_id"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// transaction's effective date. Format YYYY-MM-DD
-	EffectiveDate field.Field[map[string]time.Time] `query:"effective_date" format:"date"`
+	EffectiveDate param.Field[map[string]time.Time] `query:"effective_date" format:"date"`
 	// Use "gt" (>), "gte" (>=), "lt" (<), "lte" (<=), or "eq" (=) to filter by the
 	// transaction's effective time. Format ISO8601
-	EffectiveAt field.Field[map[string]string] `query:"effective_at" format:"time"`
+	EffectiveAt param.Field[map[string]string] `query:"effective_at" format:"time"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// updated_at%5Bgt%5D=2000-01-01T12:00:00Z.
-	UpdatedAt field.Field[map[string]time.Time] `query:"updated_at" format:"date-time"`
+	UpdatedAt param.Field[map[string]time.Time] `query:"updated_at" format:"date-time"`
 	// Shows all ledger entries that were present on a ledger account at a particular
 	// `lock_version`. You must also specify `ledger_account_id`.
-	AsOfLockVersion field.Field[int64] `query:"as_of_lock_version"`
+	AsOfLockVersion param.Field[int64] `query:"as_of_lock_version"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// lock_version of a ledger account. For example, for all entries created at or
 	// before before lock_version 1000 of a ledger account, use
 	// `ledger_account_lock_version%5Blte%5D=1000`.
-	LedgerAccountLockVersion field.Field[map[string]int64] `query:"ledger_account_lock_version"`
+	LedgerAccountLockVersion param.Field[map[string]int64] `query:"ledger_account_lock_version"`
 	// Get all ledger entries that match the direction specified. One of `credit`,
 	// `debit`.
-	LedgerAccountCategoryID field.Field[string] `query:"ledger_account_category_id"`
+	LedgerAccountCategoryID param.Field[string] `query:"ledger_account_category_id"`
 	// If true, response will include ledger entries that were deleted. When you update
 	// a ledger transaction to specify a new set of entries, the previous entries are
 	// deleted.
-	ShowDeleted field.Field[bool] `query:"show_deleted"`
+	ShowDeleted param.Field[bool] `query:"show_deleted"`
 	// If true, response will include ledger entries that were deleted. When you update
 	// a ledger transaction to specify a new set of entries, the previous entries are
 	// deleted.
-	Direction field.Field[LedgerEntryListParamsDirection] `query:"direction"`
+	Direction param.Field[LedgerEntryListParamsDirection] `query:"direction"`
 	// Get all ledger entries that match the status specified. One of `pending`,
 	// `posted`, or `archived`.
-	Status field.Field[LedgerEntryListParamsStatus] `query:"status"`
+	Status param.Field[LedgerEntryListParamsStatus] `query:"status"`
 	// Order by `created_at` or `effective_at` in `asc` or `desc` order. For example,
 	// to order by `effective_at asc`, use `order_by%5Beffective_at%5D=asc`. Ordering
 	// by only one field at a time is supported.
-	OrderBy field.Field[LedgerEntryListParamsOrderBy] `query:"order_by"`
+	OrderBy param.Field[LedgerEntryListParamsOrderBy] `query:"order_by"`
 }
 
-// URLQuery serializes LedgerEntryListParams into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [LedgerEntryListParams]'s query parameters as `url.Values`.
 func (r LedgerEntryListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
@@ -319,13 +335,16 @@ const (
 	LedgerEntryListParamsStatusArchived LedgerEntryListParamsStatus = "archived"
 )
 
+// Order by `created_at` or `effective_at` in `asc` or `desc` order. For example,
+// to order by `effective_at asc`, use `order_by%5Beffective_at%5D=asc`. Ordering
+// by only one field at a time is supported.
 type LedgerEntryListParamsOrderBy struct {
-	CreatedAt   field.Field[LedgerEntryListParamsOrderByCreatedAt]   `query:"created_at"`
-	EffectiveAt field.Field[LedgerEntryListParamsOrderByEffectiveAt] `query:"effective_at"`
+	CreatedAt   param.Field[LedgerEntryListParamsOrderByCreatedAt]   `query:"created_at"`
+	EffectiveAt param.Field[LedgerEntryListParamsOrderByEffectiveAt] `query:"effective_at"`
 }
 
-// URLQuery serializes LedgerEntryListParamsOrderBy into a url.Values of the query
-// parameters associated with this value
+// URLQuery serializes [LedgerEntryListParamsOrderBy]'s query parameters as
+// `url.Values`.
 func (r LedgerEntryListParamsOrderBy) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }

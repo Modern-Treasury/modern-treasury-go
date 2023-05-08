@@ -9,16 +9,23 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/field"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
+// LedgerService contains methods and other services that help with interacting
+// with the Modern Treasury API. Note, unlike clients, this service does not read
+// variables from the environment automatically. You should not instantiate this
+// service directly, and instead use the [NewLedgerService] method instead.
 type LedgerService struct {
 	Options []option.RequestOption
 }
 
+// NewLedgerService generates a new service that applies the given options to each
+// request. These options are applied after the parent client's options (if there
+// is one), and before any request-specific options.
 func NewLedgerService(opts ...option.RequestOption) (r *LedgerService) {
 	r = &LedgerService{}
 	r.Options = opts
@@ -97,78 +104,70 @@ type Ledger struct {
 	// strings.
 	Metadata    map[string]string      `json:"metadata,required"`
 	ExtraFields map[string]interface{} `json:"-,extras"`
-	JSON        LedgerJSON
+	JSON        ledgerJSON
 }
 
-type LedgerJSON struct {
-	ID          apijson.Metadata
-	Object      apijson.Metadata
-	LiveMode    apijson.Metadata
-	CreatedAt   apijson.Metadata
-	UpdatedAt   apijson.Metadata
-	DiscardedAt apijson.Metadata
-	Name        apijson.Metadata
-	Description apijson.Metadata
-	Metadata    apijson.Metadata
+// ledgerJSON contains the JSON metadata for the struct [Ledger]
+type ledgerJSON struct {
+	ID          apijson.Field
+	Object      apijson.Field
+	LiveMode    apijson.Field
+	CreatedAt   apijson.Field
+	UpdatedAt   apijson.Field
+	DiscardedAt apijson.Field
+	Name        apijson.Field
+	Description apijson.Field
+	Metadata    apijson.Field
 	raw         string
-	Extras      map[string]apijson.Metadata
+	ExtraFields map[string]apijson.Field
 }
 
-// UnmarshalJSON deserializes the provided bytes into Ledger using the internal
-// json library. Unrecognized fields are stored in the `jsonFields` property.
 func (r *Ledger) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 type LedgerNewParams struct {
 	// The name of the ledger.
-	Name field.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name,required"`
 	// An optional free-form description for internal use.
-	Description field.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description,nullable"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes LedgerNewParams into an array of bytes using the gjson
-// library. Members of the `jsonFields` field are serialized into the top-level,
-// and will overwrite known members of the same name.
 func (r LedgerNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 type LedgerUpdateParams struct {
 	// The name of the ledger.
-	Name field.Field[string] `json:"name"`
+	Name param.Field[string] `json:"name"`
 	// An optional free-form description for internal use.
-	Description field.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description,nullable"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata field.Field[map[string]string] `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
-// MarshalJSON serializes LedgerUpdateParams into an array of bytes using the gjson
-// library. Members of the `jsonFields` field are serialized into the top-level,
-// and will overwrite known members of the same name.
 func (r LedgerUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 type LedgerListParams struct {
-	AfterCursor field.Field[string] `query:"after_cursor,nullable"`
-	PerPage     field.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	PerPage     param.Field[int64]  `query:"per_page"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
-	Metadata field.Field[map[string]string] `query:"metadata"`
+	Metadata param.Field[map[string]string] `query:"metadata"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// updated_at%5Bgt%5D=2000-01-01T12:00:00Z.
-	UpdatedAt field.Field[map[string]time.Time] `query:"updated_at" format:"date-time"`
+	UpdatedAt param.Field[map[string]time.Time] `query:"updated_at" format:"date-time"`
 }
 
-// URLQuery serializes LedgerListParams into a url.Values of the query parameters
-// associated with this value
+// URLQuery serializes [LedgerListParams]'s query parameters as `url.Values`.
 func (r LedgerListParams) URLQuery() (v url.Values) {
 	return apiquery.Marshal(r)
 }
