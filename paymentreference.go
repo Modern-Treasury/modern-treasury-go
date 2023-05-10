@@ -150,6 +150,7 @@ const (
 	PaymentReferenceReferenceNumberTypeJpmcP3ID                        PaymentReferenceReferenceNumberType = "jpmc_p3_id"
 	PaymentReferenceReferenceNumberTypeJpmcPaymentBatchID              PaymentReferenceReferenceNumberType = "jpmc_payment_batch_id"
 	PaymentReferenceReferenceNumberTypeJpmcPaymentInformationID        PaymentReferenceReferenceNumberType = "jpmc_payment_information_id"
+	PaymentReferenceReferenceNumberTypeJpmcPaymentReturnedDatetime     PaymentReferenceReferenceNumberType = "jpmc_payment_returned_datetime"
 	PaymentReferenceReferenceNumberTypeLobCheckID                      PaymentReferenceReferenceNumberType = "lob_check_id"
 	PaymentReferenceReferenceNumberTypeOther                           PaymentReferenceReferenceNumberType = "other"
 	PaymentReferenceReferenceNumberTypePartialSwiftMir                 PaymentReferenceReferenceNumberType = "partial_swift_mir"

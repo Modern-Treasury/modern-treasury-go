@@ -316,6 +316,7 @@ const (
 	ReturnObjectReferenceNumbersReferenceNumberTypeJpmcP3ID                        ReturnObjectReferenceNumbersReferenceNumberType = "jpmc_p3_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentBatchID              ReturnObjectReferenceNumbersReferenceNumberType = "jpmc_payment_batch_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentInformationID        ReturnObjectReferenceNumbersReferenceNumberType = "jpmc_payment_information_id"
+	ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentReturnedDatetime     ReturnObjectReferenceNumbersReferenceNumberType = "jpmc_payment_returned_datetime"
 	ReturnObjectReferenceNumbersReferenceNumberTypeLobCheckID                      ReturnObjectReferenceNumbersReferenceNumberType = "lob_check_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeOther                           ReturnObjectReferenceNumbersReferenceNumberType = "other"
 	ReturnObjectReferenceNumbersReferenceNumberTypePartialSwiftMir                 ReturnObjectReferenceNumbersReferenceNumberType = "partial_swift_mir"

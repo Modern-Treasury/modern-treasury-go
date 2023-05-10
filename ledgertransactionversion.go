@@ -72,6 +72,9 @@ type LedgerTransactionVersion struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata map[string]string `json:"metadata,required"`
+	// The timestamp (ISO8601 format) at which the ledger transaction happened for
+	// reporting purposes.
+	EffectiveAt string `json:"effective_at,required" format:"time"`
 	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
 	// purposes.
 	EffectiveDate time.Time `json:"effective_date,required" format:"date"`
@@ -108,6 +111,7 @@ type ledgerTransactionVersionJSON struct {
 	Description         apijson.Field
 	Status              apijson.Field
 	Metadata            apijson.Field
+	EffectiveAt         apijson.Field
 	EffectiveDate       apijson.Field
 	LedgerEntries       apijson.Field
 	PostedAt            apijson.Field

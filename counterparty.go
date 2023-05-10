@@ -483,6 +483,13 @@ type CounterpartyNewParamsAccountsLedgerAccount struct {
 	Currency param.Field[string] `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
+	// If the ledger account links to another object in Modern Treasury, the id will be
+	// populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// If the ledger account links to another object in Modern Treasury, the type will
+	// be populated here, otherwise null. The value is one of internal_account or
+	// external_account.
+	LedgerableType param.Field[CounterpartyNewParamsAccountsLedgerAccountLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -493,6 +500,13 @@ type CounterpartyNewParamsAccountsLedgerAccountNormalBalance string
 const (
 	CounterpartyNewParamsAccountsLedgerAccountNormalBalanceCredit CounterpartyNewParamsAccountsLedgerAccountNormalBalance = "credit"
 	CounterpartyNewParamsAccountsLedgerAccountNormalBalanceDebit  CounterpartyNewParamsAccountsLedgerAccountNormalBalance = "debit"
+)
+
+type CounterpartyNewParamsAccountsLedgerAccountLedgerableType string
+
+const (
+	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "external_account"
+	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeInternalAccount CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "internal_account"
 )
 
 type CounterpartyNewParamsAccountsContactDetails struct {

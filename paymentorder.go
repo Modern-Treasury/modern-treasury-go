@@ -453,6 +453,7 @@ const (
 	PaymentOrderReferenceNumbersReferenceNumberTypeJpmcP3ID                        PaymentOrderReferenceNumbersReferenceNumberType = "jpmc_p3_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeJpmcPaymentBatchID              PaymentOrderReferenceNumbersReferenceNumberType = "jpmc_payment_batch_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeJpmcPaymentInformationID        PaymentOrderReferenceNumbersReferenceNumberType = "jpmc_payment_information_id"
+	PaymentOrderReferenceNumbersReferenceNumberTypeJpmcPaymentReturnedDatetime     PaymentOrderReferenceNumbersReferenceNumberType = "jpmc_payment_returned_datetime"
 	PaymentOrderReferenceNumbersReferenceNumberTypeLobCheckID                      PaymentOrderReferenceNumbersReferenceNumberType = "lob_check_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeOther                           PaymentOrderReferenceNumbersReferenceNumberType = "other"
 	PaymentOrderReferenceNumbersReferenceNumberTypePartialSwiftMir                 PaymentOrderReferenceNumbersReferenceNumberType = "partial_swift_mir"
@@ -767,6 +768,13 @@ type PaymentOrderNewParamsReceivingAccountLedgerAccount struct {
 	Currency param.Field[string] `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
+	// If the ledger account links to another object in Modern Treasury, the id will be
+	// populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// If the ledger account links to another object in Modern Treasury, the type will
+	// be populated here, otherwise null. The value is one of internal_account or
+	// external_account.
+	LedgerableType param.Field[PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -777,6 +785,13 @@ type PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalance string
 const (
 	PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalanceCredit PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalance = "credit"
 	PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalanceDebit  PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalance = "debit"
+)
+
+type PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType string
+
+const (
+	PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType = "external_account"
+	PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType = "internal_account"
 )
 
 type PaymentOrderNewParamsReceivingAccountContactDetails struct {
@@ -1218,6 +1233,13 @@ type PaymentOrderUpdateParamsReceivingAccountLedgerAccount struct {
 	Currency param.Field[string] `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
+	// If the ledger account links to another object in Modern Treasury, the id will be
+	// populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// If the ledger account links to another object in Modern Treasury, the type will
+	// be populated here, otherwise null. The value is one of internal_account or
+	// external_account.
+	LedgerableType param.Field[PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -1228,6 +1250,13 @@ type PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalance string
 const (
 	PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalanceCredit PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalance = "credit"
 	PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalanceDebit  PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalance = "debit"
+)
+
+type PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType string
+
+const (
+	PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType = "external_account"
+	PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType = "internal_account"
 )
 
 type PaymentOrderUpdateParamsReceivingAccountContactDetails struct {
@@ -1632,6 +1661,13 @@ type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount struct {
 	Currency param.Field[string] `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
+	// If the ledger account links to another object in Modern Treasury, the id will be
+	// populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// If the ledger account links to another object in Modern Treasury, the type will
+	// be populated here, otherwise null. The value is one of internal_account or
+	// external_account.
+	LedgerableType param.Field[PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -1642,6 +1678,13 @@ type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalance string
 const (
 	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalanceCredit PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalance = "credit"
 	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalanceDebit  PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalance = "debit"
+)
+
+type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType string
+
+const (
+	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType = "external_account"
+	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType = "internal_account"
 )
 
 type PaymentOrderNewAsyncParamsReceivingAccountContactDetails struct {
