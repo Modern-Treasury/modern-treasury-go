@@ -317,7 +317,10 @@ type LedgerEntryListParams struct {
 
 // URLQuery serializes [LedgerEntryListParams]'s query parameters as `url.Values`.
 func (r LedgerEntryListParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type LedgerEntryListParamsDirection string
@@ -346,7 +349,10 @@ type LedgerEntryListParamsOrderBy struct {
 // URLQuery serializes [LedgerEntryListParamsOrderBy]'s query parameters as
 // `url.Values`.
 func (r LedgerEntryListParamsOrderBy) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type LedgerEntryListParamsOrderByCreatedAt string

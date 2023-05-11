@@ -342,7 +342,10 @@ type LedgerAccountCategoryGetParams struct {
 // URLQuery serializes [LedgerAccountCategoryGetParams]'s query parameters as
 // `url.Values`.
 func (r LedgerAccountCategoryGetParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 // For example, if you want the balances as of a particular effective date
@@ -357,7 +360,10 @@ type LedgerAccountCategoryGetParamsBalances struct {
 // URLQuery serializes [LedgerAccountCategoryGetParamsBalances]'s query parameters
 // as `url.Values`.
 func (r LedgerAccountCategoryGetParamsBalances) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type LedgerAccountCategoryUpdateParams struct {
@@ -377,7 +383,10 @@ func (r LedgerAccountCategoryUpdateParams) MarshalJSON() (data []byte, err error
 // URLQuery serializes [LedgerAccountCategoryUpdateParams]'s query parameters as
 // `url.Values`.
 func (r LedgerAccountCategoryUpdateParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 // For example, if you want the balances as of a particular effective date
@@ -392,7 +401,10 @@ type LedgerAccountCategoryUpdateParamsBalances struct {
 // URLQuery serializes [LedgerAccountCategoryUpdateParamsBalances]'s query
 // parameters as `url.Values`.
 func (r LedgerAccountCategoryUpdateParamsBalances) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type LedgerAccountCategoryListParams struct {
@@ -411,7 +423,10 @@ type LedgerAccountCategoryListParams struct {
 // URLQuery serializes [LedgerAccountCategoryListParams]'s query parameters as
 // `url.Values`.
 func (r LedgerAccountCategoryListParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type LedgerAccountCategoryDeleteParams struct {
@@ -425,7 +440,10 @@ type LedgerAccountCategoryDeleteParams struct {
 // URLQuery serializes [LedgerAccountCategoryDeleteParams]'s query parameters as
 // `url.Values`.
 func (r LedgerAccountCategoryDeleteParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 // For example, if you want the balances as of a particular effective date
@@ -440,5 +458,8 @@ type LedgerAccountCategoryDeleteParamsBalances struct {
 // URLQuery serializes [LedgerAccountCategoryDeleteParamsBalances]'s query
 // parameters as `url.Values`.
 func (r LedgerAccountCategoryDeleteParamsBalances) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

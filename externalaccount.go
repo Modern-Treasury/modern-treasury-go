@@ -411,6 +411,13 @@ type ExternalAccountNewParamsLedgerAccount struct {
 	Currency param.Field[string] `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
+	// If the ledger account links to another object in Modern Treasury, the id will be
+	// populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// If the ledger account links to another object in Modern Treasury, the type will
+	// be populated here, otherwise null. The value is one of internal_account or
+	// external_account.
+	LedgerableType param.Field[ExternalAccountNewParamsLedgerAccountLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -421,6 +428,13 @@ type ExternalAccountNewParamsLedgerAccountNormalBalance string
 const (
 	ExternalAccountNewParamsLedgerAccountNormalBalanceCredit ExternalAccountNewParamsLedgerAccountNormalBalance = "credit"
 	ExternalAccountNewParamsLedgerAccountNormalBalanceDebit  ExternalAccountNewParamsLedgerAccountNormalBalance = "debit"
+)
+
+type ExternalAccountNewParamsLedgerAccountLedgerableType string
+
+const (
+	ExternalAccountNewParamsLedgerAccountLedgerableTypeExternalAccount ExternalAccountNewParamsLedgerAccountLedgerableType = "external_account"
+	ExternalAccountNewParamsLedgerAccountLedgerableTypeInternalAccount ExternalAccountNewParamsLedgerAccountLedgerableType = "internal_account"
 )
 
 type ExternalAccountNewParamsContactDetails struct {
@@ -492,7 +506,10 @@ type ExternalAccountListParams struct {
 // URLQuery serializes [ExternalAccountListParams]'s query parameters as
 // `url.Values`.
 func (r ExternalAccountListParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type ExternalAccountCompleteVerificationParams struct {

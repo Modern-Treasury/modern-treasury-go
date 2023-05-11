@@ -187,7 +187,10 @@ type LineItemListParams struct {
 
 // URLQuery serializes [LineItemListParams]'s query parameters as `url.Values`.
 func (r LineItemListParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type LineItemListParamsItemizableType string

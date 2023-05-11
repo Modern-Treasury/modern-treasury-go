@@ -150,6 +150,7 @@ const (
 	PaymentReferenceReferenceNumberTypeJpmcP3ID                        PaymentReferenceReferenceNumberType = "jpmc_p3_id"
 	PaymentReferenceReferenceNumberTypeJpmcPaymentBatchID              PaymentReferenceReferenceNumberType = "jpmc_payment_batch_id"
 	PaymentReferenceReferenceNumberTypeJpmcPaymentInformationID        PaymentReferenceReferenceNumberType = "jpmc_payment_information_id"
+	PaymentReferenceReferenceNumberTypeJpmcPaymentReturnedDatetime     PaymentReferenceReferenceNumberType = "jpmc_payment_returned_datetime"
 	PaymentReferenceReferenceNumberTypeLobCheckID                      PaymentReferenceReferenceNumberType = "lob_check_id"
 	PaymentReferenceReferenceNumberTypeOther                           PaymentReferenceReferenceNumberType = "other"
 	PaymentReferenceReferenceNumberTypePartialSwiftMir                 PaymentReferenceReferenceNumberType = "partial_swift_mir"
@@ -185,7 +186,10 @@ type PaymentReferenceListParams struct {
 // URLQuery serializes [PaymentReferenceListParams]'s query parameters as
 // `url.Values`.
 func (r PaymentReferenceListParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type PaymentReferenceListParamsReferenceableType string
