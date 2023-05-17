@@ -919,6 +919,13 @@ type PaymentOrderNewParamsDocuments struct {
 	File         param.Field[io.Reader] `json:"file,required" format:"binary"`
 }
 
+type PaymentOrderNewParamsContentType string
+
+const (
+	PaymentOrderNewParamsContentTypeApplicationJson   PaymentOrderNewParamsContentType = "application/json"
+	PaymentOrderNewParamsContentTypeMultipartFormData PaymentOrderNewParamsContentType = "multipart/form-data"
+)
+
 type PaymentOrderUpdateParams struct {
 	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
 	// `au_becs`, `interac`, `signet`, `provexchange`.
