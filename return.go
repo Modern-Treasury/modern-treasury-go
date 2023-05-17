@@ -316,6 +316,7 @@ const (
 	ReturnObjectReferenceNumbersReferenceNumberTypeJpmcP3ID                        ReturnObjectReferenceNumbersReferenceNumberType = "jpmc_p3_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentBatchID              ReturnObjectReferenceNumbersReferenceNumberType = "jpmc_payment_batch_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentInformationID        ReturnObjectReferenceNumbersReferenceNumberType = "jpmc_payment_information_id"
+	ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentReturnedDatetime     ReturnObjectReferenceNumbersReferenceNumberType = "jpmc_payment_returned_datetime"
 	ReturnObjectReferenceNumbersReferenceNumberTypeLobCheckID                      ReturnObjectReferenceNumbersReferenceNumberType = "lob_check_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeOther                           ReturnObjectReferenceNumbersReferenceNumberType = "other"
 	ReturnObjectReferenceNumbersReferenceNumberTypePartialSwiftMir                 ReturnObjectReferenceNumbersReferenceNumberType = "partial_swift_mir"
@@ -430,7 +431,10 @@ type ReturnListParams struct {
 
 // URLQuery serializes [ReturnListParams]'s query parameters as `url.Values`.
 func (r ReturnListParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type ReturnListParamsReturnableType string

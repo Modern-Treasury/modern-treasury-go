@@ -211,7 +211,10 @@ type BalanceReportListParams struct {
 // URLQuery serializes [BalanceReportListParams]'s query parameters as
 // `url.Values`.
 func (r BalanceReportListParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type BalanceReportListParamsBalanceReportType string

@@ -491,5 +491,8 @@ type InvoiceListParams struct {
 
 // URLQuery serializes [InvoiceListParams]'s query parameters as `url.Values`.
 func (r InvoiceListParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

@@ -88,6 +88,8 @@ type LedgerAccountPayout struct {
 	LiveMode  bool      `json:"live_mode,required"`
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	// The id of the ledger that this ledger account payout belongs to.
+	LedgerID string `json:"ledger_id,required" format:"uuid"`
 	// The description of the ledger account payout.
 	Description string `json:"description,required,nullable"`
 	// The status of the ledger account payout. One of `processing`, `pending`,
@@ -103,7 +105,7 @@ type LedgerAccountPayout struct {
 	// be included in the ledger account payout. The default value is the created_at
 	// timestamp of the ledger account payout.
 	EffectiveAtUpperBound string `json:"effective_at_upper_bound,required" format:"time"`
-	// The ledger transaction that this payout is associated with.
+	// The id of the ledger transaction that this payout is associated with.
 	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
 	// The amount of the ledger account payout.
 	Amount int64 `json:"amount,required,nullable"`
@@ -125,6 +127,7 @@ type ledgerAccountPayoutJSON struct {
 	LiveMode               apijson.Field
 	CreatedAt              apijson.Field
 	UpdatedAt              apijson.Field
+	LedgerID               apijson.Field
 	Description            apijson.Field
 	Status                 apijson.Field
 	PayoutLedgerAccountID  apijson.Field
@@ -216,5 +219,8 @@ type LedgerAccountPayoutListParams struct {
 // URLQuery serializes [LedgerAccountPayoutListParams]'s query parameters as
 // `url.Values`.
 func (r LedgerAccountPayoutListParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }

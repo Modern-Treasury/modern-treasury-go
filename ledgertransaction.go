@@ -367,7 +367,10 @@ type LedgerTransactionListParams struct {
 // URLQuery serializes [LedgerTransactionListParams]'s query parameters as
 // `url.Values`.
 func (r LedgerTransactionListParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 // Order by `created_at` or `effective_at` in `asc` or `desc` order. For example,
@@ -381,7 +384,10 @@ type LedgerTransactionListParamsOrderBy struct {
 // URLQuery serializes [LedgerTransactionListParamsOrderBy]'s query parameters as
 // `url.Values`.
 func (r LedgerTransactionListParamsOrderBy) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type LedgerTransactionListParamsOrderByCreatedAt string

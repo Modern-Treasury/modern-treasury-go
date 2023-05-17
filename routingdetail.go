@@ -318,7 +318,10 @@ type RoutingDetailListParams struct {
 // URLQuery serializes [RoutingDetailListParams]'s query parameters as
 // `url.Values`.
 func (r RoutingDetailListParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type RoutingDetailDeleteParamsAccountsType string

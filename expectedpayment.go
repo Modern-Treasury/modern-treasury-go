@@ -366,7 +366,10 @@ type ExpectedPaymentListParams struct {
 // URLQuery serializes [ExpectedPaymentListParams]'s query parameters as
 // `url.Values`.
 func (r ExpectedPaymentListParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type ExpectedPaymentListParamsStatus string

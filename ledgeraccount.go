@@ -288,8 +288,8 @@ func (r *LedgerAccountBalancesAvailableBalance) UnmarshalJSON(data []byte) (err 
 type LedgerAccountLedgerableType string
 
 const (
-	LedgerAccountLedgerableTypeExternalAccount LedgerAccountLedgerableType = "ExternalAccount"
-	LedgerAccountLedgerableTypeInternalAccount LedgerAccountLedgerableType = "InternalAccount"
+	LedgerAccountLedgerableTypeExternalAccount LedgerAccountLedgerableType = "external_account"
+	LedgerAccountLedgerableTypeInternalAccount LedgerAccountLedgerableType = "internal_account"
 )
 
 type LedgerAccountNewParams struct {
@@ -305,6 +305,13 @@ type LedgerAccountNewParams struct {
 	Currency param.Field[string] `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
+	// If the ledger account links to another object in Modern Treasury, the id will be
+	// populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// If the ledger account links to another object in Modern Treasury, the type will
+	// be populated here, otherwise null. The value is one of internal_account or
+	// external_account.
+	LedgerableType param.Field[LedgerAccountNewParamsLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -321,6 +328,13 @@ const (
 	LedgerAccountNewParamsNormalBalanceDebit  LedgerAccountNewParamsNormalBalance = "debit"
 )
 
+type LedgerAccountNewParamsLedgerableType string
+
+const (
+	LedgerAccountNewParamsLedgerableTypeExternalAccount LedgerAccountNewParamsLedgerableType = "external_account"
+	LedgerAccountNewParamsLedgerableTypeInternalAccount LedgerAccountNewParamsLedgerableType = "internal_account"
+)
+
 type LedgerAccountGetParams struct {
 	// Use balances[effective_at_lower_bound] and balances[effective_at_upper_bound] to
 	// get the balances change between the two timestamps. The lower bound is inclusive
@@ -331,7 +345,10 @@ type LedgerAccountGetParams struct {
 
 // URLQuery serializes [LedgerAccountGetParams]'s query parameters as `url.Values`.
 func (r LedgerAccountGetParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 // Use balances[effective_at_lower_bound] and balances[effective_at_upper_bound] to
@@ -348,7 +365,10 @@ type LedgerAccountGetParamsBalances struct {
 // URLQuery serializes [LedgerAccountGetParamsBalances]'s query parameters as
 // `url.Values`.
 func (r LedgerAccountGetParamsBalances) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type LedgerAccountUpdateParams struct {
@@ -381,7 +401,11 @@ type LedgerAccountListParams struct {
 	// supplied the balances will be retrieved not including that bound.
 	Balances param.Field[LedgerAccountListParamsBalances] `query:"balances"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
-	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
+	// created at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
+	// created_at%5Bgt%5D=2000-01-01T12:00:00Z.
+	CreatedAt param.Field[map[string]time.Time] `query:"created_at" format:"date-time"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
+	// updated at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// updated_at%5Bgt%5D=2000-01-01T12:00:00Z.
 	UpdatedAt               param.Field[map[string]time.Time] `query:"updated_at" format:"date-time"`
 	LedgerAccountCategoryID param.Field[string]               `query:"ledger_account_category_id"`
@@ -390,7 +414,10 @@ type LedgerAccountListParams struct {
 // URLQuery serializes [LedgerAccountListParams]'s query parameters as
 // `url.Values`.
 func (r LedgerAccountListParams) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 // Use balances[effective_at_lower_bound] and balances[effective_at_upper_bound] to
@@ -407,5 +434,8 @@ type LedgerAccountListParamsBalances struct {
 // URLQuery serializes [LedgerAccountListParamsBalances]'s query parameters as
 // `url.Values`.
 func (r LedgerAccountListParamsBalances) URLQuery() (v url.Values) {
-	return apiquery.Marshal(r)
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
