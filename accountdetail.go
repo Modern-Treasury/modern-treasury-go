@@ -119,6 +119,16 @@ func (r *AccountDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+type AccountDetailAccountNumberType string
+
+const (
+	AccountDetailAccountNumberTypeClabe         AccountDetailAccountNumberType = "clabe"
+	AccountDetailAccountNumberTypeIban          AccountDetailAccountNumberType = "iban"
+	AccountDetailAccountNumberTypeOther         AccountDetailAccountNumberType = "other"
+	AccountDetailAccountNumberTypePan           AccountDetailAccountNumberType = "pan"
+	AccountDetailAccountNumberTypeWalletAddress AccountDetailAccountNumberType = "wallet_address"
+)
+
 type AccountDetailParam struct {
 	ID     param.Field[string] `json:"id,required" format:"uuid"`
 	Object param.Field[string] `json:"object,required"`
@@ -140,16 +150,6 @@ type AccountDetailParam struct {
 func (r AccountDetailParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-type AccountDetailAccountNumberType string
-
-const (
-	AccountDetailAccountNumberTypeClabe         AccountDetailAccountNumberType = "clabe"
-	AccountDetailAccountNumberTypeIban          AccountDetailAccountNumberType = "iban"
-	AccountDetailAccountNumberTypeOther         AccountDetailAccountNumberType = "other"
-	AccountDetailAccountNumberTypePan           AccountDetailAccountNumberType = "pan"
-	AccountDetailAccountNumberTypeWalletAddress AccountDetailAccountNumberType = "wallet_address"
-)
 
 type AccountDetailNewParams struct {
 	// The account number for the bank account.

@@ -134,6 +134,7 @@ const (
 	PaymentReferenceReferenceNumberTypeDcBankTransactionID             PaymentReferenceReferenceNumberType = "dc_bank_transaction_id"
 	PaymentReferenceReferenceNumberTypeDwollaTransactionID             PaymentReferenceReferenceNumberType = "dwolla_transaction_id"
 	PaymentReferenceReferenceNumberTypeEftTraceNumber                  PaymentReferenceReferenceNumberType = "eft_trace_number"
+	PaymentReferenceReferenceNumberTypeEvolveTransactionID             PaymentReferenceReferenceNumberType = "evolve_transaction_id"
 	PaymentReferenceReferenceNumberTypeFedwireImad                     PaymentReferenceReferenceNumberType = "fedwire_imad"
 	PaymentReferenceReferenceNumberTypeFedwireOmad                     PaymentReferenceReferenceNumberType = "fedwire_omad"
 	PaymentReferenceReferenceNumberTypeFirstRepublicInternalID         PaymentReferenceReferenceNumberType = "first_republic_internal_id"
