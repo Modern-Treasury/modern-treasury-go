@@ -301,7 +301,7 @@ type ExternalAccountNewParams struct {
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
-	// https://dash.readme.com/project/modern-treasury/v1.1/docs/linking-to-other-modern-treasury-objects
+	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 	// for more details.
 	LedgerAccount param.Field[ExternalAccountNewParamsLedgerAccount] `json:"ledger_account"`
 	// If you've enabled the Modern Treasury + Plaid integration in your Plaid account,
@@ -396,7 +396,7 @@ const (
 // Specifies a ledger account object that will be created with the external
 // account. The resulting ledger account is linked to the external account for
 // auto-ledgering Payment objects. See
-// https://dash.readme.com/project/modern-treasury/v1.1/docs/linking-to-other-modern-treasury-objects
+// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 // for more details.
 type ExternalAccountNewParamsLedgerAccount struct {
 	// The name of the ledger account.

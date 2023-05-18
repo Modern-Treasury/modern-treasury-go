@@ -298,13 +298,16 @@ const (
 type PaymentOrderSubtype string
 
 const (
-	PaymentOrderSubtypeCcd PaymentOrderSubtype = "CCD"
-	PaymentOrderSubtypeCie PaymentOrderSubtype = "CIE"
-	PaymentOrderSubtypeCtx PaymentOrderSubtype = "CTX"
-	PaymentOrderSubtypeIat PaymentOrderSubtype = "IAT"
-	PaymentOrderSubtypePpd PaymentOrderSubtype = "PPD"
-	PaymentOrderSubtypeTel PaymentOrderSubtype = "TEL"
-	PaymentOrderSubtypeWeb PaymentOrderSubtype = "WEB"
+	PaymentOrderSubtypeBacsNewInstruction          PaymentOrderSubtype = "0C"
+	PaymentOrderSubtypeBacsCancellationInstruction PaymentOrderSubtype = "0N"
+	PaymentOrderSubtypeBacsConversionInstruction   PaymentOrderSubtype = "0S"
+	PaymentOrderSubtypeCcd                         PaymentOrderSubtype = "CCD"
+	PaymentOrderSubtypeCie                         PaymentOrderSubtype = "CIE"
+	PaymentOrderSubtypeCtx                         PaymentOrderSubtype = "CTX"
+	PaymentOrderSubtypeIat                         PaymentOrderSubtype = "IAT"
+	PaymentOrderSubtypePpd                         PaymentOrderSubtype = "PPD"
+	PaymentOrderSubtypeTel                         PaymentOrderSubtype = "TEL"
+	PaymentOrderSubtypeWeb                         PaymentOrderSubtype = "WEB"
 )
 
 type PaymentOrderDirection string
@@ -437,6 +440,7 @@ const (
 	PaymentOrderReferenceNumbersReferenceNumberTypeDcBankTransactionID             PaymentOrderReferenceNumbersReferenceNumberType = "dc_bank_transaction_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeDwollaTransactionID             PaymentOrderReferenceNumbersReferenceNumberType = "dwolla_transaction_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeEftTraceNumber                  PaymentOrderReferenceNumbersReferenceNumberType = "eft_trace_number"
+	PaymentOrderReferenceNumbersReferenceNumberTypeEvolveTransactionID             PaymentOrderReferenceNumbersReferenceNumberType = "evolve_transaction_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeFedwireImad                     PaymentOrderReferenceNumbersReferenceNumberType = "fedwire_imad"
 	PaymentOrderReferenceNumbersReferenceNumberTypeFedwireOmad                     PaymentOrderReferenceNumbersReferenceNumberType = "fedwire_omad"
 	PaymentOrderReferenceNumbersReferenceNumberTypeFirstRepublicInternalID         PaymentOrderReferenceNumbersReferenceNumberType = "first_republic_internal_id"
@@ -662,7 +666,7 @@ type PaymentOrderNewParamsReceivingAccount struct {
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
-	// https://dash.readme.com/project/modern-treasury/v1.1/docs/linking-to-other-modern-treasury-objects
+	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 	// for more details.
 	LedgerAccount param.Field[PaymentOrderNewParamsReceivingAccountLedgerAccount] `json:"ledger_account"`
 	// If you've enabled the Modern Treasury + Plaid integration in your Plaid account,
@@ -753,7 +757,7 @@ const (
 // Specifies a ledger account object that will be created with the external
 // account. The resulting ledger account is linked to the external account for
 // auto-ledgering Payment objects. See
-// https://dash.readme.com/project/modern-treasury/v1.1/docs/linking-to-other-modern-treasury-objects
+// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 // for more details.
 type PaymentOrderNewParamsReceivingAccountLedgerAccount struct {
 	// The name of the ledger account.
@@ -1127,7 +1131,7 @@ type PaymentOrderUpdateParamsReceivingAccount struct {
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
-	// https://dash.readme.com/project/modern-treasury/v1.1/docs/linking-to-other-modern-treasury-objects
+	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 	// for more details.
 	LedgerAccount param.Field[PaymentOrderUpdateParamsReceivingAccountLedgerAccount] `json:"ledger_account"`
 	// If you've enabled the Modern Treasury + Plaid integration in your Plaid account,
@@ -1218,7 +1222,7 @@ const (
 // Specifies a ledger account object that will be created with the external
 // account. The resulting ledger account is linked to the external account for
 // auto-ledgering Payment objects. See
-// https://dash.readme.com/project/modern-treasury/v1.1/docs/linking-to-other-modern-treasury-objects
+// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 // for more details.
 type PaymentOrderUpdateParamsReceivingAccountLedgerAccount struct {
 	// The name of the ledger account.
@@ -1558,7 +1562,7 @@ type PaymentOrderNewAsyncParamsReceivingAccount struct {
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
-	// https://dash.readme.com/project/modern-treasury/v1.1/docs/linking-to-other-modern-treasury-objects
+	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 	// for more details.
 	LedgerAccount param.Field[PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount] `json:"ledger_account"`
 	// If you've enabled the Modern Treasury + Plaid integration in your Plaid account,
@@ -1649,7 +1653,7 @@ const (
 // Specifies a ledger account object that will be created with the external
 // account. The resulting ledger account is linked to the external account for
 // auto-ledgering Payment objects. See
-// https://dash.readme.com/project/modern-treasury/v1.1/docs/linking-to-other-modern-treasury-objects
+// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 // for more details.
 type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount struct {
 	// The name of the ledger account.

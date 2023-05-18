@@ -300,6 +300,7 @@ const (
 	ReturnObjectReferenceNumbersReferenceNumberTypeDcBankTransactionID             ReturnObjectReferenceNumbersReferenceNumberType = "dc_bank_transaction_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeDwollaTransactionID             ReturnObjectReferenceNumbersReferenceNumberType = "dwolla_transaction_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeEftTraceNumber                  ReturnObjectReferenceNumbersReferenceNumberType = "eft_trace_number"
+	ReturnObjectReferenceNumbersReferenceNumberTypeEvolveTransactionID             ReturnObjectReferenceNumbersReferenceNumberType = "evolve_transaction_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeFedwireImad                     ReturnObjectReferenceNumbersReferenceNumberType = "fedwire_imad"
 	ReturnObjectReferenceNumbersReferenceNumberTypeFedwireOmad                     ReturnObjectReferenceNumbersReferenceNumberType = "fedwire_omad"
 	ReturnObjectReferenceNumbersReferenceNumberTypeFirstRepublicInternalID         ReturnObjectReferenceNumbersReferenceNumberType = "first_republic_internal_id"
