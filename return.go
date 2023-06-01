@@ -115,6 +115,9 @@ type ReturnObject struct {
 	FailureReason string `json:"failure_reason,required,nullable"`
 	// The role of the return, can be `originating` or `receiving`.
 	Role ReturnObjectRole `json:"role,required"`
+	// If the return's status is `returned`, this will include the return object's data
+	// that is returning this return.
+	CurrentReturn *ReturnObject `json:"current_return,required,nullable"`
 	// An array of Payment Reference objects.
 	ReferenceNumbers []ReturnObjectReferenceNumbers `json:"reference_numbers,required"`
 	// The ID of the ledger transaction linked to the return.
@@ -144,6 +147,7 @@ type returnObjectJSON struct {
 	Currency              apijson.Field
 	FailureReason         apijson.Field
 	Role                  apijson.Field
+	CurrentReturn         apijson.Field
 	ReferenceNumbers      apijson.Field
 	LedgerTransactionID   apijson.Field
 	raw                   string
@@ -300,6 +304,7 @@ const (
 	ReturnObjectReferenceNumbersReferenceNumberTypeDcBankTransactionID             ReturnObjectReferenceNumbersReferenceNumberType = "dc_bank_transaction_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeDwollaTransactionID             ReturnObjectReferenceNumbersReferenceNumberType = "dwolla_transaction_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeEftTraceNumber                  ReturnObjectReferenceNumbersReferenceNumberType = "eft_trace_number"
+	ReturnObjectReferenceNumbersReferenceNumberTypeEvolveTransactionID             ReturnObjectReferenceNumbersReferenceNumberType = "evolve_transaction_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeFedwireImad                     ReturnObjectReferenceNumbersReferenceNumberType = "fedwire_imad"
 	ReturnObjectReferenceNumbersReferenceNumberTypeFedwireOmad                     ReturnObjectReferenceNumbersReferenceNumberType = "fedwire_omad"
 	ReturnObjectReferenceNumbersReferenceNumberTypeFirstRepublicInternalID         ReturnObjectReferenceNumbersReferenceNumberType = "first_republic_internal_id"
