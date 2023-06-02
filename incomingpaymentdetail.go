@@ -73,10 +73,10 @@ func (r *IncomingPaymentDetailService) ListAutoPaging(ctx context.Context, query
 }
 
 // Simulate Incoming Payment Detail
-func (r *IncomingPaymentDetailService) NewAsync(ctx context.Context, body IncomingPaymentDetailNewAsyncParams, opts ...option.RequestOption) (res *shared.AsyncResponse, err error) {
+func (r *IncomingPaymentDetailService) NewAsync(ctx context.Context, params IncomingPaymentDetailNewAsyncParams, opts ...option.RequestOption) (res *shared.AsyncResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/simulations/incoming_payment_details/create_async"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -200,26 +200,26 @@ func (r IncomingPaymentDetailUpdateParams) MarshalJSON() (data []byte, err error
 }
 
 type IncomingPaymentDetailListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
-	PerPage     param.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
+	// Filters incoming payment details with an as_of_date starting on or before the
+	// specified date (YYYY-MM-DD).
+	AsOfDateEnd param.Field[time.Time] `query:"as_of_date_end" format:"date"`
+	// Filters incoming payment details with an as_of_date starting on or after the
+	// specified date (YYYY-MM-DD).
+	AsOfDateStart param.Field[time.Time] `query:"as_of_date_start" format:"date"`
 	// One of `credit` or `debit`.
 	Direction param.Field[IncomingPaymentDetailListParamsDirection] `query:"direction"`
+	// For example, if you want to query for records with metadata key `Type` and value
+	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
+	// parameters.
+	Metadata param.Field[map[string]string] `query:"metadata"`
+	PerPage  param.Field[int64]             `query:"per_page"`
 	// The current status of the incoming payment order. One of `pending`, `completed`,
 	// or `returned`.
 	Status param.Field[IncomingPaymentDetailListParamsStatus] `query:"status"`
 	// One of: `ach`, `book`, `check`, `eft`, `interac`, `rtp`, `sepa`, `signet`, or
 	// `wire`.
 	Type param.Field[IncomingPaymentDetailListParamsType] `query:"type"`
-	// Filters incoming payment details with an as_of_date starting on or after the
-	// specified date (YYYY-MM-DD).
-	AsOfDateStart param.Field[time.Time] `query:"as_of_date_start" format:"date"`
-	// Filters incoming payment details with an as_of_date starting on or before the
-	// specified date (YYYY-MM-DD).
-	AsOfDateEnd param.Field[time.Time] `query:"as_of_date_end" format:"date"`
-	// For example, if you want to query for records with metadata key `Type` and value
-	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
-	// parameters.
-	Metadata param.Field[map[string]string] `query:"metadata"`
 	// If the incoming payment detail is in a virtual account, the ID of the Virtual
 	// Account.
 	VirtualAccountID param.Field[string] `query:"virtual_account_id"`
@@ -264,27 +264,35 @@ const (
 )
 
 type IncomingPaymentDetailNewAsyncParams struct {
-	// One of `ach`, `wire`, `check`.
-	Type param.Field[IncomingPaymentDetailNewAsyncParamsType] `json:"type"`
-	// One of `credit`, `debit`.
-	Direction param.Field[IncomingPaymentDetailNewAsyncParamsDirection] `json:"direction"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
 	Amount param.Field[int64] `json:"amount"`
+	// Defaults to today.
+	AsOfDate param.Field[time.Time] `json:"as_of_date" format:"date"`
 	// Defaults to the currency of the originating account.
-	Currency param.Field[shared.Currency] `json:"currency,nullable"`
+	Currency param.Field[shared.Currency] `json:"currency"`
+	// One of `credit`, `debit`.
+	Direction param.Field[IncomingPaymentDetailNewAsyncParamsDirection] `json:"direction"`
 	// The ID of one of your internal accounts.
 	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
+	// One of `ach`, `wire`, `check`.
+	Type param.Field[IncomingPaymentDetailNewAsyncParamsType] `json:"type"`
 	// An optional parameter to associate the incoming payment detail to a virtual
 	// account.
-	VirtualAccountID param.Field[string] `json:"virtual_account_id,nullable" format:"uuid"`
-	// Defaults to today.
-	AsOfDate param.Field[time.Time] `json:"as_of_date,nullable" format:"date"`
+	VirtualAccountID param.Field[string] `json:"virtual_account_id" format:"uuid"`
+	IdempotencyKey   param.Field[string] `header:"Idempotency-Key"`
 }
 
 func (r IncomingPaymentDetailNewAsyncParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+type IncomingPaymentDetailNewAsyncParamsDirection string
+
+const (
+	IncomingPaymentDetailNewAsyncParamsDirectionCredit IncomingPaymentDetailNewAsyncParamsDirection = "credit"
+	IncomingPaymentDetailNewAsyncParamsDirectionDebit  IncomingPaymentDetailNewAsyncParamsDirection = "debit"
+)
 
 type IncomingPaymentDetailNewAsyncParamsType string
 
@@ -298,11 +306,4 @@ const (
 	IncomingPaymentDetailNewAsyncParamsTypeSepa    IncomingPaymentDetailNewAsyncParamsType = "sepa"
 	IncomingPaymentDetailNewAsyncParamsTypeSignet  IncomingPaymentDetailNewAsyncParamsType = "signet"
 	IncomingPaymentDetailNewAsyncParamsTypeWire    IncomingPaymentDetailNewAsyncParamsType = "wire"
-)
-
-type IncomingPaymentDetailNewAsyncParamsDirection string
-
-const (
-	IncomingPaymentDetailNewAsyncParamsDirectionCredit IncomingPaymentDetailNewAsyncParamsDirection = "credit"
-	IncomingPaymentDetailNewAsyncParamsDirectionDebit  IncomingPaymentDetailNewAsyncParamsDirection = "debit"
 )

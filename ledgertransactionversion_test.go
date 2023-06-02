@@ -19,7 +19,12 @@ func TestLedgerTransactionVersionListWithOptionalParams(t *testing.T) {
 	_, err := c.LedgerTransactions.Versions.List(
 		context.TODO(),
 		"string",
-		moderntreasury.LedgerTransactionVersionListParams{AfterCursor: moderntreasury.F("string"), PerPage: moderntreasury.F(int64(0)), CreatedAt: moderntreasury.F(map[string]time.Time{"foo": time.Now()}), Version: moderntreasury.F(map[string]int64{"foo": int64(0)})},
+		moderntreasury.LedgerTransactionVersionListParams{
+			AfterCursor: moderntreasury.F("string"),
+			CreatedAt:   moderntreasury.F(map[string]time.Time{"foo": time.Now()}),
+			PerPage:     moderntreasury.F(int64(0)),
+			Version:     moderntreasury.F(map[string]int64{"foo": int64(0)}),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

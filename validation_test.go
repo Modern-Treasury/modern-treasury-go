@@ -15,7 +15,10 @@ func TestValidationValidateRoutingNumber(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Validations.ValidateRoutingNumber(context.TODO(), moderntreasury.ValidationValidateRoutingNumberParams{RoutingNumber: moderntreasury.F("string"), RoutingNumberType: moderntreasury.F(moderntreasury.ValidationValidateRoutingNumberParamsRoutingNumberTypeAba)})
+	_, err := c.Validations.ValidateRoutingNumber(context.TODO(), moderntreasury.ValidationValidateRoutingNumberParams{
+		RoutingNumber:     moderntreasury.F("string"),
+		RoutingNumberType: moderntreasury.F(moderntreasury.ValidationValidateRoutingNumberParamsRoutingNumberTypeAba),
+	})
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

@@ -34,10 +34,10 @@ func NewLedgerAccountService(opts ...option.RequestOption) (r *LedgerAccountServ
 }
 
 // Create a ledger account.
-func (r *LedgerAccountService) New(ctx context.Context, body LedgerAccountNewParams, opts ...option.RequestOption) (res *LedgerAccount, err error) {
+func (r *LedgerAccountService) New(ctx context.Context, params LedgerAccountNewParams, opts ...option.RequestOption) (res *LedgerAccount, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/ledger_accounts"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -293,18 +293,18 @@ const (
 )
 
 type LedgerAccountNewParams struct {
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name,required"`
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description,nullable"`
-	// The normal balance of the ledger account.
-	NormalBalance param.Field[LedgerAccountNewParamsNormalBalance] `json:"normal_balance,required"`
-	// The id of the ledger that this account belongs to.
-	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
 	// The currency of the ledger account.
 	Currency param.Field[string] `json:"currency,required"`
+	// The id of the ledger that this account belongs to.
+	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
+	// The name of the ledger account.
+	Name param.Field[string] `json:"name,required"`
+	// The normal balance of the ledger account.
+	NormalBalance param.Field[LedgerAccountNewParamsNormalBalance] `json:"normal_balance,required"`
 	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
+	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
+	// The description of the ledger account.
+	Description param.Field[string] `json:"description"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
 	// populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
@@ -314,7 +314,8 @@ type LedgerAccountNewParams struct {
 	LedgerableType param.Field[LedgerAccountNewParamsLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
+	Metadata       param.Field[map[string]string] `json:"metadata"`
+	IdempotencyKey param.Field[string]            `header:"Idempotency-Key"`
 }
 
 func (r LedgerAccountNewParams) MarshalJSON() (data []byte, err error) {
@@ -372,13 +373,13 @@ func (r LedgerAccountGetParamsBalances) URLQuery() (v url.Values) {
 }
 
 type LedgerAccountUpdateParams struct {
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name"`
 	// The description of the ledger account.
-	Description param.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The name of the ledger account.
+	Name param.Field[string] `json:"name"`
 }
 
 func (r LedgerAccountUpdateParams) MarshalJSON() (data []byte, err error) {
@@ -386,15 +387,7 @@ func (r LedgerAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 }
 
 type LedgerAccountListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
-	PerPage     param.Field[int64]  `query:"per_page"`
-	// For example, if you want to query for records with metadata key `Type` and value
-	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
-	// parameters.
-	Metadata param.Field[map[string]string] `query:"metadata"`
-	ID       param.Field[string]            `query:"id"`
-	Name     param.Field[string]            `query:"name"`
-	LedgerID param.Field[string]            `query:"ledger_id"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	// Use balances[effective_at_lower_bound] and balances[effective_at_upper_bound] to
 	// get the balances change between the two timestamps. The lower bound is inclusive
 	// while the upper bound is exclusive of the provided timestamps. If no value is
@@ -403,12 +396,20 @@ type LedgerAccountListParams struct {
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// created at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// created_at%5Bgt%5D=2000-01-01T12:00:00Z.
-	CreatedAt param.Field[map[string]time.Time] `query:"created_at" format:"date-time"`
+	CreatedAt               param.Field[map[string]time.Time] `query:"created_at" format:"date-time"`
+	ID                      param.Field[string]               `query:"id"`
+	LedgerAccountCategoryID param.Field[string]               `query:"ledger_account_category_id"`
+	LedgerID                param.Field[string]               `query:"ledger_id"`
+	// For example, if you want to query for records with metadata key `Type` and value
+	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
+	// parameters.
+	Metadata param.Field[map[string]string] `query:"metadata"`
+	Name     param.Field[string]            `query:"name"`
+	PerPage  param.Field[int64]             `query:"per_page"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// updated at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// updated_at%5Bgt%5D=2000-01-01T12:00:00Z.
-	UpdatedAt               param.Field[map[string]time.Time] `query:"updated_at" format:"date-time"`
-	LedgerAccountCategoryID param.Field[string]               `query:"ledger_account_category_id"`
+	UpdatedAt param.Field[map[string]time.Time] `query:"updated_at" format:"date-time"`
 }
 
 // URLQuery serializes [LedgerAccountListParams]'s query parameters as

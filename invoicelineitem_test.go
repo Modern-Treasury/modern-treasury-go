@@ -20,7 +20,14 @@ func TestInvoiceLineItemNewWithOptionalParams(t *testing.T) {
 	_, err := c.Invoices.LineItems.New(
 		context.TODO(),
 		"string",
-		moderntreasury.InvoiceLineItemNewParams{Name: moderntreasury.F("string"), Description: moderntreasury.F("string"), Quantity: moderntreasury.F(int64(0)), UnitAmount: moderntreasury.F(int64(0)), Direction: moderntreasury.F("string")},
+		moderntreasury.InvoiceLineItemNewParams{
+			Name:           moderntreasury.F("string"),
+			UnitAmount:     moderntreasury.F(int64(0)),
+			Description:    moderntreasury.F("string"),
+			Direction:      moderntreasury.F("string"),
+			Quantity:       moderntreasury.F(int64(0)),
+			IdempotencyKey: moderntreasury.F("string"),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -61,7 +68,17 @@ func TestInvoiceLineItemUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"string",
 		"string",
-		moderntreasury.InvoiceLineItemUpdateParams{ContactDetails: moderntreasury.F([]moderntreasury.InvoiceLineItemUpdateParamsContactDetails{{ID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), Object: moderntreasury.F("string"), LiveMode: moderntreasury.F(true), CreatedAt: moderntreasury.F(time.Now()), UpdatedAt: moderntreasury.F(time.Now()), DiscardedAt: moderntreasury.F(time.Now()), ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsContactDetailsContactIdentifierTypeEmail)}, {ID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), Object: moderntreasury.F("string"), LiveMode: moderntreasury.F(true), CreatedAt: moderntreasury.F(time.Now()), UpdatedAt: moderntreasury.F(time.Now()), DiscardedAt: moderntreasury.F(time.Now()), ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsContactDetailsContactIdentifierTypeEmail)}, {ID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), Object: moderntreasury.F("string"), LiveMode: moderntreasury.F(true), CreatedAt: moderntreasury.F(time.Now()), UpdatedAt: moderntreasury.F(time.Now()), DiscardedAt: moderntreasury.F(time.Now()), ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsContactDetailsContactIdentifierTypeEmail)}}), CounterpartyID: moderntreasury.F("string"), CounterpartyBillingAddress: moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsCounterpartyBillingAddress{Line1: moderntreasury.F("string"), Line2: moderntreasury.F("string"), Locality: moderntreasury.F("string"), Region: moderntreasury.F("string"), PostalCode: moderntreasury.F("string"), Country: moderntreasury.F("string")}), CounterpartyShippingAddress: moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsCounterpartyShippingAddress{Line1: moderntreasury.F("string"), Line2: moderntreasury.F("string"), Locality: moderntreasury.F("string"), Region: moderntreasury.F("string"), PostalCode: moderntreasury.F("string"), Country: moderntreasury.F("string")}), Currency: moderntreasury.F(shared.CurrencyAed), Description: moderntreasury.F("string"), DueDate: moderntreasury.F(time.Now()), InvoicerAddress: moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsInvoicerAddress{Line1: moderntreasury.F("string"), Line2: moderntreasury.F("string"), Locality: moderntreasury.F("string"), Region: moderntreasury.F("string"), PostalCode: moderntreasury.F("string"), Country: moderntreasury.F("string")}), OriginatingAccountID: moderntreasury.F("string")},
+		moderntreasury.InvoiceLineItemUpdateParams{
+			ContactDetails:              moderntreasury.F([]moderntreasury.InvoiceLineItemUpdateParamsContactDetails{{ID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), Object: moderntreasury.F("string"), LiveMode: moderntreasury.F(true), CreatedAt: moderntreasury.F(time.Now()), UpdatedAt: moderntreasury.F(time.Now()), DiscardedAt: moderntreasury.F(time.Now()), ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsContactDetailsContactIdentifierTypeEmail)}, {ID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), Object: moderntreasury.F("string"), LiveMode: moderntreasury.F(true), CreatedAt: moderntreasury.F(time.Now()), UpdatedAt: moderntreasury.F(time.Now()), DiscardedAt: moderntreasury.F(time.Now()), ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsContactDetailsContactIdentifierTypeEmail)}, {ID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), Object: moderntreasury.F("string"), LiveMode: moderntreasury.F(true), CreatedAt: moderntreasury.F(time.Now()), UpdatedAt: moderntreasury.F(time.Now()), DiscardedAt: moderntreasury.F(time.Now()), ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsContactDetailsContactIdentifierTypeEmail)}}),
+			CounterpartyBillingAddress:  moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsCounterpartyBillingAddress{Line1: moderntreasury.F("string"), Line2: moderntreasury.F("string"), Locality: moderntreasury.F("string"), Region: moderntreasury.F("string"), PostalCode: moderntreasury.F("string"), Country: moderntreasury.F("string")}),
+			CounterpartyID:              moderntreasury.F("string"),
+			CounterpartyShippingAddress: moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsCounterpartyShippingAddress{Line1: moderntreasury.F("string"), Line2: moderntreasury.F("string"), Locality: moderntreasury.F("string"), Region: moderntreasury.F("string"), PostalCode: moderntreasury.F("string"), Country: moderntreasury.F("string")}),
+			Currency:                    moderntreasury.F(shared.CurrencyAed),
+			Description:                 moderntreasury.F("string"),
+			DueDate:                     moderntreasury.F(time.Now()),
+			InvoicerAddress:             moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsInvoicerAddress{Line1: moderntreasury.F("string"), Line2: moderntreasury.F("string"), Locality: moderntreasury.F("string"), Region: moderntreasury.F("string"), PostalCode: moderntreasury.F("string"), Country: moderntreasury.F("string")}),
+			OriginatingAccountID:        moderntreasury.F("string"),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -81,7 +98,10 @@ func TestInvoiceLineItemListWithOptionalParams(t *testing.T) {
 	_, err := c.Invoices.LineItems.List(
 		context.TODO(),
 		"string",
-		moderntreasury.InvoiceLineItemListParams{AfterCursor: moderntreasury.F("string"), PerPage: moderntreasury.F(int64(0))},
+		moderntreasury.InvoiceLineItemListParams{
+			AfterCursor: moderntreasury.F("string"),
+			PerPage:     moderntreasury.F(int64(0)),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

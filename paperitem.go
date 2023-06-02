@@ -138,15 +138,15 @@ const (
 )
 
 type PaperItemListParams struct {
+	AfterCursor param.Field[string] `query:"after_cursor"`
+	// Specify an inclusive end date (YYYY-MM-DD) when filtering by deposit_date
+	DepositDateEnd param.Field[time.Time] `query:"deposit_date_end" format:"date"`
+	// Specify an inclusive start date (YYYY-MM-DD) when filtering by deposit_date
+	DepositDateStart param.Field[time.Time] `query:"deposit_date_start" format:"date"`
 	// Specify `lockbox_number` if you wish to see paper items that are associated with
 	// a specific lockbox number.
 	LockboxNumber param.Field[string] `query:"lockbox_number"`
-	// Specify an inclusive start date (YYYY-MM-DD) when filtering by deposit_date
-	DepositDateStart param.Field[time.Time] `query:"deposit_date_start" format:"date"`
-	// Specify an inclusive end date (YYYY-MM-DD) when filtering by deposit_date
-	DepositDateEnd param.Field[time.Time] `query:"deposit_date_end" format:"date"`
-	AfterCursor    param.Field[string]    `query:"after_cursor,nullable"`
-	PerPage        param.Field[int64]     `query:"per_page"`
+	PerPage       param.Field[int64]  `query:"per_page"`
 }
 
 // URLQuery serializes [PaperItemListParams]'s query parameters as `url.Values`.

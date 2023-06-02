@@ -20,7 +20,12 @@ func TestRoutingDetailNewWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		moderntreasury.RoutingDetailNewParamsAccountsTypeExternalAccounts,
 		"string",
-		moderntreasury.RoutingDetailNewParams{RoutingNumber: moderntreasury.F("string"), RoutingNumberType: moderntreasury.F(moderntreasury.RoutingDetailNewParamsRoutingNumberTypeAba), PaymentType: moderntreasury.F(moderntreasury.RoutingDetailNewParamsPaymentTypeACH)},
+		moderntreasury.RoutingDetailNewParams{
+			RoutingNumber:     moderntreasury.F("string"),
+			RoutingNumberType: moderntreasury.F(moderntreasury.RoutingDetailNewParamsRoutingNumberTypeAba),
+			PaymentType:       moderntreasury.F(moderntreasury.RoutingDetailNewParamsPaymentTypeACH),
+			IdempotencyKey:    moderntreasury.F("string"),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -62,7 +67,10 @@ func TestRoutingDetailListWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		shared.AccountsTypeExternalAccounts,
 		"string",
-		moderntreasury.RoutingDetailListParams{AfterCursor: moderntreasury.F("string"), PerPage: moderntreasury.F(int64(0))},
+		moderntreasury.RoutingDetailListParams{
+			AfterCursor: moderntreasury.F("string"),
+			PerPage:     moderntreasury.F(int64(0)),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

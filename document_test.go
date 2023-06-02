@@ -22,7 +22,11 @@ func TestDocumentNewWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		moderntreasury.DocumentNewParamsDocumentableTypeCases,
 		"string",
-		moderntreasury.DocumentNewParams{DocumentType: moderntreasury.F("string"), File: moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents"))))},
+		moderntreasury.DocumentNewParams{
+			File:           moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
+			DocumentType:   moderntreasury.F("string"),
+			IdempotencyKey: moderntreasury.F("string"),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -64,7 +68,10 @@ func TestDocumentListWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		moderntreasury.DocumentListParamsDocumentableTypeCases,
 		"string",
-		moderntreasury.DocumentListParams{AfterCursor: moderntreasury.F("string"), PerPage: moderntreasury.F(int64(0))},
+		moderntreasury.DocumentListParams{
+			AfterCursor: moderntreasury.F("string"),
+			PerPage:     moderntreasury.F(int64(0)),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

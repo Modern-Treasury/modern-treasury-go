@@ -34,27 +34,27 @@ func NewRoutingDetailService(opts ...option.RequestOption) (r *RoutingDetailServ
 }
 
 // Create a routing detail for a single external account.
-func (r *RoutingDetailService) New(ctx context.Context, accounts_type RoutingDetailNewParamsAccountsType, account_id string, body RoutingDetailNewParams, opts ...option.RequestOption) (res *RoutingDetail, err error) {
+func (r *RoutingDetailService) New(ctx context.Context, accountsType RoutingDetailNewParamsAccountsType, accountID string, params RoutingDetailNewParams, opts ...option.RequestOption) (res *RoutingDetail, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/routing_details", accounts_type, account_id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	path := fmt.Sprintf("api/%s/%s/routing_details", accountsType, accountID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
 // Get a single routing detail for a single internal or external account.
-func (r *RoutingDetailService) Get(ctx context.Context, accounts_type shared.AccountsType, account_id string, id string, opts ...option.RequestOption) (res *RoutingDetail, err error) {
+func (r *RoutingDetailService) Get(ctx context.Context, accountsType shared.AccountsType, accountID string, id string, opts ...option.RequestOption) (res *RoutingDetail, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/routing_details/%s", accounts_type, account_id, id)
+	path := fmt.Sprintf("api/%s/%s/routing_details/%s", accountsType, accountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
 // Get a list of routing details for a single internal or external account.
-func (r *RoutingDetailService) List(ctx context.Context, accounts_type shared.AccountsType, account_id string, query RoutingDetailListParams, opts ...option.RequestOption) (res *shared.Page[RoutingDetail], err error) {
+func (r *RoutingDetailService) List(ctx context.Context, accountsType shared.AccountsType, accountID string, query RoutingDetailListParams, opts ...option.RequestOption) (res *shared.Page[RoutingDetail], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := fmt.Sprintf("api/%s/%s/routing_details", accounts_type, account_id)
+	path := fmt.Sprintf("api/%s/%s/routing_details", accountsType, accountID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -68,15 +68,15 @@ func (r *RoutingDetailService) List(ctx context.Context, accounts_type shared.Ac
 }
 
 // Get a list of routing details for a single internal or external account.
-func (r *RoutingDetailService) ListAutoPaging(ctx context.Context, accounts_type shared.AccountsType, account_id string, query RoutingDetailListParams, opts ...option.RequestOption) *shared.PageAutoPager[RoutingDetail] {
-	return shared.NewPageAutoPager(r.List(ctx, accounts_type, account_id, query, opts...))
+func (r *RoutingDetailService) ListAutoPaging(ctx context.Context, accountsType shared.AccountsType, accountID string, query RoutingDetailListParams, opts ...option.RequestOption) *shared.PageAutoPager[RoutingDetail] {
+	return shared.NewPageAutoPager(r.List(ctx, accountsType, accountID, query, opts...))
 }
 
 // Delete a routing detail for a single external account.
-func (r *RoutingDetailService) Delete(ctx context.Context, accounts_type RoutingDetailDeleteParamsAccountsType, account_id string, id string, opts ...option.RequestOption) (err error) {
+func (r *RoutingDetailService) Delete(ctx context.Context, accountsType RoutingDetailDeleteParamsAccountsType, accountID string, id string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
-	path := fmt.Sprintf("api/%s/%s/routing_details/%s", accounts_type, account_id, id)
+	path := fmt.Sprintf("api/%s/%s/routing_details/%s", accountsType, accountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return
 }
@@ -212,17 +212,17 @@ type RoutingDetailParam struct {
 	LiveMode    param.Field[bool]      `json:"live_mode,required"`
 	CreatedAt   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
 	UpdatedAt   param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-	DiscardedAt param.Field[time.Time] `json:"discarded_at,required,nullable" format:"date-time"`
+	DiscardedAt param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
 	// The routing number of the bank.
 	RoutingNumber param.Field[string] `json:"routing_number,required"`
 	// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
 	RoutingNumberType param.Field[RoutingDetailRoutingNumberType] `json:"routing_number_type,required"`
 	// If the routing detail is to be used for a specific payment type this field will
 	// be populated, otherwise null.
-	PaymentType param.Field[RoutingDetailPaymentType] `json:"payment_type,required,nullable"`
+	PaymentType param.Field[RoutingDetailPaymentType] `json:"payment_type,required"`
 	// The name of the bank.
 	BankName    param.Field[string]                        `json:"bank_name,required"`
-	BankAddress param.Field[RoutingDetailBankAddressParam] `json:"bank_address,required,nullable"`
+	BankAddress param.Field[RoutingDetailBankAddressParam] `json:"bank_address,required"`
 }
 
 func (r RoutingDetailParam) MarshalJSON() (data []byte, err error) {
@@ -237,16 +237,16 @@ type RoutingDetailBankAddressParam struct {
 	LiveMode  param.Field[bool]      `json:"live_mode,required"`
 	CreatedAt param.Field[time.Time] `json:"created_at,required" format:"date-time"`
 	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-	Line1     param.Field[string]    `json:"line1,required,nullable"`
-	Line2     param.Field[string]    `json:"line2,required,nullable"`
+	Line1     param.Field[string]    `json:"line1,required"`
+	Line2     param.Field[string]    `json:"line2,required"`
 	// Locality or City.
-	Locality param.Field[string] `json:"locality,required,nullable"`
+	Locality param.Field[string] `json:"locality,required"`
 	// Region or State.
-	Region param.Field[string] `json:"region,required,nullable"`
+	Region param.Field[string] `json:"region,required"`
 	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required,nullable"`
+	PostalCode param.Field[string] `json:"postal_code,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required,nullable"`
+	Country param.Field[string] `json:"country,required"`
 }
 
 func (r RoutingDetailBankAddressParam) MarshalJSON() (data []byte, err error) {
@@ -260,12 +260,19 @@ type RoutingDetailNewParams struct {
 	RoutingNumberType param.Field[RoutingDetailNewParamsRoutingNumberType] `json:"routing_number_type,required"`
 	// If the routing detail is to be used for a specific payment type this field will
 	// be populated, otherwise null.
-	PaymentType param.Field[RoutingDetailNewParamsPaymentType] `json:"payment_type,nullable"`
+	PaymentType    param.Field[RoutingDetailNewParamsPaymentType] `json:"payment_type"`
+	IdempotencyKey param.Field[string]                            `header:"Idempotency-Key"`
 }
 
 func (r RoutingDetailNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+type RoutingDetailNewParamsAccountsType string
+
+const (
+	RoutingDetailNewParamsAccountsTypeExternalAccounts RoutingDetailNewParamsAccountsType = "external_accounts"
+)
 
 type RoutingDetailNewParamsRoutingNumberType string
 
@@ -304,14 +311,8 @@ const (
 	RoutingDetailNewParamsPaymentTypeWire        RoutingDetailNewParamsPaymentType = "wire"
 )
 
-type RoutingDetailNewParamsAccountsType string
-
-const (
-	RoutingDetailNewParamsAccountsTypeExternalAccounts RoutingDetailNewParamsAccountsType = "external_accounts"
-)
-
 type RoutingDetailListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	PerPage     param.Field[int64]  `query:"per_page"`
 }
 

@@ -41,7 +41,9 @@ func TestLineItemUpdateWithOptionalParams(t *testing.T) {
 		moderntreasury.LineItemUpdateParamsItemizableTypeExpectedPayments,
 		"string",
 		"string",
-		moderntreasury.LineItemUpdateParams{Metadata: moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"})},
+		moderntreasury.LineItemUpdateParams{
+			Metadata: moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"}),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -62,7 +64,10 @@ func TestLineItemListWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		moderntreasury.LineItemListParamsItemizableTypeExpectedPayments,
 		"string",
-		moderntreasury.LineItemListParams{AfterCursor: moderntreasury.F("string"), PerPage: moderntreasury.F(int64(0))},
+		moderntreasury.LineItemListParams{
+			AfterCursor: moderntreasury.F("string"),
+			PerPage:     moderntreasury.F(int64(0)),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

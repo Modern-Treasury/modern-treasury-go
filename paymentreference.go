@@ -172,16 +172,16 @@ const (
 )
 
 type PaymentReferenceListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	PerPage     param.Field[int64]  `query:"per_page"`
+	// The actual reference number assigned by the bank.
+	ReferenceNumber param.Field[string] `query:"reference_number"`
 	// The id of the referenceable to search for. Must be accompanied by the
 	// referenceable_type or will return an error.
 	ReferenceableID param.Field[string] `query:"referenceable_id"`
 	// One of the referenceable types. This must be accompanied by the id of the
 	// referenceable or will return an error.
 	ReferenceableType param.Field[PaymentReferenceListParamsReferenceableType] `query:"referenceable_type"`
-	// The actual reference number assigned by the bank.
-	ReferenceNumber param.Field[string] `query:"reference_number"`
 }
 
 // URLQuery serializes [PaymentReferenceListParams]'s query parameters as

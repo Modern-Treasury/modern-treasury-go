@@ -92,12 +92,12 @@ func (r *Connection) UnmarshalJSON(data []byte) (err error) {
 }
 
 type ConnectionListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
-	PerPage     param.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
+	// A string code representing the vendor (i.e. bank).
+	Entity  param.Field[string] `query:"entity"`
+	PerPage param.Field[int64]  `query:"per_page"`
 	// An identifier assigned by the vendor to your organization.
 	VendorCustomerID param.Field[string] `query:"vendor_customer_id" format:"uuid"`
-	// A string code representing the vendor (i.e. bank).
-	Entity param.Field[string] `query:"entity"`
 }
 
 // URLQuery serializes [ConnectionListParams]'s query parameters as `url.Values`.

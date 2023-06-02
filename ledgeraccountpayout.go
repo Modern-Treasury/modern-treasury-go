@@ -34,10 +34,10 @@ func NewLedgerAccountPayoutService(opts ...option.RequestOption) (r *LedgerAccou
 }
 
 // Create a ledger account payout.
-func (r *LedgerAccountPayoutService) New(ctx context.Context, body LedgerAccountPayoutNewParams, opts ...option.RequestOption) (res *LedgerAccountPayout, err error) {
+func (r *LedgerAccountPayoutService) New(ctx context.Context, params LedgerAccountPayoutNewParams, opts ...option.RequestOption) (res *LedgerAccountPayout, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/ledger_account_payouts"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -157,24 +157,25 @@ const (
 )
 
 type LedgerAccountPayoutNewParams struct {
-	// The description of the ledger account payout.
-	Description param.Field[string] `json:"description,nullable"`
-	// The status of the ledger account payout. It is set to `pending` by default. To
-	// post a ledger account payout at creation, use `posted`.
-	Status param.Field[LedgerAccountPayoutNewParamsStatus] `json:"status,nullable"`
-	// The id of the payout ledger account whose ledger entries are queried against,
-	// and its balance is reduced as a result.
-	PayoutLedgerAccountID param.Field[string] `json:"payout_ledger_account_id,required" format:"uuid"`
 	// The id of the funding ledger account that sends to or receives funds from the
 	// payout ledger account.
 	FundingLedgerAccountID param.Field[string] `json:"funding_ledger_account_id,required" format:"uuid"`
+	// The id of the payout ledger account whose ledger entries are queried against,
+	// and its balance is reduced as a result.
+	PayoutLedgerAccountID param.Field[string] `json:"payout_ledger_account_id,required" format:"uuid"`
+	// The description of the ledger account payout.
+	Description param.Field[string] `json:"description"`
 	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account payout. The default value is the created_at
 	// timestamp of the ledger account payout.
-	EffectiveAtUpperBound param.Field[string] `json:"effective_at_upper_bound,nullable" format:"time"`
+	EffectiveAtUpperBound param.Field[string] `json:"effective_at_upper_bound" format:"time"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The status of the ledger account payout. It is set to `pending` by default. To
+	// post a ledger account payout at creation, use `posted`.
+	Status         param.Field[LedgerAccountPayoutNewParamsStatus] `json:"status"`
+	IdempotencyKey param.Field[string]                             `header:"Idempotency-Key"`
 }
 
 func (r LedgerAccountPayoutNewParams) MarshalJSON() (data []byte, err error) {
@@ -190,13 +191,13 @@ const (
 
 type LedgerAccountPayoutUpdateParams struct {
 	// The description of the ledger account payout.
-	Description param.Field[string] `json:"description,nullable"`
-	// To post a pending ledger account payout, use `posted`. To archive a pending
-	// ledger transaction, use `archived`.
-	Status param.Field[LedgerAccountPayoutUpdateParamsStatus] `json:"status"`
+	Description param.Field[string] `json:"description"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// To post a pending ledger account payout, use `posted`. To archive a pending
+	// ledger transaction, use `archived`.
+	Status param.Field[LedgerAccountPayoutUpdateParamsStatus] `json:"status"`
 }
 
 func (r LedgerAccountPayoutUpdateParams) MarshalJSON() (data []byte, err error) {
@@ -211,9 +212,9 @@ const (
 )
 
 type LedgerAccountPayoutListParams struct {
-	AfterCursor           param.Field[string] `query:"after_cursor,nullable"`
-	PerPage               param.Field[int64]  `query:"per_page"`
+	AfterCursor           param.Field[string] `query:"after_cursor"`
 	PayoutLedgerAccountID param.Field[string] `query:"payout_ledger_account_id"`
+	PerPage               param.Field[int64]  `query:"per_page"`
 }
 
 // URLQuery serializes [LedgerAccountPayoutListParams]'s query parameters as

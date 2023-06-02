@@ -39,7 +39,12 @@ func TestBalanceReportListWithOptionalParams(t *testing.T) {
 	_, err := c.InternalAccounts.BalanceReports.List(
 		context.TODO(),
 		"string",
-		moderntreasury.BalanceReportListParams{AsOfDate: moderntreasury.F(time.Now()), BalanceReportType: moderntreasury.F(moderntreasury.BalanceReportListParamsBalanceReportTypeIntraday), AfterCursor: moderntreasury.F("string"), PerPage: moderntreasury.F(int64(0))},
+		moderntreasury.BalanceReportListParams{
+			AfterCursor:       moderntreasury.F("string"),
+			AsOfDate:          moderntreasury.F(time.Now()),
+			BalanceReportType: moderntreasury.F(moderntreasury.BalanceReportListParamsBalanceReportTypeIntraday),
+			PerPage:           moderntreasury.F(int64(0)),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

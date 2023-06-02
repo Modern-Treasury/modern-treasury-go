@@ -33,27 +33,27 @@ func NewLineItemService(opts ...option.RequestOption) (r *LineItemService) {
 }
 
 // Get a single line item
-func (r *LineItemService) Get(ctx context.Context, itemizable_type LineItemGetParamsItemizableType, itemizable_id string, id string, opts ...option.RequestOption) (res *LineItem, err error) {
+func (r *LineItemService) Get(ctx context.Context, itemizableType LineItemGetParamsItemizableType, itemizableID string, id string, opts ...option.RequestOption) (res *LineItem, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/line_items/%s", itemizable_type, itemizable_id, id)
+	path := fmt.Sprintf("api/%s/%s/line_items/%s", itemizableType, itemizableID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
 // update line item
-func (r *LineItemService) Update(ctx context.Context, itemizable_type LineItemUpdateParamsItemizableType, itemizable_id string, id string, body LineItemUpdateParams, opts ...option.RequestOption) (res *LineItem, err error) {
+func (r *LineItemService) Update(ctx context.Context, itemizableType LineItemUpdateParamsItemizableType, itemizableID string, id string, body LineItemUpdateParams, opts ...option.RequestOption) (res *LineItem, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/line_items/%s", itemizable_type, itemizable_id, id)
+	path := fmt.Sprintf("api/%s/%s/line_items/%s", itemizableType, itemizableID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
 }
 
 // Get a list of line items
-func (r *LineItemService) List(ctx context.Context, itemizable_type LineItemListParamsItemizableType, itemizable_id string, query LineItemListParams, opts ...option.RequestOption) (res *shared.Page[LineItem], err error) {
+func (r *LineItemService) List(ctx context.Context, itemizableType LineItemListParamsItemizableType, itemizableID string, query LineItemListParams, opts ...option.RequestOption) (res *shared.Page[LineItem], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := fmt.Sprintf("api/%s/%s/line_items", itemizable_type, itemizable_id)
+	path := fmt.Sprintf("api/%s/%s/line_items", itemizableType, itemizableID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -67,8 +67,8 @@ func (r *LineItemService) List(ctx context.Context, itemizable_type LineItemList
 }
 
 // Get a list of line items
-func (r *LineItemService) ListAutoPaging(ctx context.Context, itemizable_type LineItemListParamsItemizableType, itemizable_id string, query LineItemListParams, opts ...option.RequestOption) *shared.PageAutoPager[LineItem] {
-	return shared.NewPageAutoPager(r.List(ctx, itemizable_type, itemizable_id, query, opts...))
+func (r *LineItemService) ListAutoPaging(ctx context.Context, itemizableType LineItemListParamsItemizableType, itemizableID string, query LineItemListParams, opts ...option.RequestOption) *shared.PageAutoPager[LineItem] {
+	return shared.NewPageAutoPager(r.List(ctx, itemizableType, itemizableID, query, opts...))
 }
 
 type LineItem struct {
@@ -181,7 +181,7 @@ const (
 )
 
 type LineItemListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	PerPage     param.Field[int64]  `query:"per_page"`
 }
 

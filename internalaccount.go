@@ -36,10 +36,10 @@ func NewInternalAccountService(opts ...option.RequestOption) (r *InternalAccount
 }
 
 // create internal account
-func (r *InternalAccountService) New(ctx context.Context, body InternalAccountNewParams, opts ...option.RequestOption) (res *InternalAccount, err error) {
+func (r *InternalAccountService) New(ctx context.Context, params InternalAccountNewParams, opts ...option.RequestOption) (res *InternalAccount, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/internal_accounts"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -215,26 +215,34 @@ func (r *InternalAccountPartyAddress) UnmarshalJSON(data []byte) (err error) {
 type InternalAccountNewParams struct {
 	// The identifier of the financial institution the account belongs to.
 	ConnectionID param.Field[string] `json:"connection_id,required"`
+	// Either "USD" or "CAD". Internal accounts created at Increase only supports
+	// "USD".
+	Currency param.Field[InternalAccountNewParamsCurrency] `json:"currency,required"`
 	// The nickname of the account.
 	Name param.Field[string] `json:"name,required"`
 	// The legal name of the entity which owns the account.
 	PartyName param.Field[string] `json:"party_name,required"`
-	// The address associated with the owner or null.
-	PartyAddress param.Field[InternalAccountNewParamsPartyAddress] `json:"party_address"`
-	// Either "USD" or "CAD". Internal accounts created at Increase only supports
-	// "USD".
-	Currency param.Field[InternalAccountNewParamsCurrency] `json:"currency,required"`
+	// The Counterparty associated to this account.
+	CounterpartyID param.Field[string] `json:"counterparty_id"`
 	// The identifier of the entity at Increase which owns the account.
 	EntityID param.Field[string] `json:"entity_id"`
 	// The parent internal account of this new account.
 	ParentAccountID param.Field[string] `json:"parent_account_id"`
-	// The Counterparty associated to this account.
-	CounterpartyID param.Field[string] `json:"counterparty_id"`
+	// The address associated with the owner or null.
+	PartyAddress   param.Field[InternalAccountNewParamsPartyAddress] `json:"party_address"`
+	IdempotencyKey param.Field[string]                               `header:"Idempotency-Key"`
 }
 
 func (r InternalAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+type InternalAccountNewParamsCurrency string
+
+const (
+	InternalAccountNewParamsCurrencyUsd InternalAccountNewParamsCurrency = "USD"
+	InternalAccountNewParamsCurrencyCad InternalAccountNewParamsCurrency = "CAD"
+)
 
 // The address associated with the owner or null.
 type InternalAccountNewParamsPartyAddress struct {
@@ -250,23 +258,20 @@ type InternalAccountNewParamsPartyAddress struct {
 	Country param.Field[string] `json:"country,required"`
 }
 
-type InternalAccountNewParamsCurrency string
-
-const (
-	InternalAccountNewParamsCurrencyUsd InternalAccountNewParamsCurrency = "USD"
-	InternalAccountNewParamsCurrencyCad InternalAccountNewParamsCurrency = "CAD"
-)
+func (r InternalAccountNewParamsPartyAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
 
 type InternalAccountUpdateParams struct {
-	// The nickname for the internal account.
-	Name param.Field[string] `json:"name"`
+	// The Counterparty associated to this account.
+	CounterpartyID param.Field[string] `json:"counterparty_id"`
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
 	// an empty string or `null` as the value.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The nickname for the internal account.
+	Name param.Field[string] `json:"name"`
 	// The parent internal account for this account.
 	ParentAccountID param.Field[string] `json:"parent_account_id"`
-	// The Counterparty associated to this account.
-	CounterpartyID param.Field[string] `json:"counterparty_id"`
 }
 
 func (r InternalAccountUpdateParams) MarshalJSON() (data []byte, err error) {
@@ -274,20 +279,20 @@ func (r InternalAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 }
 
 type InternalAccountListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
-	PerPage     param.Field[int64]  `query:"per_page"`
-	// The currency associated with the internal account.
-	Currency param.Field[shared.Currency] `json:"currency,nullable"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	// The counterparty associated with the internal account.
 	CounterpartyID param.Field[string] `query:"counterparty_id"`
-	// The type of payment that can be made by the internal account.
-	PaymentType param.Field[InternalAccountListParamsPaymentType] `query:"payment_type"`
-	// The direction of payments that can be made by internal account.
-	PaymentDirection param.Field[InternalAccountListParamsPaymentDirection] `query:"payment_direction"`
+	// The currency associated with the internal account.
+	Currency param.Field[shared.Currency] `query:"currency"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
 	Metadata param.Field[map[string]string] `query:"metadata"`
+	// The direction of payments that can be made by internal account.
+	PaymentDirection param.Field[InternalAccountListParamsPaymentDirection] `query:"payment_direction"`
+	// The type of payment that can be made by the internal account.
+	PaymentType param.Field[InternalAccountListParamsPaymentType] `query:"payment_type"`
+	PerPage     param.Field[int64]                                `query:"per_page"`
 }
 
 // URLQuery serializes [InternalAccountListParams]'s query parameters as
@@ -298,6 +303,13 @@ func (r InternalAccountListParams) URLQuery() (v url.Values) {
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
+
+type InternalAccountListParamsPaymentDirection string
+
+const (
+	InternalAccountListParamsPaymentDirectionCredit InternalAccountListParamsPaymentDirection = "credit"
+	InternalAccountListParamsPaymentDirectionDebit  InternalAccountListParamsPaymentDirection = "debit"
+)
 
 type InternalAccountListParamsPaymentType string
 
@@ -319,11 +331,4 @@ const (
 	InternalAccountListParamsPaymentTypeSepa        InternalAccountListParamsPaymentType = "sepa"
 	InternalAccountListParamsPaymentTypeSignet      InternalAccountListParamsPaymentType = "signet"
 	InternalAccountListParamsPaymentTypeWire        InternalAccountListParamsPaymentType = "wire"
-)
-
-type InternalAccountListParamsPaymentDirection string
-
-const (
-	InternalAccountListParamsPaymentDirectionCredit InternalAccountListParamsPaymentDirection = "credit"
-	InternalAccountListParamsPaymentDirectionDebit  InternalAccountListParamsPaymentDirection = "debit"
 )
