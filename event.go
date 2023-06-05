@@ -105,15 +105,15 @@ func (r *Event) UnmarshalJSON(data []byte) (err error) {
 }
 
 type EventListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
-	PerPage     param.Field[int64]  `query:"per_page"`
-	// An inclusive lower bound for when the event occurred
-	EventTimeStart param.Field[time.Time] `query:"event_time_start" format:"date-time"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
+	EntityID    param.Field[string] `query:"entity_id"`
+	EventName   param.Field[string] `query:"event_name"`
 	// An inclusive upper bound for when the event occurred
 	EventTimeEnd param.Field[time.Time] `query:"event_time_end" format:"date-time"`
-	Resource     param.Field[string]    `query:"resource"`
-	EntityID     param.Field[string]    `query:"entity_id"`
-	EventName    param.Field[string]    `query:"event_name"`
+	// An inclusive lower bound for when the event occurred
+	EventTimeStart param.Field[time.Time] `query:"event_time_start" format:"date-time"`
+	PerPage        param.Field[int64]     `query:"per_page"`
+	Resource       param.Field[string]    `query:"resource"`
 }
 
 // URLQuery serializes [EventListParams]'s query parameters as `url.Values`.

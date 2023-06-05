@@ -34,10 +34,10 @@ func NewExpectedPaymentService(opts ...option.RequestOption) (r *ExpectedPayment
 }
 
 // create expected payment
-func (r *ExpectedPaymentService) New(ctx context.Context, body ExpectedPaymentNewParams, opts ...option.RequestOption) (res *ExpectedPayment, err error) {
+func (r *ExpectedPaymentService) New(ctx context.Context, params ExpectedPaymentNewParams, opts ...option.RequestOption) (res *ExpectedPayment, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/expected_payments"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -225,43 +225,44 @@ const (
 )
 
 type ExpectedPaymentNewParams struct {
-	// The highest amount this expected payment may be equal to. Value in specified
-	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUpperBound param.Field[int64] `json:"amount_upper_bound,required"`
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountLowerBound param.Field[int64] `json:"amount_lower_bound,required"`
+	// The highest amount this expected payment may be equal to. Value in specified
+	// currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUpperBound param.Field[int64] `json:"amount_upper_bound,required"`
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
 	Direction param.Field[ExpectedPaymentNewParamsDirection] `json:"direction,required"`
 	// The ID of the Internal Account for the expected payment.
 	InternalAccountID param.Field[string] `json:"internal_account_id,required" format:"uuid"`
-	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
-	// sepa, signet, wire.
-	Type param.Field[ExpectedPaymentType] `json:"type,nullable"`
+	// The ID of the counterparty you expect for this payment.
+	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
 	// Must conform to ISO 4217. Defaults to the currency of the internal account.
-	Currency param.Field[shared.Currency] `json:"currency,nullable"`
-	// The latest date the payment may come in. Format: yyyy-mm-dd
-	DateUpperBound param.Field[time.Time] `json:"date_upper_bound,nullable" format:"date"`
+	Currency param.Field[shared.Currency] `json:"currency"`
 	// The earliest date the payment may come in. Format: yyyy-mm-dd
-	DateLowerBound param.Field[time.Time] `json:"date_lower_bound,nullable" format:"date"`
+	DateLowerBound param.Field[time.Time] `json:"date_lower_bound" format:"date"`
+	// The latest date the payment may come in. Format: yyyy-mm-dd
+	DateUpperBound param.Field[time.Time] `json:"date_upper_bound" format:"date"`
 	// An optional description for internal use.
-	Description param.Field[string] `json:"description,nullable"`
+	Description param.Field[string]                              `json:"description"`
+	LineItems   param.Field[[]ExpectedPaymentNewParamsLineItems] `json:"line_items"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// For `ach`, this field will be passed through on an addenda record. For `wire`
+	// payments the field will be passed through as the "Originator to Beneficiary
+	// Information", also known as OBI or Fedwire tag 6000.
+	RemittanceInformation param.Field[string] `json:"remittance_information"`
 	// The statement description you expect to see on the transaction. For ACH
 	// payments, this will be the full line item passed from the bank. For wire
 	// payments, this will be the OBI field on the wire. For check payments, this will
 	// be the memo field.
-	StatementDescriptor param.Field[string] `json:"statement_descriptor,nullable"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The ID of the counterparty you expect for this payment.
-	CounterpartyID param.Field[string] `json:"counterparty_id,nullable" format:"uuid"`
-	// For `ach`, this field will be passed through on an addenda record. For `wire`
-	// payments the field will be passed through as the "Originator to Beneficiary
-	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation param.Field[string]                              `json:"remittance_information,nullable"`
-	LineItems             param.Field[[]ExpectedPaymentNewParamsLineItems] `json:"line_items"`
+	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
+	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
+	// sepa, signet, wire.
+	Type           param.Field[ExpectedPaymentType] `json:"type"`
+	IdempotencyKey param.Field[string]              `header:"Idempotency-Key"`
 }
 
 func (r ExpectedPaymentNewParams) MarshalJSON() (data []byte, err error) {
@@ -283,49 +284,53 @@ type ExpectedPaymentNewParamsLineItems struct {
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// A free-form description of the line item.
-	Description param.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
-	AccountingCategoryID param.Field[string] `json:"accounting_category_id,nullable"`
+	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`
+}
+
+func (r ExpectedPaymentNewParamsLineItems) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type ExpectedPaymentUpdateParams struct {
-	// The highest amount this expected payment may be equal to. Value in specified
-	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
+	// The highest amount this expected payment may be equal to. Value in specified
+	// currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
+	// The ID of the counterparty you expect for this payment.
+	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
+	// Must conform to ISO 4217. Defaults to the currency of the internal account.
+	Currency param.Field[shared.Currency] `json:"currency"`
+	// The earliest date the payment may come in. Format: yyyy-mm-dd
+	DateLowerBound param.Field[time.Time] `json:"date_lower_bound" format:"date"`
+	// The latest date the payment may come in. Format: yyyy-mm-dd
+	DateUpperBound param.Field[time.Time] `json:"date_upper_bound" format:"date"`
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
 	Direction param.Field[ExpectedPaymentUpdateParamsDirection] `json:"direction"`
 	// The ID of the Internal Account for the expected payment.
 	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
-	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
-	// sepa, signet, wire.
-	Type param.Field[ExpectedPaymentType] `json:"type,nullable"`
-	// Must conform to ISO 4217. Defaults to the currency of the internal account.
-	Currency param.Field[shared.Currency] `json:"currency,nullable"`
-	// The latest date the payment may come in. Format: yyyy-mm-dd
-	DateUpperBound param.Field[time.Time] `json:"date_upper_bound,nullable" format:"date"`
-	// The earliest date the payment may come in. Format: yyyy-mm-dd
-	DateLowerBound param.Field[time.Time] `json:"date_lower_bound,nullable" format:"date"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description,nullable"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// For `ach`, this field will be passed through on an addenda record. For `wire`
+	// payments the field will be passed through as the "Originator to Beneficiary
+	// Information", also known as OBI or Fedwire tag 6000.
+	RemittanceInformation param.Field[string] `json:"remittance_information"`
 	// The statement description you expect to see on the transaction. For ACH
 	// payments, this will be the full line item passed from the bank. For wire
 	// payments, this will be the OBI field on the wire. For check payments, this will
 	// be the memo field.
-	StatementDescriptor param.Field[string] `json:"statement_descriptor,nullable"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The ID of the counterparty you expect for this payment.
-	CounterpartyID param.Field[string] `json:"counterparty_id,nullable" format:"uuid"`
-	// For `ach`, this field will be passed through on an addenda record. For `wire`
-	// payments the field will be passed through as the "Originator to Beneficiary
-	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation param.Field[string] `json:"remittance_information,nullable"`
+	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
+	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
+	// sepa, signet, wire.
+	Type param.Field[ExpectedPaymentType] `json:"type"`
 }
 
 func (r ExpectedPaymentUpdateParams) MarshalJSON() (data []byte, err error) {
@@ -340,27 +345,27 @@ const (
 )
 
 type ExpectedPaymentListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
-	PerPage     param.Field[int64]  `query:"per_page"`
-	// One of unreconciled, reconciled, or archived.
-	Status param.Field[ExpectedPaymentListParamsStatus] `query:"status"`
-	// Specify internal_account_id to see expected_payments for a specific account.
-	InternalAccountID param.Field[string] `query:"internal_account_id"`
-	// One of credit, debit
-	Direction param.Field[ExpectedPaymentListParamsDirection] `query:"direction"`
-	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp,sen,
-	// sepa, signet, wire
-	Type param.Field[ExpectedPaymentListParamsType] `query:"type"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	// Specify counterparty_id to see expected_payments for a specific account.
 	CounterpartyID param.Field[string] `query:"counterparty_id"`
-	// For example, if you want to query for records with metadata key `Type` and value
-	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
-	// parameters.
-	Metadata param.Field[map[string]string] `query:"metadata"`
 	// Used to return expected payments created after some datetime
 	CreatedAtLowerBound param.Field[time.Time] `query:"created_at_lower_bound" format:"date-time"`
 	// Used to return expected payments created before some datetime
 	CreatedAtUpperBound param.Field[time.Time] `query:"created_at_upper_bound" format:"date-time"`
+	// One of credit, debit
+	Direction param.Field[ExpectedPaymentListParamsDirection] `query:"direction"`
+	// Specify internal_account_id to see expected_payments for a specific account.
+	InternalAccountID param.Field[string] `query:"internal_account_id"`
+	// For example, if you want to query for records with metadata key `Type` and value
+	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
+	// parameters.
+	Metadata param.Field[map[string]string] `query:"metadata"`
+	PerPage  param.Field[int64]             `query:"per_page"`
+	// One of unreconciled, reconciled, or archived.
+	Status param.Field[ExpectedPaymentListParamsStatus] `query:"status"`
+	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp,sen,
+	// sepa, signet, wire
+	Type param.Field[ExpectedPaymentListParamsType] `query:"type"`
 }
 
 // URLQuery serializes [ExpectedPaymentListParams]'s query parameters as
@@ -372,19 +377,19 @@ func (r ExpectedPaymentListParams) URLQuery() (v url.Values) {
 	})
 }
 
+type ExpectedPaymentListParamsDirection string
+
+const (
+	ExpectedPaymentListParamsDirectionCredit ExpectedPaymentListParamsDirection = "credit"
+	ExpectedPaymentListParamsDirectionDebit  ExpectedPaymentListParamsDirection = "debit"
+)
+
 type ExpectedPaymentListParamsStatus string
 
 const (
 	ExpectedPaymentListParamsStatusArchived     ExpectedPaymentListParamsStatus = "archived"
 	ExpectedPaymentListParamsStatusReconciled   ExpectedPaymentListParamsStatus = "reconciled"
 	ExpectedPaymentListParamsStatusUnreconciled ExpectedPaymentListParamsStatus = "unreconciled"
-)
-
-type ExpectedPaymentListParamsDirection string
-
-const (
-	ExpectedPaymentListParamsDirectionCredit ExpectedPaymentListParamsDirection = "credit"
-	ExpectedPaymentListParamsDirectionDebit  ExpectedPaymentListParamsDirection = "debit"
 )
 
 type ExpectedPaymentListParamsType string

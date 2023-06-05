@@ -1,9 +1,11 @@
 package moderntreasury
 
 import (
+	"bytes"
 	"context"
 	"fmt"
 	"io"
+	"mime/multipart"
 	"net/http"
 	"net/url"
 	"time"
@@ -37,10 +39,10 @@ func NewPaymentOrderService(opts ...option.RequestOption) (r *PaymentOrderServic
 }
 
 // Create a new Payment Order
-func (r *PaymentOrderService) New(ctx context.Context, body PaymentOrderNewParams, opts ...option.RequestOption) (res *PaymentOrder, err error) {
+func (r *PaymentOrderService) New(ctx context.Context, params PaymentOrderNewParams, opts ...option.RequestOption) (res *PaymentOrder, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/payment_orders"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -84,10 +86,10 @@ func (r *PaymentOrderService) ListAutoPaging(ctx context.Context, query PaymentO
 }
 
 // Create a new payment order asynchronously
-func (r *PaymentOrderService) NewAsync(ctx context.Context, body PaymentOrderNewAsyncParams, opts ...option.RequestOption) (res *shared.AsyncResponse, err error) {
+func (r *PaymentOrderService) NewAsync(ctx context.Context, params PaymentOrderNewAsyncParams, opts ...option.RequestOption) (res *shared.AsyncResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/payment_orders/create_async"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -478,14 +480,6 @@ const (
 )
 
 type PaymentOrderNewParams struct {
-	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-	// `au_becs`, `interac`, `signet`, `provexchange`.
-	Type param.Field[PaymentOrderType] `json:"type,required"`
-	// An additional layer of classification for the type of payment order you are
-	// doing. This field is only used for `ach` payment orders currently. For `ach`
-	// payment orders, the `subtype` represents the SEC code. We currently support
-	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
-	Subtype param.Field[PaymentOrderSubtype] `json:"subtype,nullable"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount,required"`
@@ -494,90 +488,46 @@ type PaymentOrderNewParams struct {
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
 	Direction param.Field[PaymentOrderNewParamsDirection] `json:"direction,required"`
-	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
-	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
-	// an overnight check rather than standard mail.
-	Priority param.Field[PaymentOrderNewParamsPriority] `json:"priority"`
 	// The ID of one of your organization's internal accounts.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
-	// Either `receiving_account` or `receiving_account_id` must be present. When using
-	// `receiving_account_id`, you may pass the id of an external account or an
-	// internal account.
-	ReceivingAccountID param.Field[string]                          `json:"receiving_account_id" format:"uuid"`
-	Accounting         param.Field[PaymentOrderNewParamsAccounting] `json:"accounting"`
+	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
+	// `au_becs`, `interac`, `signet`, `provexchange`.
+	Type       param.Field[PaymentOrderType]                `json:"type,required"`
+	Accounting param.Field[PaymentOrderNewParamsAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
-	AccountingCategoryID param.Field[string] `json:"accounting_category_id,nullable" format:"uuid"`
+	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
 	// The ID of one of your accounting ledger classes. Note that these will only be
 	// accessible if your accounting system has been connected.
-	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id,nullable" format:"uuid"`
+	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
+	// The party that will pay the fees for the payment order. Only applies to wire
+	// payment orders. Can be one of shared, sender, or receiver, which correspond
+	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+	ChargeBearer param.Field[PaymentOrderNewParamsChargeBearer] `json:"charge_bearer"`
 	// Defaults to the currency of the originating account.
-	Currency param.Field[shared.Currency] `json:"currency,nullable"`
+	Currency param.Field[shared.Currency] `json:"currency"`
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
+	// An array of documents to be attached to the payment order. Note that if you
+	// attach documents, the request's content type must be `multipart/form-data`.
+	Documents param.Field[[]PaymentOrderNewParamsDocuments] `json:"documents"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description,nullable"`
-	// An optional descriptor which will appear in the receiver's statement. For
-	// `check` payments this field will be used as the memo line. For `ach` the maximum
-	// length is 10 characters. Note that for ACH payments, the name on your bank
-	// account will be included automatically by the bank, so you can use the
-	// characters for other useful information. For `eft` the maximum length is 15
-	// characters.
-	StatementDescriptor param.Field[string] `json:"statement_descriptor,nullable"`
-	// For `ach`, this field will be passed through on an addenda record. For `wire`
-	// payments the field will be passed through as the "Originator to Beneficiary
-	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation param.Field[string] `json:"remittance_information,nullable"`
-	// For `wire`, this is usually the purpose which is transmitted via the
-	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
-	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
-	// CPA Code that will be attached to the payment.
-	Purpose param.Field[string] `json:"purpose,nullable"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The party that will pay the fees for the payment order. Only applies to wire
-	// payment orders. Can be one of shared, sender, or receiver, which correspond
-	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
-	ChargeBearer param.Field[PaymentOrderNewParamsChargeBearer] `json:"charge_bearer,nullable"`
-	// Indicates the type of FX transfer to initiate, can be either
-	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
-	// currency matches the originating account currency.
-	ForeignExchangeIndicator param.Field[PaymentOrderNewParamsForeignExchangeIndicator] `json:"foreign_exchange_indicator,nullable"`
-	// If present, indicates a specific foreign exchange contract number that has been
-	// generated by your financial institution.
-	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract,nullable"`
-	// A boolean to determine if NSF Protection is enabled for this payment order. Note
-	// that this setting must also be turned on in your organization settings page.
-	NsfProtected param.Field[bool] `json:"nsf_protected"`
-	// If present, this will replace your default company name on receiver's bank
-	// statement. This field can only be used for ACH payments currently. For ACH, only
-	// the first 16 characters of this string will be used. Any additional characters
-	// will be truncated.
-	OriginatingPartyName param.Field[string] `json:"originating_party_name,nullable"`
-	// Name of the ultimate originator of the payment order.
-	UltimateOriginatingPartyName param.Field[string] `json:"ultimate_originating_party_name,nullable"`
-	// Identifier of the ultimate originator of the payment order.
-	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier,nullable"`
-	// Name of the ultimate funds recipient.
-	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name,nullable"`
-	// Identifier of the ultimate funds recipient.
-	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier,nullable"`
-	// Send an email to the counterparty when the payment order is sent to the bank. If
-	// `null`, `send_remittance_advice` on the Counterparty is used.
-	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice,nullable"`
 	// RFP payments require an expires_at. This value must be past the effective_date.
-	ExpiresAt param.Field[time.Time] `json:"expires_at,nullable" format:"date-time"`
+	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
 	// A payment type to fallback to if the original type is not valid for the
 	// receiving account. Currently, this only supports falling back from RTP to ACH
 	// (type=rtp and fallback_type=ach)
 	FallbackType param.Field[PaymentOrderNewParamsFallbackType] `json:"fallback_type"`
-	// Either `receiving_account` or `receiving_account_id` must be present. When using
-	// `receiving_account_id`, you may pass the id of an external account or an
-	// internal account.
-	ReceivingAccount param.Field[PaymentOrderNewParamsReceivingAccount] `json:"receiving_account"`
+	// If present, indicates a specific foreign exchange contract number that has been
+	// generated by your financial institution.
+	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract"`
+	// Indicates the type of FX transfer to initiate, can be either
+	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+	// currency matches the originating account currency.
+	ForeignExchangeIndicator param.Field[PaymentOrderNewParamsForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
 	// Specifies a ledger transaction object that will be created with the payment
 	// order. If the ledger transaction cannot be created, then the payment order
 	// creation will fail. The resulting ledger transaction will mirror the status of
@@ -585,16 +535,325 @@ type PaymentOrderNewParams struct {
 	LedgerTransaction param.Field[PaymentOrderNewParamsLedgerTransaction] `json:"ledger_transaction"`
 	// An array of line items that must sum up to the amount of the payment order.
 	LineItems param.Field[[]PaymentOrderNewParamsLineItems] `json:"line_items"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// A boolean to determine if NSF Protection is enabled for this payment order. Note
+	// that this setting must also be turned on in your organization settings page.
+	NsfProtected param.Field[bool] `json:"nsf_protected"`
+	// If present, this will replace your default company name on receiver's bank
+	// statement. This field can only be used for ACH payments currently. For ACH, only
+	// the first 16 characters of this string will be used. Any additional characters
+	// will be truncated.
+	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
+	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+	// an overnight check rather than standard mail.
+	Priority param.Field[PaymentOrderNewParamsPriority] `json:"priority"`
+	// For `wire`, this is usually the purpose which is transmitted via the
+	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
+	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
+	// CPA Code that will be attached to the payment.
+	Purpose param.Field[string] `json:"purpose"`
+	// Either `receiving_account` or `receiving_account_id` must be present. When using
+	// `receiving_account_id`, you may pass the id of an external account or an
+	// internal account.
+	ReceivingAccount param.Field[PaymentOrderNewParamsReceivingAccount] `json:"receiving_account"`
+	// Either `receiving_account` or `receiving_account_id` must be present. When using
+	// `receiving_account_id`, you may pass the id of an external account or an
+	// internal account.
+	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// For `ach`, this field will be passed through on an addenda record. For `wire`
+	// payments the field will be passed through as the "Originator to Beneficiary
+	// Information", also known as OBI or Fedwire tag 6000.
+	RemittanceInformation param.Field[string] `json:"remittance_information"`
+	// Send an email to the counterparty when the payment order is sent to the bank. If
+	// `null`, `send_remittance_advice` on the Counterparty is used.
+	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
+	// An optional descriptor which will appear in the receiver's statement. For
+	// `check` payments this field will be used as the memo line. For `ach` the maximum
+	// length is 10 characters. Note that for ACH payments, the name on your bank
+	// account will be included automatically by the bank, so you can use the
+	// characters for other useful information. For `eft` the maximum length is 15
+	// characters.
+	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
+	// An additional layer of classification for the type of payment order you are
+	// doing. This field is only used for `ach` payment orders currently. For `ach`
+	// payment orders, the `subtype` represents the SEC code. We currently support
+	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
+	Subtype param.Field[PaymentOrderSubtype] `json:"subtype"`
 	// A flag that determines whether a payment order should go through transaction
 	// monitoring.
 	TransactionMonitoringEnabled param.Field[bool] `json:"transaction_monitoring_enabled"`
-	// An array of documents to be attached to the payment order. Note that if you
-	// attach documents, the request's content type must be `multipart/form-data`.
-	Documents param.Field[[]PaymentOrderNewParamsDocuments] `json:"documents"`
+	// Identifier of the ultimate originator of the payment order.
+	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
+	// Name of the ultimate originator of the payment order.
+	UltimateOriginatingPartyName param.Field[string] `json:"ultimate_originating_party_name"`
+	// Identifier of the ultimate funds recipient.
+	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
+	// Name of the ultimate funds recipient.
+	UltimateReceivingPartyName param.Field[string]                           `json:"ultimate_receiving_party_name"`
+	ContentType                param.Field[PaymentOrderNewParamsContentType] `header:"Content-Type"`
+	IdempotencyKey             param.Field[string]                           `header:"Idempotency-Key"`
 }
 
-func (r PaymentOrderNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+func (r PaymentOrderNewParams) MarshalMultipart() (data []byte, err error) {
+	body := bytes.NewBuffer(nil)
+	writer := multipart.NewWriter(body)
+	defer writer.Close()
+	{
+		bdy, err := apijson.Marshal(r.Amount)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("amount", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.Direction)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("direction", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.OriginatingAccountID)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("originating_account_id", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.Type)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("type", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.Accounting)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("accounting", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.AccountingCategoryID)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("accounting_category_id", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.AccountingLedgerClassID)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("accounting_ledger_class_id", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.ChargeBearer)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("charge_bearer", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.Currency)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("currency", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.Description)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("description", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.Documents)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("documents", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.EffectiveDate)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("effective_date", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.ExpiresAt)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("expires_at", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.FallbackType)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("fallback_type", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.ForeignExchangeContract)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("foreign_exchange_contract", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.ForeignExchangeIndicator)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("foreign_exchange_indicator", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.LedgerTransaction)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("ledger_transaction", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.LineItems)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("line_items", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.Metadata)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("metadata", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.NsfProtected)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("nsf_protected", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.OriginatingPartyName)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("originating_party_name", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.Priority)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("priority", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.Purpose)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("purpose", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.ReceivingAccount)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("receiving_account", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.ReceivingAccountID)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("receiving_account_id", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.RemittanceInformation)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("remittance_information", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.SendRemittanceAdvice)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("send_remittance_advice", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.StatementDescriptor)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("statement_descriptor", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.Subtype)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("subtype", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.TransactionMonitoringEnabled)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("transaction_monitoring_enabled", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.UltimateOriginatingPartyIdentifier)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("ultimate_originating_party_identifier", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.UltimateOriginatingPartyName)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("ultimate_originating_party_name", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.UltimateReceivingPartyIdentifier)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("ultimate_receiving_party_identifier", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.UltimateReceivingPartyName)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("ultimate_receiving_party_name", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.ContentType)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("Content-Type", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.IdempotencyKey)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("Idempotency-Key", string(bdy))
+	}
+	return body.Bytes(), nil
 }
 
 type PaymentOrderNewParamsDirection string
@@ -604,21 +863,18 @@ const (
 	PaymentOrderNewParamsDirectionDebit  PaymentOrderNewParamsDirection = "debit"
 )
 
-type PaymentOrderNewParamsPriority string
-
-const (
-	PaymentOrderNewParamsPriorityHigh   PaymentOrderNewParamsPriority = "high"
-	PaymentOrderNewParamsPriorityNormal PaymentOrderNewParamsPriority = "normal"
-)
-
 type PaymentOrderNewParamsAccounting struct {
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
-	AccountID param.Field[string] `json:"account_id,nullable" format:"uuid"`
+	AccountID param.Field[string] `json:"account_id" format:"uuid"`
 	// The ID of one of the class objects in your accounting system. Class objects
 	// track segments of your business independent of client or project. Note that
 	// these will only be accessible if your accounting system has been connected.
-	ClassID param.Field[string] `json:"class_id,nullable" format:"uuid"`
+	ClassID param.Field[string] `json:"class_id" format:"uuid"`
+}
+
+func (r PaymentOrderNewParamsAccounting) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderNewParamsChargeBearer string
@@ -629,6 +885,22 @@ const (
 	PaymentOrderNewParamsChargeBearerReceiver PaymentOrderNewParamsChargeBearer = "receiver"
 )
 
+type PaymentOrderNewParamsDocuments struct {
+	// A category given to the document, can be `null`.
+	DocumentType param.Field[string]    `json:"document_type"`
+	File         param.Field[io.Reader] `json:"file,required" format:"binary"`
+}
+
+func (r PaymentOrderNewParamsDocuments) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderNewParamsFallbackType string
+
+const (
+	PaymentOrderNewParamsFallbackTypeACH PaymentOrderNewParamsFallbackType = "ach"
+)
+
 type PaymentOrderNewParamsForeignExchangeIndicator string
 
 const (
@@ -636,10 +908,129 @@ const (
 	PaymentOrderNewParamsForeignExchangeIndicatorVariableToFixed PaymentOrderNewParamsForeignExchangeIndicator = "variable_to_fixed"
 )
 
-type PaymentOrderNewParamsFallbackType string
+// Specifies a ledger transaction object that will be created with the payment
+// order. If the ledger transaction cannot be created, then the payment order
+// creation will fail. The resulting ledger transaction will mirror the status of
+// the payment order.
+type PaymentOrderNewParamsLedgerTransaction struct {
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
+	// To post a ledger transaction at creation, use `posted`.
+	Status param.Field[PaymentOrderNewParamsLedgerTransactionStatus] `json:"status"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
+	// purposes.
+	EffectiveDate param.Field[time.Time] `json:"effective_date,required" format:"date"`
+	// An array of ledger entry objects.
+	LedgerEntries param.Field[[]PaymentOrderNewParamsLedgerTransactionLedgerEntries] `json:"ledger_entries,required"`
+	// A unique string to represent the ledger transaction. Only one pending or posted
+	// ledger transaction may have this ID in the ledger.
+	ExternalID param.Field[string] `json:"external_id"`
+	// If the ledger transaction can be reconciled to another object in Modern
+	// Treasury, the type will be populated here, otherwise null. This can be one of
+	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+	LedgerableType param.Field[PaymentOrderNewParamsLedgerTransactionLedgerableType] `json:"ledgerable_type"`
+	// If the ledger transaction can be reconciled to another object in Modern
+	// Treasury, the id will be populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+}
+
+func (r PaymentOrderNewParamsLedgerTransaction) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderNewParamsLedgerTransactionStatus string
 
 const (
-	PaymentOrderNewParamsFallbackTypeACH PaymentOrderNewParamsFallbackType = "ach"
+	PaymentOrderNewParamsLedgerTransactionStatusArchived PaymentOrderNewParamsLedgerTransactionStatus = "archived"
+	PaymentOrderNewParamsLedgerTransactionStatusPending  PaymentOrderNewParamsLedgerTransactionStatus = "pending"
+	PaymentOrderNewParamsLedgerTransactionStatusPosted   PaymentOrderNewParamsLedgerTransactionStatus = "posted"
+)
+
+type PaymentOrderNewParamsLedgerTransactionLedgerEntries struct {
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000. Can be any integer up to 36 digits.
+	Amount param.Field[int64] `json:"amount,required"`
+	// One of `credit`, `debit`. Describes the direction money is flowing in the
+	// transaction. A `credit` moves money from your account to someone else's. A
+	// `debit` pulls money from someone else's account to your own. Note that wire,
+	// rtp, and check payments will always be `credit`.
+	Direction param.Field[PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection] `json:"direction,required"`
+	// The ledger account that this ledger entry is associated with.
+	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
+	// Lock version of the ledger account. This can be passed when creating a ledger
+	// transaction to only succeed if no ledger transactions have posted since the
+	// given version. See our post about Designing the Ledgers API with Optimistic
+	// Locking for more details.
+	LockVersion param.Field[int64] `json:"lock_version"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
+	// account’s pending balance. If any of these conditions would be false after the
+	// transaction is created, the entire call will fail with error code 422.
+	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
+	// account’s posted balance. If any of these conditions would be false after the
+	// transaction is created, the entire call will fail with error code 422.
+	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
+	// account’s available balance. If any of these conditions would be false after the
+	// transaction is created, the entire call will fail with error code 422.
+	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
+	// If true, response will include the balance of the associated ledger account for
+	// the entry.
+	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
+}
+
+func (r PaymentOrderNewParamsLedgerTransactionLedgerEntries) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection string
+
+const (
+	PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirectionCredit PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection = "credit"
+	PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirectionDebit  PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection = "debit"
+)
+
+type PaymentOrderNewParamsLedgerTransactionLedgerableType string
+
+const (
+	PaymentOrderNewParamsLedgerTransactionLedgerableTypeCounterparty          PaymentOrderNewParamsLedgerTransactionLedgerableType = "counterparty"
+	PaymentOrderNewParamsLedgerTransactionLedgerableTypeExpectedPayment       PaymentOrderNewParamsLedgerTransactionLedgerableType = "expected_payment"
+	PaymentOrderNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail PaymentOrderNewParamsLedgerTransactionLedgerableType = "incoming_payment_detail"
+	PaymentOrderNewParamsLedgerTransactionLedgerableTypeInternalAccount       PaymentOrderNewParamsLedgerTransactionLedgerableType = "internal_account"
+	PaymentOrderNewParamsLedgerTransactionLedgerableTypeLineItem              PaymentOrderNewParamsLedgerTransactionLedgerableType = "line_item"
+	PaymentOrderNewParamsLedgerTransactionLedgerableTypePaperItem             PaymentOrderNewParamsLedgerTransactionLedgerableType = "paper_item"
+	PaymentOrderNewParamsLedgerTransactionLedgerableTypePaymentOrder          PaymentOrderNewParamsLedgerTransactionLedgerableType = "payment_order"
+	PaymentOrderNewParamsLedgerTransactionLedgerableTypePaymentOrderAttempt   PaymentOrderNewParamsLedgerTransactionLedgerableType = "payment_order_attempt"
+	PaymentOrderNewParamsLedgerTransactionLedgerableTypeReturn                PaymentOrderNewParamsLedgerTransactionLedgerableType = "return"
+	PaymentOrderNewParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderNewParamsLedgerTransactionLedgerableType = "reversal"
+)
+
+type PaymentOrderNewParamsLineItems struct {
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000.
+	Amount param.Field[int64] `json:"amount,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// A free-form description of the line item.
+	Description param.Field[string] `json:"description"`
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`
+}
+
+func (r PaymentOrderNewParamsLineItems) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderNewParamsPriority string
+
+const (
+	PaymentOrderNewParamsPriorityHigh   PaymentOrderNewParamsPriority = "high"
+	PaymentOrderNewParamsPriorityNormal PaymentOrderNewParamsPriority = "normal"
 )
 
 // Either `receiving_account` or `receiving_account_id` must be present. When using
@@ -649,12 +1040,12 @@ type PaymentOrderNewParamsReceivingAccount struct {
 	// Can be `checking`, `savings` or `other`.
 	AccountType param.Field[ExternalAccountType] `json:"account_type"`
 	// Either `individual` or `business`.
-	PartyType param.Field[PaymentOrderNewParamsReceivingAccountPartyType] `json:"party_type,nullable"`
+	PartyType param.Field[PaymentOrderNewParamsReceivingAccountPartyType] `json:"party_type"`
 	// Required if receiving wire payments.
 	PartyAddress param.Field[PaymentOrderNewParamsReceivingAccountPartyAddress] `json:"party_address"`
 	// A nickname for the external account. This is only for internal usage and won't
 	// affect any payments
-	Name           param.Field[string]                                                `json:"name,nullable"`
+	Name           param.Field[string]                                                `json:"name"`
 	AccountDetails param.Field[[]PaymentOrderNewParamsReceivingAccountAccountDetails] `json:"account_details"`
 	RoutingDetails param.Field[[]PaymentOrderNewParamsReceivingAccountRoutingDetails] `json:"routing_details"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -675,6 +1066,10 @@ type PaymentOrderNewParamsReceivingAccount struct {
 	ContactDetails      param.Field[[]PaymentOrderNewParamsReceivingAccountContactDetails] `json:"contact_details"`
 }
 
+func (r PaymentOrderNewParamsReceivingAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type PaymentOrderNewParamsReceivingAccountPartyType string
 
 const (
@@ -684,21 +1079,29 @@ const (
 
 // Required if receiving wire payments.
 type PaymentOrderNewParamsReceivingAccountPartyAddress struct {
-	Line1 param.Field[string] `json:"line1,nullable"`
-	Line2 param.Field[string] `json:"line2,nullable"`
+	Line1 param.Field[string] `json:"line1"`
+	Line2 param.Field[string] `json:"line2"`
 	// Locality or City.
-	Locality param.Field[string] `json:"locality,nullable"`
+	Locality param.Field[string] `json:"locality"`
 	// Region or State.
-	Region param.Field[string] `json:"region,nullable"`
+	Region param.Field[string] `json:"region"`
 	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,nullable"`
+	PostalCode param.Field[string] `json:"postal_code"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,nullable"`
+	Country param.Field[string] `json:"country"`
+}
+
+func (r PaymentOrderNewParamsReceivingAccountPartyAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderNewParamsReceivingAccountAccountDetails struct {
 	AccountNumber     param.Field[string]                                                               `json:"account_number,required"`
 	AccountNumberType param.Field[PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType] `json:"account_number_type"`
+}
+
+func (r PaymentOrderNewParamsReceivingAccountAccountDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType string
@@ -715,6 +1118,10 @@ type PaymentOrderNewParamsReceivingAccountRoutingDetails struct {
 	RoutingNumber     param.Field[string]                                                               `json:"routing_number,required"`
 	RoutingNumberType param.Field[PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
 	PaymentType       param.Field[PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType]       `json:"payment_type"`
+}
+
+func (r PaymentOrderNewParamsReceivingAccountRoutingDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType string
@@ -763,7 +1170,7 @@ type PaymentOrderNewParamsReceivingAccountLedgerAccount struct {
 	// The name of the ledger account.
 	Name param.Field[string] `json:"name,required"`
 	// The description of the ledger account.
-	Description param.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description"`
 	// The normal balance of the ledger account.
 	NormalBalance param.Field[PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalance] `json:"normal_balance,required"`
 	// The id of the ledger that this account belongs to.
@@ -771,7 +1178,7 @@ type PaymentOrderNewParamsReceivingAccountLedgerAccount struct {
 	// The currency of the ledger account.
 	Currency param.Field[string] `json:"currency,required"`
 	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
+	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
 	// populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
@@ -782,6 +1189,10 @@ type PaymentOrderNewParamsReceivingAccountLedgerAccount struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+}
+
+func (r PaymentOrderNewParamsReceivingAccountLedgerAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalance string
@@ -803,6 +1214,10 @@ type PaymentOrderNewParamsReceivingAccountContactDetails struct {
 	ContactIdentifierType param.Field[PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
 }
 
+func (r PaymentOrderNewParamsReceivingAccountContactDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType string
 
 const (
@@ -810,118 +1225,6 @@ const (
 	PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType = "phone_number"
 	PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite     PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType = "website"
 )
-
-// Specifies a ledger transaction object that will be created with the payment
-// order. If the ledger transaction cannot be created, then the payment order
-// creation will fail. The resulting ledger transaction will mirror the status of
-// the payment order.
-type PaymentOrderNewParamsLedgerTransaction struct {
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description,nullable"`
-	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[PaymentOrderNewParamsLedgerTransactionStatus] `json:"status"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
-	// purposes.
-	EffectiveDate param.Field[time.Time] `json:"effective_date,required" format:"date"`
-	// An array of ledger entry objects.
-	LedgerEntries param.Field[[]PaymentOrderNewParamsLedgerTransactionLedgerEntries] `json:"ledger_entries,required"`
-	// A unique string to represent the ledger transaction. Only one pending or posted
-	// ledger transaction may have this ID in the ledger.
-	ExternalID param.Field[string] `json:"external_id"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
-	LedgerableType param.Field[PaymentOrderNewParamsLedgerTransactionLedgerableType] `json:"ledgerable_type"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-}
-
-type PaymentOrderNewParamsLedgerTransactionStatus string
-
-const (
-	PaymentOrderNewParamsLedgerTransactionStatusArchived PaymentOrderNewParamsLedgerTransactionStatus = "archived"
-	PaymentOrderNewParamsLedgerTransactionStatusPending  PaymentOrderNewParamsLedgerTransactionStatus = "pending"
-	PaymentOrderNewParamsLedgerTransactionStatusPosted   PaymentOrderNewParamsLedgerTransactionStatus = "posted"
-)
-
-type PaymentOrderNewParamsLedgerTransactionLedgerEntries struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount,required"`
-	// One of `credit`, `debit`. Describes the direction money is flowing in the
-	// transaction. A `credit` moves money from your account to someone else's. A
-	// `debit` pulls money from someone else's account to your own. Note that wire,
-	// rtp, and check payments will always be `credit`.
-	Direction param.Field[PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection] `json:"direction,required"`
-	// The ledger account that this ledger entry is associated with.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
-	// Lock version of the ledger account. This can be passed when creating a ledger
-	// transaction to only succeed if no ledger transactions have posted since the
-	// given version. See our post about Designing the Ledgers API with Optimistic
-	// Locking for more details.
-	LockVersion param.Field[int64] `json:"lock_version,nullable"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s pending balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount,nullable"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s posted balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount,nullable"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s available balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount,nullable"`
-	// If true, response will include the balance of the associated ledger account for
-	// the entry.
-	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances,nullable"`
-}
-
-type PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection string
-
-const (
-	PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirectionCredit PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection = "credit"
-	PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirectionDebit  PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection = "debit"
-)
-
-type PaymentOrderNewParamsLedgerTransactionLedgerableType string
-
-const (
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeCounterparty          PaymentOrderNewParamsLedgerTransactionLedgerableType = "counterparty"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeExpectedPayment       PaymentOrderNewParamsLedgerTransactionLedgerableType = "expected_payment"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail PaymentOrderNewParamsLedgerTransactionLedgerableType = "incoming_payment_detail"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeInternalAccount       PaymentOrderNewParamsLedgerTransactionLedgerableType = "internal_account"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeLineItem              PaymentOrderNewParamsLedgerTransactionLedgerableType = "line_item"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypePaperItem             PaymentOrderNewParamsLedgerTransactionLedgerableType = "paper_item"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypePaymentOrder          PaymentOrderNewParamsLedgerTransactionLedgerableType = "payment_order"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypePaymentOrderAttempt   PaymentOrderNewParamsLedgerTransactionLedgerableType = "payment_order_attempt"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeReturn                PaymentOrderNewParamsLedgerTransactionLedgerableType = "return"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderNewParamsLedgerTransactionLedgerableType = "reversal"
-)
-
-type PaymentOrderNewParamsLineItems struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// A free-form description of the line item.
-	Description param.Field[string] `json:"description,nullable"`
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountingCategoryID param.Field[string] `json:"accounting_category_id,nullable"`
-}
-
-type PaymentOrderNewParamsDocuments struct {
-	// A category given to the document, can be `null`.
-	DocumentType param.Field[string]    `json:"document_type"`
-	File         param.Field[io.Reader] `json:"file,required" format:"binary"`
-}
 
 type PaymentOrderNewParamsContentType string
 
@@ -931,150 +1234,140 @@ const (
 )
 
 type PaymentOrderUpdateParams struct {
-	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-	// `au_becs`, `interac`, `signet`, `provexchange`.
-	Type param.Field[PaymentOrderType] `json:"type"`
-	// An additional layer of classification for the type of payment order you are
-	// doing. This field is only used for `ach` payment orders currently. For `ach`
-	// payment orders, the `subtype` represents the SEC code. We currently support
-	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
-	Subtype param.Field[PaymentOrderSubtype] `json:"subtype,nullable"`
+	Accounting param.Field[PaymentOrderUpdateParamsAccounting] `json:"accounting"`
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
+	// The ID of one of your accounting ledger classes. Note that these will only be
+	// accessible if your accounting system has been connected.
+	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount"`
+	// The party that will pay the fees for the payment order. Only applies to wire
+	// payment orders. Can be one of shared, sender, or receiver, which correspond
+	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+	ChargeBearer param.Field[PaymentOrderUpdateParamsChargeBearer] `json:"charge_bearer"`
+	// Required when receiving_account_id is passed the ID of an external account.
+	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
+	// Defaults to the currency of the originating account.
+	Currency param.Field[shared.Currency] `json:"currency"`
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
 	Direction param.Field[PaymentOrderUpdateParamsDirection] `json:"direction"`
-	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
-	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
-	// an overnight check rather than standard mail.
-	Priority param.Field[PaymentOrderUpdateParamsPriority] `json:"priority"`
-	// The ID of one of your organization's internal accounts.
-	OriginatingAccountID param.Field[string] `json:"originating_account_id" format:"uuid"`
-	// Either `receiving_account` or `receiving_account_id` must be present. When using
-	// `receiving_account_id`, you may pass the id of an external account or an
-	// internal account.
-	ReceivingAccountID param.Field[string]                             `json:"receiving_account_id" format:"uuid"`
-	Accounting         param.Field[PaymentOrderUpdateParamsAccounting] `json:"accounting"`
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountingCategoryID param.Field[string] `json:"accounting_category_id,nullable" format:"uuid"`
-	// The ID of one of your accounting ledger classes. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id,nullable" format:"uuid"`
-	// Defaults to the currency of the originating account.
-	Currency param.Field[shared.Currency] `json:"currency,nullable"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description,nullable"`
+	// RFP payments require an expires_at. This value must be past the effective_date.
+	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
+	// A payment type to fallback to if the original type is not valid for the
+	// receiving account. Currently, this only supports falling back from RTP to ACH
+	// (type=rtp and fallback_type=ach)
+	FallbackType param.Field[PaymentOrderUpdateParamsFallbackType] `json:"fallback_type"`
+	// If present, indicates a specific foreign exchange contract number that has been
+	// generated by your financial institution.
+	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract"`
+	// Indicates the type of FX transfer to initiate, can be either
+	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+	// currency matches the originating account currency.
+	ForeignExchangeIndicator param.Field[PaymentOrderUpdateParamsForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
+	// An array of line items that must sum up to the amount of the payment order.
+	LineItems param.Field[[]PaymentOrderUpdateParamsLineItems] `json:"line_items"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// A boolean to determine if NSF Protection is enabled for this payment order. Note
+	// that this setting must also be turned on in your organization settings page.
+	NsfProtected param.Field[bool] `json:"nsf_protected"`
+	// The ID of one of your organization's internal accounts.
+	OriginatingAccountID param.Field[string] `json:"originating_account_id" format:"uuid"`
+	// If present, this will replace your default company name on receiver's bank
+	// statement. This field can only be used for ACH payments currently. For ACH, only
+	// the first 16 characters of this string will be used. Any additional characters
+	// will be truncated.
+	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
+	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+	// an overnight check rather than standard mail.
+	Priority param.Field[PaymentOrderUpdateParamsPriority] `json:"priority"`
+	// For `wire`, this is usually the purpose which is transmitted via the
+	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
+	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
+	// CPA Code that will be attached to the payment.
+	Purpose param.Field[string] `json:"purpose"`
+	// Either `receiving_account` or `receiving_account_id` must be present. When using
+	// `receiving_account_id`, you may pass the id of an external account or an
+	// internal account.
+	ReceivingAccount param.Field[PaymentOrderUpdateParamsReceivingAccount] `json:"receiving_account"`
+	// Either `receiving_account` or `receiving_account_id` must be present. When using
+	// `receiving_account_id`, you may pass the id of an external account or an
+	// internal account.
+	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// For `ach`, this field will be passed through on an addenda record. For `wire`
+	// payments the field will be passed through as the "Originator to Beneficiary
+	// Information", also known as OBI or Fedwire tag 6000.
+	RemittanceInformation param.Field[string] `json:"remittance_information"`
+	// Send an email to the counterparty when the payment order is sent to the bank. If
+	// `null`, `send_remittance_advice` on the Counterparty is used.
+	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
 	// An optional descriptor which will appear in the receiver's statement. For
 	// `check` payments this field will be used as the memo line. For `ach` the maximum
 	// length is 10 characters. Note that for ACH payments, the name on your bank
 	// account will be included automatically by the bank, so you can use the
 	// characters for other useful information. For `eft` the maximum length is 15
 	// characters.
-	StatementDescriptor param.Field[string] `json:"statement_descriptor,nullable"`
-	// For `ach`, this field will be passed through on an addenda record. For `wire`
-	// payments the field will be passed through as the "Originator to Beneficiary
-	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation param.Field[string] `json:"remittance_information,nullable"`
-	// For `wire`, this is usually the purpose which is transmitted via the
-	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
-	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
-	// CPA Code that will be attached to the payment.
-	Purpose param.Field[string] `json:"purpose,nullable"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The party that will pay the fees for the payment order. Only applies to wire
-	// payment orders. Can be one of shared, sender, or receiver, which correspond
-	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
-	ChargeBearer param.Field[PaymentOrderUpdateParamsChargeBearer] `json:"charge_bearer,nullable"`
-	// Indicates the type of FX transfer to initiate, can be either
-	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
-	// currency matches the originating account currency.
-	ForeignExchangeIndicator param.Field[PaymentOrderUpdateParamsForeignExchangeIndicator] `json:"foreign_exchange_indicator,nullable"`
-	// If present, indicates a specific foreign exchange contract number that has been
-	// generated by your financial institution.
-	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract,nullable"`
-	// A boolean to determine if NSF Protection is enabled for this payment order. Note
-	// that this setting must also be turned on in your organization settings page.
-	NsfProtected param.Field[bool] `json:"nsf_protected"`
-	// If present, this will replace your default company name on receiver's bank
-	// statement. This field can only be used for ACH payments currently. For ACH, only
-	// the first 16 characters of this string will be used. Any additional characters
-	// will be truncated.
-	OriginatingPartyName param.Field[string] `json:"originating_party_name,nullable"`
-	// This represents the name of the person that the payment is on behalf of when
-	// using the CIE subtype for ACH payments. Only the first 15 characters of this
-	// string will be used. Any additional characters will be truncated.
-	UltimateOriginatingPartyName param.Field[string] `json:"ultimate_originating_party_name,nullable"`
-	// This represents the identifier by which the person is known to the receiver when
-	// using the CIE subtype for ACH payments. Only the first 22 characters of this
-	// string will be used. Any additional characters will be truncated.
-	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier,nullable"`
-	// This represents the identifier by which the merchant is known to the person
-	// initiating an ACH payment with CIE subtype. Only the first 15 characters of this
-	// string will be used. Any additional characters will be truncated.
-	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name,nullable"`
-	// This represents the name of the merchant that the payment is being sent to when
-	// using the CIE subtype for ACH payments. Only the first 22 characters of this
-	// string will be used. Any additional characters will be truncated.
-	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier,nullable"`
-	// Send an email to the counterparty when the payment order is sent to the bank. If
-	// `null`, `send_remittance_advice` on the Counterparty is used.
-	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice,nullable"`
-	// RFP payments require an expires_at. This value must be past the effective_date.
-	ExpiresAt param.Field[time.Time] `json:"expires_at,nullable" format:"date-time"`
+	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
 	// To cancel a payment order, use `cancelled`. To redraft a returned payment order,
 	// use `approved`. To undo approval on a denied or approved payment order, use
 	// `needs_approval`.
 	Status param.Field[PaymentOrderUpdateParamsStatus] `json:"status"`
-	// Required when receiving_account_id is passed the ID of an external account.
-	CounterpartyID param.Field[string] `json:"counterparty_id,nullable" format:"uuid"`
-	// A payment type to fallback to if the original type is not valid for the
-	// receiving account. Currently, this only supports falling back from RTP to ACH
-	// (type=rtp and fallback_type=ach)
-	FallbackType param.Field[PaymentOrderUpdateParamsFallbackType] `json:"fallback_type"`
-	// Either `receiving_account` or `receiving_account_id` must be present. When using
-	// `receiving_account_id`, you may pass the id of an external account or an
-	// internal account.
-	ReceivingAccount param.Field[PaymentOrderUpdateParamsReceivingAccount] `json:"receiving_account"`
-	// An array of line items that must sum up to the amount of the payment order.
-	LineItems param.Field[[]PaymentOrderUpdateParamsLineItems] `json:"line_items"`
+	// An additional layer of classification for the type of payment order you are
+	// doing. This field is only used for `ach` payment orders currently. For `ach`
+	// payment orders, the `subtype` represents the SEC code. We currently support
+	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
+	Subtype param.Field[PaymentOrderSubtype] `json:"subtype"`
+	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
+	// `au_becs`, `interac`, `signet`, `provexchange`.
+	Type param.Field[PaymentOrderType] `json:"type"`
+	// This represents the identifier by which the person is known to the receiver when
+	// using the CIE subtype for ACH payments. Only the first 22 characters of this
+	// string will be used. Any additional characters will be truncated.
+	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
+	// This represents the name of the person that the payment is on behalf of when
+	// using the CIE subtype for ACH payments. Only the first 15 characters of this
+	// string will be used. Any additional characters will be truncated.
+	UltimateOriginatingPartyName param.Field[string] `json:"ultimate_originating_party_name"`
+	// This represents the name of the merchant that the payment is being sent to when
+	// using the CIE subtype for ACH payments. Only the first 22 characters of this
+	// string will be used. Any additional characters will be truncated.
+	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
+	// This represents the identifier by which the merchant is known to the person
+	// initiating an ACH payment with CIE subtype. Only the first 15 characters of this
+	// string will be used. Any additional characters will be truncated.
+	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
 }
 
 func (r PaymentOrderUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-type PaymentOrderUpdateParamsDirection string
-
-const (
-	PaymentOrderUpdateParamsDirectionCredit PaymentOrderUpdateParamsDirection = "credit"
-	PaymentOrderUpdateParamsDirectionDebit  PaymentOrderUpdateParamsDirection = "debit"
-)
-
-type PaymentOrderUpdateParamsPriority string
-
-const (
-	PaymentOrderUpdateParamsPriorityHigh   PaymentOrderUpdateParamsPriority = "high"
-	PaymentOrderUpdateParamsPriorityNormal PaymentOrderUpdateParamsPriority = "normal"
-)
-
 type PaymentOrderUpdateParamsAccounting struct {
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
-	AccountID param.Field[string] `json:"account_id,nullable" format:"uuid"`
+	AccountID param.Field[string] `json:"account_id" format:"uuid"`
 	// The ID of one of the class objects in your accounting system. Class objects
 	// track segments of your business independent of client or project. Note that
 	// these will only be accessible if your accounting system has been connected.
-	ClassID param.Field[string] `json:"class_id,nullable" format:"uuid"`
+	ClassID param.Field[string] `json:"class_id" format:"uuid"`
+}
+
+func (r PaymentOrderUpdateParamsAccounting) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderUpdateParamsChargeBearer string
@@ -1085,6 +1378,19 @@ const (
 	PaymentOrderUpdateParamsChargeBearerReceiver PaymentOrderUpdateParamsChargeBearer = "receiver"
 )
 
+type PaymentOrderUpdateParamsDirection string
+
+const (
+	PaymentOrderUpdateParamsDirectionCredit PaymentOrderUpdateParamsDirection = "credit"
+	PaymentOrderUpdateParamsDirectionDebit  PaymentOrderUpdateParamsDirection = "debit"
+)
+
+type PaymentOrderUpdateParamsFallbackType string
+
+const (
+	PaymentOrderUpdateParamsFallbackTypeACH PaymentOrderUpdateParamsFallbackType = "ach"
+)
+
 type PaymentOrderUpdateParamsForeignExchangeIndicator string
 
 const (
@@ -1092,26 +1398,29 @@ const (
 	PaymentOrderUpdateParamsForeignExchangeIndicatorVariableToFixed PaymentOrderUpdateParamsForeignExchangeIndicator = "variable_to_fixed"
 )
 
-type PaymentOrderUpdateParamsStatus string
+type PaymentOrderUpdateParamsLineItems struct {
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000.
+	Amount param.Field[int64] `json:"amount,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// A free-form description of the line item.
+	Description param.Field[string] `json:"description"`
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`
+}
+
+func (r PaymentOrderUpdateParamsLineItems) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderUpdateParamsPriority string
 
 const (
-	PaymentOrderUpdateParamsStatusApproved      PaymentOrderUpdateParamsStatus = "approved"
-	PaymentOrderUpdateParamsStatusCancelled     PaymentOrderUpdateParamsStatus = "cancelled"
-	PaymentOrderUpdateParamsStatusCompleted     PaymentOrderUpdateParamsStatus = "completed"
-	PaymentOrderUpdateParamsStatusDenied        PaymentOrderUpdateParamsStatus = "denied"
-	PaymentOrderUpdateParamsStatusFailed        PaymentOrderUpdateParamsStatus = "failed"
-	PaymentOrderUpdateParamsStatusNeedsApproval PaymentOrderUpdateParamsStatus = "needs_approval"
-	PaymentOrderUpdateParamsStatusPending       PaymentOrderUpdateParamsStatus = "pending"
-	PaymentOrderUpdateParamsStatusProcessing    PaymentOrderUpdateParamsStatus = "processing"
-	PaymentOrderUpdateParamsStatusReturned      PaymentOrderUpdateParamsStatus = "returned"
-	PaymentOrderUpdateParamsStatusReversed      PaymentOrderUpdateParamsStatus = "reversed"
-	PaymentOrderUpdateParamsStatusSent          PaymentOrderUpdateParamsStatus = "sent"
-)
-
-type PaymentOrderUpdateParamsFallbackType string
-
-const (
-	PaymentOrderUpdateParamsFallbackTypeACH PaymentOrderUpdateParamsFallbackType = "ach"
+	PaymentOrderUpdateParamsPriorityHigh   PaymentOrderUpdateParamsPriority = "high"
+	PaymentOrderUpdateParamsPriorityNormal PaymentOrderUpdateParamsPriority = "normal"
 )
 
 // Either `receiving_account` or `receiving_account_id` must be present. When using
@@ -1121,12 +1430,12 @@ type PaymentOrderUpdateParamsReceivingAccount struct {
 	// Can be `checking`, `savings` or `other`.
 	AccountType param.Field[ExternalAccountType] `json:"account_type"`
 	// Either `individual` or `business`.
-	PartyType param.Field[PaymentOrderUpdateParamsReceivingAccountPartyType] `json:"party_type,nullable"`
+	PartyType param.Field[PaymentOrderUpdateParamsReceivingAccountPartyType] `json:"party_type"`
 	// Required if receiving wire payments.
 	PartyAddress param.Field[PaymentOrderUpdateParamsReceivingAccountPartyAddress] `json:"party_address"`
 	// A nickname for the external account. This is only for internal usage and won't
 	// affect any payments
-	Name           param.Field[string]                                                   `json:"name,nullable"`
+	Name           param.Field[string]                                                   `json:"name"`
 	AccountDetails param.Field[[]PaymentOrderUpdateParamsReceivingAccountAccountDetails] `json:"account_details"`
 	RoutingDetails param.Field[[]PaymentOrderUpdateParamsReceivingAccountRoutingDetails] `json:"routing_details"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -1147,6 +1456,10 @@ type PaymentOrderUpdateParamsReceivingAccount struct {
 	ContactDetails      param.Field[[]PaymentOrderUpdateParamsReceivingAccountContactDetails] `json:"contact_details"`
 }
 
+func (r PaymentOrderUpdateParamsReceivingAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type PaymentOrderUpdateParamsReceivingAccountPartyType string
 
 const (
@@ -1156,21 +1469,29 @@ const (
 
 // Required if receiving wire payments.
 type PaymentOrderUpdateParamsReceivingAccountPartyAddress struct {
-	Line1 param.Field[string] `json:"line1,nullable"`
-	Line2 param.Field[string] `json:"line2,nullable"`
+	Line1 param.Field[string] `json:"line1"`
+	Line2 param.Field[string] `json:"line2"`
 	// Locality or City.
-	Locality param.Field[string] `json:"locality,nullable"`
+	Locality param.Field[string] `json:"locality"`
 	// Region or State.
-	Region param.Field[string] `json:"region,nullable"`
+	Region param.Field[string] `json:"region"`
 	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,nullable"`
+	PostalCode param.Field[string] `json:"postal_code"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,nullable"`
+	Country param.Field[string] `json:"country"`
+}
+
+func (r PaymentOrderUpdateParamsReceivingAccountPartyAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderUpdateParamsReceivingAccountAccountDetails struct {
 	AccountNumber     param.Field[string]                                                                  `json:"account_number,required"`
 	AccountNumberType param.Field[PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType] `json:"account_number_type"`
+}
+
+func (r PaymentOrderUpdateParamsReceivingAccountAccountDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType string
@@ -1187,6 +1508,10 @@ type PaymentOrderUpdateParamsReceivingAccountRoutingDetails struct {
 	RoutingNumber     param.Field[string]                                                                  `json:"routing_number,required"`
 	RoutingNumberType param.Field[PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
 	PaymentType       param.Field[PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType]       `json:"payment_type"`
+}
+
+func (r PaymentOrderUpdateParamsReceivingAccountRoutingDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType string
@@ -1235,7 +1560,7 @@ type PaymentOrderUpdateParamsReceivingAccountLedgerAccount struct {
 	// The name of the ledger account.
 	Name param.Field[string] `json:"name,required"`
 	// The description of the ledger account.
-	Description param.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description"`
 	// The normal balance of the ledger account.
 	NormalBalance param.Field[PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalance] `json:"normal_balance,required"`
 	// The id of the ledger that this account belongs to.
@@ -1243,7 +1568,7 @@ type PaymentOrderUpdateParamsReceivingAccountLedgerAccount struct {
 	// The currency of the ledger account.
 	Currency param.Field[string] `json:"currency,required"`
 	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
+	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
 	// populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
@@ -1254,6 +1579,10 @@ type PaymentOrderUpdateParamsReceivingAccountLedgerAccount struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+}
+
+func (r PaymentOrderUpdateParamsReceivingAccountLedgerAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalance string
@@ -1275,6 +1604,10 @@ type PaymentOrderUpdateParamsReceivingAccountContactDetails struct {
 	ContactIdentifierType param.Field[PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
 }
 
+func (r PaymentOrderUpdateParamsReceivingAccountContactDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType string
 
 const (
@@ -1283,44 +1616,46 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite     PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType = "website"
 )
 
-type PaymentOrderUpdateParamsLineItems struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// A free-form description of the line item.
-	Description param.Field[string] `json:"description,nullable"`
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountingCategoryID param.Field[string] `json:"accounting_category_id,nullable"`
-}
+type PaymentOrderUpdateParamsStatus string
+
+const (
+	PaymentOrderUpdateParamsStatusApproved      PaymentOrderUpdateParamsStatus = "approved"
+	PaymentOrderUpdateParamsStatusCancelled     PaymentOrderUpdateParamsStatus = "cancelled"
+	PaymentOrderUpdateParamsStatusCompleted     PaymentOrderUpdateParamsStatus = "completed"
+	PaymentOrderUpdateParamsStatusDenied        PaymentOrderUpdateParamsStatus = "denied"
+	PaymentOrderUpdateParamsStatusFailed        PaymentOrderUpdateParamsStatus = "failed"
+	PaymentOrderUpdateParamsStatusNeedsApproval PaymentOrderUpdateParamsStatus = "needs_approval"
+	PaymentOrderUpdateParamsStatusPending       PaymentOrderUpdateParamsStatus = "pending"
+	PaymentOrderUpdateParamsStatusProcessing    PaymentOrderUpdateParamsStatus = "processing"
+	PaymentOrderUpdateParamsStatusReturned      PaymentOrderUpdateParamsStatus = "returned"
+	PaymentOrderUpdateParamsStatusReversed      PaymentOrderUpdateParamsStatus = "reversed"
+	PaymentOrderUpdateParamsStatusSent          PaymentOrderUpdateParamsStatus = "sent"
+)
 
 type PaymentOrderListParams struct {
-	AfterCursor param.Field[string]                     `query:"after_cursor,nullable"`
-	PerPage     param.Field[int64]                      `query:"per_page"`
-	Type        param.Field[PaymentOrderListParamsType] `query:"type"`
-	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
-	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
-	// an overnight check rather than standard mail.
-	Priority             param.Field[PaymentOrderListParamsPriority] `query:"priority"`
-	CounterpartyID       param.Field[string]                         `query:"counterparty_id" format:"uuid"`
-	OriginatingAccountID param.Field[string]                         `query:"originating_account_id" format:"uuid"`
-	// The ID of a transaction that the payment order has been reconciled to.
-	TransactionID param.Field[string]                          `query:"transaction_id" format:"uuid"`
-	Status        param.Field[PaymentOrderListParamsStatus]    `query:"status"`
-	Direction     param.Field[PaymentOrderListParamsDirection] `query:"direction"`
-	// Query for records with the provided reference number
-	ReferenceNumber param.Field[string] `query:"reference_number"`
-	// An inclusive lower bound for searching effective_date
-	EffectiveDateStart param.Field[time.Time] `query:"effective_date_start" format:"date"`
+	AfterCursor    param.Field[string]                          `query:"after_cursor"`
+	CounterpartyID param.Field[string]                          `query:"counterparty_id" format:"uuid"`
+	Direction      param.Field[PaymentOrderListParamsDirection] `query:"direction"`
 	// An inclusive upper bound for searching effective_date
 	EffectiveDateEnd param.Field[time.Time] `query:"effective_date_end" format:"date"`
+	// An inclusive lower bound for searching effective_date
+	EffectiveDateStart param.Field[time.Time] `query:"effective_date_start" format:"date"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
-	Metadata param.Field[map[string]string] `query:"metadata"`
+	Metadata             param.Field[map[string]string] `query:"metadata"`
+	OriginatingAccountID param.Field[string]            `query:"originating_account_id" format:"uuid"`
+	PerPage              param.Field[int64]             `query:"per_page"`
+	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+	// an overnight check rather than standard mail.
+	Priority param.Field[PaymentOrderListParamsPriority] `query:"priority"`
+	// Query for records with the provided reference number
+	ReferenceNumber param.Field[string]                       `query:"reference_number"`
+	Status          param.Field[PaymentOrderListParamsStatus] `query:"status"`
+	// The ID of a transaction that the payment order has been reconciled to.
+	TransactionID param.Field[string]                     `query:"transaction_id" format:"uuid"`
+	Type          param.Field[PaymentOrderListParamsType] `query:"type"`
 }
 
 // URLQuery serializes [PaymentOrderListParams]'s query parameters as `url.Values`.
@@ -1331,26 +1666,11 @@ func (r PaymentOrderListParams) URLQuery() (v url.Values) {
 	})
 }
 
-type PaymentOrderListParamsType string
+type PaymentOrderListParamsDirection string
 
 const (
-	PaymentOrderListParamsTypeACH         PaymentOrderListParamsType = "ach"
-	PaymentOrderListParamsTypeAuBecs      PaymentOrderListParamsType = "au_becs"
-	PaymentOrderListParamsTypeBacs        PaymentOrderListParamsType = "bacs"
-	PaymentOrderListParamsTypeBook        PaymentOrderListParamsType = "book"
-	PaymentOrderListParamsTypeCard        PaymentOrderListParamsType = "card"
-	PaymentOrderListParamsTypeCheck       PaymentOrderListParamsType = "check"
-	PaymentOrderListParamsTypeCrossBorder PaymentOrderListParamsType = "cross_border"
-	PaymentOrderListParamsTypeEft         PaymentOrderListParamsType = "eft"
-	PaymentOrderListParamsTypeInterac     PaymentOrderListParamsType = "interac"
-	PaymentOrderListParamsTypeMasav       PaymentOrderListParamsType = "masav"
-	PaymentOrderListParamsTypeNeft        PaymentOrderListParamsType = "neft"
-	PaymentOrderListParamsTypeProvxchange PaymentOrderListParamsType = "provxchange"
-	PaymentOrderListParamsTypeRtp         PaymentOrderListParamsType = "rtp"
-	PaymentOrderListParamsTypeSen         PaymentOrderListParamsType = "sen"
-	PaymentOrderListParamsTypeSepa        PaymentOrderListParamsType = "sepa"
-	PaymentOrderListParamsTypeSignet      PaymentOrderListParamsType = "signet"
-	PaymentOrderListParamsTypeWire        PaymentOrderListParamsType = "wire"
+	PaymentOrderListParamsDirectionCredit PaymentOrderListParamsDirection = "credit"
+	PaymentOrderListParamsDirectionDebit  PaymentOrderListParamsDirection = "debit"
 )
 
 type PaymentOrderListParamsPriority string
@@ -1376,22 +1696,29 @@ const (
 	PaymentOrderListParamsStatusSent          PaymentOrderListParamsStatus = "sent"
 )
 
-type PaymentOrderListParamsDirection string
+type PaymentOrderListParamsType string
 
 const (
-	PaymentOrderListParamsDirectionCredit PaymentOrderListParamsDirection = "credit"
-	PaymentOrderListParamsDirectionDebit  PaymentOrderListParamsDirection = "debit"
+	PaymentOrderListParamsTypeACH         PaymentOrderListParamsType = "ach"
+	PaymentOrderListParamsTypeAuBecs      PaymentOrderListParamsType = "au_becs"
+	PaymentOrderListParamsTypeBacs        PaymentOrderListParamsType = "bacs"
+	PaymentOrderListParamsTypeBook        PaymentOrderListParamsType = "book"
+	PaymentOrderListParamsTypeCard        PaymentOrderListParamsType = "card"
+	PaymentOrderListParamsTypeCheck       PaymentOrderListParamsType = "check"
+	PaymentOrderListParamsTypeCrossBorder PaymentOrderListParamsType = "cross_border"
+	PaymentOrderListParamsTypeEft         PaymentOrderListParamsType = "eft"
+	PaymentOrderListParamsTypeInterac     PaymentOrderListParamsType = "interac"
+	PaymentOrderListParamsTypeMasav       PaymentOrderListParamsType = "masav"
+	PaymentOrderListParamsTypeNeft        PaymentOrderListParamsType = "neft"
+	PaymentOrderListParamsTypeProvxchange PaymentOrderListParamsType = "provxchange"
+	PaymentOrderListParamsTypeRtp         PaymentOrderListParamsType = "rtp"
+	PaymentOrderListParamsTypeSen         PaymentOrderListParamsType = "sen"
+	PaymentOrderListParamsTypeSepa        PaymentOrderListParamsType = "sepa"
+	PaymentOrderListParamsTypeSignet      PaymentOrderListParamsType = "signet"
+	PaymentOrderListParamsTypeWire        PaymentOrderListParamsType = "wire"
 )
 
 type PaymentOrderNewAsyncParams struct {
-	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-	// `au_becs`, `interac`, `signet`, `provexchange`.
-	Type param.Field[PaymentOrderType] `json:"type,required"`
-	// An additional layer of classification for the type of payment order you are
-	// doing. This field is only used for `ach` payment orders currently. For `ach`
-	// payment orders, the `subtype` represents the SEC code. We currently support
-	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
-	Subtype param.Field[PaymentOrderSubtype] `json:"subtype,nullable"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount,required"`
@@ -1400,90 +1727,43 @@ type PaymentOrderNewAsyncParams struct {
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
 	Direction param.Field[PaymentOrderNewAsyncParamsDirection] `json:"direction,required"`
-	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
-	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
-	// an overnight check rather than standard mail.
-	Priority param.Field[PaymentOrderNewAsyncParamsPriority] `json:"priority"`
 	// The ID of one of your organization's internal accounts.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
-	// Either `receiving_account` or `receiving_account_id` must be present. When using
-	// `receiving_account_id`, you may pass the id of an external account or an
-	// internal account.
-	ReceivingAccountID param.Field[string]                               `json:"receiving_account_id" format:"uuid"`
-	Accounting         param.Field[PaymentOrderNewAsyncParamsAccounting] `json:"accounting"`
+	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
+	// `au_becs`, `interac`, `signet`, `provexchange`.
+	Type       param.Field[PaymentOrderType]                     `json:"type,required"`
+	Accounting param.Field[PaymentOrderNewAsyncParamsAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
-	AccountingCategoryID param.Field[string] `json:"accounting_category_id,nullable" format:"uuid"`
+	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
 	// The ID of one of your accounting ledger classes. Note that these will only be
 	// accessible if your accounting system has been connected.
-	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id,nullable" format:"uuid"`
+	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
+	// The party that will pay the fees for the payment order. Only applies to wire
+	// payment orders. Can be one of shared, sender, or receiver, which correspond
+	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+	ChargeBearer param.Field[PaymentOrderNewAsyncParamsChargeBearer] `json:"charge_bearer"`
 	// Defaults to the currency of the originating account.
-	Currency param.Field[shared.Currency] `json:"currency,nullable"`
+	Currency param.Field[shared.Currency] `json:"currency"`
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description,nullable"`
-	// An optional descriptor which will appear in the receiver's statement. For
-	// `check` payments this field will be used as the memo line. For `ach` the maximum
-	// length is 10 characters. Note that for ACH payments, the name on your bank
-	// account will be included automatically by the bank, so you can use the
-	// characters for other useful information. For `eft` the maximum length is 15
-	// characters.
-	StatementDescriptor param.Field[string] `json:"statement_descriptor,nullable"`
-	// For `ach`, this field will be passed through on an addenda record. For `wire`
-	// payments the field will be passed through as the "Originator to Beneficiary
-	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation param.Field[string] `json:"remittance_information,nullable"`
-	// For `wire`, this is usually the purpose which is transmitted via the
-	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
-	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
-	// CPA Code that will be attached to the payment.
-	Purpose param.Field[string] `json:"purpose,nullable"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The party that will pay the fees for the payment order. Only applies to wire
-	// payment orders. Can be one of shared, sender, or receiver, which correspond
-	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
-	ChargeBearer param.Field[PaymentOrderNewAsyncParamsChargeBearer] `json:"charge_bearer,nullable"`
-	// Indicates the type of FX transfer to initiate, can be either
-	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
-	// currency matches the originating account currency.
-	ForeignExchangeIndicator param.Field[PaymentOrderNewAsyncParamsForeignExchangeIndicator] `json:"foreign_exchange_indicator,nullable"`
-	// If present, indicates a specific foreign exchange contract number that has been
-	// generated by your financial institution.
-	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract,nullable"`
-	// A boolean to determine if NSF Protection is enabled for this payment order. Note
-	// that this setting must also be turned on in your organization settings page.
-	NsfProtected param.Field[bool] `json:"nsf_protected"`
-	// If present, this will replace your default company name on receiver's bank
-	// statement. This field can only be used for ACH payments currently. For ACH, only
-	// the first 16 characters of this string will be used. Any additional characters
-	// will be truncated.
-	OriginatingPartyName param.Field[string] `json:"originating_party_name,nullable"`
-	// Name of the ultimate originator of the payment order.
-	UltimateOriginatingPartyName param.Field[string] `json:"ultimate_originating_party_name,nullable"`
-	// Identifier of the ultimate originator of the payment order.
-	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier,nullable"`
-	// Name of the ultimate funds recipient.
-	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name,nullable"`
-	// Identifier of the ultimate funds recipient.
-	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier,nullable"`
-	// Send an email to the counterparty when the payment order is sent to the bank. If
-	// `null`, `send_remittance_advice` on the Counterparty is used.
-	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice,nullable"`
 	// RFP payments require an expires_at. This value must be past the effective_date.
-	ExpiresAt param.Field[time.Time] `json:"expires_at,nullable" format:"date-time"`
+	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
 	// A payment type to fallback to if the original type is not valid for the
 	// receiving account. Currently, this only supports falling back from RTP to ACH
 	// (type=rtp and fallback_type=ach)
 	FallbackType param.Field[PaymentOrderNewAsyncParamsFallbackType] `json:"fallback_type"`
-	// Either `receiving_account` or `receiving_account_id` must be present. When using
-	// `receiving_account_id`, you may pass the id of an external account or an
-	// internal account.
-	ReceivingAccount param.Field[PaymentOrderNewAsyncParamsReceivingAccount] `json:"receiving_account"`
+	// If present, indicates a specific foreign exchange contract number that has been
+	// generated by your financial institution.
+	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract"`
+	// Indicates the type of FX transfer to initiate, can be either
+	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+	// currency matches the originating account currency.
+	ForeignExchangeIndicator param.Field[PaymentOrderNewAsyncParamsForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
 	// Specifies a ledger transaction object that will be created with the payment
 	// order. If the ledger transaction cannot be created, then the payment order
 	// creation will fail. The resulting ledger transaction will mirror the status of
@@ -1491,9 +1771,65 @@ type PaymentOrderNewAsyncParams struct {
 	LedgerTransaction param.Field[PaymentOrderNewAsyncParamsLedgerTransaction] `json:"ledger_transaction"`
 	// An array of line items that must sum up to the amount of the payment order.
 	LineItems param.Field[[]PaymentOrderNewAsyncParamsLineItems] `json:"line_items"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// A boolean to determine if NSF Protection is enabled for this payment order. Note
+	// that this setting must also be turned on in your organization settings page.
+	NsfProtected param.Field[bool] `json:"nsf_protected"`
+	// If present, this will replace your default company name on receiver's bank
+	// statement. This field can only be used for ACH payments currently. For ACH, only
+	// the first 16 characters of this string will be used. Any additional characters
+	// will be truncated.
+	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
+	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+	// an overnight check rather than standard mail.
+	Priority param.Field[PaymentOrderNewAsyncParamsPriority] `json:"priority"`
+	// For `wire`, this is usually the purpose which is transmitted via the
+	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
+	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
+	// CPA Code that will be attached to the payment.
+	Purpose param.Field[string] `json:"purpose"`
+	// Either `receiving_account` or `receiving_account_id` must be present. When using
+	// `receiving_account_id`, you may pass the id of an external account or an
+	// internal account.
+	ReceivingAccount param.Field[PaymentOrderNewAsyncParamsReceivingAccount] `json:"receiving_account"`
+	// Either `receiving_account` or `receiving_account_id` must be present. When using
+	// `receiving_account_id`, you may pass the id of an external account or an
+	// internal account.
+	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// For `ach`, this field will be passed through on an addenda record. For `wire`
+	// payments the field will be passed through as the "Originator to Beneficiary
+	// Information", also known as OBI or Fedwire tag 6000.
+	RemittanceInformation param.Field[string] `json:"remittance_information"`
+	// Send an email to the counterparty when the payment order is sent to the bank. If
+	// `null`, `send_remittance_advice` on the Counterparty is used.
+	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
+	// An optional descriptor which will appear in the receiver's statement. For
+	// `check` payments this field will be used as the memo line. For `ach` the maximum
+	// length is 10 characters. Note that for ACH payments, the name on your bank
+	// account will be included automatically by the bank, so you can use the
+	// characters for other useful information. For `eft` the maximum length is 15
+	// characters.
+	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
+	// An additional layer of classification for the type of payment order you are
+	// doing. This field is only used for `ach` payment orders currently. For `ach`
+	// payment orders, the `subtype` represents the SEC code. We currently support
+	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
+	Subtype param.Field[PaymentOrderSubtype] `json:"subtype"`
 	// A flag that determines whether a payment order should go through transaction
 	// monitoring.
 	TransactionMonitoringEnabled param.Field[bool] `json:"transaction_monitoring_enabled"`
+	// Identifier of the ultimate originator of the payment order.
+	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
+	// Name of the ultimate originator of the payment order.
+	UltimateOriginatingPartyName param.Field[string] `json:"ultimate_originating_party_name"`
+	// Identifier of the ultimate funds recipient.
+	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
+	// Name of the ultimate funds recipient.
+	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
+	IdempotencyKey             param.Field[string] `header:"Idempotency-Key"`
 }
 
 func (r PaymentOrderNewAsyncParams) MarshalJSON() (data []byte, err error) {
@@ -1507,21 +1843,18 @@ const (
 	PaymentOrderNewAsyncParamsDirectionDebit  PaymentOrderNewAsyncParamsDirection = "debit"
 )
 
-type PaymentOrderNewAsyncParamsPriority string
-
-const (
-	PaymentOrderNewAsyncParamsPriorityHigh   PaymentOrderNewAsyncParamsPriority = "high"
-	PaymentOrderNewAsyncParamsPriorityNormal PaymentOrderNewAsyncParamsPriority = "normal"
-)
-
 type PaymentOrderNewAsyncParamsAccounting struct {
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
-	AccountID param.Field[string] `json:"account_id,nullable" format:"uuid"`
+	AccountID param.Field[string] `json:"account_id" format:"uuid"`
 	// The ID of one of the class objects in your accounting system. Class objects
 	// track segments of your business independent of client or project. Note that
 	// these will only be accessible if your accounting system has been connected.
-	ClassID param.Field[string] `json:"class_id,nullable" format:"uuid"`
+	ClassID param.Field[string] `json:"class_id" format:"uuid"`
+}
+
+func (r PaymentOrderNewAsyncParamsAccounting) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderNewAsyncParamsChargeBearer string
@@ -1532,6 +1865,12 @@ const (
 	PaymentOrderNewAsyncParamsChargeBearerReceiver PaymentOrderNewAsyncParamsChargeBearer = "receiver"
 )
 
+type PaymentOrderNewAsyncParamsFallbackType string
+
+const (
+	PaymentOrderNewAsyncParamsFallbackTypeACH PaymentOrderNewAsyncParamsFallbackType = "ach"
+)
+
 type PaymentOrderNewAsyncParamsForeignExchangeIndicator string
 
 const (
@@ -1539,10 +1878,129 @@ const (
 	PaymentOrderNewAsyncParamsForeignExchangeIndicatorVariableToFixed PaymentOrderNewAsyncParamsForeignExchangeIndicator = "variable_to_fixed"
 )
 
-type PaymentOrderNewAsyncParamsFallbackType string
+// Specifies a ledger transaction object that will be created with the payment
+// order. If the ledger transaction cannot be created, then the payment order
+// creation will fail. The resulting ledger transaction will mirror the status of
+// the payment order.
+type PaymentOrderNewAsyncParamsLedgerTransaction struct {
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
+	// To post a ledger transaction at creation, use `posted`.
+	Status param.Field[PaymentOrderNewAsyncParamsLedgerTransactionStatus] `json:"status"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
+	// purposes.
+	EffectiveDate param.Field[time.Time] `json:"effective_date,required" format:"date"`
+	// An array of ledger entry objects.
+	LedgerEntries param.Field[[]PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntries] `json:"ledger_entries,required"`
+	// A unique string to represent the ledger transaction. Only one pending or posted
+	// ledger transaction may have this ID in the ledger.
+	ExternalID param.Field[string] `json:"external_id"`
+	// If the ledger transaction can be reconciled to another object in Modern
+	// Treasury, the type will be populated here, otherwise null. This can be one of
+	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+	LedgerableType param.Field[PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType] `json:"ledgerable_type"`
+	// If the ledger transaction can be reconciled to another object in Modern
+	// Treasury, the id will be populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+}
+
+func (r PaymentOrderNewAsyncParamsLedgerTransaction) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderNewAsyncParamsLedgerTransactionStatus string
 
 const (
-	PaymentOrderNewAsyncParamsFallbackTypeACH PaymentOrderNewAsyncParamsFallbackType = "ach"
+	PaymentOrderNewAsyncParamsLedgerTransactionStatusArchived PaymentOrderNewAsyncParamsLedgerTransactionStatus = "archived"
+	PaymentOrderNewAsyncParamsLedgerTransactionStatusPending  PaymentOrderNewAsyncParamsLedgerTransactionStatus = "pending"
+	PaymentOrderNewAsyncParamsLedgerTransactionStatusPosted   PaymentOrderNewAsyncParamsLedgerTransactionStatus = "posted"
+)
+
+type PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntries struct {
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000. Can be any integer up to 36 digits.
+	Amount param.Field[int64] `json:"amount,required"`
+	// One of `credit`, `debit`. Describes the direction money is flowing in the
+	// transaction. A `credit` moves money from your account to someone else's. A
+	// `debit` pulls money from someone else's account to your own. Note that wire,
+	// rtp, and check payments will always be `credit`.
+	Direction param.Field[PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection] `json:"direction,required"`
+	// The ledger account that this ledger entry is associated with.
+	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
+	// Lock version of the ledger account. This can be passed when creating a ledger
+	// transaction to only succeed if no ledger transactions have posted since the
+	// given version. See our post about Designing the Ledgers API with Optimistic
+	// Locking for more details.
+	LockVersion param.Field[int64] `json:"lock_version"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
+	// account’s pending balance. If any of these conditions would be false after the
+	// transaction is created, the entire call will fail with error code 422.
+	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
+	// account’s posted balance. If any of these conditions would be false after the
+	// transaction is created, the entire call will fail with error code 422.
+	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
+	// account’s available balance. If any of these conditions would be false after the
+	// transaction is created, the entire call will fail with error code 422.
+	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
+	// If true, response will include the balance of the associated ledger account for
+	// the entry.
+	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
+}
+
+func (r PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntries) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection string
+
+const (
+	PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirectionCredit PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection = "credit"
+	PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirectionDebit  PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection = "debit"
+)
+
+type PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType string
+
+const (
+	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeCounterparty          PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "counterparty"
+	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeExpectedPayment       PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "expected_payment"
+	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "incoming_payment_detail"
+	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeInternalAccount       PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "internal_account"
+	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeLineItem              PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "line_item"
+	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaperItem             PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "paper_item"
+	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaymentOrder          PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "payment_order"
+	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaymentOrderAttempt   PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "payment_order_attempt"
+	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReturn                PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "return"
+	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "reversal"
+)
+
+type PaymentOrderNewAsyncParamsLineItems struct {
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000.
+	Amount param.Field[int64] `json:"amount,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// A free-form description of the line item.
+	Description param.Field[string] `json:"description"`
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`
+}
+
+func (r PaymentOrderNewAsyncParamsLineItems) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderNewAsyncParamsPriority string
+
+const (
+	PaymentOrderNewAsyncParamsPriorityHigh   PaymentOrderNewAsyncParamsPriority = "high"
+	PaymentOrderNewAsyncParamsPriorityNormal PaymentOrderNewAsyncParamsPriority = "normal"
 )
 
 // Either `receiving_account` or `receiving_account_id` must be present. When using
@@ -1552,12 +2010,12 @@ type PaymentOrderNewAsyncParamsReceivingAccount struct {
 	// Can be `checking`, `savings` or `other`.
 	AccountType param.Field[ExternalAccountType] `json:"account_type"`
 	// Either `individual` or `business`.
-	PartyType param.Field[PaymentOrderNewAsyncParamsReceivingAccountPartyType] `json:"party_type,nullable"`
+	PartyType param.Field[PaymentOrderNewAsyncParamsReceivingAccountPartyType] `json:"party_type"`
 	// Required if receiving wire payments.
 	PartyAddress param.Field[PaymentOrderNewAsyncParamsReceivingAccountPartyAddress] `json:"party_address"`
 	// A nickname for the external account. This is only for internal usage and won't
 	// affect any payments
-	Name           param.Field[string]                                                     `json:"name,nullable"`
+	Name           param.Field[string]                                                     `json:"name"`
 	AccountDetails param.Field[[]PaymentOrderNewAsyncParamsReceivingAccountAccountDetails] `json:"account_details"`
 	RoutingDetails param.Field[[]PaymentOrderNewAsyncParamsReceivingAccountRoutingDetails] `json:"routing_details"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -1578,6 +2036,10 @@ type PaymentOrderNewAsyncParamsReceivingAccount struct {
 	ContactDetails      param.Field[[]PaymentOrderNewAsyncParamsReceivingAccountContactDetails] `json:"contact_details"`
 }
 
+func (r PaymentOrderNewAsyncParamsReceivingAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type PaymentOrderNewAsyncParamsReceivingAccountPartyType string
 
 const (
@@ -1587,21 +2049,29 @@ const (
 
 // Required if receiving wire payments.
 type PaymentOrderNewAsyncParamsReceivingAccountPartyAddress struct {
-	Line1 param.Field[string] `json:"line1,nullable"`
-	Line2 param.Field[string] `json:"line2,nullable"`
+	Line1 param.Field[string] `json:"line1"`
+	Line2 param.Field[string] `json:"line2"`
 	// Locality or City.
-	Locality param.Field[string] `json:"locality,nullable"`
+	Locality param.Field[string] `json:"locality"`
 	// Region or State.
-	Region param.Field[string] `json:"region,nullable"`
+	Region param.Field[string] `json:"region"`
 	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,nullable"`
+	PostalCode param.Field[string] `json:"postal_code"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,nullable"`
+	Country param.Field[string] `json:"country"`
+}
+
+func (r PaymentOrderNewAsyncParamsReceivingAccountPartyAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderNewAsyncParamsReceivingAccountAccountDetails struct {
 	AccountNumber     param.Field[string]                                                                    `json:"account_number,required"`
 	AccountNumberType param.Field[PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType] `json:"account_number_type"`
+}
+
+func (r PaymentOrderNewAsyncParamsReceivingAccountAccountDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType string
@@ -1618,6 +2088,10 @@ type PaymentOrderNewAsyncParamsReceivingAccountRoutingDetails struct {
 	RoutingNumber     param.Field[string]                                                                    `json:"routing_number,required"`
 	RoutingNumberType param.Field[PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
 	PaymentType       param.Field[PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType]       `json:"payment_type"`
+}
+
+func (r PaymentOrderNewAsyncParamsReceivingAccountRoutingDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType string
@@ -1666,7 +2140,7 @@ type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount struct {
 	// The name of the ledger account.
 	Name param.Field[string] `json:"name,required"`
 	// The description of the ledger account.
-	Description param.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description"`
 	// The normal balance of the ledger account.
 	NormalBalance param.Field[PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalance] `json:"normal_balance,required"`
 	// The id of the ledger that this account belongs to.
@@ -1674,7 +2148,7 @@ type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount struct {
 	// The currency of the ledger account.
 	Currency param.Field[string] `json:"currency,required"`
 	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
+	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
 	// populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
@@ -1685,6 +2159,10 @@ type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+}
+
+func (r PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalance string
@@ -1706,6 +2184,10 @@ type PaymentOrderNewAsyncParamsReceivingAccountContactDetails struct {
 	ContactIdentifierType param.Field[PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
 }
 
+func (r PaymentOrderNewAsyncParamsReceivingAccountContactDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType string
 
 const (
@@ -1713,109 +2195,3 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType = "phone_number"
 	PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite     PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType = "website"
 )
-
-// Specifies a ledger transaction object that will be created with the payment
-// order. If the ledger transaction cannot be created, then the payment order
-// creation will fail. The resulting ledger transaction will mirror the status of
-// the payment order.
-type PaymentOrderNewAsyncParamsLedgerTransaction struct {
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description,nullable"`
-	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[PaymentOrderNewAsyncParamsLedgerTransactionStatus] `json:"status"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
-	// purposes.
-	EffectiveDate param.Field[time.Time] `json:"effective_date,required" format:"date"`
-	// An array of ledger entry objects.
-	LedgerEntries param.Field[[]PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntries] `json:"ledger_entries,required"`
-	// A unique string to represent the ledger transaction. Only one pending or posted
-	// ledger transaction may have this ID in the ledger.
-	ExternalID param.Field[string] `json:"external_id"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
-	LedgerableType param.Field[PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType] `json:"ledgerable_type"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-}
-
-type PaymentOrderNewAsyncParamsLedgerTransactionStatus string
-
-const (
-	PaymentOrderNewAsyncParamsLedgerTransactionStatusArchived PaymentOrderNewAsyncParamsLedgerTransactionStatus = "archived"
-	PaymentOrderNewAsyncParamsLedgerTransactionStatusPending  PaymentOrderNewAsyncParamsLedgerTransactionStatus = "pending"
-	PaymentOrderNewAsyncParamsLedgerTransactionStatusPosted   PaymentOrderNewAsyncParamsLedgerTransactionStatus = "posted"
-)
-
-type PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntries struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount,required"`
-	// One of `credit`, `debit`. Describes the direction money is flowing in the
-	// transaction. A `credit` moves money from your account to someone else's. A
-	// `debit` pulls money from someone else's account to your own. Note that wire,
-	// rtp, and check payments will always be `credit`.
-	Direction param.Field[PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection] `json:"direction,required"`
-	// The ledger account that this ledger entry is associated with.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
-	// Lock version of the ledger account. This can be passed when creating a ledger
-	// transaction to only succeed if no ledger transactions have posted since the
-	// given version. See our post about Designing the Ledgers API with Optimistic
-	// Locking for more details.
-	LockVersion param.Field[int64] `json:"lock_version,nullable"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s pending balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount,nullable"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s posted balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount,nullable"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s available balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount,nullable"`
-	// If true, response will include the balance of the associated ledger account for
-	// the entry.
-	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances,nullable"`
-}
-
-type PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection string
-
-const (
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirectionCredit PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection = "credit"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirectionDebit  PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection = "debit"
-)
-
-type PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType string
-
-const (
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeCounterparty          PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "counterparty"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeExpectedPayment       PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "expected_payment"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "incoming_payment_detail"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeInternalAccount       PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "internal_account"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeLineItem              PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "line_item"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaperItem             PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "paper_item"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaymentOrder          PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "payment_order"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaymentOrderAttempt   PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "payment_order_attempt"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReturn                PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "return"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "reversal"
-)
-
-type PaymentOrderNewAsyncParamsLineItems struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// A free-form description of the line item.
-	Description param.Field[string] `json:"description,nullable"`
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountingCategoryID param.Field[string] `json:"accounting_category_id,nullable"`
-}

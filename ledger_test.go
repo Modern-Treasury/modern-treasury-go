@@ -16,7 +16,12 @@ func TestLedgerNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Ledgers.New(context.TODO(), moderntreasury.LedgerNewParams{Name: moderntreasury.F("string"), Description: moderntreasury.F("string"), Metadata: moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"})})
+	_, err := c.Ledgers.New(context.TODO(), moderntreasury.LedgerNewParams{
+		Name:           moderntreasury.F("string"),
+		Description:    moderntreasury.F("string"),
+		Metadata:       moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"}),
+		IdempotencyKey: moderntreasury.F("string"),
+	})
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -54,7 +59,11 @@ func TestLedgerUpdateWithOptionalParams(t *testing.T) {
 	_, err := c.Ledgers.Update(
 		context.TODO(),
 		"string",
-		moderntreasury.LedgerUpdateParams{Name: moderntreasury.F("string"), Description: moderntreasury.F("string"), Metadata: moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"})},
+		moderntreasury.LedgerUpdateParams{
+			Description: moderntreasury.F("string"),
+			Metadata:    moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"}),
+			Name:        moderntreasury.F("string"),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -71,7 +80,12 @@ func TestLedgerListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Ledgers.List(context.TODO(), moderntreasury.LedgerListParams{AfterCursor: moderntreasury.F("string"), PerPage: moderntreasury.F(int64(0)), Metadata: moderntreasury.F(map[string]string{"foo": "string"}), UpdatedAt: moderntreasury.F(map[string]time.Time{"foo": time.Now()})})
+	_, err := c.Ledgers.List(context.TODO(), moderntreasury.LedgerListParams{
+		AfterCursor: moderntreasury.F("string"),
+		Metadata:    moderntreasury.F(map[string]string{"foo": "string"}),
+		PerPage:     moderntreasury.F(int64(0)),
+		UpdatedAt:   moderntreasury.F(map[string]time.Time{"foo": time.Now()}),
+	})
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

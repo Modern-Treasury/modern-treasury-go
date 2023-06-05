@@ -36,10 +36,10 @@ func NewLedgerTransactionService(opts ...option.RequestOption) (r *LedgerTransac
 }
 
 // Create a ledger transaction.
-func (r *LedgerTransactionService) New(ctx context.Context, body LedgerTransactionNewParams, opts ...option.RequestOption) (res *LedgerTransaction, err error) {
+func (r *LedgerTransactionService) New(ctx context.Context, params LedgerTransactionNewParams, opts ...option.RequestOption) (res *LedgerTransaction, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/ledger_transactions"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -174,41 +174,34 @@ const (
 )
 
 type LedgerTransactionNewParams struct {
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description,nullable"`
-	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[LedgerTransactionNewParamsStatus] `json:"status"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
 	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
 	// purposes.
 	EffectiveDate param.Field[time.Time] `json:"effective_date,required" format:"date"`
 	// An array of ledger entry objects.
 	LedgerEntries param.Field[[]LedgerTransactionNewParamsLedgerEntries] `json:"ledger_entries,required"`
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
 	// A unique string to represent the ledger transaction. Only one pending or posted
 	// ledger transaction may have this ID in the ledger.
 	ExternalID param.Field[string] `json:"external_id"`
 	// If the ledger transaction can be reconciled to another object in Modern
+	// Treasury, the id will be populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
 	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 	LedgerableType param.Field[LedgerTransactionNewParamsLedgerableType] `json:"ledgerable_type"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// To post a ledger transaction at creation, use `posted`.
+	Status         param.Field[LedgerTransactionNewParamsStatus] `json:"status"`
+	IdempotencyKey param.Field[string]                           `header:"Idempotency-Key"`
 }
 
 func (r LedgerTransactionNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-type LedgerTransactionNewParamsStatus string
-
-const (
-	LedgerTransactionNewParamsStatusArchived LedgerTransactionNewParamsStatus = "archived"
-	LedgerTransactionNewParamsStatusPending  LedgerTransactionNewParamsStatus = "pending"
-	LedgerTransactionNewParamsStatusPosted   LedgerTransactionNewParamsStatus = "posted"
-)
 
 type LedgerTransactionNewParamsLedgerEntries struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
@@ -225,22 +218,26 @@ type LedgerTransactionNewParamsLedgerEntries struct {
 	// transaction to only succeed if no ledger transactions have posted since the
 	// given version. See our post about Designing the Ledgers API with Optimistic
 	// Locking for more details.
-	LockVersion param.Field[int64] `json:"lock_version,nullable"`
+	LockVersion param.Field[int64] `json:"lock_version"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
 	// account’s pending balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
-	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount,nullable"`
+	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
 	// account’s posted balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
-	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount,nullable"`
+	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
 	// account’s available balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount,nullable"`
+	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
 	// If true, response will include the balance of the associated ledger account for
 	// the entry.
-	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances,nullable"`
+	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
+}
+
+func (r LedgerTransactionNewParamsLedgerEntries) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type LedgerTransactionNewParamsLedgerEntriesDirection string
@@ -265,29 +262,29 @@ const (
 	LedgerTransactionNewParamsLedgerableTypeReversal              LedgerTransactionNewParamsLedgerableType = "reversal"
 )
 
+type LedgerTransactionNewParamsStatus string
+
+const (
+	LedgerTransactionNewParamsStatusArchived LedgerTransactionNewParamsStatus = "archived"
+	LedgerTransactionNewParamsStatusPending  LedgerTransactionNewParamsStatus = "pending"
+	LedgerTransactionNewParamsStatusPosted   LedgerTransactionNewParamsStatus = "posted"
+)
+
 type LedgerTransactionUpdateParams struct {
 	// An optional description for internal use.
-	Description param.Field[string] `json:"description,nullable"`
-	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[LedgerTransactionUpdateParamsStatus] `json:"status"`
+	Description param.Field[string] `json:"description"`
+	// An array of ledger entry objects.
+	LedgerEntries param.Field[[]LedgerTransactionUpdateParamsLedgerEntries] `json:"ledger_entries"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
-	// An array of ledger entry objects.
-	LedgerEntries param.Field[[]LedgerTransactionUpdateParamsLedgerEntries] `json:"ledger_entries"`
+	// To post a ledger transaction at creation, use `posted`.
+	Status param.Field[LedgerTransactionUpdateParamsStatus] `json:"status"`
 }
 
 func (r LedgerTransactionUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-type LedgerTransactionUpdateParamsStatus string
-
-const (
-	LedgerTransactionUpdateParamsStatusArchived LedgerTransactionUpdateParamsStatus = "archived"
-	LedgerTransactionUpdateParamsStatusPending  LedgerTransactionUpdateParamsStatus = "pending"
-	LedgerTransactionUpdateParamsStatusPosted   LedgerTransactionUpdateParamsStatus = "posted"
-)
 
 type LedgerTransactionUpdateParamsLedgerEntries struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
@@ -304,22 +301,26 @@ type LedgerTransactionUpdateParamsLedgerEntries struct {
 	// transaction to only succeed if no ledger transactions have posted since the
 	// given version. See our post about Designing the Ledgers API with Optimistic
 	// Locking for more details.
-	LockVersion param.Field[int64] `json:"lock_version,nullable"`
+	LockVersion param.Field[int64] `json:"lock_version"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
 	// account’s pending balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
-	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount,nullable"`
+	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
 	// account’s posted balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
-	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount,nullable"`
+	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
 	// account’s available balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount,nullable"`
+	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
 	// If true, response will include the balance of the associated ledger account for
 	// the entry.
-	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances,nullable"`
+	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
+}
+
+func (r LedgerTransactionUpdateParamsLedgerEntries) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type LedgerTransactionUpdateParamsLedgerEntriesDirection string
@@ -329,16 +330,16 @@ const (
 	LedgerTransactionUpdateParamsLedgerEntriesDirectionDebit  LedgerTransactionUpdateParamsLedgerEntriesDirection = "debit"
 )
 
+type LedgerTransactionUpdateParamsStatus string
+
+const (
+	LedgerTransactionUpdateParamsStatusArchived LedgerTransactionUpdateParamsStatus = "archived"
+	LedgerTransactionUpdateParamsStatusPending  LedgerTransactionUpdateParamsStatus = "pending"
+	LedgerTransactionUpdateParamsStatusPosted   LedgerTransactionUpdateParamsStatus = "posted"
+)
+
 type LedgerTransactionListParams struct {
-	AfterCursor param.Field[string]            `query:"after_cursor,nullable"`
-	PerPage     param.Field[int64]             `query:"per_page"`
-	ID          param.Field[map[string]string] `query:"id"`
-	// For example, if you want to query for records with metadata key `Type` and value
-	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
-	// parameters.
-	Metadata        param.Field[map[string]string] `query:"metadata"`
-	LedgerID        param.Field[string]            `query:"ledger_id"`
-	LedgerAccountID param.Field[string]            `query:"ledger_account_id"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	// Use "gt" (>), "gte" (>=), "lt" (<), "lte" (<=), or "eq" (=) to filter by
 	// effective at. For example, for all transactions after Jan 1 2000, use
 	// effective_at%5Bgt%5D=2000-01-01T00:00:00:00.000Z.
@@ -346,22 +347,30 @@ type LedgerTransactionListParams struct {
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by
 	// effective date. For example, for all dates after Jan 1 2000, use
 	// effective_date%5Bgt%5D=2000-01-01.
-	EffectiveDate param.Field[map[string]time.Time] `query:"effective_date" format:"date-time"`
+	EffectiveDate           param.Field[map[string]time.Time] `query:"effective_date" format:"date-time"`
+	ExternalID              param.Field[string]               `query:"external_id"`
+	ID                      param.Field[map[string]string]    `query:"id"`
+	LedgerAccountCategoryID param.Field[string]               `query:"ledger_account_category_id"`
+	LedgerAccountID         param.Field[string]               `query:"ledger_account_id"`
+	LedgerID                param.Field[string]               `query:"ledger_id"`
+	// For example, if you want to query for records with metadata key `Type` and value
+	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
+	// parameters.
+	Metadata param.Field[map[string]string] `query:"metadata"`
+	// Order by `created_at` or `effective_at` in `asc` or `desc` order. For example,
+	// to order by `effective_at asc`, use `order_by%5Beffective_at%5D=asc`. Ordering
+	// by only one field at a time is supported.
+	OrderBy param.Field[LedgerTransactionListParamsOrderBy] `query:"order_by"`
+	PerPage param.Field[int64]                              `query:"per_page"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// posted_at%5Bgt%5D=2000-01-01T12:00:00Z.
-	PostedAt param.Field[map[string]time.Time] `query:"posted_at" format:"date-time"`
+	PostedAt param.Field[map[string]time.Time]              `query:"posted_at" format:"date-time"`
+	Status   param.Field[LedgerTransactionListParamsStatus] `query:"status"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// updated_at%5Bgt%5D=2000-01-01T12:00:00Z.
 	UpdatedAt param.Field[map[string]time.Time] `query:"updated_at" format:"date-time"`
-	// Order by `created_at` or `effective_at` in `asc` or `desc` order. For example,
-	// to order by `effective_at asc`, use `order_by%5Beffective_at%5D=asc`. Ordering
-	// by only one field at a time is supported.
-	OrderBy                 param.Field[LedgerTransactionListParamsOrderBy] `query:"order_by"`
-	Status                  param.Field[LedgerTransactionListParamsStatus]  `query:"status"`
-	ExternalID              param.Field[string]                             `query:"external_id"`
-	LedgerAccountCategoryID param.Field[string]                             `query:"ledger_account_category_id"`
 }
 
 // URLQuery serializes [LedgerTransactionListParams]'s query parameters as

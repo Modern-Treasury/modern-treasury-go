@@ -223,30 +223,30 @@ func (r TransactionUpdateParams) MarshalJSON() (data []byte, err error) {
 }
 
 type TransactionListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
-	PerPage     param.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
+	// Filters transactions with an `as_of_date` starting on or before the specified
+	// date (YYYY-MM-DD).
+	AsOfDateEnd param.Field[time.Time] `query:"as_of_date_end" format:"date"`
+	// Filters transactions with an `as_of_date` starting on or after the specified
+	// date (YYYY-MM-DD).
+	AsOfDateStart  param.Field[time.Time] `query:"as_of_date_start" format:"date"`
+	CounterpartyID param.Field[string]    `query:"counterparty_id" format:"uuid"`
+	// Filters for transactions including the queried string in the description.
+	Description param.Field[string] `query:"description"`
+	Direction   param.Field[string] `query:"direction"`
 	// Specify `internal_account_id` if you wish to see transactions to/from a specific
 	// account.
 	InternalAccountID param.Field[string] `query:"internal_account_id" format:"uuid"`
-	VirtualAccountID  param.Field[string] `query:"virtual_account_id" format:"uuid"`
-	// Either `true` or `false`.
-	Posted param.Field[bool] `query:"posted"`
-	// Filters transactions with an `as_of_date` starting on or after the specified
-	// date (YYYY-MM-DD).
-	AsOfDateStart param.Field[time.Time] `query:"as_of_date_start" format:"date"`
-	// Filters transactions with an `as_of_date` starting on or before the specified
-	// date (YYYY-MM-DD).
-	AsOfDateEnd      param.Field[time.Time] `query:"as_of_date_end" format:"date"`
-	Direction        param.Field[string]    `query:"direction"`
-	CounterpartyID   param.Field[string]    `query:"counterparty_id" format:"uuid"`
-	PaymentType      param.Field[string]    `query:"payment_type"`
-	TransactableType param.Field[string]    `query:"transactable_type"`
-	// Filters for transactions including the queried string in the description.
-	Description param.Field[string] `query:"description"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
-	Metadata param.Field[map[string]string] `query:"metadata"`
+	Metadata    param.Field[map[string]string] `query:"metadata"`
+	PaymentType param.Field[string]            `query:"payment_type"`
+	PerPage     param.Field[int64]             `query:"per_page"`
+	// Either `true` or `false`.
+	Posted           param.Field[bool]   `query:"posted"`
+	TransactableType param.Field[string] `query:"transactable_type"`
+	VirtualAccountID param.Field[string] `query:"virtual_account_id" format:"uuid"`
 }
 
 // URLQuery serializes [TransactionListParams]'s query parameters as `url.Values`.

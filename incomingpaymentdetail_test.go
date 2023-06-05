@@ -39,7 +39,9 @@ func TestIncomingPaymentDetailUpdateWithOptionalParams(t *testing.T) {
 	_, err := c.IncomingPaymentDetails.Update(
 		context.TODO(),
 		"string",
-		moderntreasury.IncomingPaymentDetailUpdateParams{Metadata: moderntreasury.F(map[string]string{"foo": "string"})},
+		moderntreasury.IncomingPaymentDetailUpdateParams{
+			Metadata: moderntreasury.F(map[string]string{"foo": "string"}),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -56,7 +58,17 @@ func TestIncomingPaymentDetailListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.IncomingPaymentDetails.List(context.TODO(), moderntreasury.IncomingPaymentDetailListParams{AfterCursor: moderntreasury.F("string"), PerPage: moderntreasury.F(int64(0)), Direction: moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsDirectionCredit), Status: moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsStatusCompleted), Type: moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsTypeACH), AsOfDateStart: moderntreasury.F(time.Now()), AsOfDateEnd: moderntreasury.F(time.Now()), Metadata: moderntreasury.F(map[string]string{"foo": "string"}), VirtualAccountID: moderntreasury.F("string")})
+	_, err := c.IncomingPaymentDetails.List(context.TODO(), moderntreasury.IncomingPaymentDetailListParams{
+		AfterCursor:      moderntreasury.F("string"),
+		AsOfDateEnd:      moderntreasury.F(time.Now()),
+		AsOfDateStart:    moderntreasury.F(time.Now()),
+		Direction:        moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsDirectionCredit),
+		Metadata:         moderntreasury.F(map[string]string{"foo": "string"}),
+		PerPage:          moderntreasury.F(int64(0)),
+		Status:           moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsStatusCompleted),
+		Type:             moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsTypeACH),
+		VirtualAccountID: moderntreasury.F("string"),
+	})
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -72,7 +84,16 @@ func TestIncomingPaymentDetailNewAsyncWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.IncomingPaymentDetails.NewAsync(context.TODO(), moderntreasury.IncomingPaymentDetailNewAsyncParams{Type: moderntreasury.F(moderntreasury.IncomingPaymentDetailNewAsyncParamsTypeACH), Direction: moderntreasury.F(moderntreasury.IncomingPaymentDetailNewAsyncParamsDirectionCredit), Amount: moderntreasury.F(int64(0)), Currency: moderntreasury.F(shared.CurrencyAed), InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), VirtualAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), AsOfDate: moderntreasury.F(time.Now())})
+	_, err := c.IncomingPaymentDetails.NewAsync(context.TODO(), moderntreasury.IncomingPaymentDetailNewAsyncParams{
+		Amount:            moderntreasury.F(int64(0)),
+		AsOfDate:          moderntreasury.F(time.Now()),
+		Currency:          moderntreasury.F(shared.CurrencyAed),
+		Direction:         moderntreasury.F(moderntreasury.IncomingPaymentDetailNewAsyncParamsDirectionCredit),
+		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		Type:              moderntreasury.F(moderntreasury.IncomingPaymentDetailNewAsyncParamsTypeACH),
+		VirtualAccountID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		IdempotencyKey:    moderntreasury.F("string"),
+	})
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

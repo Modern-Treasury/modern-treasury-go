@@ -33,10 +33,10 @@ func NewReturnService(opts ...option.RequestOption) (r *ReturnService) {
 }
 
 // Create a return.
-func (r *ReturnService) New(ctx context.Context, body ReturnNewParams, opts ...option.RequestOption) (res *ReturnObject, err error) {
+func (r *ReturnService) New(ctx context.Context, params ReturnNewParams, opts ...option.RequestOption) (res *ReturnObject, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/returns"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -343,26 +343,33 @@ const (
 
 type ReturnNewParams struct {
 	// The ID of the object being returned or `null`.
-	ReturnableID param.Field[string] `json:"returnable_id,required,nullable" format:"uuid"`
-	// The return code. For ACH returns, this is the required ACH return code.
-	Code param.Field[ReturnNewParamsCode] `json:"code,nullable"`
-	// An optional description of the reason for the return. This is for internal usage
-	// and will not be transmitted to the bank.”
-	Reason param.Field[string] `json:"reason,nullable"`
-	// If the return code is `R14` or `R15` this is the date the deceased counterparty
-	// passed away.
-	DateOfDeath param.Field[time.Time] `json:"date_of_death,nullable" format:"date"`
-	// Some returns may include additional information from the bank. In these cases,
-	// this string will be present.
-	AdditionalInformation param.Field[string] `json:"additional_information,nullable"`
+	ReturnableID param.Field[string] `json:"returnable_id,required" format:"uuid"`
 	// The type of object being returned. Currently, this may only be
 	// incoming_payment_detail.
 	ReturnableType param.Field[ReturnNewParamsReturnableType] `json:"returnable_type,required"`
+	// Some returns may include additional information from the bank. In these cases,
+	// this string will be present.
+	AdditionalInformation param.Field[string] `json:"additional_information"`
+	// The return code. For ACH returns, this is the required ACH return code.
+	Code param.Field[ReturnNewParamsCode] `json:"code"`
+	// If the return code is `R14` or `R15` this is the date the deceased counterparty
+	// passed away.
+	DateOfDeath param.Field[time.Time] `json:"date_of_death" format:"date"`
+	// An optional description of the reason for the return. This is for internal usage
+	// and will not be transmitted to the bank.”
+	Reason         param.Field[string] `json:"reason"`
+	IdempotencyKey param.Field[string] `header:"Idempotency-Key"`
 }
 
 func (r ReturnNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+type ReturnNewParamsReturnableType string
+
+const (
+	ReturnNewParamsReturnableTypeIncomingPaymentDetail ReturnNewParamsReturnableType = "incoming_payment_detail"
+)
 
 type ReturnNewParamsCode string
 
@@ -412,21 +419,15 @@ const (
 	ReturnNewParamsCodeCurrencycloud ReturnNewParamsCode = "currencycloud"
 )
 
-type ReturnNewParamsReturnableType string
-
-const (
-	ReturnNewParamsReturnableTypeIncomingPaymentDetail ReturnNewParamsReturnableType = "incoming_payment_detail"
-)
-
 type ReturnListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
-	PerPage     param.Field[int64]  `query:"per_page"`
-	// Specify `internal_account_id` if you wish to see returns to/from a specific
-	// account.
-	InternalAccountID param.Field[string] `query:"internal_account_id"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	// Specify `counterparty_id` if you wish to see returns that occurred with a
 	// specific counterparty.
 	CounterpartyID param.Field[string] `query:"counterparty_id"`
+	// Specify `internal_account_id` if you wish to see returns to/from a specific
+	// account.
+	InternalAccountID param.Field[string] `query:"internal_account_id"`
+	PerPage           param.Field[int64]  `query:"per_page"`
 	// The ID of a valid returnable. Must be accompanied by `returnable_type`.
 	ReturnableID param.Field[string] `query:"returnable_id"`
 	// One of `payment_order`, `paper_item`, `reversal`, or `incoming_payment_detail`.

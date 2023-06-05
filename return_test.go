@@ -16,7 +16,15 @@ func TestReturnNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Returns.New(context.TODO(), moderntreasury.ReturnNewParams{ReturnableID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), Code: moderntreasury.F(moderntreasury.ReturnNewParamsCode901), Reason: moderntreasury.F("string"), DateOfDeath: moderntreasury.F(time.Now()), AdditionalInformation: moderntreasury.F("string"), ReturnableType: moderntreasury.F(moderntreasury.ReturnNewParamsReturnableTypeIncomingPaymentDetail)})
+	_, err := c.Returns.New(context.TODO(), moderntreasury.ReturnNewParams{
+		ReturnableID:          moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		ReturnableType:        moderntreasury.F(moderntreasury.ReturnNewParamsReturnableTypeIncomingPaymentDetail),
+		AdditionalInformation: moderntreasury.F("string"),
+		Code:                  moderntreasury.F(moderntreasury.ReturnNewParamsCode901),
+		DateOfDeath:           moderntreasury.F(time.Now()),
+		Reason:                moderntreasury.F("string"),
+		IdempotencyKey:        moderntreasury.F("string"),
+	})
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -51,7 +59,14 @@ func TestReturnListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Returns.List(context.TODO(), moderntreasury.ReturnListParams{AfterCursor: moderntreasury.F("string"), PerPage: moderntreasury.F(int64(0)), InternalAccountID: moderntreasury.F("string"), CounterpartyID: moderntreasury.F("string"), ReturnableID: moderntreasury.F("string"), ReturnableType: moderntreasury.F(moderntreasury.ReturnListParamsReturnableTypeIncomingPaymentDetail)})
+	_, err := c.Returns.List(context.TODO(), moderntreasury.ReturnListParams{
+		AfterCursor:       moderntreasury.F("string"),
+		CounterpartyID:    moderntreasury.F("string"),
+		InternalAccountID: moderntreasury.F("string"),
+		PerPage:           moderntreasury.F(int64(0)),
+		ReturnableID:      moderntreasury.F("string"),
+		ReturnableType:    moderntreasury.F(moderntreasury.ReturnListParamsReturnableTypeIncomingPaymentDetail),
+	})
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

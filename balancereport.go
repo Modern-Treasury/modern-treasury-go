@@ -34,19 +34,19 @@ func NewInternalAccountBalanceReportService(opts ...option.RequestOption) (r *In
 }
 
 // Get a single balance report for a given internal account.
-func (r *InternalAccountBalanceReportService) Get(ctx context.Context, internal_account_id string, id string, opts ...option.RequestOption) (res *BalanceReport, err error) {
+func (r *InternalAccountBalanceReportService) Get(ctx context.Context, internalAccountID string, id string, opts ...option.RequestOption) (res *BalanceReport, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports/%s", internal_account_id, id)
+	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports/%s", internalAccountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
 // Get all balance reports for a given internal account.
-func (r *InternalAccountBalanceReportService) List(ctx context.Context, internal_account_id string, query BalanceReportListParams, opts ...option.RequestOption) (res *shared.Page[BalanceReport], err error) {
+func (r *InternalAccountBalanceReportService) List(ctx context.Context, internalAccountID string, query BalanceReportListParams, opts ...option.RequestOption) (res *shared.Page[BalanceReport], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports", internal_account_id)
+	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports", internalAccountID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -60,8 +60,8 @@ func (r *InternalAccountBalanceReportService) List(ctx context.Context, internal
 }
 
 // Get all balance reports for a given internal account.
-func (r *InternalAccountBalanceReportService) ListAutoPaging(ctx context.Context, internal_account_id string, query BalanceReportListParams, opts ...option.RequestOption) *shared.PageAutoPager[BalanceReport] {
-	return shared.NewPageAutoPager(r.List(ctx, internal_account_id, query, opts...))
+func (r *InternalAccountBalanceReportService) ListAutoPaging(ctx context.Context, internalAccountID string, query BalanceReportListParams, opts ...option.RequestOption) *shared.PageAutoPager[BalanceReport] {
+	return shared.NewPageAutoPager(r.List(ctx, internalAccountID, query, opts...))
 }
 
 type BalanceReport struct {
@@ -199,12 +199,12 @@ const (
 )
 
 type BalanceReportListParams struct {
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	// The date of the balance report in local time.
 	AsOfDate param.Field[time.Time] `query:"as_of_date" format:"date"`
 	// The specific type of balance report. One of `intraday`, `previous_day`,
 	// `real_time`, or `other`.
 	BalanceReportType param.Field[BalanceReportListParamsBalanceReportType] `query:"balance_report_type"`
-	AfterCursor       param.Field[string]                                   `query:"after_cursor,nullable"`
 	PerPage           param.Field[int64]                                    `query:"per_page"`
 }
 

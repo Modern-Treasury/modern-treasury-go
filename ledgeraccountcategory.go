@@ -34,10 +34,10 @@ func NewLedgerAccountCategoryService(opts ...option.RequestOption) (r *LedgerAcc
 }
 
 // Create a ledger account category.
-func (r *LedgerAccountCategoryService) New(ctx context.Context, body LedgerAccountCategoryNewParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
+func (r *LedgerAccountCategoryService) New(ctx context.Context, params LedgerAccountCategoryNewParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/ledger_account_categories"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -50,10 +50,10 @@ func (r *LedgerAccountCategoryService) Get(ctx context.Context, id string, query
 }
 
 // Update the details of a ledger account category.
-func (r *LedgerAccountCategoryService) Update(ctx context.Context, id string, body LedgerAccountCategoryUpdateParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
+func (r *LedgerAccountCategoryService) Update(ctx context.Context, id string, params LedgerAccountCategoryUpdateParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/ledger_account_categories/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
 	return
 }
 
@@ -81,45 +81,45 @@ func (r *LedgerAccountCategoryService) ListAutoPaging(ctx context.Context, query
 }
 
 // Delete a ledger account category.
-func (r *LedgerAccountCategoryService) Delete(ctx context.Context, id string, query LedgerAccountCategoryDeleteParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
+func (r *LedgerAccountCategoryService) Delete(ctx context.Context, id string, body LedgerAccountCategoryDeleteParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/ledger_account_categories/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, query, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, body, &res, opts...)
 	return
 }
 
 // Add a ledger account category to an account.
-func (r *LedgerAccountCategoryService) AddLedgerAccount(ctx context.Context, id string, ledger_account_id string, opts ...option.RequestOption) (err error) {
+func (r *LedgerAccountCategoryService) AddLedgerAccount(ctx context.Context, id string, ledgerAccountID string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
-	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_accounts/%s", id, ledger_account_id)
+	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_accounts/%s", id, ledgerAccountID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, nil, nil, opts...)
 	return
 }
 
 // Add a ledger account category to a ledger account category.
-func (r *LedgerAccountCategoryService) AddNestedCategory(ctx context.Context, id string, sub_category_id string, opts ...option.RequestOption) (err error) {
+func (r *LedgerAccountCategoryService) AddNestedCategory(ctx context.Context, id string, subCategoryID string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
-	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_account_categories/%s", id, sub_category_id)
+	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_account_categories/%s", id, subCategoryID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, nil, nil, opts...)
 	return
 }
 
 // Delete a ledger account category from an account.
-func (r *LedgerAccountCategoryService) RemoveLedgerAccount(ctx context.Context, id string, ledger_account_id string, opts ...option.RequestOption) (err error) {
+func (r *LedgerAccountCategoryService) RemoveLedgerAccount(ctx context.Context, id string, ledgerAccountID string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
-	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_accounts/%s", id, ledger_account_id)
+	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_accounts/%s", id, ledgerAccountID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return
 }
 
 // Delete a ledger account category from a ledger account category.
-func (r *LedgerAccountCategoryService) RemoveNestedCategory(ctx context.Context, id string, sub_category_id string, opts ...option.RequestOption) (err error) {
+func (r *LedgerAccountCategoryService) RemoveNestedCategory(ctx context.Context, id string, subCategoryID string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
-	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_account_categories/%s", id, sub_category_id)
+	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_account_categories/%s", id, subCategoryID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return
 }
@@ -303,21 +303,22 @@ func (r *LedgerAccountCategoryBalancesAvailableBalance) UnmarshalJSON(data []byt
 }
 
 type LedgerAccountCategoryNewParams struct {
-	// The name of the ledger account category.
-	Name param.Field[string] `json:"name,required"`
-	// The description of the ledger account category.
-	Description param.Field[string] `json:"description,nullable"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
 	// The currency of the ledger account category.
 	Currency param.Field[string] `json:"currency,required"`
-	// The currency exponent of the ledger account category.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
 	// The id of the ledger that this account category belongs to.
 	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
+	// The name of the ledger account category.
+	Name param.Field[string] `json:"name,required"`
 	// The normal balance of the ledger account category.
 	NormalBalance param.Field[LedgerAccountCategoryNewParamsNormalBalance] `json:"normal_balance,required"`
+	// The currency exponent of the ledger account category.
+	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
+	// The description of the ledger account category.
+	Description param.Field[string] `json:"description"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata       param.Field[map[string]string] `json:"metadata"`
+	IdempotencyKey param.Field[string]            `header:"Idempotency-Key"`
 }
 
 func (r LedgerAccountCategoryNewParams) MarshalJSON() (data []byte, err error) {
@@ -367,13 +368,18 @@ func (r LedgerAccountCategoryGetParamsBalances) URLQuery() (v url.Values) {
 }
 
 type LedgerAccountCategoryUpdateParams struct {
-	// The name of the ledger account category.
-	Name param.Field[string] `json:"name"`
+	// For example, if you want the balances as of a particular effective date
+	// (YYYY-MM-DD), the encoded query string would be
+	// balances%5Bas_of_date%5D=2000-12-31. The balances as of a date are exclusive of
+	// entries with that exact date.
+	Balances param.Field[LedgerAccountCategoryUpdateParamsBalances] `query:"balances"`
 	// The description of the ledger account category.
-	Description param.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The name of the ledger account category.
+	Name param.Field[string] `json:"name"`
 }
 
 func (r LedgerAccountCategoryUpdateParams) MarshalJSON() (data []byte, err error) {
@@ -408,16 +414,16 @@ func (r LedgerAccountCategoryUpdateParamsBalances) URLQuery() (v url.Values) {
 }
 
 type LedgerAccountCategoryListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
-	PerPage     param.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
+	LedgerID    param.Field[string] `query:"ledger_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
 	Metadata param.Field[map[string]string] `query:"metadata"`
 	Name     param.Field[string]            `query:"name"`
-	LedgerID param.Field[string]            `query:"ledger_id"`
 	// Query categories that are nested underneath a parent category
 	ParentLedgerAccountCategoryID param.Field[string] `query:"parent_ledger_account_category_id"`
+	PerPage                       param.Field[int64]  `query:"per_page"`
 }
 
 // URLQuery serializes [LedgerAccountCategoryListParams]'s query parameters as

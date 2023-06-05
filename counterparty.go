@@ -34,10 +34,10 @@ func NewCounterpartyService(opts ...option.RequestOption) (r *CounterpartyServic
 }
 
 // Create a new counterparty.
-func (r *CounterpartyService) New(ctx context.Context, body CounterpartyNewParams, opts ...option.RequestOption) (res *Counterparty, err error) {
+func (r *CounterpartyService) New(ctx context.Context, params CounterpartyNewParams, opts ...option.RequestOption) (res *Counterparty, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/counterparties"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -90,10 +90,10 @@ func (r *CounterpartyService) Delete(ctx context.Context, id string, opts ...opt
 }
 
 // Send an email requesting account details.
-func (r *CounterpartyService) CollectAccount(ctx context.Context, id string, body CounterpartyCollectAccountParams, opts ...option.RequestOption) (res *CounterpartyCollectAccountResponse, err error) {
+func (r *CounterpartyService) CollectAccount(ctx context.Context, id string, params CounterpartyCollectAccountParams, opts ...option.RequestOption) (res *CounterpartyCollectAccountResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/counterparties/%s/collect_account", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -333,39 +333,57 @@ func (r *CounterpartyCollectAccountResponse) UnmarshalJSON(data []byte) (err err
 
 type CounterpartyNewParams struct {
 	// A human friendly name for this counterparty.
-	Name param.Field[string] `json:"name,required,nullable"`
+	Name       param.Field[string]                          `json:"name,required"`
+	Accounting param.Field[CounterpartyNewParamsAccounting] `json:"accounting"`
 	// The accounts for this counterparty.
 	Accounts param.Field[[]CounterpartyNewParamsAccounts] `json:"accounts"`
 	// The counterparty's email.
-	Email param.Field[string] `json:"email,nullable" format:"email"`
+	Email param.Field[string] `json:"email" format:"email"`
+	// An optional type to auto-sync the counterparty to your ledger. Either `customer`
+	// or `vendor`.
+	LedgerType param.Field[CounterpartyNewParamsLedgerType] `json:"ledger_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// Send an email to the counterparty whenever an associated payment order is sent
 	// to the bank.
-	SendRemittanceAdvice param.Field[bool]                            `json:"send_remittance_advice"`
-	Accounting           param.Field[CounterpartyNewParamsAccounting] `json:"accounting"`
-	// An optional type to auto-sync the counterparty to your ledger. Either `customer`
-	// or `vendor`.
-	LedgerType param.Field[CounterpartyNewParamsLedgerType] `json:"ledger_type"`
+	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
 	// Either a valid SSN or EIN.
 	TaxpayerIdentifier param.Field[string] `json:"taxpayer_identifier"`
+	IdempotencyKey     param.Field[string] `header:"Idempotency-Key"`
 }
 
 func (r CounterpartyNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+type CounterpartyNewParamsAccounting struct {
+	// An optional type to auto-sync the counterparty to your ledger. Either `customer`
+	// or `vendor`.
+	Type param.Field[CounterpartyNewParamsAccountingType] `json:"type"`
+}
+
+func (r CounterpartyNewParamsAccounting) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type CounterpartyNewParamsAccountingType string
+
+const (
+	CounterpartyNewParamsAccountingTypeCustomer CounterpartyNewParamsAccountingType = "customer"
+	CounterpartyNewParamsAccountingTypeVendor   CounterpartyNewParamsAccountingType = "vendor"
+)
+
 type CounterpartyNewParamsAccounts struct {
 	// Can be `checking`, `savings` or `other`.
 	AccountType param.Field[ExternalAccountType] `json:"account_type"`
 	// Either `individual` or `business`.
-	PartyType param.Field[CounterpartyNewParamsAccountsPartyType] `json:"party_type,nullable"`
+	PartyType param.Field[CounterpartyNewParamsAccountsPartyType] `json:"party_type"`
 	// Required if receiving wire payments.
 	PartyAddress param.Field[CounterpartyNewParamsAccountsPartyAddress] `json:"party_address"`
 	// A nickname for the external account. This is only for internal usage and won't
 	// affect any payments
-	Name           param.Field[string]                                        `json:"name,nullable"`
+	Name           param.Field[string]                                        `json:"name"`
 	AccountDetails param.Field[[]CounterpartyNewParamsAccountsAccountDetails] `json:"account_details"`
 	RoutingDetails param.Field[[]CounterpartyNewParamsAccountsRoutingDetails] `json:"routing_details"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -386,6 +404,10 @@ type CounterpartyNewParamsAccounts struct {
 	ContactDetails      param.Field[[]CounterpartyNewParamsAccountsContactDetails] `json:"contact_details"`
 }
 
+func (r CounterpartyNewParamsAccounts) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type CounterpartyNewParamsAccountsPartyType string
 
 const (
@@ -395,21 +417,29 @@ const (
 
 // Required if receiving wire payments.
 type CounterpartyNewParamsAccountsPartyAddress struct {
-	Line1 param.Field[string] `json:"line1,nullable"`
-	Line2 param.Field[string] `json:"line2,nullable"`
+	Line1 param.Field[string] `json:"line1"`
+	Line2 param.Field[string] `json:"line2"`
 	// Locality or City.
-	Locality param.Field[string] `json:"locality,nullable"`
+	Locality param.Field[string] `json:"locality"`
 	// Region or State.
-	Region param.Field[string] `json:"region,nullable"`
+	Region param.Field[string] `json:"region"`
 	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,nullable"`
+	PostalCode param.Field[string] `json:"postal_code"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,nullable"`
+	Country param.Field[string] `json:"country"`
+}
+
+func (r CounterpartyNewParamsAccountsPartyAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type CounterpartyNewParamsAccountsAccountDetails struct {
 	AccountNumber     param.Field[string]                                                       `json:"account_number,required"`
 	AccountNumberType param.Field[CounterpartyNewParamsAccountsAccountDetailsAccountNumberType] `json:"account_number_type"`
+}
+
+func (r CounterpartyNewParamsAccountsAccountDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type CounterpartyNewParamsAccountsAccountDetailsAccountNumberType string
@@ -426,6 +456,10 @@ type CounterpartyNewParamsAccountsRoutingDetails struct {
 	RoutingNumber     param.Field[string]                                                       `json:"routing_number,required"`
 	RoutingNumberType param.Field[CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
 	PaymentType       param.Field[CounterpartyNewParamsAccountsRoutingDetailsPaymentType]       `json:"payment_type"`
+}
+
+func (r CounterpartyNewParamsAccountsRoutingDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType string
@@ -474,7 +508,7 @@ type CounterpartyNewParamsAccountsLedgerAccount struct {
 	// The name of the ledger account.
 	Name param.Field[string] `json:"name,required"`
 	// The description of the ledger account.
-	Description param.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description"`
 	// The normal balance of the ledger account.
 	NormalBalance param.Field[CounterpartyNewParamsAccountsLedgerAccountNormalBalance] `json:"normal_balance,required"`
 	// The id of the ledger that this account belongs to.
@@ -482,7 +516,7 @@ type CounterpartyNewParamsAccountsLedgerAccount struct {
 	// The currency of the ledger account.
 	Currency param.Field[string] `json:"currency,required"`
 	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent,nullable"`
+	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
 	// populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
@@ -493,6 +527,10 @@ type CounterpartyNewParamsAccountsLedgerAccount struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+}
+
+func (r CounterpartyNewParamsAccountsLedgerAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type CounterpartyNewParamsAccountsLedgerAccountNormalBalance string
@@ -514,25 +552,16 @@ type CounterpartyNewParamsAccountsContactDetails struct {
 	ContactIdentifierType param.Field[CounterpartyNewParamsAccountsContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
 }
 
+func (r CounterpartyNewParamsAccountsContactDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type CounterpartyNewParamsAccountsContactDetailsContactIdentifierType string
 
 const (
 	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail       CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "email"
 	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypePhoneNumber CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "phone_number"
 	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeWebsite     CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "website"
-)
-
-type CounterpartyNewParamsAccounting struct {
-	// An optional type to auto-sync the counterparty to your ledger. Either `customer`
-	// or `vendor`.
-	Type param.Field[CounterpartyNewParamsAccountingType] `json:"type"`
-}
-
-type CounterpartyNewParamsAccountingType string
-
-const (
-	CounterpartyNewParamsAccountingTypeCustomer CounterpartyNewParamsAccountingType = "customer"
-	CounterpartyNewParamsAccountingTypeVendor   CounterpartyNewParamsAccountingType = "vendor"
 )
 
 type CounterpartyNewParamsLedgerType string
@@ -543,13 +572,13 @@ const (
 )
 
 type CounterpartyUpdateParams struct {
-	// A new name for the counterparty. Will only update if passed.
-	Name param.Field[string] `json:"name"`
 	// A new email for the counterparty.
 	Email param.Field[string] `json:"email" format:"email"`
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
 	// an empty string or `null` as the value.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// A new name for the counterparty. Will only update if passed.
+	Name param.Field[string] `json:"name"`
 	// If this is `true`, Modern Treasury will send an email to the counterparty
 	// whenever an associated payment order is sent to the bank.
 	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
@@ -562,11 +591,11 @@ func (r CounterpartyUpdateParams) MarshalJSON() (data []byte, err error) {
 }
 
 type CounterpartyListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
-	PerPage     param.Field[int64]  `query:"per_page"`
-	// Performs a partial string match of the name field. This is also case
-	// insensitive.
-	Name param.Field[string] `query:"name"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
+	// Used to return counterparties created after some datetime.
+	CreatedAtLowerBound param.Field[time.Time] `query:"created_at_lower_bound" format:"date-time"`
+	// Used to return counterparties created before some datetime.
+	CreatedAtUpperBound param.Field[time.Time] `query:"created_at_upper_bound" format:"date-time"`
 	// Performs a partial string match of the email field. This is also case
 	// insensitive.
 	Email param.Field[string] `query:"email" format:"email"`
@@ -574,10 +603,10 @@ type CounterpartyListParams struct {
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
 	Metadata param.Field[map[string]string] `query:"metadata"`
-	// Used to return counterparties created after some datetime.
-	CreatedAtLowerBound param.Field[time.Time] `query:"created_at_lower_bound" format:"date-time"`
-	// Used to return counterparties created before some datetime.
-	CreatedAtUpperBound param.Field[time.Time] `query:"created_at_upper_bound" format:"date-time"`
+	// Performs a partial string match of the name field. This is also case
+	// insensitive.
+	Name    param.Field[string] `query:"name"`
+	PerPage param.Field[int64]  `query:"per_page"`
 }
 
 // URLQuery serializes [CounterpartyListParams]'s query parameters as `url.Values`.
@@ -593,21 +622,22 @@ type CounterpartyCollectAccountParams struct {
 	// Use `debit` when you need to charge a counterparty. This field helps us send a
 	// more tailored email to your counterparties."
 	Direction param.Field[CounterpartyCollectAccountParamsDirection] `json:"direction,required"`
-	// By default, Modern Treasury will send an email to your counterparty that
-	// includes a link to the form they must fill out. However, if you would like to
-	// send the counterparty the link, you can set this parameter to `false`. The JSON
-	// body will include the link to the secure Modern Treasury form.
-	SendEmail param.Field[bool] `json:"send_email"`
+	// The URL you want your customer to visit upon filling out the form. By default,
+	// they will be sent to a Modern Treasury landing page. This must be a valid HTTPS
+	// URL if set.
+	CustomRedirect param.Field[string] `json:"custom_redirect" format:"uri"`
 	// The list of fields you want on the form. This field is optional and if it is not
 	// set, will default to [\"nameOnAccount\", \"accountType\", \"accountNumber\",
 	// \"routingNumber\", \"address\"]. The full list of options is [\"name\",
 	// \"nameOnAccount\", \"taxpayerIdentifier\", \"accountType\", \"accountNumber\",
 	// \"routingNumber\", \"address\", \"ibanNumber\", \"swiftCode\"].
 	Fields param.Field[[]CounterpartyCollectAccountParamsFields] `json:"fields"`
-	// The URL you want your customer to visit upon filling out the form. By default,
-	// they will be sent to a Modern Treasury landing page. This must be a valid HTTPS
-	// URL if set.
-	CustomRedirect param.Field[string] `json:"custom_redirect" format:"uri"`
+	// By default, Modern Treasury will send an email to your counterparty that
+	// includes a link to the form they must fill out. However, if you would like to
+	// send the counterparty the link, you can set this parameter to `false`. The JSON
+	// body will include the link to the secure Modern Treasury form.
+	SendEmail      param.Field[bool]   `json:"send_email"`
+	IdempotencyKey param.Field[string] `header:"Idempotency-Key"`
 }
 
 func (r CounterpartyCollectAccountParams) MarshalJSON() (data []byte, err error) {

@@ -33,10 +33,10 @@ func NewLedgerService(opts ...option.RequestOption) (r *LedgerService) {
 }
 
 // Create a ledger.
-func (r *LedgerService) New(ctx context.Context, body LedgerNewParams, opts ...option.RequestOption) (res *Ledger, err error) {
+func (r *LedgerService) New(ctx context.Context, params LedgerNewParams, opts ...option.RequestOption) (res *Ledger, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/ledgers"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -130,10 +130,11 @@ type LedgerNewParams struct {
 	// The name of the ledger.
 	Name param.Field[string] `json:"name,required"`
 	// An optional free-form description for internal use.
-	Description param.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
+	Metadata       param.Field[map[string]string] `json:"metadata"`
+	IdempotencyKey param.Field[string]            `header:"Idempotency-Key"`
 }
 
 func (r LedgerNewParams) MarshalJSON() (data []byte, err error) {
@@ -141,13 +142,13 @@ func (r LedgerNewParams) MarshalJSON() (data []byte, err error) {
 }
 
 type LedgerUpdateParams struct {
-	// The name of the ledger.
-	Name param.Field[string] `json:"name"`
 	// An optional free-form description for internal use.
-	Description param.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The name of the ledger.
+	Name param.Field[string] `json:"name"`
 }
 
 func (r LedgerUpdateParams) MarshalJSON() (data []byte, err error) {
@@ -155,12 +156,12 @@ func (r LedgerUpdateParams) MarshalJSON() (data []byte, err error) {
 }
 
 type LedgerListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
-	PerPage     param.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
 	Metadata param.Field[map[string]string] `query:"metadata"`
+	PerPage  param.Field[int64]             `query:"per_page"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// updated_at%5Bgt%5D=2000-01-01T12:00:00Z.

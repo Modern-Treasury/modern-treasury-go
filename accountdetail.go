@@ -34,27 +34,27 @@ func NewAccountDetailService(opts ...option.RequestOption) (r *AccountDetailServ
 }
 
 // Create an account detail for an external account.
-func (r *AccountDetailService) New(ctx context.Context, accounts_type AccountDetailNewParamsAccountsType, account_id string, body AccountDetailNewParams, opts ...option.RequestOption) (res *AccountDetail, err error) {
+func (r *AccountDetailService) New(ctx context.Context, accountsType AccountDetailNewParamsAccountsType, accountID string, params AccountDetailNewParams, opts ...option.RequestOption) (res *AccountDetail, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/account_details", accounts_type, account_id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	path := fmt.Sprintf("api/%s/%s/account_details", accountsType, accountID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
 // Get a single account detail for a single internal or external account.
-func (r *AccountDetailService) Get(ctx context.Context, accounts_type shared.AccountsType, account_id string, id string, opts ...option.RequestOption) (res *AccountDetail, err error) {
+func (r *AccountDetailService) Get(ctx context.Context, accountsType shared.AccountsType, accountID string, id string, opts ...option.RequestOption) (res *AccountDetail, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/account_details/%s", accounts_type, account_id, id)
+	path := fmt.Sprintf("api/%s/%s/account_details/%s", accountsType, accountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
 // Get a list of account details for a single internal or external account.
-func (r *AccountDetailService) List(ctx context.Context, accounts_type shared.AccountsType, account_id string, query AccountDetailListParams, opts ...option.RequestOption) (res *shared.Page[AccountDetail], err error) {
+func (r *AccountDetailService) List(ctx context.Context, accountsType shared.AccountsType, accountID string, query AccountDetailListParams, opts ...option.RequestOption) (res *shared.Page[AccountDetail], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := fmt.Sprintf("api/%s/%s/account_details", accounts_type, account_id)
+	path := fmt.Sprintf("api/%s/%s/account_details", accountsType, accountID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -68,15 +68,15 @@ func (r *AccountDetailService) List(ctx context.Context, accounts_type shared.Ac
 }
 
 // Get a list of account details for a single internal or external account.
-func (r *AccountDetailService) ListAutoPaging(ctx context.Context, accounts_type shared.AccountsType, account_id string, query AccountDetailListParams, opts ...option.RequestOption) *shared.PageAutoPager[AccountDetail] {
-	return shared.NewPageAutoPager(r.List(ctx, accounts_type, account_id, query, opts...))
+func (r *AccountDetailService) ListAutoPaging(ctx context.Context, accountsType shared.AccountsType, accountID string, query AccountDetailListParams, opts ...option.RequestOption) *shared.PageAutoPager[AccountDetail] {
+	return shared.NewPageAutoPager(r.List(ctx, accountsType, accountID, query, opts...))
 }
 
 // Delete a single account detail for an external account.
-func (r *AccountDetailService) Delete(ctx context.Context, accounts_type AccountDetailDeleteParamsAccountsType, account_id string, id string, opts ...option.RequestOption) (err error) {
+func (r *AccountDetailService) Delete(ctx context.Context, accountsType AccountDetailDeleteParamsAccountsType, accountID string, id string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
-	path := fmt.Sprintf("api/%s/%s/account_details/%s", accounts_type, account_id, id)
+	path := fmt.Sprintf("api/%s/%s/account_details/%s", accountsType, accountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return
 }
@@ -137,7 +137,7 @@ type AccountDetailParam struct {
 	LiveMode    param.Field[bool]      `json:"live_mode,required"`
 	CreatedAt   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
 	UpdatedAt   param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-	DiscardedAt param.Field[time.Time] `json:"discarded_at,required,nullable" format:"date-time"`
+	DiscardedAt param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
 	// The account number for the bank account.
 	AccountNumber param.Field[string] `json:"account_number"`
 	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
@@ -157,11 +157,18 @@ type AccountDetailNewParams struct {
 	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
 	// account number is in a generic format.
 	AccountNumberType param.Field[AccountDetailNewParamsAccountNumberType] `json:"account_number_type"`
+	IdempotencyKey    param.Field[string]                                  `header:"Idempotency-Key"`
 }
 
 func (r AccountDetailNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+type AccountDetailNewParamsAccountsType string
+
+const (
+	AccountDetailNewParamsAccountsTypeExternalAccounts AccountDetailNewParamsAccountsType = "external_accounts"
+)
 
 type AccountDetailNewParamsAccountNumberType string
 
@@ -173,14 +180,8 @@ const (
 	AccountDetailNewParamsAccountNumberTypeWalletAddress AccountDetailNewParamsAccountNumberType = "wallet_address"
 )
 
-type AccountDetailNewParamsAccountsType string
-
-const (
-	AccountDetailNewParamsAccountsTypeExternalAccounts AccountDetailNewParamsAccountsType = "external_accounts"
-)
-
 type AccountDetailListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	PerPage     param.Field[int64]  `query:"per_page"`
 }
 

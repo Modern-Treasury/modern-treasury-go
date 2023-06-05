@@ -34,35 +34,35 @@ func NewInvoiceLineItemService(opts ...option.RequestOption) (r *InvoiceLineItem
 }
 
 // create invoice_line_item
-func (r *InvoiceLineItemService) New(ctx context.Context, invoice_id string, body InvoiceLineItemNewParams, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
+func (r *InvoiceLineItemService) New(ctx context.Context, invoiceID string, params InvoiceLineItemNewParams, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/invoices/%s/invoice_line_items", invoice_id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	path := fmt.Sprintf("api/invoices/%s/invoice_line_items", invoiceID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
 // get invoice_line_item
-func (r *InvoiceLineItemService) Get(ctx context.Context, invoice_id string, id string, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
+func (r *InvoiceLineItemService) Get(ctx context.Context, invoiceID string, id string, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/invoices/%s/invoice_line_items/%s", invoice_id, id)
+	path := fmt.Sprintf("api/invoices/%s/invoice_line_items/%s", invoiceID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
 // update invoice_line_item
-func (r *InvoiceLineItemService) Update(ctx context.Context, invoice_id string, id string, body InvoiceLineItemUpdateParams, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
+func (r *InvoiceLineItemService) Update(ctx context.Context, invoiceID string, id string, body InvoiceLineItemUpdateParams, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/invoices/%s/invoice_line_items/%s", invoice_id, id)
+	path := fmt.Sprintf("api/invoices/%s/invoice_line_items/%s", invoiceID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
 }
 
 // list invoice_line_items
-func (r *InvoiceLineItemService) List(ctx context.Context, invoice_id string, query InvoiceLineItemListParams, opts ...option.RequestOption) (res *shared.Page[InvoiceLineItem], err error) {
+func (r *InvoiceLineItemService) List(ctx context.Context, invoiceID string, query InvoiceLineItemListParams, opts ...option.RequestOption) (res *shared.Page[InvoiceLineItem], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := fmt.Sprintf("api/invoices/%s/invoice_line_items", invoice_id)
+	path := fmt.Sprintf("api/invoices/%s/invoice_line_items", invoiceID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -76,14 +76,14 @@ func (r *InvoiceLineItemService) List(ctx context.Context, invoice_id string, qu
 }
 
 // list invoice_line_items
-func (r *InvoiceLineItemService) ListAutoPaging(ctx context.Context, invoice_id string, query InvoiceLineItemListParams, opts ...option.RequestOption) *shared.PageAutoPager[InvoiceLineItem] {
-	return shared.NewPageAutoPager(r.List(ctx, invoice_id, query, opts...))
+func (r *InvoiceLineItemService) ListAutoPaging(ctx context.Context, invoiceID string, query InvoiceLineItemListParams, opts ...option.RequestOption) *shared.PageAutoPager[InvoiceLineItem] {
+	return shared.NewPageAutoPager(r.List(ctx, invoiceID, query, opts...))
 }
 
 // delete invoice_line_item
-func (r *InvoiceLineItemService) Delete(ctx context.Context, invoice_id string, id string, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
+func (r *InvoiceLineItemService) Delete(ctx context.Context, invoiceID string, id string, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/invoices/%s/invoice_line_items/%s", invoice_id, id)
+	path := fmt.Sprintf("api/invoices/%s/invoice_line_items/%s", invoiceID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return
 }
@@ -140,18 +140,19 @@ func (r *InvoiceLineItem) UnmarshalJSON(data []byte) (err error) {
 type InvoiceLineItemNewParams struct {
 	// The name of the line item, typically a product or SKU name.
 	Name param.Field[string] `json:"name,required"`
-	// An optional free-form description of the line item.
-	Description param.Field[string] `json:"description"`
-	// The number of units of a product or service that this line item is for. Must be
-	// a whole number. Defaults to 1 if not provided.
-	Quantity param.Field[int64] `json:"quantity"`
 	// The cost per unit of the product or service that this line item is for,
 	// specified in the invoice currency's smallest unit.
 	UnitAmount param.Field[int64] `json:"unit_amount,required"`
+	// An optional free-form description of the line item.
+	Description param.Field[string] `json:"description"`
 	// Either `debit` or `credit`. `debit` indicates that a client owes the business
 	// money and increases the invoice's `total_amount` due. `credit` has the opposite
 	// intention and effect.
 	Direction param.Field[string] `json:"direction"`
+	// The number of units of a product or service that this line item is for. Must be
+	// a whole number. Defaults to 1 if not provided.
+	Quantity       param.Field[int64]  `json:"quantity"`
+	IdempotencyKey param.Field[string] `header:"Idempotency-Key"`
 }
 
 func (r InvoiceLineItemNewParams) MarshalJSON() (data []byte, err error) {
@@ -161,20 +162,20 @@ func (r InvoiceLineItemNewParams) MarshalJSON() (data []byte, err error) {
 type InvoiceLineItemUpdateParams struct {
 	// The invoicer's contact details displayed at the top of the invoice.
 	ContactDetails param.Field[[]InvoiceLineItemUpdateParamsContactDetails] `json:"contact_details"`
+	// The counterparty's billing address.
+	CounterpartyBillingAddress param.Field[InvoiceLineItemUpdateParamsCounterpartyBillingAddress] `json:"counterparty_billing_address"`
 	// The ID of the counterparty receiving the invoice.
 	CounterpartyID param.Field[string] `json:"counterparty_id"`
-	// The counterparty's billing address.
-	CounterpartyBillingAddress param.Field[InvoiceLineItemUpdateParamsCounterpartyBillingAddress] `json:"counterparty_billing_address,nullable"`
 	// The counterparty's shipping address where physical goods should be delivered.
-	CounterpartyShippingAddress param.Field[InvoiceLineItemUpdateParamsCounterpartyShippingAddress] `json:"counterparty_shipping_address,nullable"`
+	CounterpartyShippingAddress param.Field[InvoiceLineItemUpdateParamsCounterpartyShippingAddress] `json:"counterparty_shipping_address"`
 	// Currency that the invoice is denominated in. Defaults to `USD` if not provided.
-	Currency param.Field[shared.Currency] `json:"currency,nullable"`
+	Currency param.Field[shared.Currency] `json:"currency"`
 	// A free-form description of the invoice.
 	Description param.Field[string] `json:"description"`
 	// A future date by when the invoice needs to be paid.
 	DueDate param.Field[time.Time] `json:"due_date" format:"date-time"`
 	// The invoice issuer's business address.
-	InvoicerAddress param.Field[InvoiceLineItemUpdateParamsInvoicerAddress] `json:"invoicer_address,nullable"`
+	InvoicerAddress param.Field[InvoiceLineItemUpdateParamsInvoicerAddress] `json:"invoicer_address"`
 	// The ID of the internal account the invoice should be paid to.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id"`
 }
@@ -191,9 +192,13 @@ type InvoiceLineItemUpdateParamsContactDetails struct {
 	LiveMode              param.Field[bool]                                                           `json:"live_mode,required"`
 	CreatedAt             param.Field[time.Time]                                                      `json:"created_at,required" format:"date-time"`
 	UpdatedAt             param.Field[time.Time]                                                      `json:"updated_at,required" format:"date-time"`
-	DiscardedAt           param.Field[time.Time]                                                      `json:"discarded_at,required,nullable" format:"date-time"`
+	DiscardedAt           param.Field[time.Time]                                                      `json:"discarded_at,required" format:"date-time"`
 	ContactIdentifier     param.Field[string]                                                         `json:"contact_identifier,required"`
 	ContactIdentifierType param.Field[InvoiceLineItemUpdateParamsContactDetailsContactIdentifierType] `json:"contact_identifier_type,required"`
+}
+
+func (r InvoiceLineItemUpdateParamsContactDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type InvoiceLineItemUpdateParamsContactDetailsContactIdentifierType string
@@ -218,6 +223,10 @@ type InvoiceLineItemUpdateParamsCounterpartyBillingAddress struct {
 	Country param.Field[string] `json:"country,required"`
 }
 
+func (r InvoiceLineItemUpdateParamsCounterpartyBillingAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 // The counterparty's shipping address where physical goods should be delivered.
 type InvoiceLineItemUpdateParamsCounterpartyShippingAddress struct {
 	Line1 param.Field[string] `json:"line1,required"`
@@ -230,6 +239,10 @@ type InvoiceLineItemUpdateParamsCounterpartyShippingAddress struct {
 	PostalCode param.Field[string] `json:"postal_code,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country,required"`
+}
+
+func (r InvoiceLineItemUpdateParamsCounterpartyShippingAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // The invoice issuer's business address.
@@ -246,8 +259,12 @@ type InvoiceLineItemUpdateParamsInvoicerAddress struct {
 	Country param.Field[string] `json:"country,required"`
 }
 
+func (r InvoiceLineItemUpdateParamsInvoicerAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type InvoiceLineItemListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	PerPage     param.Field[int64]  `query:"per_page"`
 }
 

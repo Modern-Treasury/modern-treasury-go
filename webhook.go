@@ -63,3 +63,9 @@ func (r *WebhookService) ValidateSignature(payload []byte, key string, headers h
 	return signature == expectedSignature, nil
 
 }
+
+type WebhookGetSignatureParams struct {
+}
+
+type WebhookValidateSignatureParams struct {
+}

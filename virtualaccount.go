@@ -34,10 +34,10 @@ func NewVirtualAccountService(opts ...option.RequestOption) (r *VirtualAccountSe
 }
 
 // create virtual_account
-func (r *VirtualAccountService) New(ctx context.Context, body VirtualAccountNewParams, opts ...option.RequestOption) (res *VirtualAccount, err error) {
+func (r *VirtualAccountService) New(ctx context.Context, params VirtualAccountNewParams, opts ...option.RequestOption) (res *VirtualAccount, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/virtual_accounts"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -151,29 +151,30 @@ func (r *VirtualAccount) UnmarshalJSON(data []byte) (err error) {
 }
 
 type VirtualAccountNewParams struct {
-	// The name of the virtual account.
-	Name param.Field[string] `json:"name,required"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// The ID of the counterparty that the virtual account belongs to.
-	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
 	// The ID of the internal account that this virtual account is associated with.
 	InternalAccountID param.Field[string] `json:"internal_account_id,required" format:"uuid"`
+	// The name of the virtual account.
+	Name param.Field[string] `json:"name,required"`
 	// An array of account detail objects.
 	AccountDetails param.Field[[]AccountDetailParam] `json:"account_details"`
-	// An array of routing detail objects.
-	RoutingDetails param.Field[[]RoutingDetailParam] `json:"routing_details"`
-	// The ID of a debit normal ledger account. When money enters the virtual account,
-	// this ledger account will be debited. Must be accompanied by a
-	// credit_ledger_account_id if present.
-	DebitLedgerAccountID param.Field[string] `json:"debit_ledger_account_id" format:"uuid"`
+	// The ID of the counterparty that the virtual account belongs to.
+	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
 	// The ID of a credit normal ledger account. When money leaves the virtual account,
 	// this ledger account will be credited. Must be accompanied by a
 	// debit_ledger_account_id if present.
 	CreditLedgerAccountID param.Field[string] `json:"credit_ledger_account_id" format:"uuid"`
+	// The ID of a debit normal ledger account. When money enters the virtual account,
+	// this ledger account will be debited. Must be accompanied by a
+	// credit_ledger_account_id if present.
+	DebitLedgerAccountID param.Field[string] `json:"debit_ledger_account_id" format:"uuid"`
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// An array of routing detail objects.
+	RoutingDetails param.Field[[]RoutingDetailParam] `json:"routing_details"`
+	IdempotencyKey param.Field[string]               `header:"Idempotency-Key"`
 }
 
 func (r VirtualAccountNewParams) MarshalJSON() (data []byte, err error) {
@@ -181,9 +182,9 @@ func (r VirtualAccountNewParams) MarshalJSON() (data []byte, err error) {
 }
 
 type VirtualAccountUpdateParams struct {
-	Name           param.Field[string]            `json:"name,nullable"`
 	CounterpartyID param.Field[string]            `json:"counterparty_id" format:"uuid"`
 	Metadata       param.Field[map[string]string] `json:"metadata"`
+	Name           param.Field[string]            `json:"name"`
 }
 
 func (r VirtualAccountUpdateParams) MarshalJSON() (data []byte, err error) {
@@ -191,14 +192,14 @@ func (r VirtualAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 }
 
 type VirtualAccountListParams struct {
-	AfterCursor       param.Field[string] `query:"after_cursor,nullable"`
-	PerPage           param.Field[int64]  `query:"per_page"`
-	InternalAccountID param.Field[string] `query:"internal_account_id" format:"uuid"`
+	AfterCursor       param.Field[string] `query:"after_cursor"`
 	CounterpartyID    param.Field[string] `query:"counterparty_id" format:"uuid"`
+	InternalAccountID param.Field[string] `query:"internal_account_id" format:"uuid"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
 	Metadata param.Field[map[string]string] `query:"metadata"`
+	PerPage  param.Field[int64]             `query:"per_page"`
 }
 
 // URLQuery serializes [VirtualAccountListParams]'s query parameters as

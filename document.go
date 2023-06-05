@@ -36,27 +36,27 @@ func NewDocumentService(opts ...option.RequestOption) (r *DocumentService) {
 }
 
 // Create a document.
-func (r *DocumentService) New(ctx context.Context, documentable_type DocumentNewParamsDocumentableType, documentable_id string, body DocumentNewParams, opts ...option.RequestOption) (res *Document, err error) {
+func (r *DocumentService) New(ctx context.Context, documentableType DocumentNewParamsDocumentableType, documentableID string, params DocumentNewParams, opts ...option.RequestOption) (res *Document, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/documents", documentable_type, documentable_id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	path := fmt.Sprintf("api/%s/%s/documents", documentableType, documentableID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
 // Get an existing document.
-func (r *DocumentService) Get(ctx context.Context, documentable_type DocumentGetParamsDocumentableType, documentable_id string, id string, opts ...option.RequestOption) (res *Document, err error) {
+func (r *DocumentService) Get(ctx context.Context, documentableType DocumentGetParamsDocumentableType, documentableID string, id string, opts ...option.RequestOption) (res *Document, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/documents/%s", documentable_type, documentable_id, id)
+	path := fmt.Sprintf("api/%s/%s/documents/%s", documentableType, documentableID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
 // Get a list of documents.
-func (r *DocumentService) List(ctx context.Context, documentable_type DocumentListParamsDocumentableType, documentable_id string, query DocumentListParams, opts ...option.RequestOption) (res *shared.Page[Document], err error) {
+func (r *DocumentService) List(ctx context.Context, documentableType DocumentListParamsDocumentableType, documentableID string, query DocumentListParams, opts ...option.RequestOption) (res *shared.Page[Document], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := fmt.Sprintf("api/%s/%s/documents", documentable_type, documentable_id)
+	path := fmt.Sprintf("api/%s/%s/documents", documentableType, documentableID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -70,8 +70,8 @@ func (r *DocumentService) List(ctx context.Context, documentable_type DocumentLi
 }
 
 // Get a list of documents.
-func (r *DocumentService) ListAutoPaging(ctx context.Context, documentable_type DocumentListParamsDocumentableType, documentable_id string, query DocumentListParams, opts ...option.RequestOption) *shared.PageAutoPager[Document] {
-	return shared.NewPageAutoPager(r.List(ctx, documentable_type, documentable_id, query, opts...))
+func (r *DocumentService) ListAutoPaging(ctx context.Context, documentableType DocumentListParamsDocumentableType, documentableID string, query DocumentListParams, opts ...option.RequestOption) *shared.PageAutoPager[Document] {
+	return shared.NewPageAutoPager(r.List(ctx, documentableType, documentableID, query, opts...))
 }
 
 type Document struct {
@@ -189,22 +189,16 @@ func (r *DocumentFile) UnmarshalJSON(data []byte) (err error) {
 }
 
 type DocumentNewParams struct {
+	File param.Field[io.Reader] `json:"file,required" format:"binary"`
 	// A category given to the document, can be `null`.
-	DocumentType param.Field[string]    `form:"document_type"`
-	File         param.Field[io.Reader] `form:"file,required" format:"binary"`
+	DocumentType   param.Field[string] `json:"document_type"`
+	IdempotencyKey param.Field[string] `header:"Idempotency-Key"`
 }
 
 func (r DocumentNewParams) MarshalMultipart() (data []byte, err error) {
 	body := bytes.NewBuffer(nil)
 	writer := multipart.NewWriter(body)
 	defer writer.Close()
-	{
-		bdy, err := apijson.Marshal(r.DocumentType)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("document_type", string(bdy))
-	}
 	{
 		name := "anonymous_file"
 		if nameable, ok := r.File.Value.(interface{ Name() string }); ok {
@@ -215,6 +209,20 @@ func (r DocumentNewParams) MarshalMultipart() (data []byte, err error) {
 			return nil, err
 		}
 		io.Copy(part, r.File.Value)
+	}
+	{
+		bdy, err := apijson.Marshal(r.DocumentType)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("document_type", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.IdempotencyKey)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("Idempotency-Key", string(bdy))
 	}
 	return body.Bytes(), nil
 }
@@ -250,7 +258,7 @@ const (
 )
 
 type DocumentListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	PerPage     param.Field[int64]  `query:"per_page"`
 }
 

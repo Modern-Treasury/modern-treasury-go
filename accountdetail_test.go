@@ -20,7 +20,11 @@ func TestAccountDetailNewWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		moderntreasury.AccountDetailNewParamsAccountsTypeExternalAccounts,
 		"string",
-		moderntreasury.AccountDetailNewParams{AccountNumber: moderntreasury.F("string"), AccountNumberType: moderntreasury.F(moderntreasury.AccountDetailNewParamsAccountNumberTypeClabe)},
+		moderntreasury.AccountDetailNewParams{
+			AccountNumber:     moderntreasury.F("string"),
+			AccountNumberType: moderntreasury.F(moderntreasury.AccountDetailNewParamsAccountNumberTypeClabe),
+			IdempotencyKey:    moderntreasury.F("string"),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -62,7 +66,10 @@ func TestAccountDetailListWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		shared.AccountsTypeExternalAccounts,
 		"string",
-		moderntreasury.AccountDetailListParams{AfterCursor: moderntreasury.F("string"), PerPage: moderntreasury.F(int64(0))},
+		moderntreasury.AccountDetailListParams{
+			AfterCursor: moderntreasury.F("string"),
+			PerPage:     moderntreasury.F(int64(0)),
+		},
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

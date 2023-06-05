@@ -34,27 +34,27 @@ func NewPaymentOrderReversalService(opts ...option.RequestOption) (r *PaymentOrd
 }
 
 // Create a reversal for a payment order.
-func (r *PaymentOrderReversalService) New(ctx context.Context, payment_order_id string, body PaymentOrderReversalNewParams, opts ...option.RequestOption) (res *Reversal, err error) {
+func (r *PaymentOrderReversalService) New(ctx context.Context, paymentOrderID string, params PaymentOrderReversalNewParams, opts ...option.RequestOption) (res *Reversal, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/payment_orders/%s/reversals", payment_order_id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	path := fmt.Sprintf("api/payment_orders/%s/reversals", paymentOrderID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
 // Get details on a single reversal of a payment order.
-func (r *PaymentOrderReversalService) Get(ctx context.Context, payment_order_id string, reversal_id string, opts ...option.RequestOption) (res *Reversal, err error) {
+func (r *PaymentOrderReversalService) Get(ctx context.Context, paymentOrderID string, reversalID string, opts ...option.RequestOption) (res *Reversal, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/payment_orders/%s/reversals/%s", payment_order_id, reversal_id)
+	path := fmt.Sprintf("api/payment_orders/%s/reversals/%s", paymentOrderID, reversalID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
 // Get a list of all reversals of a payment order.
-func (r *PaymentOrderReversalService) List(ctx context.Context, payment_order_id string, query PaymentOrderReversalListParams, opts ...option.RequestOption) (res *shared.Page[Reversal], err error) {
+func (r *PaymentOrderReversalService) List(ctx context.Context, paymentOrderID string, query PaymentOrderReversalListParams, opts ...option.RequestOption) (res *shared.Page[Reversal], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := fmt.Sprintf("api/payment_orders/%s/reversals", payment_order_id)
+	path := fmt.Sprintf("api/payment_orders/%s/reversals", paymentOrderID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -68,8 +68,8 @@ func (r *PaymentOrderReversalService) List(ctx context.Context, payment_order_id
 }
 
 // Get a list of all reversals of a payment order.
-func (r *PaymentOrderReversalService) ListAutoPaging(ctx context.Context, payment_order_id string, query PaymentOrderReversalListParams, opts ...option.RequestOption) *shared.PageAutoPager[Reversal] {
-	return shared.NewPageAutoPager(r.List(ctx, payment_order_id, query, opts...))
+func (r *PaymentOrderReversalService) ListAutoPaging(ctx context.Context, paymentOrderID string, query PaymentOrderReversalListParams, opts ...option.RequestOption) *shared.PageAutoPager[Reversal] {
+	return shared.NewPageAutoPager(r.List(ctx, paymentOrderID, query, opts...))
 }
 
 type Reversal struct {
@@ -137,13 +137,14 @@ type PaymentOrderReversalNewParams struct {
 	// `incorrect_receiving_account`, `date_earlier_than_intended`,
 	// `date_later_than_intended`.
 	Reason param.Field[PaymentOrderReversalNewParamsReason] `json:"reason,required"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
 	// Specifies a ledger transaction object that will be created with the reversal. If
 	// the ledger transaction cannot be created, then the reversal creation will fail.
 	// The resulting ledger transaction will mirror the status of the reversal.
 	LedgerTransaction param.Field[PaymentOrderReversalNewParamsLedgerTransaction] `json:"ledger_transaction"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata       param.Field[map[string]string] `json:"metadata"`
+	IdempotencyKey param.Field[string]            `header:"Idempotency-Key"`
 }
 
 func (r PaymentOrderReversalNewParams) MarshalJSON() (data []byte, err error) {
@@ -165,7 +166,7 @@ const (
 // The resulting ledger transaction will mirror the status of the reversal.
 type PaymentOrderReversalNewParamsLedgerTransaction struct {
 	// An optional description for internal use.
-	Description param.Field[string] `json:"description,nullable"`
+	Description param.Field[string] `json:"description"`
 	// To post a ledger transaction at creation, use `posted`.
 	Status param.Field[PaymentOrderReversalNewParamsLedgerTransactionStatus] `json:"status"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -186,6 +187,10 @@ type PaymentOrderReversalNewParamsLedgerTransaction struct {
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the id will be populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+}
+
+func (r PaymentOrderReversalNewParamsLedgerTransaction) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderReversalNewParamsLedgerTransactionStatus string
@@ -211,22 +216,26 @@ type PaymentOrderReversalNewParamsLedgerTransactionLedgerEntries struct {
 	// transaction to only succeed if no ledger transactions have posted since the
 	// given version. See our post about Designing the Ledgers API with Optimistic
 	// Locking for more details.
-	LockVersion param.Field[int64] `json:"lock_version,nullable"`
+	LockVersion param.Field[int64] `json:"lock_version"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
 	// account’s pending balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
-	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount,nullable"`
+	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
 	// account’s posted balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
-	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount,nullable"`
+	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
 	// account’s available balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount,nullable"`
+	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
 	// If true, response will include the balance of the associated ledger account for
 	// the entry.
-	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances,nullable"`
+	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
+}
+
+func (r PaymentOrderReversalNewParamsLedgerTransactionLedgerEntries) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirection string
@@ -252,7 +261,7 @@ const (
 )
 
 type PaymentOrderReversalListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor,nullable"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
 	PerPage     param.Field[int64]  `query:"per_page"`
 }
 
