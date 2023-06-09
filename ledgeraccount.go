@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -151,6 +153,7 @@ func (r *LedgerAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The normal balance of the ledger account.
 type LedgerAccountNormalBalance string
 
 const (
@@ -285,6 +288,9 @@ func (r *LedgerAccountBalancesAvailableBalance) UnmarshalJSON(data []byte) (err 
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// If the ledger account links to another object in Modern Treasury, the type will
+// be populated here, otherwise null. The value is one of internal_account or
+// external_account.
 type LedgerAccountLedgerableType string
 
 const (
@@ -322,6 +328,7 @@ func (r LedgerAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// The normal balance of the ledger account.
 type LedgerAccountNewParamsNormalBalance string
 
 const (
@@ -329,6 +336,9 @@ const (
 	LedgerAccountNewParamsNormalBalanceDebit  LedgerAccountNewParamsNormalBalance = "debit"
 )
 
+// If the ledger account links to another object in Modern Treasury, the type will
+// be populated here, otherwise null. The value is one of internal_account or
+// external_account.
 type LedgerAccountNewParamsLedgerableType string
 
 const (

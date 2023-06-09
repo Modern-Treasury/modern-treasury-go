@@ -210,8 +210,8 @@ func (e *encoder) newStructTypeEncoder(t reflect.Type) encoderFunc {
 	// This helper allows us to recursively collect field encoders into a flat
 	// array. The parameter `index` keeps track of the access patterns necessary
 	// to get to some field.
-	var collectFieldEncoders func(r reflect.Type, index []int)
-	collectFieldEncoders = func(r reflect.Type, index []int) {
+	var collectEncoderFields func(r reflect.Type, index []int)
+	collectEncoderFields = func(r reflect.Type, index []int) {
 		for i := 0; i < r.NumField(); i++ {
 			idx := append(index, i)
 			field := t.FieldByIndex(idx)
@@ -221,7 +221,7 @@ func (e *encoder) newStructTypeEncoder(t reflect.Type) encoderFunc {
 			// If this is an embedded struct, traverse one level deeper to extract
 			// the field and get their encoders as well.
 			if field.Anonymous {
-				collectFieldEncoders(field.Type, idx)
+				collectEncoderFields(field.Type, idx)
 				continue
 			}
 			// If json tag is not present, then we skip, which is intentionally
@@ -255,7 +255,7 @@ func (e *encoder) newStructTypeEncoder(t reflect.Type) encoderFunc {
 			e.dateFormat = oldFormat
 		}
 	}
-	collectFieldEncoders(t, []int{})
+	collectEncoderFields(t, []int{})
 
 	// Ensure deterministic output by sorting by lexicographic order
 	sort.Slice(encoderFields, func(i, j int) bool {

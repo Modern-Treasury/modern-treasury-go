@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -158,6 +160,7 @@ func (r *ReturnObject) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The type of object being returned or `null`.
 type ReturnObjectReturnableType string
 
 const (
@@ -168,6 +171,7 @@ const (
 	ReturnObjectReturnableTypeReversal              ReturnObjectReturnableType = "reversal"
 )
 
+// The return code. For ACH returns, this is the required ACH return code.
 type ReturnObjectCode string
 
 const (
@@ -216,6 +220,7 @@ const (
 	ReturnObjectCodeCurrencycloud ReturnObjectCode = "currencycloud"
 )
 
+// The current status of the return.
 type ReturnObjectStatus string
 
 const (
@@ -227,6 +232,8 @@ const (
 	ReturnObjectStatusSent       ReturnObjectStatus = "sent"
 )
 
+// The type of return. Can be one of: `ach`, `ach_noc`, `au_becs`, `bacs`, `eft`,
+// `interac`, `manual`, `paper_item`, `wire`.
 type ReturnObjectType string
 
 const (
@@ -243,6 +250,7 @@ const (
 	ReturnObjectTypeWire      ReturnObjectType = "wire"
 )
 
+// The role of the return, can be `originating` or `receiving`.
 type ReturnObjectRole string
 
 const (
@@ -283,6 +291,7 @@ func (r *ReturnObjectReferenceNumbers) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The type of the reference number. Referring to the vendor payment id.
 type ReturnObjectReferenceNumbersReferenceNumberType string
 
 const (
@@ -365,12 +374,15 @@ func (r ReturnNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// The type of object being returned. Currently, this may only be
+// incoming_payment_detail.
 type ReturnNewParamsReturnableType string
 
 const (
 	ReturnNewParamsReturnableTypeIncomingPaymentDetail ReturnNewParamsReturnableType = "incoming_payment_detail"
 )
 
+// The return code. For ACH returns, this is the required ACH return code.
 type ReturnNewParamsCode string
 
 const (
@@ -443,6 +455,8 @@ func (r ReturnListParams) URLQuery() (v url.Values) {
 	})
 }
 
+// One of `payment_order`, `paper_item`, `reversal`, or `incoming_payment_detail`.
+// Must be accompanied by `returnable_id`.
 type ReturnListParamsReturnableType string
 
 const (

@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -119,6 +121,8 @@ func (r *AccountDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
+// account number is in a generic format.
 type AccountDetailAccountNumberType string
 
 const (
@@ -170,6 +174,8 @@ const (
 	AccountDetailNewParamsAccountsTypeExternalAccounts AccountDetailNewParamsAccountsType = "external_accounts"
 )
 
+// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
+// account number is in a generic format.
 type AccountDetailNewParamsAccountNumberType string
 
 const (

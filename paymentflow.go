@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -138,6 +140,8 @@ func (r *PaymentFlow) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The current status of the payment flow. One of `pending`, `completed`,
+// `expired`, or `cancelled`.
 type PaymentFlowStatus string
 
 const (
@@ -147,6 +151,8 @@ const (
 	PaymentFlowStatusPending   PaymentFlowStatus = "pending"
 )
 
+// Describes the direction money is flowing in the transaction. Can only be
+// `debit`. A `debit` pulls money from someone else's account to your own.
 type PaymentFlowDirection string
 
 const (
@@ -175,6 +181,8 @@ func (r PaymentFlowNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// Required. Describes the direction money is flowing in the transaction. Can only
+// be `debit`. A `debit` pulls money from someone else's account to your own.
 type PaymentFlowNewParamsDirection string
 
 const (
@@ -197,6 +205,8 @@ func (r PaymentFlowUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// Required. The updated status of the payment flow. Can only be used to mark a
+// flow as `cancelled`.
 type PaymentFlowUpdateParamsStatus string
 
 const (
