@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -291,6 +293,7 @@ func (r *InvoiceInvoicerAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The status of the invoice.
 type InvoiceStatus string
 
 const (
