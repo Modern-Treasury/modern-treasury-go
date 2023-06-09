@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -128,6 +130,7 @@ func (r *LedgerTransactionVersion) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// One of `pending`, `posted`, or `archived`
 type LedgerTransactionVersionStatus string
 
 const (
@@ -202,6 +205,10 @@ func (r *LedgerTransactionVersionLedgerEntries) UnmarshalJSON(data []byte) (err 
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
 type LedgerTransactionVersionLedgerEntriesDirection string
 
 const (
@@ -209,6 +216,8 @@ const (
 	LedgerTransactionVersionLedgerEntriesDirectionDebit  LedgerTransactionVersionLedgerEntriesDirection = "debit"
 )
 
+// Equal to the state of the ledger transaction when the ledger entry was created.
+// One of `pending`, `posted`, or `archived`.
 type LedgerTransactionVersionLedgerEntriesStatus string
 
 const (
@@ -342,6 +351,9 @@ func (r *LedgerTransactionVersionLedgerEntriesResultingLedgerAccountBalancesAvai
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// If the ledger transaction can be reconciled to another object in Modern
+// Treasury, the type will be populated here, otherwise null. This can be one of
+// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 type LedgerTransactionVersionLedgerableType string
 
 const (

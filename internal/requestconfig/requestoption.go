@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package requestconfig
 
 import (
@@ -99,6 +101,7 @@ func NewRequestConfig(ctx context.Context, method string, u string, body interfa
 	}
 	req.Header.Set("Idempotency-Key", "stainless-go-"+uuid.New().String())
 	req.Header.Set("Accept", "application/json")
+
 	for k, v := range getPlatformProperties() {
 		req.Header.Add(k, v)
 	}
@@ -117,7 +120,7 @@ func NewRequestConfig(ctx context.Context, method string, u string, body interfa
 	return &cfg, nil
 }
 
-// RequestConfigruation represents all the state related to one request.
+// RequestConfig represents all the state related to one request.
 //
 // Editing the variables inside RequestConfig directly is unstable api. Prefer
 // composing [func(*RequestConfig) error] instead if possible.

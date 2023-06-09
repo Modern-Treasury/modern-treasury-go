@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -111,6 +113,7 @@ func (r *Reversal) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The current status of the reversal.
 type ReversalStatus string
 
 const (
@@ -122,6 +125,7 @@ const (
 	ReversalStatusSent       ReversalStatus = "sent"
 )
 
+// The reason for the reversal.
 type ReversalReason string
 
 const (
@@ -151,6 +155,9 @@ func (r PaymentOrderReversalNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// The reason for the reversal. Must be one of `duplicate`, `incorrect_amount`,
+// `incorrect_receiving_account`, `date_earlier_than_intended`,
+// `date_later_than_intended`.
 type PaymentOrderReversalNewParamsReason string
 
 const (
@@ -193,6 +200,7 @@ func (r PaymentOrderReversalNewParamsLedgerTransaction) MarshalJSON() (data []by
 	return apijson.MarshalRoot(r)
 }
 
+// To post a ledger transaction at creation, use `posted`.
 type PaymentOrderReversalNewParamsLedgerTransactionStatus string
 
 const (
@@ -238,6 +246,10 @@ func (r PaymentOrderReversalNewParamsLedgerTransactionLedgerEntries) MarshalJSON
 	return apijson.MarshalRoot(r)
 }
 
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
 type PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirection string
 
 const (
@@ -245,6 +257,9 @@ const (
 	PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionDebit  PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirection = "debit"
 )
 
+// If the ledger transaction can be reconciled to another object in Modern
+// Treasury, the type will be populated here, otherwise null. This can be one of
+// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 type PaymentOrderReversalNewParamsLedgerTransactionLedgerableType string
 
 const (

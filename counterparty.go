@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -203,6 +205,7 @@ func (r *CounterpartyAccounts) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Either `individual` or `business`.
 type CounterpartyAccountsPartyType string
 
 const (
@@ -367,6 +370,8 @@ func (r CounterpartyNewParamsAccounting) MarshalJSON() (data []byte, err error) 
 	return apijson.MarshalRoot(r)
 }
 
+// An optional type to auto-sync the counterparty to your ledger. Either `customer`
+// or `vendor`.
 type CounterpartyNewParamsAccountingType string
 
 const (
@@ -408,6 +413,7 @@ func (r CounterpartyNewParamsAccounts) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// Either `individual` or `business`.
 type CounterpartyNewParamsAccountsPartyType string
 
 const (
@@ -533,6 +539,7 @@ func (r CounterpartyNewParamsAccountsLedgerAccount) MarshalJSON() (data []byte, 
 	return apijson.MarshalRoot(r)
 }
 
+// The normal balance of the ledger account.
 type CounterpartyNewParamsAccountsLedgerAccountNormalBalance string
 
 const (
@@ -540,6 +547,9 @@ const (
 	CounterpartyNewParamsAccountsLedgerAccountNormalBalanceDebit  CounterpartyNewParamsAccountsLedgerAccountNormalBalance = "debit"
 )
 
+// If the ledger account links to another object in Modern Treasury, the type will
+// be populated here, otherwise null. The value is one of internal_account or
+// external_account.
 type CounterpartyNewParamsAccountsLedgerAccountLedgerableType string
 
 const (
@@ -564,6 +574,8 @@ const (
 	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeWebsite     CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "website"
 )
 
+// An optional type to auto-sync the counterparty to your ledger. Either `customer`
+// or `vendor`.
 type CounterpartyNewParamsLedgerType string
 
 const (
@@ -644,6 +656,9 @@ func (r CounterpartyCollectAccountParams) MarshalJSON() (data []byte, err error)
 	return apijson.MarshalRoot(r)
 }
 
+// One of `credit` or `debit`. Use `credit` when you want to pay a counterparty.
+// Use `debit` when you need to charge a counterparty. This field helps us send a
+// more tailored email to your counterparties."
 type CounterpartyCollectAccountParamsDirection string
 
 const (

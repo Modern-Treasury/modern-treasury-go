@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -160,6 +162,8 @@ func (r *IncomingPaymentDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// One of: `ach`, `book`, `check`, `eft`, `interac`, `rtp`, `sepa`, `signet`, or
+// `wire`.
 type IncomingPaymentDetailType string
 
 const (
@@ -174,6 +178,7 @@ const (
 	IncomingPaymentDetailTypeWire    IncomingPaymentDetailType = "wire"
 )
 
+// One of `credit` or `debit`.
 type IncomingPaymentDetailDirection string
 
 const (
@@ -181,6 +186,8 @@ const (
 	IncomingPaymentDetailDirectionDebit  IncomingPaymentDetailDirection = "debit"
 )
 
+// The current status of the incoming payment order. One of `pending`, `completed`,
+// or `returned`.
 type IncomingPaymentDetailStatus string
 
 const (
@@ -234,6 +241,7 @@ func (r IncomingPaymentDetailListParams) URLQuery() (v url.Values) {
 	})
 }
 
+// One of `credit` or `debit`.
 type IncomingPaymentDetailListParamsDirection string
 
 const (
@@ -241,6 +249,8 @@ const (
 	IncomingPaymentDetailListParamsDirectionDebit  IncomingPaymentDetailListParamsDirection = "debit"
 )
 
+// The current status of the incoming payment order. One of `pending`, `completed`,
+// or `returned`.
 type IncomingPaymentDetailListParamsStatus string
 
 const (
@@ -249,6 +259,8 @@ const (
 	IncomingPaymentDetailListParamsStatusReturned  IncomingPaymentDetailListParamsStatus = "returned"
 )
 
+// One of: `ach`, `book`, `check`, `eft`, `interac`, `rtp`, `sepa`, `signet`, or
+// `wire`.
 type IncomingPaymentDetailListParamsType string
 
 const (
@@ -287,6 +299,7 @@ func (r IncomingPaymentDetailNewAsyncParams) MarshalJSON() (data []byte, err err
 	return apijson.MarshalRoot(r)
 }
 
+// One of `credit`, `debit`.
 type IncomingPaymentDetailNewAsyncParamsDirection string
 
 const (
@@ -294,6 +307,7 @@ const (
 	IncomingPaymentDetailNewAsyncParamsDirectionDebit  IncomingPaymentDetailNewAsyncParamsDirection = "debit"
 )
 
+// One of `ach`, `wire`, `check`.
 type IncomingPaymentDetailNewAsyncParamsType string
 
 const (

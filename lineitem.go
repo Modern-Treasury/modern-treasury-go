@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -125,6 +127,7 @@ func (r *LineItem) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// One of `payment_orders` or `expected_payments`.
 type LineItemItemizableType string
 
 const (

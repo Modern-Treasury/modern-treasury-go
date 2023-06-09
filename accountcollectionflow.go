@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -124,6 +126,8 @@ func (r *AccountConnectionFlow) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The current status of the account collection flow. One of `pending`,
+// `completed`, `expired`, or `cancelled`.
 type AccountConnectionFlowStatus string
 
 const (
@@ -133,6 +137,7 @@ const (
 	AccountConnectionFlowStatusPending   AccountConnectionFlowStatus = "pending"
 )
 
+// An account created with this flow will support payments of one of these types.
 type AccountConnectionFlowPaymentTypes string
 
 const (
@@ -166,6 +171,8 @@ func (r AccountCollectionFlowUpdateParams) MarshalJSON() (data []byte, err error
 	return apijson.MarshalRoot(r)
 }
 
+// Required. The updated status of the account collection flow. Can only be used to
+// mark a flow as `cancelled`.
 type AccountCollectionFlowUpdateParamsStatus string
 
 const (
