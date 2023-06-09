@@ -3,13 +3,11 @@ package apiquery
 import (
 	"net/url"
 	"reflect"
+	"time"
 )
 
-const queryStructTag = "query"
-const pathParamStructTag = "pathparam"
-
 func MarshalWithSettings(value interface{}, settings QuerySettings) url.Values {
-	e := encoder{settings}
+	e := encoder{time.RFC3339, true, settings}
 	kv := url.Values{}
 	val := reflect.ValueOf(value)
 	if !val.IsValid() {
