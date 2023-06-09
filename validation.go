@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -77,6 +79,10 @@ func (r *RoutingNumberLookupRequest) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// One of `aba`, `au_bsb`, `br_codigo`, `ca_cpa`, `cnaps`, `gb_sort_code`,
+// `in_ifsc`, `my_branch_code`, or `swift`. In sandbox mode we currently only
+// support `aba` and `swift` with routing numbers '123456789' and 'GRINUST0XXX'
+// respectively.
 type RoutingNumberLookupRequestRoutingNumberType string
 
 const (
@@ -161,6 +167,10 @@ func (r ValidationValidateRoutingNumberParams) URLQuery() (v url.Values) {
 	})
 }
 
+// One of `aba`, `au_bsb`, `br_codigo`, `ca_cpa`, `cnaps`, `gb_sort_code`,
+// `in_ifsc`, `my_branch_code`, or `swift`. In sandbox mode we currently only
+// support `aba` and `swift` with routing numbers '123456789' and 'GRINUST0XXX'
+// respectively.
 type ValidationValidateRoutingNumberParamsRoutingNumberType string
 
 const (

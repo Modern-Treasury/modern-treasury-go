@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -176,6 +178,7 @@ func (r *LedgerAccountCategory) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The normal balance of the ledger account category.
 type LedgerAccountCategoryNormalBalance string
 
 const (
@@ -325,6 +328,7 @@ func (r LedgerAccountCategoryNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// The normal balance of the ledger account category.
 type LedgerAccountCategoryNewParamsNormalBalance string
 
 const (

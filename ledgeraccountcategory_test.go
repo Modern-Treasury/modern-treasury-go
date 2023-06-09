@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury_test
 
 import (
@@ -7,10 +9,14 @@ import (
 	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
 func TestLedgerAccountCategoryNewWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -36,6 +42,9 @@ func TestLedgerAccountCategoryNewWithOptionalParams(t *testing.T) {
 }
 
 func TestLedgerAccountCategoryGetWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -58,6 +67,9 @@ func TestLedgerAccountCategoryGetWithOptionalParams(t *testing.T) {
 }
 
 func TestLedgerAccountCategoryUpdateWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -83,6 +95,9 @@ func TestLedgerAccountCategoryUpdateWithOptionalParams(t *testing.T) {
 }
 
 func TestLedgerAccountCategoryListWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -106,6 +121,9 @@ func TestLedgerAccountCategoryListWithOptionalParams(t *testing.T) {
 }
 
 func TestLedgerAccountCategoryDeleteWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -128,6 +146,9 @@ func TestLedgerAccountCategoryDeleteWithOptionalParams(t *testing.T) {
 }
 
 func TestLedgerAccountCategoryAddLedgerAccount(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -148,6 +169,9 @@ func TestLedgerAccountCategoryAddLedgerAccount(t *testing.T) {
 }
 
 func TestLedgerAccountCategoryAddNestedCategory(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -168,6 +192,9 @@ func TestLedgerAccountCategoryAddNestedCategory(t *testing.T) {
 }
 
 func TestLedgerAccountCategoryRemoveLedgerAccount(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -188,6 +215,9 @@ func TestLedgerAccountCategoryRemoveLedgerAccount(t *testing.T) {
 }
 
 func TestLedgerAccountCategoryRemoveNestedCategory(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),

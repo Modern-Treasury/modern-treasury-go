@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -124,6 +126,7 @@ func (r *RoutingDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
 type RoutingDetailRoutingNumberType string
 
 const (
@@ -139,6 +142,8 @@ const (
 	RoutingDetailRoutingNumberTypeSwift        RoutingDetailRoutingNumberType = "swift"
 )
 
+// If the routing detail is to be used for a specific payment type this field will
+// be populated, otherwise null.
 type RoutingDetailPaymentType string
 
 const (
@@ -274,6 +279,7 @@ const (
 	RoutingDetailNewParamsAccountsTypeExternalAccounts RoutingDetailNewParamsAccountsType = "external_accounts"
 )
 
+// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
 type RoutingDetailNewParamsRoutingNumberType string
 
 const (
@@ -289,6 +295,8 @@ const (
 	RoutingDetailNewParamsRoutingNumberTypeSwift        RoutingDetailNewParamsRoutingNumberType = "swift"
 )
 
+// If the routing detail is to be used for a specific payment type this field will
+// be populated, otherwise null.
 type RoutingDetailNewParamsPaymentType string
 
 const (
