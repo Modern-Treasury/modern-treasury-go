@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -150,6 +152,7 @@ func (r *LedgerTransaction) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// To post a ledger transaction at creation, use `posted`.
 type LedgerTransactionStatus string
 
 const (
@@ -158,6 +161,9 @@ const (
 	LedgerTransactionStatusPosted   LedgerTransactionStatus = "posted"
 )
 
+// If the ledger transaction can be reconciled to another object in Modern
+// Treasury, the type will be populated here, otherwise null. This can be one of
+// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 type LedgerTransactionLedgerableType string
 
 const (
@@ -240,6 +246,10 @@ func (r LedgerTransactionNewParamsLedgerEntries) MarshalJSON() (data []byte, err
 	return apijson.MarshalRoot(r)
 }
 
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
 type LedgerTransactionNewParamsLedgerEntriesDirection string
 
 const (
@@ -247,6 +257,9 @@ const (
 	LedgerTransactionNewParamsLedgerEntriesDirectionDebit  LedgerTransactionNewParamsLedgerEntriesDirection = "debit"
 )
 
+// If the ledger transaction can be reconciled to another object in Modern
+// Treasury, the type will be populated here, otherwise null. This can be one of
+// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 type LedgerTransactionNewParamsLedgerableType string
 
 const (
@@ -262,6 +275,7 @@ const (
 	LedgerTransactionNewParamsLedgerableTypeReversal              LedgerTransactionNewParamsLedgerableType = "reversal"
 )
 
+// To post a ledger transaction at creation, use `posted`.
 type LedgerTransactionNewParamsStatus string
 
 const (
@@ -323,6 +337,10 @@ func (r LedgerTransactionUpdateParamsLedgerEntries) MarshalJSON() (data []byte, 
 	return apijson.MarshalRoot(r)
 }
 
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
 type LedgerTransactionUpdateParamsLedgerEntriesDirection string
 
 const (
@@ -330,6 +348,7 @@ const (
 	LedgerTransactionUpdateParamsLedgerEntriesDirectionDebit  LedgerTransactionUpdateParamsLedgerEntriesDirection = "debit"
 )
 
+// To post a ledger transaction at creation, use `posted`.
 type LedgerTransactionUpdateParamsStatus string
 
 const (

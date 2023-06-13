@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -106,6 +108,8 @@ func (r *BalanceReport) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The specific type of balance report. One of `intraday`, `previous_day`,
+// `real_time`, or `other`.
 type BalanceReportBalanceReportType string
 
 const (
@@ -160,6 +164,10 @@ func (r *BalanceReportBalances) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The specific type of balance reported. One of `opening_ledger`,
+// `closing_ledger`, `current_ledger`, `opening_available`,
+// `opening_available_next_business_day`, `closing_available`, `current_available`,
+// or `other`.
 type BalanceReportBalancesBalanceType string
 
 const (
@@ -173,6 +181,7 @@ const (
 	BalanceReportBalancesBalanceTypeOther                           BalanceReportBalancesBalanceType = "other"
 )
 
+// The code used by the bank when reporting this specific balance.
 type BalanceReportBalancesVendorCodeType string
 
 const (
@@ -217,6 +226,8 @@ func (r BalanceReportListParams) URLQuery() (v url.Values) {
 	})
 }
 
+// The specific type of balance report. One of `intraday`, `previous_day`,
+// `real_time`, or `other`.
 type BalanceReportListParamsBalanceReportType string
 
 const (
