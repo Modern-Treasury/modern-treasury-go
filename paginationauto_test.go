@@ -1,15 +1,20 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury_test
 
 import (
 	"context"
-	"fmt"
 	"testing"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
 func TestAutoPagination(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -19,7 +24,7 @@ func TestAutoPagination(t *testing.T) {
 	// Prism mock isn't going to give us real pagination
 	for i := 0; i < 3 && iter.Next(); i++ {
 		externalAccount := iter.Current()
-		fmt.Printf("%+v\n", externalAccount)
+		t.Logf("%+v\n", externalAccount)
 	}
 	if err := iter.Err(); err != nil {
 		t.Fatalf("err should be nil: %s", err.Error())

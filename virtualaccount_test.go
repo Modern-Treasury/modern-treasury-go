@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury_test
 
 import (
@@ -7,10 +9,14 @@ import (
 	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
 func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -31,13 +37,16 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 }
 
 func TestVirtualAccountGet(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -50,13 +59,16 @@ func TestVirtualAccountGet(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 }
 
 func TestVirtualAccountUpdateWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -74,13 +86,16 @@ func TestVirtualAccountUpdateWithOptionalParams(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 }
 
 func TestVirtualAccountListWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -96,13 +111,16 @@ func TestVirtualAccountListWithOptionalParams(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 }
 
 func TestVirtualAccountDelete(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -115,7 +133,7 @@ func TestVirtualAccountDelete(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}

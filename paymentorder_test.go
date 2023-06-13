@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury_test
 
 import (
@@ -10,10 +12,14 @@ import (
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
 func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	t.Skip("skipped: prism mock server is broken for file uploads")
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
@@ -61,13 +67,16 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 }
 
 func TestPaymentOrderGet(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -80,13 +89,16 @@ func TestPaymentOrderGet(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 }
 
 func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -134,13 +146,16 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 }
 
 func TestPaymentOrderListWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -164,13 +179,16 @@ func TestPaymentOrderListWithOptionalParams(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 }
 
 func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -215,7 +233,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}

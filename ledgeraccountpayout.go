@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -146,6 +148,8 @@ func (r *LedgerAccountPayout) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The status of the ledger account payout. One of `processing`, `pending`,
+// `posted`, `archiving` or `archived`.
 type LedgerAccountPayoutStatus string
 
 const (
@@ -182,6 +186,8 @@ func (r LedgerAccountPayoutNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// The status of the ledger account payout. It is set to `pending` by default. To
+// post a ledger account payout at creation, use `posted`.
 type LedgerAccountPayoutNewParamsStatus string
 
 const (
@@ -204,6 +210,8 @@ func (r LedgerAccountPayoutUpdateParams) MarshalJSON() (data []byte, err error) 
 	return apijson.MarshalRoot(r)
 }
 
+// To post a pending ledger account payout, use `posted`. To archive a pending
+// ledger transaction, use `archived`.
 type LedgerAccountPayoutUpdateParamsStatus string
 
 const (

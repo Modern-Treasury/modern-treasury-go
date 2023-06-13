@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury_test
 
 import (
@@ -7,10 +9,14 @@ import (
 	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
 func TestLedgerNewWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -25,13 +31,16 @@ func TestLedgerNewWithOptionalParams(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 }
 
 func TestLedgerGet(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -44,13 +53,16 @@ func TestLedgerGet(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 }
 
 func TestLedgerUpdateWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -68,13 +80,16 @@ func TestLedgerUpdateWithOptionalParams(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 }
 
 func TestLedgerListWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -89,13 +104,16 @@ func TestLedgerListWithOptionalParams(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 }
 
 func TestLedgerDelete(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -108,7 +126,7 @@ func TestLedgerDelete(t *testing.T) {
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
-			println(apierr.DumpRequest(true))
+			t.Log(string(apierr.DumpRequest(true)))
 		}
 		t.Fatalf("err should be nil: %s", err.Error())
 	}

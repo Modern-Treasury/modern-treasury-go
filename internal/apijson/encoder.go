@@ -96,7 +96,10 @@ func marshalerEncoder(v reflect.Value) ([]byte, error) {
 }
 
 func (e *encoder) newTypeEncoder(t reflect.Type) encoderFunc {
-	if !e.root && t != reflect.TypeOf(time.Time{}) && t.Implements(reflect.TypeOf((*json.Marshaler)(nil)).Elem()) {
+	if t.ConvertibleTo(reflect.TypeOf(time.Time{})) {
+		return e.newTimeTypeEncoder()
+	}
+	if !e.root && t.Implements(reflect.TypeOf((*json.Marshaler)(nil)).Elem()) {
 		return marshalerEncoder
 	}
 	e.root = false
@@ -120,13 +123,7 @@ func (e *encoder) newTypeEncoder(t reflect.Type) encoderFunc {
 	case reflect.Map:
 		return e.newMapEncoder(t)
 	case reflect.Interface:
-		return func(value reflect.Value) ([]byte, error) {
-			value = value.Elem()
-			if !value.IsValid() {
-				return nil, nil
-			}
-			return e.typeEncoder(value.Type())(value)
-		}
+		return e.newInterfaceEncoder()
 	default:
 		return e.newPrimitiveTypeEncoder(t)
 	}
@@ -197,9 +194,6 @@ func (e *encoder) newArrayTypeEncoder(t reflect.Type) encoderFunc {
 }
 
 func (e *encoder) newStructTypeEncoder(t reflect.Type) encoderFunc {
-	if t == reflect.TypeOf(time.Time{}) {
-		return e.newTimeTypeEncoder(t)
-	}
 	if t.Implements(reflect.TypeOf((*param.FieldLike)(nil)).Elem()) {
 		return e.newFieldTypeEncoder(t)
 	}
@@ -210,8 +204,8 @@ func (e *encoder) newStructTypeEncoder(t reflect.Type) encoderFunc {
 	// This helper allows us to recursively collect field encoders into a flat
 	// array. The parameter `index` keeps track of the access patterns necessary
 	// to get to some field.
-	var collectFieldEncoders func(r reflect.Type, index []int)
-	collectFieldEncoders = func(r reflect.Type, index []int) {
+	var collectEncoderFields func(r reflect.Type, index []int)
+	collectEncoderFields = func(r reflect.Type, index []int) {
 		for i := 0; i < r.NumField(); i++ {
 			idx := append(index, i)
 			field := t.FieldByIndex(idx)
@@ -221,7 +215,7 @@ func (e *encoder) newStructTypeEncoder(t reflect.Type) encoderFunc {
 			// If this is an embedded struct, traverse one level deeper to extract
 			// the field and get their encoders as well.
 			if field.Anonymous {
-				collectFieldEncoders(field.Type, idx)
+				collectEncoderFields(field.Type, idx)
 				continue
 			}
 			// If json tag is not present, then we skip, which is intentionally
@@ -255,7 +249,7 @@ func (e *encoder) newStructTypeEncoder(t reflect.Type) encoderFunc {
 			e.dateFormat = oldFormat
 		}
 	}
-	collectFieldEncoders(t, []int{})
+	collectEncoderFields(t, []int{})
 
 	// Ensure deterministic output by sorting by lexicographic order
 	sort.Slice(encoderFields, func(i, j int) bool {
@@ -311,10 +305,20 @@ func (e *encoder) newFieldTypeEncoder(t reflect.Type) encoderFunc {
 	}
 }
 
-func (e *encoder) newTimeTypeEncoder(t reflect.Type) encoderFunc {
+func (e *encoder) newTimeTypeEncoder() encoderFunc {
 	format := e.dateFormat
 	return func(value reflect.Value) (json []byte, err error) {
-		return []byte(`"` + value.Interface().(time.Time).Format(format) + `"`), nil
+		return []byte(`"` + value.Convert(reflect.TypeOf(time.Time{})).Interface().(time.Time).Format(format) + `"`), nil
+	}
+}
+
+func (e encoder) newInterfaceEncoder() encoderFunc {
+	return func(value reflect.Value) ([]byte, error) {
+		value = value.Elem()
+		if !value.IsValid() {
+			return nil, nil
+		}
+		return e.typeEncoder(value.Type())(value)
 	}
 }
 

@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package apierror
 
 import (
@@ -9,7 +11,9 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 )
 
-// TODO
+// Error represents an error that originates from the API, i.e. when a request is
+// made and the API returns a response with a HTTP status code. Other errors are
+// not wrapped by this SDK.
 type Error struct {
 	JSON       errorJSON
 	StatusCode int
