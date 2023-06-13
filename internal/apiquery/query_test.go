@@ -3,41 +3,98 @@ package apiquery
 import (
 	"net/url"
 	"testing"
+	"time"
 )
 
 func P[T any](v T) *T { return &v }
 
-type EmptyTestC struct {
-	Field *string `query:"field"`
+type Primitives struct {
+	A bool    `query:"a"`
+	B int     `query:"b"`
+	C uint    `query:"c"`
+	D float64 `query:"d"`
+	E float32 `query:"e"`
+	F []int   `query:"f"`
 }
 
-type EmptyTestB struct {
-	C EmptyTestC `query:"c"`
+type PrimitivePointers struct {
+	A *bool    `query:"a"`
+	B *int     `query:"b"`
+	C *uint    `query:"c"`
+	D *float64 `query:"d"`
+	E *float32 `query:"e"`
+	F *[]int   `query:"f"`
 }
 
-type EmptyTestA struct {
-	B EmptyTestB `query:"b"`
+type Slices struct {
+	Slice []Primitives  `query:"slices"`
+	Mixed []interface{} `query:"mixed"`
 }
 
-type EmptyTest struct {
-	A EmptyTestA `query:"a"`
+type DateTime struct {
+	Date     time.Time `query:"date" format:"date"`
+	DateTime time.Time `query:"date-time" format:"date-time"`
 }
 
-func TestEmpty(t *testing.T) {
-	assert(t, EmptyTest{}, "", QuerySettings{})
+type AdditionalProperties struct {
+	A      bool                   `query:"a"`
+	Extras map[string]interface{} `query:"-,inline"`
 }
 
-type BasicTest struct {
-	A interface{} `query:"a"`
+type Recursive struct {
+	Name  string     `query:"name"`
+	Child *Recursive `query:"child"`
 }
 
-func TestBasic(t *testing.T) {
-	assert(t, BasicTest{A: nil}, "", QuerySettings{})
-	assert(t, BasicTest{A: 1}, "a=1", QuerySettings{})
-	assert(t, BasicTest{A: "b"}, "a=b", QuerySettings{})
-	assert(t, BasicTest{A: true}, "a=true", QuerySettings{})
-	assert(t, BasicTest{A: false}, "a=false", QuerySettings{})
-	assert(t, BasicTest{A: P(1.23456)}, "a=1.23456", QuerySettings{})
+type UnknownStruct struct {
+	Unknown interface{} `query:"unknown"`
+}
+
+type UnionStruct struct {
+	Union Union `query:"union"`
+}
+
+type Union interface {
+	union()
+}
+
+type UnionInteger int64
+
+func (UnionInteger) union() {}
+
+type UnionString string
+
+func (UnionString) union() {}
+
+type UnionStructA struct {
+	Type string `query:"type"`
+	A    string `query:"a"`
+	B    string `query:"b"`
+}
+
+func (UnionStructA) union() {}
+
+type UnionStructB struct {
+	Type string `query:"type"`
+	A    string `query:"a"`
+}
+
+func (UnionStructB) union() {}
+
+type DeeplyNested struct {
+	A DeeplyNested1 `query:"a"`
+}
+
+type DeeplyNested1 struct {
+	B DeeplyNested2 `query:"b"`
+}
+
+type DeeplyNested2 struct {
+	C DeeplyNested3 `query:"c"`
+}
+
+type DeeplyNested3 struct {
+	D *string `query:"d"`
 }
 
 func serialize(v interface{}, options QuerySettings) string {
@@ -55,102 +112,227 @@ func assert(t *testing.T, v interface{}, expectation string, settings QuerySetti
 	}
 }
 
-type NestedTestDepth1A struct {
-	B *string `query:"b"`
-	D *string `query:"d"`
-	F *string `query:"f"`
+var tests = map[string]struct {
+	enc      string
+	val      interface{}
+	settings QuerySettings
+}{
+	"primitives": {
+		"a=false&b=237628372683&c=654&d=9999.43&e=43.7599983215332&f=1,2,3,4",
+		Primitives{A: false, B: 237628372683, C: uint(654), D: 9999.43, E: 43.76, F: []int{1, 2, 3, 4}},
+		QuerySettings{},
+	},
+
+	"slices_brackets": {
+		`mixed[]=1&mixed[]=2.3&mixed[]=hello&slices[][a]=false&slices[][a]=false&slices[][b]=237628372683&slices[][b]=237628372683&slices[][c]=654&slices[][c]=654&slices[][d]=9999.43&slices[][d]=9999.43&slices[][e]=43.7599983215332&slices[][e]=43.7599983215332&slices[][f][]=1&slices[][f][]=2&slices[][f][]=3&slices[][f][]=4&slices[][f][]=1&slices[][f][]=2&slices[][f][]=3&slices[][f][]=4`,
+		Slices{
+			Slice: []Primitives{
+				{A: false, B: 237628372683, C: uint(654), D: 9999.43, E: 43.76, F: []int{1, 2, 3, 4}},
+				{A: false, B: 237628372683, C: uint(654), D: 9999.43, E: 43.76, F: []int{1, 2, 3, 4}},
+			},
+			Mixed: []interface{}{1, 2.3, "hello"},
+		},
+		QuerySettings{ArrayFormat: ArrayQueryFormatBrackets},
+	},
+
+	"slices_comma": {
+		`mixed=1,2.3,hello`,
+		Slices{
+			Mixed: []interface{}{1, 2.3, "hello"},
+		},
+		QuerySettings{ArrayFormat: ArrayQueryFormatComma},
+	},
+
+	"slices_repeat": {
+		`mixed=1&mixed=2.3&mixed=hello&slices[a]=false&slices[a]=false&slices[b]=237628372683&slices[b]=237628372683&slices[c]=654&slices[c]=654&slices[d]=9999.43&slices[d]=9999.43&slices[e]=43.7599983215332&slices[e]=43.7599983215332&slices[f]=1&slices[f]=2&slices[f]=3&slices[f]=4&slices[f]=1&slices[f]=2&slices[f]=3&slices[f]=4`,
+		Slices{
+			Slice: []Primitives{
+				{A: false, B: 237628372683, C: uint(654), D: 9999.43, E: 43.76, F: []int{1, 2, 3, 4}},
+				{A: false, B: 237628372683, C: uint(654), D: 9999.43, E: 43.76, F: []int{1, 2, 3, 4}},
+			},
+			Mixed: []interface{}{1, 2.3, "hello"},
+		},
+		QuerySettings{ArrayFormat: ArrayQueryFormatRepeat},
+	},
+
+	"primitive_pointer_struct": {
+		"a=false&b=237628372683&c=654&d=9999.43&e=43.7599983215332&f=1,2,3,4,5",
+		PrimitivePointers{
+			A: P(false),
+			B: P(237628372683),
+			C: P(uint(654)),
+			D: P(9999.43),
+			E: P(float32(43.76)),
+			F: &[]int{1, 2, 3, 4, 5},
+		},
+		QuerySettings{},
+	},
+
+	"datetime_struct": {
+		`date=2006-01-02&date-time=2006-01-02T15:04:05Z`,
+		DateTime{
+			Date:     time.Date(2006, time.January, 2, 0, 0, 0, 0, time.UTC),
+			DateTime: time.Date(2006, time.January, 2, 15, 4, 5, 0, time.UTC),
+		},
+		QuerySettings{},
+	},
+
+	"additional_properties": {
+		`a=true&bar=value&foo=true`,
+		AdditionalProperties{
+			A: true,
+			Extras: map[string]interface{}{
+				"bar": "value",
+				"foo": true,
+			},
+		},
+		QuerySettings{},
+	},
+
+	"recursive_struct_brackets": {
+		`child[name]=Alex&name=Robert`,
+		Recursive{Name: "Robert", Child: &Recursive{Name: "Alex"}},
+		QuerySettings{NestedFormat: NestedQueryFormatBrackets},
+	},
+
+	"recursive_struct_dots": {
+		`child.name=Alex&name=Robert`,
+		Recursive{Name: "Robert", Child: &Recursive{Name: "Alex"}},
+		QuerySettings{NestedFormat: NestedQueryFormatDots},
+	},
+
+	"unknown_struct_number": {
+		`unknown=12`,
+		UnknownStruct{
+			Unknown: 12.,
+		},
+		QuerySettings{},
+	},
+
+	"unknown_struct_map_brackets": {
+		`unknown[foo]=bar`,
+		UnknownStruct{
+			Unknown: map[string]interface{}{
+				"foo": "bar",
+			},
+		},
+		QuerySettings{NestedFormat: NestedQueryFormatBrackets},
+	},
+
+	"unknown_struct_map_dots": {
+		`unknown.foo=bar`,
+		UnknownStruct{
+			Unknown: map[string]interface{}{
+				"foo": "bar",
+			},
+		},
+		QuerySettings{NestedFormat: NestedQueryFormatDots},
+	},
+
+	"union_string": {
+		`union=hello`,
+		UnionStruct{
+			Union: UnionString("hello"),
+		},
+		QuerySettings{},
+	},
+
+	"union_integer": {
+		`union=12`,
+		UnionStruct{
+			Union: UnionInteger(12),
+		},
+		QuerySettings{},
+	},
+
+	"union_struct_discriminated_a": {
+		`union[a]=foo&union[b]=bar&union[type]=typeA`,
+		UnionStruct{
+			Union: UnionStructA{
+				Type: "typeA",
+				A:    "foo",
+				B:    "bar",
+			},
+		},
+		QuerySettings{},
+	},
+
+	"union_struct_discriminated_b": {
+		`union[a]=foo&union[type]=typeB`,
+		UnionStruct{
+			Union: UnionStructB{
+				Type: "typeB",
+				A:    "foo",
+			},
+		},
+		QuerySettings{},
+	},
+
+	"deeply_nested_brackets": {
+		`a[b][c][d]=hello`,
+		DeeplyNested{
+			A: DeeplyNested1{
+				B: DeeplyNested2{
+					C: DeeplyNested3{
+						D: P("hello"),
+					},
+				},
+			},
+		},
+		QuerySettings{NestedFormat: NestedQueryFormatBrackets},
+	},
+
+	"deeply_nested_dots": {
+		`a.b.c.d=hello`,
+		DeeplyNested{
+			A: DeeplyNested1{
+				B: DeeplyNested2{
+					C: DeeplyNested3{
+						D: P("hello"),
+					},
+				},
+			},
+		},
+		QuerySettings{NestedFormat: NestedQueryFormatDots},
+	},
+
+	"deeply_nested_brackets_empty": {
+		``,
+		DeeplyNested{
+			A: DeeplyNested1{
+				B: DeeplyNested2{
+					C: DeeplyNested3{
+						D: nil,
+					},
+				},
+			},
+		},
+		QuerySettings{NestedFormat: NestedQueryFormatBrackets},
+	},
+
+	"deeply_nested_dots_empty": {
+		``,
+		DeeplyNested{
+			A: DeeplyNested1{
+				B: DeeplyNested2{
+					C: DeeplyNested3{
+						D: nil,
+					},
+				},
+			},
+		},
+		QuerySettings{NestedFormat: NestedQueryFormatDots},
+	},
 }
 
-type NestedTestDepth1 struct {
-	A *NestedTestDepth1A `query:"a"`
-}
-
-type NestedTestDepth3C struct {
-	D *string `query:"d"`
-}
-
-type NestedTestDepth3B struct {
-	C *NestedTestDepth3C `query:"c"`
-}
-
-type NestedTestDepth3A struct {
-	B *NestedTestDepth3B `query:"b"`
-}
-
-type NestedTestDepth3 struct {
-	A *NestedTestDepth3A `query:"a"`
-}
-
-func TestNestedDotted(t *testing.T) {
-	settings := QuerySettings{NestedFormat: NestedQueryFormatDots}
-
-	assert(t, NestedTestDepth1{&NestedTestDepth1A{B: P("c")}}, "a.b=c", settings)
-	assert(t, NestedTestDepth1{&NestedTestDepth1A{B: P("c"), D: P("e"), F: P("g")}}, "a.b=c&a.d=e&a.f=g", settings)
-	assert(t, NestedTestDepth3{&NestedTestDepth3A{&NestedTestDepth3B{&NestedTestDepth3C{D: P("e")}}}}, "a.b.c.d=e", settings)
-}
-
-func TestNestedBrackets(t *testing.T) {
-	settings := QuerySettings{NestedFormat: NestedQueryFormatBrackets}
-
-	assert(t, NestedTestDepth1{&NestedTestDepth1A{B: P("c")}}, "a[b]=c", settings)
-	assert(t, NestedTestDepth1{&NestedTestDepth1A{B: P("c"), D: P("e"), F: P("g")}}, "a[b]=c&a[d]=e&a[f]=g", settings)
-	assert(t, NestedTestDepth3{&NestedTestDepth3A{&NestedTestDepth3B{&NestedTestDepth3C{D: P("e")}}}}, "a[b][c][d]=e", settings)
-}
-
-type ArrayTestDepth0 struct {
-	In []string `query:"in"`
-}
-
-type ArrayTestDepth1A struct {
-	B []*bool `query:"b"`
-}
-
-type ArrayTestDepth1 struct {
-	A *ArrayTestDepth1A `query:"a"`
-}
-
-func TestArrayComma(t *testing.T) {
-	settings := QuerySettings{ArrayFormat: ArrayQueryFormatComma}
-
-	assert(t, ArrayTestDepth0{[]string{"foo", "bar"}}, "in=foo,bar", settings)
-	assert(t, ArrayTestDepth1{&ArrayTestDepth1A{B: []*bool{P(true), P(false)}}}, "a[b]=true,false", settings)
-	assert(t, ArrayTestDepth1{&ArrayTestDepth1A{B: []*bool{P(true), P(false), nil, P(true)}}}, "a[b]=true,false,true", settings)
-}
-
-type ArrayRepeatMixed struct {
-	In []interface{} `query:"in"`
-}
-
-type ArrayRepeatMixedB struct {
-	C []string `query:"c"`
-}
-
-type ArrayRepeatMixedA struct {
-	B ArrayRepeatMixedB `query:"b"`
-}
-
-func TestArrayRepeat(t *testing.T) {
-	settings := QuerySettings{ArrayFormat: ArrayQueryFormatRepeat}
-
-	assert(t, ArrayTestDepth0{[]string{"foo", "bar"}}, "in=foo&in=bar", settings)
-	assert(t, ArrayTestDepth1{&ArrayTestDepth1A{B: []*bool{P(true), P(false)}}}, "a[b]=true&a[b]=false", settings)
-	assert(t, ArrayTestDepth1{&ArrayTestDepth1A{B: []*bool{P(true), P(false), nil, P(true)}}}, "a[b]=true&a[b]=false&a[b]=true", settings)
-	assert(t, ArrayRepeatMixed{In: []interface{}{"foof", ArrayRepeatMixedA{B: ArrayRepeatMixedB{C: []string{"d", "e"}}}}}, "in=foof&in[b][c]=d&in[b][c]=e", settings)
-}
-
-func TestMapMarshal(t *testing.T) {
-	settings := QuerySettings{}
-
-	assert(t, map[string]interface{}{"hello": "world", "goodbye": map[string]string{"friend": "yes"}}, "goodbye[friend]=yes&hello=world", settings)
-}
-
-type InlineExtrasTest struct {
-	A      *string           `query:"a"`
-	Extras map[string]string `query:"-,inline"`
-}
-
-func TestInlineExtras(t *testing.T) {
-	settings := QuerySettings{}
-
-	assert(t, InlineExtrasTest{P("hi"), map[string]string{"there": "neighbor"}}, "a=hi&there=neighbor", settings)
+func TestEncode(t *testing.T) {
+	for name, test := range tests {
+		t.Run(name, func(t *testing.T) {
+			values := MarshalWithSettings(test.val, test.settings)
+			str, _ := url.QueryUnescape(values.Encode())
+			if str != test.enc {
+				t.Fatalf("expected %+#v to serialize to %s but got %s", test.val, test.enc, str)
+			}
+		})
+	}
 }

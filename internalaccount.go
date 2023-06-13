@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -149,6 +151,7 @@ func (r *InternalAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Can be checking, savings or other.
 type InternalAccountAccountType string
 
 const (
@@ -161,6 +164,7 @@ const (
 	InternalAccountAccountTypeSavings     InternalAccountAccountType = "savings"
 )
 
+// Either individual or business.
 type InternalAccountPartyType string
 
 const (
@@ -237,6 +241,8 @@ func (r InternalAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// Either "USD" or "CAD". Internal accounts created at Increase only supports
+// "USD".
 type InternalAccountNewParamsCurrency string
 
 const (
@@ -304,6 +310,7 @@ func (r InternalAccountListParams) URLQuery() (v url.Values) {
 	})
 }
 
+// The direction of payments that can be made by internal account.
 type InternalAccountListParamsPaymentDirection string
 
 const (
@@ -311,6 +318,7 @@ const (
 	InternalAccountListParamsPaymentDirectionDebit  InternalAccountListParamsPaymentDirection = "debit"
 )
 
+// The type of payment that can be made by the internal account.
 type InternalAccountListParamsPaymentType string
 
 const (

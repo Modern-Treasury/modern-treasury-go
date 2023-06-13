@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -105,6 +107,8 @@ func (r *PaymentReference) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// One of the referenceable types. This must be accompanied by the id of the
+// referenceable or will return an error.
 type PaymentReferenceReferenceableType string
 
 const (
@@ -113,6 +117,7 @@ const (
 	PaymentReferenceReferenceableTypeReturn       PaymentReferenceReferenceableType = "return"
 )
 
+// The type of reference number.
 type PaymentReferenceReferenceNumberType string
 
 const (
@@ -193,6 +198,8 @@ func (r PaymentReferenceListParams) URLQuery() (v url.Values) {
 	})
 }
 
+// One of the referenceable types. This must be accompanied by the id of the
+// referenceable or will return an error.
 type PaymentReferenceListParamsReferenceableType string
 
 const (

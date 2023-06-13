@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury_test
 
 import (
@@ -8,10 +10,14 @@ import (
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
 func TestInvoiceLineItemNewWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -39,6 +45,9 @@ func TestInvoiceLineItemNewWithOptionalParams(t *testing.T) {
 }
 
 func TestInvoiceLineItemGet(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -59,6 +68,9 @@ func TestInvoiceLineItemGet(t *testing.T) {
 }
 
 func TestInvoiceLineItemUpdateWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -90,6 +102,9 @@ func TestInvoiceLineItemUpdateWithOptionalParams(t *testing.T) {
 }
 
 func TestInvoiceLineItemListWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -113,6 +128,9 @@ func TestInvoiceLineItemListWithOptionalParams(t *testing.T) {
 }
 
 func TestInvoiceLineItemDelete(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),

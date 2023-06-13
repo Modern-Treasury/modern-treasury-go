@@ -1,11 +1,13 @@
 package apiquery
 
 import (
+	"encoding/json"
 	"fmt"
 	"reflect"
 	"strconv"
 	"strings"
 	"sync"
+	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 )
@@ -13,51 +15,39 @@ import (
 var encoders sync.Map // map[reflect.Type]encoderFunc
 
 type encoder struct {
-	settings QuerySettings
+	dateFormat string
+	root       bool
+	settings   QuerySettings
+}
+
+type encoderFunc func(key string, value reflect.Value) []Pair
+
+type encoderField struct {
+	tag parsedStructTag
+	fn  encoderFunc
+	idx []int
 }
 
 type encoderEntry struct {
 	reflect.Type
-	settings QuerySettings
+	dateFormat string
+	root       bool
+	settings   QuerySettings
 }
-
-type encoderFunc func(key string, value reflect.Value) []Pair
 
 type Pair struct {
 	key   string
 	value string
 }
 
-type parsedStructTag struct {
-	name      string
-	omitempty bool
-	inline    bool
-}
-
-func parseStructTag(raw string) (tag parsedStructTag) {
-	parts := strings.Split(raw, ",")
-	if len(parts) == 0 {
-		return
-	}
-	tag.name = parts[0]
-	for _, part := range parts[1:] {
-		switch part {
-		case "omitempty":
-			tag.omitempty = true
-		case "inline":
-			tag.inline = true
-		}
-	}
-	return
-}
-
-type structField struct {
-	parsedStructTag
-	encoderFunc
-}
-
 func (e *encoder) typeEncoder(t reflect.Type) encoderFunc {
-	entry := encoderEntry{t, e.settings}
+	entry := encoderEntry{
+		Type:       t,
+		dateFormat: e.dateFormat,
+		root:       e.root,
+		settings:   e.settings,
+	}
+
 	if fi, ok := encoders.Load(entry); ok {
 		return fi.(encoderFunc)
 	}
@@ -86,7 +76,16 @@ func (e *encoder) typeEncoder(t reflect.Type) encoderFunc {
 	return f
 }
 
+func marshalerEncoder(key string, value reflect.Value) []Pair {
+	s, _ := value.Interface().(json.Marshaler).MarshalJSON()
+	return []Pair{{key, string(s)}}
+}
+
 func (e *encoder) newTypeEncoder(t reflect.Type) encoderFunc {
+	if !e.root && t != reflect.TypeOf(time.Time{}) && t.Implements(reflect.TypeOf((*json.Marshaler)(nil)).Elem()) {
+		return marshalerEncoder
+	}
+	e.root = false
 	switch t.Kind() {
 	case reflect.Pointer:
 		encoder := e.typeEncoder(t.Elem())
@@ -119,52 +118,68 @@ func (e *encoder) newTypeEncoder(t reflect.Type) encoderFunc {
 }
 
 func (e *encoder) newStructTypeEncoder(t reflect.Type) encoderFunc {
+	if t == reflect.TypeOf(time.Time{}) {
+		return e.newTimeTypeEncoder(t)
+	}
 	if t.Implements(reflect.TypeOf((*param.FieldLike)(nil)).Elem()) {
 		return e.newFieldTypeEncoder(t)
 	}
 
-	fieldEncoders := map[int]structField{}
+	encoderFields := []encoderField{}
 
-	for i := 0; i < t.NumField(); i++ {
-		field := t.Field(i)
-		if field.Anonymous {
-			t := field.Type
-			if !field.IsExported() && t.Kind() != reflect.Struct {
-				// Ignore embedded field of unexported non-struct types.
+	// This helper allows us to recursively collect field encoders into a flat
+	// array. The parameter `index` keeps track of the access patterns necessary
+	// to get to some field.
+	var collectEncoderFields func(r reflect.Type, index []int)
+	collectEncoderFields = func(r reflect.Type, index []int) {
+		for i := 0; i < r.NumField(); i++ {
+			idx := append(index, i)
+			field := t.FieldByIndex(idx)
+			if !field.IsExported() {
 				continue
 			}
-			// Do not ignore embedded field of unexported struct types
-			// since they may have exported field.
+			// If this is an embedded struct, traverse one level deeper to extract
+			// the field and get their encoders as well.
+			if field.Anonymous {
+				collectEncoderFields(field.Type, idx)
+				continue
+			}
+			// If query tag is not present, then we skip, which is intentionally
+			// different behavior from the stdlib.
+			ptag, ok := parseQueryStructTag(field)
+			if !ok {
+				continue
+			}
+
+			if ptag.name == "-" && !ptag.inline {
+				continue
+			}
+
+			dateFormat, ok := parseFormatStructTag(field)
+			oldFormat := e.dateFormat
+			if ok {
+				switch dateFormat {
+				case "date-time":
+					e.dateFormat = time.RFC3339
+				case "date":
+					e.dateFormat = "2006-01-02"
+				}
+			}
+			encoderFields = append(encoderFields, encoderField{ptag, e.typeEncoder(field.Type), idx})
+			e.dateFormat = oldFormat
 		}
-		if !field.IsExported() {
-			continue
-		}
-		tag, ok := field.Tag.Lookup(queryStructTag)
-		if !ok {
-			continue
-		}
-		fieldEncoders[i] = structField{parseStructTag(tag), e.typeEncoder(field.Type)}
 	}
+	collectEncoderFields(t, []int{})
 
 	return func(key string, value reflect.Value) (pairs []Pair) {
-		for i, field := range fieldEncoders {
-			if field.omitempty {
-				if !value.IsValid() || value.IsZero() {
-					continue
-				}
-			}
-			var subkey string = field.name
-			if field.inline {
+		for _, ef := range encoderFields {
+			var subkey string = e.renderKeyPath(key, ef.tag.name)
+			if ef.tag.inline {
 				subkey = key
-			} else {
-				subkey = e.renderKeyPath(key, subkey)
 			}
-			for _, pair := range field.encoderFunc(subkey, value.Field(i)) {
-				if field.omitempty && len(pair.value) == 0 {
-					continue
-				}
-				pairs = append(pairs, pair)
-			}
+
+			field := value.FieldByIndex(ef.idx)
+			pairs = append(pairs, ef.fn(subkey, field)...)
 		}
 		return
 	}
@@ -229,7 +244,7 @@ func (e *encoder) newArrayTypeEncoder(t reflect.Type) encoderFunc {
 		return func(key string, value reflect.Value) []Pair {
 			pairs := []Pair{}
 			for i := 0; i < value.Len(); i++ {
-				pairs = append(pairs, innerEncoder(key+"[]", value)...)
+				pairs = append(pairs, innerEncoder(key+"[]", value.Index(i))...)
 			}
 			return pairs
 		}
@@ -307,5 +322,12 @@ func (e *encoder) newFieldTypeEncoder(t reflect.Type) encoderFunc {
 			return e.typeEncoder(raw.Type())(key, raw)
 		}
 		return enc(key, value.FieldByName("Value"))
+	}
+}
+
+func (e *encoder) newTimeTypeEncoder(t reflect.Type) encoderFunc {
+	format := e.dateFormat
+	return func(key string, value reflect.Value) []Pair {
+		return []Pair{{key, value.Interface().(time.Time).Format(format)}}
 	}
 }

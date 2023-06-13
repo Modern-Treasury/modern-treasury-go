@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package shared
 
 import (
@@ -29,6 +31,7 @@ func (r *AsyncResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Three-letter ISO currency code.
 type Currency string
 
 const (

@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury_test
 
 import (
@@ -8,10 +10,14 @@ import (
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
 func TestIncomingPaymentDetailGet(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -31,6 +37,9 @@ func TestIncomingPaymentDetailGet(t *testing.T) {
 }
 
 func TestIncomingPaymentDetailUpdateWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -53,6 +62,9 @@ func TestIncomingPaymentDetailUpdateWithOptionalParams(t *testing.T) {
 }
 
 func TestIncomingPaymentDetailListWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -79,6 +91,9 @@ func TestIncomingPaymentDetailListWithOptionalParams(t *testing.T) {
 }
 
 func TestIncomingPaymentDetailNewAsyncWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),

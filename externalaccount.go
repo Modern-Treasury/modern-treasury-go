@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -167,6 +169,7 @@ func (r *ExternalAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// Can be `checking`, `savings` or `other`.
 type ExternalAccountType string
 
 const (
@@ -179,6 +182,7 @@ const (
 	ExternalAccountTypeSavings     ExternalAccountType = "savings"
 )
 
+// Either `individual` or `business`.
 type ExternalAccountPartyType string
 
 const (
@@ -385,6 +389,7 @@ func (r ExternalAccountNewParamsLedgerAccount) MarshalJSON() (data []byte, err e
 	return apijson.MarshalRoot(r)
 }
 
+// The normal balance of the ledger account.
 type ExternalAccountNewParamsLedgerAccountNormalBalance string
 
 const (
@@ -392,6 +397,9 @@ const (
 	ExternalAccountNewParamsLedgerAccountNormalBalanceDebit  ExternalAccountNewParamsLedgerAccountNormalBalance = "debit"
 )
 
+// If the ledger account links to another object in Modern Treasury, the type will
+// be populated here, otherwise null. The value is one of internal_account or
+// external_account.
 type ExternalAccountNewParamsLedgerAccountLedgerableType string
 
 const (
@@ -417,6 +425,7 @@ func (r ExternalAccountNewParamsPartyAddress) MarshalJSON() (data []byte, err er
 	return apijson.MarshalRoot(r)
 }
 
+// Either `individual` or `business`.
 type ExternalAccountNewParamsPartyType string
 
 const (
@@ -509,6 +518,7 @@ func (r ExternalAccountUpdateParamsPartyAddress) MarshalJSON() (data []byte, err
 	return apijson.MarshalRoot(r)
 }
 
+// Either `individual` or `business`.
 type ExternalAccountUpdateParamsPartyType string
 
 const (
@@ -561,6 +571,7 @@ func (r ExternalAccountVerifyParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// Both ach and eft are supported payment types.
 type ExternalAccountVerifyParamsPaymentType string
 
 const (

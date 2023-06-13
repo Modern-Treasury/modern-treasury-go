@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -180,6 +182,8 @@ func (r *ExpectedPayment) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// One of credit or debit. When you are receiving money, use credit. When you are
+// being charged, use debit.
 type ExpectedPaymentDirection string
 
 const (
@@ -187,6 +191,8 @@ const (
 	ExpectedPaymentDirectionDebit  ExpectedPaymentDirection = "debit"
 )
 
+// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
+// sepa, signet, wire.
 type ExpectedPaymentType string
 
 const (
@@ -209,6 +215,7 @@ const (
 	ExpectedPaymentTypeWire        ExpectedPaymentType = "wire"
 )
 
+// One of unreconciled, reconciled, or archived.
 type ExpectedPaymentStatus string
 
 const (
@@ -217,6 +224,9 @@ const (
 	ExpectedPaymentStatusUnreconciled ExpectedPaymentStatus = "unreconciled"
 )
 
+// One of manual if this expected payment was manually reconciled in the dashboard,
+// automatic if it was automatically reconciled by Modern Treasury, or null if it
+// is unreconciled.
 type ExpectedPaymentReconciliationMethod string
 
 const (
@@ -269,6 +279,8 @@ func (r ExpectedPaymentNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// One of credit or debit. When you are receiving money, use credit. When you are
+// being charged, use debit.
 type ExpectedPaymentNewParamsDirection string
 
 const (
@@ -337,6 +349,8 @@ func (r ExpectedPaymentUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// One of credit or debit. When you are receiving money, use credit. When you are
+// being charged, use debit.
 type ExpectedPaymentUpdateParamsDirection string
 
 const (
@@ -377,6 +391,7 @@ func (r ExpectedPaymentListParams) URLQuery() (v url.Values) {
 	})
 }
 
+// One of credit, debit
 type ExpectedPaymentListParamsDirection string
 
 const (
@@ -384,6 +399,7 @@ const (
 	ExpectedPaymentListParamsDirectionDebit  ExpectedPaymentListParamsDirection = "debit"
 )
 
+// One of unreconciled, reconciled, or archived.
 type ExpectedPaymentListParamsStatus string
 
 const (
@@ -392,6 +408,8 @@ const (
 	ExpectedPaymentListParamsStatusUnreconciled ExpectedPaymentListParamsStatus = "unreconciled"
 )
 
+// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp,sen,
+// sepa, signet, wire
 type ExpectedPaymentListParamsType string
 
 const (

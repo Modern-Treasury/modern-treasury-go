@@ -253,24 +253,40 @@ client.ExternalAccounts.List(
 
 ### Middleware
 
-You may apply any middleware you wish by replacing the default `http.Client` with
-`option.WithHTTPClient(client)`. An example of a basic logging middleware is given
-below:
+We provide `option.WithMiddleware` which applies the given
+middleware to requests.
 
 ```go
-type requestLogger struct {}
+func Logger(req *http.Request, next option.MiddlewareNext) (res *http.Response, err error) {
+	// Before the request
+	start := time.Now()
+	LogReq(req)
 
-func (l *requestLogger) RoundTrip(req *http.Request) (*http.Response, error) {
-	b, _ := httputil.DumpRequest(req, true)
-	println(string(b))
-	res, err := http.DefaultClient.Do(req)
-	return res, err
+	// Forward the request to the next handler
+	res, err = next(req)
+
+	// Handle stuff after the request
+	end := time.Now()
+	LogRes(res, err, start - end)
+
+    return res, err
 }
 
 client := moderntreasury.NewClient(
-	option.WithHTTPClient(&http.Client{Transport: &requestLogger{}}),
+	option.WithMiddleware(Logger),
 )
 ```
+
+When multiple middlewares are provided as variadic arguments, the middlewares
+are applied left to right. If `option.WithMiddleware` is given
+multiple times, for example first in the client then the method, the
+middleware in the client will run first and the middleware given in the method
+will run next.
+
+You may also replace the default `http.Client` with
+`option.WithHTTPClient(client)`. Only one http client is
+accepted (this overwrites any previous client) and receives requests after any
+middleware has been applied.
 
 ## Status
 

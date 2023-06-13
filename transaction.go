@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -165,6 +167,10 @@ func (r *Transaction) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
+// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
+// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
+// `swift`, or `us_bank`.
 type TransactionVendorCodeType string
 
 const (
@@ -190,6 +196,8 @@ const (
 	TransactionVendorCodeTypeUsBank        TransactionVendorCodeType = "us_bank"
 )
 
+// The type of the transaction. Can be one of `ach`, `wire`, `check`, `rtp`,
+// `book`, or `sen`.
 type TransactionType string
 
 const (

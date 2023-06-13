@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury_test
 
 import (
@@ -7,10 +9,14 @@ import (
 	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
 func TestTransactionGet(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -30,6 +36,9 @@ func TestTransactionGet(t *testing.T) {
 }
 
 func TestTransactionUpdateWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -52,6 +61,9 @@ func TestTransactionUpdateWithOptionalParams(t *testing.T) {
 }
 
 func TestTransactionListWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),

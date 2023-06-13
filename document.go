@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -117,6 +119,9 @@ func (r *Document) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The type of the associated object. Currently can be one of `payment_order`,
+// `transaction`, `paper_item`, `expected_payment`, `counterparty`, `organization`,
+// `case`, `internal_account`, `decision`, or `external_account`.
 type DocumentDocumentableType string
 
 const (
