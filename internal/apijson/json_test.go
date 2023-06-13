@@ -11,7 +11,7 @@ import (
 
 func P[T any](v T) *T { return &v }
 
-type Primitves struct {
+type Primitives struct {
 	A bool    `json:"a"`
 	B int     `json:"b"`
 	C uint    `json:"c"`
@@ -20,13 +20,17 @@ type Primitves struct {
 	F []int   `json:"f"`
 }
 
-type PrimitvePointers struct {
+type PrimitivePointers struct {
 	A *bool    `json:"a"`
 	B *int     `json:"b"`
 	C *uint    `json:"c"`
 	D *float64 `json:"d"`
 	E *float32 `json:"e"`
 	F *[]int   `json:"f"`
+}
+
+type Slices struct {
+	Slice []Primitives `json:"slices"`
 }
 
 type DateTime struct {
@@ -78,7 +82,7 @@ type UnknownStruct struct {
 }
 
 type UnionStruct struct {
-	Union Union `json:"union"`
+	Union Union `json:"union" format:"date"`
 }
 
 type Union interface {
@@ -89,7 +93,7 @@ func init() {
 	RegisterUnion(reflect.TypeOf((*Union)(nil)).Elem(), "type",
 		UnionVariant{
 			TypeFilter: gjson.String,
-			Type:       reflect.TypeOf(UnionString("")),
+			Type:       reflect.TypeOf(UnionTime{}),
 		},
 		UnionVariant{
 			TypeFilter: gjson.Number,
@@ -112,10 +116,6 @@ type UnionInteger int64
 
 func (UnionInteger) union() {}
 
-type UnionString string
-
-func (UnionString) union() {}
-
 type UnionStructA struct {
 	Type string `json:"type"`
 	A    string `json:"a"`
@@ -130,6 +130,10 @@ type UnionStructB struct {
 }
 
 func (UnionStructB) union() {}
+
+type UnionTime time.Time
+
+func (UnionTime) union() {}
 
 var tests = map[string]struct {
 	buf string
@@ -175,12 +179,19 @@ var tests = map[string]struct {
 
 	"primitive_struct": {
 		`{"a":false,"b":237628372683,"c":654,"d":9999.43,"e":43.76,"f":[1,2,3,4]}`,
-		Primitves{A: false, B: 237628372683, C: uint(654), D: 9999.43, E: 43.76, F: []int{1, 2, 3, 4}},
+		Primitives{A: false, B: 237628372683, C: uint(654), D: 9999.43, E: 43.76, F: []int{1, 2, 3, 4}},
+	},
+
+	"slices": {
+		`{"slices":[{"a":false,"b":237628372683,"c":654,"d":9999.43,"e":43.76,"f":[1,2,3,4]}]}`,
+		Slices{
+			Slice: []Primitives{{A: false, B: 237628372683, C: uint(654), D: 9999.43, E: 43.76, F: []int{1, 2, 3, 4}}},
+		},
 	},
 
 	"primitive_pointer_struct": {
 		`{"a":false,"b":237628372683,"c":654,"d":9999.43,"e":43.76,"f":[1,2,3,4,5]}`,
-		PrimitvePointers{
+		PrimitivePointers{
 			A: P(false),
 			B: P(237628372683),
 			C: P(uint(654)),
@@ -260,13 +271,6 @@ var tests = map[string]struct {
 		},
 	},
 
-	"union_string": {
-		`{"union":"hello"}`,
-		UnionStruct{
-			Union: UnionString("hello"),
-		},
-	},
-
 	"union_integer": {
 		`{"union":12}`,
 		UnionStruct{
@@ -292,6 +296,13 @@ var tests = map[string]struct {
 				Type: "typeB",
 				A:    "foo",
 			},
+		},
+	},
+
+	"union_struct_time": {
+		`{"union":"2010-05-23"}`,
+		UnionStruct{
+			Union: UnionTime(time.Date(2010, 05, 23, 0, 0, 0, 0, time.UTC)),
 		},
 	},
 }

@@ -94,7 +94,10 @@ func unmarshalerDecoder(n gjson.Result, v reflect.Value) error {
 }
 
 func (d *decoder) newTypeDecoder(t reflect.Type) decoderFunc {
-	if !d.root && t != reflect.TypeOf(time.Time{}) && t.Implements(reflect.TypeOf((*json.Unmarshaler)(nil)).Elem()) {
+	if t.ConvertibleTo(reflect.TypeOf(time.Time{})) {
+		return d.newTimeTypeDecoder(t)
+	}
+	if !d.root && t.Implements(reflect.TypeOf((*json.Unmarshaler)(nil)).Elem()) {
 		return unmarshalerDecoder
 	}
 	d.root = false
@@ -123,9 +126,6 @@ func (d *decoder) newTypeDecoder(t reflect.Type) decoderFunc {
 			return nil
 		}
 	case reflect.Struct:
-		if t == reflect.TypeOf(time.Time{}) {
-			return d.newTimeTypeDecoder(t)
-		}
 		return d.newStructTypeDecoder(t)
 	case reflect.Array:
 		fallthrough
@@ -420,13 +420,11 @@ func (d *decoder) newPrimitiveTypeDecoder(t reflect.Type) decoderFunc {
 func (d *decoder) newTimeTypeDecoder(t reflect.Type) decoderFunc {
 	format := d.dateFormat
 	return func(n gjson.Result, v reflect.Value) error {
-		t, err := time.Parse(format, n.Str)
+		parsed, err := time.Parse(format, n.Str)
 		if err != nil {
-			// FIXME: Currently, we do nothing on parse failure Later when we
-			// implment metadata we should make this change the metadata instead
-			return nil
+			return err
 		}
-		v.Set(reflect.ValueOf(t))
+		v.Set(reflect.ValueOf(parsed).Convert(t))
 		return nil
 	}
 }
