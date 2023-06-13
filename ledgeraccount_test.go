@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury_test
 
 import (
@@ -7,10 +9,14 @@ import (
 	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
 func TestLedgerAccountNewWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -38,6 +44,9 @@ func TestLedgerAccountNewWithOptionalParams(t *testing.T) {
 }
 
 func TestLedgerAccountGetWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -60,6 +69,9 @@ func TestLedgerAccountGetWithOptionalParams(t *testing.T) {
 }
 
 func TestLedgerAccountUpdateWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -84,6 +96,9 @@ func TestLedgerAccountUpdateWithOptionalParams(t *testing.T) {
 }
 
 func TestLedgerAccountListWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -111,6 +126,9 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 }
 
 func TestLedgerAccountDelete(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),

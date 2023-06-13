@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -129,6 +131,8 @@ func (r *PaperItem) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The current status of the paper item. One of `pending`, `completed`, or
+// `returned`.
 type PaperItemStatus string
 
 const (

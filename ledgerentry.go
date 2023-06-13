@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -133,6 +135,10 @@ func (r *LedgerEntry) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
 type LedgerEntryDirection string
 
 const (
@@ -140,6 +146,8 @@ const (
 	LedgerEntryDirectionDebit  LedgerEntryDirection = "debit"
 )
 
+// Equal to the state of the ledger transaction when the ledger entry was created.
+// One of `pending`, `posted`, or `archived`.
 type LedgerEntryStatus string
 
 const (
@@ -323,6 +331,9 @@ func (r LedgerEntryListParams) URLQuery() (v url.Values) {
 	})
 }
 
+// If true, response will include ledger entries that were deleted. When you update
+// a ledger transaction to specify a new set of entries, the previous entries are
+// deleted.
 type LedgerEntryListParamsDirection string
 
 const (
@@ -361,6 +372,8 @@ const (
 	LedgerEntryListParamsOrderByEffectiveAtDesc LedgerEntryListParamsOrderByEffectiveAt = "desc"
 )
 
+// Get all ledger entries that match the status specified. One of `pending`,
+// `posted`, or `archived`.
 type LedgerEntryListParamsStatus string
 
 const (

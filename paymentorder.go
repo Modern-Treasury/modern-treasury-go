@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury
 
 import (
@@ -275,6 +277,8 @@ func (r *PaymentOrder) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
+// `au_becs`, `interac`, `signet`, `provexchange`.
 type PaymentOrderType string
 
 const (
@@ -297,6 +301,10 @@ const (
 	PaymentOrderTypeWire        PaymentOrderType = "wire"
 )
 
+// An additional layer of classification for the type of payment order you are
+// doing. This field is only used for `ach` payment orders currently. For `ach`
+// payment orders, the `subtype` represents the SEC code. We currently support
+// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
 type PaymentOrderSubtype string
 
 const (
@@ -312,6 +320,10 @@ const (
 	PaymentOrderSubtypeWeb                         PaymentOrderSubtype = "WEB"
 )
 
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
 type PaymentOrderDirection string
 
 const (
@@ -319,6 +331,9 @@ const (
 	PaymentOrderDirectionDebit  PaymentOrderDirection = "debit"
 )
 
+// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+// an overnight check rather than standard mail.
 type PaymentOrderPriority string
 
 const (
@@ -350,6 +365,9 @@ func (r *PaymentOrderAccounting) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The party that will pay the fees for the payment order. Only applies to wire
+// payment orders. Can be one of shared, sender, or receiver, which correspond
+// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
 type PaymentOrderChargeBearer string
 
 const (
@@ -358,6 +376,9 @@ const (
 	PaymentOrderChargeBearerReceiver PaymentOrderChargeBearer = "receiver"
 )
 
+// Indicates the type of FX transfer to initiate, can be either
+// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+// currency matches the originating account currency.
 type PaymentOrderForeignExchangeIndicator string
 
 const (
@@ -365,6 +386,7 @@ const (
 	PaymentOrderForeignExchangeIndicatorVariableToFixed PaymentOrderForeignExchangeIndicator = "variable_to_fixed"
 )
 
+// The current status of the payment order.
 type PaymentOrderStatus string
 
 const (
@@ -421,6 +443,7 @@ func (r *PaymentOrderReferenceNumbers) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// The type of the reference number. Referring to the vendor payment id.
 type PaymentOrderReferenceNumbersReferenceNumberType string
 
 const (
@@ -856,6 +879,10 @@ func (r PaymentOrderNewParams) MarshalMultipart() (data []byte, err error) {
 	return body.Bytes(), nil
 }
 
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
 type PaymentOrderNewParamsDirection string
 
 const (
@@ -877,6 +904,9 @@ func (r PaymentOrderNewParamsAccounting) MarshalJSON() (data []byte, err error) 
 	return apijson.MarshalRoot(r)
 }
 
+// The party that will pay the fees for the payment order. Only applies to wire
+// payment orders. Can be one of shared, sender, or receiver, which correspond
+// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
 type PaymentOrderNewParamsChargeBearer string
 
 const (
@@ -895,12 +925,18 @@ func (r PaymentOrderNewParamsDocuments) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// A payment type to fallback to if the original type is not valid for the
+// receiving account. Currently, this only supports falling back from RTP to ACH
+// (type=rtp and fallback_type=ach)
 type PaymentOrderNewParamsFallbackType string
 
 const (
 	PaymentOrderNewParamsFallbackTypeACH PaymentOrderNewParamsFallbackType = "ach"
 )
 
+// Indicates the type of FX transfer to initiate, can be either
+// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+// currency matches the originating account currency.
 type PaymentOrderNewParamsForeignExchangeIndicator string
 
 const (
@@ -941,6 +977,7 @@ func (r PaymentOrderNewParamsLedgerTransaction) MarshalJSON() (data []byte, err 
 	return apijson.MarshalRoot(r)
 }
 
+// To post a ledger transaction at creation, use `posted`.
 type PaymentOrderNewParamsLedgerTransactionStatus string
 
 const (
@@ -986,6 +1023,10 @@ func (r PaymentOrderNewParamsLedgerTransactionLedgerEntries) MarshalJSON() (data
 	return apijson.MarshalRoot(r)
 }
 
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
 type PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection string
 
 const (
@@ -993,6 +1034,9 @@ const (
 	PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirectionDebit  PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection = "debit"
 )
 
+// If the ledger transaction can be reconciled to another object in Modern
+// Treasury, the type will be populated here, otherwise null. This can be one of
+// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 type PaymentOrderNewParamsLedgerTransactionLedgerableType string
 
 const (
@@ -1026,6 +1070,9 @@ func (r PaymentOrderNewParamsLineItems) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+// an overnight check rather than standard mail.
 type PaymentOrderNewParamsPriority string
 
 const (
@@ -1070,6 +1117,7 @@ func (r PaymentOrderNewParamsReceivingAccount) MarshalJSON() (data []byte, err e
 	return apijson.MarshalRoot(r)
 }
 
+// Either `individual` or `business`.
 type PaymentOrderNewParamsReceivingAccountPartyType string
 
 const (
@@ -1195,6 +1243,7 @@ func (r PaymentOrderNewParamsReceivingAccountLedgerAccount) MarshalJSON() (data 
 	return apijson.MarshalRoot(r)
 }
 
+// The normal balance of the ledger account.
 type PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalance string
 
 const (
@@ -1202,6 +1251,9 @@ const (
 	PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalanceDebit  PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalance = "debit"
 )
 
+// If the ledger account links to another object in Modern Treasury, the type will
+// be populated here, otherwise null. The value is one of internal_account or
+// external_account.
 type PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType string
 
 const (
@@ -1370,6 +1422,9 @@ func (r PaymentOrderUpdateParamsAccounting) MarshalJSON() (data []byte, err erro
 	return apijson.MarshalRoot(r)
 }
 
+// The party that will pay the fees for the payment order. Only applies to wire
+// payment orders. Can be one of shared, sender, or receiver, which correspond
+// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
 type PaymentOrderUpdateParamsChargeBearer string
 
 const (
@@ -1378,6 +1433,10 @@ const (
 	PaymentOrderUpdateParamsChargeBearerReceiver PaymentOrderUpdateParamsChargeBearer = "receiver"
 )
 
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
 type PaymentOrderUpdateParamsDirection string
 
 const (
@@ -1385,12 +1444,18 @@ const (
 	PaymentOrderUpdateParamsDirectionDebit  PaymentOrderUpdateParamsDirection = "debit"
 )
 
+// A payment type to fallback to if the original type is not valid for the
+// receiving account. Currently, this only supports falling back from RTP to ACH
+// (type=rtp and fallback_type=ach)
 type PaymentOrderUpdateParamsFallbackType string
 
 const (
 	PaymentOrderUpdateParamsFallbackTypeACH PaymentOrderUpdateParamsFallbackType = "ach"
 )
 
+// Indicates the type of FX transfer to initiate, can be either
+// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+// currency matches the originating account currency.
 type PaymentOrderUpdateParamsForeignExchangeIndicator string
 
 const (
@@ -1416,6 +1481,9 @@ func (r PaymentOrderUpdateParamsLineItems) MarshalJSON() (data []byte, err error
 	return apijson.MarshalRoot(r)
 }
 
+// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+// an overnight check rather than standard mail.
 type PaymentOrderUpdateParamsPriority string
 
 const (
@@ -1460,6 +1528,7 @@ func (r PaymentOrderUpdateParamsReceivingAccount) MarshalJSON() (data []byte, er
 	return apijson.MarshalRoot(r)
 }
 
+// Either `individual` or `business`.
 type PaymentOrderUpdateParamsReceivingAccountPartyType string
 
 const (
@@ -1585,6 +1654,7 @@ func (r PaymentOrderUpdateParamsReceivingAccountLedgerAccount) MarshalJSON() (da
 	return apijson.MarshalRoot(r)
 }
 
+// The normal balance of the ledger account.
 type PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalance string
 
 const (
@@ -1592,6 +1662,9 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalanceDebit  PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalance = "debit"
 )
 
+// If the ledger account links to another object in Modern Treasury, the type will
+// be populated here, otherwise null. The value is one of internal_account or
+// external_account.
 type PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType string
 
 const (
@@ -1616,6 +1689,9 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite     PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType = "website"
 )
 
+// To cancel a payment order, use `cancelled`. To redraft a returned payment order,
+// use `approved`. To undo approval on a denied or approved payment order, use
+// `needs_approval`.
 type PaymentOrderUpdateParamsStatus string
 
 const (
@@ -1673,6 +1749,9 @@ const (
 	PaymentOrderListParamsDirectionDebit  PaymentOrderListParamsDirection = "debit"
 )
 
+// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+// an overnight check rather than standard mail.
 type PaymentOrderListParamsPriority string
 
 const (
@@ -1836,6 +1915,10 @@ func (r PaymentOrderNewAsyncParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
 type PaymentOrderNewAsyncParamsDirection string
 
 const (
@@ -1857,6 +1940,9 @@ func (r PaymentOrderNewAsyncParamsAccounting) MarshalJSON() (data []byte, err er
 	return apijson.MarshalRoot(r)
 }
 
+// The party that will pay the fees for the payment order. Only applies to wire
+// payment orders. Can be one of shared, sender, or receiver, which correspond
+// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
 type PaymentOrderNewAsyncParamsChargeBearer string
 
 const (
@@ -1865,12 +1951,18 @@ const (
 	PaymentOrderNewAsyncParamsChargeBearerReceiver PaymentOrderNewAsyncParamsChargeBearer = "receiver"
 )
 
+// A payment type to fallback to if the original type is not valid for the
+// receiving account. Currently, this only supports falling back from RTP to ACH
+// (type=rtp and fallback_type=ach)
 type PaymentOrderNewAsyncParamsFallbackType string
 
 const (
 	PaymentOrderNewAsyncParamsFallbackTypeACH PaymentOrderNewAsyncParamsFallbackType = "ach"
 )
 
+// Indicates the type of FX transfer to initiate, can be either
+// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+// currency matches the originating account currency.
 type PaymentOrderNewAsyncParamsForeignExchangeIndicator string
 
 const (
@@ -1911,6 +2003,7 @@ func (r PaymentOrderNewAsyncParamsLedgerTransaction) MarshalJSON() (data []byte,
 	return apijson.MarshalRoot(r)
 }
 
+// To post a ledger transaction at creation, use `posted`.
 type PaymentOrderNewAsyncParamsLedgerTransactionStatus string
 
 const (
@@ -1956,6 +2049,10 @@ func (r PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntries) MarshalJSON() 
 	return apijson.MarshalRoot(r)
 }
 
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
 type PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection string
 
 const (
@@ -1963,6 +2060,9 @@ const (
 	PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirectionDebit  PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection = "debit"
 )
 
+// If the ledger transaction can be reconciled to another object in Modern
+// Treasury, the type will be populated here, otherwise null. This can be one of
+// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 type PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType string
 
 const (
@@ -1996,6 +2096,9 @@ func (r PaymentOrderNewAsyncParamsLineItems) MarshalJSON() (data []byte, err err
 	return apijson.MarshalRoot(r)
 }
 
+// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+// an overnight check rather than standard mail.
 type PaymentOrderNewAsyncParamsPriority string
 
 const (
@@ -2040,6 +2143,7 @@ func (r PaymentOrderNewAsyncParamsReceivingAccount) MarshalJSON() (data []byte, 
 	return apijson.MarshalRoot(r)
 }
 
+// Either `individual` or `business`.
 type PaymentOrderNewAsyncParamsReceivingAccountPartyType string
 
 const (
@@ -2165,6 +2269,7 @@ func (r PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount) MarshalJSON() (
 	return apijson.MarshalRoot(r)
 }
 
+// The normal balance of the ledger account.
 type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalance string
 
 const (
@@ -2172,6 +2277,9 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalanceDebit  PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalance = "debit"
 )
 
+// If the ledger account links to another object in Modern Treasury, the type will
+// be populated here, otherwise null. The value is one of internal_account or
+// external_account.
 type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType string
 
 const (

@@ -1,3 +1,5 @@
+// File generated from our OpenAPI spec by Stainless.
+
 package moderntreasury_test
 
 import (
@@ -7,10 +9,14 @@ import (
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
 func TestRoutingDetailNewWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -37,6 +43,9 @@ func TestRoutingDetailNewWithOptionalParams(t *testing.T) {
 }
 
 func TestRoutingDetailGet(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -58,6 +67,9 @@ func TestRoutingDetailGet(t *testing.T) {
 }
 
 func TestRoutingDetailListWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
@@ -82,6 +94,9 @@ func TestRoutingDetailListWithOptionalParams(t *testing.T) {
 }
 
 func TestRoutingDetailDelete(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
 	c := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
