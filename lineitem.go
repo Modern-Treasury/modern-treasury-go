@@ -37,7 +37,7 @@ func NewLineItemService(opts ...option.RequestOption) (r *LineItemService) {
 // Get a single line item
 func (r *LineItemService) Get(ctx context.Context, itemizableType LineItemGetParamsItemizableType, itemizableID string, id string, opts ...option.RequestOption) (res *LineItem, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/line_items/%s", itemizableType, itemizableID, id)
+	path := fmt.Sprintf("api/%v/%s/line_items/%s", itemizableType, itemizableID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
@@ -45,7 +45,7 @@ func (r *LineItemService) Get(ctx context.Context, itemizableType LineItemGetPar
 // update line item
 func (r *LineItemService) Update(ctx context.Context, itemizableType LineItemUpdateParamsItemizableType, itemizableID string, id string, body LineItemUpdateParams, opts ...option.RequestOption) (res *LineItem, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/line_items/%s", itemizableType, itemizableID, id)
+	path := fmt.Sprintf("api/%v/%s/line_items/%s", itemizableType, itemizableID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
 }
@@ -55,7 +55,7 @@ func (r *LineItemService) List(ctx context.Context, itemizableType LineItemListP
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := fmt.Sprintf("api/%s/%s/line_items", itemizableType, itemizableID)
+	path := fmt.Sprintf("api/%v/%s/line_items", itemizableType, itemizableID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
