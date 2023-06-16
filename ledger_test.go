@@ -46,10 +46,7 @@ func TestLedgerGet(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Ledgers.Get(
-		context.TODO(),
-		"string",
-	)
+	_, err := c.Ledgers.Get(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -119,10 +116,7 @@ func TestLedgerDelete(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Ledgers.Delete(
-		context.TODO(),
-		"string",
-	)
+	_, err := c.Ledgers.Delete(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

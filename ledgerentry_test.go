@@ -22,10 +22,7 @@ func TestLedgerEntryGet(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.LedgerEntries.Get(
-		context.TODO(),
-		"string",
-	)
+	_, err := c.LedgerEntries.Get(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

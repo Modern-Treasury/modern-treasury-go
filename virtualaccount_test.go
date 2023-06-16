@@ -52,10 +52,7 @@ func TestVirtualAccountGet(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	err := c.VirtualAccounts.Get(
-		context.TODO(),
-		"string",
-	)
+	err := c.VirtualAccounts.Get(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -126,10 +123,7 @@ func TestVirtualAccountDelete(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.VirtualAccounts.Delete(
-		context.TODO(),
-		"string",
-	)
+	_, err := c.VirtualAccounts.Delete(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
