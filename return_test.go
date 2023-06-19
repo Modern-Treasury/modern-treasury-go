@@ -17,12 +17,12 @@ func TestReturnNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Returns.New(context.TODO(), moderntreasury.ReturnNewParams{
+	_, err := client.Returns.New(context.TODO(), moderntreasury.ReturnNewParams{
 		ReturnableID:          moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		ReturnableType:        moderntreasury.F(moderntreasury.ReturnNewParamsReturnableTypeIncomingPaymentDetail),
 		AdditionalInformation: moderntreasury.F("string"),
@@ -44,15 +44,12 @@ func TestReturnGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Returns.Get(
-		context.TODO(),
-		"string",
-	)
+	_, err := client.Returns.Get(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -66,12 +63,12 @@ func TestReturnListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Returns.List(context.TODO(), moderntreasury.ReturnListParams{
+	_, err := client.Returns.List(context.TODO(), moderntreasury.ReturnListParams{
 		AfterCursor:       moderntreasury.F("string"),
 		CounterpartyID:    moderntreasury.F("string"),
 		InternalAccountID: moderntreasury.F("string"),

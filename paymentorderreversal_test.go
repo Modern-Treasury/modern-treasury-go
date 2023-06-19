@@ -17,19 +17,81 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.PaymentOrders.Reversals.New(
+	_, err := client.PaymentOrders.Reversals.New(
 		context.TODO(),
 		"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
 		moderntreasury.PaymentOrderReversalNewParams{
-			Reason:            moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsReasonDuplicate),
-			LedgerTransaction: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransaction{Description: moderntreasury.F("string"), Status: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionStatusArchived), Metadata: moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"}), EffectiveDate: moderntreasury.F(time.Now()), LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntries{{Amount: moderntreasury.F(int64(0)), Direction: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionCredit), LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), LockVersion: moderntreasury.F(int64(0)), PendingBalanceAmount: moderntreasury.F(map[string]int64{"foo": int64(0)}), PostedBalanceAmount: moderntreasury.F(map[string]int64{"foo": int64(0)}), AvailableBalanceAmount: moderntreasury.F(map[string]int64{"foo": int64(0)}), ShowResultingLedgerAccountBalances: moderntreasury.F(true)}, {Amount: moderntreasury.F(int64(0)), Direction: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionCredit), LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), LockVersion: moderntreasury.F(int64(0)), PendingBalanceAmount: moderntreasury.F(map[string]int64{"foo": int64(0)}), PostedBalanceAmount: moderntreasury.F(map[string]int64{"foo": int64(0)}), AvailableBalanceAmount: moderntreasury.F(map[string]int64{"foo": int64(0)}), ShowResultingLedgerAccountBalances: moderntreasury.F(true)}, {Amount: moderntreasury.F(int64(0)), Direction: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionCredit), LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), LockVersion: moderntreasury.F(int64(0)), PendingBalanceAmount: moderntreasury.F(map[string]int64{"foo": int64(0)}), PostedBalanceAmount: moderntreasury.F(map[string]int64{"foo": int64(0)}), AvailableBalanceAmount: moderntreasury.F(map[string]int64{"foo": int64(0)}), ShowResultingLedgerAccountBalances: moderntreasury.F(true)}}), ExternalID: moderntreasury.F("string"), LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeCounterparty), LedgerableID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")}),
-			Metadata:          moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"}),
-			IdempotencyKey:    moderntreasury.F("string"),
+			Reason: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsReasonDuplicate),
+			LedgerTransaction: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransaction{
+				Description: moderntreasury.F("string"),
+				Status:      moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionStatusArchived),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
+				EffectiveDate: moderntreasury.F(time.Now()),
+				LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntries{{
+					Amount:          moderntreasury.F(int64(0)),
+					Direction:       moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
+					LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+					LockVersion:     moderntreasury.F(int64(0)),
+					PendingBalanceAmount: moderntreasury.F(map[string]int64{
+						"foo": int64(0),
+					}),
+					PostedBalanceAmount: moderntreasury.F(map[string]int64{
+						"foo": int64(0),
+					}),
+					AvailableBalanceAmount: moderntreasury.F(map[string]int64{
+						"foo": int64(0),
+					}),
+					ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+				}, {
+					Amount:          moderntreasury.F(int64(0)),
+					Direction:       moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
+					LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+					LockVersion:     moderntreasury.F(int64(0)),
+					PendingBalanceAmount: moderntreasury.F(map[string]int64{
+						"foo": int64(0),
+					}),
+					PostedBalanceAmount: moderntreasury.F(map[string]int64{
+						"foo": int64(0),
+					}),
+					AvailableBalanceAmount: moderntreasury.F(map[string]int64{
+						"foo": int64(0),
+					}),
+					ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+				}, {
+					Amount:          moderntreasury.F(int64(0)),
+					Direction:       moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
+					LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+					LockVersion:     moderntreasury.F(int64(0)),
+					PendingBalanceAmount: moderntreasury.F(map[string]int64{
+						"foo": int64(0),
+					}),
+					PostedBalanceAmount: moderntreasury.F(map[string]int64{
+						"foo": int64(0),
+					}),
+					AvailableBalanceAmount: moderntreasury.F(map[string]int64{
+						"foo": int64(0),
+					}),
+					ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+				}}),
+				ExternalID:     moderntreasury.F("string"),
+				LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeCounterparty),
+				LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			}),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
+			IdempotencyKey: moderntreasury.F("string"),
 		},
 	)
 	if err != nil {
@@ -45,12 +107,12 @@ func TestPaymentOrderReversalGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.PaymentOrders.Reversals.Get(
+	_, err := client.PaymentOrders.Reversals.Get(
 		context.TODO(),
 		"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
 		"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
@@ -68,12 +130,12 @@ func TestPaymentOrderReversalListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.PaymentOrders.Reversals.List(
+	_, err := client.PaymentOrders.Reversals.List(
 		context.TODO(),
 		"string",
 		moderntreasury.PaymentOrderReversalListParams{

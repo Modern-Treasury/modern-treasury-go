@@ -17,15 +17,12 @@ func TestPaperItemGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.PaperItems.Get(
-		context.TODO(),
-		"string",
-	)
+	_, err := client.PaperItems.Get(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -39,12 +36,12 @@ func TestPaperItemListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.PaperItems.List(context.TODO(), moderntreasury.PaperItemListParams{
+	_, err := client.PaperItems.List(context.TODO(), moderntreasury.PaperItemListParams{
 		AfterCursor:      moderntreasury.F("string"),
 		DepositDateEnd:   moderntreasury.F(time.Now()),
 		DepositDateStart: moderntreasury.F(time.Now()),

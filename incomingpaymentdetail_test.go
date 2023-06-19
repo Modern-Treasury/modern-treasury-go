@@ -18,15 +18,12 @@ func TestIncomingPaymentDetailGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.IncomingPaymentDetails.Get(
-		context.TODO(),
-		"string",
-	)
+	_, err := client.IncomingPaymentDetails.Get(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -40,16 +37,18 @@ func TestIncomingPaymentDetailUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.IncomingPaymentDetails.Update(
+	_, err := client.IncomingPaymentDetails.Update(
 		context.TODO(),
 		"string",
 		moderntreasury.IncomingPaymentDetailUpdateParams{
-			Metadata: moderntreasury.F(map[string]string{"foo": "string"}),
+			Metadata: moderntreasury.F(map[string]string{
+				"foo": "string",
+			}),
 		},
 	)
 	if err != nil {
@@ -65,17 +64,19 @@ func TestIncomingPaymentDetailListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.IncomingPaymentDetails.List(context.TODO(), moderntreasury.IncomingPaymentDetailListParams{
-		AfterCursor:      moderntreasury.F("string"),
-		AsOfDateEnd:      moderntreasury.F(time.Now()),
-		AsOfDateStart:    moderntreasury.F(time.Now()),
-		Direction:        moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsDirectionCredit),
-		Metadata:         moderntreasury.F(map[string]string{"foo": "string"}),
+	_, err := client.IncomingPaymentDetails.List(context.TODO(), moderntreasury.IncomingPaymentDetailListParams{
+		AfterCursor:   moderntreasury.F("string"),
+		AsOfDateEnd:   moderntreasury.F(time.Now()),
+		AsOfDateStart: moderntreasury.F(time.Now()),
+		Direction:     moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsDirectionCredit),
+		Metadata: moderntreasury.F(map[string]string{
+			"foo": "string",
+		}),
 		PerPage:          moderntreasury.F(int64(0)),
 		Status:           moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsStatusCompleted),
 		Type:             moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsTypeACH),
@@ -94,12 +95,12 @@ func TestIncomingPaymentDetailNewAsyncWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.IncomingPaymentDetails.NewAsync(context.TODO(), moderntreasury.IncomingPaymentDetailNewAsyncParams{
+	_, err := client.IncomingPaymentDetails.NewAsync(context.TODO(), moderntreasury.IncomingPaymentDetailNewAsyncParams{
 		Amount:            moderntreasury.F(int64(0)),
 		AsOfDate:          moderntreasury.F(time.Now()),
 		Currency:          moderntreasury.F(shared.CurrencyAed),

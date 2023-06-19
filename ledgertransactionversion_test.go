@@ -17,19 +17,23 @@ func TestLedgerTransactionVersionListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.LedgerTransactions.Versions.List(
+	_, err := client.LedgerTransactions.Versions.List(
 		context.TODO(),
 		"string",
 		moderntreasury.LedgerTransactionVersionListParams{
 			AfterCursor: moderntreasury.F("string"),
-			CreatedAt:   moderntreasury.F(map[string]time.Time{"foo": time.Now()}),
-			PerPage:     moderntreasury.F(int64(0)),
-			Version:     moderntreasury.F(map[string]int64{"foo": int64(0)}),
+			CreatedAt: moderntreasury.F(map[string]time.Time{
+				"foo": time.Now(),
+			}),
+			PerPage: moderntreasury.F(int64(0)),
+			Version: moderntreasury.F(map[string]int64{
+				"foo": int64(0),
+			}),
 		},
 	)
 	if err != nil {

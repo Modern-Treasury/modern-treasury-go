@@ -17,20 +17,24 @@ func TestLedgerAccountCategoryNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.LedgerAccountCategories.New(context.TODO(), moderntreasury.LedgerAccountCategoryNewParams{
+	_, err := client.LedgerAccountCategories.New(context.TODO(), moderntreasury.LedgerAccountCategoryNewParams{
 		Currency:         moderntreasury.F("string"),
 		LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Name:             moderntreasury.F("string"),
 		NormalBalance:    moderntreasury.F(moderntreasury.LedgerAccountCategoryNewParamsNormalBalanceCredit),
 		CurrencyExponent: moderntreasury.F(int64(0)),
 		Description:      moderntreasury.F("string"),
-		Metadata:         moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"}),
-		IdempotencyKey:   moderntreasury.F("string"),
+		Metadata: moderntreasury.F(map[string]string{
+			"key":    "value",
+			"foo":    "bar",
+			"modern": "treasury",
+		}),
+		IdempotencyKey: moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -45,16 +49,19 @@ func TestLedgerAccountCategoryGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.LedgerAccountCategories.Get(
+	_, err := client.LedgerAccountCategories.Get(
 		context.TODO(),
 		"string",
 		moderntreasury.LedgerAccountCategoryGetParams{
-			Balances: moderntreasury.F(moderntreasury.LedgerAccountCategoryGetParamsBalances{AsOfDate: moderntreasury.F(time.Now()), EffectiveAt: moderntreasury.F(time.Now())}),
+			Balances: moderntreasury.F(moderntreasury.LedgerAccountCategoryGetParamsBalances{
+				AsOfDate:    moderntreasury.F(time.Now()),
+				EffectiveAt: moderntreasury.F(time.Now()),
+			}),
 		},
 	)
 	if err != nil {
@@ -70,19 +77,26 @@ func TestLedgerAccountCategoryUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.LedgerAccountCategories.Update(
+	_, err := client.LedgerAccountCategories.Update(
 		context.TODO(),
 		"string",
 		moderntreasury.LedgerAccountCategoryUpdateParams{
-			Balances:    moderntreasury.F(moderntreasury.LedgerAccountCategoryUpdateParamsBalances{AsOfDate: moderntreasury.F(time.Now()), EffectiveAt: moderntreasury.F(time.Now())}),
+			Balances: moderntreasury.F(moderntreasury.LedgerAccountCategoryUpdateParamsBalances{
+				AsOfDate:    moderntreasury.F(time.Now()),
+				EffectiveAt: moderntreasury.F(time.Now()),
+			}),
 			Description: moderntreasury.F("string"),
-			Metadata:    moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"}),
-			Name:        moderntreasury.F("string"),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
+			Name: moderntreasury.F("string"),
 		},
 	)
 	if err != nil {
@@ -98,15 +112,17 @@ func TestLedgerAccountCategoryListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.LedgerAccountCategories.List(context.TODO(), moderntreasury.LedgerAccountCategoryListParams{
-		AfterCursor:                   moderntreasury.F("string"),
-		LedgerID:                      moderntreasury.F("string"),
-		Metadata:                      moderntreasury.F(map[string]string{"foo": "string"}),
+	_, err := client.LedgerAccountCategories.List(context.TODO(), moderntreasury.LedgerAccountCategoryListParams{
+		AfterCursor: moderntreasury.F("string"),
+		LedgerID:    moderntreasury.F("string"),
+		Metadata: moderntreasury.F(map[string]string{
+			"foo": "string",
+		}),
 		Name:                          moderntreasury.F("string"),
 		ParentLedgerAccountCategoryID: moderntreasury.F("string"),
 		PerPage:                       moderntreasury.F(int64(0)),
@@ -124,16 +140,19 @@ func TestLedgerAccountCategoryDeleteWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.LedgerAccountCategories.Delete(
+	_, err := client.LedgerAccountCategories.Delete(
 		context.TODO(),
 		"string",
 		moderntreasury.LedgerAccountCategoryDeleteParams{
-			Balances: moderntreasury.F(moderntreasury.LedgerAccountCategoryDeleteParamsBalances{AsOfDate: moderntreasury.F(time.Now()), EffectiveAt: moderntreasury.F(time.Now())}),
+			Balances: moderntreasury.F(moderntreasury.LedgerAccountCategoryDeleteParamsBalances{
+				AsOfDate:    moderntreasury.F(time.Now()),
+				EffectiveAt: moderntreasury.F(time.Now()),
+			}),
 		},
 	)
 	if err != nil {
@@ -149,12 +168,12 @@ func TestLedgerAccountCategoryAddLedgerAccount(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	err := c.LedgerAccountCategories.AddLedgerAccount(
+	err := client.LedgerAccountCategories.AddLedgerAccount(
 		context.TODO(),
 		"string",
 		"string",
@@ -172,12 +191,12 @@ func TestLedgerAccountCategoryAddNestedCategory(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	err := c.LedgerAccountCategories.AddNestedCategory(
+	err := client.LedgerAccountCategories.AddNestedCategory(
 		context.TODO(),
 		"string",
 		"string",
@@ -195,12 +214,12 @@ func TestLedgerAccountCategoryRemoveLedgerAccount(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	err := c.LedgerAccountCategories.RemoveLedgerAccount(
+	err := client.LedgerAccountCategories.RemoveLedgerAccount(
 		context.TODO(),
 		"string",
 		"string",
@@ -218,12 +237,12 @@ func TestLedgerAccountCategoryRemoveNestedCategory(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	err := c.LedgerAccountCategories.RemoveNestedCategory(
+	err := client.LedgerAccountCategories.RemoveNestedCategory(
 		context.TODO(),
 		"string",
 		"string",

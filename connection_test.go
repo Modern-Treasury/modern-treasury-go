@@ -16,12 +16,12 @@ func TestConnectionListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Connections.List(context.TODO(), moderntreasury.ConnectionListParams{
+	_, err := client.Connections.List(context.TODO(), moderntreasury.ConnectionListParams{
 		AfterCursor:      moderntreasury.F("string"),
 		Entity:           moderntreasury.F("string"),
 		PerPage:          moderntreasury.F(int64(0)),

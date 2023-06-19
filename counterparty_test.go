@@ -17,18 +17,228 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Counterparties.New(context.TODO(), moderntreasury.CounterpartyNewParams{
-		Name:                 moderntreasury.F("string"),
-		Accounting:           moderntreasury.F(moderntreasury.CounterpartyNewParamsAccounting{Type: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountingTypeCustomer)}),
-		Accounts:             moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccounts{{AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash), PartyType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyTypeBusiness), PartyAddress: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyAddress{Line1: moderntreasury.F("string"), Line2: moderntreasury.F("string"), Locality: moderntreasury.F("string"), Region: moderntreasury.F("string"), PostalCode: moderntreasury.F("string"), Country: moderntreasury.F("string")}), Name: moderntreasury.F("string"), AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetails{{AccountNumber: moderntreasury.F("string"), AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban)}, {AccountNumber: moderntreasury.F("string"), AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban)}, {AccountNumber: moderntreasury.F("string"), AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban)}}), RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetails{{RoutingNumber: moderntreasury.F("string"), RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba), PaymentType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH)}, {RoutingNumber: moderntreasury.F("string"), RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba), PaymentType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH)}, {RoutingNumber: moderntreasury.F("string"), RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba), PaymentType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH)}}), Metadata: moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"}), PartyName: moderntreasury.F("string"), PartyIdentifier: moderntreasury.F("string"), LedgerAccount: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccount{Name: moderntreasury.F("string"), Description: moderntreasury.F("string"), NormalBalance: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountNormalBalanceCredit), LedgerID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), Currency: moderntreasury.F("string"), CurrencyExponent: moderntreasury.F(int64(0)), LedgerableID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), LedgerableType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount), Metadata: moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"})}), PlaidProcessorToken: moderntreasury.F("string"), ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetails{{ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail)}, {ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail)}, {ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail)}})}, {AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash), PartyType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyTypeBusiness), PartyAddress: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyAddress{Line1: moderntreasury.F("string"), Line2: moderntreasury.F("string"), Locality: moderntreasury.F("string"), Region: moderntreasury.F("string"), PostalCode: moderntreasury.F("string"), Country: moderntreasury.F("string")}), Name: moderntreasury.F("string"), AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetails{{AccountNumber: moderntreasury.F("string"), AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban)}, {AccountNumber: moderntreasury.F("string"), AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban)}, {AccountNumber: moderntreasury.F("string"), AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban)}}), RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetails{{RoutingNumber: moderntreasury.F("string"), RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba), PaymentType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH)}, {RoutingNumber: moderntreasury.F("string"), RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba), PaymentType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH)}, {RoutingNumber: moderntreasury.F("string"), RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba), PaymentType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH)}}), Metadata: moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"}), PartyName: moderntreasury.F("string"), PartyIdentifier: moderntreasury.F("string"), LedgerAccount: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccount{Name: moderntreasury.F("string"), Description: moderntreasury.F("string"), NormalBalance: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountNormalBalanceCredit), LedgerID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), Currency: moderntreasury.F("string"), CurrencyExponent: moderntreasury.F(int64(0)), LedgerableID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), LedgerableType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount), Metadata: moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"})}), PlaidProcessorToken: moderntreasury.F("string"), ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetails{{ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail)}, {ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail)}, {ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail)}})}, {AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash), PartyType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyTypeBusiness), PartyAddress: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyAddress{Line1: moderntreasury.F("string"), Line2: moderntreasury.F("string"), Locality: moderntreasury.F("string"), Region: moderntreasury.F("string"), PostalCode: moderntreasury.F("string"), Country: moderntreasury.F("string")}), Name: moderntreasury.F("string"), AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetails{{AccountNumber: moderntreasury.F("string"), AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban)}, {AccountNumber: moderntreasury.F("string"), AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban)}, {AccountNumber: moderntreasury.F("string"), AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban)}}), RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetails{{RoutingNumber: moderntreasury.F("string"), RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba), PaymentType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH)}, {RoutingNumber: moderntreasury.F("string"), RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba), PaymentType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH)}, {RoutingNumber: moderntreasury.F("string"), RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba), PaymentType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH)}}), Metadata: moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"}), PartyName: moderntreasury.F("string"), PartyIdentifier: moderntreasury.F("string"), LedgerAccount: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccount{Name: moderntreasury.F("string"), Description: moderntreasury.F("string"), NormalBalance: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountNormalBalanceCredit), LedgerID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), Currency: moderntreasury.F("string"), CurrencyExponent: moderntreasury.F(int64(0)), LedgerableID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"), LedgerableType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount), Metadata: moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"})}), PlaidProcessorToken: moderntreasury.F("string"), ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetails{{ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail)}, {ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail)}, {ContactIdentifier: moderntreasury.F("string"), ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail)}})}}),
-		Email:                moderntreasury.F("dev@stainlessapi.com"),
-		LedgerType:           moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
-		Metadata:             moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"}),
+	_, err := client.Counterparties.New(context.TODO(), moderntreasury.CounterpartyNewParams{
+		Name: moderntreasury.F("string"),
+		Accounting: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccounting{
+			Type: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountingTypeCustomer),
+		}),
+		Accounts: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccounts{{
+			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
+			PartyType:   moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyTypeBusiness),
+			PartyAddress: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyAddress{
+				Line1:      moderntreasury.F("string"),
+				Line2:      moderntreasury.F("string"),
+				Locality:   moderntreasury.F("string"),
+				Region:     moderntreasury.F("string"),
+				PostalCode: moderntreasury.F("string"),
+				Country:    moderntreasury.F("string"),
+			}),
+			Name: moderntreasury.F("string"),
+			AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetails{{
+				AccountNumber:     moderntreasury.F("string"),
+				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
+			}, {
+				AccountNumber:     moderntreasury.F("string"),
+				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
+			}, {
+				AccountNumber:     moderntreasury.F("string"),
+				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
+			}}),
+			RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetails{{
+				RoutingNumber:     moderntreasury.F("string"),
+				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
+				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
+			}, {
+				RoutingNumber:     moderntreasury.F("string"),
+				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
+				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
+			}, {
+				RoutingNumber:     moderntreasury.F("string"),
+				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
+				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
+			}}),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
+			PartyName:       moderntreasury.F("string"),
+			PartyIdentifier: moderntreasury.F("string"),
+			LedgerAccount: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccount{
+				Name:             moderntreasury.F("string"),
+				Description:      moderntreasury.F("string"),
+				NormalBalance:    moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountNormalBalanceCredit),
+				LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				Currency:         moderntreasury.F("string"),
+				CurrencyExponent: moderntreasury.F(int64(0)),
+				LedgerableID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				LedgerableType:   moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
+			}),
+			PlaidProcessorToken: moderntreasury.F("string"),
+			ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetails{{
+				ContactIdentifier:     moderntreasury.F("string"),
+				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
+			}, {
+				ContactIdentifier:     moderntreasury.F("string"),
+				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
+			}, {
+				ContactIdentifier:     moderntreasury.F("string"),
+				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
+			}}),
+		}, {
+			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
+			PartyType:   moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyTypeBusiness),
+			PartyAddress: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyAddress{
+				Line1:      moderntreasury.F("string"),
+				Line2:      moderntreasury.F("string"),
+				Locality:   moderntreasury.F("string"),
+				Region:     moderntreasury.F("string"),
+				PostalCode: moderntreasury.F("string"),
+				Country:    moderntreasury.F("string"),
+			}),
+			Name: moderntreasury.F("string"),
+			AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetails{{
+				AccountNumber:     moderntreasury.F("string"),
+				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
+			}, {
+				AccountNumber:     moderntreasury.F("string"),
+				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
+			}, {
+				AccountNumber:     moderntreasury.F("string"),
+				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
+			}}),
+			RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetails{{
+				RoutingNumber:     moderntreasury.F("string"),
+				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
+				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
+			}, {
+				RoutingNumber:     moderntreasury.F("string"),
+				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
+				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
+			}, {
+				RoutingNumber:     moderntreasury.F("string"),
+				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
+				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
+			}}),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
+			PartyName:       moderntreasury.F("string"),
+			PartyIdentifier: moderntreasury.F("string"),
+			LedgerAccount: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccount{
+				Name:             moderntreasury.F("string"),
+				Description:      moderntreasury.F("string"),
+				NormalBalance:    moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountNormalBalanceCredit),
+				LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				Currency:         moderntreasury.F("string"),
+				CurrencyExponent: moderntreasury.F(int64(0)),
+				LedgerableID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				LedgerableType:   moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
+			}),
+			PlaidProcessorToken: moderntreasury.F("string"),
+			ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetails{{
+				ContactIdentifier:     moderntreasury.F("string"),
+				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
+			}, {
+				ContactIdentifier:     moderntreasury.F("string"),
+				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
+			}, {
+				ContactIdentifier:     moderntreasury.F("string"),
+				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
+			}}),
+		}, {
+			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
+			PartyType:   moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyTypeBusiness),
+			PartyAddress: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyAddress{
+				Line1:      moderntreasury.F("string"),
+				Line2:      moderntreasury.F("string"),
+				Locality:   moderntreasury.F("string"),
+				Region:     moderntreasury.F("string"),
+				PostalCode: moderntreasury.F("string"),
+				Country:    moderntreasury.F("string"),
+			}),
+			Name: moderntreasury.F("string"),
+			AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetails{{
+				AccountNumber:     moderntreasury.F("string"),
+				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
+			}, {
+				AccountNumber:     moderntreasury.F("string"),
+				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
+			}, {
+				AccountNumber:     moderntreasury.F("string"),
+				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
+			}}),
+			RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetails{{
+				RoutingNumber:     moderntreasury.F("string"),
+				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
+				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
+			}, {
+				RoutingNumber:     moderntreasury.F("string"),
+				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
+				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
+			}, {
+				RoutingNumber:     moderntreasury.F("string"),
+				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
+				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
+			}}),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
+			PartyName:       moderntreasury.F("string"),
+			PartyIdentifier: moderntreasury.F("string"),
+			LedgerAccount: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccount{
+				Name:             moderntreasury.F("string"),
+				Description:      moderntreasury.F("string"),
+				NormalBalance:    moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountNormalBalanceCredit),
+				LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				Currency:         moderntreasury.F("string"),
+				CurrencyExponent: moderntreasury.F(int64(0)),
+				LedgerableID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				LedgerableType:   moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
+			}),
+			PlaidProcessorToken: moderntreasury.F("string"),
+			ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetails{{
+				ContactIdentifier:     moderntreasury.F("string"),
+				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
+			}, {
+				ContactIdentifier:     moderntreasury.F("string"),
+				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
+			}, {
+				ContactIdentifier:     moderntreasury.F("string"),
+				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
+			}}),
+		}}),
+		Email:      moderntreasury.F("dev@stainlessapi.com"),
+		LedgerType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
+		Metadata: moderntreasury.F(map[string]string{
+			"key":    "value",
+			"foo":    "bar",
+			"modern": "treasury",
+		}),
 		SendRemittanceAdvice: moderntreasury.F(true),
 		TaxpayerIdentifier:   moderntreasury.F("string"),
 		IdempotencyKey:       moderntreasury.F("string"),
@@ -46,15 +256,12 @@ func TestCounterpartyGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Counterparties.Get(
-		context.TODO(),
-		"string",
-	)
+	_, err := client.Counterparties.Get(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -68,17 +275,19 @@ func TestCounterpartyUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Counterparties.Update(
+	_, err := client.Counterparties.Update(
 		context.TODO(),
 		"string",
 		moderntreasury.CounterpartyUpdateParams{
-			Email:                moderntreasury.F("dev@stainlessapi.com"),
-			Metadata:             moderntreasury.F(map[string]string{"foo": "string"}),
+			Email: moderntreasury.F("dev@stainlessapi.com"),
+			Metadata: moderntreasury.F(map[string]string{
+				"foo": "string",
+			}),
 			Name:                 moderntreasury.F("string"),
 			SendRemittanceAdvice: moderntreasury.F(true),
 			TaxpayerIdentifier:   moderntreasury.F("string"),
@@ -97,19 +306,21 @@ func TestCounterpartyListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Counterparties.List(context.TODO(), moderntreasury.CounterpartyListParams{
+	_, err := client.Counterparties.List(context.TODO(), moderntreasury.CounterpartyListParams{
 		AfterCursor:         moderntreasury.F("string"),
 		CreatedAtLowerBound: moderntreasury.F(time.Now()),
 		CreatedAtUpperBound: moderntreasury.F(time.Now()),
 		Email:               moderntreasury.F("dev@stainlessapi.com"),
-		Metadata:            moderntreasury.F(map[string]string{"foo": "string"}),
-		Name:                moderntreasury.F("string"),
-		PerPage:             moderntreasury.F(int64(0)),
+		Metadata: moderntreasury.F(map[string]string{
+			"foo": "string",
+		}),
+		Name:    moderntreasury.F("string"),
+		PerPage: moderntreasury.F(int64(0)),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -124,15 +335,12 @@ func TestCounterpartyDelete(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	err := c.Counterparties.Delete(
-		context.TODO(),
-		"string",
-	)
+	err := client.Counterparties.Delete(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -146,12 +354,12 @@ func TestCounterpartyCollectAccountWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Counterparties.CollectAccount(
+	_, err := client.Counterparties.CollectAccount(
 		context.TODO(),
 		"string",
 		moderntreasury.CounterpartyCollectAccountParams{

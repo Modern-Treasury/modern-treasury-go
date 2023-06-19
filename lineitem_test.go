@@ -16,12 +16,12 @@ func TestLineItemGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.LineItems.Get(
+	_, err := client.LineItems.Get(
 		context.TODO(),
 		moderntreasury.LineItemGetParamsItemizableTypeExpectedPayments,
 		"string",
@@ -40,18 +40,22 @@ func TestLineItemUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.LineItems.Update(
+	_, err := client.LineItems.Update(
 		context.TODO(),
 		moderntreasury.LineItemUpdateParamsItemizableTypeExpectedPayments,
 		"string",
 		"string",
 		moderntreasury.LineItemUpdateParams{
-			Metadata: moderntreasury.F(map[string]string{"key": "value", "foo": "bar", "modern": "treasury"}),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
 		},
 	)
 	if err != nil {
@@ -67,12 +71,12 @@ func TestLineItemListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.LineItems.List(
+	_, err := client.LineItems.List(
 		context.TODO(),
 		moderntreasury.LineItemListParamsItemizableTypeExpectedPayments,
 		"string",

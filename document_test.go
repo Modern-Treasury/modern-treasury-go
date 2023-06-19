@@ -19,12 +19,12 @@ func TestDocumentNewWithOptionalParams(t *testing.T) {
 		return
 	}
 	t.Skip("skipped: prism mock server is broken for file uploads")
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Documents.New(
+	_, err := client.Documents.New(
 		context.TODO(),
 		moderntreasury.DocumentNewParamsDocumentableTypeCases,
 		"string",
@@ -47,12 +47,12 @@ func TestDocumentGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Documents.Get(
+	_, err := client.Documents.Get(
 		context.TODO(),
 		moderntreasury.DocumentGetParamsDocumentableTypeCases,
 		"string",
@@ -71,12 +71,12 @@ func TestDocumentListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Documents.List(
+	_, err := client.Documents.List(
 		context.TODO(),
 		moderntreasury.DocumentListParamsDocumentableTypeCases,
 		"string",

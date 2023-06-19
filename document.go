@@ -40,7 +40,7 @@ func NewDocumentService(opts ...option.RequestOption) (r *DocumentService) {
 // Create a document.
 func (r *DocumentService) New(ctx context.Context, documentableType DocumentNewParamsDocumentableType, documentableID string, params DocumentNewParams, opts ...option.RequestOption) (res *Document, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/documents", documentableType, documentableID)
+	path := fmt.Sprintf("api/%v/%s/documents", documentableType, documentableID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
@@ -48,7 +48,7 @@ func (r *DocumentService) New(ctx context.Context, documentableType DocumentNewP
 // Get an existing document.
 func (r *DocumentService) Get(ctx context.Context, documentableType DocumentGetParamsDocumentableType, documentableID string, id string, opts ...option.RequestOption) (res *Document, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/documents/%s", documentableType, documentableID, id)
+	path := fmt.Sprintf("api/%v/%s/documents/%s", documentableType, documentableID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
@@ -58,7 +58,7 @@ func (r *DocumentService) List(ctx context.Context, documentableType DocumentLis
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := fmt.Sprintf("api/%s/%s/documents", documentableType, documentableID)
+	path := fmt.Sprintf("api/%v/%s/documents", documentableType, documentableID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
