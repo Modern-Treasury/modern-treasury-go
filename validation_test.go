@@ -16,12 +16,12 @@ func TestValidationValidateRoutingNumber(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Validations.ValidateRoutingNumber(context.TODO(), moderntreasury.ValidationValidateRoutingNumberParams{
+	_, err := client.Validations.ValidateRoutingNumber(context.TODO(), moderntreasury.ValidationValidateRoutingNumberParams{
 		RoutingNumber:     moderntreasury.F("string"),
 		RoutingNumberType: moderntreasury.F(moderntreasury.ValidationValidateRoutingNumberParamsRoutingNumberTypeAba),
 	})

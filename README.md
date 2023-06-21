@@ -37,8 +37,8 @@ import (
 
 func main() {
 	client := moderntreasury.NewClient(
-		option.WithOrganizationID("my-organization-ID"), // defaults to os.LookupEnv("MODERN_TREASURY_ORGANIZATION_ID")
 		option.WithAPIKey("my api key"),                 // defaults to os.LookupEnv("MODERN_TREASURY_API_KEY")
+		option.WithOrganizationID("my-organization-ID"), // defaults to os.LookupEnv("MODERN_TREASURY_ORGANIZATION_ID")
 	)
 	externalAccount, err := client.ExternalAccounts.New(context.TODO(), moderntreasury.ExternalAccountNewParams{
 		CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),
@@ -47,7 +47,7 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-	fmt.Printf("%+v\n", externalAccount)
+	fmt.Printf("%+v\n", externalAccount.ID)
 }
 
 ```
@@ -239,8 +239,7 @@ You can use the `WithMaxRetries` option to configure or disable this:
 ```go
 // Configure the default for all requests:
 client := moderntreasury.NewClient(
-	option.WithOrganizationID("my-organization-ID"), // defaults to os.LookupEnv("MODERN_TREASURY_ORGANIZATION_ID")
-	option.WithMaxRetries(0),                        // default is 2
+	option.WithMaxRetries(0), // default is 2
 )
 
 // Override per-request:

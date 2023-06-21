@@ -17,12 +17,12 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.InternalAccounts.New(context.TODO(), moderntreasury.InternalAccountNewParams{
+	_, err := client.InternalAccounts.New(context.TODO(), moderntreasury.InternalAccountNewParams{
 		ConnectionID:    moderntreasury.F("string"),
 		Currency:        moderntreasury.F(moderntreasury.InternalAccountNewParamsCurrencyUsd),
 		Name:            moderntreasury.F("string"),
@@ -30,8 +30,15 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 		CounterpartyID:  moderntreasury.F("string"),
 		EntityID:        moderntreasury.F("string"),
 		ParentAccountID: moderntreasury.F("string"),
-		PartyAddress:    moderntreasury.F(moderntreasury.InternalAccountNewParamsPartyAddress{Line1: moderntreasury.F("string"), Line2: moderntreasury.F("string"), Locality: moderntreasury.F("string"), Region: moderntreasury.F("string"), PostalCode: moderntreasury.F("string"), Country: moderntreasury.F("string")}),
-		IdempotencyKey:  moderntreasury.F("string"),
+		PartyAddress: moderntreasury.F(moderntreasury.InternalAccountNewParamsPartyAddress{
+			Line1:      moderntreasury.F("string"),
+			Line2:      moderntreasury.F("string"),
+			Locality:   moderntreasury.F("string"),
+			Region:     moderntreasury.F("string"),
+			PostalCode: moderntreasury.F("string"),
+			Country:    moderntreasury.F("string"),
+		}),
+		IdempotencyKey: moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -46,15 +53,12 @@ func TestInternalAccountGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.InternalAccounts.Get(
-		context.TODO(),
-		"string",
-	)
+	_, err := client.InternalAccounts.Get(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -68,17 +72,19 @@ func TestInternalAccountUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.InternalAccounts.Update(
+	_, err := client.InternalAccounts.Update(
 		context.TODO(),
 		"string",
 		moderntreasury.InternalAccountUpdateParams{
-			CounterpartyID:  moderntreasury.F("string"),
-			Metadata:        moderntreasury.F(map[string]string{"foo": "string"}),
+			CounterpartyID: moderntreasury.F("string"),
+			Metadata: moderntreasury.F(map[string]string{
+				"foo": "string",
+			}),
 			Name:            moderntreasury.F("string"),
 			ParentAccountID: moderntreasury.F("string"),
 		},
@@ -96,16 +102,18 @@ func TestInternalAccountListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.InternalAccounts.List(context.TODO(), moderntreasury.InternalAccountListParams{
-		AfterCursor:      moderntreasury.F("string"),
-		CounterpartyID:   moderntreasury.F("string"),
-		Currency:         moderntreasury.F(shared.CurrencyAed),
-		Metadata:         moderntreasury.F(map[string]string{"foo": "string"}),
+	_, err := client.InternalAccounts.List(context.TODO(), moderntreasury.InternalAccountListParams{
+		AfterCursor:    moderntreasury.F("string"),
+		CounterpartyID: moderntreasury.F("string"),
+		Currency:       moderntreasury.F(shared.CurrencyAed),
+		Metadata: moderntreasury.F(map[string]string{
+			"foo": "string",
+		}),
 		PaymentDirection: moderntreasury.F(moderntreasury.InternalAccountListParamsPaymentDirectionCredit),
 		PaymentType:      moderntreasury.F(moderntreasury.InternalAccountListParamsPaymentTypeACH),
 		PerPage:          moderntreasury.F(int64(0)),

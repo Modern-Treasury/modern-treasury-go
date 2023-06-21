@@ -17,12 +17,12 @@ func TestBalanceReportGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.InternalAccounts.BalanceReports.Get(
+	_, err := client.InternalAccounts.BalanceReports.Get(
 		context.TODO(),
 		"string",
 		"string",
@@ -40,12 +40,12 @@ func TestBalanceReportListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.InternalAccounts.BalanceReports.List(
+	_, err := client.InternalAccounts.BalanceReports.List(
 		context.TODO(),
 		"string",
 		moderntreasury.BalanceReportListParams{

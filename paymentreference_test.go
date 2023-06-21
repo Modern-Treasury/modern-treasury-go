@@ -16,12 +16,12 @@ func TestPaymentReferenceListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.PaymentReferences.List(context.TODO(), moderntreasury.PaymentReferenceListParams{
+	_, err := client.PaymentReferences.List(context.TODO(), moderntreasury.PaymentReferenceListParams{
 		AfterCursor:       moderntreasury.F("string"),
 		PerPage:           moderntreasury.F(int64(0)),
 		ReferenceNumber:   moderntreasury.F("string"),
@@ -41,15 +41,12 @@ func TestPaymentReferenceRetireve(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.PaymentReferences.Retireve(
-		context.TODO(),
-		"string",
-	)
+	_, err := client.PaymentReferences.Retireve(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

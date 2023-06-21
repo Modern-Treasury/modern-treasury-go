@@ -16,12 +16,12 @@ func TestPaymentFlowNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.PaymentFlows.New(context.TODO(), moderntreasury.PaymentFlowNewParams{
+	_, err := client.PaymentFlows.New(context.TODO(), moderntreasury.PaymentFlowNewParams{
 		Amount:               moderntreasury.F(int64(0)),
 		CounterpartyID:       moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Currency:             moderntreasury.F("string"),
@@ -42,12 +42,12 @@ func TestPaymentFlowGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.PaymentFlows.Get(
+	_, err := client.PaymentFlows.Get(
 		context.TODO(),
 		"string",
 		moderntreasury.PaymentFlowGetParams{
@@ -67,12 +67,12 @@ func TestPaymentFlowUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.PaymentFlows.Update(
+	_, err := client.PaymentFlows.Update(
 		context.TODO(),
 		"string",
 		moderntreasury.PaymentFlowUpdateParams{
@@ -93,12 +93,12 @@ func TestPaymentFlowListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.PaymentFlows.List(context.TODO(), moderntreasury.PaymentFlowListParams{
+	_, err := client.PaymentFlows.List(context.TODO(), moderntreasury.PaymentFlowListParams{
 		AfterCursor:          moderntreasury.F("string"),
 		ClientToken:          moderntreasury.F("string"),
 		CounterpartyID:       moderntreasury.F("string"),

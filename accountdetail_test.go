@@ -17,12 +17,12 @@ func TestAccountDetailNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.AccountDetails.New(
+	_, err := client.AccountDetails.New(
 		context.TODO(),
 		moderntreasury.AccountDetailNewParamsAccountsTypeExternalAccounts,
 		"string",
@@ -45,12 +45,12 @@ func TestAccountDetailGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.AccountDetails.Get(
+	_, err := client.AccountDetails.Get(
 		context.TODO(),
 		shared.AccountsTypeExternalAccounts,
 		"string",
@@ -69,12 +69,12 @@ func TestAccountDetailListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.AccountDetails.List(
+	_, err := client.AccountDetails.List(
 		context.TODO(),
 		shared.AccountsTypeExternalAccounts,
 		"string",
@@ -96,12 +96,12 @@ func TestAccountDetailDelete(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	err := c.AccountDetails.Delete(
+	err := client.AccountDetails.Delete(
 		context.TODO(),
 		moderntreasury.AccountDetailDeleteParamsAccountsTypeExternalAccounts,
 		"string",

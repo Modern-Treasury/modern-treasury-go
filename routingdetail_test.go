@@ -17,12 +17,12 @@ func TestRoutingDetailNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.RoutingDetails.New(
+	_, err := client.RoutingDetails.New(
 		context.TODO(),
 		moderntreasury.RoutingDetailNewParamsAccountsTypeExternalAccounts,
 		"string",
@@ -46,12 +46,12 @@ func TestRoutingDetailGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.RoutingDetails.Get(
+	_, err := client.RoutingDetails.Get(
 		context.TODO(),
 		shared.AccountsTypeExternalAccounts,
 		"string",
@@ -70,12 +70,12 @@ func TestRoutingDetailListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.RoutingDetails.List(
+	_, err := client.RoutingDetails.List(
 		context.TODO(),
 		shared.AccountsTypeExternalAccounts,
 		"string",
@@ -97,12 +97,12 @@ func TestRoutingDetailDelete(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	err := c.RoutingDetails.Delete(
+	err := client.RoutingDetails.Delete(
 		context.TODO(),
 		moderntreasury.RoutingDetailDeleteParamsAccountsTypeExternalAccounts,
 		"string",

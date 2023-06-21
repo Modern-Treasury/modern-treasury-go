@@ -16,12 +16,12 @@ func TestAccountCollectionFlowNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.AccountCollectionFlows.New(context.TODO(), moderntreasury.AccountCollectionFlowNewParams{
+	_, err := client.AccountCollectionFlows.New(context.TODO(), moderntreasury.AccountCollectionFlowNewParams{
 		CounterpartyID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		PaymentTypes:   moderntreasury.F([]string{"string", "string", "string"}),
 		IdempotencyKey: moderntreasury.F("string"),
@@ -39,12 +39,12 @@ func TestAccountCollectionFlowGetWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.AccountCollectionFlows.Get(
+	_, err := client.AccountCollectionFlows.Get(
 		context.TODO(),
 		"string",
 		moderntreasury.AccountCollectionFlowGetParams{
@@ -64,12 +64,12 @@ func TestAccountCollectionFlowUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.AccountCollectionFlows.Update(
+	_, err := client.AccountCollectionFlows.Update(
 		context.TODO(),
 		"string",
 		moderntreasury.AccountCollectionFlowUpdateParams{
@@ -90,12 +90,12 @@ func TestAccountCollectionFlowListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.AccountCollectionFlows.List(context.TODO(), moderntreasury.AccountCollectionFlowListParams{
+	_, err := client.AccountCollectionFlows.List(context.TODO(), moderntreasury.AccountCollectionFlowListParams{
 		AfterCursor:       moderntreasury.F("string"),
 		ClientToken:       moderntreasury.F("string"),
 		CounterpartyID:    moderntreasury.F("string"),

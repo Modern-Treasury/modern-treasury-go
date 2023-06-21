@@ -25,7 +25,7 @@ func TestUsage(t *testing.T) {
 		Name:           moderntreasury.F("my bank"),
 	})
 	if err != nil {
-		panic(err.Error())
+		t.Error(err)
 	}
-	t.Logf("%+v\n", externalAccount)
+	t.Logf("%+v\n", externalAccount.ID)
 }

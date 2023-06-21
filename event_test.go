@@ -17,15 +17,12 @@ func TestEventGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Events.Get(
-		context.TODO(),
-		"string",
-	)
+	_, err := client.Events.Get(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -39,12 +36,12 @@ func TestEventListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	c := moderntreasury.NewClient(
+	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := c.Events.List(context.TODO(), moderntreasury.EventListParams{
+	_, err := client.Events.List(context.TODO(), moderntreasury.EventListParams{
 		AfterCursor:    moderntreasury.F("string"),
 		EntityID:       moderntreasury.F("string"),
 		EventName:      moderntreasury.F("string"),

@@ -38,7 +38,7 @@ func NewRoutingDetailService(opts ...option.RequestOption) (r *RoutingDetailServ
 // Create a routing detail for a single external account.
 func (r *RoutingDetailService) New(ctx context.Context, accountsType RoutingDetailNewParamsAccountsType, accountID string, params RoutingDetailNewParams, opts ...option.RequestOption) (res *RoutingDetail, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/routing_details", accountsType, accountID)
+	path := fmt.Sprintf("api/%v/%s/routing_details", accountsType, accountID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
@@ -46,7 +46,7 @@ func (r *RoutingDetailService) New(ctx context.Context, accountsType RoutingDeta
 // Get a single routing detail for a single internal or external account.
 func (r *RoutingDetailService) Get(ctx context.Context, accountsType shared.AccountsType, accountID string, id string, opts ...option.RequestOption) (res *RoutingDetail, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%s/%s/routing_details/%s", accountsType, accountID, id)
+	path := fmt.Sprintf("api/%v/%s/routing_details/%s", accountsType, accountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
@@ -56,7 +56,7 @@ func (r *RoutingDetailService) List(ctx context.Context, accountsType shared.Acc
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := fmt.Sprintf("api/%s/%s/routing_details", accountsType, accountID)
+	path := fmt.Sprintf("api/%v/%s/routing_details", accountsType, accountID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -78,7 +78,7 @@ func (r *RoutingDetailService) ListAutoPaging(ctx context.Context, accountsType 
 func (r *RoutingDetailService) Delete(ctx context.Context, accountsType RoutingDetailDeleteParamsAccountsType, accountID string, id string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
-	path := fmt.Sprintf("api/%s/%s/routing_details/%s", accountsType, accountID, id)
+	path := fmt.Sprintf("api/%v/%s/routing_details/%s", accountsType, accountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return
 }
