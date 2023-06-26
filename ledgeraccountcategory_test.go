@@ -118,8 +118,9 @@ func TestLedgerAccountCategoryListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.LedgerAccountCategories.List(context.TODO(), moderntreasury.LedgerAccountCategoryListParams{
-		AfterCursor: moderntreasury.F("string"),
-		LedgerID:    moderntreasury.F("string"),
+		AfterCursor:     moderntreasury.F("string"),
+		LedgerAccountID: moderntreasury.F("string"),
+		LedgerID:        moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),

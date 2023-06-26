@@ -38,27 +38,27 @@ func NewDocumentService(opts ...option.RequestOption) (r *DocumentService) {
 }
 
 // Create a document.
-func (r *DocumentService) New(ctx context.Context, documentableType DocumentNewParamsDocumentableType, documentableID string, params DocumentNewParams, opts ...option.RequestOption) (res *Document, err error) {
+func (r *DocumentService) New(ctx context.Context, params DocumentNewParams, opts ...option.RequestOption) (res *Document, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%v/%s/documents", documentableType, documentableID)
+	path := "api/documents"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
 // Get an existing document.
-func (r *DocumentService) Get(ctx context.Context, documentableType DocumentGetParamsDocumentableType, documentableID string, id string, opts ...option.RequestOption) (res *Document, err error) {
+func (r *DocumentService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *Document, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/%v/%s/documents/%s", documentableType, documentableID, id)
+	path := fmt.Sprintf("api/documents/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
 // Get a list of documents.
-func (r *DocumentService) List(ctx context.Context, documentableType DocumentListParamsDocumentableType, documentableID string, query DocumentListParams, opts ...option.RequestOption) (res *shared.Page[Document], err error) {
+func (r *DocumentService) List(ctx context.Context, query DocumentListParams, opts ...option.RequestOption) (res *shared.Page[Document], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := fmt.Sprintf("api/%v/%s/documents", documentableType, documentableID)
+	path := "api/documents"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -72,8 +72,8 @@ func (r *DocumentService) List(ctx context.Context, documentableType DocumentLis
 }
 
 // Get a list of documents.
-func (r *DocumentService) ListAutoPaging(ctx context.Context, documentableType DocumentListParamsDocumentableType, documentableID string, query DocumentListParams, opts ...option.RequestOption) *shared.PageAutoPager[Document] {
-	return shared.NewPageAutoPager(r.List(ctx, documentableType, documentableID, query, opts...))
+func (r *DocumentService) ListAutoPaging(ctx context.Context, query DocumentListParams, opts ...option.RequestOption) *shared.PageAutoPager[Document] {
+	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type Document struct {
@@ -87,6 +87,8 @@ type Document struct {
 	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
 	// A category given to the document, can be `null`.
 	DocumentType string `json:"document_type,required,nullable"`
+	// The source of the document. Can be `vendor`, `customer`, or `modern_treasury`.
+	Source string `json:"source,required"`
 	// The unique identifier for the associated object.
 	DocumentableID string `json:"documentable_id,required" format:"uuid"`
 	// The type of the associated object. Currently can be one of `payment_order`,
@@ -107,6 +109,7 @@ type documentJSON struct {
 	UpdatedAt        apijson.Field
 	DiscardedAt      apijson.Field
 	DocumentType     apijson.Field
+	Source           apijson.Field
 	DocumentableID   apijson.Field
 	DocumentableType apijson.Field
 	DocumentDetails  apijson.Field
@@ -135,6 +138,7 @@ const (
 	DocumentDocumentableTypePaymentOrder    DocumentDocumentableType = "payment_order"
 	DocumentDocumentableTypeTransaction     DocumentDocumentableType = "transaction"
 	DocumentDocumentableTypeDecision        DocumentDocumentableType = "decision"
+	DocumentDocumentableTypeConnection      DocumentDocumentableType = "connection"
 )
 
 type DocumentDocumentDetails struct {
@@ -194,7 +198,13 @@ func (r *DocumentFile) UnmarshalJSON(data []byte) (err error) {
 }
 
 type DocumentNewParams struct {
-	File param.Field[io.Reader] `json:"file,required" format:"binary"`
+	// The unique identifier for the associated object.
+	DocumentableID param.Field[string] `query:"documentable_id,required"`
+	// The type of the associated object. Currently can be one of `payment_order`,
+	// `transaction`, `paper_item`, `expected_payment`, `counterparty`, `organization`,
+	// `case`, `internal_account`, `decision`, or `external_account`.
+	DocumentableType param.Field[DocumentNewParamsDocumentableType] `query:"documentable_type,required"`
+	File             param.Field[io.Reader]                         `json:"file,required" format:"binary"`
 	// A category given to the document, can be `null`.
 	DocumentType   param.Field[string] `json:"document_type"`
 	IdempotencyKey param.Field[string] `header:"Idempotency-Key"`
@@ -204,6 +214,20 @@ func (r DocumentNewParams) MarshalMultipart() (data []byte, err error) {
 	body := bytes.NewBuffer(nil)
 	writer := multipart.NewWriter(body)
 	defer writer.Close()
+	{
+		bdy, err := apijson.Marshal(r.DocumentableID)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("documentable_id", string(bdy))
+	}
+	{
+		bdy, err := apijson.Marshal(r.DocumentableType)
+		if err != nil {
+			return nil, err
+		}
+		writer.WriteField("documentable_type", string(bdy))
+	}
 	{
 		name := "anonymous_file"
 		if nameable, ok := r.File.Value.(interface{ Name() string }); ok {
@@ -232,6 +256,17 @@ func (r DocumentNewParams) MarshalMultipart() (data []byte, err error) {
 	return body.Bytes(), nil
 }
 
+// URLQuery serializes [DocumentNewParams]'s query parameters as `url.Values`.
+func (r DocumentNewParams) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+// The type of the associated object. Currently can be one of `payment_order`,
+// `transaction`, `paper_item`, `expected_payment`, `counterparty`, `organization`,
+// `case`, `internal_account`, `decision`, or `external_account`.
 type DocumentNewParamsDocumentableType string
 
 const (
@@ -245,26 +280,18 @@ const (
 	DocumentNewParamsDocumentableTypePaymentOrders    DocumentNewParamsDocumentableType = "payment_orders"
 	DocumentNewParamsDocumentableTypeTransactions     DocumentNewParamsDocumentableType = "transactions"
 	DocumentNewParamsDocumentableTypeDecisions        DocumentNewParamsDocumentableType = "decisions"
-)
-
-type DocumentGetParamsDocumentableType string
-
-const (
-	DocumentGetParamsDocumentableTypeCases            DocumentGetParamsDocumentableType = "cases"
-	DocumentGetParamsDocumentableTypeCounterparties   DocumentGetParamsDocumentableType = "counterparties"
-	DocumentGetParamsDocumentableTypeExpectedPayments DocumentGetParamsDocumentableType = "expected_payments"
-	DocumentGetParamsDocumentableTypeExternalAccounts DocumentGetParamsDocumentableType = "external_accounts"
-	DocumentGetParamsDocumentableTypeInternalAccounts DocumentGetParamsDocumentableType = "internal_accounts"
-	DocumentGetParamsDocumentableTypeOrganizations    DocumentGetParamsDocumentableType = "organizations"
-	DocumentGetParamsDocumentableTypePaperItems       DocumentGetParamsDocumentableType = "paper_items"
-	DocumentGetParamsDocumentableTypePaymentOrders    DocumentGetParamsDocumentableType = "payment_orders"
-	DocumentGetParamsDocumentableTypeTransactions     DocumentGetParamsDocumentableType = "transactions"
-	DocumentGetParamsDocumentableTypeDecisions        DocumentGetParamsDocumentableType = "decisions"
+	DocumentNewParamsDocumentableTypeConnections      DocumentNewParamsDocumentableType = "connections"
 )
 
 type DocumentListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
-	PerPage     param.Field[int64]  `query:"per_page"`
+	// The unique identifier for the associated object.
+	DocumentableID param.Field[string] `query:"documentable_id"`
+	// The type of the associated object. Currently can be one of `payment_order`,
+	// `transaction`, `paper_item`, `expected_payment`, `counterparty`, `organization`,
+	// `case`, `internal_account`, `decision`, or `external_account`.
+	DocumentableType param.Field[DocumentListParamsDocumentableType] `query:"documentable_type"`
+	PerPage          param.Field[int64]                              `query:"per_page"`
 }
 
 // URLQuery serializes [DocumentListParams]'s query parameters as `url.Values`.
@@ -275,6 +302,9 @@ func (r DocumentListParams) URLQuery() (v url.Values) {
 	})
 }
 
+// The type of the associated object. Currently can be one of `payment_order`,
+// `transaction`, `paper_item`, `expected_payment`, `counterparty`, `organization`,
+// `case`, `internal_account`, `decision`, or `external_account`.
 type DocumentListParamsDocumentableType string
 
 const (
@@ -288,4 +318,5 @@ const (
 	DocumentListParamsDocumentableTypePaymentOrders    DocumentListParamsDocumentableType = "payment_orders"
 	DocumentListParamsDocumentableTypeTransactions     DocumentListParamsDocumentableType = "transactions"
 	DocumentListParamsDocumentableTypeDecisions        DocumentListParamsDocumentableType = "decisions"
+	DocumentListParamsDocumentableTypeConnections      DocumentListParamsDocumentableType = "connections"
 )

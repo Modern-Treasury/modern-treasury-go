@@ -134,6 +134,10 @@ type ExpectedPayment struct {
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
 	RemittanceInformation string `json:"remittance_information,required,nullable"`
+	// The reconciliation groups you have for this payment.
+	ReconciliationGroups interface{} `json:"reconciliation_groups,required,nullable"`
+	// The reconciliation filters you have for this payment.
+	ReconciliationFilters interface{} `json:"reconciliation_filters,required,nullable"`
 	// The ID of the Transaction this expected payment object has been matched to.
 	TransactionID string `json:"transaction_id,required,nullable" format:"uuid"`
 	// The ID of the Transaction Line Item this expected payment has been matched to.
@@ -169,6 +173,8 @@ type expectedPaymentJSON struct {
 	Metadata              apijson.Field
 	CounterpartyID        apijson.Field
 	RemittanceInformation apijson.Field
+	ReconciliationGroups  apijson.Field
+	ReconciliationFilters apijson.Field
 	TransactionID         apijson.Field
 	TransactionLineItemID apijson.Field
 	Status                apijson.Field
@@ -260,6 +266,10 @@ type ExpectedPaymentNewParams struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The reconciliation filters you have for this payment.
+	ReconciliationFilters param.Field[interface{}] `json:"reconciliation_filters"`
+	// The reconciliation groups you have for this payment.
+	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -331,6 +341,10 @@ type ExpectedPaymentUpdateParams struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The reconciliation filters you have for this payment.
+	ReconciliationFilters param.Field[interface{}] `json:"reconciliation_filters"`
+	// The reconciliation groups you have for this payment.
+	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
