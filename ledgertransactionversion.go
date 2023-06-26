@@ -4,7 +4,6 @@ package moderntreasury
 
 import (
 	"context"
-	"fmt"
 	"net/http"
 	"net/url"
 	"time"
@@ -36,11 +35,11 @@ func NewLedgerTransactionVersionService(opts ...option.RequestOption) (r *Ledger
 }
 
 // Get a list of ledger transaction versions.
-func (r *LedgerTransactionVersionService) List(ctx context.Context, id string, query LedgerTransactionVersionListParams, opts ...option.RequestOption) (res *shared.Page[LedgerTransactionVersion], err error) {
+func (r *LedgerTransactionVersionService) List(ctx context.Context, query LedgerTransactionVersionListParams, opts ...option.RequestOption) (res *shared.Page[LedgerTransactionVersion], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := fmt.Sprintf("api/ledger_transactions/%s/versions", id)
+	path := "api/ledger_transaction_versions"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -54,8 +53,8 @@ func (r *LedgerTransactionVersionService) List(ctx context.Context, id string, q
 }
 
 // Get a list of ledger transaction versions.
-func (r *LedgerTransactionVersionService) ListAutoPaging(ctx context.Context, id string, query LedgerTransactionVersionListParams, opts ...option.RequestOption) *shared.PageAutoPager[LedgerTransactionVersion] {
-	return shared.NewPageAutoPager(r.List(ctx, id, query, opts...))
+func (r *LedgerTransactionVersionService) ListAutoPaging(ctx context.Context, query LedgerTransactionVersionListParams, opts ...option.RequestOption) *shared.PageAutoPager[LedgerTransactionVersion] {
+	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type LedgerTransactionVersion struct {
@@ -170,6 +169,9 @@ type LedgerTransactionVersionLedgerEntries struct {
 	LedgerAccountCurrencyExponent int64 `json:"ledger_account_currency_exponent,required"`
 	// The ledger transaction that this ledger entry is associated with.
 	LedgerTransactionID string `json:"ledger_transaction_id,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata map[string]string `json:"metadata,required"`
 	// The pending, posted, and available balances for this ledger entry's ledger
 	// account. The posted balance is the sum of all posted entries on the account. The
 	// pending balance is the sum of all pending and posted entries on the account. The
@@ -196,6 +198,7 @@ type ledgerTransactionVersionLedgerEntriesJSON struct {
 	LedgerAccountCurrency          apijson.Field
 	LedgerAccountCurrencyExponent  apijson.Field
 	LedgerTransactionID            apijson.Field
+	Metadata                       apijson.Field
 	ResultingLedgerAccountBalances apijson.Field
 	raw                            string
 	ExtraFields                    map[string]apijson.Field
@@ -375,7 +378,13 @@ type LedgerTransactionVersionListParams struct {
 	// created_at timestamp. For example, for all dates after Jan 1 2000 12:00 UTC, use
 	// created_at%5Bgt%5D=2000-01-01T12:00:00Z.
 	CreatedAt param.Field[map[string]time.Time] `query:"created_at" format:"date-time"`
-	PerPage   param.Field[int64]                `query:"per_page"`
+	// Get all ledger transaction versions that are included in the ledger account
+	// statement.
+	LedgerAccountStatementID param.Field[string] `query:"ledger_account_statement_id"`
+	// Get all the ledger transaction versions corresponding to the ID of a ledger
+	// transaction.
+	LedgerTransactionID param.Field[string] `query:"ledger_transaction_id"`
+	PerPage             param.Field[int64]  `query:"per_page"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// version. For example, for all versions after 2, use version%5Bgt%5D=2.
 	Version param.Field[map[string]int64] `query:"version"`

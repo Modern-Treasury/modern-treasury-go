@@ -419,7 +419,10 @@ func (r LedgerAccountCategoryUpdateParamsBalances) URLQuery() (v url.Values) {
 
 type LedgerAccountCategoryListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
-	LedgerID    param.Field[string] `query:"ledger_id"`
+	// Query categories which contain a ledger account directly or through child
+	// categories.
+	LedgerAccountID param.Field[string] `query:"ledger_account_id"`
+	LedgerID        param.Field[string] `query:"ledger_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
