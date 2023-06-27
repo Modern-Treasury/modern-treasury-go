@@ -84,6 +84,14 @@ func (r *LedgerTransactionService) ListAutoPaging(ctx context.Context, query Led
 	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
+// Create a ledger transaction reversal.
+func (r *LedgerTransactionService) NewReversal(ctx context.Context, ledgerTransactionID string, body LedgerTransactionNewReversalParams, opts ...option.RequestOption) (res *LedgerTransaction, err error) {
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("api/ledger_transactions/%s/reversal", ledgerTransactionID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 type LedgerTransaction struct {
 	ID     string `json:"id,required" format:"uuid"`
 	Object string `json:"object,required"`
@@ -122,30 +130,33 @@ type LedgerTransaction struct {
 	// A unique string to represent the ledger transaction. Only one pending or posted
 	// ledger transaction may have this ID in the ledger.
 	ExternalID string `json:"external_id,required,nullable"`
-	JSON       ledgerTransactionJSON
+	// The ID of the original ledger transaction that this ledger transaction reverses.
+	ReversesLedgerTransactionID string `json:"reverses_ledger_transaction_id,required,nullable"`
+	JSON                        ledgerTransactionJSON
 }
 
 // ledgerTransactionJSON contains the JSON metadata for the struct
 // [LedgerTransaction]
 type ledgerTransactionJSON struct {
-	ID             apijson.Field
-	Object         apijson.Field
-	LiveMode       apijson.Field
-	CreatedAt      apijson.Field
-	UpdatedAt      apijson.Field
-	Description    apijson.Field
-	Status         apijson.Field
-	Metadata       apijson.Field
-	EffectiveAt    apijson.Field
-	EffectiveDate  apijson.Field
-	LedgerEntries  apijson.Field
-	PostedAt       apijson.Field
-	LedgerID       apijson.Field
-	LedgerableType apijson.Field
-	LedgerableID   apijson.Field
-	ExternalID     apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
+	ID                          apijson.Field
+	Object                      apijson.Field
+	LiveMode                    apijson.Field
+	CreatedAt                   apijson.Field
+	UpdatedAt                   apijson.Field
+	Description                 apijson.Field
+	Status                      apijson.Field
+	Metadata                    apijson.Field
+	EffectiveAt                 apijson.Field
+	EffectiveDate               apijson.Field
+	LedgerEntries               apijson.Field
+	PostedAt                    apijson.Field
+	LedgerID                    apijson.Field
+	LedgerableType              apijson.Field
+	LedgerableID                apijson.Field
+	ExternalID                  apijson.Field
+	ReversesLedgerTransactionID apijson.Field
+	raw                         string
+	ExtraFields                 map[string]apijson.Field
 }
 
 func (r *LedgerTransaction) UnmarshalJSON(data []byte) (err error) {
@@ -366,12 +377,14 @@ type LedgerTransactionListParams struct {
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by
 	// effective date. For example, for all dates after Jan 1 2000, use
 	// effective_date%5Bgt%5D=2000-01-01.
-	EffectiveDate           param.Field[map[string]time.Time] `query:"effective_date" format:"date-time"`
-	ExternalID              param.Field[string]               `query:"external_id"`
-	ID                      param.Field[map[string]string]    `query:"id"`
-	LedgerAccountCategoryID param.Field[string]               `query:"ledger_account_category_id"`
-	LedgerAccountID         param.Field[string]               `query:"ledger_account_id"`
-	LedgerID                param.Field[string]               `query:"ledger_id"`
+	EffectiveDate           param.Field[map[string]time.Time]                      `query:"effective_date" format:"date-time"`
+	ExternalID              param.Field[string]                                    `query:"external_id"`
+	ID                      param.Field[map[string]string]                         `query:"id"`
+	LedgerAccountCategoryID param.Field[string]                                    `query:"ledger_account_category_id"`
+	LedgerAccountID         param.Field[string]                                    `query:"ledger_account_id"`
+	LedgerID                param.Field[string]                                    `query:"ledger_id"`
+	LedgerableID            param.Field[string]                                    `query:"ledgerable_id"`
+	LedgerableType          param.Field[LedgerTransactionListParamsLedgerableType] `query:"ledgerable_type"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
@@ -384,8 +397,9 @@ type LedgerTransactionListParams struct {
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// posted_at%5Bgt%5D=2000-01-01T12:00:00Z.
-	PostedAt param.Field[map[string]time.Time]              `query:"posted_at" format:"date-time"`
-	Status   param.Field[LedgerTransactionListParamsStatus] `query:"status"`
+	PostedAt                    param.Field[map[string]time.Time]              `query:"posted_at" format:"date-time"`
+	ReversesLedgerTransactionID param.Field[string]                            `query:"reverses_ledger_transaction_id"`
+	Status                      param.Field[LedgerTransactionListParamsStatus] `query:"status"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// updated_at%5Bgt%5D=2000-01-01T12:00:00Z.
@@ -400,6 +414,21 @@ func (r LedgerTransactionListParams) URLQuery() (v url.Values) {
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
+
+type LedgerTransactionListParamsLedgerableType string
+
+const (
+	LedgerTransactionListParamsLedgerableTypeCounterparty          LedgerTransactionListParamsLedgerableType = "counterparty"
+	LedgerTransactionListParamsLedgerableTypeExpectedPayment       LedgerTransactionListParamsLedgerableType = "expected_payment"
+	LedgerTransactionListParamsLedgerableTypeIncomingPaymentDetail LedgerTransactionListParamsLedgerableType = "incoming_payment_detail"
+	LedgerTransactionListParamsLedgerableTypeInternalAccount       LedgerTransactionListParamsLedgerableType = "internal_account"
+	LedgerTransactionListParamsLedgerableTypeLineItem              LedgerTransactionListParamsLedgerableType = "line_item"
+	LedgerTransactionListParamsLedgerableTypePaperItem             LedgerTransactionListParamsLedgerableType = "paper_item"
+	LedgerTransactionListParamsLedgerableTypePaymentOrder          LedgerTransactionListParamsLedgerableType = "payment_order"
+	LedgerTransactionListParamsLedgerableTypePaymentOrderAttempt   LedgerTransactionListParamsLedgerableType = "payment_order_attempt"
+	LedgerTransactionListParamsLedgerableTypeReturn                LedgerTransactionListParamsLedgerableType = "return"
+	LedgerTransactionListParamsLedgerableTypeReversal              LedgerTransactionListParamsLedgerableType = "reversal"
+)
 
 // Order by `created_at` or `effective_at` in `asc` or `desc` order. For example,
 // to order by `effective_at asc`, use `order_by%5Beffective_at%5D=asc`. Ordering
@@ -438,4 +467,59 @@ const (
 	LedgerTransactionListParamsStatusPending  LedgerTransactionListParamsStatus = "pending"
 	LedgerTransactionListParamsStatusPosted   LedgerTransactionListParamsStatus = "posted"
 	LedgerTransactionListParamsStatusArchived LedgerTransactionListParamsStatus = "archived"
+)
+
+type LedgerTransactionNewReversalParams struct {
+	// An optional free-form description for the reversal ledger transaction. Maximum
+	// of 1000 characters allowed.
+	Description param.Field[string] `json:"description"`
+	// The timestamp (ISO8601 format) at which the reversal ledger transaction happened
+	// for reporting purposes. It defaults to the `effective_at` of the original ledger
+	// transaction if not provided.
+	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date"`
+	// Must be unique within the ledger.
+	ExternalID param.Field[string] `json:"external_id"`
+	// Specify this if you'd like to link the reversal ledger transaction to a Payment
+	// object like Return or Reversal.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// Specify this if you'd like to link the reversal ledger transaction to a Payment
+	// object like Return or Reversal.
+	LedgerableType param.Field[LedgerTransactionNewReversalParamsLedgerableType] `json:"ledgerable_type"`
+	// Additional data to be added to the reversal ledger transaction as key-value
+	// pairs. Both the key and value must be strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// Status of the reversal ledger transaction. It defaults to `posted` if not
+	// provided.
+	Status param.Field[LedgerTransactionNewReversalParamsStatus] `json:"status"`
+}
+
+func (r LedgerTransactionNewReversalParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Specify this if you'd like to link the reversal ledger transaction to a Payment
+// object like Return or Reversal.
+type LedgerTransactionNewReversalParamsLedgerableType string
+
+const (
+	LedgerTransactionNewReversalParamsLedgerableTypeCounterparty          LedgerTransactionNewReversalParamsLedgerableType = "counterparty"
+	LedgerTransactionNewReversalParamsLedgerableTypeExpectedPayment       LedgerTransactionNewReversalParamsLedgerableType = "expected_payment"
+	LedgerTransactionNewReversalParamsLedgerableTypeIncomingPaymentDetail LedgerTransactionNewReversalParamsLedgerableType = "incoming_payment_detail"
+	LedgerTransactionNewReversalParamsLedgerableTypeInternalAccount       LedgerTransactionNewReversalParamsLedgerableType = "internal_account"
+	LedgerTransactionNewReversalParamsLedgerableTypeLineItem              LedgerTransactionNewReversalParamsLedgerableType = "line_item"
+	LedgerTransactionNewReversalParamsLedgerableTypePaperItem             LedgerTransactionNewReversalParamsLedgerableType = "paper_item"
+	LedgerTransactionNewReversalParamsLedgerableTypePaymentOrder          LedgerTransactionNewReversalParamsLedgerableType = "payment_order"
+	LedgerTransactionNewReversalParamsLedgerableTypePaymentOrderAttempt   LedgerTransactionNewReversalParamsLedgerableType = "payment_order_attempt"
+	LedgerTransactionNewReversalParamsLedgerableTypeReturn                LedgerTransactionNewReversalParamsLedgerableType = "return"
+	LedgerTransactionNewReversalParamsLedgerableTypeReversal              LedgerTransactionNewReversalParamsLedgerableType = "reversal"
+)
+
+// Status of the reversal ledger transaction. It defaults to `posted` if not
+// provided.
+type LedgerTransactionNewReversalParamsStatus string
+
+const (
+	LedgerTransactionNewReversalParamsStatusArchived LedgerTransactionNewReversalParamsStatus = "archived"
+	LedgerTransactionNewReversalParamsStatusPending  LedgerTransactionNewReversalParamsStatus = "pending"
+	LedgerTransactionNewReversalParamsStatusPosted   LedgerTransactionNewReversalParamsStatus = "posted"
 )

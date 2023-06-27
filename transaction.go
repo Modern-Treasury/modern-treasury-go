@@ -23,7 +23,8 @@ import (
 // instantiate this service directly, and instead use the [NewTransactionService]
 // method instead.
 type TransactionService struct {
-	Options []option.RequestOption
+	Options   []option.RequestOption
+	LineItems *TransactionLineItemService
 }
 
 // NewTransactionService generates a new service that applies the given options to
@@ -32,6 +33,7 @@ type TransactionService struct {
 func NewTransactionService(opts ...option.RequestOption) (r *TransactionService) {
 	r = &TransactionService{}
 	r.Options = opts
+	r.LineItems = NewTransactionLineItemService(opts...)
 	return
 }
 
@@ -254,6 +256,9 @@ type TransactionListParams struct {
 	// Either `true` or `false`.
 	Posted           param.Field[bool]   `query:"posted"`
 	TransactableType param.Field[string] `query:"transactable_type"`
+	// Filters for transactions including the queried vendor id (an identifier given to
+	// transactions by the bank).
+	VendorID         param.Field[string] `query:"vendor_id"`
 	VirtualAccountID param.Field[string] `query:"virtual_account_id" format:"uuid"`
 }
 

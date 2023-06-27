@@ -120,7 +120,9 @@ type Counterparty struct {
 	// Send an email to the counterparty whenever an associated payment order is sent
 	// to the bank.
 	SendRemittanceAdvice bool `json:"send_remittance_advice,required"`
-	JSON                 counterpartyJSON
+	// The verification status of the counterparty.
+	VerificationStatus CounterpartyVerificationStatus `json:"verification_status,required"`
+	JSON               counterpartyJSON
 }
 
 // counterpartyJSON contains the JSON metadata for the struct [Counterparty]
@@ -136,6 +138,7 @@ type counterpartyJSON struct {
 	Email                apijson.Field
 	Metadata             apijson.Field
 	SendRemittanceAdvice apijson.Field
+	VerificationStatus   apijson.Field
 	raw                  string
 	ExtraFields          map[string]apijson.Field
 }
@@ -306,6 +309,16 @@ const (
 	CounterpartyAccountsVerificationStatusVerified            CounterpartyAccountsVerificationStatus = "verified"
 )
 
+// The verification status of the counterparty.
+type CounterpartyVerificationStatus string
+
+const (
+	CounterpartyVerificationStatusDenied        CounterpartyVerificationStatus = "denied"
+	CounterpartyVerificationStatusNeedsApproval CounterpartyVerificationStatus = "needs_approval"
+	CounterpartyVerificationStatusUnverified    CounterpartyVerificationStatus = "unverified"
+	CounterpartyVerificationStatusVerified      CounterpartyVerificationStatus = "verified"
+)
+
 type CounterpartyCollectAccountResponse struct {
 	// The id of the existing counterparty.
 	ID string `json:"id,required"`
@@ -353,7 +366,9 @@ type CounterpartyNewParams struct {
 	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
 	// Either a valid SSN or EIN.
 	TaxpayerIdentifier param.Field[string] `json:"taxpayer_identifier"`
-	IdempotencyKey     param.Field[string] `header:"Idempotency-Key"`
+	// The verification status of the counterparty.
+	VerificationStatus param.Field[CounterpartyNewParamsVerificationStatus] `json:"verification_status"`
+	IdempotencyKey     param.Field[string]                                  `header:"Idempotency-Key"`
 }
 
 func (r CounterpartyNewParams) MarshalJSON() (data []byte, err error) {
@@ -581,6 +596,16 @@ type CounterpartyNewParamsLedgerType string
 const (
 	CounterpartyNewParamsLedgerTypeCustomer CounterpartyNewParamsLedgerType = "customer"
 	CounterpartyNewParamsLedgerTypeVendor   CounterpartyNewParamsLedgerType = "vendor"
+)
+
+// The verification status of the counterparty.
+type CounterpartyNewParamsVerificationStatus string
+
+const (
+	CounterpartyNewParamsVerificationStatusDenied        CounterpartyNewParamsVerificationStatus = "denied"
+	CounterpartyNewParamsVerificationStatusNeedsApproval CounterpartyNewParamsVerificationStatus = "needs_approval"
+	CounterpartyNewParamsVerificationStatusUnverified    CounterpartyNewParamsVerificationStatus = "unverified"
+	CounterpartyNewParamsVerificationStatusVerified      CounterpartyNewParamsVerificationStatus = "verified"
 )
 
 type CounterpartyUpdateParams struct {

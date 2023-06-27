@@ -128,34 +128,50 @@ type IncomingPaymentDetail struct {
 	AsOfDate time.Time `json:"as_of_date,required" format:"date"`
 	// The identifier of the vendor bank.
 	VendorID string `json:"vendor_id,required,nullable" format:"uuid"`
-	JSON     incomingPaymentDetailJSON
+	// The routing number of the originating account for the incoming payment detail.
+	OriginatingRoutingNumber string `json:"originating_routing_number,required,nullable"`
+	// The type of the originating routing number for the incoming payment detail.
+	OriginatingRoutingNumberType IncomingPaymentDetailOriginatingRoutingNumberType `json:"originating_routing_number_type,required,nullable"`
+	// The account number of the originating account for the incoming payment detail.
+	OriginatingAccountNumber string `json:"originating_account_number,nullable"`
+	// The last 4 digits of the originating account_number for the incoming payment
+	// detail.
+	OriginatingAccountNumberSafe string `json:"originating_account_number_safe,required,nullable"`
+	// The type of the originating account number for the incoming payment detail.
+	OriginatingAccountNumberType IncomingPaymentDetailOriginatingAccountNumberType `json:"originating_account_number_type,required,nullable"`
+	JSON                         incomingPaymentDetailJSON
 }
 
 // incomingPaymentDetailJSON contains the JSON metadata for the struct
 // [IncomingPaymentDetail]
 type incomingPaymentDetailJSON struct {
-	ID                    apijson.Field
-	Object                apijson.Field
-	LiveMode              apijson.Field
-	CreatedAt             apijson.Field
-	UpdatedAt             apijson.Field
-	InternalAccountID     apijson.Field
-	VirtualAccountID      apijson.Field
-	VirtualAccount        apijson.Field
-	TransactionLineItemID apijson.Field
-	TransactionID         apijson.Field
-	LedgerTransactionID   apijson.Field
-	Type                  apijson.Field
-	Data                  apijson.Field
-	Amount                apijson.Field
-	Currency              apijson.Field
-	Direction             apijson.Field
-	Status                apijson.Field
-	Metadata              apijson.Field
-	AsOfDate              apijson.Field
-	VendorID              apijson.Field
-	raw                   string
-	ExtraFields           map[string]apijson.Field
+	ID                           apijson.Field
+	Object                       apijson.Field
+	LiveMode                     apijson.Field
+	CreatedAt                    apijson.Field
+	UpdatedAt                    apijson.Field
+	InternalAccountID            apijson.Field
+	VirtualAccountID             apijson.Field
+	VirtualAccount               apijson.Field
+	TransactionLineItemID        apijson.Field
+	TransactionID                apijson.Field
+	LedgerTransactionID          apijson.Field
+	Type                         apijson.Field
+	Data                         apijson.Field
+	Amount                       apijson.Field
+	Currency                     apijson.Field
+	Direction                    apijson.Field
+	Status                       apijson.Field
+	Metadata                     apijson.Field
+	AsOfDate                     apijson.Field
+	VendorID                     apijson.Field
+	OriginatingRoutingNumber     apijson.Field
+	OriginatingRoutingNumberType apijson.Field
+	OriginatingAccountNumber     apijson.Field
+	OriginatingAccountNumberSafe apijson.Field
+	OriginatingAccountNumberType apijson.Field
+	raw                          string
+	ExtraFields                  map[string]apijson.Field
 }
 
 func (r *IncomingPaymentDetail) UnmarshalJSON(data []byte) (err error) {
@@ -194,6 +210,33 @@ const (
 	IncomingPaymentDetailStatusCompleted IncomingPaymentDetailStatus = "completed"
 	IncomingPaymentDetailStatusPending   IncomingPaymentDetailStatus = "pending"
 	IncomingPaymentDetailStatusReturned  IncomingPaymentDetailStatus = "returned"
+)
+
+// The type of the originating routing number for the incoming payment detail.
+type IncomingPaymentDetailOriginatingRoutingNumberType string
+
+const (
+	IncomingPaymentDetailOriginatingRoutingNumberTypeAba          IncomingPaymentDetailOriginatingRoutingNumberType = "aba"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeAuBsb        IncomingPaymentDetailOriginatingRoutingNumberType = "au_bsb"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeBrCodigo     IncomingPaymentDetailOriginatingRoutingNumberType = "br_codigo"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeCaCpa        IncomingPaymentDetailOriginatingRoutingNumberType = "ca_cpa"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeChips        IncomingPaymentDetailOriginatingRoutingNumberType = "chips"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeCnaps        IncomingPaymentDetailOriginatingRoutingNumberType = "cnaps"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeGBSortCode   IncomingPaymentDetailOriginatingRoutingNumberType = "gb_sort_code"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeInIfsc       IncomingPaymentDetailOriginatingRoutingNumberType = "in_ifsc"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeMyBranchCode IncomingPaymentDetailOriginatingRoutingNumberType = "my_branch_code"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeSwift        IncomingPaymentDetailOriginatingRoutingNumberType = "swift"
+)
+
+// The type of the originating account number for the incoming payment detail.
+type IncomingPaymentDetailOriginatingAccountNumberType string
+
+const (
+	IncomingPaymentDetailOriginatingAccountNumberTypeClabe         IncomingPaymentDetailOriginatingAccountNumberType = "clabe"
+	IncomingPaymentDetailOriginatingAccountNumberTypeIban          IncomingPaymentDetailOriginatingAccountNumberType = "iban"
+	IncomingPaymentDetailOriginatingAccountNumberTypeOther         IncomingPaymentDetailOriginatingAccountNumberType = "other"
+	IncomingPaymentDetailOriginatingAccountNumberTypePan           IncomingPaymentDetailOriginatingAccountNumberType = "pan"
+	IncomingPaymentDetailOriginatingAccountNumberTypeWalletAddress IncomingPaymentDetailOriginatingAccountNumberType = "wallet_address"
 )
 
 type IncomingPaymentDetailUpdateParams struct {

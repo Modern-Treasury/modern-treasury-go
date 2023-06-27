@@ -241,6 +241,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 		}),
 		SendRemittanceAdvice: moderntreasury.F(true),
 		TaxpayerIdentifier:   moderntreasury.F("string"),
+		VerificationStatus:   moderntreasury.F(moderntreasury.CounterpartyNewParamsVerificationStatusDenied),
 		IdempotencyKey:       moderntreasury.F("string"),
 	})
 	if err != nil {
