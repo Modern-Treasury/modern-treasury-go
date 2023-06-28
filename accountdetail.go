@@ -84,35 +84,35 @@ func (r *AccountDetailService) Delete(ctx context.Context, accountsType AccountD
 }
 
 type AccountDetail struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode    bool      `json:"live_mode,required"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt   time.Time `json:"updated_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
-	// The account number for the bank account.
-	AccountNumber string `json:"account_number"`
+	ID string `json:"id,required" format:"uuid"`
+	// The last 4 digits of the account_number.
+	AccountNumberSafe string `json:"account_number_safe,required"`
 	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
 	// account number is in a generic format.
 	AccountNumberType AccountDetailAccountNumberType `json:"account_number_type,required"`
-	// The last 4 digits of the account_number.
-	AccountNumberSafe string `json:"account_number_safe,required"`
-	JSON              accountDetailJSON
+	CreatedAt         time.Time                      `json:"created_at,required" format:"date-time"`
+	DiscardedAt       time.Time                      `json:"discarded_at,required,nullable" format:"date-time"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode  bool      `json:"live_mode,required"`
+	Object    string    `json:"object,required"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	// The account number for the bank account.
+	AccountNumber string `json:"account_number"`
+	JSON          accountDetailJSON
 }
 
 // accountDetailJSON contains the JSON metadata for the struct [AccountDetail]
 type accountDetailJSON struct {
 	ID                apijson.Field
-	Object            apijson.Field
-	LiveMode          apijson.Field
-	CreatedAt         apijson.Field
-	UpdatedAt         apijson.Field
-	DiscardedAt       apijson.Field
-	AccountNumber     apijson.Field
-	AccountNumberType apijson.Field
 	AccountNumberSafe apijson.Field
+	AccountNumberType apijson.Field
+	CreatedAt         apijson.Field
+	DiscardedAt       apijson.Field
+	LiveMode          apijson.Field
+	Object            apijson.Field
+	UpdatedAt         apijson.Field
+	AccountNumber     apijson.Field
 	raw               string
 	ExtraFields       map[string]apijson.Field
 }
@@ -134,21 +134,21 @@ const (
 )
 
 type AccountDetailParam struct {
-	ID     param.Field[string] `json:"id,required" format:"uuid"`
-	Object param.Field[string] `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode    param.Field[bool]      `json:"live_mode,required"`
-	CreatedAt   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
-	UpdatedAt   param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-	DiscardedAt param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
-	// The account number for the bank account.
-	AccountNumber param.Field[string] `json:"account_number"`
+	ID param.Field[string] `json:"id,required" format:"uuid"`
+	// The last 4 digits of the account_number.
+	AccountNumberSafe param.Field[string] `json:"account_number_safe,required"`
 	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
 	// account number is in a generic format.
 	AccountNumberType param.Field[AccountDetailAccountNumberType] `json:"account_number_type,required"`
-	// The last 4 digits of the account_number.
-	AccountNumberSafe param.Field[string] `json:"account_number_safe,required"`
+	CreatedAt         param.Field[time.Time]                      `json:"created_at,required" format:"date-time"`
+	DiscardedAt       param.Field[time.Time]                      `json:"discarded_at,required" format:"date-time"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode  param.Field[bool]      `json:"live_mode,required"`
+	Object    param.Field[string]    `json:"object,required"`
+	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
+	// The account number for the bank account.
+	AccountNumber param.Field[string] `json:"account_number"`
 }
 
 func (r AccountDetailParam) MarshalJSON() (data []byte, err error) {

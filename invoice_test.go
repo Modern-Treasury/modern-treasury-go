@@ -27,7 +27,7 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 		CounterpartyID:       moderntreasury.F("string"),
 		DueDate:              moderntreasury.F(time.Now()),
 		OriginatingAccountID: moderntreasury.F("string"),
-		ContactDetails: moderntreasury.F([]moderntreasury.InvoiceNewParamsContactDetails{{
+		ContactDetails: moderntreasury.F([]moderntreasury.InvoiceNewParamsContactDetail{{
 			ID:                    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Object:                moderntreasury.F("string"),
 			LiveMode:              moderntreasury.F(true),
@@ -124,7 +124,7 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"string",
 		moderntreasury.InvoiceUpdateParams{
-			ContactDetails: moderntreasury.F([]moderntreasury.InvoiceUpdateParamsContactDetails{{
+			ContactDetails: moderntreasury.F([]moderntreasury.InvoiceUpdateParamsContactDetail{{
 				ID:                    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				Object:                moderntreasury.F("string"),
 				LiveMode:              moderntreasury.F(true),

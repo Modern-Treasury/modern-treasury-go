@@ -83,6 +83,7 @@ func TestTransactionListWithOptionalParams(t *testing.T) {
 		PerPage:          moderntreasury.F(int64(0)),
 		Posted:           moderntreasury.F(true),
 		TransactableType: moderntreasury.F("string"),
+		VendorID:         moderntreasury.F("string"),
 		VirtualAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 	})
 	if err != nil {

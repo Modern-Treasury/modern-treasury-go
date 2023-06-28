@@ -24,7 +24,7 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.ExternalAccounts.New(context.TODO(), moderntreasury.ExternalAccountNewParams{
 		CounterpartyID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		AccountDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsAccountDetails{{
+		AccountDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsAccountDetail{{
 			AccountNumber:     moderntreasury.F("string"),
 			AccountNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsAccountDetailsAccountNumberTypeIban),
 		}, {
@@ -35,7 +35,7 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 			AccountNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsAccountDetailsAccountNumberTypeIban),
 		}}),
 		AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
-		ContactDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsContactDetails{{
+		ContactDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsContactDetail{{
 			ContactIdentifier:     moderntreasury.F("string"),
 			ContactIdentifierType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsContactDetailsContactIdentifierTypeEmail),
 		}, {
@@ -78,7 +78,7 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 		PartyName:           moderntreasury.F("string"),
 		PartyType:           moderntreasury.F(moderntreasury.ExternalAccountNewParamsPartyTypeBusiness),
 		PlaidProcessorToken: moderntreasury.F("string"),
-		RoutingDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsRoutingDetails{{
+		RoutingDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsRoutingDetail{{
 			RoutingNumber:     moderntreasury.F("string"),
 			RoutingNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
 			PaymentType:       moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsPaymentTypeACH),

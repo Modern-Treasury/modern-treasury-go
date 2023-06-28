@@ -83,41 +83,41 @@ func (r *AccountCollectionFlowService) ListAutoPaging(ctx context.Context, query
 }
 
 type AccountConnectionFlow struct {
-	ID     string `json:"id" format:"uuid"`
-	Object string `json:"object"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode"`
-	CreatedAt time.Time `json:"created_at" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at" format:"date-time"`
-	// The client token of the account collection flow. This token can be used to embed
-	// account collection in your client-side application.
-	ClientToken string `json:"client_token"`
-	// The current status of the account collection flow. One of `pending`,
-	// `completed`, `expired`, or `cancelled`.
-	Status AccountConnectionFlowStatus `json:"status"`
 	// The ID of a counterparty. An external account created with this flow will be
 	// associated with this counterparty.
-	CounterpartyID string `json:"counterparty_id,required" format:"uuid"`
+	CounterpartyID string                             `json:"counterparty_id,required" format:"uuid"`
+	PaymentTypes   []AccountConnectionFlowPaymentType `json:"payment_types,required"`
+	ID             string                             `json:"id" format:"uuid"`
+	// The client token of the account collection flow. This token can be used to embed
+	// account collection in your client-side application.
+	ClientToken string    `json:"client_token"`
+	CreatedAt   time.Time `json:"created_at" format:"date-time"`
 	// If present, the ID of the external account created using this flow.
-	ExternalAccountID string                              `json:"external_account_id,nullable" format:"uuid"`
-	PaymentTypes      []AccountConnectionFlowPaymentTypes `json:"payment_types,required"`
-	JSON              accountConnectionFlowJSON
+	ExternalAccountID string `json:"external_account_id,nullable" format:"uuid"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool   `json:"live_mode"`
+	Object   string `json:"object"`
+	// The current status of the account collection flow. One of `pending`,
+	// `completed`, `expired`, or `cancelled`.
+	Status    AccountConnectionFlowStatus `json:"status"`
+	UpdatedAt time.Time                   `json:"updated_at" format:"date-time"`
+	JSON      accountConnectionFlowJSON
 }
 
 // accountConnectionFlowJSON contains the JSON metadata for the struct
 // [AccountConnectionFlow]
 type accountConnectionFlowJSON struct {
-	ID                apijson.Field
-	Object            apijson.Field
-	LiveMode          apijson.Field
-	CreatedAt         apijson.Field
-	UpdatedAt         apijson.Field
-	ClientToken       apijson.Field
-	Status            apijson.Field
 	CounterpartyID    apijson.Field
-	ExternalAccountID apijson.Field
 	PaymentTypes      apijson.Field
+	ID                apijson.Field
+	ClientToken       apijson.Field
+	CreatedAt         apijson.Field
+	ExternalAccountID apijson.Field
+	LiveMode          apijson.Field
+	Object            apijson.Field
+	Status            apijson.Field
+	UpdatedAt         apijson.Field
 	raw               string
 	ExtraFields       map[string]apijson.Field
 }
@@ -125,6 +125,14 @@ type accountConnectionFlowJSON struct {
 func (r *AccountConnectionFlow) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+// An account created with this flow will support payments of one of these types.
+type AccountConnectionFlowPaymentType string
+
+const (
+	AccountConnectionFlowPaymentTypeACH  AccountConnectionFlowPaymentType = "ach"
+	AccountConnectionFlowPaymentTypeWire AccountConnectionFlowPaymentType = "wire"
+)
 
 // The current status of the account collection flow. One of `pending`,
 // `completed`, `expired`, or `cancelled`.
@@ -135,14 +143,6 @@ const (
 	AccountConnectionFlowStatusCompleted AccountConnectionFlowStatus = "completed"
 	AccountConnectionFlowStatusExpired   AccountConnectionFlowStatus = "expired"
 	AccountConnectionFlowStatusPending   AccountConnectionFlowStatus = "pending"
-)
-
-// An account created with this flow will support payments of one of these types.
-type AccountConnectionFlowPaymentTypes string
-
-const (
-	AccountConnectionFlowPaymentTypesACH  AccountConnectionFlowPaymentTypes = "ach"
-	AccountConnectionFlowPaymentTypesWire AccountConnectionFlowPaymentTypes = "wire"
 )
 
 type AccountCollectionFlowNewParams struct {

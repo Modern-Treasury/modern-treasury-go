@@ -91,28 +91,17 @@ func (r *LedgerAccountService) Delete(ctx context.Context, id string, opts ...op
 }
 
 type LedgerAccount struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode    bool      `json:"live_mode,required"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt   time.Time `json:"updated_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
-	// The name of the ledger account.
-	Name string `json:"name,required"`
-	// The description of the ledger account.
-	Description string `json:"description,required,nullable"`
-	// The normal balance of the ledger account.
-	NormalBalance LedgerAccountNormalBalance `json:"normal_balance,required"`
+	ID string `json:"id,required" format:"uuid"`
 	// The pending, posted, and available balances for this ledger account. The posted
 	// balance is the sum of all posted entries on the account. The pending balance is
 	// the sum of all pending and posted entries on the account. The available balance
 	// is the posted incoming entries minus the sum of the pending and posted outgoing
 	// amounts.
-	Balances LedgerAccountBalances `json:"balances,required"`
-	// Lock version of the ledger account.
-	LockVersion int64 `json:"lock_version,required"`
+	Balances  LedgerAccountBalances `json:"balances,required"`
+	CreatedAt time.Time             `json:"created_at,required" format:"date-time"`
+	// The description of the ledger account.
+	Description string    `json:"description,required,nullable"`
+	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
 	// The id of the ledger that this account belongs to.
 	LedgerID string `json:"ledger_id,required" format:"uuid"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
@@ -122,29 +111,40 @@ type LedgerAccount struct {
 	// be populated here, otherwise null. The value is one of internal_account or
 	// external_account.
 	LedgerableType LedgerAccountLedgerableType `json:"ledgerable_type,required,nullable"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// Lock version of the ledger account.
+	LockVersion int64 `json:"lock_version,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata map[string]string `json:"metadata,required"`
-	JSON     ledgerAccountJSON
+	// The name of the ledger account.
+	Name string `json:"name,required"`
+	// The normal balance of the ledger account.
+	NormalBalance LedgerAccountNormalBalance `json:"normal_balance,required"`
+	Object        string                     `json:"object,required"`
+	UpdatedAt     time.Time                  `json:"updated_at,required" format:"date-time"`
+	JSON          ledgerAccountJSON
 }
 
 // ledgerAccountJSON contains the JSON metadata for the struct [LedgerAccount]
 type ledgerAccountJSON struct {
 	ID             apijson.Field
-	Object         apijson.Field
-	LiveMode       apijson.Field
-	CreatedAt      apijson.Field
-	UpdatedAt      apijson.Field
-	DiscardedAt    apijson.Field
-	Name           apijson.Field
-	Description    apijson.Field
-	NormalBalance  apijson.Field
 	Balances       apijson.Field
-	LockVersion    apijson.Field
+	CreatedAt      apijson.Field
+	Description    apijson.Field
+	DiscardedAt    apijson.Field
 	LedgerID       apijson.Field
 	LedgerableID   apijson.Field
 	LedgerableType apijson.Field
+	LiveMode       apijson.Field
+	LockVersion    apijson.Field
 	Metadata       apijson.Field
+	Name           apijson.Field
+	NormalBalance  apijson.Field
+	Object         apijson.Field
+	UpdatedAt      apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
@@ -153,20 +153,17 @@ func (r *LedgerAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The normal balance of the ledger account.
-type LedgerAccountNormalBalance string
-
-const (
-	LedgerAccountNormalBalanceCredit LedgerAccountNormalBalance = "credit"
-	LedgerAccountNormalBalanceDebit  LedgerAccountNormalBalance = "debit"
-)
-
 // The pending, posted, and available balances for this ledger account. The posted
 // balance is the sum of all posted entries on the account. The pending balance is
 // the sum of all pending and posted entries on the account. The available balance
 // is the posted incoming entries minus the sum of the pending and posted outgoing
 // amounts.
 type LedgerAccountBalances struct {
+	// The available_balance is the sum of all posted inbound entries and pending
+	// outbound entries. For credit normal, available_amount = posted_credits -
+	// pending_debits; for debit normal, available_amount = posted_debits -
+	// pending_credits.
+	AvailableBalance LedgerAccountBalancesAvailableBalance `json:"available_balance,required"`
 	// The inclusive lower bound of the effective_at timestamp for the returned
 	// balances.
 	EffectiveAtLowerBound string `json:"effective_at_lower_bound,required,nullable" format:"time"`
@@ -177,22 +174,17 @@ type LedgerAccountBalances struct {
 	PendingBalance LedgerAccountBalancesPendingBalance `json:"pending_balance,required"`
 	// The posted_balance is the sum of all posted entries.
 	PostedBalance LedgerAccountBalancesPostedBalance `json:"posted_balance,required"`
-	// The available_balance is the sum of all posted inbound entries and pending
-	// outbound entries. For credit normal, available_amount = posted_credits -
-	// pending_debits; for debit normal, available_amount = posted_debits -
-	// pending_credits.
-	AvailableBalance LedgerAccountBalancesAvailableBalance `json:"available_balance,required"`
-	JSON             ledgerAccountBalancesJSON
+	JSON          ledgerAccountBalancesJSON
 }
 
 // ledgerAccountBalancesJSON contains the JSON metadata for the struct
 // [LedgerAccountBalances]
 type ledgerAccountBalancesJSON struct {
+	AvailableBalance      apijson.Field
 	EffectiveAtLowerBound apijson.Field
 	EffectiveAtUpperBound apijson.Field
 	PendingBalance        apijson.Field
 	PostedBalance         apijson.Field
-	AvailableBalance      apijson.Field
 	raw                   string
 	ExtraFields           map[string]apijson.Field
 }
@@ -201,26 +193,57 @@ func (r *LedgerAccountBalances) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The pending_balance is the sum of all pending and posted entries.
-type LedgerAccountBalancesPendingBalance struct {
-	Credits int64 `json:"credits,required"`
-	Debits  int64 `json:"debits,required"`
+// The available_balance is the sum of all posted inbound entries and pending
+// outbound entries. For credit normal, available_amount = posted_credits -
+// pending_debits; for debit normal, available_amount = posted_debits -
+// pending_credits.
+type LedgerAccountBalancesAvailableBalance struct {
 	Amount  int64 `json:"amount,required"`
+	Credits int64 `json:"credits,required"`
 	// The currency of the ledger account.
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64 `json:"currency_exponent,required"`
+	Debits           int64 `json:"debits,required"`
+	JSON             ledgerAccountBalancesAvailableBalanceJSON
+}
+
+// ledgerAccountBalancesAvailableBalanceJSON contains the JSON metadata for the
+// struct [LedgerAccountBalancesAvailableBalance]
+type ledgerAccountBalancesAvailableBalanceJSON struct {
+	Amount           apijson.Field
+	Credits          apijson.Field
+	Currency         apijson.Field
+	CurrencyExponent apijson.Field
+	Debits           apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
+}
+
+func (r *LedgerAccountBalancesAvailableBalance) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The pending_balance is the sum of all pending and posted entries.
+type LedgerAccountBalancesPendingBalance struct {
+	Amount  int64 `json:"amount,required"`
+	Credits int64 `json:"credits,required"`
+	// The currency of the ledger account.
+	Currency string `json:"currency,required"`
+	// The currency exponent of the ledger account.
+	CurrencyExponent int64 `json:"currency_exponent,required"`
+	Debits           int64 `json:"debits,required"`
 	JSON             ledgerAccountBalancesPendingBalanceJSON
 }
 
 // ledgerAccountBalancesPendingBalanceJSON contains the JSON metadata for the
 // struct [LedgerAccountBalancesPendingBalance]
 type ledgerAccountBalancesPendingBalanceJSON struct {
-	Credits          apijson.Field
-	Debits           apijson.Field
 	Amount           apijson.Field
+	Credits          apijson.Field
 	Currency         apijson.Field
 	CurrencyExponent apijson.Field
+	Debits           apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
@@ -231,60 +254,29 @@ func (r *LedgerAccountBalancesPendingBalance) UnmarshalJSON(data []byte) (err er
 
 // The posted_balance is the sum of all posted entries.
 type LedgerAccountBalancesPostedBalance struct {
-	Credits int64 `json:"credits,required"`
-	Debits  int64 `json:"debits,required"`
 	Amount  int64 `json:"amount,required"`
+	Credits int64 `json:"credits,required"`
 	// The currency of the ledger account.
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64 `json:"currency_exponent,required"`
+	Debits           int64 `json:"debits,required"`
 	JSON             ledgerAccountBalancesPostedBalanceJSON
 }
 
 // ledgerAccountBalancesPostedBalanceJSON contains the JSON metadata for the struct
 // [LedgerAccountBalancesPostedBalance]
 type ledgerAccountBalancesPostedBalanceJSON struct {
-	Credits          apijson.Field
-	Debits           apijson.Field
 	Amount           apijson.Field
+	Credits          apijson.Field
 	Currency         apijson.Field
 	CurrencyExponent apijson.Field
+	Debits           apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
 
 func (r *LedgerAccountBalancesPostedBalance) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-// The available_balance is the sum of all posted inbound entries and pending
-// outbound entries. For credit normal, available_amount = posted_credits -
-// pending_debits; for debit normal, available_amount = posted_debits -
-// pending_credits.
-type LedgerAccountBalancesAvailableBalance struct {
-	Credits int64 `json:"credits,required"`
-	Debits  int64 `json:"debits,required"`
-	Amount  int64 `json:"amount,required"`
-	// The currency of the ledger account.
-	Currency string `json:"currency,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent int64 `json:"currency_exponent,required"`
-	JSON             ledgerAccountBalancesAvailableBalanceJSON
-}
-
-// ledgerAccountBalancesAvailableBalanceJSON contains the JSON metadata for the
-// struct [LedgerAccountBalancesAvailableBalance]
-type ledgerAccountBalancesAvailableBalanceJSON struct {
-	Credits          apijson.Field
-	Debits           apijson.Field
-	Amount           apijson.Field
-	Currency         apijson.Field
-	CurrencyExponent apijson.Field
-	raw              string
-	ExtraFields      map[string]apijson.Field
-}
-
-func (r *LedgerAccountBalancesAvailableBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -296,6 +288,14 @@ type LedgerAccountLedgerableType string
 const (
 	LedgerAccountLedgerableTypeExternalAccount LedgerAccountLedgerableType = "external_account"
 	LedgerAccountLedgerableTypeInternalAccount LedgerAccountLedgerableType = "internal_account"
+)
+
+// The normal balance of the ledger account.
+type LedgerAccountNormalBalance string
+
+const (
+	LedgerAccountNormalBalanceCredit LedgerAccountNormalBalance = "credit"
+	LedgerAccountNormalBalanceDebit  LedgerAccountNormalBalance = "debit"
 )
 
 type LedgerAccountNewParams struct {
@@ -397,6 +397,7 @@ func (r LedgerAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 }
 
 type LedgerAccountListParams struct {
+	ID          param.Field[string] `query:"id"`
 	AfterCursor param.Field[string] `query:"after_cursor"`
 	// Use balances[effective_at_lower_bound] and balances[effective_at_upper_bound] to
 	// get the balances change between the two timestamps. The lower bound is inclusive
@@ -407,7 +408,6 @@ type LedgerAccountListParams struct {
 	// created at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// created_at%5Bgt%5D=2000-01-01T12:00:00Z.
 	CreatedAt               param.Field[map[string]time.Time] `query:"created_at" format:"date-time"`
-	ID                      param.Field[string]               `query:"id"`
 	LedgerAccountCategoryID param.Field[string]               `query:"ledger_account_category_id"`
 	LedgerID                param.Field[string]               `query:"ledger_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
