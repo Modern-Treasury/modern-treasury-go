@@ -91,46 +91,46 @@ func (r *InvoiceLineItemService) Delete(ctx context.Context, invoiceID string, i
 }
 
 type InvoiceLineItem struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
+	ID string `json:"id,required" format:"uuid"`
+	// The total amount for this line item specified in the invoice currency's smallest
+	// unit.
+	Amount    int64     `json:"amount,required"`
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	// The name of the line item, typically a product or SKU name.
-	Name string `json:"name,required"`
 	// An optional free-form description of the line item.
 	Description string `json:"description,required"`
+	// Either `debit` or `credit`. `debit` indicates that a client owes the business
+	// money and increases the invoice's `total_amount` due. `credit` has the opposite
+	// intention and effect.
+	Direction string `json:"direction,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// The name of the line item, typically a product or SKU name.
+	Name   string `json:"name,required"`
+	Object string `json:"object,required"`
 	// The number of units of a product or service that this line item is for. Must be
 	// a whole number. Defaults to 1 if not provided.
 	Quantity int64 `json:"quantity,required"`
 	// The cost per unit of the product or service that this line item is for,
 	// specified in the invoice currency's smallest unit.
-	UnitAmount int64 `json:"unit_amount,required"`
-	// Either `debit` or `credit`. `debit` indicates that a client owes the business
-	// money and increases the invoice's `total_amount` due. `credit` has the opposite
-	// intention and effect.
-	Direction string `json:"direction,required"`
-	// The total amount for this line item specified in the invoice currency's smallest
-	// unit.
-	Amount int64 `json:"amount,required"`
-	JSON   invoiceLineItemJSON
+	UnitAmount int64     `json:"unit_amount,required"`
+	UpdatedAt  time.Time `json:"updated_at,required" format:"date-time"`
+	JSON       invoiceLineItemJSON
 }
 
 // invoiceLineItemJSON contains the JSON metadata for the struct [InvoiceLineItem]
 type invoiceLineItemJSON struct {
 	ID          apijson.Field
-	Object      apijson.Field
-	LiveMode    apijson.Field
+	Amount      apijson.Field
 	CreatedAt   apijson.Field
-	UpdatedAt   apijson.Field
-	Name        apijson.Field
 	Description apijson.Field
+	Direction   apijson.Field
+	LiveMode    apijson.Field
+	Name        apijson.Field
+	Object      apijson.Field
 	Quantity    apijson.Field
 	UnitAmount  apijson.Field
-	Direction   apijson.Field
-	Amount      apijson.Field
+	UpdatedAt   apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -187,16 +187,16 @@ func (r InvoiceLineItemUpdateParams) MarshalJSON() (data []byte, err error) {
 }
 
 type InvoiceLineItemUpdateParamsContactDetails struct {
-	ID     param.Field[string] `json:"id,required" format:"uuid"`
-	Object param.Field[string] `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode              param.Field[bool]                                                           `json:"live_mode,required"`
-	CreatedAt             param.Field[time.Time]                                                      `json:"created_at,required" format:"date-time"`
-	UpdatedAt             param.Field[time.Time]                                                      `json:"updated_at,required" format:"date-time"`
-	DiscardedAt           param.Field[time.Time]                                                      `json:"discarded_at,required" format:"date-time"`
+	ID                    param.Field[string]                                                         `json:"id,required" format:"uuid"`
 	ContactIdentifier     param.Field[string]                                                         `json:"contact_identifier,required"`
 	ContactIdentifierType param.Field[InvoiceLineItemUpdateParamsContactDetailsContactIdentifierType] `json:"contact_identifier_type,required"`
+	CreatedAt             param.Field[time.Time]                                                      `json:"created_at,required" format:"date-time"`
+	DiscardedAt           param.Field[time.Time]                                                      `json:"discarded_at,required" format:"date-time"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode  param.Field[bool]      `json:"live_mode,required"`
+	Object    param.Field[string]    `json:"object,required"`
+	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
 }
 
 func (r InvoiceLineItemUpdateParamsContactDetails) MarshalJSON() (data []byte, err error) {
@@ -213,16 +213,16 @@ const (
 
 // The counterparty's billing address.
 type InvoiceLineItemUpdateParamsCounterpartyBillingAddress struct {
-	Line1 param.Field[string] `json:"line1,required"`
-	Line2 param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
-	// Region or State.
-	Region param.Field[string] `json:"region,required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country,required"`
+	Line1   param.Field[string] `json:"line1,required"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality,required"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code,required"`
+	// Region or State.
+	Region param.Field[string] `json:"region,required"`
+	Line2  param.Field[string] `json:"line2"`
 }
 
 func (r InvoiceLineItemUpdateParamsCounterpartyBillingAddress) MarshalJSON() (data []byte, err error) {
@@ -231,16 +231,16 @@ func (r InvoiceLineItemUpdateParamsCounterpartyBillingAddress) MarshalJSON() (da
 
 // The counterparty's shipping address where physical goods should be delivered.
 type InvoiceLineItemUpdateParamsCounterpartyShippingAddress struct {
-	Line1 param.Field[string] `json:"line1,required"`
-	Line2 param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
-	// Region or State.
-	Region param.Field[string] `json:"region,required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country,required"`
+	Line1   param.Field[string] `json:"line1,required"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality,required"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code,required"`
+	// Region or State.
+	Region param.Field[string] `json:"region,required"`
+	Line2  param.Field[string] `json:"line2"`
 }
 
 func (r InvoiceLineItemUpdateParamsCounterpartyShippingAddress) MarshalJSON() (data []byte, err error) {
@@ -249,16 +249,16 @@ func (r InvoiceLineItemUpdateParamsCounterpartyShippingAddress) MarshalJSON() (d
 
 // The invoice issuer's business address.
 type InvoiceLineItemUpdateParamsInvoicerAddress struct {
-	Line1 param.Field[string] `json:"line1,required"`
-	Line2 param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
-	// Region or State.
-	Region param.Field[string] `json:"region,required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country,required"`
+	Line1   param.Field[string] `json:"line1,required"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality,required"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code,required"`
+	// Region or State.
+	Region param.Field[string] `json:"region,required"`
+	Line2  param.Field[string] `json:"line2"`
 }
 
 func (r InvoiceLineItemUpdateParamsInvoicerAddress) MarshalJSON() (data []byte, err error) {

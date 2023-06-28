@@ -108,35 +108,35 @@ func (r *ExternalAccountService) Verify(ctx context.Context, id string, params E
 }
 
 type ExternalAccount struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
+	ID             string          `json:"id,required" format:"uuid"`
+	AccountDetails []AccountDetail `json:"account_details,required"`
+	// Can be `checking`, `savings` or `other`.
+	AccountType    ExternalAccountType             `json:"account_type,required"`
+	ContactDetails []ExternalAccountContactDetails `json:"contact_details,required"`
+	CounterpartyID string                          `json:"counterparty_id,required,nullable" format:"uuid"`
+	CreatedAt      time.Time                       `json:"created_at,required" format:"date-time"`
+	DiscardedAt    time.Time                       `json:"discarded_at,required,nullable" format:"date-time"`
+	// If the external account links to a ledger account in Modern Treasury, the id of
+	// the ledger account will be populated here.
+	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode    bool      `json:"live_mode,required"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt   time.Time `json:"updated_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
-	// Can be `checking`, `savings` or `other`.
-	AccountType ExternalAccountType `json:"account_type,required"`
-	// Either `individual` or `business`.
-	PartyType ExternalAccountPartyType `json:"party_type,required,nullable"`
-	// The address associated with the owner or `null`.
-	PartyAddress ExternalAccountPartyAddress `json:"party_address,required,nullable"`
-	// A nickname for the external account. This is only for internal usage and won't
-	// affect any payments
-	Name           string          `json:"name,required,nullable"`
-	CounterpartyID string          `json:"counterparty_id,required,nullable" format:"uuid"`
-	AccountDetails []AccountDetail `json:"account_details,required"`
-	RoutingDetails []RoutingDetail `json:"routing_details,required"`
+	LiveMode bool `json:"live_mode,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata map[string]string `json:"metadata,required"`
+	// A nickname for the external account. This is only for internal usage and won't
+	// affect any payments
+	Name   string `json:"name,required,nullable"`
+	Object string `json:"object,required"`
+	// The address associated with the owner or `null`.
+	PartyAddress ExternalAccountPartyAddress `json:"party_address,required,nullable"`
 	// The legal name of the entity which owns the account.
-	PartyName      string                          `json:"party_name,required"`
-	ContactDetails []ExternalAccountContactDetails `json:"contact_details,required"`
-	// If the external account links to a ledger account in Modern Treasury, the id of
-	// the ledger account will be populated here.
-	LedgerAccountID    string                            `json:"ledger_account_id,required,nullable" format:"uuid"`
+	PartyName string `json:"party_name,required"`
+	// Either `individual` or `business`.
+	PartyType          ExternalAccountPartyType          `json:"party_type,required,nullable"`
+	RoutingDetails     []RoutingDetail                   `json:"routing_details,required"`
+	UpdatedAt          time.Time                         `json:"updated_at,required" format:"date-time"`
 	VerificationStatus ExternalAccountVerificationStatus `json:"verification_status,required"`
 	JSON               externalAccountJSON
 }
@@ -144,22 +144,22 @@ type ExternalAccount struct {
 // externalAccountJSON contains the JSON metadata for the struct [ExternalAccount]
 type externalAccountJSON struct {
 	ID                 apijson.Field
-	Object             apijson.Field
-	LiveMode           apijson.Field
-	CreatedAt          apijson.Field
-	UpdatedAt          apijson.Field
-	DiscardedAt        apijson.Field
-	AccountType        apijson.Field
-	PartyType          apijson.Field
-	PartyAddress       apijson.Field
-	Name               apijson.Field
-	CounterpartyID     apijson.Field
 	AccountDetails     apijson.Field
-	RoutingDetails     apijson.Field
-	Metadata           apijson.Field
-	PartyName          apijson.Field
+	AccountType        apijson.Field
 	ContactDetails     apijson.Field
+	CounterpartyID     apijson.Field
+	CreatedAt          apijson.Field
+	DiscardedAt        apijson.Field
 	LedgerAccountID    apijson.Field
+	LiveMode           apijson.Field
+	Metadata           apijson.Field
+	Name               apijson.Field
+	Object             apijson.Field
+	PartyAddress       apijson.Field
+	PartyName          apijson.Field
+	PartyType          apijson.Field
+	RoutingDetails     apijson.Field
+	UpdatedAt          apijson.Field
 	VerificationStatus apijson.Field
 	raw                string
 	ExtraFields        map[string]apijson.Field
@@ -182,83 +182,31 @@ const (
 	ExternalAccountTypeSavings     ExternalAccountType = "savings"
 )
 
-// Either `individual` or `business`.
-type ExternalAccountPartyType string
-
-const (
-	ExternalAccountPartyTypeBusiness   ExternalAccountPartyType = "business"
-	ExternalAccountPartyTypeIndividual ExternalAccountPartyType = "individual"
-)
-
-// The address associated with the owner or `null`.
-type ExternalAccountPartyAddress struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
+type ExternalAccountContactDetails struct {
+	ID                    string                                             `json:"id,required" format:"uuid"`
+	ContactIdentifier     string                                             `json:"contact_identifier,required"`
+	ContactIdentifierType ExternalAccountContactDetailsContactIdentifierType `json:"contact_identifier_type,required"`
+	CreatedAt             time.Time                                          `json:"created_at,required" format:"date-time"`
+	DiscardedAt           time.Time                                          `json:"discarded_at,required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	Object    string    `json:"object,required"`
 	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	Line1     string    `json:"line1,required,nullable"`
-	Line2     string    `json:"line2,required,nullable"`
-	// Locality or City.
-	Locality string `json:"locality,required,nullable"`
-	// Region or State.
-	Region string `json:"region,required,nullable"`
-	// The postal code of the address.
-	PostalCode string `json:"postal_code,required,nullable"`
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country string `json:"country,required,nullable"`
-	JSON    externalAccountPartyAddressJSON
-}
-
-// externalAccountPartyAddressJSON contains the JSON metadata for the struct
-// [ExternalAccountPartyAddress]
-type externalAccountPartyAddressJSON struct {
-	ID          apijson.Field
-	Object      apijson.Field
-	LiveMode    apijson.Field
-	CreatedAt   apijson.Field
-	UpdatedAt   apijson.Field
-	Line1       apijson.Field
-	Line2       apijson.Field
-	Locality    apijson.Field
-	Region      apijson.Field
-	PostalCode  apijson.Field
-	Country     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *ExternalAccountPartyAddress) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type ExternalAccountContactDetails struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode              bool                                               `json:"live_mode,required"`
-	CreatedAt             time.Time                                          `json:"created_at,required" format:"date-time"`
-	UpdatedAt             time.Time                                          `json:"updated_at,required" format:"date-time"`
-	DiscardedAt           time.Time                                          `json:"discarded_at,required,nullable" format:"date-time"`
-	ContactIdentifier     string                                             `json:"contact_identifier,required"`
-	ContactIdentifierType ExternalAccountContactDetailsContactIdentifierType `json:"contact_identifier_type,required"`
-	JSON                  externalAccountContactDetailsJSON
+	JSON      externalAccountContactDetailsJSON
 }
 
 // externalAccountContactDetailsJSON contains the JSON metadata for the struct
 // [ExternalAccountContactDetails]
 type externalAccountContactDetailsJSON struct {
 	ID                    apijson.Field
-	Object                apijson.Field
-	LiveMode              apijson.Field
-	CreatedAt             apijson.Field
-	UpdatedAt             apijson.Field
-	DiscardedAt           apijson.Field
 	ContactIdentifier     apijson.Field
 	ContactIdentifierType apijson.Field
+	CreatedAt             apijson.Field
+	DiscardedAt           apijson.Field
+	LiveMode              apijson.Field
+	Object                apijson.Field
+	UpdatedAt             apijson.Field
 	raw                   string
 	ExtraFields           map[string]apijson.Field
 }
@@ -273,6 +221,58 @@ const (
 	ExternalAccountContactDetailsContactIdentifierTypeEmail       ExternalAccountContactDetailsContactIdentifierType = "email"
 	ExternalAccountContactDetailsContactIdentifierTypePhoneNumber ExternalAccountContactDetailsContactIdentifierType = "phone_number"
 	ExternalAccountContactDetailsContactIdentifierTypeWebsite     ExternalAccountContactDetailsContactIdentifierType = "website"
+)
+
+// The address associated with the owner or `null`.
+type ExternalAccountPartyAddress struct {
+	ID string `json:"id,required" format:"uuid"`
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country   string    `json:"country,required,nullable"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	Line1     string    `json:"line1,required,nullable"`
+	Line2     string    `json:"line2,required,nullable"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// Locality or City.
+	Locality string `json:"locality,required,nullable"`
+	Object   string `json:"object,required"`
+	// The postal code of the address.
+	PostalCode string `json:"postal_code,required,nullable"`
+	// Region or State.
+	Region    string    `json:"region,required,nullable"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	JSON      externalAccountPartyAddressJSON
+}
+
+// externalAccountPartyAddressJSON contains the JSON metadata for the struct
+// [ExternalAccountPartyAddress]
+type externalAccountPartyAddressJSON struct {
+	ID          apijson.Field
+	Country     apijson.Field
+	CreatedAt   apijson.Field
+	Line1       apijson.Field
+	Line2       apijson.Field
+	LiveMode    apijson.Field
+	Locality    apijson.Field
+	Object      apijson.Field
+	PostalCode  apijson.Field
+	Region      apijson.Field
+	UpdatedAt   apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ExternalAccountPartyAddress) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// Either `individual` or `business`.
+type ExternalAccountPartyType string
+
+const (
+	ExternalAccountPartyTypeBusiness   ExternalAccountPartyType = "business"
+	ExternalAccountPartyTypeIndividual ExternalAccountPartyType = "individual"
 )
 
 type ExternalAccountVerificationStatus string
@@ -361,18 +361,18 @@ const (
 // https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 // for more details.
 type ExternalAccountNewParamsLedgerAccount struct {
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name,required"`
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description"`
-	// The normal balance of the ledger account.
-	NormalBalance param.Field[ExternalAccountNewParamsLedgerAccountNormalBalance] `json:"normal_balance,required"`
-	// The id of the ledger that this account belongs to.
-	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
 	// The currency of the ledger account.
 	Currency param.Field[string] `json:"currency,required"`
+	// The id of the ledger that this account belongs to.
+	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
+	// The name of the ledger account.
+	Name param.Field[string] `json:"name,required"`
+	// The normal balance of the ledger account.
+	NormalBalance param.Field[ExternalAccountNewParamsLedgerAccountNormalBalance] `json:"normal_balance,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
+	// The description of the ledger account.
+	Description param.Field[string] `json:"description"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
 	// populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
@@ -409,16 +409,16 @@ const (
 
 // Required if receiving wire payments.
 type ExternalAccountNewParamsPartyAddress struct {
-	Line1 param.Field[string] `json:"line1"`
-	Line2 param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality"`
-	// Region or State.
-	Region param.Field[string] `json:"region"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country"`
+	Line1   param.Field[string] `json:"line1"`
+	Line2   param.Field[string] `json:"line2"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code"`
+	// Region or State.
+	Region param.Field[string] `json:"region"`
 }
 
 func (r ExternalAccountNewParamsPartyAddress) MarshalJSON() (data []byte, err error) {
@@ -502,16 +502,16 @@ func (r ExternalAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 }
 
 type ExternalAccountUpdateParamsPartyAddress struct {
-	Line1 param.Field[string] `json:"line1"`
-	Line2 param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality"`
-	// Region or State.
-	Region param.Field[string] `json:"region"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country"`
+	Line1   param.Field[string] `json:"line1"`
+	Line2   param.Field[string] `json:"line2"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code"`
+	// Region or State.
+	Region param.Field[string] `json:"region"`
 }
 
 func (r ExternalAccountUpdateParamsPartyAddress) MarshalJSON() (data []byte, err error) {

@@ -41,6 +41,10 @@ func (r *ValidationService) ValidateRoutingNumber(ctx context.Context, query Val
 }
 
 type RoutingNumberLookupRequest struct {
+	// The address of the bank.
+	BankAddress RoutingNumberLookupRequestBankAddress `json:"bank_address"`
+	// The name of the bank.
+	BankName string `json:"bank_name"`
 	// The routing number of the bank.
 	RoutingNumber string `json:"routing_number"`
 	// One of `aba`, `au_bsb`, `br_codigo`, `ca_cpa`, `cnaps`, `gb_sort_code`,
@@ -48,34 +52,62 @@ type RoutingNumberLookupRequest struct {
 	// support `aba` and `swift` with routing numbers '123456789' and 'GRINUST0XXX'
 	// respectively.
 	RoutingNumberType RoutingNumberLookupRequestRoutingNumberType `json:"routing_number_type"`
-	// An array of payment types that are supported for this routing number. This can
-	// include `ach`, `wire`, `rtp`, `sepa`, `bacs`, `au_becs` currently.
-	SupportedPaymentTypes []RoutingNumberLookupRequestSupportedPaymentTypes `json:"supported_payment_types"`
-	// The name of the bank.
-	BankName string `json:"bank_name"`
-	// The address of the bank.
-	BankAddress RoutingNumberLookupRequestBankAddress `json:"bank_address"`
 	// An object containing key-value pairs, each with a sanctions list as the key and
 	// a boolean value representing whether the bank is on that particular sanctions
 	// list. Currently, this includes eu_con, uk_hmt, us_ofac, and un sanctions lists.
 	Sanctions map[string]interface{} `json:"sanctions"`
-	JSON      routingNumberLookupRequestJSON
+	// An array of payment types that are supported for this routing number. This can
+	// include `ach`, `wire`, `rtp`, `sepa`, `bacs`, `au_becs` currently.
+	SupportedPaymentTypes []RoutingNumberLookupRequestSupportedPaymentTypes `json:"supported_payment_types"`
+	JSON                  routingNumberLookupRequestJSON
 }
 
 // routingNumberLookupRequestJSON contains the JSON metadata for the struct
 // [RoutingNumberLookupRequest]
 type routingNumberLookupRequestJSON struct {
+	BankAddress           apijson.Field
+	BankName              apijson.Field
 	RoutingNumber         apijson.Field
 	RoutingNumberType     apijson.Field
-	SupportedPaymentTypes apijson.Field
-	BankName              apijson.Field
-	BankAddress           apijson.Field
 	Sanctions             apijson.Field
+	SupportedPaymentTypes apijson.Field
 	raw                   string
 	ExtraFields           map[string]apijson.Field
 }
 
 func (r *RoutingNumberLookupRequest) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The address of the bank.
+type RoutingNumberLookupRequestBankAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country string `json:"country,nullable"`
+	Line1   string `json:"line1,nullable"`
+	Line2   string `json:"line2,nullable"`
+	// Locality or City.
+	Locality string `json:"locality,nullable"`
+	// The postal code of the address.
+	PostalCode string `json:"postal_code,nullable"`
+	// Region or State.
+	Region string `json:"region,nullable"`
+	JSON   routingNumberLookupRequestBankAddressJSON
+}
+
+// routingNumberLookupRequestBankAddressJSON contains the JSON metadata for the
+// struct [RoutingNumberLookupRequestBankAddress]
+type routingNumberLookupRequestBankAddressJSON struct {
+	Country     apijson.Field
+	Line1       apijson.Field
+	Line2       apijson.Field
+	Locality    apijson.Field
+	PostalCode  apijson.Field
+	Region      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *RoutingNumberLookupRequestBankAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -115,38 +147,6 @@ const (
 	RoutingNumberLookupRequestSupportedPaymentTypesSignet      RoutingNumberLookupRequestSupportedPaymentTypes = "signet"
 	RoutingNumberLookupRequestSupportedPaymentTypesWire        RoutingNumberLookupRequestSupportedPaymentTypes = "wire"
 )
-
-// The address of the bank.
-type RoutingNumberLookupRequestBankAddress struct {
-	Line1 string `json:"line1,nullable"`
-	Line2 string `json:"line2,nullable"`
-	// Locality or City.
-	Locality string `json:"locality,nullable"`
-	// Region or State.
-	Region string `json:"region,nullable"`
-	// The postal code of the address.
-	PostalCode string `json:"postal_code,nullable"`
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country string `json:"country,nullable"`
-	JSON    routingNumberLookupRequestBankAddressJSON
-}
-
-// routingNumberLookupRequestBankAddressJSON contains the JSON metadata for the
-// struct [RoutingNumberLookupRequestBankAddress]
-type routingNumberLookupRequestBankAddressJSON struct {
-	Line1       apijson.Field
-	Line2       apijson.Field
-	Locality    apijson.Field
-	Region      apijson.Field
-	PostalCode  apijson.Field
-	Country     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *RoutingNumberLookupRequestBankAddress) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
 
 type ValidationValidateRoutingNumberParams struct {
 	// The routing number that is being validated.

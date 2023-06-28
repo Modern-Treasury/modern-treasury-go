@@ -66,38 +66,38 @@ func (r *EventService) ListAutoPaging(ctx context.Context, query EventListParams
 }
 
 type Event struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
+	ID        string    `json:"id,required" format:"uuid"`
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	// The type of resource for the event.
-	Resource string `json:"resource,required"`
-	// The name of the event.
-	EventName string `json:"event_name,required"`
-	// The time of the event.
-	EventTime time.Time `json:"event_time,required" format:"date-time"`
 	// The body of the event.
 	Data map[string]interface{} `json:"data,required"`
 	// The ID of the entity for the event.
 	EntityID string `json:"entity_id,required"`
-	JSON     eventJSON
+	// The name of the event.
+	EventName string `json:"event_name,required"`
+	// The time of the event.
+	EventTime time.Time `json:"event_time,required" format:"date-time"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
+	// The type of resource for the event.
+	Resource  string    `json:"resource,required"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	JSON      eventJSON
 }
 
 // eventJSON contains the JSON metadata for the struct [Event]
 type eventJSON struct {
 	ID          apijson.Field
-	Object      apijson.Field
-	LiveMode    apijson.Field
 	CreatedAt   apijson.Field
-	UpdatedAt   apijson.Field
-	Resource    apijson.Field
-	EventName   apijson.Field
-	EventTime   apijson.Field
 	Data        apijson.Field
 	EntityID    apijson.Field
+	EventName   apijson.Field
+	EventTime   apijson.Field
+	LiveMode    apijson.Field
+	Object      apijson.Field
+	Resource    apijson.Field
+	UpdatedAt   apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }

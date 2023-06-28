@@ -197,6 +197,9 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.LedgerTransactions.List(context.TODO(), moderntreasury.LedgerTransactionListParams{
+		ID: moderntreasury.F(map[string]string{
+			"foo": "string",
+		}),
 		AfterCursor: moderntreasury.F("string"),
 		EffectiveAt: moderntreasury.F(map[string]string{
 			"foo": "string",
@@ -204,13 +207,12 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 		EffectiveDate: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
-		ExternalID: moderntreasury.F("string"),
-		ID: moderntreasury.F(map[string]string{
-			"foo": "string",
-		}),
+		ExternalID:              moderntreasury.F("string"),
 		LedgerAccountCategoryID: moderntreasury.F("string"),
 		LedgerAccountID:         moderntreasury.F("string"),
 		LedgerID:                moderntreasury.F("string"),
+		LedgerableID:            moderntreasury.F("string"),
+		LedgerableType:          moderntreasury.F(moderntreasury.LedgerTransactionListParamsLedgerableTypeCounterparty),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
@@ -222,11 +224,47 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 		PostedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
-		Status: moderntreasury.F(moderntreasury.LedgerTransactionListParamsStatusPending),
+		ReversesLedgerTransactionID: moderntreasury.F("string"),
+		Status:                      moderntreasury.F(moderntreasury.LedgerTransactionListParamsStatusPending),
 		UpdatedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
 	})
+	if err != nil {
+		var apierr *moderntreasury.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestLedgerTransactionNewReversalWithOptionalParams(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
+	client := moderntreasury.NewClient(
+		option.WithAPIKey("APIKey"),
+		option.WithOrganizationID("my-organization-ID"),
+		option.WithBaseURL("http://127.0.0.1:4010"),
+	)
+	_, err := client.LedgerTransactions.NewReversal(
+		context.TODO(),
+		"string",
+		moderntreasury.LedgerTransactionNewReversalParams{
+			Description:    moderntreasury.F("string"),
+			EffectiveAt:    moderntreasury.F(time.Now()),
+			ExternalID:     moderntreasury.F("string"),
+			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionNewReversalParamsLedgerableTypeCounterparty),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
+			Status: moderntreasury.F(moderntreasury.LedgerTransactionNewReversalParamsStatusArchived),
+		},
+	)
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

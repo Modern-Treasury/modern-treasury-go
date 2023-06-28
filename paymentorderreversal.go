@@ -75,36 +75,36 @@ func (r *PaymentOrderReversalService) ListAutoPaging(ctx context.Context, paymen
 }
 
 type Reversal struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
+	ID        string    `json:"id,required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	// The current status of the reversal.
-	Status ReversalStatus `json:"status,required"`
-	// The ID of the relevant Payment Order.
-	PaymentOrderID string `json:"payment_order_id,required,nullable" format:"uuid"`
+	LiveMode bool `json:"live_mode,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata map[string]string `json:"metadata,required"`
+	Object   string            `json:"object,required"`
+	// The ID of the relevant Payment Order.
+	PaymentOrderID string `json:"payment_order_id,required,nullable" format:"uuid"`
 	// The reason for the reversal.
 	Reason ReversalReason `json:"reason,required"`
-	JSON   reversalJSON
+	// The current status of the reversal.
+	Status    ReversalStatus `json:"status,required"`
+	UpdatedAt time.Time      `json:"updated_at,required" format:"date-time"`
+	JSON      reversalJSON
 }
 
 // reversalJSON contains the JSON metadata for the struct [Reversal]
 type reversalJSON struct {
 	ID             apijson.Field
-	Object         apijson.Field
-	LiveMode       apijson.Field
 	CreatedAt      apijson.Field
-	UpdatedAt      apijson.Field
-	Status         apijson.Field
-	PaymentOrderID apijson.Field
+	LiveMode       apijson.Field
 	Metadata       apijson.Field
+	Object         apijson.Field
+	PaymentOrderID apijson.Field
 	Reason         apijson.Field
+	Status         apijson.Field
+	UpdatedAt      apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
@@ -112,6 +112,17 @@ type reversalJSON struct {
 func (r *Reversal) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+// The reason for the reversal.
+type ReversalReason string
+
+const (
+	ReversalReasonDuplicate                 ReversalReason = "duplicate"
+	ReversalReasonIncorrectAmount           ReversalReason = "incorrect_amount"
+	ReversalReasonIncorrectReceivingAccount ReversalReason = "incorrect_receiving_account"
+	ReversalReasonDateEarlierThanIntended   ReversalReason = "date_earlier_than_intended"
+	ReversalReasonDateLaterThanIntended     ReversalReason = "date_later_than_intended"
+)
 
 // The current status of the reversal.
 type ReversalStatus string
@@ -123,17 +134,6 @@ const (
 	ReversalStatusProcessing ReversalStatus = "processing"
 	ReversalStatusReturned   ReversalStatus = "returned"
 	ReversalStatusSent       ReversalStatus = "sent"
-)
-
-// The reason for the reversal.
-type ReversalReason string
-
-const (
-	ReversalReasonDuplicate                 ReversalReason = "duplicate"
-	ReversalReasonIncorrectAmount           ReversalReason = "incorrect_amount"
-	ReversalReasonIncorrectReceivingAccount ReversalReason = "incorrect_receiving_account"
-	ReversalReasonDateEarlierThanIntended   ReversalReason = "date_earlier_than_intended"
-	ReversalReasonDateLaterThanIntended     ReversalReason = "date_later_than_intended"
 )
 
 type PaymentOrderReversalNewParams struct {
@@ -172,42 +172,33 @@ const (
 // the ledger transaction cannot be created, then the reversal creation will fail.
 // The resulting ledger transaction will mirror the status of the reversal.
 type PaymentOrderReversalNewParamsLedgerTransaction struct {
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[PaymentOrderReversalNewParamsLedgerTransactionStatus] `json:"status"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
 	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
 	// purposes.
 	EffectiveDate param.Field[time.Time] `json:"effective_date,required" format:"date"`
 	// An array of ledger entry objects.
 	LedgerEntries param.Field[[]PaymentOrderReversalNewParamsLedgerTransactionLedgerEntries] `json:"ledger_entries,required"`
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
 	// A unique string to represent the ledger transaction. Only one pending or posted
 	// ledger transaction may have this ID in the ledger.
 	ExternalID param.Field[string] `json:"external_id"`
 	// If the ledger transaction can be reconciled to another object in Modern
+	// Treasury, the id will be populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
 	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 	LedgerableType param.Field[PaymentOrderReversalNewParamsLedgerTransactionLedgerableType] `json:"ledgerable_type"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// To post a ledger transaction at creation, use `posted`.
+	Status param.Field[PaymentOrderReversalNewParamsLedgerTransactionStatus] `json:"status"`
 }
 
 func (r PaymentOrderReversalNewParamsLedgerTransaction) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-// To post a ledger transaction at creation, use `posted`.
-type PaymentOrderReversalNewParamsLedgerTransactionStatus string
-
-const (
-	PaymentOrderReversalNewParamsLedgerTransactionStatusArchived PaymentOrderReversalNewParamsLedgerTransactionStatus = "archived"
-	PaymentOrderReversalNewParamsLedgerTransactionStatusPending  PaymentOrderReversalNewParamsLedgerTransactionStatus = "pending"
-	PaymentOrderReversalNewParamsLedgerTransactionStatusPosted   PaymentOrderReversalNewParamsLedgerTransactionStatus = "posted"
-)
 
 type PaymentOrderReversalNewParamsLedgerTransactionLedgerEntries struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
@@ -220,6 +211,10 @@ type PaymentOrderReversalNewParamsLedgerTransactionLedgerEntries struct {
 	Direction param.Field[PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirection] `json:"direction,required"`
 	// The ledger account that this ledger entry is associated with.
 	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
+	// account’s available balance. If any of these conditions would be false after the
+	// transaction is created, the entire call will fail with error code 422.
+	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
 	// Lock version of the ledger account. This can be passed when creating a ledger
 	// transaction to only succeed if no ledger transactions have posted since the
 	// given version. See our post about Designing the Ledgers API with Optimistic
@@ -233,10 +228,6 @@ type PaymentOrderReversalNewParamsLedgerTransactionLedgerEntries struct {
 	// account’s posted balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
 	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s available balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
 	// If true, response will include the balance of the associated ledger account for
 	// the entry.
 	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
@@ -273,6 +264,15 @@ const (
 	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaymentOrderAttempt   PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "payment_order_attempt"
 	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReturn                PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "return"
 	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "reversal"
+)
+
+// To post a ledger transaction at creation, use `posted`.
+type PaymentOrderReversalNewParamsLedgerTransactionStatus string
+
+const (
+	PaymentOrderReversalNewParamsLedgerTransactionStatusArchived PaymentOrderReversalNewParamsLedgerTransactionStatus = "archived"
+	PaymentOrderReversalNewParamsLedgerTransactionStatusPending  PaymentOrderReversalNewParamsLedgerTransactionStatus = "pending"
+	PaymentOrderReversalNewParamsLedgerTransactionStatusPosted   PaymentOrderReversalNewParamsLedgerTransactionStatus = "posted"
 )
 
 type PaymentOrderReversalListParams struct {

@@ -91,89 +91,95 @@ func (r *ExpectedPaymentService) Delete(ctx context.Context, id string, opts ...
 }
 
 type ExpectedPayment struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	// The highest amount this expected payment may be equal to. Value in specified
-	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUpperBound int64 `json:"amount_upper_bound,required"`
+	ID string `json:"id,required" format:"uuid"`
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountLowerBound int64 `json:"amount_lower_bound,required"`
+	// The highest amount this expected payment may be equal to. Value in specified
+	// currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUpperBound int64 `json:"amount_upper_bound,required"`
+	// The ID of the counterparty you expect for this payment.
+	CounterpartyID string    `json:"counterparty_id,required,nullable" format:"uuid"`
+	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	// Must conform to ISO 4217. Defaults to the currency of the internal account.
+	Currency shared.Currency `json:"currency,required,nullable"`
+	// The earliest date the payment may come in. Format: yyyy-mm-dd
+	DateLowerBound time.Time `json:"date_lower_bound,required,nullable" format:"date"`
+	// The latest date the payment may come in. Format: yyyy-mm-dd
+	DateUpperBound time.Time `json:"date_upper_bound,required,nullable" format:"date"`
+	// An optional description for internal use.
+	Description string `json:"description,required,nullable"`
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
 	Direction ExpectedPaymentDirection `json:"direction,required"`
 	// The ID of the Internal Account for the expected payment.
 	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
-	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
-	// sepa, signet, wire.
-	Type ExpectedPaymentType `json:"type,required,nullable"`
-	// Must conform to ISO 4217. Defaults to the currency of the internal account.
-	Currency shared.Currency `json:"currency,required,nullable"`
-	// The latest date the payment may come in. Format: yyyy-mm-dd
-	DateUpperBound time.Time `json:"date_upper_bound,required,nullable" format:"date"`
-	// The earliest date the payment may come in. Format: yyyy-mm-dd
-	DateLowerBound time.Time `json:"date_lower_bound,required,nullable" format:"date"`
-	// An optional description for internal use.
-	Description string `json:"description,required,nullable"`
+	// The ID of the ledger transaction linked to the expected payment.
+	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata map[string]string `json:"metadata,required"`
+	Object   string            `json:"object,required"`
+	// The reconciliation filters you have for this payment.
+	ReconciliationFilters interface{} `json:"reconciliation_filters,required,nullable"`
+	// The reconciliation groups you have for this payment.
+	ReconciliationGroups interface{} `json:"reconciliation_groups,required,nullable"`
+	// One of manual if this expected payment was manually reconciled in the dashboard,
+	// automatic if it was automatically reconciled by Modern Treasury, or null if it
+	// is unreconciled.
+	ReconciliationMethod ExpectedPaymentReconciliationMethod `json:"reconciliation_method,required,nullable"`
+	// For `ach`, this field will be passed through on an addenda record. For `wire`
+	// payments the field will be passed through as the "Originator to Beneficiary
+	// Information", also known as OBI or Fedwire tag 6000.
+	RemittanceInformation string `json:"remittance_information,required,nullable"`
 	// The statement description you expect to see on the transaction. For ACH
 	// payments, this will be the full line item passed from the bank. For wire
 	// payments, this will be the OBI field on the wire. For check payments, this will
 	// be the memo field.
 	StatementDescriptor string `json:"statement_descriptor,required,nullable"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata map[string]string `json:"metadata,required"`
-	// The ID of the counterparty you expect for this payment.
-	CounterpartyID string `json:"counterparty_id,required,nullable" format:"uuid"`
-	// For `ach`, this field will be passed through on an addenda record. For `wire`
-	// payments the field will be passed through as the "Originator to Beneficiary
-	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation string `json:"remittance_information,required,nullable"`
+	// One of unreconciled, reconciled, or archived.
+	Status ExpectedPaymentStatus `json:"status,required"`
 	// The ID of the Transaction this expected payment object has been matched to.
 	TransactionID string `json:"transaction_id,required,nullable" format:"uuid"`
 	// The ID of the Transaction Line Item this expected payment has been matched to.
 	TransactionLineItemID string `json:"transaction_line_item_id,required,nullable" format:"uuid"`
-	// One of unreconciled, reconciled, or archived.
-	Status ExpectedPaymentStatus `json:"status,required"`
-	// One of manual if this expected payment was manually reconciled in the dashboard,
-	// automatic if it was automatically reconciled by Modern Treasury, or null if it
-	// is unreconciled.
-	ReconciliationMethod ExpectedPaymentReconciliationMethod `json:"reconciliation_method,required,nullable"`
-	// The ID of the ledger transaction linked to the expected payment.
-	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
-	JSON                expectedPaymentJSON
+	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
+	// sepa, signet, wire.
+	Type      ExpectedPaymentType `json:"type,required,nullable"`
+	UpdatedAt time.Time           `json:"updated_at,required" format:"date-time"`
+	JSON      expectedPaymentJSON
 }
 
 // expectedPaymentJSON contains the JSON metadata for the struct [ExpectedPayment]
 type expectedPaymentJSON struct {
 	ID                    apijson.Field
-	Object                apijson.Field
-	LiveMode              apijson.Field
-	CreatedAt             apijson.Field
-	UpdatedAt             apijson.Field
-	AmountUpperBound      apijson.Field
 	AmountLowerBound      apijson.Field
+	AmountUpperBound      apijson.Field
+	CounterpartyID        apijson.Field
+	CreatedAt             apijson.Field
+	Currency              apijson.Field
+	DateLowerBound        apijson.Field
+	DateUpperBound        apijson.Field
+	Description           apijson.Field
 	Direction             apijson.Field
 	InternalAccountID     apijson.Field
-	Type                  apijson.Field
-	Currency              apijson.Field
-	DateUpperBound        apijson.Field
-	DateLowerBound        apijson.Field
-	Description           apijson.Field
-	StatementDescriptor   apijson.Field
+	LedgerTransactionID   apijson.Field
+	LiveMode              apijson.Field
 	Metadata              apijson.Field
-	CounterpartyID        apijson.Field
+	Object                apijson.Field
+	ReconciliationFilters apijson.Field
+	ReconciliationGroups  apijson.Field
+	ReconciliationMethod  apijson.Field
 	RemittanceInformation apijson.Field
+	StatementDescriptor   apijson.Field
+	Status                apijson.Field
 	TransactionID         apijson.Field
 	TransactionLineItemID apijson.Field
-	Status                apijson.Field
-	ReconciliationMethod  apijson.Field
-	LedgerTransactionID   apijson.Field
+	Type                  apijson.Field
+	UpdatedAt             apijson.Field
 	raw                   string
 	ExtraFields           map[string]apijson.Field
 }
@@ -189,6 +195,25 @@ type ExpectedPaymentDirection string
 const (
 	ExpectedPaymentDirectionCredit ExpectedPaymentDirection = "credit"
 	ExpectedPaymentDirectionDebit  ExpectedPaymentDirection = "debit"
+)
+
+// One of manual if this expected payment was manually reconciled in the dashboard,
+// automatic if it was automatically reconciled by Modern Treasury, or null if it
+// is unreconciled.
+type ExpectedPaymentReconciliationMethod string
+
+const (
+	ExpectedPaymentReconciliationMethodAutomatic ExpectedPaymentReconciliationMethod = "automatic"
+	ExpectedPaymentReconciliationMethodManual    ExpectedPaymentReconciliationMethod = "manual"
+)
+
+// One of unreconciled, reconciled, or archived.
+type ExpectedPaymentStatus string
+
+const (
+	ExpectedPaymentStatusArchived     ExpectedPaymentStatus = "archived"
+	ExpectedPaymentStatusReconciled   ExpectedPaymentStatus = "reconciled"
+	ExpectedPaymentStatusUnreconciled ExpectedPaymentStatus = "unreconciled"
 )
 
 // One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
@@ -213,25 +238,6 @@ const (
 	ExpectedPaymentTypeSepa        ExpectedPaymentType = "sepa"
 	ExpectedPaymentTypeSignet      ExpectedPaymentType = "signet"
 	ExpectedPaymentTypeWire        ExpectedPaymentType = "wire"
-)
-
-// One of unreconciled, reconciled, or archived.
-type ExpectedPaymentStatus string
-
-const (
-	ExpectedPaymentStatusArchived     ExpectedPaymentStatus = "archived"
-	ExpectedPaymentStatusReconciled   ExpectedPaymentStatus = "reconciled"
-	ExpectedPaymentStatusUnreconciled ExpectedPaymentStatus = "unreconciled"
-)
-
-// One of manual if this expected payment was manually reconciled in the dashboard,
-// automatic if it was automatically reconciled by Modern Treasury, or null if it
-// is unreconciled.
-type ExpectedPaymentReconciliationMethod string
-
-const (
-	ExpectedPaymentReconciliationMethodAutomatic ExpectedPaymentReconciliationMethod = "automatic"
-	ExpectedPaymentReconciliationMethodManual    ExpectedPaymentReconciliationMethod = "manual"
 )
 
 type ExpectedPaymentNewParams struct {
@@ -260,6 +266,10 @@ type ExpectedPaymentNewParams struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The reconciliation filters you have for this payment.
+	ReconciliationFilters param.Field[interface{}] `json:"reconciliation_filters"`
+	// The reconciliation groups you have for this payment.
+	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -292,14 +302,14 @@ type ExpectedPaymentNewParamsLineItems struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
 	Amount param.Field[int64] `json:"amount,required"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// A free-form description of the line item.
-	Description param.Field[string] `json:"description"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`
+	// A free-form description of the line item.
+	Description param.Field[string] `json:"description"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
 func (r ExpectedPaymentNewParamsLineItems) MarshalJSON() (data []byte, err error) {
@@ -331,6 +341,10 @@ type ExpectedPaymentUpdateParams struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The reconciliation filters you have for this payment.
+	ReconciliationFilters param.Field[interface{}] `json:"reconciliation_filters"`
+	// The reconciliation groups you have for this payment.
+	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
