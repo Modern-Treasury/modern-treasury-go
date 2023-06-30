@@ -92,58 +92,58 @@ func (r *VirtualAccountService) Delete(ctx context.Context, id string, opts ...o
 }
 
 type VirtualAccount struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode    bool      `json:"live_mode,required"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt   time.Time `json:"updated_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
-	// The name of the virtual account.
-	Name string `json:"name,required"`
-	// An optional free-form description for internal use.
-	Description string `json:"description,required,nullable"`
-	// The ID of a counterparty that the virtual account belongs to. Optional.
-	CounterpartyID string `json:"counterparty_id,required,nullable" format:"uuid"`
-	// The ID of the internal account that the virtual account is in.
-	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	ID string `json:"id,required" format:"uuid"`
 	// An array of account detail objects.
 	AccountDetails []AccountDetail `json:"account_details,required"`
-	// An array of routing detail objects. These will be the routing details of the
-	// internal account.
-	RoutingDetails []RoutingDetail `json:"routing_details,required"`
-	// The ID of a debit normal ledger account. When money enters the virtual account,
-	// this ledger account will be debited. Must be accompanied by a
-	// credit_ledger_account_id if present.
-	DebitLedgerAccountID string `json:"debit_ledger_account_id,required,nullable" format:"uuid"`
+	// The ID of a counterparty that the virtual account belongs to. Optional.
+	CounterpartyID string    `json:"counterparty_id,required,nullable" format:"uuid"`
+	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
 	// The ID of a credit normal ledger account. When money enters the virtual account,
 	// this ledger account will be credited. Must be accompanied by a
 	// debit_ledger_account_id if present.
 	CreditLedgerAccountID string `json:"credit_ledger_account_id,required,nullable" format:"uuid"`
+	// The ID of a debit normal ledger account. When money enters the virtual account,
+	// this ledger account will be debited. Must be accompanied by a
+	// credit_ledger_account_id if present.
+	DebitLedgerAccountID string `json:"debit_ledger_account_id,required,nullable" format:"uuid"`
+	// An optional free-form description for internal use.
+	Description string    `json:"description,required,nullable"`
+	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	// The ID of the internal account that the virtual account is in.
+	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata map[string]string `json:"metadata,required"`
-	JSON     virtualAccountJSON
+	// The name of the virtual account.
+	Name   string `json:"name,required"`
+	Object string `json:"object,required"`
+	// An array of routing detail objects. These will be the routing details of the
+	// internal account.
+	RoutingDetails []RoutingDetail `json:"routing_details,required"`
+	UpdatedAt      time.Time       `json:"updated_at,required" format:"date-time"`
+	JSON           virtualAccountJSON
 }
 
 // virtualAccountJSON contains the JSON metadata for the struct [VirtualAccount]
 type virtualAccountJSON struct {
 	ID                    apijson.Field
-	Object                apijson.Field
-	LiveMode              apijson.Field
-	CreatedAt             apijson.Field
-	UpdatedAt             apijson.Field
-	DiscardedAt           apijson.Field
-	Name                  apijson.Field
-	Description           apijson.Field
-	CounterpartyID        apijson.Field
-	InternalAccountID     apijson.Field
 	AccountDetails        apijson.Field
-	RoutingDetails        apijson.Field
-	DebitLedgerAccountID  apijson.Field
+	CounterpartyID        apijson.Field
+	CreatedAt             apijson.Field
 	CreditLedgerAccountID apijson.Field
+	DebitLedgerAccountID  apijson.Field
+	Description           apijson.Field
+	DiscardedAt           apijson.Field
+	InternalAccountID     apijson.Field
+	LiveMode              apijson.Field
 	Metadata              apijson.Field
+	Name                  apijson.Field
+	Object                apijson.Field
+	RoutingDetails        apijson.Field
+	UpdatedAt             apijson.Field
 	raw                   string
 	ExtraFields           map[string]apijson.Field
 }

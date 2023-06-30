@@ -57,18 +57,18 @@ func (r *ConnectionService) ListAutoPaging(ctx context.Context, query Connection
 }
 
 type Connection struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
+	ID          string    `json:"id,required" format:"uuid"`
+	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
+	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode    bool      `json:"live_mode,required"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt   time.Time `json:"updated_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
-	// Unique identifier for the bank or vendor.
-	VendorID string `json:"vendor_id,required" format:"uuid"`
+	LiveMode  bool      `json:"live_mode,required"`
+	Object    string    `json:"object,required"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
 	// An identifier given to this connection by the bank.
 	VendorCustomerID string `json:"vendor_customer_id,required,nullable" format:"uuid"`
+	// Unique identifier for the bank or vendor.
+	VendorID string `json:"vendor_id,required" format:"uuid"`
 	// A human-friendly name for the bank or vendor.
 	VendorName string `json:"vendor_name,required"`
 	JSON       connectionJSON
@@ -77,13 +77,13 @@ type Connection struct {
 // connectionJSON contains the JSON metadata for the struct [Connection]
 type connectionJSON struct {
 	ID               apijson.Field
-	Object           apijson.Field
-	LiveMode         apijson.Field
 	CreatedAt        apijson.Field
-	UpdatedAt        apijson.Field
 	DiscardedAt      apijson.Field
-	VendorID         apijson.Field
+	LiveMode         apijson.Field
+	Object           apijson.Field
+	UpdatedAt        apijson.Field
 	VendorCustomerID apijson.Field
+	VendorID         apijson.Field
 	VendorName       apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field

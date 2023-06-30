@@ -74,84 +74,84 @@ func (r *ReturnService) ListAutoPaging(ctx context.Context, query ReturnListPara
 }
 
 type ReturnObject struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
+	ID string `json:"id,required" format:"uuid"`
+	// Some returns may include additional information from the bank. In these cases,
+	// this string will be present.
+	AdditionalInformation string `json:"additional_information,required,nullable"`
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000.
+	Amount int64 `json:"amount,required"`
+	// The return code. For ACH returns, this is the required ACH return code.
+	Code      ReturnObjectCode `json:"code,required,nullable"`
+	CreatedAt time.Time        `json:"created_at,required" format:"date-time"`
+	// Currency that this transaction is denominated in.
+	Currency shared.Currency `json:"currency,required,nullable"`
+	// If the return's status is `returned`, this will include the return object's data
+	// that is returning this return.
+	CurrentReturn *ReturnObject `json:"current_return,required,nullable"`
+	// If the return code is `R14` or `R15` this is the date the deceased counterparty
+	// passed away.
+	DateOfDeath time.Time `json:"date_of_death,required,nullable" format:"date"`
+	// If an originating return failed to be processed by the bank, a description of
+	// the failure reason will be available.
+	FailureReason string `json:"failure_reason,required,nullable"`
+	// The ID of the relevant Internal Account.
+	InternalAccountID string `json:"internal_account_id,required,nullable" format:"uuid"`
+	// The ID of the ledger transaction linked to the return.
+	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
+	// Often the bank will provide an explanation for the return, which is a short
+	// human readable string.
+	Reason string `json:"reason,required,nullable"`
+	// An array of Payment Reference objects.
+	ReferenceNumbers []ReturnObjectReferenceNumber `json:"reference_numbers,required"`
 	// The ID of the object being returned or `null`.
 	ReturnableID string `json:"returnable_id,required,nullable" format:"uuid"`
 	// The type of object being returned or `null`.
 	ReturnableType ReturnObjectReturnableType `json:"returnable_type,required,nullable"`
-	// The return code. For ACH returns, this is the required ACH return code.
-	Code ReturnObjectCode `json:"code,required,nullable"`
-	// Often the bank will provide an explanation for the return, which is a short
-	// human readable string.
-	Reason string `json:"reason,required,nullable"`
-	// If the return code is `R14` or `R15` this is the date the deceased counterparty
-	// passed away.
-	DateOfDeath time.Time `json:"date_of_death,required,nullable" format:"date"`
-	// Some returns may include additional information from the bank. In these cases,
-	// this string will be present.
-	AdditionalInformation string `json:"additional_information,required,nullable"`
-	// The current status of the return.
-	Status ReturnObjectStatus `json:"status,required"`
-	// The ID of the relevant Transaction Line Item or `null`.
-	TransactionLineItemID string `json:"transaction_line_item_id,required,nullable" format:"uuid"`
-	// The ID of the relevant Transaction or `null`.
-	TransactionID string `json:"transaction_id,required,nullable" format:"uuid"`
-	// The ID of the relevant Internal Account.
-	InternalAccountID string `json:"internal_account_id,required,nullable" format:"uuid"`
-	// The type of return. Can be one of: `ach`, `ach_noc`, `au_becs`, `bacs`, `eft`,
-	// `interac`, `manual`, `paper_item`, `wire`.
-	Type ReturnObjectType `json:"type,required"`
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount int64 `json:"amount,required"`
-	// Currency that this transaction is denominated in.
-	Currency shared.Currency `json:"currency,required,nullable"`
-	// If an originating return failed to be processed by the bank, a description of
-	// the failure reason will be available.
-	FailureReason string `json:"failure_reason,required,nullable"`
 	// The role of the return, can be `originating` or `receiving`.
 	Role ReturnObjectRole `json:"role,required"`
-	// If the return's status is `returned`, this will include the return object's data
-	// that is returning this return.
-	CurrentReturn *ReturnObject `json:"current_return,required,nullable"`
-	// An array of Payment Reference objects.
-	ReferenceNumbers []ReturnObjectReferenceNumbers `json:"reference_numbers,required"`
-	// The ID of the ledger transaction linked to the return.
-	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
-	JSON                returnObjectJSON
+	// The current status of the return.
+	Status ReturnObjectStatus `json:"status,required"`
+	// The ID of the relevant Transaction or `null`.
+	TransactionID string `json:"transaction_id,required,nullable" format:"uuid"`
+	// The ID of the relevant Transaction Line Item or `null`.
+	TransactionLineItemID string `json:"transaction_line_item_id,required,nullable" format:"uuid"`
+	// The type of return. Can be one of: `ach`, `ach_noc`, `au_becs`, `bacs`, `eft`,
+	// `interac`, `manual`, `paper_item`, `wire`.
+	Type      ReturnObjectType `json:"type,required"`
+	UpdatedAt time.Time        `json:"updated_at,required" format:"date-time"`
+	JSON      returnObjectJSON
 }
 
 // returnObjectJSON contains the JSON metadata for the struct [ReturnObject]
 type returnObjectJSON struct {
 	ID                    apijson.Field
-	Object                apijson.Field
-	LiveMode              apijson.Field
+	AdditionalInformation apijson.Field
+	Amount                apijson.Field
+	Code                  apijson.Field
 	CreatedAt             apijson.Field
-	UpdatedAt             apijson.Field
+	Currency              apijson.Field
+	CurrentReturn         apijson.Field
+	DateOfDeath           apijson.Field
+	FailureReason         apijson.Field
+	InternalAccountID     apijson.Field
+	LedgerTransactionID   apijson.Field
+	LiveMode              apijson.Field
+	Object                apijson.Field
+	Reason                apijson.Field
+	ReferenceNumbers      apijson.Field
 	ReturnableID          apijson.Field
 	ReturnableType        apijson.Field
-	Code                  apijson.Field
-	Reason                apijson.Field
-	DateOfDeath           apijson.Field
-	AdditionalInformation apijson.Field
-	Status                apijson.Field
-	TransactionLineItemID apijson.Field
-	TransactionID         apijson.Field
-	InternalAccountID     apijson.Field
-	Type                  apijson.Field
-	Amount                apijson.Field
-	Currency              apijson.Field
-	FailureReason         apijson.Field
 	Role                  apijson.Field
-	CurrentReturn         apijson.Field
-	ReferenceNumbers      apijson.Field
-	LedgerTransactionID   apijson.Field
+	Status                apijson.Field
+	TransactionID         apijson.Field
+	TransactionLineItemID apijson.Field
+	Type                  apijson.Field
+	UpdatedAt             apijson.Field
 	raw                   string
 	ExtraFields           map[string]apijson.Field
 }
@@ -159,17 +159,6 @@ type returnObjectJSON struct {
 func (r *ReturnObject) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-// The type of object being returned or `null`.
-type ReturnObjectReturnableType string
-
-const (
-	ReturnObjectReturnableTypeIncomingPaymentDetail ReturnObjectReturnableType = "incoming_payment_detail"
-	ReturnObjectReturnableTypePaperItem             ReturnObjectReturnableType = "paper_item"
-	ReturnObjectReturnableTypePaymentOrder          ReturnObjectReturnableType = "payment_order"
-	ReturnObjectReturnableTypeReturn                ReturnObjectReturnableType = "return"
-	ReturnObjectReturnableTypeReversal              ReturnObjectReturnableType = "reversal"
-)
 
 // The return code. For ACH returns, this is the required ACH return code.
 type ReturnObjectCode string
@@ -220,74 +209,36 @@ const (
 	ReturnObjectCodeCurrencycloud ReturnObjectCode = "currencycloud"
 )
 
-// The current status of the return.
-type ReturnObjectStatus string
-
-const (
-	ReturnObjectStatusCompleted  ReturnObjectStatus = "completed"
-	ReturnObjectStatusFailed     ReturnObjectStatus = "failed"
-	ReturnObjectStatusPending    ReturnObjectStatus = "pending"
-	ReturnObjectStatusProcessing ReturnObjectStatus = "processing"
-	ReturnObjectStatusReturned   ReturnObjectStatus = "returned"
-	ReturnObjectStatusSent       ReturnObjectStatus = "sent"
-)
-
-// The type of return. Can be one of: `ach`, `ach_noc`, `au_becs`, `bacs`, `eft`,
-// `interac`, `manual`, `paper_item`, `wire`.
-type ReturnObjectType string
-
-const (
-	ReturnObjectTypeACH       ReturnObjectType = "ach"
-	ReturnObjectTypeACHNoc    ReturnObjectType = "ach_noc"
-	ReturnObjectTypeAuBecs    ReturnObjectType = "au_becs"
-	ReturnObjectTypeBacs      ReturnObjectType = "bacs"
-	ReturnObjectTypeBook      ReturnObjectType = "book"
-	ReturnObjectTypeEft       ReturnObjectType = "eft"
-	ReturnObjectTypeInterac   ReturnObjectType = "interac"
-	ReturnObjectTypeManual    ReturnObjectType = "manual"
-	ReturnObjectTypePaperItem ReturnObjectType = "paper_item"
-	ReturnObjectTypeSepa      ReturnObjectType = "sepa"
-	ReturnObjectTypeWire      ReturnObjectType = "wire"
-)
-
-// The role of the return, can be `originating` or `receiving`.
-type ReturnObjectRole string
-
-const (
-	ReturnObjectRoleOriginating ReturnObjectRole = "originating"
-	ReturnObjectRoleReceiving   ReturnObjectRole = "receiving"
-)
-
-type ReturnObjectReferenceNumbers struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
+type ReturnObjectReferenceNumber struct {
+	ID        string    `json:"id,required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
 	// The vendor reference number.
 	ReferenceNumber string `json:"reference_number,required"`
 	// The type of the reference number. Referring to the vendor payment id.
 	ReferenceNumberType ReturnObjectReferenceNumbersReferenceNumberType `json:"reference_number_type,required"`
-	JSON                returnObjectReferenceNumbersJSON
+	UpdatedAt           time.Time                                       `json:"updated_at,required" format:"date-time"`
+	JSON                returnObjectReferenceNumberJSON
 }
 
-// returnObjectReferenceNumbersJSON contains the JSON metadata for the struct
-// [ReturnObjectReferenceNumbers]
-type returnObjectReferenceNumbersJSON struct {
+// returnObjectReferenceNumberJSON contains the JSON metadata for the struct
+// [ReturnObjectReferenceNumber]
+type returnObjectReferenceNumberJSON struct {
 	ID                  apijson.Field
-	Object              apijson.Field
-	LiveMode            apijson.Field
 	CreatedAt           apijson.Field
-	UpdatedAt           apijson.Field
+	LiveMode            apijson.Field
+	Object              apijson.Field
 	ReferenceNumber     apijson.Field
 	ReferenceNumberType apijson.Field
+	UpdatedAt           apijson.Field
 	raw                 string
 	ExtraFields         map[string]apijson.Field
 }
 
-func (r *ReturnObjectReferenceNumbers) UnmarshalJSON(data []byte) (err error) {
+func (r *ReturnObjectReferenceNumber) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -305,6 +256,7 @@ const (
 	ReturnObjectReferenceNumbersReferenceNumberTypeBofaTransactionID               ReturnObjectReferenceNumbersReferenceNumberType = "bofa_transaction_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeCheckNumber                     ReturnObjectReferenceNumbersReferenceNumberType = "check_number"
 	ReturnObjectReferenceNumbersReferenceNumberTypeColumnFxQuoteID                 ReturnObjectReferenceNumbersReferenceNumberType = "column_fx_quote_id"
+	ReturnObjectReferenceNumbersReferenceNumberTypeColumnReversalPairTransferID    ReturnObjectReferenceNumbersReferenceNumberType = "column_reversal_pair_transfer_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeColumnTransferID                ReturnObjectReferenceNumbersReferenceNumberType = "column_transfer_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverPaymentID             ReturnObjectReferenceNumbersReferenceNumberType = "cross_river_payment_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverTransactionID         ReturnObjectReferenceNumbersReferenceNumberType = "cross_river_transaction_id"
@@ -338,6 +290,7 @@ const (
 	ReturnObjectReferenceNumbersReferenceNumberTypePncInstructionID                ReturnObjectReferenceNumbersReferenceNumberType = "pnc_instruction_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypePncMultipaymentID               ReturnObjectReferenceNumbersReferenceNumberType = "pnc_multipayment_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypePncPaymentTraceID               ReturnObjectReferenceNumbersReferenceNumberType = "pnc_payment_trace_id"
+	ReturnObjectReferenceNumbersReferenceNumberTypeRspecVendorPaymentID            ReturnObjectReferenceNumbersReferenceNumberType = "rspec_vendor_payment_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeRtpInstructionID                ReturnObjectReferenceNumbersReferenceNumberType = "rtp_instruction_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeSignetAPIReferenceID            ReturnObjectReferenceNumbersReferenceNumberType = "signet_api_reference_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeSignetConfirmationID            ReturnObjectReferenceNumbersReferenceNumberType = "signet_confirmation_id"
@@ -348,6 +301,56 @@ const (
 	ReturnObjectReferenceNumbersReferenceNumberTypeUsbankPaymentID                 ReturnObjectReferenceNumbersReferenceNumberType = "usbank_payment_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoPaymentID             ReturnObjectReferenceNumbersReferenceNumberType = "wells_fargo_payment_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoTraceNumber           ReturnObjectReferenceNumbersReferenceNumberType = "wells_fargo_trace_number"
+)
+
+// The type of object being returned or `null`.
+type ReturnObjectReturnableType string
+
+const (
+	ReturnObjectReturnableTypeIncomingPaymentDetail ReturnObjectReturnableType = "incoming_payment_detail"
+	ReturnObjectReturnableTypePaperItem             ReturnObjectReturnableType = "paper_item"
+	ReturnObjectReturnableTypePaymentOrder          ReturnObjectReturnableType = "payment_order"
+	ReturnObjectReturnableTypeReturn                ReturnObjectReturnableType = "return"
+	ReturnObjectReturnableTypeReversal              ReturnObjectReturnableType = "reversal"
+)
+
+// The role of the return, can be `originating` or `receiving`.
+type ReturnObjectRole string
+
+const (
+	ReturnObjectRoleOriginating ReturnObjectRole = "originating"
+	ReturnObjectRoleReceiving   ReturnObjectRole = "receiving"
+)
+
+// The current status of the return.
+type ReturnObjectStatus string
+
+const (
+	ReturnObjectStatusCompleted  ReturnObjectStatus = "completed"
+	ReturnObjectStatusFailed     ReturnObjectStatus = "failed"
+	ReturnObjectStatusPending    ReturnObjectStatus = "pending"
+	ReturnObjectStatusProcessing ReturnObjectStatus = "processing"
+	ReturnObjectStatusReturned   ReturnObjectStatus = "returned"
+	ReturnObjectStatusSent       ReturnObjectStatus = "sent"
+)
+
+// The type of return. Can be one of: `ach`, `ach_noc`, `au_becs`, `bacs`, `eft`,
+// `interac`, `manual`, `paper_item`, `wire`.
+type ReturnObjectType string
+
+const (
+	ReturnObjectTypeACH       ReturnObjectType = "ach"
+	ReturnObjectTypeACHNoc    ReturnObjectType = "ach_noc"
+	ReturnObjectTypeAuBecs    ReturnObjectType = "au_becs"
+	ReturnObjectTypeBacs      ReturnObjectType = "bacs"
+	ReturnObjectTypeBook      ReturnObjectType = "book"
+	ReturnObjectTypeCheck     ReturnObjectType = "check"
+	ReturnObjectTypeEft       ReturnObjectType = "eft"
+	ReturnObjectTypeInterac   ReturnObjectType = "interac"
+	ReturnObjectTypeManual    ReturnObjectType = "manual"
+	ReturnObjectTypePaperItem ReturnObjectType = "paper_item"
+	ReturnObjectTypeSepa      ReturnObjectType = "sepa"
+	ReturnObjectTypeWire      ReturnObjectType = "wire"
 )
 
 type ReturnNewParams struct {

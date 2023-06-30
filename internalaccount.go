@@ -85,64 +85,64 @@ func (r *InternalAccountService) ListAutoPaging(ctx context.Context, query Inter
 }
 
 type InternalAccount struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	ID string `json:"id,required" format:"uuid"`
+	// An array of account detail objects.
+	AccountDetails []AccountDetail `json:"account_details,required"`
 	// Can be checking, savings or other.
 	AccountType InternalAccountAccountType `json:"account_type,required,nullable"`
+	// Specifies which financial institution the accounts belong to.
+	Connection Connection `json:"connection,required"`
+	// The Counterparty associated to this account.
+	CounterpartyID string    `json:"counterparty_id,required,nullable" format:"uuid"`
+	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	// The currency of the account.
+	Currency shared.Currency `json:"currency,required,nullable"`
+	// If the internal account links to a ledger account in Modern Treasury, the id of
+	// the ledger account will be populated here.
+	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata map[string]string `json:"metadata,required"`
+	// A nickname for the account.
+	Name   string `json:"name,required,nullable"`
+	Object string `json:"object,required"`
+	// The parent InternalAccount of this account.
+	ParentAccountID string `json:"parent_account_id,required,nullable" format:"uuid"`
+	// The address associated with the owner or null.
+	PartyAddress InternalAccountPartyAddress `json:"party_address,required,nullable"`
 	// The legal name of the entity which owns the account.
 	PartyName string `json:"party_name,required"`
 	// Either individual or business.
 	PartyType InternalAccountPartyType `json:"party_type,required,nullable"`
-	// The address associated with the owner or null.
-	PartyAddress InternalAccountPartyAddress `json:"party_address,required,nullable"`
-	// A nickname for the account.
-	Name string `json:"name,required,nullable"`
-	// An array of account detail objects.
-	AccountDetails []AccountDetail `json:"account_details,required"`
 	// An array of routing detail objects.
 	RoutingDetails []RoutingDetail `json:"routing_details,required"`
-	// Specifies which financial institution the accounts belong to.
-	Connection Connection `json:"connection,required"`
-	// The currency of the account.
-	Currency shared.Currency `json:"currency,required,nullable"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata map[string]string `json:"metadata,required"`
-	// The parent InternalAccount of this account.
-	ParentAccountID string `json:"parent_account_id,required,nullable" format:"uuid"`
-	// The Counterparty associated to this account.
-	CounterpartyID string `json:"counterparty_id,required,nullable" format:"uuid"`
-	// If the internal account links to a ledger account in Modern Treasury, the id of
-	// the ledger account will be populated here.
-	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
-	JSON            internalAccountJSON
+	UpdatedAt      time.Time       `json:"updated_at,required" format:"date-time"`
+	JSON           internalAccountJSON
 }
 
 // internalAccountJSON contains the JSON metadata for the struct [InternalAccount]
 type internalAccountJSON struct {
 	ID              apijson.Field
-	Object          apijson.Field
-	LiveMode        apijson.Field
-	CreatedAt       apijson.Field
-	UpdatedAt       apijson.Field
+	AccountDetails  apijson.Field
 	AccountType     apijson.Field
+	Connection      apijson.Field
+	CounterpartyID  apijson.Field
+	CreatedAt       apijson.Field
+	Currency        apijson.Field
+	LedgerAccountID apijson.Field
+	LiveMode        apijson.Field
+	Metadata        apijson.Field
+	Name            apijson.Field
+	Object          apijson.Field
+	ParentAccountID apijson.Field
+	PartyAddress    apijson.Field
 	PartyName       apijson.Field
 	PartyType       apijson.Field
-	PartyAddress    apijson.Field
-	Name            apijson.Field
-	AccountDetails  apijson.Field
 	RoutingDetails  apijson.Field
-	Connection      apijson.Field
-	Currency        apijson.Field
-	Metadata        apijson.Field
-	ParentAccountID apijson.Field
-	CounterpartyID  apijson.Field
-	LedgerAccountID apijson.Field
+	UpdatedAt       apijson.Field
 	raw             string
 	ExtraFields     map[string]apijson.Field
 }
@@ -164,50 +164,42 @@ const (
 	InternalAccountAccountTypeSavings     InternalAccountAccountType = "savings"
 )
 
-// Either individual or business.
-type InternalAccountPartyType string
-
-const (
-	InternalAccountPartyTypeBusiness   InternalAccountPartyType = "business"
-	InternalAccountPartyTypeIndividual InternalAccountPartyType = "individual"
-)
-
 // The address associated with the owner or null.
 type InternalAccountPartyAddress struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
+	ID string `json:"id,required" format:"uuid"`
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country   string    `json:"country,required,nullable"`
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
 	Line1     string    `json:"line1,required,nullable"`
 	Line2     string    `json:"line2,required,nullable"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
 	// Locality or City.
 	Locality string `json:"locality,required,nullable"`
-	// Region or State.
-	Region string `json:"region,required,nullable"`
+	Object   string `json:"object,required"`
 	// The postal code of the address.
 	PostalCode string `json:"postal_code,required,nullable"`
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country string `json:"country,required,nullable"`
-	JSON    internalAccountPartyAddressJSON
+	// Region or State.
+	Region    string    `json:"region,required,nullable"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	JSON      internalAccountPartyAddressJSON
 }
 
 // internalAccountPartyAddressJSON contains the JSON metadata for the struct
 // [InternalAccountPartyAddress]
 type internalAccountPartyAddressJSON struct {
 	ID          apijson.Field
-	Object      apijson.Field
-	LiveMode    apijson.Field
+	Country     apijson.Field
 	CreatedAt   apijson.Field
-	UpdatedAt   apijson.Field
 	Line1       apijson.Field
 	Line2       apijson.Field
+	LiveMode    apijson.Field
 	Locality    apijson.Field
-	Region      apijson.Field
+	Object      apijson.Field
 	PostalCode  apijson.Field
-	Country     apijson.Field
+	Region      apijson.Field
+	UpdatedAt   apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -215,6 +207,14 @@ type internalAccountPartyAddressJSON struct {
 func (r *InternalAccountPartyAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+// Either individual or business.
+type InternalAccountPartyType string
+
+const (
+	InternalAccountPartyTypeBusiness   InternalAccountPartyType = "business"
+	InternalAccountPartyTypeIndividual InternalAccountPartyType = "individual"
+)
 
 type InternalAccountNewParams struct {
 	// The identifier of the financial institution the account belongs to.
@@ -252,16 +252,16 @@ const (
 
 // The address associated with the owner or null.
 type InternalAccountNewParamsPartyAddress struct {
-	Line1 param.Field[string] `json:"line1,required"`
-	Line2 param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
-	// Region or State.
-	Region param.Field[string] `json:"region,required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country,required"`
+	Line1   param.Field[string] `json:"line1,required"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality,required"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code,required"`
+	// Region or State.
+	Region param.Field[string] `json:"region,required"`
+	Line2  param.Field[string] `json:"line2"`
 }
 
 func (r InternalAccountNewParamsPartyAddress) MarshalJSON() (data []byte, err error) {

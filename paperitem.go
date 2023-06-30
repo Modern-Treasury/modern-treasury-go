@@ -66,63 +66,63 @@ func (r *PaperItemService) ListAutoPaging(ctx context.Context, query PaperItemLi
 }
 
 type PaperItem struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	// The ID of the reconciled Transaction Line Item or `null`.
-	TransactionLineItemID string `json:"transaction_line_item_id,required,nullable" format:"uuid"`
-	// The ID of the reconciled Transaction or `null`.
-	TransactionID string `json:"transaction_id,required,nullable" format:"uuid"`
-	// The current status of the paper item. One of `pending`, `completed`, or
-	// `returned`.
-	Status PaperItemStatus `json:"status,required"`
-	// The identifier for the lockbox assigned by the bank.
-	LockboxNumber string `json:"lockbox_number,required"`
-	// The date the paper item was deposited into your organization's bank account.
-	DepositDate time.Time `json:"deposit_date,required" format:"date"`
-	// The amount of the paper item.
-	Amount int64 `json:"amount,required"`
-	// The currency of the paper item.
-	Currency shared.Currency `json:"currency,required,nullable"`
+	ID string `json:"id,required" format:"uuid"`
 	// The account number on the paper item.
 	AccountNumber string `json:"account_number,required,nullable"`
 	// The last 4 digits of the account_number.
 	AccountNumberSafe string `json:"account_number_safe,required,nullable"`
-	// The routing number on the paper item.
-	RoutingNumber string `json:"routing_number,required,nullable"`
+	// The amount of the paper item.
+	Amount int64 `json:"amount,required"`
 	// The check number on the paper item.
-	CheckNumber string `json:"check_number,required,nullable"`
-	// The name of the remitter on the paper item.
-	RemitterName string `json:"remitter_name,required,nullable"`
+	CheckNumber string    `json:"check_number,required,nullable"`
+	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
+	// The currency of the paper item.
+	Currency shared.Currency `json:"currency,required,nullable"`
+	// The date the paper item was deposited into your organization's bank account.
+	DepositDate time.Time `json:"deposit_date,required" format:"date"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// The identifier for the lockbox assigned by the bank.
+	LockboxNumber string `json:"lockbox_number,required"`
 	// The memo field on the paper item.
 	MemoField string `json:"memo_field,required,nullable"`
-	JSON      paperItemJSON
+	Object    string `json:"object,required"`
+	// The name of the remitter on the paper item.
+	RemitterName string `json:"remitter_name,required,nullable"`
+	// The routing number on the paper item.
+	RoutingNumber string `json:"routing_number,required,nullable"`
+	// The current status of the paper item. One of `pending`, `completed`, or
+	// `returned`.
+	Status PaperItemStatus `json:"status,required"`
+	// The ID of the reconciled Transaction or `null`.
+	TransactionID string `json:"transaction_id,required,nullable" format:"uuid"`
+	// The ID of the reconciled Transaction Line Item or `null`.
+	TransactionLineItemID string    `json:"transaction_line_item_id,required,nullable" format:"uuid"`
+	UpdatedAt             time.Time `json:"updated_at,required" format:"date-time"`
+	JSON                  paperItemJSON
 }
 
 // paperItemJSON contains the JSON metadata for the struct [PaperItem]
 type paperItemJSON struct {
 	ID                    apijson.Field
-	Object                apijson.Field
-	LiveMode              apijson.Field
-	CreatedAt             apijson.Field
-	UpdatedAt             apijson.Field
-	TransactionLineItemID apijson.Field
-	TransactionID         apijson.Field
-	Status                apijson.Field
-	LockboxNumber         apijson.Field
-	DepositDate           apijson.Field
-	Amount                apijson.Field
-	Currency              apijson.Field
 	AccountNumber         apijson.Field
 	AccountNumberSafe     apijson.Field
-	RoutingNumber         apijson.Field
+	Amount                apijson.Field
 	CheckNumber           apijson.Field
-	RemitterName          apijson.Field
+	CreatedAt             apijson.Field
+	Currency              apijson.Field
+	DepositDate           apijson.Field
+	LiveMode              apijson.Field
+	LockboxNumber         apijson.Field
 	MemoField             apijson.Field
+	Object                apijson.Field
+	RemitterName          apijson.Field
+	RoutingNumber         apijson.Field
+	Status                apijson.Field
+	TransactionID         apijson.Field
+	TransactionLineItemID apijson.Field
+	UpdatedAt             apijson.Field
 	raw                   string
 	ExtraFields           map[string]apijson.Field
 }

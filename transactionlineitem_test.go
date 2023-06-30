@@ -6,34 +6,31 @@ import (
 	"context"
 	"errors"
 	"testing"
-	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
-func TestLedgerTransactionVersionListWithOptionalParams(t *testing.T) {
+func TestTransactionLineItemListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
+	t.Skip("Prism is broken in this case")
 	client := moderntreasury.NewClient(
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := client.LedgerTransactions.Versions.List(context.TODO(), moderntreasury.LedgerTransactionVersionListParams{
-		AfterCursor: moderntreasury.F("string"),
-		CreatedAt: moderntreasury.F(map[string]time.Time{
-			"foo": time.Now(),
-		}),
-		LedgerAccountStatementID: moderntreasury.F("string"),
-		LedgerTransactionID:      moderntreasury.F("string"),
-		PerPage:                  moderntreasury.F(int64(0)),
-		Version: moderntreasury.F(map[string]int64{
-			"foo": int64(0),
-		}),
-	})
+	_, err := client.Transactions.LineItems.List(
+		context.TODO(),
+		"string",
+		moderntreasury.TransactionLineItemListParams{
+			AfterCursor: moderntreasury.F("string"),
+			PerPage:     moderntreasury.F(int64(0)),
+			Type:        moderntreasury.F(moderntreasury.TransactionLineItemListParamsTypeOriginating),
+		},
+	)
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

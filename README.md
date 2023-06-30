@@ -7,17 +7,25 @@ API](https://docs.moderntreasury.com) from applications written in Go.
 
 ## Installation
 
+<!-- x-release-please-start-version -->
+
 ```go
 import (
 	"github.com/Modern-Treasury/modern-treasury-go" // imported as moderntreasury
 )
 ```
 
+<!-- x-release-please-end -->
+
 Or to pin the version:
+
+<!-- x-release-please-start-version -->
 
 ```sh
 go get -u 'github.com/Modern-Treasury/modern-treasury-go@v0.0.1'
 ```
+
+<!-- x-release-please-end -->
 
 ## Requirements
 

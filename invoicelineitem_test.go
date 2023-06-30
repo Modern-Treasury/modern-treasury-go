@@ -81,7 +81,7 @@ func TestInvoiceLineItemUpdateWithOptionalParams(t *testing.T) {
 		"string",
 		"string",
 		moderntreasury.InvoiceLineItemUpdateParams{
-			ContactDetails: moderntreasury.F([]moderntreasury.InvoiceLineItemUpdateParamsContactDetails{{
+			ContactDetails: moderntreasury.F([]moderntreasury.InvoiceLineItemUpdateParamsContactDetail{{
 				ID:                    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				Object:                moderntreasury.F("string"),
 				LiveMode:              moderntreasury.F(true),

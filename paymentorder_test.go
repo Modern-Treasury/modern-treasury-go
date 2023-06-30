@@ -40,7 +40,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 		ChargeBearer:            moderntreasury.F(moderntreasury.PaymentOrderNewParamsChargeBearerShared),
 		Currency:                moderntreasury.F(shared.CurrencyAed),
 		Description:             moderntreasury.F("string"),
-		Documents: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsDocuments{{
+		Documents: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsDocument{{
 			DocumentType: moderntreasury.F("string"),
 			File:         moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
 		}, {
@@ -64,7 +64,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				"modern": "treasury",
 			}),
 			EffectiveDate: moderntreasury.F(time.Now()),
-			LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerEntries{{
+			LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerEntry{{
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -114,7 +114,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 			LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerableTypeCounterparty),
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		}),
-		LineItems: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsLineItems{{
+		LineItems: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsLineItem{{
 			Amount: moderntreasury.F(int64(0)),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
@@ -163,7 +163,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				Country:    moderntreasury.F("string"),
 			}),
 			Name: moderntreasury.F("string"),
-			AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetails{{
+			AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetail{{
 				AccountNumber:     moderntreasury.F("string"),
 				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
 			}, {
@@ -173,7 +173,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				AccountNumber:     moderntreasury.F("string"),
 				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
 			}}),
-			RoutingDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsReceivingAccountRoutingDetails{{
+			RoutingDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsReceivingAccountRoutingDetail{{
 				RoutingNumber:     moderntreasury.F("string"),
 				RoutingNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba),
 				PaymentType:       moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeACH),
@@ -209,7 +209,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				}),
 			}),
 			PlaidProcessorToken: moderntreasury.F("string"),
-			ContactDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsReceivingAccountContactDetails{{
+			ContactDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsReceivingAccountContactDetail{{
 				ContactIdentifier:     moderntreasury.F("string"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypeEmail),
 			}, {
@@ -291,7 +291,7 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 			FallbackType:             moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsFallbackTypeACH),
 			ForeignExchangeContract:  moderntreasury.F("string"),
 			ForeignExchangeIndicator: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsForeignExchangeIndicatorFixedToVariable),
-			LineItems: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsLineItems{{
+			LineItems: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsLineItem{{
 				Amount: moderntreasury.F(int64(0)),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
@@ -341,7 +341,7 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 					Country:    moderntreasury.F("string"),
 				}),
 				Name: moderntreasury.F("string"),
-				AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetails{{
+				AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetail{{
 					AccountNumber:     moderntreasury.F("string"),
 					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
 				}, {
@@ -351,7 +351,7 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 					AccountNumber:     moderntreasury.F("string"),
 					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
 				}}),
-				RoutingDetails: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsReceivingAccountRoutingDetails{{
+				RoutingDetails: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsReceivingAccountRoutingDetail{{
 					RoutingNumber:     moderntreasury.F("string"),
 					RoutingNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba),
 					PaymentType:       moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeACH),
@@ -387,7 +387,7 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 					}),
 				}),
 				PlaidProcessorToken: moderntreasury.F("string"),
-				ContactDetails: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsReceivingAccountContactDetails{{
+				ContactDetails: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsReceivingAccountContactDetail{{
 					ContactIdentifier:     moderntreasury.F("string"),
 					ContactIdentifierType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypeEmail),
 				}, {
@@ -492,7 +492,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 				"modern": "treasury",
 			}),
 			EffectiveDate: moderntreasury.F(time.Now()),
-			LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntries{{
+			LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntry{{
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -542,7 +542,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 			LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeCounterparty),
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		}),
-		LineItems: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsLineItems{{
+		LineItems: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsLineItem{{
 			Amount: moderntreasury.F(int64(0)),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
@@ -591,7 +591,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 				Country:    moderntreasury.F("string"),
 			}),
 			Name: moderntreasury.F("string"),
-			AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetails{{
+			AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetail{{
 				AccountNumber:     moderntreasury.F("string"),
 				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
 			}, {
@@ -601,7 +601,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 				AccountNumber:     moderntreasury.F("string"),
 				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
 			}}),
-			RoutingDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountRoutingDetails{{
+			RoutingDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountRoutingDetail{{
 				RoutingNumber:     moderntreasury.F("string"),
 				RoutingNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba),
 				PaymentType:       moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeACH),
@@ -637,7 +637,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 				}),
 			}),
 			PlaidProcessorToken: moderntreasury.F("string"),
-			ContactDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountContactDetails{{
+			ContactDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountContactDetail{{
 				ContactIdentifier:     moderntreasury.F("string"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypeEmail),
 			}, {

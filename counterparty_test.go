@@ -27,7 +27,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 		Accounting: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccounting{
 			Type: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountingTypeCustomer),
 		}),
-		Accounts: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccounts{{
+		Accounts: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccount{{
 			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
 			PartyType:   moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyTypeBusiness),
 			PartyAddress: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyAddress{
@@ -39,7 +39,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				Country:    moderntreasury.F("string"),
 			}),
 			Name: moderntreasury.F("string"),
-			AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetails{{
+			AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetail{{
 				AccountNumber:     moderntreasury.F("string"),
 				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
 			}, {
@@ -49,7 +49,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				AccountNumber:     moderntreasury.F("string"),
 				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
 			}}),
-			RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetails{{
+			RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetail{{
 				RoutingNumber:     moderntreasury.F("string"),
 				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
 				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
@@ -85,7 +85,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				}),
 			}),
 			PlaidProcessorToken: moderntreasury.F("string"),
-			ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetails{{
+			ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetail{{
 				ContactIdentifier:     moderntreasury.F("string"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
 			}, {
@@ -107,7 +107,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				Country:    moderntreasury.F("string"),
 			}),
 			Name: moderntreasury.F("string"),
-			AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetails{{
+			AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetail{{
 				AccountNumber:     moderntreasury.F("string"),
 				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
 			}, {
@@ -117,7 +117,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				AccountNumber:     moderntreasury.F("string"),
 				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
 			}}),
-			RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetails{{
+			RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetail{{
 				RoutingNumber:     moderntreasury.F("string"),
 				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
 				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
@@ -153,7 +153,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				}),
 			}),
 			PlaidProcessorToken: moderntreasury.F("string"),
-			ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetails{{
+			ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetail{{
 				ContactIdentifier:     moderntreasury.F("string"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
 			}, {
@@ -175,7 +175,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				Country:    moderntreasury.F("string"),
 			}),
 			Name: moderntreasury.F("string"),
-			AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetails{{
+			AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetail{{
 				AccountNumber:     moderntreasury.F("string"),
 				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
 			}, {
@@ -185,7 +185,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				AccountNumber:     moderntreasury.F("string"),
 				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban),
 			}}),
-			RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetails{{
+			RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetail{{
 				RoutingNumber:     moderntreasury.F("string"),
 				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
 				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
@@ -221,7 +221,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				}),
 			}),
 			PlaidProcessorToken: moderntreasury.F("string"),
-			ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetails{{
+			ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetail{{
 				ContactIdentifier:     moderntreasury.F("string"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
 			}, {
@@ -241,6 +241,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 		}),
 		SendRemittanceAdvice: moderntreasury.F(true),
 		TaxpayerIdentifier:   moderntreasury.F("string"),
+		VerificationStatus:   moderntreasury.F(moderntreasury.CounterpartyNewParamsVerificationStatusDenied),
 		IdempotencyKey:       moderntreasury.F("string"),
 	})
 	if err != nil {
@@ -365,7 +366,7 @@ func TestCounterpartyCollectAccountWithOptionalParams(t *testing.T) {
 		moderntreasury.CounterpartyCollectAccountParams{
 			Direction:      moderntreasury.F(moderntreasury.CounterpartyCollectAccountParamsDirectionCredit),
 			CustomRedirect: moderntreasury.F("https://example.com"),
-			Fields:         moderntreasury.F([]moderntreasury.CounterpartyCollectAccountParamsFields{moderntreasury.CounterpartyCollectAccountParamsFieldsName, moderntreasury.CounterpartyCollectAccountParamsFieldsName, moderntreasury.CounterpartyCollectAccountParamsFieldsName}),
+			Fields:         moderntreasury.F([]moderntreasury.CounterpartyCollectAccountParamsField{moderntreasury.CounterpartyCollectAccountParamsFieldName, moderntreasury.CounterpartyCollectAccountParamsFieldName, moderntreasury.CounterpartyCollectAccountParamsFieldName}),
 			SendEmail:      moderntreasury.F(true),
 			IdempotencyKey: moderntreasury.F("string"),
 		},

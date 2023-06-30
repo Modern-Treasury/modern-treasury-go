@@ -67,38 +67,38 @@ func (r *PaymentReferenceService) Retireve(ctx context.Context, id string, opts 
 }
 
 type PaymentReference struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
+	ID        string    `json:"id,required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
+	// The actual reference number assigned by the bank.
+	ReferenceNumber string `json:"reference_number,required"`
+	// The type of reference number.
+	ReferenceNumberType PaymentReferenceReferenceNumberType `json:"reference_number_type,required"`
 	// The id of the referenceable to search for. Must be accompanied by the
 	// referenceable_type or will return an error.
 	ReferenceableID string `json:"referenceable_id,required"`
 	// One of the referenceable types. This must be accompanied by the id of the
 	// referenceable or will return an error.
 	ReferenceableType PaymentReferenceReferenceableType `json:"referenceable_type,required"`
-	// The actual reference number assigned by the bank.
-	ReferenceNumber string `json:"reference_number,required"`
-	// The type of reference number.
-	ReferenceNumberType PaymentReferenceReferenceNumberType `json:"reference_number_type,required"`
-	JSON                paymentReferenceJSON
+	UpdatedAt         time.Time                         `json:"updated_at,required" format:"date-time"`
+	JSON              paymentReferenceJSON
 }
 
 // paymentReferenceJSON contains the JSON metadata for the struct
 // [PaymentReference]
 type paymentReferenceJSON struct {
 	ID                  apijson.Field
-	Object              apijson.Field
-	LiveMode            apijson.Field
 	CreatedAt           apijson.Field
-	UpdatedAt           apijson.Field
-	ReferenceableID     apijson.Field
-	ReferenceableType   apijson.Field
+	LiveMode            apijson.Field
+	Object              apijson.Field
 	ReferenceNumber     apijson.Field
 	ReferenceNumberType apijson.Field
+	ReferenceableID     apijson.Field
+	ReferenceableType   apijson.Field
+	UpdatedAt           apijson.Field
 	raw                 string
 	ExtraFields         map[string]apijson.Field
 }
@@ -106,16 +106,6 @@ type paymentReferenceJSON struct {
 func (r *PaymentReference) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-// One of the referenceable types. This must be accompanied by the id of the
-// referenceable or will return an error.
-type PaymentReferenceReferenceableType string
-
-const (
-	PaymentReferenceReferenceableTypePaymentOrder PaymentReferenceReferenceableType = "payment_order"
-	PaymentReferenceReferenceableTypeReversal     PaymentReferenceReferenceableType = "reversal"
-	PaymentReferenceReferenceableTypeReturn       PaymentReferenceReferenceableType = "return"
-)
 
 // The type of reference number.
 type PaymentReferenceReferenceNumberType string
@@ -131,6 +121,7 @@ const (
 	PaymentReferenceReferenceNumberTypeBofaTransactionID               PaymentReferenceReferenceNumberType = "bofa_transaction_id"
 	PaymentReferenceReferenceNumberTypeCheckNumber                     PaymentReferenceReferenceNumberType = "check_number"
 	PaymentReferenceReferenceNumberTypeColumnFxQuoteID                 PaymentReferenceReferenceNumberType = "column_fx_quote_id"
+	PaymentReferenceReferenceNumberTypeColumnReversalPairTransferID    PaymentReferenceReferenceNumberType = "column_reversal_pair_transfer_id"
 	PaymentReferenceReferenceNumberTypeColumnTransferID                PaymentReferenceReferenceNumberType = "column_transfer_id"
 	PaymentReferenceReferenceNumberTypeCrossRiverPaymentID             PaymentReferenceReferenceNumberType = "cross_river_payment_id"
 	PaymentReferenceReferenceNumberTypeCrossRiverTransactionID         PaymentReferenceReferenceNumberType = "cross_river_transaction_id"
@@ -164,6 +155,7 @@ const (
 	PaymentReferenceReferenceNumberTypePncInstructionID                PaymentReferenceReferenceNumberType = "pnc_instruction_id"
 	PaymentReferenceReferenceNumberTypePncMultipaymentID               PaymentReferenceReferenceNumberType = "pnc_multipayment_id"
 	PaymentReferenceReferenceNumberTypePncPaymentTraceID               PaymentReferenceReferenceNumberType = "pnc_payment_trace_id"
+	PaymentReferenceReferenceNumberTypeRspecVendorPaymentID            PaymentReferenceReferenceNumberType = "rspec_vendor_payment_id"
 	PaymentReferenceReferenceNumberTypeRtpInstructionID                PaymentReferenceReferenceNumberType = "rtp_instruction_id"
 	PaymentReferenceReferenceNumberTypeSignetAPIReferenceID            PaymentReferenceReferenceNumberType = "signet_api_reference_id"
 	PaymentReferenceReferenceNumberTypeSignetConfirmationID            PaymentReferenceReferenceNumberType = "signet_confirmation_id"
@@ -174,6 +166,16 @@ const (
 	PaymentReferenceReferenceNumberTypeUsbankPaymentID                 PaymentReferenceReferenceNumberType = "usbank_payment_id"
 	PaymentReferenceReferenceNumberTypeWellsFargoPaymentID             PaymentReferenceReferenceNumberType = "wells_fargo_payment_id"
 	PaymentReferenceReferenceNumberTypeWellsFargoTraceNumber           PaymentReferenceReferenceNumberType = "wells_fargo_trace_number"
+)
+
+// One of the referenceable types. This must be accompanied by the id of the
+// referenceable or will return an error.
+type PaymentReferenceReferenceableType string
+
+const (
+	PaymentReferenceReferenceableTypePaymentOrder PaymentReferenceReferenceableType = "payment_order"
+	PaymentReferenceReferenceableTypeReversal     PaymentReferenceReferenceableType = "reversal"
+	PaymentReferenceReferenceableTypeReturn       PaymentReferenceReferenceableType = "return"
 )
 
 type PaymentReferenceListParams struct {

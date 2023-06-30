@@ -84,40 +84,40 @@ func (r *RoutingDetailService) Delete(ctx context.Context, accountsType RoutingD
 }
 
 type RoutingDetail struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
+	ID          string                   `json:"id,required" format:"uuid"`
+	BankAddress RoutingDetailBankAddress `json:"bank_address,required,nullable"`
+	// The name of the bank.
+	BankName    string    `json:"bank_name,required"`
+	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
+	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode    bool      `json:"live_mode,required"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt   time.Time `json:"updated_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
+	// If the routing detail is to be used for a specific payment type this field will
+	// be populated, otherwise null.
+	PaymentType RoutingDetailPaymentType `json:"payment_type,required,nullable"`
 	// The routing number of the bank.
 	RoutingNumber string `json:"routing_number,required"`
 	// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
 	RoutingNumberType RoutingDetailRoutingNumberType `json:"routing_number_type,required"`
-	// If the routing detail is to be used for a specific payment type this field will
-	// be populated, otherwise null.
-	PaymentType RoutingDetailPaymentType `json:"payment_type,required,nullable"`
-	// The name of the bank.
-	BankName    string                   `json:"bank_name,required"`
-	BankAddress RoutingDetailBankAddress `json:"bank_address,required,nullable"`
-	JSON        routingDetailJSON
+	UpdatedAt         time.Time                      `json:"updated_at,required" format:"date-time"`
+	JSON              routingDetailJSON
 }
 
 // routingDetailJSON contains the JSON metadata for the struct [RoutingDetail]
 type routingDetailJSON struct {
 	ID                apijson.Field
-	Object            apijson.Field
-	LiveMode          apijson.Field
+	BankAddress       apijson.Field
+	BankName          apijson.Field
 	CreatedAt         apijson.Field
-	UpdatedAt         apijson.Field
 	DiscardedAt       apijson.Field
+	LiveMode          apijson.Field
+	Object            apijson.Field
+	PaymentType       apijson.Field
 	RoutingNumber     apijson.Field
 	RoutingNumberType apijson.Field
-	PaymentType       apijson.Field
-	BankName          apijson.Field
-	BankAddress       apijson.Field
+	UpdatedAt         apijson.Field
 	raw               string
 	ExtraFields       map[string]apijson.Field
 }
@@ -126,21 +126,48 @@ func (r *RoutingDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
-type RoutingDetailRoutingNumberType string
+type RoutingDetailBankAddress struct {
+	ID string `json:"id,required" format:"uuid"`
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country   string    `json:"country,required,nullable"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	Line1     string    `json:"line1,required,nullable"`
+	Line2     string    `json:"line2,required,nullable"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// Locality or City.
+	Locality string `json:"locality,required,nullable"`
+	Object   string `json:"object,required"`
+	// The postal code of the address.
+	PostalCode string `json:"postal_code,required,nullable"`
+	// Region or State.
+	Region    string    `json:"region,required,nullable"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	JSON      routingDetailBankAddressJSON
+}
 
-const (
-	RoutingDetailRoutingNumberTypeAba          RoutingDetailRoutingNumberType = "aba"
-	RoutingDetailRoutingNumberTypeAuBsb        RoutingDetailRoutingNumberType = "au_bsb"
-	RoutingDetailRoutingNumberTypeBrCodigo     RoutingDetailRoutingNumberType = "br_codigo"
-	RoutingDetailRoutingNumberTypeCaCpa        RoutingDetailRoutingNumberType = "ca_cpa"
-	RoutingDetailRoutingNumberTypeChips        RoutingDetailRoutingNumberType = "chips"
-	RoutingDetailRoutingNumberTypeCnaps        RoutingDetailRoutingNumberType = "cnaps"
-	RoutingDetailRoutingNumberTypeGBSortCode   RoutingDetailRoutingNumberType = "gb_sort_code"
-	RoutingDetailRoutingNumberTypeInIfsc       RoutingDetailRoutingNumberType = "in_ifsc"
-	RoutingDetailRoutingNumberTypeMyBranchCode RoutingDetailRoutingNumberType = "my_branch_code"
-	RoutingDetailRoutingNumberTypeSwift        RoutingDetailRoutingNumberType = "swift"
-)
+// routingDetailBankAddressJSON contains the JSON metadata for the struct
+// [RoutingDetailBankAddress]
+type routingDetailBankAddressJSON struct {
+	ID          apijson.Field
+	Country     apijson.Field
+	CreatedAt   apijson.Field
+	Line1       apijson.Field
+	Line2       apijson.Field
+	LiveMode    apijson.Field
+	Locality    apijson.Field
+	Object      apijson.Field
+	PostalCode  apijson.Field
+	Region      apijson.Field
+	UpdatedAt   apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *RoutingDetailBankAddress) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
 
 // If the routing detail is to be used for a specific payment type this field will
 // be populated, otherwise null.
@@ -166,68 +193,41 @@ const (
 	RoutingDetailPaymentTypeWire        RoutingDetailPaymentType = "wire"
 )
 
-type RoutingDetailBankAddress struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	Line1     string    `json:"line1,required,nullable"`
-	Line2     string    `json:"line2,required,nullable"`
-	// Locality or City.
-	Locality string `json:"locality,required,nullable"`
-	// Region or State.
-	Region string `json:"region,required,nullable"`
-	// The postal code of the address.
-	PostalCode string `json:"postal_code,required,nullable"`
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country string `json:"country,required,nullable"`
-	JSON    routingDetailBankAddressJSON
-}
+// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
+type RoutingDetailRoutingNumberType string
 
-// routingDetailBankAddressJSON contains the JSON metadata for the struct
-// [RoutingDetailBankAddress]
-type routingDetailBankAddressJSON struct {
-	ID          apijson.Field
-	Object      apijson.Field
-	LiveMode    apijson.Field
-	CreatedAt   apijson.Field
-	UpdatedAt   apijson.Field
-	Line1       apijson.Field
-	Line2       apijson.Field
-	Locality    apijson.Field
-	Region      apijson.Field
-	PostalCode  apijson.Field
-	Country     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *RoutingDetailBankAddress) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
+const (
+	RoutingDetailRoutingNumberTypeAba          RoutingDetailRoutingNumberType = "aba"
+	RoutingDetailRoutingNumberTypeAuBsb        RoutingDetailRoutingNumberType = "au_bsb"
+	RoutingDetailRoutingNumberTypeBrCodigo     RoutingDetailRoutingNumberType = "br_codigo"
+	RoutingDetailRoutingNumberTypeCaCpa        RoutingDetailRoutingNumberType = "ca_cpa"
+	RoutingDetailRoutingNumberTypeChips        RoutingDetailRoutingNumberType = "chips"
+	RoutingDetailRoutingNumberTypeCnaps        RoutingDetailRoutingNumberType = "cnaps"
+	RoutingDetailRoutingNumberTypeGBSortCode   RoutingDetailRoutingNumberType = "gb_sort_code"
+	RoutingDetailRoutingNumberTypeInIfsc       RoutingDetailRoutingNumberType = "in_ifsc"
+	RoutingDetailRoutingNumberTypeMyBranchCode RoutingDetailRoutingNumberType = "my_branch_code"
+	RoutingDetailRoutingNumberTypeSwift        RoutingDetailRoutingNumberType = "swift"
+)
 
 type RoutingDetailParam struct {
-	ID     param.Field[string] `json:"id,required" format:"uuid"`
-	Object param.Field[string] `json:"object,required"`
+	ID          param.Field[string]                        `json:"id,required" format:"uuid"`
+	BankAddress param.Field[RoutingDetailBankAddressParam] `json:"bank_address,required"`
+	// The name of the bank.
+	BankName    param.Field[string]    `json:"bank_name,required"`
+	CreatedAt   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
+	DiscardedAt param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode    param.Field[bool]      `json:"live_mode,required"`
-	CreatedAt   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
-	UpdatedAt   param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-	DiscardedAt param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
+	LiveMode param.Field[bool]   `json:"live_mode,required"`
+	Object   param.Field[string] `json:"object,required"`
+	// If the routing detail is to be used for a specific payment type this field will
+	// be populated, otherwise null.
+	PaymentType param.Field[RoutingDetailPaymentType] `json:"payment_type,required"`
 	// The routing number of the bank.
 	RoutingNumber param.Field[string] `json:"routing_number,required"`
 	// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
 	RoutingNumberType param.Field[RoutingDetailRoutingNumberType] `json:"routing_number_type,required"`
-	// If the routing detail is to be used for a specific payment type this field will
-	// be populated, otherwise null.
-	PaymentType param.Field[RoutingDetailPaymentType] `json:"payment_type,required"`
-	// The name of the bank.
-	BankName    param.Field[string]                        `json:"bank_name,required"`
-	BankAddress param.Field[RoutingDetailBankAddressParam] `json:"bank_address,required"`
+	UpdatedAt         param.Field[time.Time]                      `json:"updated_at,required" format:"date-time"`
 }
 
 func (r RoutingDetailParam) MarshalJSON() (data []byte, err error) {
@@ -235,23 +235,23 @@ func (r RoutingDetailParam) MarshalJSON() (data []byte, err error) {
 }
 
 type RoutingDetailBankAddressParam struct {
-	ID     param.Field[string] `json:"id,required" format:"uuid"`
-	Object param.Field[string] `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  param.Field[bool]      `json:"live_mode,required"`
+	ID param.Field[string] `json:"id,required" format:"uuid"`
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country   param.Field[string]    `json:"country,required"`
 	CreatedAt param.Field[time.Time] `json:"created_at,required" format:"date-time"`
-	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
 	Line1     param.Field[string]    `json:"line1,required"`
 	Line2     param.Field[string]    `json:"line2,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode param.Field[bool] `json:"live_mode,required"`
 	// Locality or City.
 	Locality param.Field[string] `json:"locality,required"`
-	// Region or State.
-	Region param.Field[string] `json:"region,required"`
+	Object   param.Field[string] `json:"object,required"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code,required"`
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
+	// Region or State.
+	Region    param.Field[string]    `json:"region,required"`
+	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
 }
 
 func (r RoutingDetailBankAddressParam) MarshalJSON() (data []byte, err error) {
