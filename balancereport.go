@@ -67,39 +67,39 @@ func (r *InternalAccountBalanceReportService) ListAutoPaging(ctx context.Context
 }
 
 type BalanceReport struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	// The specific type of balance report. One of `intraday`, `previous_day`,
-	// `real_time`, or `other`.
-	BalanceReportType BalanceReportBalanceReportType `json:"balance_report_type,required"`
+	ID string `json:"id,required" format:"uuid"`
 	// The date of the balance report in local time.
 	AsOfDate time.Time `json:"as_of_date,required" format:"date"`
 	// The time (24-hour clock) of the balance report in local time.
 	AsOfTime string `json:"as_of_time,required,nullable" format:"time"`
+	// The specific type of balance report. One of `intraday`, `previous_day`,
+	// `real_time`, or `other`.
+	BalanceReportType BalanceReportBalanceReportType `json:"balance_report_type,required"`
 	// An array of `Balance` objects.
-	Balances []BalanceReportBalances `json:"balances,required"`
+	Balances  []BalanceReportBalance `json:"balances,required"`
+	CreatedAt time.Time              `json:"created_at,required" format:"date-time"`
 	// The ID of one of your organization's Internal Accounts.
 	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
-	JSON              balanceReportJSON
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode  bool      `json:"live_mode,required"`
+	Object    string    `json:"object,required"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	JSON      balanceReportJSON
 }
 
 // balanceReportJSON contains the JSON metadata for the struct [BalanceReport]
 type balanceReportJSON struct {
 	ID                apijson.Field
-	Object            apijson.Field
-	LiveMode          apijson.Field
-	CreatedAt         apijson.Field
-	UpdatedAt         apijson.Field
-	BalanceReportType apijson.Field
 	AsOfDate          apijson.Field
 	AsOfTime          apijson.Field
+	BalanceReportType apijson.Field
 	Balances          apijson.Field
+	CreatedAt         apijson.Field
 	InternalAccountID apijson.Field
+	LiveMode          apijson.Field
+	Object            apijson.Field
+	UpdatedAt         apijson.Field
 	raw               string
 	ExtraFields       map[string]apijson.Field
 }
@@ -119,48 +119,48 @@ const (
 	BalanceReportBalanceReportTypeRealTime    BalanceReportBalanceReportType = "real_time"
 )
 
-type BalanceReportBalances struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+type BalanceReportBalance struct {
+	ID string `json:"id,required" format:"uuid"`
 	// The balance amount.
 	Amount int64 `json:"amount,required"`
-	// The currency of the balance.
-	Currency shared.Currency `json:"currency,required,nullable"`
 	// The specific type of balance reported. One of `opening_ledger`,
 	// `closing_ledger`, `current_ledger`, `opening_available`,
 	// `opening_available_next_business_day`, `closing_available`, `current_available`,
 	// or `other`.
 	BalanceType BalanceReportBalancesBalanceType `json:"balance_type,required"`
+	CreatedAt   time.Time                        `json:"created_at,required" format:"date-time"`
+	// The currency of the balance.
+	Currency shared.Currency `json:"currency,required,nullable"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode  bool      `json:"live_mode,required"`
+	Object    string    `json:"object,required"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
 	// The code used by the bank when reporting this specific balance.
 	VendorCode string `json:"vendor_code,required"`
 	// The code used by the bank when reporting this specific balance.
 	VendorCodeType BalanceReportBalancesVendorCodeType `json:"vendor_code_type,required,nullable"`
-	JSON           balanceReportBalancesJSON
+	JSON           balanceReportBalanceJSON
 }
 
-// balanceReportBalancesJSON contains the JSON metadata for the struct
-// [BalanceReportBalances]
-type balanceReportBalancesJSON struct {
+// balanceReportBalanceJSON contains the JSON metadata for the struct
+// [BalanceReportBalance]
+type balanceReportBalanceJSON struct {
 	ID             apijson.Field
-	Object         apijson.Field
-	LiveMode       apijson.Field
-	CreatedAt      apijson.Field
-	UpdatedAt      apijson.Field
 	Amount         apijson.Field
-	Currency       apijson.Field
 	BalanceType    apijson.Field
+	CreatedAt      apijson.Field
+	Currency       apijson.Field
+	LiveMode       apijson.Field
+	Object         apijson.Field
+	UpdatedAt      apijson.Field
 	VendorCode     apijson.Field
 	VendorCodeType apijson.Field
 	raw            string
 	ExtraFields    map[string]apijson.Field
 }
 
-func (r *BalanceReportBalances) UnmarshalJSON(data []byte) (err error) {
+func (r *BalanceReportBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 

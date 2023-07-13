@@ -36,10 +36,10 @@ func NewLedgerEntryService(opts ...option.RequestOption) (r *LedgerEntryService)
 }
 
 // Get details on a single ledger entry.
-func (r *LedgerEntryService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerEntry, err error) {
+func (r *LedgerEntryService) Get(ctx context.Context, id string, query LedgerEntryGetParams, opts ...option.RequestOption) (res *LedgerEntry, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/ledger_entries/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
 }
 
@@ -67,25 +67,21 @@ func (r *LedgerEntryService) ListAutoPaging(ctx context.Context, query LedgerEnt
 }
 
 type LedgerEntry struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode    bool      `json:"live_mode,required"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt   time.Time `json:"updated_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	ID string `json:"id,required" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000. Can be any integer up to 36 digits.
-	Amount int64 `json:"amount,required"`
+	Amount    int64     `json:"amount,required"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
-	Direction LedgerEntryDirection `json:"direction,required"`
-	// Equal to the state of the ledger transaction when the ledger entry was created.
-	// One of `pending`, `posted`, or `archived`.
-	Status LedgerEntryStatus `json:"status,required"`
+	Direction   LedgerEntryDirection `json:"direction,required"`
+	DiscardedAt time.Time            `json:"discarded_at,required,nullable" format:"date-time"`
+	// The currency of the ledger account.
+	LedgerAccountCurrency string `json:"ledger_account_currency,required"`
+	// The currency exponent of the ledger account.
+	LedgerAccountCurrencyExponent int64 `json:"ledger_account_currency_exponent,required"`
 	// The ledger account that this ledger entry is associated with.
 	LedgerAccountID string `json:"ledger_account_id,required" format:"uuid"`
 	// Lock version of the ledger account. This can be passed when creating a ledger
@@ -93,12 +89,15 @@ type LedgerEntry struct {
 	// given version. See our post about Designing the Ledgers API with Optimistic
 	// Locking for more details.
 	LedgerAccountLockVersion int64 `json:"ledger_account_lock_version,required,nullable"`
-	// The currency of the ledger account.
-	LedgerAccountCurrency string `json:"ledger_account_currency,required"`
-	// The currency exponent of the ledger account.
-	LedgerAccountCurrencyExponent int64 `json:"ledger_account_currency_exponent,required"`
 	// The ledger transaction that this ledger entry is associated with.
 	LedgerTransactionID string `json:"ledger_transaction_id,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata map[string]string `json:"metadata,required"`
+	Object   string            `json:"object,required"`
 	// The pending, posted, and available balances for this ledger entry's ledger
 	// account. The posted balance is the sum of all posted entries on the account. The
 	// pending balance is the sum of all pending and posted entries on the account. The
@@ -107,26 +106,31 @@ type LedgerEntry struct {
 	// https://docs.moderntreasury.com/docs/transaction-status-and-balances for more
 	// details.
 	ResultingLedgerAccountBalances LedgerEntryResultingLedgerAccountBalances `json:"resulting_ledger_account_balances,required,nullable"`
-	JSON                           ledgerEntryJSON
+	// Equal to the state of the ledger transaction when the ledger entry was created.
+	// One of `pending`, `posted`, or `archived`.
+	Status    LedgerEntryStatus `json:"status,required"`
+	UpdatedAt time.Time         `json:"updated_at,required" format:"date-time"`
+	JSON      ledgerEntryJSON
 }
 
 // ledgerEntryJSON contains the JSON metadata for the struct [LedgerEntry]
 type ledgerEntryJSON struct {
 	ID                             apijson.Field
-	Object                         apijson.Field
-	LiveMode                       apijson.Field
-	CreatedAt                      apijson.Field
-	UpdatedAt                      apijson.Field
-	DiscardedAt                    apijson.Field
 	Amount                         apijson.Field
+	CreatedAt                      apijson.Field
 	Direction                      apijson.Field
-	Status                         apijson.Field
-	LedgerAccountID                apijson.Field
-	LedgerAccountLockVersion       apijson.Field
+	DiscardedAt                    apijson.Field
 	LedgerAccountCurrency          apijson.Field
 	LedgerAccountCurrencyExponent  apijson.Field
+	LedgerAccountID                apijson.Field
+	LedgerAccountLockVersion       apijson.Field
 	LedgerTransactionID            apijson.Field
+	LiveMode                       apijson.Field
+	Metadata                       apijson.Field
+	Object                         apijson.Field
 	ResultingLedgerAccountBalances apijson.Field
+	Status                         apijson.Field
+	UpdatedAt                      apijson.Field
 	raw                            string
 	ExtraFields                    map[string]apijson.Field
 }
@@ -146,16 +150,6 @@ const (
 	LedgerEntryDirectionDebit  LedgerEntryDirection = "debit"
 )
 
-// Equal to the state of the ledger transaction when the ledger entry was created.
-// One of `pending`, `posted`, or `archived`.
-type LedgerEntryStatus string
-
-const (
-	LedgerEntryStatusArchived LedgerEntryStatus = "archived"
-	LedgerEntryStatusPending  LedgerEntryStatus = "pending"
-	LedgerEntryStatusPosted   LedgerEntryStatus = "posted"
-)
-
 // The pending, posted, and available balances for this ledger entry's ledger
 // account. The posted balance is the sum of all posted entries on the account. The
 // pending balance is the sum of all pending and posted entries on the account. The
@@ -164,24 +158,24 @@ const (
 // https://docs.moderntreasury.com/docs/transaction-status-and-balances for more
 // details.
 type LedgerEntryResultingLedgerAccountBalances struct {
-	// The pending_balance is the sum of all pending and posted entries.
-	PendingBalance LedgerEntryResultingLedgerAccountBalancesPendingBalance `json:"pending_balance,required"`
-	// The posted_balance is the sum of all posted entries.
-	PostedBalance LedgerEntryResultingLedgerAccountBalancesPostedBalance `json:"posted_balance,required"`
 	// The available_balance is the sum of all posted inbound entries and pending
 	// outbound entries. For credit normal, available_amount = posted_credits -
 	// pending_debits; for debit normal, available_amount = posted_debits -
 	// pending_credits.
 	AvailableBalance LedgerEntryResultingLedgerAccountBalancesAvailableBalance `json:"available_balance,required"`
-	JSON             ledgerEntryResultingLedgerAccountBalancesJSON
+	// The pending_balance is the sum of all pending and posted entries.
+	PendingBalance LedgerEntryResultingLedgerAccountBalancesPendingBalance `json:"pending_balance,required"`
+	// The posted_balance is the sum of all posted entries.
+	PostedBalance LedgerEntryResultingLedgerAccountBalancesPostedBalance `json:"posted_balance,required"`
+	JSON          ledgerEntryResultingLedgerAccountBalancesJSON
 }
 
 // ledgerEntryResultingLedgerAccountBalancesJSON contains the JSON metadata for the
 // struct [LedgerEntryResultingLedgerAccountBalances]
 type ledgerEntryResultingLedgerAccountBalancesJSON struct {
+	AvailableBalance apijson.Field
 	PendingBalance   apijson.Field
 	PostedBalance    apijson.Field
-	AvailableBalance apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
@@ -190,15 +184,47 @@ func (r *LedgerEntryResultingLedgerAccountBalances) UnmarshalJSON(data []byte) (
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The pending_balance is the sum of all pending and posted entries.
-type LedgerEntryResultingLedgerAccountBalancesPendingBalance struct {
-	Credits int64 `json:"credits,required"`
-	Debits  int64 `json:"debits,required"`
+// The available_balance is the sum of all posted inbound entries and pending
+// outbound entries. For credit normal, available_amount = posted_credits -
+// pending_debits; for debit normal, available_amount = posted_debits -
+// pending_credits.
+type LedgerEntryResultingLedgerAccountBalancesAvailableBalance struct {
 	Amount  int64 `json:"amount,required"`
+	Credits int64 `json:"credits,required"`
 	// The currency of the ledger account.
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64 `json:"currency_exponent,required"`
+	Debits           int64 `json:"debits,required"`
+	JSON             ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON
+}
+
+// ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON contains the JSON
+// metadata for the struct
+// [LedgerEntryResultingLedgerAccountBalancesAvailableBalance]
+type ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON struct {
+	Amount           apijson.Field
+	Credits          apijson.Field
+	Currency         apijson.Field
+	CurrencyExponent apijson.Field
+	Debits           apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
+}
+
+func (r *LedgerEntryResultingLedgerAccountBalancesAvailableBalance) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// The pending_balance is the sum of all pending and posted entries.
+type LedgerEntryResultingLedgerAccountBalancesPendingBalance struct {
+	Amount  int64 `json:"amount,required"`
+	Credits int64 `json:"credits,required"`
+	// The currency of the ledger account.
+	Currency string `json:"currency,required"`
+	// The currency exponent of the ledger account.
+	CurrencyExponent int64 `json:"currency_exponent,required"`
+	Debits           int64 `json:"debits,required"`
 	JSON             ledgerEntryResultingLedgerAccountBalancesPendingBalanceJSON
 }
 
@@ -206,11 +232,11 @@ type LedgerEntryResultingLedgerAccountBalancesPendingBalance struct {
 // metadata for the struct
 // [LedgerEntryResultingLedgerAccountBalancesPendingBalance]
 type ledgerEntryResultingLedgerAccountBalancesPendingBalanceJSON struct {
-	Credits          apijson.Field
-	Debits           apijson.Field
 	Amount           apijson.Field
+	Credits          apijson.Field
 	Currency         apijson.Field
 	CurrencyExponent apijson.Field
+	Debits           apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
@@ -221,24 +247,24 @@ func (r *LedgerEntryResultingLedgerAccountBalancesPendingBalance) UnmarshalJSON(
 
 // The posted_balance is the sum of all posted entries.
 type LedgerEntryResultingLedgerAccountBalancesPostedBalance struct {
-	Credits int64 `json:"credits,required"`
-	Debits  int64 `json:"debits,required"`
 	Amount  int64 `json:"amount,required"`
+	Credits int64 `json:"credits,required"`
 	// The currency of the ledger account.
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64 `json:"currency_exponent,required"`
+	Debits           int64 `json:"debits,required"`
 	JSON             ledgerEntryResultingLedgerAccountBalancesPostedBalanceJSON
 }
 
 // ledgerEntryResultingLedgerAccountBalancesPostedBalanceJSON contains the JSON
 // metadata for the struct [LedgerEntryResultingLedgerAccountBalancesPostedBalance]
 type ledgerEntryResultingLedgerAccountBalancesPostedBalanceJSON struct {
-	Credits          apijson.Field
-	Debits           apijson.Field
 	Amount           apijson.Field
+	Credits          apijson.Field
 	Currency         apijson.Field
 	CurrencyExponent apijson.Field
+	Debits           apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
@@ -247,40 +273,33 @@ func (r *LedgerEntryResultingLedgerAccountBalancesPostedBalance) UnmarshalJSON(d
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The available_balance is the sum of all posted inbound entries and pending
-// outbound entries. For credit normal, available_amount = posted_credits -
-// pending_debits; for debit normal, available_amount = posted_debits -
-// pending_credits.
-type LedgerEntryResultingLedgerAccountBalancesAvailableBalance struct {
-	Credits int64 `json:"credits,required"`
-	Debits  int64 `json:"debits,required"`
-	Amount  int64 `json:"amount,required"`
-	// The currency of the ledger account.
-	Currency string `json:"currency,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent int64 `json:"currency_exponent,required"`
-	JSON             ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON
+// Equal to the state of the ledger transaction when the ledger entry was created.
+// One of `pending`, `posted`, or `archived`.
+type LedgerEntryStatus string
+
+const (
+	LedgerEntryStatusArchived LedgerEntryStatus = "archived"
+	LedgerEntryStatusPending  LedgerEntryStatus = "pending"
+	LedgerEntryStatusPosted   LedgerEntryStatus = "posted"
+)
+
+type LedgerEntryGetParams struct {
+	// If true, response will include the balances attached to the ledger entry. If
+	// there is no balance available, null will be returned instead.
+	ShowBalances param.Field[bool] `query:"show_balances"`
 }
 
-// ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON contains the JSON
-// metadata for the struct
-// [LedgerEntryResultingLedgerAccountBalancesAvailableBalance]
-type ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON struct {
-	Credits          apijson.Field
-	Debits           apijson.Field
-	Amount           apijson.Field
-	Currency         apijson.Field
-	CurrencyExponent apijson.Field
-	raw              string
-	ExtraFields      map[string]apijson.Field
-}
-
-func (r *LedgerEntryResultingLedgerAccountBalancesAvailableBalance) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+// URLQuery serializes [LedgerEntryGetParams]'s query parameters as `url.Values`.
+func (r LedgerEntryGetParams) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type LedgerEntryListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor"`
+	ID          param.Field[map[string]string] `query:"id"`
+	AfterCursor param.Field[string]            `query:"after_cursor"`
 	// Shows all ledger entries that were present on a ledger account at a particular
 	// `lock_version`. You must also specify `ledger_account_id`.
 	AsOfLockVersion param.Field[int64] `query:"as_of_lock_version"`
@@ -294,7 +313,6 @@ type LedgerEntryListParams struct {
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// transaction's effective date. Format YYYY-MM-DD
 	EffectiveDate param.Field[map[string]time.Time] `query:"effective_date" format:"date"`
-	ID            param.Field[map[string]string]    `query:"id"`
 	// Get all ledger entries that match the direction specified. One of `credit`,
 	// `debit`.
 	LedgerAccountCategoryID param.Field[string] `query:"ledger_account_category_id"`
@@ -304,12 +322,17 @@ type LedgerEntryListParams struct {
 	// before before lock_version 1000 of a ledger account, use
 	// `ledger_account_lock_version%5Blte%5D=1000`.
 	LedgerAccountLockVersion param.Field[map[string]int64] `query:"ledger_account_lock_version"`
-	LedgerTransactionID      param.Field[string]           `query:"ledger_transaction_id"`
+	// Get all ledger entries that are included in the ledger account statement.
+	LedgerAccountStatementID param.Field[string] `query:"ledger_account_statement_id"`
+	LedgerTransactionID      param.Field[string] `query:"ledger_transaction_id"`
 	// Order by `created_at` or `effective_at` in `asc` or `desc` order. For example,
 	// to order by `effective_at asc`, use `order_by%5Beffective_at%5D=asc`. Ordering
 	// by only one field at a time is supported.
 	OrderBy param.Field[LedgerEntryListParamsOrderBy] `query:"order_by"`
 	PerPage param.Field[int64]                        `query:"per_page"`
+	// If true, response will include the balances attached to the ledger entry. If
+	// there is no balance available, null will be returned instead.
+	ShowBalances param.Field[bool] `query:"show_balances"`
 	// If true, response will include ledger entries that were deleted. When you update
 	// a ledger transaction to specify a new set of entries, the previous entries are
 	// deleted.

@@ -33,7 +33,7 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 		DateLowerBound:    moderntreasury.F(time.Now()),
 		DateUpperBound:    moderntreasury.F(time.Now()),
 		Description:       moderntreasury.F("string"),
-		LineItems: moderntreasury.F([]moderntreasury.ExpectedPaymentNewParamsLineItems{{
+		LineItems: moderntreasury.F([]moderntreasury.ExpectedPaymentNewParamsLineItem{{
 			Amount: moderntreasury.F(int64(0)),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
@@ -66,6 +66,8 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 			"foo":    "bar",
 			"modern": "treasury",
 		}),
+		ReconciliationFilters: moderntreasury.F[any](map[string]interface{}{}),
+		ReconciliationGroups:  moderntreasury.F[any](map[string]interface{}{}),
 		RemittanceInformation: moderntreasury.F("string"),
 		StatementDescriptor:   moderntreasury.F("string"),
 		Type:                  moderntreasury.F(moderntreasury.ExpectedPaymentTypeACH),
@@ -126,6 +128,8 @@ func TestExpectedPaymentUpdateWithOptionalParams(t *testing.T) {
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
+			ReconciliationFilters: moderntreasury.F[any](map[string]interface{}{}),
+			ReconciliationGroups:  moderntreasury.F[any](map[string]interface{}{}),
 			RemittanceInformation: moderntreasury.F("string"),
 			StatementDescriptor:   moderntreasury.F("string"),
 			Type:                  moderntreasury.F(moderntreasury.ExpectedPaymentTypeACH),

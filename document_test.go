@@ -24,16 +24,13 @@ func TestDocumentNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := client.Documents.New(
-		context.TODO(),
-		moderntreasury.DocumentNewParamsDocumentableTypeCases,
-		"string",
-		moderntreasury.DocumentNewParams{
-			File:           moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
-			DocumentType:   moderntreasury.F("string"),
-			IdempotencyKey: moderntreasury.F("string"),
-		},
-	)
+	_, err := client.Documents.New(context.TODO(), moderntreasury.DocumentNewParams{
+		DocumentableID:   moderntreasury.F("string"),
+		DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCases),
+		File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
+		DocumentType:     moderntreasury.F("string"),
+		IdempotencyKey:   moderntreasury.F("string"),
+	})
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -52,12 +49,7 @@ func TestDocumentGet(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := client.Documents.Get(
-		context.TODO(),
-		moderntreasury.DocumentGetParamsDocumentableTypeCases,
-		"string",
-		"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-	)
+	_, err := client.Documents.Get(context.TODO(), "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -76,15 +68,12 @@ func TestDocumentListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	_, err := client.Documents.List(
-		context.TODO(),
-		moderntreasury.DocumentListParamsDocumentableTypeCases,
-		"string",
-		moderntreasury.DocumentListParams{
-			AfterCursor: moderntreasury.F("string"),
-			PerPage:     moderntreasury.F(int64(0)),
-		},
-	)
+	_, err := client.Documents.List(context.TODO(), moderntreasury.DocumentListParams{
+		AfterCursor:      moderntreasury.F("string"),
+		DocumentableID:   moderntreasury.F("string"),
+		DocumentableType: moderntreasury.F(moderntreasury.DocumentListParamsDocumentableTypeCases),
+		PerPage:          moderntreasury.F(int64(0)),
+	})
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

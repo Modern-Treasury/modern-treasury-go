@@ -100,42 +100,45 @@ func (r *CounterpartyService) CollectAccount(ctx context.Context, id string, par
 }
 
 type Counterparty struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode    bool      `json:"live_mode,required"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt   time.Time `json:"updated_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
-	// A human friendly name for this counterparty.
-	Name string `json:"name,required,nullable"`
+	ID string `json:"id,required" format:"uuid"`
 	// The accounts for this counterparty.
-	Accounts []CounterpartyAccounts `json:"accounts,required"`
+	Accounts    []CounterpartyAccount `json:"accounts,required"`
+	CreatedAt   time.Time             `json:"created_at,required" format:"date-time"`
+	DiscardedAt time.Time             `json:"discarded_at,required,nullable" format:"date-time"`
 	// The counterparty's email.
 	Email string `json:"email,required,nullable" format:"email"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata map[string]string `json:"metadata,required"`
+	// A human friendly name for this counterparty.
+	Name   string `json:"name,required,nullable"`
+	Object string `json:"object,required"`
 	// Send an email to the counterparty whenever an associated payment order is sent
 	// to the bank.
-	SendRemittanceAdvice bool `json:"send_remittance_advice,required"`
-	JSON                 counterpartyJSON
+	SendRemittanceAdvice bool      `json:"send_remittance_advice,required"`
+	UpdatedAt            time.Time `json:"updated_at,required" format:"date-time"`
+	// The verification status of the counterparty.
+	VerificationStatus CounterpartyVerificationStatus `json:"verification_status,required"`
+	JSON               counterpartyJSON
 }
 
 // counterpartyJSON contains the JSON metadata for the struct [Counterparty]
 type counterpartyJSON struct {
 	ID                   apijson.Field
-	Object               apijson.Field
-	LiveMode             apijson.Field
-	CreatedAt            apijson.Field
-	UpdatedAt            apijson.Field
-	DiscardedAt          apijson.Field
-	Name                 apijson.Field
 	Accounts             apijson.Field
+	CreatedAt            apijson.Field
+	DiscardedAt          apijson.Field
 	Email                apijson.Field
+	LiveMode             apijson.Field
 	Metadata             apijson.Field
+	Name                 apijson.Field
+	Object               apijson.Field
 	SendRemittanceAdvice apijson.Field
+	UpdatedAt            apijson.Field
+	VerificationStatus   apijson.Field
 	raw                  string
 	ExtraFields          map[string]apijson.Field
 }
@@ -144,149 +147,97 @@ func (r *Counterparty) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-type CounterpartyAccounts struct {
-	ID     string `json:"id" format:"uuid"`
-	Object string `json:"object"`
+type CounterpartyAccount struct {
+	ID             string          `json:"id" format:"uuid"`
+	AccountDetails []AccountDetail `json:"account_details"`
+	// Can be `checking`, `savings` or `other`.
+	AccountType    ExternalAccountType                 `json:"account_type"`
+	ContactDetails []CounterpartyAccountsContactDetail `json:"contact_details"`
+	CreatedAt      time.Time                           `json:"created_at" format:"date-time"`
+	DiscardedAt    time.Time                           `json:"discarded_at,nullable" format:"date-time"`
+	// If the external account links to a ledger account in Modern Treasury, the id of
+	// the ledger account will be populated here.
+	LedgerAccountID string `json:"ledger_account_id,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode    bool      `json:"live_mode"`
-	CreatedAt   time.Time `json:"created_at" format:"date-time"`
-	UpdatedAt   time.Time `json:"updated_at" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,nullable" format:"date-time"`
-	// Can be `checking`, `savings` or `other`.
-	AccountType ExternalAccountType `json:"account_type"`
-	// Either `individual` or `business`.
-	PartyType CounterpartyAccountsPartyType `json:"party_type,nullable"`
-	// The address associated with the owner or `null`.
-	PartyAddress CounterpartyAccountsPartyAddress `json:"party_address,nullable"`
-	// A nickname for the external account. This is only for internal usage and won't
-	// affect any payments
-	Name           string          `json:"name,nullable"`
-	AccountDetails []AccountDetail `json:"account_details"`
-	RoutingDetails []RoutingDetail `json:"routing_details"`
+	LiveMode bool `json:"live_mode"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata map[string]string `json:"metadata"`
+	// A nickname for the external account. This is only for internal usage and won't
+	// affect any payments
+	Name   string `json:"name,nullable"`
+	Object string `json:"object"`
+	// The address associated with the owner or `null`.
+	PartyAddress CounterpartyAccountsPartyAddress `json:"party_address,nullable"`
 	// The legal name of the entity which owns the account.
-	PartyName      string                               `json:"party_name"`
-	ContactDetails []CounterpartyAccountsContactDetails `json:"contact_details"`
-	// If the external account links to a ledger account in Modern Treasury, the id of
-	// the ledger account will be populated here.
-	LedgerAccountID    string                                 `json:"ledger_account_id,nullable" format:"uuid"`
+	PartyName string `json:"party_name"`
+	// Either `individual` or `business`.
+	PartyType          CounterpartyAccountsPartyType          `json:"party_type,nullable"`
+	RoutingDetails     []RoutingDetail                        `json:"routing_details"`
+	UpdatedAt          time.Time                              `json:"updated_at" format:"date-time"`
 	VerificationStatus CounterpartyAccountsVerificationStatus `json:"verification_status"`
-	JSON               counterpartyAccountsJSON
+	JSON               counterpartyAccountJSON
 }
 
-// counterpartyAccountsJSON contains the JSON metadata for the struct
-// [CounterpartyAccounts]
-type counterpartyAccountsJSON struct {
+// counterpartyAccountJSON contains the JSON metadata for the struct
+// [CounterpartyAccount]
+type counterpartyAccountJSON struct {
 	ID                 apijson.Field
-	Object             apijson.Field
-	LiveMode           apijson.Field
-	CreatedAt          apijson.Field
-	UpdatedAt          apijson.Field
-	DiscardedAt        apijson.Field
-	AccountType        apijson.Field
-	PartyType          apijson.Field
-	PartyAddress       apijson.Field
-	Name               apijson.Field
 	AccountDetails     apijson.Field
-	RoutingDetails     apijson.Field
-	Metadata           apijson.Field
-	PartyName          apijson.Field
+	AccountType        apijson.Field
 	ContactDetails     apijson.Field
+	CreatedAt          apijson.Field
+	DiscardedAt        apijson.Field
 	LedgerAccountID    apijson.Field
+	LiveMode           apijson.Field
+	Metadata           apijson.Field
+	Name               apijson.Field
+	Object             apijson.Field
+	PartyAddress       apijson.Field
+	PartyName          apijson.Field
+	PartyType          apijson.Field
+	RoutingDetails     apijson.Field
+	UpdatedAt          apijson.Field
 	VerificationStatus apijson.Field
 	raw                string
 	ExtraFields        map[string]apijson.Field
 }
 
-func (r *CounterpartyAccounts) UnmarshalJSON(data []byte) (err error) {
+func (r *CounterpartyAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Either `individual` or `business`.
-type CounterpartyAccountsPartyType string
-
-const (
-	CounterpartyAccountsPartyTypeBusiness   CounterpartyAccountsPartyType = "business"
-	CounterpartyAccountsPartyTypeIndividual CounterpartyAccountsPartyType = "individual"
-)
-
-// The address associated with the owner or `null`.
-type CounterpartyAccountsPartyAddress struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
+type CounterpartyAccountsContactDetail struct {
+	ID                    string                                                  `json:"id,required" format:"uuid"`
+	ContactIdentifier     string                                                  `json:"contact_identifier,required"`
+	ContactIdentifierType CounterpartyAccountsContactDetailsContactIdentifierType `json:"contact_identifier_type,required"`
+	CreatedAt             time.Time                                               `json:"created_at,required" format:"date-time"`
+	DiscardedAt           time.Time                                               `json:"discarded_at,required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	Object    string    `json:"object,required"`
 	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	Line1     string    `json:"line1,required,nullable"`
-	Line2     string    `json:"line2,required,nullable"`
-	// Locality or City.
-	Locality string `json:"locality,required,nullable"`
-	// Region or State.
-	Region string `json:"region,required,nullable"`
-	// The postal code of the address.
-	PostalCode string `json:"postal_code,required,nullable"`
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country string `json:"country,required,nullable"`
-	JSON    counterpartyAccountsPartyAddressJSON
+	JSON      counterpartyAccountsContactDetailJSON
 }
 
-// counterpartyAccountsPartyAddressJSON contains the JSON metadata for the struct
-// [CounterpartyAccountsPartyAddress]
-type counterpartyAccountsPartyAddressJSON struct {
-	ID          apijson.Field
-	Object      apijson.Field
-	LiveMode    apijson.Field
-	CreatedAt   apijson.Field
-	UpdatedAt   apijson.Field
-	Line1       apijson.Field
-	Line2       apijson.Field
-	Locality    apijson.Field
-	Region      apijson.Field
-	PostalCode  apijson.Field
-	Country     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *CounterpartyAccountsPartyAddress) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-type CounterpartyAccountsContactDetails struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode              bool                                                    `json:"live_mode,required"`
-	CreatedAt             time.Time                                               `json:"created_at,required" format:"date-time"`
-	UpdatedAt             time.Time                                               `json:"updated_at,required" format:"date-time"`
-	DiscardedAt           time.Time                                               `json:"discarded_at,required,nullable" format:"date-time"`
-	ContactIdentifier     string                                                  `json:"contact_identifier,required"`
-	ContactIdentifierType CounterpartyAccountsContactDetailsContactIdentifierType `json:"contact_identifier_type,required"`
-	JSON                  counterpartyAccountsContactDetailsJSON
-}
-
-// counterpartyAccountsContactDetailsJSON contains the JSON metadata for the struct
-// [CounterpartyAccountsContactDetails]
-type counterpartyAccountsContactDetailsJSON struct {
+// counterpartyAccountsContactDetailJSON contains the JSON metadata for the struct
+// [CounterpartyAccountsContactDetail]
+type counterpartyAccountsContactDetailJSON struct {
 	ID                    apijson.Field
-	Object                apijson.Field
-	LiveMode              apijson.Field
-	CreatedAt             apijson.Field
-	UpdatedAt             apijson.Field
-	DiscardedAt           apijson.Field
 	ContactIdentifier     apijson.Field
 	ContactIdentifierType apijson.Field
+	CreatedAt             apijson.Field
+	DiscardedAt           apijson.Field
+	LiveMode              apijson.Field
+	Object                apijson.Field
+	UpdatedAt             apijson.Field
 	raw                   string
 	ExtraFields           map[string]apijson.Field
 }
 
-func (r *CounterpartyAccountsContactDetails) UnmarshalJSON(data []byte) (err error) {
+func (r *CounterpartyAccountsContactDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
@@ -298,6 +249,58 @@ const (
 	CounterpartyAccountsContactDetailsContactIdentifierTypeWebsite     CounterpartyAccountsContactDetailsContactIdentifierType = "website"
 )
 
+// The address associated with the owner or `null`.
+type CounterpartyAccountsPartyAddress struct {
+	ID string `json:"id,required" format:"uuid"`
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country   string    `json:"country,required,nullable"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	Line1     string    `json:"line1,required,nullable"`
+	Line2     string    `json:"line2,required,nullable"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// Locality or City.
+	Locality string `json:"locality,required,nullable"`
+	Object   string `json:"object,required"`
+	// The postal code of the address.
+	PostalCode string `json:"postal_code,required,nullable"`
+	// Region or State.
+	Region    string    `json:"region,required,nullable"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	JSON      counterpartyAccountsPartyAddressJSON
+}
+
+// counterpartyAccountsPartyAddressJSON contains the JSON metadata for the struct
+// [CounterpartyAccountsPartyAddress]
+type counterpartyAccountsPartyAddressJSON struct {
+	ID          apijson.Field
+	Country     apijson.Field
+	CreatedAt   apijson.Field
+	Line1       apijson.Field
+	Line2       apijson.Field
+	LiveMode    apijson.Field
+	Locality    apijson.Field
+	Object      apijson.Field
+	PostalCode  apijson.Field
+	Region      apijson.Field
+	UpdatedAt   apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *CounterpartyAccountsPartyAddress) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+// Either `individual` or `business`.
+type CounterpartyAccountsPartyType string
+
+const (
+	CounterpartyAccountsPartyTypeBusiness   CounterpartyAccountsPartyType = "business"
+	CounterpartyAccountsPartyTypeIndividual CounterpartyAccountsPartyType = "individual"
+)
+
 type CounterpartyAccountsVerificationStatus string
 
 const (
@@ -306,17 +309,27 @@ const (
 	CounterpartyAccountsVerificationStatusVerified            CounterpartyAccountsVerificationStatus = "verified"
 )
 
+// The verification status of the counterparty.
+type CounterpartyVerificationStatus string
+
+const (
+	CounterpartyVerificationStatusDenied        CounterpartyVerificationStatus = "denied"
+	CounterpartyVerificationStatusNeedsApproval CounterpartyVerificationStatus = "needs_approval"
+	CounterpartyVerificationStatusUnverified    CounterpartyVerificationStatus = "unverified"
+	CounterpartyVerificationStatusVerified      CounterpartyVerificationStatus = "verified"
+)
+
 type CounterpartyCollectAccountResponse struct {
 	// The id of the existing counterparty.
 	ID string `json:"id,required"`
-	// This field will be `true` if an email requesting account details has already
-	// been sent to this counterparty.
-	IsResend bool `json:"is_resend,required"`
 	// This is the link to the secure Modern Treasury form. By default, Modern Treasury
 	// will send an email to your counterparty that includes a link to this form.
 	// However, if `send_email` is passed as `false` in the body then Modern Treasury
 	// will not send the email and you can send it to the counterparty directly.
 	FormLink string `json:"form_link,required" format:"uri"`
+	// This field will be `true` if an email requesting account details has already
+	// been sent to this counterparty.
+	IsResend bool `json:"is_resend,required"`
 	JSON     counterpartyCollectAccountResponseJSON
 }
 
@@ -324,8 +337,8 @@ type CounterpartyCollectAccountResponse struct {
 // [CounterpartyCollectAccountResponse]
 type counterpartyCollectAccountResponseJSON struct {
 	ID          apijson.Field
-	IsResend    apijson.Field
 	FormLink    apijson.Field
+	IsResend    apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }
@@ -339,7 +352,7 @@ type CounterpartyNewParams struct {
 	Name       param.Field[string]                          `json:"name,required"`
 	Accounting param.Field[CounterpartyNewParamsAccounting] `json:"accounting"`
 	// The accounts for this counterparty.
-	Accounts param.Field[[]CounterpartyNewParamsAccounts] `json:"accounts"`
+	Accounts param.Field[[]CounterpartyNewParamsAccount] `json:"accounts"`
 	// The counterparty's email.
 	Email param.Field[string] `json:"email" format:"email"`
 	// An optional type to auto-sync the counterparty to your ledger. Either `customer`
@@ -353,7 +366,9 @@ type CounterpartyNewParams struct {
 	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
 	// Either a valid SSN or EIN.
 	TaxpayerIdentifier param.Field[string] `json:"taxpayer_identifier"`
-	IdempotencyKey     param.Field[string] `header:"Idempotency-Key"`
+	// The verification status of the counterparty.
+	VerificationStatus param.Field[CounterpartyNewParamsVerificationStatus] `json:"verification_status"`
+	IdempotencyKey     param.Field[string]                                  `header:"Idempotency-Key"`
 }
 
 func (r CounterpartyNewParams) MarshalJSON() (data []byte, err error) {
@@ -379,72 +394,46 @@ const (
 	CounterpartyNewParamsAccountingTypeVendor   CounterpartyNewParamsAccountingType = "vendor"
 )
 
-type CounterpartyNewParamsAccounts struct {
+type CounterpartyNewParamsAccount struct {
+	AccountDetails param.Field[[]CounterpartyNewParamsAccountsAccountDetail] `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
-	AccountType param.Field[ExternalAccountType] `json:"account_type"`
-	// Either `individual` or `business`.
-	PartyType param.Field[CounterpartyNewParamsAccountsPartyType] `json:"party_type"`
-	// Required if receiving wire payments.
-	PartyAddress param.Field[CounterpartyNewParamsAccountsPartyAddress] `json:"party_address"`
-	// A nickname for the external account. This is only for internal usage and won't
-	// affect any payments
-	Name           param.Field[string]                                        `json:"name"`
-	AccountDetails param.Field[[]CounterpartyNewParamsAccountsAccountDetails] `json:"account_details"`
-	RoutingDetails param.Field[[]CounterpartyNewParamsAccountsRoutingDetails] `json:"routing_details"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// If this value isn't provided, it will be inherited from the counterparty's name.
-	PartyName       param.Field[string] `json:"party_name"`
-	PartyIdentifier param.Field[string] `json:"party_identifier"`
+	AccountType    param.Field[ExternalAccountType]                          `json:"account_type"`
+	ContactDetails param.Field[[]CounterpartyNewParamsAccountsContactDetail] `json:"contact_details"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
 	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 	// for more details.
 	LedgerAccount param.Field[CounterpartyNewParamsAccountsLedgerAccount] `json:"ledger_account"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// A nickname for the external account. This is only for internal usage and won't
+	// affect any payments
+	Name param.Field[string] `json:"name"`
+	// Required if receiving wire payments.
+	PartyAddress    param.Field[CounterpartyNewParamsAccountsPartyAddress] `json:"party_address"`
+	PartyIdentifier param.Field[string]                                    `json:"party_identifier"`
+	// If this value isn't provided, it will be inherited from the counterparty's name.
+	PartyName param.Field[string] `json:"party_name"`
+	// Either `individual` or `business`.
+	PartyType param.Field[CounterpartyNewParamsAccountsPartyType] `json:"party_type"`
 	// If you've enabled the Modern Treasury + Plaid integration in your Plaid account,
 	// you can pass the processor token in this field.
-	PlaidProcessorToken param.Field[string]                                        `json:"plaid_processor_token"`
-	ContactDetails      param.Field[[]CounterpartyNewParamsAccountsContactDetails] `json:"contact_details"`
+	PlaidProcessorToken param.Field[string]                                       `json:"plaid_processor_token"`
+	RoutingDetails      param.Field[[]CounterpartyNewParamsAccountsRoutingDetail] `json:"routing_details"`
 }
 
-func (r CounterpartyNewParamsAccounts) MarshalJSON() (data []byte, err error) {
+func (r CounterpartyNewParamsAccount) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// Either `individual` or `business`.
-type CounterpartyNewParamsAccountsPartyType string
-
-const (
-	CounterpartyNewParamsAccountsPartyTypeBusiness   CounterpartyNewParamsAccountsPartyType = "business"
-	CounterpartyNewParamsAccountsPartyTypeIndividual CounterpartyNewParamsAccountsPartyType = "individual"
-)
-
-// Required if receiving wire payments.
-type CounterpartyNewParamsAccountsPartyAddress struct {
-	Line1 param.Field[string] `json:"line1"`
-	Line2 param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality"`
-	// Region or State.
-	Region param.Field[string] `json:"region"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code"`
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country"`
-}
-
-func (r CounterpartyNewParamsAccountsPartyAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type CounterpartyNewParamsAccountsAccountDetails struct {
+type CounterpartyNewParamsAccountsAccountDetail struct {
 	AccountNumber     param.Field[string]                                                       `json:"account_number,required"`
 	AccountNumberType param.Field[CounterpartyNewParamsAccountsAccountDetailsAccountNumberType] `json:"account_number_type"`
 }
 
-func (r CounterpartyNewParamsAccountsAccountDetails) MarshalJSON() (data []byte, err error) {
+func (r CounterpartyNewParamsAccountsAccountDetail) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -458,13 +447,108 @@ const (
 	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeOther         CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "other"
 )
 
-type CounterpartyNewParamsAccountsRoutingDetails struct {
+type CounterpartyNewParamsAccountsContactDetail struct {
+	ContactIdentifier     param.Field[string]                                                           `json:"contact_identifier"`
+	ContactIdentifierType param.Field[CounterpartyNewParamsAccountsContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
+}
+
+func (r CounterpartyNewParamsAccountsContactDetail) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type CounterpartyNewParamsAccountsContactDetailsContactIdentifierType string
+
+const (
+	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail       CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "email"
+	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypePhoneNumber CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "phone_number"
+	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeWebsite     CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "website"
+)
+
+// Specifies a ledger account object that will be created with the external
+// account. The resulting ledger account is linked to the external account for
+// auto-ledgering Payment objects. See
+// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
+// for more details.
+type CounterpartyNewParamsAccountsLedgerAccount struct {
+	// The currency of the ledger account.
+	Currency param.Field[string] `json:"currency,required"`
+	// The id of the ledger that this account belongs to.
+	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
+	// The name of the ledger account.
+	Name param.Field[string] `json:"name,required"`
+	// The normal balance of the ledger account.
+	NormalBalance param.Field[CounterpartyNewParamsAccountsLedgerAccountNormalBalance] `json:"normal_balance,required"`
+	// The currency exponent of the ledger account.
+	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
+	// The description of the ledger account.
+	Description param.Field[string] `json:"description"`
+	// If the ledger account links to another object in Modern Treasury, the id will be
+	// populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// If the ledger account links to another object in Modern Treasury, the type will
+	// be populated here, otherwise null. The value is one of internal_account or
+	// external_account.
+	LedgerableType param.Field[CounterpartyNewParamsAccountsLedgerAccountLedgerableType] `json:"ledgerable_type"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+}
+
+func (r CounterpartyNewParamsAccountsLedgerAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The normal balance of the ledger account.
+type CounterpartyNewParamsAccountsLedgerAccountNormalBalance string
+
+const (
+	CounterpartyNewParamsAccountsLedgerAccountNormalBalanceCredit CounterpartyNewParamsAccountsLedgerAccountNormalBalance = "credit"
+	CounterpartyNewParamsAccountsLedgerAccountNormalBalanceDebit  CounterpartyNewParamsAccountsLedgerAccountNormalBalance = "debit"
+)
+
+// If the ledger account links to another object in Modern Treasury, the type will
+// be populated here, otherwise null. The value is one of internal_account or
+// external_account.
+type CounterpartyNewParamsAccountsLedgerAccountLedgerableType string
+
+const (
+	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "external_account"
+	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeInternalAccount CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "internal_account"
+)
+
+// Required if receiving wire payments.
+type CounterpartyNewParamsAccountsPartyAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country param.Field[string] `json:"country"`
+	Line1   param.Field[string] `json:"line1"`
+	Line2   param.Field[string] `json:"line2"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code"`
+	// Region or State.
+	Region param.Field[string] `json:"region"`
+}
+
+func (r CounterpartyNewParamsAccountsPartyAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Either `individual` or `business`.
+type CounterpartyNewParamsAccountsPartyType string
+
+const (
+	CounterpartyNewParamsAccountsPartyTypeBusiness   CounterpartyNewParamsAccountsPartyType = "business"
+	CounterpartyNewParamsAccountsPartyTypeIndividual CounterpartyNewParamsAccountsPartyType = "individual"
+)
+
+type CounterpartyNewParamsAccountsRoutingDetail struct {
 	RoutingNumber     param.Field[string]                                                       `json:"routing_number,required"`
 	RoutingNumberType param.Field[CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
 	PaymentType       param.Field[CounterpartyNewParamsAccountsRoutingDetailsPaymentType]       `json:"payment_type"`
 }
 
-func (r CounterpartyNewParamsAccountsRoutingDetails) MarshalJSON() (data []byte, err error) {
+func (r CounterpartyNewParamsAccountsRoutingDetail) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -505,75 +589,6 @@ const (
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeWire        CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "wire"
 )
 
-// Specifies a ledger account object that will be created with the external
-// account. The resulting ledger account is linked to the external account for
-// auto-ledgering Payment objects. See
-// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
-// for more details.
-type CounterpartyNewParamsAccountsLedgerAccount struct {
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name,required"`
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description"`
-	// The normal balance of the ledger account.
-	NormalBalance param.Field[CounterpartyNewParamsAccountsLedgerAccountNormalBalance] `json:"normal_balance,required"`
-	// The id of the ledger that this account belongs to.
-	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
-	// The currency of the ledger account.
-	Currency param.Field[string] `json:"currency,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
-	// If the ledger account links to another object in Modern Treasury, the id will be
-	// populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the type will
-	// be populated here, otherwise null. The value is one of internal_account or
-	// external_account.
-	LedgerableType param.Field[CounterpartyNewParamsAccountsLedgerAccountLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-}
-
-func (r CounterpartyNewParamsAccountsLedgerAccount) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The normal balance of the ledger account.
-type CounterpartyNewParamsAccountsLedgerAccountNormalBalance string
-
-const (
-	CounterpartyNewParamsAccountsLedgerAccountNormalBalanceCredit CounterpartyNewParamsAccountsLedgerAccountNormalBalance = "credit"
-	CounterpartyNewParamsAccountsLedgerAccountNormalBalanceDebit  CounterpartyNewParamsAccountsLedgerAccountNormalBalance = "debit"
-)
-
-// If the ledger account links to another object in Modern Treasury, the type will
-// be populated here, otherwise null. The value is one of internal_account or
-// external_account.
-type CounterpartyNewParamsAccountsLedgerAccountLedgerableType string
-
-const (
-	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "external_account"
-	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeInternalAccount CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "internal_account"
-)
-
-type CounterpartyNewParamsAccountsContactDetails struct {
-	ContactIdentifier     param.Field[string]                                                           `json:"contact_identifier"`
-	ContactIdentifierType param.Field[CounterpartyNewParamsAccountsContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
-}
-
-func (r CounterpartyNewParamsAccountsContactDetails) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type CounterpartyNewParamsAccountsContactDetailsContactIdentifierType string
-
-const (
-	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail       CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "email"
-	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypePhoneNumber CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "phone_number"
-	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeWebsite     CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "website"
-)
-
 // An optional type to auto-sync the counterparty to your ledger. Either `customer`
 // or `vendor`.
 type CounterpartyNewParamsLedgerType string
@@ -581,6 +596,16 @@ type CounterpartyNewParamsLedgerType string
 const (
 	CounterpartyNewParamsLedgerTypeCustomer CounterpartyNewParamsLedgerType = "customer"
 	CounterpartyNewParamsLedgerTypeVendor   CounterpartyNewParamsLedgerType = "vendor"
+)
+
+// The verification status of the counterparty.
+type CounterpartyNewParamsVerificationStatus string
+
+const (
+	CounterpartyNewParamsVerificationStatusDenied        CounterpartyNewParamsVerificationStatus = "denied"
+	CounterpartyNewParamsVerificationStatusNeedsApproval CounterpartyNewParamsVerificationStatus = "needs_approval"
+	CounterpartyNewParamsVerificationStatusUnverified    CounterpartyNewParamsVerificationStatus = "unverified"
+	CounterpartyNewParamsVerificationStatusVerified      CounterpartyNewParamsVerificationStatus = "verified"
 )
 
 type CounterpartyUpdateParams struct {
@@ -643,7 +668,7 @@ type CounterpartyCollectAccountParams struct {
 	// \"routingNumber\", \"address\"]. The full list of options is [\"name\",
 	// \"nameOnAccount\", \"taxpayerIdentifier\", \"accountType\", \"accountNumber\",
 	// \"routingNumber\", \"address\", \"ibanNumber\", \"swiftCode\"].
-	Fields param.Field[[]CounterpartyCollectAccountParamsFields] `json:"fields"`
+	Fields param.Field[[]CounterpartyCollectAccountParamsField] `json:"fields"`
 	// By default, Modern Treasury will send an email to your counterparty that
 	// includes a link to the form they must fill out. However, if you would like to
 	// send the counterparty the link, you can set this parameter to `false`. The JSON
@@ -666,28 +691,28 @@ const (
 	CounterpartyCollectAccountParamsDirectionDebit  CounterpartyCollectAccountParamsDirection = "debit"
 )
 
-type CounterpartyCollectAccountParamsFields string
+type CounterpartyCollectAccountParamsField string
 
 const (
-	CounterpartyCollectAccountParamsFieldsName                 CounterpartyCollectAccountParamsFields = "name"
-	CounterpartyCollectAccountParamsFieldsNameOnAccount        CounterpartyCollectAccountParamsFields = "nameOnAccount"
-	CounterpartyCollectAccountParamsFieldsTaxpayerIdentifier   CounterpartyCollectAccountParamsFields = "taxpayerIdentifier"
-	CounterpartyCollectAccountParamsFieldsAccountType          CounterpartyCollectAccountParamsFields = "accountType"
-	CounterpartyCollectAccountParamsFieldsAccountNumber        CounterpartyCollectAccountParamsFields = "accountNumber"
-	CounterpartyCollectAccountParamsFieldsIbanNumber           CounterpartyCollectAccountParamsFields = "ibanNumber"
-	CounterpartyCollectAccountParamsFieldsClabeNumber          CounterpartyCollectAccountParamsFields = "clabeNumber"
-	CounterpartyCollectAccountParamsFieldsWalletAddress        CounterpartyCollectAccountParamsFields = "walletAddress"
-	CounterpartyCollectAccountParamsFieldsPanNumber            CounterpartyCollectAccountParamsFields = "panNumber"
-	CounterpartyCollectAccountParamsFieldsRoutingNumber        CounterpartyCollectAccountParamsFields = "routingNumber"
-	CounterpartyCollectAccountParamsFieldsAbaWireRoutingNumber CounterpartyCollectAccountParamsFields = "abaWireRoutingNumber"
-	CounterpartyCollectAccountParamsFieldsSwiftCode            CounterpartyCollectAccountParamsFields = "swiftCode"
-	CounterpartyCollectAccountParamsFieldsAuBsb                CounterpartyCollectAccountParamsFields = "auBsb"
-	CounterpartyCollectAccountParamsFieldsCaCpa                CounterpartyCollectAccountParamsFields = "caCpa"
-	CounterpartyCollectAccountParamsFieldsCnaps                CounterpartyCollectAccountParamsFields = "cnaps"
-	CounterpartyCollectAccountParamsFieldsGBSortCode           CounterpartyCollectAccountParamsFields = "gbSortCode"
-	CounterpartyCollectAccountParamsFieldsInIfsc               CounterpartyCollectAccountParamsFields = "inIfsc"
-	CounterpartyCollectAccountParamsFieldsMyBranchCode         CounterpartyCollectAccountParamsFields = "myBranchCode"
-	CounterpartyCollectAccountParamsFieldsBrCodigo             CounterpartyCollectAccountParamsFields = "brCodigo"
-	CounterpartyCollectAccountParamsFieldsRoutingNumberType    CounterpartyCollectAccountParamsFields = "routingNumberType"
-	CounterpartyCollectAccountParamsFieldsAddress              CounterpartyCollectAccountParamsFields = "address"
+	CounterpartyCollectAccountParamsFieldName                 CounterpartyCollectAccountParamsField = "name"
+	CounterpartyCollectAccountParamsFieldNameOnAccount        CounterpartyCollectAccountParamsField = "nameOnAccount"
+	CounterpartyCollectAccountParamsFieldTaxpayerIdentifier   CounterpartyCollectAccountParamsField = "taxpayerIdentifier"
+	CounterpartyCollectAccountParamsFieldAccountType          CounterpartyCollectAccountParamsField = "accountType"
+	CounterpartyCollectAccountParamsFieldAccountNumber        CounterpartyCollectAccountParamsField = "accountNumber"
+	CounterpartyCollectAccountParamsFieldIbanNumber           CounterpartyCollectAccountParamsField = "ibanNumber"
+	CounterpartyCollectAccountParamsFieldClabeNumber          CounterpartyCollectAccountParamsField = "clabeNumber"
+	CounterpartyCollectAccountParamsFieldWalletAddress        CounterpartyCollectAccountParamsField = "walletAddress"
+	CounterpartyCollectAccountParamsFieldPanNumber            CounterpartyCollectAccountParamsField = "panNumber"
+	CounterpartyCollectAccountParamsFieldRoutingNumber        CounterpartyCollectAccountParamsField = "routingNumber"
+	CounterpartyCollectAccountParamsFieldAbaWireRoutingNumber CounterpartyCollectAccountParamsField = "abaWireRoutingNumber"
+	CounterpartyCollectAccountParamsFieldSwiftCode            CounterpartyCollectAccountParamsField = "swiftCode"
+	CounterpartyCollectAccountParamsFieldAuBsb                CounterpartyCollectAccountParamsField = "auBsb"
+	CounterpartyCollectAccountParamsFieldCaCpa                CounterpartyCollectAccountParamsField = "caCpa"
+	CounterpartyCollectAccountParamsFieldCnaps                CounterpartyCollectAccountParamsField = "cnaps"
+	CounterpartyCollectAccountParamsFieldGBSortCode           CounterpartyCollectAccountParamsField = "gbSortCode"
+	CounterpartyCollectAccountParamsFieldInIfsc               CounterpartyCollectAccountParamsField = "inIfsc"
+	CounterpartyCollectAccountParamsFieldMyBranchCode         CounterpartyCollectAccountParamsField = "myBranchCode"
+	CounterpartyCollectAccountParamsFieldBrCodigo             CounterpartyCollectAccountParamsField = "brCodigo"
+	CounterpartyCollectAccountParamsFieldRoutingNumberType    CounterpartyCollectAccountParamsField = "routingNumberType"
+	CounterpartyCollectAccountParamsFieldAddress              CounterpartyCollectAccountParamsField = "address"
 )

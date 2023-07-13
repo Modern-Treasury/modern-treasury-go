@@ -74,25 +74,7 @@ func (r *LineItemService) ListAutoPaging(ctx context.Context, itemizableType Lin
 }
 
 type LineItem struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	// The ID of the payment order or expected payment.
-	ItemizableID string `json:"itemizable_id,required" format:"uuid"`
-	// One of `payment_orders` or `expected_payments`.
-	ItemizableType LineItemItemizableType `json:"itemizable_type,required"`
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount int64 `json:"amount,required"`
-	// A free-form description of the line item.
-	Description string `json:"description,required,nullable"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata   map[string]string  `json:"metadata,required"`
+	ID         string             `json:"id,required" format:"uuid"`
 	Accounting LineItemAccounting `json:"accounting,required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
@@ -101,24 +83,42 @@ type LineItem struct {
 	// track segments of your business independent of client or project. Note that
 	// these will only be accessible if your accounting system has been connected.
 	AccountingLedgerClassID string `json:"accounting_ledger_class_id,required,nullable" format:"uuid"`
-	JSON                    lineItemJSON
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000.
+	Amount    int64     `json:"amount,required"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	// A free-form description of the line item.
+	Description string `json:"description,required,nullable"`
+	// The ID of the payment order or expected payment.
+	ItemizableID string `json:"itemizable_id,required" format:"uuid"`
+	// One of `payment_orders` or `expected_payments`.
+	ItemizableType LineItemItemizableType `json:"itemizable_type,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata  map[string]string `json:"metadata,required"`
+	Object    string            `json:"object,required"`
+	UpdatedAt time.Time         `json:"updated_at,required" format:"date-time"`
+	JSON      lineItemJSON
 }
 
 // lineItemJSON contains the JSON metadata for the struct [LineItem]
 type lineItemJSON struct {
 	ID                      apijson.Field
-	Object                  apijson.Field
-	LiveMode                apijson.Field
-	CreatedAt               apijson.Field
-	UpdatedAt               apijson.Field
-	ItemizableID            apijson.Field
-	ItemizableType          apijson.Field
-	Amount                  apijson.Field
-	Description             apijson.Field
-	Metadata                apijson.Field
 	Accounting              apijson.Field
 	AccountingCategoryID    apijson.Field
 	AccountingLedgerClassID apijson.Field
+	Amount                  apijson.Field
+	CreatedAt               apijson.Field
+	Description             apijson.Field
+	ItemizableID            apijson.Field
+	ItemizableType          apijson.Field
+	LiveMode                apijson.Field
+	Metadata                apijson.Field
+	Object                  apijson.Field
+	UpdatedAt               apijson.Field
 	raw                     string
 	ExtraFields             map[string]apijson.Field
 }
@@ -126,14 +126,6 @@ type lineItemJSON struct {
 func (r *LineItem) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-// One of `payment_orders` or `expected_payments`.
-type LineItemItemizableType string
-
-const (
-	LineItemItemizableTypeExpectedPayment LineItemItemizableType = "ExpectedPayment"
-	LineItemItemizableTypePaymentOrder    LineItemItemizableType = "PaymentOrder"
-)
 
 type LineItemAccounting struct {
 	// The ID of one of your accounting categories. Note that these will only be
@@ -158,6 +150,14 @@ type lineItemAccountingJSON struct {
 func (r *LineItemAccounting) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+// One of `payment_orders` or `expected_payments`.
+type LineItemItemizableType string
+
+const (
+	LineItemItemizableTypeExpectedPayment LineItemItemizableType = "ExpectedPayment"
+	LineItemItemizableTypePaymentOrder    LineItemItemizableType = "PaymentOrder"
+)
 
 type LineItemGetParamsItemizableType string
 

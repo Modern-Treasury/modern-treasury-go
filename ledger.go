@@ -90,21 +90,21 @@ func (r *LedgerService) Delete(ctx context.Context, id string, opts ...option.Re
 }
 
 type Ledger struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
+	ID        string    `json:"id,required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	// An optional free-form description for internal use.
+	Description string    `json:"description,required,nullable"`
+	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode    bool      `json:"live_mode,required"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt   time.Time `json:"updated_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
-	// The name of the ledger.
-	Name string `json:"name,required"`
-	// An optional free-form description for internal use.
-	Description string `json:"description,required,nullable"`
+	LiveMode bool `json:"live_mode,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata    map[string]string      `json:"metadata,required"`
+	Metadata map[string]string `json:"metadata,required"`
+	// The name of the ledger.
+	Name        string                 `json:"name,required"`
+	Object      string                 `json:"object,required"`
+	UpdatedAt   time.Time              `json:"updated_at,required" format:"date-time"`
 	ExtraFields map[string]interface{} `json:"-,extras"`
 	JSON        ledgerJSON
 }
@@ -112,14 +112,14 @@ type Ledger struct {
 // ledgerJSON contains the JSON metadata for the struct [Ledger]
 type ledgerJSON struct {
 	ID          apijson.Field
-	Object      apijson.Field
-	LiveMode    apijson.Field
 	CreatedAt   apijson.Field
-	UpdatedAt   apijson.Field
-	DiscardedAt apijson.Field
-	Name        apijson.Field
 	Description apijson.Field
+	DiscardedAt apijson.Field
+	LiveMode    apijson.Field
 	Metadata    apijson.Field
+	Name        apijson.Field
+	Object      apijson.Field
+	UpdatedAt   apijson.Field
 	raw         string
 	ExtraFields map[string]apijson.Field
 }

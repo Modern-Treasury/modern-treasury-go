@@ -118,6 +118,7 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.LedgerAccounts.List(context.TODO(), moderntreasury.LedgerAccountListParams{
+		ID:          moderntreasury.F("string"),
 		AfterCursor: moderntreasury.F("string"),
 		Balances: moderntreasury.F(moderntreasury.LedgerAccountListParamsBalances{
 			AsOfDate:              moderntreasury.F(time.Now()),
@@ -128,7 +129,6 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 		CreatedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
-		ID:                      moderntreasury.F("string"),
 		LedgerAccountCategoryID: moderntreasury.F("string"),
 		LedgerID:                moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{

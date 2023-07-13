@@ -36,7 +36,7 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 					"modern": "treasury",
 				}),
 				EffectiveDate: moderntreasury.F(time.Now()),
-				LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntries{{
+				LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntry{{
 					Amount:          moderntreasury.F(int64(0)),
 					Direction:       moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
 					LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),

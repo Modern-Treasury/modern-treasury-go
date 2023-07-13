@@ -83,63 +83,63 @@ func (r *LedgerAccountPayoutService) Retireve(ctx context.Context, id string, op
 }
 
 type LedgerAccountPayout struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	// The id of the ledger that this ledger account payout belongs to.
-	LedgerID string `json:"ledger_id,required" format:"uuid"`
-	// The description of the ledger account payout.
-	Description string `json:"description,required,nullable"`
-	// The status of the ledger account payout. One of `processing`, `pending`,
-	// `posted`, `archiving` or `archived`.
-	Status LedgerAccountPayoutStatus `json:"status,required"`
-	// The id of the payout ledger account whose ledger entries are queried against,
-	// and its balance is reduced as a result.
-	PayoutLedgerAccountID string `json:"payout_ledger_account_id,required" format:"uuid"`
-	// The id of the funding ledger account that sends to or receives funds from the
-	// payout ledger account.
-	FundingLedgerAccountID string `json:"funding_ledger_account_id,required" format:"uuid"`
-	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
-	// be included in the ledger account payout. The default value is the created_at
-	// timestamp of the ledger account payout.
-	EffectiveAtUpperBound string `json:"effective_at_upper_bound,required" format:"time"`
-	// The id of the ledger transaction that this payout is associated with.
-	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
+	ID string `json:"id,required" format:"uuid"`
 	// The amount of the ledger account payout.
-	Amount int64 `json:"amount,required,nullable"`
+	Amount    int64     `json:"amount,required,nullable"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	// The currency of the ledger account payout.
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account payout.
 	CurrencyExponent int64 `json:"currency_exponent,required,nullable"`
+	// The description of the ledger account payout.
+	Description string `json:"description,required,nullable"`
+	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
+	// be included in the ledger account payout. The default value is the created_at
+	// timestamp of the ledger account payout.
+	EffectiveAtUpperBound string `json:"effective_at_upper_bound,required" format:"time"`
+	// The id of the funding ledger account that sends to or receives funds from the
+	// payout ledger account.
+	FundingLedgerAccountID string `json:"funding_ledger_account_id,required" format:"uuid"`
+	// The id of the ledger that this ledger account payout belongs to.
+	LedgerID string `json:"ledger_id,required" format:"uuid"`
+	// The id of the ledger transaction that this payout is associated with.
+	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata map[string]string `json:"metadata,required"`
-	JSON     ledgerAccountPayoutJSON
+	Object   string            `json:"object,required"`
+	// The id of the payout ledger account whose ledger entries are queried against,
+	// and its balance is reduced as a result.
+	PayoutLedgerAccountID string `json:"payout_ledger_account_id,required" format:"uuid"`
+	// The status of the ledger account payout. One of `processing`, `pending`,
+	// `posted`, `archiving` or `archived`.
+	Status    LedgerAccountPayoutStatus `json:"status,required"`
+	UpdatedAt time.Time                 `json:"updated_at,required" format:"date-time"`
+	JSON      ledgerAccountPayoutJSON
 }
 
 // ledgerAccountPayoutJSON contains the JSON metadata for the struct
 // [LedgerAccountPayout]
 type ledgerAccountPayoutJSON struct {
 	ID                     apijson.Field
-	Object                 apijson.Field
-	LiveMode               apijson.Field
-	CreatedAt              apijson.Field
-	UpdatedAt              apijson.Field
-	LedgerID               apijson.Field
-	Description            apijson.Field
-	Status                 apijson.Field
-	PayoutLedgerAccountID  apijson.Field
-	FundingLedgerAccountID apijson.Field
-	EffectiveAtUpperBound  apijson.Field
-	LedgerTransactionID    apijson.Field
 	Amount                 apijson.Field
+	CreatedAt              apijson.Field
 	Currency               apijson.Field
 	CurrencyExponent       apijson.Field
+	Description            apijson.Field
+	EffectiveAtUpperBound  apijson.Field
+	FundingLedgerAccountID apijson.Field
+	LedgerID               apijson.Field
+	LedgerTransactionID    apijson.Field
+	LiveMode               apijson.Field
 	Metadata               apijson.Field
+	Object                 apijson.Field
+	PayoutLedgerAccountID  apijson.Field
+	Status                 apijson.Field
+	UpdatedAt              apijson.Field
 	raw                    string
 	ExtraFields            map[string]apijson.Field
 }
