@@ -918,7 +918,10 @@ const (
 )
 
 type PaymentOrderNewParamsDocument struct {
-	File param.Field[io.Reader] `json:"file,required" format:"binary"`
+	// The unique identifier for the associated object.
+	DocumentableID   param.Field[string]                                         `json:"documentable_id,required"`
+	DocumentableType param.Field[PaymentOrderNewParamsDocumentsDocumentableType] `json:"documentable_type,required"`
+	File             param.Field[io.Reader]                                      `json:"file,required" format:"binary"`
 	// A category given to the document, can be `null`.
 	DocumentType param.Field[string] `json:"document_type"`
 }
@@ -926,6 +929,22 @@ type PaymentOrderNewParamsDocument struct {
 func (r PaymentOrderNewParamsDocument) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+type PaymentOrderNewParamsDocumentsDocumentableType string
+
+const (
+	PaymentOrderNewParamsDocumentsDocumentableTypeCases            PaymentOrderNewParamsDocumentsDocumentableType = "cases"
+	PaymentOrderNewParamsDocumentsDocumentableTypeCounterparties   PaymentOrderNewParamsDocumentsDocumentableType = "counterparties"
+	PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayments PaymentOrderNewParamsDocumentsDocumentableType = "expected_payments"
+	PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccounts PaymentOrderNewParamsDocumentsDocumentableType = "external_accounts"
+	PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccounts PaymentOrderNewParamsDocumentsDocumentableType = "internal_accounts"
+	PaymentOrderNewParamsDocumentsDocumentableTypeOrganizations    PaymentOrderNewParamsDocumentsDocumentableType = "organizations"
+	PaymentOrderNewParamsDocumentsDocumentableTypePaperItems       PaymentOrderNewParamsDocumentsDocumentableType = "paper_items"
+	PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrders    PaymentOrderNewParamsDocumentsDocumentableType = "payment_orders"
+	PaymentOrderNewParamsDocumentsDocumentableTypeTransactions     PaymentOrderNewParamsDocumentsDocumentableType = "transactions"
+	PaymentOrderNewParamsDocumentsDocumentableTypeDecisions        PaymentOrderNewParamsDocumentsDocumentableType = "decisions"
+	PaymentOrderNewParamsDocumentsDocumentableTypeConnections      PaymentOrderNewParamsDocumentsDocumentableType = "connections"
+)
 
 // A payment type to fallback to if the original type is not valid for the
 // receiving account. Currently, this only supports falling back from RTP to ACH

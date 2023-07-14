@@ -65,6 +65,7 @@ func TestLedgerAccountGetWithOptionalParams(t *testing.T) {
 				EffectiveAt:           moderntreasury.F(time.Now()),
 				EffectiveAtLowerBound: moderntreasury.F(time.Now()),
 				EffectiveAtUpperBound: moderntreasury.F(time.Now()),
+				AsOfLockVersion:       moderntreasury.F(int64(0)),
 			}),
 		},
 	)
