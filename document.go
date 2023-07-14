@@ -199,11 +199,8 @@ func (r *DocumentFile) UnmarshalJSON(data []byte) (err error) {
 
 type DocumentNewParams struct {
 	// The unique identifier for the associated object.
-	DocumentableID param.Field[string] `query:"documentable_id,required"`
-	// The type of the associated object. Currently can be one of `payment_order`,
-	// `transaction`, `paper_item`, `expected_payment`, `counterparty`, `organization`,
-	// `case`, `internal_account`, `decision`, or `external_account`.
-	DocumentableType param.Field[DocumentNewParamsDocumentableType] `query:"documentable_type,required"`
+	DocumentableID   param.Field[string]                            `json:"documentable_id,required"`
+	DocumentableType param.Field[DocumentNewParamsDocumentableType] `json:"documentable_type,required"`
 	File             param.Field[io.Reader]                         `json:"file,required" format:"binary"`
 	// A category given to the document, can be `null`.
 	DocumentType   param.Field[string] `json:"document_type"`
@@ -256,17 +253,6 @@ func (r DocumentNewParams) MarshalMultipart() (data []byte, err error) {
 	return body.Bytes(), nil
 }
 
-// URLQuery serializes [DocumentNewParams]'s query parameters as `url.Values`.
-func (r DocumentNewParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
-}
-
-// The type of the associated object. Currently can be one of `payment_order`,
-// `transaction`, `paper_item`, `expected_payment`, `counterparty`, `organization`,
-// `case`, `internal_account`, `decision`, or `external_account`.
 type DocumentNewParamsDocumentableType string
 
 const (

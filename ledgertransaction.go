@@ -476,7 +476,7 @@ type LedgerTransactionNewReversalParams struct {
 	// The timestamp (ISO8601 format) at which the reversal ledger transaction happened
 	// for reporting purposes. It defaults to the `effective_at` of the original ledger
 	// transaction if not provided.
-	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date"`
+	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
 	// Must be unique within the ledger.
 	ExternalID param.Field[string] `json:"external_id"`
 	// Specify this if you'd like to link the reversal ledger transaction to a Payment

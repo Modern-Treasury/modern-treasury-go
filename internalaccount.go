@@ -228,13 +228,14 @@ type InternalAccountNewParams struct {
 	PartyName param.Field[string] `json:"party_name,required"`
 	// The Counterparty associated to this account.
 	CounterpartyID param.Field[string] `json:"counterparty_id"`
-	// The identifier of the entity at Increase which owns the account.
-	EntityID param.Field[string] `json:"entity_id"`
 	// The parent internal account of this new account.
 	ParentAccountID param.Field[string] `json:"parent_account_id"`
 	// The address associated with the owner or null.
-	PartyAddress   param.Field[InternalAccountNewParamsPartyAddress] `json:"party_address"`
-	IdempotencyKey param.Field[string]                               `header:"Idempotency-Key"`
+	PartyAddress param.Field[InternalAccountNewParamsPartyAddress] `json:"party_address"`
+	// A hash of vendor specific attributes that will be used when creating the account
+	// at the vendor specified by the given connection.
+	VendorAttributes param.Field[map[string]string] `json:"vendor_attributes"`
+	IdempotencyKey   param.Field[string]            `header:"Idempotency-Key"`
 }
 
 func (r InternalAccountNewParams) MarshalJSON() (data []byte, err error) {
