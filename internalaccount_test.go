@@ -28,7 +28,6 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 		Name:            moderntreasury.F("string"),
 		PartyName:       moderntreasury.F("string"),
 		CounterpartyID:  moderntreasury.F("string"),
-		EntityID:        moderntreasury.F("string"),
 		ParentAccountID: moderntreasury.F("string"),
 		PartyAddress: moderntreasury.F(moderntreasury.InternalAccountNewParamsPartyAddress{
 			Line1:      moderntreasury.F("string"),
@@ -37,6 +36,11 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 			Region:     moderntreasury.F("string"),
 			PostalCode: moderntreasury.F("string"),
 			Country:    moderntreasury.F("string"),
+		}),
+		VendorAttributes: moderntreasury.F(map[string]string{
+			"key":    "value",
+			"foo":    "bar",
+			"modern": "treasury",
 		}),
 		IdempotencyKey: moderntreasury.F("string"),
 	})

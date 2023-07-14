@@ -347,10 +347,12 @@ const (
 )
 
 type LedgerAccountGetParams struct {
-	// Use balances[effective_at_lower_bound] and balances[effective_at_upper_bound] to
-	// get the balances change between the two timestamps. The lower bound is inclusive
-	// while the upper bound is exclusive of the provided timestamps. If no value is
-	// supplied the balances will be retrieved not including that bound.
+	// Use `balances[effective_at_lower_bound]` and
+	// `balances[effective_at_upper_bound]` to get the balances change between the two
+	// timestamps. The lower bound is inclusive while the upper bound is exclusive of
+	// the provided timestamps. If no value is supplied the balances will be retrieved
+	// not including that bound. Use `balances[as_of_lock_version]` to retrieve a
+	// balance as of a specific Ledger Account `lock_version`.
 	Balances param.Field[LedgerAccountGetParamsBalances] `query:"balances"`
 }
 
@@ -362,12 +364,15 @@ func (r LedgerAccountGetParams) URLQuery() (v url.Values) {
 	})
 }
 
-// Use balances[effective_at_lower_bound] and balances[effective_at_upper_bound] to
-// get the balances change between the two timestamps. The lower bound is inclusive
-// while the upper bound is exclusive of the provided timestamps. If no value is
-// supplied the balances will be retrieved not including that bound.
+// Use `balances[effective_at_lower_bound]` and
+// `balances[effective_at_upper_bound]` to get the balances change between the two
+// timestamps. The lower bound is inclusive while the upper bound is exclusive of
+// the provided timestamps. If no value is supplied the balances will be retrieved
+// not including that bound. Use `balances[as_of_lock_version]` to retrieve a
+// balance as of a specific Ledger Account `lock_version`.
 type LedgerAccountGetParamsBalances struct {
 	AsOfDate              param.Field[time.Time] `query:"as_of_date" format:"date"`
+	AsOfLockVersion       param.Field[int64]     `query:"as_of_lock_version"`
 	EffectiveAt           param.Field[time.Time] `query:"effective_at" format:"date-time"`
 	EffectiveAtLowerBound param.Field[time.Time] `query:"effective_at_lower_bound" format:"date-time"`
 	EffectiveAtUpperBound param.Field[time.Time] `query:"effective_at_upper_bound" format:"date-time"`
@@ -399,10 +404,11 @@ func (r LedgerAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 type LedgerAccountListParams struct {
 	ID          param.Field[string] `query:"id"`
 	AfterCursor param.Field[string] `query:"after_cursor"`
-	// Use balances[effective_at_lower_bound] and balances[effective_at_upper_bound] to
-	// get the balances change between the two timestamps. The lower bound is inclusive
-	// while the upper bound is exclusive of the provided timestamps. If no value is
-	// supplied the balances will be retrieved not including that bound.
+	// Use `balances[effective_at_lower_bound]` and
+	// `balances[effective_at_upper_bound]` to get the balances change between the two
+	// timestamps. The lower bound is inclusive while the upper bound is exclusive of
+	// the provided timestamps. If no value is supplied the balances will be retrieved
+	// not including that bound.
 	Balances param.Field[LedgerAccountListParamsBalances] `query:"balances"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// created at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
@@ -431,10 +437,11 @@ func (r LedgerAccountListParams) URLQuery() (v url.Values) {
 	})
 }
 
-// Use balances[effective_at_lower_bound] and balances[effective_at_upper_bound] to
-// get the balances change between the two timestamps. The lower bound is inclusive
-// while the upper bound is exclusive of the provided timestamps. If no value is
-// supplied the balances will be retrieved not including that bound.
+// Use `balances[effective_at_lower_bound]` and
+// `balances[effective_at_upper_bound]` to get the balances change between the two
+// timestamps. The lower bound is inclusive while the upper bound is exclusive of
+// the provided timestamps. If no value is supplied the balances will be retrieved
+// not including that bound.
 type LedgerAccountListParamsBalances struct {
 	AsOfDate              param.Field[time.Time] `query:"as_of_date" format:"date"`
 	EffectiveAt           param.Field[time.Time] `query:"effective_at" format:"date-time"`

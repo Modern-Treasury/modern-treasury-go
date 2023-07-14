@@ -156,7 +156,7 @@ func TestVirtualAccountGet(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
-	err := client.VirtualAccounts.Get(context.TODO(), "string")
+	_, err := client.VirtualAccounts.Get(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
