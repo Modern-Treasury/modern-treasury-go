@@ -44,11 +44,10 @@ func (r *VirtualAccountService) New(ctx context.Context, params VirtualAccountNe
 }
 
 // get virtual_account
-func (r *VirtualAccountService) Get(ctx context.Context, id string, opts ...option.RequestOption) (err error) {
+func (r *VirtualAccountService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *VirtualAccount, err error) {
 	opts = append(r.Options[:], opts...)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
 	path := fmt.Sprintf("api/virtual_accounts/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, nil, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
