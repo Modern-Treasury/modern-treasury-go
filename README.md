@@ -11,7 +11,7 @@ API](https://docs.moderntreasury.com) from applications written in Go.
 
 ```go
 import (
-	"github.com/Modern-Treasury/modern-treasury-go" // imported as moderntreasury
+	"github.com/Modern-Treasury/modern-treasury-go/v1" // imported as moderntreasury
 )
 ```
 
@@ -296,5 +296,9 @@ accepted (this overwrites any previous client) and receives requests after any
 middleware has been applied.
 
 ## Status
+
+This package is in beta. Its internals and interfaces are not stable and
+subject to change without a major version bump; please reach out if you rely on
+any undocumented behavior.
 
 We are keen for your feedback; please open an [issue](https://www.github.com/Modern-Treasury/modern-treasury-go/issues) with questions, bugs, or suggestions.
