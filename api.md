@@ -162,10 +162,6 @@ Methods:
 
 # AccountDetails
 
-Params Types:
-
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go#AccountDetailParam">AccountDetailParam</a>
-
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go#AccountDetail">AccountDetail</a>
@@ -178,10 +174,6 @@ Methods:
 - <code title="delete /api/{accounts_type}/{account_id}/account_details/{id}">client.AccountDetails.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go#AccountDetailService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, accountsType <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go#AccountDetailDeleteParamsAccountsType">AccountDetailDeleteParamsAccountsType</a>, accountID <a href="https://pkg.go.dev/builtin#string">string</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) <a href="https://pkg.go.dev/builtin#error">error</a></code>
 
 # RoutingDetails
-
-Params Types:
-
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go#RoutingDetailParam">RoutingDetailParam</a>
 
 Response Types:
 

@@ -209,55 +209,6 @@ const (
 	RoutingDetailRoutingNumberTypeSwift        RoutingDetailRoutingNumberType = "swift"
 )
 
-type RoutingDetailParam struct {
-	ID          param.Field[string]                        `json:"id,required" format:"uuid"`
-	BankAddress param.Field[RoutingDetailBankAddressParam] `json:"bank_address,required"`
-	// The name of the bank.
-	BankName    param.Field[string]    `json:"bank_name,required"`
-	CreatedAt   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
-	DiscardedAt param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode param.Field[bool]   `json:"live_mode,required"`
-	Object   param.Field[string] `json:"object,required"`
-	// If the routing detail is to be used for a specific payment type this field will
-	// be populated, otherwise null.
-	PaymentType param.Field[RoutingDetailPaymentType] `json:"payment_type,required"`
-	// The routing number of the bank.
-	RoutingNumber param.Field[string] `json:"routing_number,required"`
-	// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
-	RoutingNumberType param.Field[RoutingDetailRoutingNumberType] `json:"routing_number_type,required"`
-	UpdatedAt         param.Field[time.Time]                      `json:"updated_at,required" format:"date-time"`
-}
-
-func (r RoutingDetailParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type RoutingDetailBankAddressParam struct {
-	ID param.Field[string] `json:"id,required" format:"uuid"`
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country   param.Field[string]    `json:"country,required"`
-	CreatedAt param.Field[time.Time] `json:"created_at,required" format:"date-time"`
-	Line1     param.Field[string]    `json:"line1,required"`
-	Line2     param.Field[string]    `json:"line2,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode param.Field[bool] `json:"live_mode,required"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
-	Object   param.Field[string] `json:"object,required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
-	// Region or State.
-	Region    param.Field[string]    `json:"region,required"`
-	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-}
-
-func (r RoutingDetailBankAddressParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
 type RoutingDetailNewParams struct {
 	// The routing number of the bank.
 	RoutingNumber param.Field[string] `json:"routing_number,required"`
