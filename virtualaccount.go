@@ -157,7 +157,7 @@ type VirtualAccountNewParams struct {
 	// The name of the virtual account.
 	Name param.Field[string] `json:"name,required"`
 	// An array of account detail objects.
-	AccountDetails param.Field[[]AccountDetailParam] `json:"account_details"`
+	AccountDetails param.Field[[]VirtualAccountNewParamsAccountDetail] `json:"account_details"`
 	// The ID of the counterparty that the virtual account belongs to.
 	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
 	// The ID of a credit normal ledger account. When money leaves the virtual account,
@@ -174,13 +174,91 @@ type VirtualAccountNewParams struct {
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// An array of routing detail objects.
-	RoutingDetails param.Field[[]RoutingDetailParam] `json:"routing_details"`
-	IdempotencyKey param.Field[string]               `header:"Idempotency-Key"`
+	RoutingDetails param.Field[[]VirtualAccountNewParamsRoutingDetail] `json:"routing_details"`
+	IdempotencyKey param.Field[string]                                 `header:"Idempotency-Key"`
 }
 
 func (r VirtualAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+type VirtualAccountNewParamsAccountDetail struct {
+	// The account number for the bank account.
+	AccountNumber param.Field[string] `json:"account_number,required"`
+	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
+	// account number is in a generic format.
+	AccountNumberType param.Field[VirtualAccountNewParamsAccountDetailsAccountNumberType] `json:"account_number_type"`
+}
+
+func (r VirtualAccountNewParamsAccountDetail) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
+// account number is in a generic format.
+type VirtualAccountNewParamsAccountDetailsAccountNumberType string
+
+const (
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeClabe         VirtualAccountNewParamsAccountDetailsAccountNumberType = "clabe"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeIban          VirtualAccountNewParamsAccountDetailsAccountNumberType = "iban"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeOther         VirtualAccountNewParamsAccountDetailsAccountNumberType = "other"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypePan           VirtualAccountNewParamsAccountDetailsAccountNumberType = "pan"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress VirtualAccountNewParamsAccountDetailsAccountNumberType = "wallet_address"
+)
+
+type VirtualAccountNewParamsRoutingDetail struct {
+	// The routing number of the bank.
+	RoutingNumber param.Field[string] `json:"routing_number,required"`
+	// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
+	RoutingNumberType param.Field[VirtualAccountNewParamsRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
+	// If the routing detail is to be used for a specific payment type this field will
+	// be populated, otherwise null.
+	PaymentType param.Field[VirtualAccountNewParamsRoutingDetailsPaymentType] `json:"payment_type"`
+}
+
+func (r VirtualAccountNewParamsRoutingDetail) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
+type VirtualAccountNewParamsRoutingDetailsRoutingNumberType string
+
+const (
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba          VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "aba"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAuBsb        VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "au_bsb"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeBrCodigo     VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "br_codigo"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCaCpa        VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "ca_cpa"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeChips        VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "chips"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCnaps        VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "cnaps"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeGBSortCode   VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "gb_sort_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeInIfsc       VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "in_ifsc"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeMyBranchCode VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "my_branch_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSwift        VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "swift"
+)
+
+// If the routing detail is to be used for a specific payment type this field will
+// be populated, otherwise null.
+type VirtualAccountNewParamsRoutingDetailsPaymentType string
+
+const (
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeACH         VirtualAccountNewParamsRoutingDetailsPaymentType = "ach"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeAuBecs      VirtualAccountNewParamsRoutingDetailsPaymentType = "au_becs"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeBacs        VirtualAccountNewParamsRoutingDetailsPaymentType = "bacs"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeBook        VirtualAccountNewParamsRoutingDetailsPaymentType = "book"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeCard        VirtualAccountNewParamsRoutingDetailsPaymentType = "card"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeCheck       VirtualAccountNewParamsRoutingDetailsPaymentType = "check"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeCrossBorder VirtualAccountNewParamsRoutingDetailsPaymentType = "cross_border"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeEft         VirtualAccountNewParamsRoutingDetailsPaymentType = "eft"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeInterac     VirtualAccountNewParamsRoutingDetailsPaymentType = "interac"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeMasav       VirtualAccountNewParamsRoutingDetailsPaymentType = "masav"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeNeft        VirtualAccountNewParamsRoutingDetailsPaymentType = "neft"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeProvxchange VirtualAccountNewParamsRoutingDetailsPaymentType = "provxchange"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeRtp         VirtualAccountNewParamsRoutingDetailsPaymentType = "rtp"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSen         VirtualAccountNewParamsRoutingDetailsPaymentType = "sen"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSepa        VirtualAccountNewParamsRoutingDetailsPaymentType = "sepa"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSignet      VirtualAccountNewParamsRoutingDetailsPaymentType = "signet"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeWire        VirtualAccountNewParamsRoutingDetailsPaymentType = "wire"
+)
 
 type VirtualAccountUpdateParams struct {
 	CounterpartyID param.Field[string]            `json:"counterparty_id" format:"uuid"`
