@@ -133,28 +133,6 @@ const (
 	AccountDetailAccountNumberTypeWalletAddress AccountDetailAccountNumberType = "wallet_address"
 )
 
-type AccountDetailParam struct {
-	ID param.Field[string] `json:"id,required" format:"uuid"`
-	// The last 4 digits of the account_number.
-	AccountNumberSafe param.Field[string] `json:"account_number_safe,required"`
-	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
-	// account number is in a generic format.
-	AccountNumberType param.Field[AccountDetailAccountNumberType] `json:"account_number_type,required"`
-	CreatedAt         param.Field[time.Time]                      `json:"created_at,required" format:"date-time"`
-	DiscardedAt       param.Field[time.Time]                      `json:"discarded_at,required" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  param.Field[bool]      `json:"live_mode,required"`
-	Object    param.Field[string]    `json:"object,required"`
-	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-	// The account number for the bank account.
-	AccountNumber param.Field[string] `json:"account_number"`
-}
-
-func (r AccountDetailParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
 type AccountDetailNewParams struct {
 	// The account number for the bank account.
 	AccountNumber param.Field[string] `json:"account_number,required"`
