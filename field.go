@@ -26,7 +26,10 @@ func Raw[T any](value any) param.Field[T] { return param.Field[T]{Raw: value, Pr
 func Int(value int64) param.Field[int64] { return F(value) }
 
 // String is a param field helper which helps specify strings.
-func String(str string) param.Field[string] { return F(str) }
+func String(value string) param.Field[string] { return F(value) }
 
 // Float is a param field helper which helps specify floats.
 func Float(value float64) param.Field[float64] { return F(value) }
+
+// Bool is a param field helper which helps specify bools.
+func Bool(value bool) param.Field[bool] { return F(value) }
