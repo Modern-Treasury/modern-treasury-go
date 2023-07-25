@@ -52,6 +52,7 @@ func TestLedgerEventHandlerNewWithOptionalParams(t *testing.T) {
 			Value:    moderntreasury.F("string"),
 		}),
 		Description: moderntreasury.F("string"),
+		LedgerID:    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",

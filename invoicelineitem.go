@@ -180,6 +180,22 @@ type InvoiceLineItemUpdateParams struct {
 	InvoicerAddress param.Field[InvoiceLineItemUpdateParamsInvoicerAddress] `json:"invoicer_address"`
 	// The ID of the internal account the invoice should be paid to.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id"`
+	// Date transactions are to be posted to the participants' account. Defaults to the
+	// current business day or the next business day if the current day is a bank
+	// holiday or weekend. Format: yyyy-mm-dd.
+	PaymentEffectiveDate param.Field[time.Time] `json:"payment_effective_date" format:"date"`
+	// The method by which the invoice can be paid. `ui` will show the embedded payment
+	// collection flow. `automatic` will automatically initiate payment based upon the
+	// account details of the receiving_account id.\nIf the invoice amount is positive,
+	// the automatically initiated payment order's direction will be debit. If the
+	// invoice amount is negative, the automatically initiated payment order's
+	// direction will be credit. One of `manual`, `ui`, or `automatic`.
+	PaymentMethod param.Field[InvoiceLineItemUpdateParamsPaymentMethod] `json:"payment_method"`
+	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
+	// `au_becs`, `interac`, `signet`, `provexchange`.
+	PaymentType param.Field[InvoiceLineItemUpdateParamsPaymentType] `json:"payment_type"`
+	// The receiving account ID. Can be an `external_account`.
+	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
 }
 
 func (r InvoiceLineItemUpdateParams) MarshalJSON() (data []byte, err error) {
@@ -264,6 +280,44 @@ type InvoiceLineItemUpdateParamsInvoicerAddress struct {
 func (r InvoiceLineItemUpdateParamsInvoicerAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+// The method by which the invoice can be paid. `ui` will show the embedded payment
+// collection flow. `automatic` will automatically initiate payment based upon the
+// account details of the receiving_account id.\nIf the invoice amount is positive,
+// the automatically initiated payment order's direction will be debit. If the
+// invoice amount is negative, the automatically initiated payment order's
+// direction will be credit. One of `manual`, `ui`, or `automatic`.
+type InvoiceLineItemUpdateParamsPaymentMethod string
+
+const (
+	InvoiceLineItemUpdateParamsPaymentMethodUi        InvoiceLineItemUpdateParamsPaymentMethod = "ui"
+	InvoiceLineItemUpdateParamsPaymentMethodManual    InvoiceLineItemUpdateParamsPaymentMethod = "manual"
+	InvoiceLineItemUpdateParamsPaymentMethodAutomatic InvoiceLineItemUpdateParamsPaymentMethod = "automatic"
+)
+
+// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
+// `au_becs`, `interac`, `signet`, `provexchange`.
+type InvoiceLineItemUpdateParamsPaymentType string
+
+const (
+	InvoiceLineItemUpdateParamsPaymentTypeACH         InvoiceLineItemUpdateParamsPaymentType = "ach"
+	InvoiceLineItemUpdateParamsPaymentTypeAuBecs      InvoiceLineItemUpdateParamsPaymentType = "au_becs"
+	InvoiceLineItemUpdateParamsPaymentTypeBacs        InvoiceLineItemUpdateParamsPaymentType = "bacs"
+	InvoiceLineItemUpdateParamsPaymentTypeBook        InvoiceLineItemUpdateParamsPaymentType = "book"
+	InvoiceLineItemUpdateParamsPaymentTypeCard        InvoiceLineItemUpdateParamsPaymentType = "card"
+	InvoiceLineItemUpdateParamsPaymentTypeCheck       InvoiceLineItemUpdateParamsPaymentType = "check"
+	InvoiceLineItemUpdateParamsPaymentTypeEft         InvoiceLineItemUpdateParamsPaymentType = "eft"
+	InvoiceLineItemUpdateParamsPaymentTypeCrossBorder InvoiceLineItemUpdateParamsPaymentType = "cross_border"
+	InvoiceLineItemUpdateParamsPaymentTypeInterac     InvoiceLineItemUpdateParamsPaymentType = "interac"
+	InvoiceLineItemUpdateParamsPaymentTypeMasav       InvoiceLineItemUpdateParamsPaymentType = "masav"
+	InvoiceLineItemUpdateParamsPaymentTypeNeft        InvoiceLineItemUpdateParamsPaymentType = "neft"
+	InvoiceLineItemUpdateParamsPaymentTypeProvxchange InvoiceLineItemUpdateParamsPaymentType = "provxchange"
+	InvoiceLineItemUpdateParamsPaymentTypeRtp         InvoiceLineItemUpdateParamsPaymentType = "rtp"
+	InvoiceLineItemUpdateParamsPaymentTypeSen         InvoiceLineItemUpdateParamsPaymentType = "sen"
+	InvoiceLineItemUpdateParamsPaymentTypeSepa        InvoiceLineItemUpdateParamsPaymentType = "sepa"
+	InvoiceLineItemUpdateParamsPaymentTypeSignet      InvoiceLineItemUpdateParamsPaymentType = "signet"
+	InvoiceLineItemUpdateParamsPaymentTypeWire        InvoiceLineItemUpdateParamsPaymentType = "wire"
+)
 
 type InvoiceLineItemListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`

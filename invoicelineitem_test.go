@@ -138,6 +138,10 @@ func TestInvoiceLineItemUpdateWithOptionalParams(t *testing.T) {
 				Country:    moderntreasury.F("string"),
 			}),
 			OriginatingAccountID: moderntreasury.F("string"),
+			PaymentEffectiveDate: moderntreasury.F(time.Now()),
+			PaymentMethod:        moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsPaymentMethodUi),
+			PaymentType:          moderntreasury.F(moderntreasury.InvoiceLineItemUpdateParamsPaymentTypeACH),
+			ReceivingAccountID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		},
 	)
 	if err != nil {

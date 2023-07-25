@@ -112,11 +112,22 @@ type Invoice struct {
 	Object string `json:"object,required"`
 	// The ID of the internal account the invoice should be paid to.
 	OriginatingAccountID string `json:"originating_account_id,required"`
+	// Date transactions are to be posted to the participants' account. Defaults to the
+	// current business day or the next business day if the current day is a bank
+	// holiday or weekend. Format: yyyy-mm-dd.
+	PaymentEffectiveDate time.Time `json:"payment_effective_date,required,nullable" format:"date"`
+	// When opening an invoice, whether to show the embedded payment UI , automatically
+	// debit the recipient, or rely on manual payment from the recipient.
+	PaymentMethod InvoicePaymentMethod `json:"payment_method,required,nullable"`
 	// The payment orders created for paying the invoice through the invoice payment
 	// UI.
 	PaymentOrders []PaymentOrder `json:"payment_orders,required"`
+	// One of `ach` or `eft`
+	PaymentType InvoicePaymentType `json:"payment_type,required,nullable"`
 	// The URL where the invoice PDF can be downloaded.
 	PdfURL string `json:"pdf_url,required,nullable"`
+	// The receiving account ID. Can be an `internal_account`.
+	ReceivingAccountID string `json:"receiving_account_id,required,nullable" format:"uuid"`
 	// The status of the invoice.
 	Status InvoiceStatus `json:"status,required"`
 	// Total amount due in specified currency's smallest unit, e.g., $10 USD would be
@@ -143,8 +154,12 @@ type invoiceJSON struct {
 	Number                      apijson.Field
 	Object                      apijson.Field
 	OriginatingAccountID        apijson.Field
+	PaymentEffectiveDate        apijson.Field
+	PaymentMethod               apijson.Field
 	PaymentOrders               apijson.Field
+	PaymentType                 apijson.Field
 	PdfURL                      apijson.Field
+	ReceivingAccountID          apijson.Field
 	Status                      apijson.Field
 	TotalAmount                 apijson.Field
 	UpdatedAt                   apijson.Field
@@ -293,6 +308,24 @@ func (r *InvoiceInvoicerAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+// When opening an invoice, whether to show the embedded payment UI , automatically
+// debit the recipient, or rely on manual payment from the recipient.
+type InvoicePaymentMethod string
+
+const (
+	InvoicePaymentMethodUi        InvoicePaymentMethod = "ui"
+	InvoicePaymentMethodManual    InvoicePaymentMethod = "manual"
+	InvoicePaymentMethodAutomatic InvoicePaymentMethod = "automatic"
+)
+
+// One of `ach` or `eft`
+type InvoicePaymentType string
+
+const (
+	InvoicePaymentTypeEft InvoicePaymentType = "eft"
+	InvoicePaymentTypeACH InvoicePaymentType = "ach"
+)
+
 // The status of the invoice.
 type InvoiceStatus string
 
@@ -323,7 +356,23 @@ type InvoiceNewParams struct {
 	Description param.Field[string] `json:"description"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceNewParamsInvoicerAddress] `json:"invoicer_address"`
-	IdempotencyKey  param.Field[string]                          `header:"Idempotency-Key"`
+	// Date transactions are to be posted to the participants' account. Defaults to the
+	// current business day or the next business day if the current day is a bank
+	// holiday or weekend. Format: yyyy-mm-dd.
+	PaymentEffectiveDate param.Field[time.Time] `json:"payment_effective_date" format:"date"`
+	// The method by which the invoice can be paid. `ui` will show the embedded payment
+	// collection flow. `automatic` will automatically initiate payment based upon the
+	// account details of the receiving_account id.\nIf the invoice amount is positive,
+	// the automatically initiated payment order's direction will be debit. If the
+	// invoice amount is negative, the automatically initiated payment order's
+	// direction will be credit. One of `manual`, `ui`, or `automatic`.
+	PaymentMethod param.Field[InvoiceNewParamsPaymentMethod] `json:"payment_method"`
+	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
+	// `au_becs`, `interac`, `signet`, `provexchange`.
+	PaymentType param.Field[InvoiceNewParamsPaymentType] `json:"payment_type"`
+	// The receiving account ID. Can be an `external_account`.
+	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	IdempotencyKey     param.Field[string] `header:"Idempotency-Key"`
 }
 
 func (r InvoiceNewParams) MarshalJSON() (data []byte, err error) {
@@ -409,6 +458,44 @@ func (r InvoiceNewParamsInvoicerAddress) MarshalJSON() (data []byte, err error) 
 	return apijson.MarshalRoot(r)
 }
 
+// The method by which the invoice can be paid. `ui` will show the embedded payment
+// collection flow. `automatic` will automatically initiate payment based upon the
+// account details of the receiving_account id.\nIf the invoice amount is positive,
+// the automatically initiated payment order's direction will be debit. If the
+// invoice amount is negative, the automatically initiated payment order's
+// direction will be credit. One of `manual`, `ui`, or `automatic`.
+type InvoiceNewParamsPaymentMethod string
+
+const (
+	InvoiceNewParamsPaymentMethodUi        InvoiceNewParamsPaymentMethod = "ui"
+	InvoiceNewParamsPaymentMethodManual    InvoiceNewParamsPaymentMethod = "manual"
+	InvoiceNewParamsPaymentMethodAutomatic InvoiceNewParamsPaymentMethod = "automatic"
+)
+
+// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
+// `au_becs`, `interac`, `signet`, `provexchange`.
+type InvoiceNewParamsPaymentType string
+
+const (
+	InvoiceNewParamsPaymentTypeACH         InvoiceNewParamsPaymentType = "ach"
+	InvoiceNewParamsPaymentTypeAuBecs      InvoiceNewParamsPaymentType = "au_becs"
+	InvoiceNewParamsPaymentTypeBacs        InvoiceNewParamsPaymentType = "bacs"
+	InvoiceNewParamsPaymentTypeBook        InvoiceNewParamsPaymentType = "book"
+	InvoiceNewParamsPaymentTypeCard        InvoiceNewParamsPaymentType = "card"
+	InvoiceNewParamsPaymentTypeCheck       InvoiceNewParamsPaymentType = "check"
+	InvoiceNewParamsPaymentTypeEft         InvoiceNewParamsPaymentType = "eft"
+	InvoiceNewParamsPaymentTypeCrossBorder InvoiceNewParamsPaymentType = "cross_border"
+	InvoiceNewParamsPaymentTypeInterac     InvoiceNewParamsPaymentType = "interac"
+	InvoiceNewParamsPaymentTypeMasav       InvoiceNewParamsPaymentType = "masav"
+	InvoiceNewParamsPaymentTypeNeft        InvoiceNewParamsPaymentType = "neft"
+	InvoiceNewParamsPaymentTypeProvxchange InvoiceNewParamsPaymentType = "provxchange"
+	InvoiceNewParamsPaymentTypeRtp         InvoiceNewParamsPaymentType = "rtp"
+	InvoiceNewParamsPaymentTypeSen         InvoiceNewParamsPaymentType = "sen"
+	InvoiceNewParamsPaymentTypeSepa        InvoiceNewParamsPaymentType = "sepa"
+	InvoiceNewParamsPaymentTypeSignet      InvoiceNewParamsPaymentType = "signet"
+	InvoiceNewParamsPaymentTypeWire        InvoiceNewParamsPaymentType = "wire"
+)
+
 type InvoiceUpdateParams struct {
 	// The invoicer's contact details displayed at the top of the invoice.
 	ContactDetails param.Field[[]InvoiceUpdateParamsContactDetail] `json:"contact_details"`
@@ -424,13 +511,26 @@ type InvoiceUpdateParams struct {
 	Description param.Field[string] `json:"description"`
 	// A future date by when the invoice needs to be paid.
 	DueDate param.Field[time.Time] `json:"due_date" format:"date-time"`
-	// When opening an invoice, whether to show the embedded payment UI with the
-	// invoice. Default true.
-	IncludePaymentUi param.Field[bool] `json:"include_payment_ui"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceUpdateParamsInvoicerAddress] `json:"invoicer_address"`
 	// The ID of the internal account the invoice should be paid to.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id"`
+	// Date transactions are to be posted to the participants' account. Defaults to the
+	// current business day or the next business day if the current day is a bank
+	// holiday or weekend. Format: yyyy-mm-dd.
+	PaymentEffectiveDate param.Field[time.Time] `json:"payment_effective_date" format:"date"`
+	// The method by which the invoice can be paid. `ui` will show the embedded payment
+	// collection flow. `automatic` will automatically initiate payment based upon the
+	// account details of the receiving_account id.\nIf the invoice amount is positive,
+	// the automatically initiated payment order's direction will be debit. If the
+	// invoice amount is negative, the automatically initiated payment order's
+	// direction will be credit. One of `manual`, `ui`, or `automatic`.
+	PaymentMethod param.Field[InvoiceUpdateParamsPaymentMethod] `json:"payment_method"`
+	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
+	// `au_becs`, `interac`, `signet`, `provexchange`.
+	PaymentType param.Field[InvoiceUpdateParamsPaymentType] `json:"payment_type"`
+	// The receiving account ID. Can be an `external_account`.
+	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
 	// Invoice status must be updated in a `PATCH` request that does not modify any
 	// other invoice attributes. Valid state transitions are `draft` to `unpaid` and
 	// `draft` or `unpaid` to `voided`.
@@ -519,6 +619,44 @@ type InvoiceUpdateParamsInvoicerAddress struct {
 func (r InvoiceUpdateParamsInvoicerAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+// The method by which the invoice can be paid. `ui` will show the embedded payment
+// collection flow. `automatic` will automatically initiate payment based upon the
+// account details of the receiving_account id.\nIf the invoice amount is positive,
+// the automatically initiated payment order's direction will be debit. If the
+// invoice amount is negative, the automatically initiated payment order's
+// direction will be credit. One of `manual`, `ui`, or `automatic`.
+type InvoiceUpdateParamsPaymentMethod string
+
+const (
+	InvoiceUpdateParamsPaymentMethodUi        InvoiceUpdateParamsPaymentMethod = "ui"
+	InvoiceUpdateParamsPaymentMethodManual    InvoiceUpdateParamsPaymentMethod = "manual"
+	InvoiceUpdateParamsPaymentMethodAutomatic InvoiceUpdateParamsPaymentMethod = "automatic"
+)
+
+// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
+// `au_becs`, `interac`, `signet`, `provexchange`.
+type InvoiceUpdateParamsPaymentType string
+
+const (
+	InvoiceUpdateParamsPaymentTypeACH         InvoiceUpdateParamsPaymentType = "ach"
+	InvoiceUpdateParamsPaymentTypeAuBecs      InvoiceUpdateParamsPaymentType = "au_becs"
+	InvoiceUpdateParamsPaymentTypeBacs        InvoiceUpdateParamsPaymentType = "bacs"
+	InvoiceUpdateParamsPaymentTypeBook        InvoiceUpdateParamsPaymentType = "book"
+	InvoiceUpdateParamsPaymentTypeCard        InvoiceUpdateParamsPaymentType = "card"
+	InvoiceUpdateParamsPaymentTypeCheck       InvoiceUpdateParamsPaymentType = "check"
+	InvoiceUpdateParamsPaymentTypeEft         InvoiceUpdateParamsPaymentType = "eft"
+	InvoiceUpdateParamsPaymentTypeCrossBorder InvoiceUpdateParamsPaymentType = "cross_border"
+	InvoiceUpdateParamsPaymentTypeInterac     InvoiceUpdateParamsPaymentType = "interac"
+	InvoiceUpdateParamsPaymentTypeMasav       InvoiceUpdateParamsPaymentType = "masav"
+	InvoiceUpdateParamsPaymentTypeNeft        InvoiceUpdateParamsPaymentType = "neft"
+	InvoiceUpdateParamsPaymentTypeProvxchange InvoiceUpdateParamsPaymentType = "provxchange"
+	InvoiceUpdateParamsPaymentTypeRtp         InvoiceUpdateParamsPaymentType = "rtp"
+	InvoiceUpdateParamsPaymentTypeSen         InvoiceUpdateParamsPaymentType = "sen"
+	InvoiceUpdateParamsPaymentTypeSepa        InvoiceUpdateParamsPaymentType = "sepa"
+	InvoiceUpdateParamsPaymentTypeSignet      InvoiceUpdateParamsPaymentType = "signet"
+	InvoiceUpdateParamsPaymentTypeWire        InvoiceUpdateParamsPaymentType = "wire"
+)
 
 type InvoiceListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
