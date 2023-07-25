@@ -36,7 +36,7 @@ func NewAccountCollectionFlowService(opts ...option.RequestOption) (r *AccountCo
 }
 
 // create account_collection_flow
-func (r *AccountCollectionFlowService) New(ctx context.Context, params AccountCollectionFlowNewParams, opts ...option.RequestOption) (res *AccountConnectionFlow, err error) {
+func (r *AccountCollectionFlowService) New(ctx context.Context, params AccountCollectionFlowNewParams, opts ...option.RequestOption) (res *AccountCollectionFlow, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/account_collection_flows"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
@@ -44,7 +44,7 @@ func (r *AccountCollectionFlowService) New(ctx context.Context, params AccountCo
 }
 
 // get account_collection_flow
-func (r *AccountCollectionFlowService) Get(ctx context.Context, id string, query AccountCollectionFlowGetParams, opts ...option.RequestOption) (res *AccountConnectionFlow, err error) {
+func (r *AccountCollectionFlowService) Get(ctx context.Context, id string, query AccountCollectionFlowGetParams, opts ...option.RequestOption) (res *AccountCollectionFlow, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/account_collection_flows/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
@@ -52,7 +52,7 @@ func (r *AccountCollectionFlowService) Get(ctx context.Context, id string, query
 }
 
 // update account_collection_flow
-func (r *AccountCollectionFlowService) Update(ctx context.Context, id string, params AccountCollectionFlowUpdateParams, opts ...option.RequestOption) (res *AccountConnectionFlow, err error) {
+func (r *AccountCollectionFlowService) Update(ctx context.Context, id string, params AccountCollectionFlowUpdateParams, opts ...option.RequestOption) (res *AccountCollectionFlow, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/account_collection_flows/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
@@ -60,7 +60,7 @@ func (r *AccountCollectionFlowService) Update(ctx context.Context, id string, pa
 }
 
 // list account_collection_flows
-func (r *AccountCollectionFlowService) List(ctx context.Context, query AccountCollectionFlowListParams, opts ...option.RequestOption) (res *shared.Page[AccountConnectionFlow], err error) {
+func (r *AccountCollectionFlowService) List(ctx context.Context, query AccountCollectionFlowListParams, opts ...option.RequestOption) (res *shared.Page[AccountCollectionFlow], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -78,15 +78,15 @@ func (r *AccountCollectionFlowService) List(ctx context.Context, query AccountCo
 }
 
 // list account_collection_flows
-func (r *AccountCollectionFlowService) ListAutoPaging(ctx context.Context, query AccountCollectionFlowListParams, opts ...option.RequestOption) *shared.PageAutoPager[AccountConnectionFlow] {
+func (r *AccountCollectionFlowService) ListAutoPaging(ctx context.Context, query AccountCollectionFlowListParams, opts ...option.RequestOption) *shared.PageAutoPager[AccountCollectionFlow] {
 	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
-type AccountConnectionFlow struct {
+type AccountCollectionFlow struct {
 	// The ID of a counterparty. An external account created with this flow will be
 	// associated with this counterparty.
 	CounterpartyID string                             `json:"counterparty_id,required" format:"uuid"`
-	PaymentTypes   []AccountConnectionFlowPaymentType `json:"payment_types,required"`
+	PaymentTypes   []AccountCollectionFlowPaymentType `json:"payment_types,required"`
 	ID             string                             `json:"id" format:"uuid"`
 	// The client token of the account collection flow. This token can be used to embed
 	// account collection in your client-side application.
@@ -100,14 +100,14 @@ type AccountConnectionFlow struct {
 	Object   string `json:"object"`
 	// The current status of the account collection flow. One of `pending`,
 	// `completed`, `expired`, or `cancelled`.
-	Status    AccountConnectionFlowStatus `json:"status"`
+	Status    AccountCollectionFlowStatus `json:"status"`
 	UpdatedAt time.Time                   `json:"updated_at" format:"date-time"`
-	JSON      accountConnectionFlowJSON
+	JSON      accountCollectionFlowJSON
 }
 
-// accountConnectionFlowJSON contains the JSON metadata for the struct
-// [AccountConnectionFlow]
-type accountConnectionFlowJSON struct {
+// accountCollectionFlowJSON contains the JSON metadata for the struct
+// [AccountCollectionFlow]
+type accountCollectionFlowJSON struct {
 	CounterpartyID    apijson.Field
 	PaymentTypes      apijson.Field
 	ID                apijson.Field
@@ -122,27 +122,27 @@ type accountConnectionFlowJSON struct {
 	ExtraFields       map[string]apijson.Field
 }
 
-func (r *AccountConnectionFlow) UnmarshalJSON(data []byte) (err error) {
+func (r *AccountCollectionFlow) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
 // An account created with this flow will support payments of one of these types.
-type AccountConnectionFlowPaymentType string
+type AccountCollectionFlowPaymentType string
 
 const (
-	AccountConnectionFlowPaymentTypeACH  AccountConnectionFlowPaymentType = "ach"
-	AccountConnectionFlowPaymentTypeWire AccountConnectionFlowPaymentType = "wire"
+	AccountCollectionFlowPaymentTypeACH  AccountCollectionFlowPaymentType = "ach"
+	AccountCollectionFlowPaymentTypeWire AccountCollectionFlowPaymentType = "wire"
 )
 
 // The current status of the account collection flow. One of `pending`,
 // `completed`, `expired`, or `cancelled`.
-type AccountConnectionFlowStatus string
+type AccountCollectionFlowStatus string
 
 const (
-	AccountConnectionFlowStatusCancelled AccountConnectionFlowStatus = "cancelled"
-	AccountConnectionFlowStatusCompleted AccountConnectionFlowStatus = "completed"
-	AccountConnectionFlowStatusExpired   AccountConnectionFlowStatus = "expired"
-	AccountConnectionFlowStatusPending   AccountConnectionFlowStatus = "pending"
+	AccountCollectionFlowStatusCancelled AccountCollectionFlowStatus = "cancelled"
+	AccountCollectionFlowStatusCompleted AccountCollectionFlowStatus = "completed"
+	AccountCollectionFlowStatusExpired   AccountCollectionFlowStatus = "expired"
+	AccountCollectionFlowStatusPending   AccountCollectionFlowStatus = "pending"
 )
 
 type AccountCollectionFlowNewParams struct {
