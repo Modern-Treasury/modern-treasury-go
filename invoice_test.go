@@ -81,7 +81,11 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 			PostalCode: moderntreasury.F("string"),
 			Country:    moderntreasury.F("string"),
 		}),
-		IdempotencyKey: moderntreasury.F("string"),
+		PaymentEffectiveDate: moderntreasury.F(time.Now()),
+		PaymentMethod:        moderntreasury.F(moderntreasury.InvoiceNewParamsPaymentMethodUi),
+		PaymentType:          moderntreasury.F(moderntreasury.InvoiceNewParamsPaymentTypeACH),
+		ReceivingAccountID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		IdempotencyKey:       moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -169,10 +173,9 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 				PostalCode: moderntreasury.F("string"),
 				Country:    moderntreasury.F("string"),
 			}),
-			Currency:         moderntreasury.F(shared.CurrencyAed),
-			Description:      moderntreasury.F("string"),
-			DueDate:          moderntreasury.F(time.Now()),
-			IncludePaymentUi: moderntreasury.F(true),
+			Currency:    moderntreasury.F(shared.CurrencyAed),
+			Description: moderntreasury.F("string"),
+			DueDate:     moderntreasury.F(time.Now()),
 			InvoicerAddress: moderntreasury.F(moderntreasury.InvoiceUpdateParamsInvoicerAddress{
 				Line1:      moderntreasury.F("string"),
 				Line2:      moderntreasury.F("string"),
@@ -182,6 +185,10 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 				Country:    moderntreasury.F("string"),
 			}),
 			OriginatingAccountID: moderntreasury.F("string"),
+			PaymentEffectiveDate: moderntreasury.F(time.Now()),
+			PaymentMethod:        moderntreasury.F(moderntreasury.InvoiceUpdateParamsPaymentMethodUi),
+			PaymentType:          moderntreasury.F(moderntreasury.InvoiceUpdateParamsPaymentTypeACH),
+			ReceivingAccountID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Status:               moderntreasury.F("string"),
 		},
 	)
