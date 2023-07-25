@@ -583,6 +583,8 @@ type LedgerEventHandlerNewParams struct {
 	Conditions param.Field[LedgerEventHandlerNewParamsConditions] `json:"conditions"`
 	// An optional description.
 	Description param.Field[string] `json:"description"`
+	// The id of the ledger that this account belongs to.
+	LedgerID param.Field[string] `json:"ledger_id" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata       param.Field[map[string]string] `json:"metadata"`
