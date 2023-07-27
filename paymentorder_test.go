@@ -69,6 +69,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
+			EffectiveAt:   moderntreasury.F(time.Now()),
 			EffectiveDate: moderntreasury.F(time.Now()),
 			LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerEntry{{
 				Amount:          moderntreasury.F(int64(0)),
@@ -497,6 +498,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
+			EffectiveAt:   moderntreasury.F(time.Now()),
 			EffectiveDate: moderntreasury.F(time.Now()),
 			LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntry{{
 				Amount:          moderntreasury.F(int64(0)),
