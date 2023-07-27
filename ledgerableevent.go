@@ -75,36 +75,30 @@ type LedgerableEvent struct {
 	// strings.
 	Metadata map[string]string `json:"metadata,required,nullable"`
 	// Name of the ledgerable event.
-	Name   string `json:"name,required"`
-	Object string `json:"object,required"`
-	// The ledger account that initiates the money movement.
-	OriginatingLedgerAccountID string `json:"originating_ledger_account_id,required,nullable" format:"uuid"`
-	// The ledger account that receives the money movement.
-	ReceivingLedgerAccountID string    `json:"receiving_ledger_account_id,required,nullable" format:"uuid"`
-	UpdatedAt                time.Time `json:"updated_at,required" format:"date-time"`
-	JSON                     ledgerableEventJSON
+	Name      string    `json:"name,required"`
+	Object    string    `json:"object,required"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	JSON      ledgerableEventJSON
 }
 
 // ledgerableEventJSON contains the JSON metadata for the struct [LedgerableEvent]
 type ledgerableEventJSON struct {
-	ID                         apijson.Field
-	Amount                     apijson.Field
-	CreatedAt                  apijson.Field
-	Currency                   apijson.Field
-	CurrencyExponent           apijson.Field
-	CustomData                 apijson.Field
-	Description                apijson.Field
-	Direction                  apijson.Field
-	LedgerEventHandlerID       apijson.Field
-	LiveMode                   apijson.Field
-	Metadata                   apijson.Field
-	Name                       apijson.Field
-	Object                     apijson.Field
-	OriginatingLedgerAccountID apijson.Field
-	ReceivingLedgerAccountID   apijson.Field
-	UpdatedAt                  apijson.Field
-	raw                        string
-	ExtraFields                map[string]apijson.Field
+	ID                   apijson.Field
+	Amount               apijson.Field
+	CreatedAt            apijson.Field
+	Currency             apijson.Field
+	CurrencyExponent     apijson.Field
+	CustomData           apijson.Field
+	Description          apijson.Field
+	Direction            apijson.Field
+	LedgerEventHandlerID apijson.Field
+	LiveMode             apijson.Field
+	Metadata             apijson.Field
+	Name                 apijson.Field
+	Object               apijson.Field
+	UpdatedAt            apijson.Field
+	raw                  string
+	ExtraFields          map[string]apijson.Field
 }
 
 func (r *LedgerableEvent) UnmarshalJSON(data []byte) (err error) {
@@ -130,12 +124,8 @@ type LedgerableEventNewParams struct {
 	Direction param.Field[string] `json:"direction"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The ledger account that initiates the money movement.
-	OriginatingLedgerAccountID param.Field[string] `json:"originating_ledger_account_id" format:"uuid"`
-	// The ledger account that receives the money movement.
-	ReceivingLedgerAccountID param.Field[string] `json:"receiving_ledger_account_id" format:"uuid"`
-	IdempotencyKey           param.Field[string] `header:"Idempotency-Key"`
+	Metadata       param.Field[map[string]string] `json:"metadata"`
+	IdempotencyKey param.Field[string]            `header:"Idempotency-Key"`
 }
 
 func (r LedgerableEventNewParams) MarshalJSON() (data []byte, err error) {
