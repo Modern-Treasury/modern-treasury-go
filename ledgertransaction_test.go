@@ -23,7 +23,7 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.LedgerTransactions.New(context.TODO(), moderntreasury.LedgerTransactionNewParams{
-		EffectiveDate: moderntreasury.F(time.Now()),
+		EffectiveAt: moderntreasury.F(time.Now()),
 		LedgerEntries: moderntreasury.F([]moderntreasury.LedgerTransactionNewParamsLedgerEntry{{
 			Amount:          moderntreasury.F(int64(0)),
 			Direction:       moderntreasury.F(moderntreasury.LedgerTransactionNewParamsLedgerEntriesDirectionCredit),
@@ -71,6 +71,7 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 			ShowResultingLedgerAccountBalances: moderntreasury.F(true),
 		}}),
 		Description:    moderntreasury.F("string"),
+		EffectiveDate:  moderntreasury.F(time.Now()),
 		ExternalID:     moderntreasury.F("string"),
 		LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionNewParamsLedgerableTypeCounterparty),
