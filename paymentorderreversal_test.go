@@ -18,9 +18,9 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaymentOrders.Reversals.New(
 		context.TODO(),
@@ -109,9 +109,9 @@ func TestPaymentOrderReversalGet(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaymentOrders.Reversals.Get(
 		context.TODO(),
@@ -132,9 +132,9 @@ func TestPaymentOrderReversalListWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaymentOrders.Reversals.List(
 		context.TODO(),

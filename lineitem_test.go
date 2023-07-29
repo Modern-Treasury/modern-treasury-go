@@ -17,9 +17,9 @@ func TestLineItemGet(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.LineItems.Get(
 		context.TODO(),
@@ -41,9 +41,9 @@ func TestLineItemUpdateWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.LineItems.Update(
 		context.TODO(),
@@ -73,9 +73,9 @@ func TestLineItemListWithOptionalParams(t *testing.T) {
 	}
 	t.Skip("Prism is broken in this case")
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.LineItems.List(
 		context.TODO(),

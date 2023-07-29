@@ -16,9 +16,9 @@ func TestUsage(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	externalAccount, err := client.ExternalAccounts.New(context.TODO(), moderntreasury.ExternalAccountNewParams{
 		CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),

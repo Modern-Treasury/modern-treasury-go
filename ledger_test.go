@@ -18,9 +18,9 @@ func TestLedgerNewWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.Ledgers.New(context.TODO(), moderntreasury.LedgerNewParams{
 		Name:        moderntreasury.F("string"),
@@ -46,9 +46,9 @@ func TestLedgerGet(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.Ledgers.Get(context.TODO(), "string")
 	if err != nil {
@@ -65,9 +65,9 @@ func TestLedgerUpdateWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.Ledgers.Update(
 		context.TODO(),
@@ -96,9 +96,9 @@ func TestLedgerListWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.Ledgers.List(context.TODO(), moderntreasury.LedgerListParams{
 		AfterCursor: moderntreasury.F("string"),
@@ -124,9 +124,9 @@ func TestLedgerDelete(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.Ledgers.Delete(context.TODO(), "string")
 	if err != nil {

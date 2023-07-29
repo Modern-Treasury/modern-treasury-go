@@ -17,9 +17,9 @@ func TestLedgerableEventNewWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.LedgerableEvents.New(context.TODO(), moderntreasury.LedgerableEventNewParams{
 		Amount:           moderntreasury.F(int64(0)),
@@ -50,9 +50,9 @@ func TestLedgerableEventGet(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.LedgerableEvents.Get(context.TODO(), "string")
 	if err != nil {

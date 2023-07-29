@@ -17,9 +17,9 @@ func TestPaymentFlowNewWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaymentFlows.New(context.TODO(), moderntreasury.PaymentFlowNewParams{
 		Amount:               moderntreasury.F(int64(0)),
@@ -43,9 +43,9 @@ func TestPaymentFlowGetWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaymentFlows.Get(
 		context.TODO(),
@@ -68,9 +68,9 @@ func TestPaymentFlowUpdateWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaymentFlows.Update(
 		context.TODO(),
@@ -94,9 +94,9 @@ func TestPaymentFlowListWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaymentFlows.List(context.TODO(), moderntreasury.PaymentFlowListParams{
 		AfterCursor:          moderntreasury.F("string"),

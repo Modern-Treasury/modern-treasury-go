@@ -18,9 +18,9 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.InternalAccounts.New(context.TODO(), moderntreasury.InternalAccountNewParams{
 		ConnectionID:    moderntreasury.F("string"),
@@ -58,9 +58,9 @@ func TestInternalAccountGet(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.InternalAccounts.Get(context.TODO(), "string")
 	if err != nil {
@@ -77,9 +77,9 @@ func TestInternalAccountUpdateWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.InternalAccounts.Update(
 		context.TODO(),
@@ -107,9 +107,9 @@ func TestInternalAccountListWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.InternalAccounts.List(context.TODO(), moderntreasury.InternalAccountListParams{
 		AfterCursor:    moderntreasury.F("string"),

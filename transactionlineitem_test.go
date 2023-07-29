@@ -18,9 +18,9 @@ func TestTransactionLineItemListWithOptionalParams(t *testing.T) {
 	}
 	t.Skip("Prism is broken in this case")
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.Transactions.LineItems.List(
 		context.TODO(),
