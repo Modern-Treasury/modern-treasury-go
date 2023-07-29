@@ -50,8 +50,8 @@ type Client struct {
 }
 
 // NewClient generates a new client with the default option read from the
-// environment (`MODERN_TREASURY_API_KEY`, `MODERN_TREASURY_ORGANIZATION_ID`,
-// `MODERN_TREASURY_WEBHOOK_KEY`). The option passed in as arguments are applied
+// environment (MODERN_TREASURY_API_KEY, MODERN_TREASURY_ORGANIZATION_ID,
+// MODERN_TREASURY_WEBHOOK_KEY). The option passed in as arguments are applied
 // after these default arguments, and all option will be passed down to the
 // services and requests that this client makes.
 func NewClient(opts ...option.RequestOption) (r *Client) {
