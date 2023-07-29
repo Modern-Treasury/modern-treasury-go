@@ -18,9 +18,9 @@ func TestPaperItemGet(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaperItems.Get(context.TODO(), "string")
 	if err != nil {
@@ -37,9 +37,9 @@ func TestPaperItemListWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaperItems.List(context.TODO(), moderntreasury.PaperItemListParams{
 		AfterCursor:      moderntreasury.F("string"),

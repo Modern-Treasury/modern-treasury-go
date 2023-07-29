@@ -22,9 +22,9 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 	}
 	t.Skip("skipped: prism mock server is broken for file uploads")
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaymentOrders.New(context.TODO(), moderntreasury.PaymentOrderNewParams{
 		Amount:               moderntreasury.F(int64(0)),
@@ -254,9 +254,9 @@ func TestPaymentOrderGet(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaymentOrders.Get(context.TODO(), "string")
 	if err != nil {
@@ -273,9 +273,9 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaymentOrders.Update(
 		context.TODO(),
@@ -432,9 +432,9 @@ func TestPaymentOrderListWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaymentOrders.List(context.TODO(), moderntreasury.PaymentOrderListParams{
 		AfterCursor:        moderntreasury.F("string"),
@@ -467,9 +467,9 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 		return
 	}
 	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
-		option.WithBaseURL("http://127.0.0.1:4010"),
 	)
 	_, err := client.PaymentOrders.NewAsync(context.TODO(), moderntreasury.PaymentOrderNewAsyncParams{
 		Amount:               moderntreasury.F(int64(0)),
