@@ -52,6 +52,11 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 						"foo": int64(0),
 					}),
 					ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+					Metadata: moderntreasury.F(map[string]string{
+						"key":    "value",
+						"foo":    "bar",
+						"modern": "treasury",
+					}),
 				}, {
 					Amount:          moderntreasury.F(int64(0)),
 					Direction:       moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
@@ -67,6 +72,11 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 						"foo": int64(0),
 					}),
 					ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+					Metadata: moderntreasury.F(map[string]string{
+						"key":    "value",
+						"foo":    "bar",
+						"modern": "treasury",
+					}),
 				}, {
 					Amount:          moderntreasury.F(int64(0)),
 					Direction:       moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
@@ -82,6 +92,11 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 						"foo": int64(0),
 					}),
 					ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+					Metadata: moderntreasury.F(map[string]string{
+						"key":    "value",
+						"foo":    "bar",
+						"modern": "treasury",
+					}),
 				}}),
 				ExternalID:     moderntreasury.F("string"),
 				LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeCounterparty),

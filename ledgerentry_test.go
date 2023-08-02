@@ -67,6 +67,9 @@ func TestLedgerEntryListWithOptionalParams(t *testing.T) {
 		}),
 		LedgerAccountStatementID: moderntreasury.F("string"),
 		LedgerTransactionID:      moderntreasury.F("string"),
+		Metadata: moderntreasury.F(map[string]string{
+			"foo": "string",
+		}),
 		OrderBy: moderntreasury.F(moderntreasury.LedgerEntryListParamsOrderBy{
 			CreatedAt:   moderntreasury.F(moderntreasury.LedgerEntryListParamsOrderByCreatedAtAsc),
 			EffectiveAt: moderntreasury.F(moderntreasury.LedgerEntryListParamsOrderByEffectiveAtAsc),

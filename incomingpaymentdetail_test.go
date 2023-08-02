@@ -104,6 +104,7 @@ func TestIncomingPaymentDetailNewAsyncWithOptionalParams(t *testing.T) {
 		Amount:            moderntreasury.F(int64(0)),
 		AsOfDate:          moderntreasury.F(time.Now()),
 		Currency:          moderntreasury.F(shared.CurrencyAed),
+		Description:       moderntreasury.F("string"),
 		Direction:         moderntreasury.F(moderntreasury.IncomingPaymentDetailNewAsyncParamsDirectionCredit),
 		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Type:              moderntreasury.F(moderntreasury.IncomingPaymentDetailNewAsyncParamsTypeACH),
