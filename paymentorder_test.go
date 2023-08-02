@@ -86,6 +86,11 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 					"foo": int64(0),
 				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
@@ -101,6 +106,11 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 					"foo": int64(0),
 				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
@@ -116,6 +126,11 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 					"foo": int64(0),
 				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
 			}}),
 			ExternalID:     moderntreasury.F("string"),
 			LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerableTypeCounterparty),
@@ -515,6 +530,11 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 					"foo": int64(0),
 				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirectionCredit),
@@ -530,6 +550,11 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 					"foo": int64(0),
 				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirectionCredit),
@@ -545,6 +570,11 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 					"foo": int64(0),
 				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
 			}}),
 			ExternalID:     moderntreasury.F("string"),
 			LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeCounterparty),

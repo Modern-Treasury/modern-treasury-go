@@ -325,6 +325,10 @@ type LedgerEntryListParams struct {
 	// Get all ledger entries that are included in the ledger account statement.
 	LedgerAccountStatementID param.Field[string] `query:"ledger_account_statement_id"`
 	LedgerTransactionID      param.Field[string] `query:"ledger_transaction_id"`
+	// For example, if you want to query for records with metadata key `Type` and value
+	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
+	// parameters.
+	Metadata param.Field[map[string]string] `query:"metadata"`
 	// Order by `created_at` or `effective_at` in `asc` or `desc` order. For example,
 	// to order by `effective_at asc`, use `order_by%5Beffective_at%5D=asc`. Ordering
 	// by only one field at a time is supported.

@@ -326,6 +326,8 @@ type IncomingPaymentDetailNewAsyncParams struct {
 	AsOfDate param.Field[time.Time] `json:"as_of_date" format:"date"`
 	// Defaults to the currency of the originating account.
 	Currency param.Field[shared.Currency] `json:"currency"`
+	// Defaults to a random description.
+	Description param.Field[string] `json:"description"`
 	// One of `credit`, `debit`.
 	Direction param.Field[IncomingPaymentDetailNewAsyncParamsDirection] `json:"direction"`
 	// The ID of one of your internal accounts.
