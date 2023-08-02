@@ -39,6 +39,11 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 				"foo": int64(0),
 			}),
 			ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
 		}, {
 			Amount:          moderntreasury.F(int64(0)),
 			Direction:       moderntreasury.F(moderntreasury.LedgerTransactionNewParamsLedgerEntriesDirectionCredit),
@@ -54,6 +59,11 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 				"foo": int64(0),
 			}),
 			ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
 		}, {
 			Amount:          moderntreasury.F(int64(0)),
 			Direction:       moderntreasury.F(moderntreasury.LedgerTransactionNewParamsLedgerEntriesDirectionCredit),
@@ -69,6 +79,11 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 				"foo": int64(0),
 			}),
 			ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
 		}}),
 		Description:    moderntreasury.F("string"),
 		EffectiveDate:  moderntreasury.F(time.Now()),
@@ -140,6 +155,11 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 					"foo": int64(0),
 				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(moderntreasury.LedgerTransactionUpdateParamsLedgerEntriesDirectionCredit),
@@ -155,6 +175,11 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 					"foo": int64(0),
 				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(moderntreasury.LedgerTransactionUpdateParamsLedgerEntriesDirectionCredit),
@@ -170,6 +195,11 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 					"foo": int64(0),
 				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
 			}}),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
