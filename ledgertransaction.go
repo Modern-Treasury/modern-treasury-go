@@ -85,9 +85,9 @@ func (r *LedgerTransactionService) ListAutoPaging(ctx context.Context, query Led
 }
 
 // Create a ledger transaction reversal.
-func (r *LedgerTransactionService) NewReversal(ctx context.Context, ledgerTransactionID string, body LedgerTransactionNewReversalParams, opts ...option.RequestOption) (res *LedgerTransaction, err error) {
+func (r *LedgerTransactionService) NewReversal(ctx context.Context, id string, body LedgerTransactionNewReversalParams, opts ...option.RequestOption) (res *LedgerTransaction, err error) {
 	opts = append(r.Options[:], opts...)
-	path := fmt.Sprintf("api/ledger_transactions/%s/reversal", ledgerTransactionID)
+	path := fmt.Sprintf("api/ledger_transactions/%s/reversal", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
@@ -191,13 +191,13 @@ const (
 )
 
 type LedgerTransactionNewParams struct {
-	// The timestamp (ISO8601 format) at which the ledger transaction happened for
-	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at,required" format:"date"`
 	// An array of ledger entry objects.
 	LedgerEntries param.Field[[]LedgerTransactionNewParamsLedgerEntry] `json:"ledger_entries,required"`
 	// An optional description for internal use.
 	Description param.Field[string] `json:"description"`
+	// The timestamp (ISO8601 format) at which the ledger transaction happened for
+	// reporting purposes.
+	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date"`
 	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
 	// purposes.
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
@@ -304,6 +304,9 @@ const (
 type LedgerTransactionUpdateParams struct {
 	// An optional description for internal use.
 	Description param.Field[string] `json:"description"`
+	// The timestamp (ISO8601 format) at which the ledger transaction happened for
+	// reporting purposes.
+	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date"`
 	// An array of ledger entry objects.
 	LedgerEntries param.Field[[]LedgerTransactionUpdateParamsLedgerEntry] `json:"ledger_entries"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -391,6 +394,7 @@ type LedgerTransactionListParams struct {
 	ExternalID              param.Field[string]                                    `query:"external_id"`
 	LedgerAccountCategoryID param.Field[string]                                    `query:"ledger_account_category_id"`
 	LedgerAccountID         param.Field[string]                                    `query:"ledger_account_id"`
+	LedgerAccountPayoutID   param.Field[string]                                    `query:"ledger_account_payout_id"`
 	LedgerID                param.Field[string]                                    `query:"ledger_id"`
 	LedgerableID            param.Field[string]                                    `query:"ledgerable_id"`
 	LedgerableType          param.Field[LedgerTransactionListParamsLedgerableType] `query:"ledgerable_type"`

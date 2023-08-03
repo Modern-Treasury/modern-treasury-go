@@ -176,6 +176,9 @@ type LedgerAccountPayoutNewParams struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// It is set to `false` by default. It should be set to `true` when migrating
+	// existing payouts.
+	SkipPayoutLedgerTransaction param.Field[bool] `json:"skip_payout_ledger_transaction"`
 	// The status of the ledger account payout. It is set to `pending` by default. To
 	// post a ledger account payout at creation, use `posted`.
 	Status         param.Field[LedgerAccountPayoutNewParamsStatus] `json:"status"`
@@ -220,9 +223,13 @@ const (
 )
 
 type LedgerAccountPayoutListParams struct {
-	AfterCursor           param.Field[string] `query:"after_cursor"`
-	PayoutLedgerAccountID param.Field[string] `query:"payout_ledger_account_id"`
-	PerPage               param.Field[int64]  `query:"per_page"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
+	// For example, if you want to query for records with metadata key `Type` and value
+	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
+	// parameters.
+	Metadata              param.Field[map[string]string] `query:"metadata"`
+	PayoutLedgerAccountID param.Field[string]            `query:"payout_ledger_account_id"`
+	PerPage               param.Field[int64]             `query:"per_page"`
 }
 
 // URLQuery serializes [LedgerAccountPayoutListParams]'s query parameters as

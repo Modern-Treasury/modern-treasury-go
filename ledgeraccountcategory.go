@@ -52,10 +52,10 @@ func (r *LedgerAccountCategoryService) Get(ctx context.Context, id string, query
 }
 
 // Update the details of a ledger account category.
-func (r *LedgerAccountCategoryService) Update(ctx context.Context, id string, params LedgerAccountCategoryUpdateParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
+func (r *LedgerAccountCategoryService) Update(ctx context.Context, id string, body LedgerAccountCategoryUpdateParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/ledger_account_categories/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
 }
 
@@ -83,14 +83,14 @@ func (r *LedgerAccountCategoryService) ListAutoPaging(ctx context.Context, query
 }
 
 // Delete a ledger account category.
-func (r *LedgerAccountCategoryService) Delete(ctx context.Context, id string, body LedgerAccountCategoryDeleteParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
+func (r *LedgerAccountCategoryService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/ledger_account_categories/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return
 }
 
-// Add a ledger account category to an account.
+// Add a ledger account to a ledger account category.
 func (r *LedgerAccountCategoryService) AddLedgerAccount(ctx context.Context, id string, ledgerAccountID string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
@@ -108,7 +108,7 @@ func (r *LedgerAccountCategoryService) AddNestedCategory(ctx context.Context, id
 	return
 }
 
-// Delete a ledger account category from an account.
+// Remove a ledger account from a ledger account category.
 func (r *LedgerAccountCategoryService) RemoveLedgerAccount(ctx context.Context, id string, ledgerAccountID string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
@@ -337,10 +337,9 @@ const (
 )
 
 type LedgerAccountCategoryGetParams struct {
-	// For example, if you want the balances as of a particular effective date
-	// (YYYY-MM-DD), the encoded query string would be
-	// balances%5Bas_of_date%5D=2000-12-31. The balances as of a date are exclusive of
-	// entries with that exact date.
+	// For example, if you want the balances as of a particular time (ISO8601), the
+	// encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
+	// The balances as of a time are inclusive of entries with that exact time.
 	Balances param.Field[LedgerAccountCategoryGetParamsBalances] `query:"balances"`
 }
 
@@ -353,10 +352,9 @@ func (r LedgerAccountCategoryGetParams) URLQuery() (v url.Values) {
 	})
 }
 
-// For example, if you want the balances as of a particular effective date
-// (YYYY-MM-DD), the encoded query string would be
-// balances%5Bas_of_date%5D=2000-12-31. The balances as of a date are exclusive of
-// entries with that exact date.
+// For example, if you want the balances as of a particular time (ISO8601), the
+// encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
+// The balances as of a time are inclusive of entries with that exact time.
 type LedgerAccountCategoryGetParamsBalances struct {
 	AsOfDate    param.Field[time.Time] `query:"as_of_date" format:"date"`
 	EffectiveAt param.Field[time.Time] `query:"effective_at" format:"date-time"`
@@ -372,11 +370,6 @@ func (r LedgerAccountCategoryGetParamsBalances) URLQuery() (v url.Values) {
 }
 
 type LedgerAccountCategoryUpdateParams struct {
-	// For example, if you want the balances as of a particular effective date
-	// (YYYY-MM-DD), the encoded query string would be
-	// balances%5Bas_of_date%5D=2000-12-31. The balances as of a date are exclusive of
-	// entries with that exact date.
-	Balances param.Field[LedgerAccountCategoryUpdateParamsBalances] `query:"balances"`
 	// The description of the ledger account category.
 	Description param.Field[string] `json:"description"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -390,35 +383,12 @@ func (r LedgerAccountCategoryUpdateParams) MarshalJSON() (data []byte, err error
 	return apijson.MarshalRoot(r)
 }
 
-// URLQuery serializes [LedgerAccountCategoryUpdateParams]'s query parameters as
-// `url.Values`.
-func (r LedgerAccountCategoryUpdateParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
-}
-
-// For example, if you want the balances as of a particular effective date
-// (YYYY-MM-DD), the encoded query string would be
-// balances%5Bas_of_date%5D=2000-12-31. The balances as of a date are exclusive of
-// entries with that exact date.
-type LedgerAccountCategoryUpdateParamsBalances struct {
-	AsOfDate    param.Field[time.Time] `query:"as_of_date" format:"date"`
-	EffectiveAt param.Field[time.Time] `query:"effective_at" format:"date-time"`
-}
-
-// URLQuery serializes [LedgerAccountCategoryUpdateParamsBalances]'s query
-// parameters as `url.Values`.
-func (r LedgerAccountCategoryUpdateParamsBalances) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
-}
-
 type LedgerAccountCategoryListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
+	// For example, if you want the balances as of a particular time (ISO8601), the
+	// encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
+	// The balances as of a time are inclusive of entries with that exact time.
+	Balances param.Field[LedgerAccountCategoryListParamsBalances] `query:"balances"`
 	// Query categories which contain a ledger account directly or through child
 	// categories.
 	LedgerAccountID param.Field[string] `query:"ledger_account_id"`
@@ -442,35 +412,16 @@ func (r LedgerAccountCategoryListParams) URLQuery() (v url.Values) {
 	})
 }
 
-type LedgerAccountCategoryDeleteParams struct {
-	// For example, if you want the balances as of a particular effective date
-	// (YYYY-MM-DD), the encoded query string would be
-	// balances%5Bas_of_date%5D=2000-12-31. The balances as of a date are exclusive of
-	// entries with that exact date.
-	Balances param.Field[LedgerAccountCategoryDeleteParamsBalances] `query:"balances"`
-}
-
-// URLQuery serializes [LedgerAccountCategoryDeleteParams]'s query parameters as
-// `url.Values`.
-func (r LedgerAccountCategoryDeleteParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
-}
-
-// For example, if you want the balances as of a particular effective date
-// (YYYY-MM-DD), the encoded query string would be
-// balances%5Bas_of_date%5D=2000-12-31. The balances as of a date are exclusive of
-// entries with that exact date.
-type LedgerAccountCategoryDeleteParamsBalances struct {
-	AsOfDate    param.Field[time.Time] `query:"as_of_date" format:"date"`
+// For example, if you want the balances as of a particular time (ISO8601), the
+// encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
+// The balances as of a time are inclusive of entries with that exact time.
+type LedgerAccountCategoryListParamsBalances struct {
 	EffectiveAt param.Field[time.Time] `query:"effective_at" format:"date-time"`
 }
 
-// URLQuery serializes [LedgerAccountCategoryDeleteParamsBalances]'s query
-// parameters as `url.Values`.
-func (r LedgerAccountCategoryDeleteParamsBalances) URLQuery() (v url.Values) {
+// URLQuery serializes [LedgerAccountCategoryListParamsBalances]'s query parameters
+// as `url.Values`.
+func (r LedgerAccountCategoryListParamsBalances) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
