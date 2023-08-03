@@ -31,8 +31,9 @@ func TestLedgerAccountPayoutNewWithOptionalParams(t *testing.T) {
 			"foo":    "bar",
 			"modern": "treasury",
 		}),
-		Status:         moderntreasury.F(moderntreasury.LedgerAccountPayoutNewParamsStatusPending),
-		IdempotencyKey: moderntreasury.F("string"),
+		SkipPayoutLedgerTransaction: moderntreasury.F(true),
+		Status:                      moderntreasury.F(moderntreasury.LedgerAccountPayoutNewParamsStatusPending),
+		IdempotencyKey:              moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -84,7 +85,10 @@ func TestLedgerAccountPayoutListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountPayouts.List(context.TODO(), moderntreasury.LedgerAccountPayoutListParams{
-		AfterCursor:           moderntreasury.F("string"),
+		AfterCursor: moderntreasury.F("string"),
+		Metadata: moderntreasury.F(map[string]string{
+			"foo": "string",
+		}),
 		PayoutLedgerAccountID: moderntreasury.F("string"),
 		PerPage:               moderntreasury.F(int64(0)),
 	})

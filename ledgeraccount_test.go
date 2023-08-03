@@ -130,6 +130,7 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 		CreatedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
+		Currency:                moderntreasury.F("string"),
 		LedgerAccountCategoryID: moderntreasury.F("string"),
 		LedgerID:                moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{

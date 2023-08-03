@@ -86,10 +86,6 @@ func TestLedgerAccountCategoryUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"string",
 		moderntreasury.LedgerAccountCategoryUpdateParams{
-			Balances: moderntreasury.F(moderntreasury.LedgerAccountCategoryUpdateParamsBalances{
-				AsOfDate:    moderntreasury.F(time.Now()),
-				EffectiveAt: moderntreasury.F(time.Now()),
-			}),
 			Description: moderntreasury.F("string"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
@@ -118,7 +114,10 @@ func TestLedgerAccountCategoryListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountCategories.List(context.TODO(), moderntreasury.LedgerAccountCategoryListParams{
-		AfterCursor:     moderntreasury.F("string"),
+		AfterCursor: moderntreasury.F("string"),
+		Balances: moderntreasury.F(moderntreasury.LedgerAccountCategoryListParamsBalances{
+			EffectiveAt: moderntreasury.F(time.Now()),
+		}),
 		LedgerAccountID: moderntreasury.F("string"),
 		LedgerID:        moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{
@@ -137,7 +136,7 @@ func TestLedgerAccountCategoryListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestLedgerAccountCategoryDeleteWithOptionalParams(t *testing.T) {
+func TestLedgerAccountCategoryDelete(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
@@ -146,16 +145,7 @@ func TestLedgerAccountCategoryDeleteWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerAccountCategories.Delete(
-		context.TODO(),
-		"string",
-		moderntreasury.LedgerAccountCategoryDeleteParams{
-			Balances: moderntreasury.F(moderntreasury.LedgerAccountCategoryDeleteParamsBalances{
-				AsOfDate:    moderntreasury.F(time.Now()),
-				EffectiveAt: moderntreasury.F(time.Now()),
-			}),
-		},
-	)
+	_, err := client.LedgerAccountCategories.Delete(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

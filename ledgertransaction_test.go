@@ -23,7 +23,6 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerTransactions.New(context.TODO(), moderntreasury.LedgerTransactionNewParams{
-		EffectiveAt: moderntreasury.F(time.Now()),
 		LedgerEntries: moderntreasury.F([]moderntreasury.LedgerTransactionNewParamsLedgerEntry{{
 			Amount:          moderntreasury.F(int64(0)),
 			Direction:       moderntreasury.F(moderntreasury.LedgerTransactionNewParamsLedgerEntriesDirectionCredit),
@@ -86,6 +85,7 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 			}),
 		}}),
 		Description:    moderntreasury.F("string"),
+		EffectiveAt:    moderntreasury.F(time.Now()),
 		EffectiveDate:  moderntreasury.F(time.Now()),
 		ExternalID:     moderntreasury.F("string"),
 		LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -140,6 +140,7 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 		"string",
 		moderntreasury.LedgerTransactionUpdateParams{
 			Description: moderntreasury.F("string"),
+			EffectiveAt: moderntreasury.F(time.Now()),
 			LedgerEntries: moderntreasury.F([]moderntreasury.LedgerTransactionUpdateParamsLedgerEntry{{
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(moderntreasury.LedgerTransactionUpdateParamsLedgerEntriesDirectionCredit),
@@ -241,6 +242,7 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 		ExternalID:              moderntreasury.F("string"),
 		LedgerAccountCategoryID: moderntreasury.F("string"),
 		LedgerAccountID:         moderntreasury.F("string"),
+		LedgerAccountPayoutID:   moderntreasury.F("string"),
 		LedgerID:                moderntreasury.F("string"),
 		LedgerableID:            moderntreasury.F("string"),
 		LedgerableType:          moderntreasury.F(moderntreasury.LedgerTransactionListParamsLedgerableTypeCounterparty),

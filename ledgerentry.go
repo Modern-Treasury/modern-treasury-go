@@ -307,7 +307,7 @@ type LedgerEntryListParams struct {
 	// a ledger transaction to specify a new set of entries, the previous entries are
 	// deleted.
 	Direction param.Field[LedgerEntryListParamsDirection] `query:"direction"`
-	// Use "gt" (>), "gte" (>=), "lt" (<), "lte" (<=), or "eq" (=) to filter by the
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// transaction's effective time. Format ISO8601
 	EffectiveAt param.Field[map[string]string] `query:"effective_at" format:"time"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
@@ -322,6 +322,7 @@ type LedgerEntryListParams struct {
 	// before before lock_version 1000 of a ledger account, use
 	// `ledger_account_lock_version%5Blte%5D=1000`.
 	LedgerAccountLockVersion param.Field[map[string]int64] `query:"ledger_account_lock_version"`
+	LedgerAccountPayoutID    param.Field[string]           `query:"ledger_account_payout_id"`
 	// Get all ledger entries that are included in the ledger account statement.
 	LedgerAccountStatementID param.Field[string] `query:"ledger_account_statement_id"`
 	LedgerTransactionID      param.Field[string] `query:"ledger_transaction_id"`
