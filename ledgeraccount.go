@@ -414,6 +414,7 @@ type LedgerAccountListParams struct {
 	// created at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// created_at%5Bgt%5D=2000-01-01T12:00:00Z.
 	CreatedAt               param.Field[map[string]time.Time] `query:"created_at" format:"date-time"`
+	Currency                param.Field[string]               `query:"currency"`
 	LedgerAccountCategoryID param.Field[string]               `query:"ledger_account_category_id"`
 	LedgerID                param.Field[string]               `query:"ledger_id"`
 	// For example, if you want to query for records with metadata key `Type` and value

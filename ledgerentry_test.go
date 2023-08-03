@@ -65,6 +65,7 @@ func TestLedgerEntryListWithOptionalParams(t *testing.T) {
 		LedgerAccountLockVersion: moderntreasury.F(map[string]int64{
 			"foo": int64(0),
 		}),
+		LedgerAccountPayoutID:    moderntreasury.F("string"),
 		LedgerAccountStatementID: moderntreasury.F("string"),
 		LedgerTransactionID:      moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{

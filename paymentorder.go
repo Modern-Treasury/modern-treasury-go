@@ -970,13 +970,13 @@ const (
 // creation will fail. The resulting ledger transaction will mirror the status of
 // the payment order.
 type PaymentOrderNewParamsLedgerTransaction struct {
-	// The timestamp (ISO8601 format) at which the ledger transaction happened for
-	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at,required" format:"date"`
 	// An array of ledger entry objects.
 	LedgerEntries param.Field[[]PaymentOrderNewParamsLedgerTransactionLedgerEntry] `json:"ledger_entries,required"`
 	// An optional description for internal use.
 	Description param.Field[string] `json:"description"`
+	// The timestamp (ISO8601 format) at which the ledger transaction happened for
+	// reporting purposes.
+	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date"`
 	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
 	// purposes.
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
@@ -2002,13 +2002,13 @@ const (
 // creation will fail. The resulting ledger transaction will mirror the status of
 // the payment order.
 type PaymentOrderNewAsyncParamsLedgerTransaction struct {
-	// The timestamp (ISO8601 format) at which the ledger transaction happened for
-	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at,required" format:"date"`
 	// An array of ledger entry objects.
 	LedgerEntries param.Field[[]PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntry] `json:"ledger_entries,required"`
 	// An optional description for internal use.
 	Description param.Field[string] `json:"description"`
+	// The timestamp (ISO8601 format) at which the ledger transaction happened for
+	// reporting purposes.
+	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date"`
 	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
 	// purposes.
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
