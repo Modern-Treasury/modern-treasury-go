@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/Modern-Treasury/modern-treasury-go/internal/apiform"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
@@ -617,268 +618,23 @@ type PaymentOrderNewParams struct {
 	// Identifier of the ultimate funds recipient.
 	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
 	// Name of the ultimate funds recipient.
-	UltimateReceivingPartyName param.Field[string]                           `json:"ultimate_receiving_party_name"`
-	ContentType                param.Field[PaymentOrderNewParamsContentType] `header:"Content-Type"`
-	IdempotencyKey             param.Field[string]                           `header:"Idempotency-Key"`
+	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
+	IdempotencyKey             param.Field[string] `header:"Idempotency-Key"`
 }
 
-func (r PaymentOrderNewParams) MarshalMultipart() (data []byte, err error) {
-	body := bytes.NewBuffer(nil)
-	writer := multipart.NewWriter(body)
-	defer writer.Close()
-	{
-		bdy, err := apijson.Marshal(r.Amount)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("amount", string(bdy))
+func (r PaymentOrderNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
+	buf := bytes.NewBuffer(nil)
+	writer := multipart.NewWriter(buf)
+	err = apiform.MarshalRoot(r, writer)
+	if err != nil {
+		writer.Close()
+		return nil, "", err
 	}
-	{
-		bdy, err := apijson.Marshal(r.Direction)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("direction", string(bdy))
+	err = writer.Close()
+	if err != nil {
+		return nil, "", err
 	}
-	{
-		bdy, err := apijson.Marshal(r.OriginatingAccountID)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("originating_account_id", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.Type)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("type", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.Accounting)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("accounting", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.AccountingCategoryID)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("accounting_category_id", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.AccountingLedgerClassID)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("accounting_ledger_class_id", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.ChargeBearer)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("charge_bearer", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.Currency)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("currency", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.Description)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("description", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.Documents)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("documents", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.EffectiveDate)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("effective_date", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.ExpiresAt)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("expires_at", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.FallbackType)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("fallback_type", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.ForeignExchangeContract)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("foreign_exchange_contract", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.ForeignExchangeIndicator)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("foreign_exchange_indicator", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.LedgerTransaction)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("ledger_transaction", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.LineItems)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("line_items", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.Metadata)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("metadata", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.NsfProtected)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("nsf_protected", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.OriginatingPartyName)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("originating_party_name", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.Priority)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("priority", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.Purpose)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("purpose", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.ReceivingAccount)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("receiving_account", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.ReceivingAccountID)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("receiving_account_id", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.RemittanceInformation)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("remittance_information", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.SendRemittanceAdvice)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("send_remittance_advice", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.StatementDescriptor)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("statement_descriptor", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.Subtype)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("subtype", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.TransactionMonitoringEnabled)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("transaction_monitoring_enabled", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.UltimateOriginatingPartyIdentifier)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("ultimate_originating_party_identifier", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.UltimateOriginatingPartyName)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("ultimate_originating_party_name", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.UltimateReceivingPartyIdentifier)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("ultimate_receiving_party_identifier", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.UltimateReceivingPartyName)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("ultimate_receiving_party_name", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.ContentType)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("Content-Type", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.IdempotencyKey)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("Idempotency-Key", string(bdy))
-	}
-	return body.Bytes(), nil
+	return buf.Bytes(), writer.FormDataContentType(), nil
 }
 
 // One of `credit`, `debit`. Describes the direction money is flowing in the
@@ -1303,13 +1059,6 @@ const (
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "signet"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "wire"
-)
-
-type PaymentOrderNewParamsContentType string
-
-const (
-	PaymentOrderNewParamsContentTypeApplicationJson   PaymentOrderNewParamsContentType = "application/json"
-	PaymentOrderNewParamsContentTypeMultipartFormData PaymentOrderNewParamsContentType = "multipart/form-data"
 )
 
 type PaymentOrderUpdateParams struct {
