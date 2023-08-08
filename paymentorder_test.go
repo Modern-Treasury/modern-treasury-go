@@ -20,7 +20,6 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
-	t.Skip("skipped: prism mock server is broken for file uploads")
 	client := moderntreasury.NewClient(
 		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
@@ -252,7 +251,6 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 		UltimateOriginatingPartyName:       moderntreasury.F("string"),
 		UltimateReceivingPartyIdentifier:   moderntreasury.F("string"),
 		UltimateReceivingPartyName:         moderntreasury.F("string"),
-		ContentType:                        moderntreasury.F(moderntreasury.PaymentOrderNewParamsContentTypeApplicationJson),
 		IdempotencyKey:                     moderntreasury.F("string"),
 	})
 	if err != nil {

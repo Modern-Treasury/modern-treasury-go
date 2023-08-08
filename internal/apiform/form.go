@@ -1,5 +1,5 @@
 package apiform
 
 type Marshaler interface {
-	MarshalMultipart() ([]byte, error)
+	MarshalMultipart() ([]byte, string, error)
 }

@@ -12,6 +12,7 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/Modern-Treasury/modern-treasury-go/internal/apiform"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
@@ -207,50 +208,19 @@ type DocumentNewParams struct {
 	IdempotencyKey param.Field[string] `header:"Idempotency-Key"`
 }
 
-func (r DocumentNewParams) MarshalMultipart() (data []byte, err error) {
-	body := bytes.NewBuffer(nil)
-	writer := multipart.NewWriter(body)
-	defer writer.Close()
-	{
-		bdy, err := apijson.Marshal(r.DocumentableID)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("documentable_id", string(bdy))
+func (r DocumentNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
+	buf := bytes.NewBuffer(nil)
+	writer := multipart.NewWriter(buf)
+	err = apiform.MarshalRoot(r, writer)
+	if err != nil {
+		writer.Close()
+		return nil, "", err
 	}
-	{
-		bdy, err := apijson.Marshal(r.DocumentableType)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("documentable_type", string(bdy))
+	err = writer.Close()
+	if err != nil {
+		return nil, "", err
 	}
-	{
-		name := "anonymous_file"
-		if nameable, ok := r.File.Value.(interface{ Name() string }); ok {
-			name = nameable.Name()
-		}
-		part, err := writer.CreateFormFile("file", name)
-		if err != nil {
-			return nil, err
-		}
-		io.Copy(part, r.File.Value)
-	}
-	{
-		bdy, err := apijson.Marshal(r.DocumentType)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("document_type", string(bdy))
-	}
-	{
-		bdy, err := apijson.Marshal(r.IdempotencyKey)
-		if err != nil {
-			return nil, err
-		}
-		writer.WriteField("Idempotency-Key", string(bdy))
-	}
-	return body.Bytes(), nil
+	return buf.Bytes(), writer.FormDataContentType(), nil
 }
 
 type DocumentNewParamsDocumentableType string
