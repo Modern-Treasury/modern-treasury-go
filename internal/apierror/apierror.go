@@ -37,6 +37,9 @@ func (r *Error) Error() string {
 }
 
 func (r *Error) DumpRequest(body bool) []byte {
+	if r.Request.GetBody != nil {
+		r.Request.Body, _ = r.Request.GetBody()
+	}
 	out, _ := httputil.DumpRequestOut(r.Request, body)
 	return out
 }
