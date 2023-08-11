@@ -48,9 +48,7 @@ func TestLedgerEntryListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerEntries.List(context.TODO(), moderntreasury.LedgerEntryListParams{
-		ID: moderntreasury.F(map[string]string{
-			"foo": "string",
-		}),
+		ID:              moderntreasury.F([]string{"string", "string", "string"}),
 		AfterCursor:     moderntreasury.F("string"),
 		AsOfLockVersion: moderntreasury.F(int64(0)),
 		Direction:       moderntreasury.F(moderntreasury.LedgerEntryListParamsDirectionCredit),

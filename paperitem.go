@@ -156,7 +156,7 @@ type PaperItemListParams struct {
 // URLQuery serializes [PaperItemListParams]'s query parameters as `url.Values`.
 func (r PaperItemListParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }

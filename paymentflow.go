@@ -227,7 +227,7 @@ type PaymentFlowListParams struct {
 // URLQuery serializes [PaymentFlowListParams]'s query parameters as `url.Values`.
 func (r PaymentFlowListParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
