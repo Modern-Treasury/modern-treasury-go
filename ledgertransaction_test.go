@@ -229,9 +229,7 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerTransactions.List(context.TODO(), moderntreasury.LedgerTransactionListParams{
-		ID: moderntreasury.F(map[string]string{
-			"foo": "string",
-		}),
+		ID:          moderntreasury.F([]string{"string", "string", "string"}),
 		AfterCursor: moderntreasury.F("string"),
 		EffectiveAt: moderntreasury.F(map[string]string{
 			"foo": "string",

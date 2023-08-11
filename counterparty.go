@@ -649,7 +649,7 @@ type CounterpartyListParams struct {
 // URLQuery serializes [CounterpartyListParams]'s query parameters as `url.Values`.
 func (r CounterpartyListParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }

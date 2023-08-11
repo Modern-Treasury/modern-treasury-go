@@ -381,8 +381,10 @@ const (
 )
 
 type LedgerTransactionListParams struct {
-	ID          param.Field[map[string]string] `query:"id"`
-	AfterCursor param.Field[string]            `query:"after_cursor"`
+	// If you have specific IDs to retrieve in bulk, you can pass them as query
+	// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
+	ID          param.Field[[]string] `query:"id"`
+	AfterCursor param.Field[string]   `query:"after_cursor"`
 	// Use "gt" (>), "gte" (>=), "lt" (<), "lte" (<=), or "eq" (=) to filter by
 	// effective at. For example, for all transactions after Jan 1 2000, use
 	// effective_at%5Bgt%5D=2000-01-01T00:00:00:00.000Z.
@@ -423,7 +425,7 @@ type LedgerTransactionListParams struct {
 // `url.Values`.
 func (r LedgerTransactionListParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
@@ -455,7 +457,7 @@ type LedgerTransactionListParamsOrderBy struct {
 // `url.Values`.
 func (r LedgerTransactionListParamsOrderBy) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }

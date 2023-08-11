@@ -114,6 +114,7 @@ func TestLedgerAccountCategoryListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountCategories.List(context.TODO(), moderntreasury.LedgerAccountCategoryListParams{
+		ID:          moderntreasury.F([]string{"string", "string", "string"}),
 		AfterCursor: moderntreasury.F("string"),
 		Balances: moderntreasury.F(moderntreasury.LedgerAccountCategoryListParamsBalances{
 			EffectiveAt: moderntreasury.F(time.Now()),
