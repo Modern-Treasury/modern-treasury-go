@@ -347,7 +347,7 @@ type LedgerAccountCategoryGetParams struct {
 // `url.Values`.
 func (r LedgerAccountCategoryGetParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
@@ -364,7 +364,7 @@ type LedgerAccountCategoryGetParamsBalances struct {
 // as `url.Values`.
 func (r LedgerAccountCategoryGetParamsBalances) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
@@ -384,7 +384,10 @@ func (r LedgerAccountCategoryUpdateParams) MarshalJSON() (data []byte, err error
 }
 
 type LedgerAccountCategoryListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor"`
+	// If you have specific IDs to retrieve in bulk, you can pass them as query
+	// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
+	ID          param.Field[[]string] `query:"id"`
+	AfterCursor param.Field[string]   `query:"after_cursor"`
 	// For example, if you want the balances as of a particular time (ISO8601), the
 	// encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
 	// The balances as of a time are inclusive of entries with that exact time.
@@ -407,7 +410,7 @@ type LedgerAccountCategoryListParams struct {
 // `url.Values`.
 func (r LedgerAccountCategoryListParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
@@ -423,7 +426,7 @@ type LedgerAccountCategoryListParamsBalances struct {
 // as `url.Values`.
 func (r LedgerAccountCategoryListParamsBalances) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }

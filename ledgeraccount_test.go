@@ -119,7 +119,7 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccounts.List(context.TODO(), moderntreasury.LedgerAccountListParams{
-		ID:          moderntreasury.F("string"),
+		ID:          moderntreasury.F([]string{"string", "string", "string"}),
 		AfterCursor: moderntreasury.F("string"),
 		Balances: moderntreasury.F(moderntreasury.LedgerAccountListParamsBalances{
 			AsOfDate:              moderntreasury.F(time.Now()),

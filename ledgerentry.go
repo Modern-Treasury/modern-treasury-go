@@ -292,14 +292,16 @@ type LedgerEntryGetParams struct {
 // URLQuery serializes [LedgerEntryGetParams]'s query parameters as `url.Values`.
 func (r LedgerEntryGetParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
 
 type LedgerEntryListParams struct {
-	ID          param.Field[map[string]string] `query:"id"`
-	AfterCursor param.Field[string]            `query:"after_cursor"`
+	// If you have specific IDs to retrieve in bulk, you can pass them as query
+	// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
+	ID          param.Field[[]string] `query:"id"`
+	AfterCursor param.Field[string]   `query:"after_cursor"`
 	// Shows all ledger entries that were present on a ledger account at a particular
 	// `lock_version`. You must also specify `ledger_account_id`.
 	AsOfLockVersion param.Field[int64] `query:"as_of_lock_version"`
@@ -354,7 +356,7 @@ type LedgerEntryListParams struct {
 // URLQuery serializes [LedgerEntryListParams]'s query parameters as `url.Values`.
 func (r LedgerEntryListParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
@@ -381,7 +383,7 @@ type LedgerEntryListParamsOrderBy struct {
 // `url.Values`.
 func (r LedgerEntryListParamsOrderBy) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }

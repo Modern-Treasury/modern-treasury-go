@@ -107,6 +107,13 @@ type Invoice struct {
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode,required"`
+	// Emails in addition to the counterparty email to send invoice status
+	// notifications to. At least one email is required if notifications are enabled
+	// and the counterparty doesn't have an email.
+	NotificationEmailAddresses []string `json:"notification_email_addresses,required,nullable"`
+	// If true, the invoice will send email notifications to the invoice recipients
+	// about invoice status changes.
+	NotificationsEnabled bool `json:"notifications_enabled,required"`
 	// A unique record number assigned to each invoice that is issued.
 	Number string `json:"number,required"`
 	Object string `json:"object,required"`
@@ -122,7 +129,7 @@ type Invoice struct {
 	// The payment orders created for paying the invoice through the invoice payment
 	// UI.
 	PaymentOrders []PaymentOrder `json:"payment_orders,required"`
-	// One of `ach` or `eft`
+	// One of `ach` or `eft`.
 	PaymentType InvoicePaymentType `json:"payment_type,required,nullable"`
 	// The URL where the invoice PDF can be downloaded.
 	PdfURL string `json:"pdf_url,required,nullable"`
@@ -132,9 +139,11 @@ type Invoice struct {
 	Status InvoiceStatus `json:"status,required"`
 	// Total amount due in specified currency's smallest unit, e.g., $10 USD would be
 	// represented as 1000.
-	TotalAmount int64     `json:"total_amount,required"`
-	UpdatedAt   time.Time `json:"updated_at,required" format:"date-time"`
-	JSON        invoiceJSON
+	TotalAmount int64 `json:"total_amount,required"`
+	// IDs of transaction line items associated with an invoice.
+	TransactionLineItemIDs []string  `json:"transaction_line_item_ids,required" format:"uuid"`
+	UpdatedAt              time.Time `json:"updated_at,required" format:"date-time"`
+	JSON                   invoiceJSON
 }
 
 // invoiceJSON contains the JSON metadata for the struct [Invoice]
@@ -151,6 +160,8 @@ type invoiceJSON struct {
 	HostedURL                   apijson.Field
 	InvoicerAddress             apijson.Field
 	LiveMode                    apijson.Field
+	NotificationEmailAddresses  apijson.Field
+	NotificationsEnabled        apijson.Field
 	Number                      apijson.Field
 	Object                      apijson.Field
 	OriginatingAccountID        apijson.Field
@@ -162,6 +173,7 @@ type invoiceJSON struct {
 	ReceivingAccountID          apijson.Field
 	Status                      apijson.Field
 	TotalAmount                 apijson.Field
+	TransactionLineItemIDs      apijson.Field
 	UpdatedAt                   apijson.Field
 	raw                         string
 	ExtraFields                 map[string]apijson.Field
@@ -318,7 +330,7 @@ const (
 	InvoicePaymentMethodAutomatic InvoicePaymentMethod = "automatic"
 )
 
-// One of `ach` or `eft`
+// One of `ach` or `eft`.
 type InvoicePaymentType string
 
 const (
@@ -356,6 +368,13 @@ type InvoiceNewParams struct {
 	Description param.Field[string] `json:"description"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceNewParamsInvoicerAddress] `json:"invoicer_address"`
+	// Emails in addition to the counterparty email to send invoice status
+	// notifications to. At least one email is required if notifications are enabled
+	// and the counterparty doesn't have an email.
+	NotificationEmailAddresses param.Field[[]string] `json:"notification_email_addresses"`
+	// If true, the invoice will send email notifications to the invoice recipients
+	// about invoice status changes.
+	NotificationsEnabled param.Field[bool] `json:"notifications_enabled"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.
@@ -513,6 +532,13 @@ type InvoiceUpdateParams struct {
 	DueDate param.Field[time.Time] `json:"due_date" format:"date-time"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceUpdateParamsInvoicerAddress] `json:"invoicer_address"`
+	// Emails in addition to the counterparty email to send invoice status
+	// notifications to. At least one email is required if notifications are enabled
+	// and the counterparty doesn't have an email.
+	NotificationEmailAddresses param.Field[[]string] `json:"notification_email_addresses"`
+	// If true, the invoice will send email notifications to the invoice recipients
+	// about invoice status changes.
+	NotificationsEnabled param.Field[bool] `json:"notifications_enabled"`
 	// The ID of the internal account the invoice should be paid to.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
@@ -532,8 +558,8 @@ type InvoiceUpdateParams struct {
 	// The receiving account ID. Can be an `external_account`.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
 	// Invoice status must be updated in a `PATCH` request that does not modify any
-	// other invoice attributes. Valid state transitions are `draft` to `unpaid` and
-	// `draft` or `unpaid` to `voided`.
+	// other invoice attributes. Valid state transitions are `draft` to `unpaid`,
+	// `draft` or `unpaid` to `voided`, and `draft` or `unpaid` to `paid`.
 	Status param.Field[string] `json:"status"`
 }
 
@@ -666,7 +692,7 @@ type InvoiceListParams struct {
 // URLQuery serializes [InvoiceListParams]'s query parameters as `url.Values`.
 func (r InvoiceListParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }

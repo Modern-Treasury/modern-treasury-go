@@ -162,162 +162,25 @@ func (r InvoiceLineItemNewParams) MarshalJSON() (data []byte, err error) {
 }
 
 type InvoiceLineItemUpdateParams struct {
-	// The invoicer's contact details displayed at the top of the invoice.
-	ContactDetails param.Field[[]InvoiceLineItemUpdateParamsContactDetail] `json:"contact_details"`
-	// The counterparty's billing address.
-	CounterpartyBillingAddress param.Field[InvoiceLineItemUpdateParamsCounterpartyBillingAddress] `json:"counterparty_billing_address"`
-	// The ID of the counterparty receiving the invoice.
-	CounterpartyID param.Field[string] `json:"counterparty_id"`
-	// The counterparty's shipping address where physical goods should be delivered.
-	CounterpartyShippingAddress param.Field[InvoiceLineItemUpdateParamsCounterpartyShippingAddress] `json:"counterparty_shipping_address"`
-	// Currency that the invoice is denominated in. Defaults to `USD` if not provided.
-	Currency param.Field[shared.Currency] `json:"currency"`
-	// A free-form description of the invoice.
+	// An optional free-form description of the line item.
 	Description param.Field[string] `json:"description"`
-	// A future date by when the invoice needs to be paid.
-	DueDate param.Field[time.Time] `json:"due_date" format:"date-time"`
-	// The invoice issuer's business address.
-	InvoicerAddress param.Field[InvoiceLineItemUpdateParamsInvoicerAddress] `json:"invoicer_address"`
-	// The ID of the internal account the invoice should be paid to.
-	OriginatingAccountID param.Field[string] `json:"originating_account_id"`
-	// Date transactions are to be posted to the participants' account. Defaults to the
-	// current business day or the next business day if the current day is a bank
-	// holiday or weekend. Format: yyyy-mm-dd.
-	PaymentEffectiveDate param.Field[time.Time] `json:"payment_effective_date" format:"date"`
-	// The method by which the invoice can be paid. `ui` will show the embedded payment
-	// collection flow. `automatic` will automatically initiate payment based upon the
-	// account details of the receiving_account id.\nIf the invoice amount is positive,
-	// the automatically initiated payment order's direction will be debit. If the
-	// invoice amount is negative, the automatically initiated payment order's
-	// direction will be credit. One of `manual`, `ui`, or `automatic`.
-	PaymentMethod param.Field[InvoiceLineItemUpdateParamsPaymentMethod] `json:"payment_method"`
-	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-	// `au_becs`, `interac`, `signet`, `provexchange`.
-	PaymentType param.Field[InvoiceLineItemUpdateParamsPaymentType] `json:"payment_type"`
-	// The receiving account ID. Can be an `external_account`.
-	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// Either `debit` or `credit`. `debit` indicates that a client owes the business
+	// money and increases the invoice's `total_amount` due. `credit` has the opposite
+	// intention and effect.
+	Direction param.Field[string] `json:"direction"`
+	// The name of the line item, typically a product or SKU name.
+	Name param.Field[string] `json:"name"`
+	// The number of units of a product or service that this line item is for. Must be
+	// a whole number. Defaults to 1 if not provided.
+	Quantity param.Field[int64] `json:"quantity"`
+	// The cost per unit of the product or service that this line item is for,
+	// specified in the invoice currency's smallest unit.
+	UnitAmount param.Field[int64] `json:"unit_amount"`
 }
 
 func (r InvoiceLineItemUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-type InvoiceLineItemUpdateParamsContactDetail struct {
-	ID                    param.Field[string]                                                         `json:"id,required" format:"uuid"`
-	ContactIdentifier     param.Field[string]                                                         `json:"contact_identifier,required"`
-	ContactIdentifierType param.Field[InvoiceLineItemUpdateParamsContactDetailsContactIdentifierType] `json:"contact_identifier_type,required"`
-	CreatedAt             param.Field[time.Time]                                                      `json:"created_at,required" format:"date-time"`
-	DiscardedAt           param.Field[time.Time]                                                      `json:"discarded_at,required" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  param.Field[bool]      `json:"live_mode,required"`
-	Object    param.Field[string]    `json:"object,required"`
-	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-}
-
-func (r InvoiceLineItemUpdateParamsContactDetail) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type InvoiceLineItemUpdateParamsContactDetailsContactIdentifierType string
-
-const (
-	InvoiceLineItemUpdateParamsContactDetailsContactIdentifierTypeEmail       InvoiceLineItemUpdateParamsContactDetailsContactIdentifierType = "email"
-	InvoiceLineItemUpdateParamsContactDetailsContactIdentifierTypePhoneNumber InvoiceLineItemUpdateParamsContactDetailsContactIdentifierType = "phone_number"
-	InvoiceLineItemUpdateParamsContactDetailsContactIdentifierTypeWebsite     InvoiceLineItemUpdateParamsContactDetailsContactIdentifierType = "website"
-)
-
-// The counterparty's billing address.
-type InvoiceLineItemUpdateParamsCounterpartyBillingAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
-	// Region or State.
-	Region param.Field[string] `json:"region,required"`
-	Line2  param.Field[string] `json:"line2"`
-}
-
-func (r InvoiceLineItemUpdateParamsCounterpartyBillingAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The counterparty's shipping address where physical goods should be delivered.
-type InvoiceLineItemUpdateParamsCounterpartyShippingAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
-	// Region or State.
-	Region param.Field[string] `json:"region,required"`
-	Line2  param.Field[string] `json:"line2"`
-}
-
-func (r InvoiceLineItemUpdateParamsCounterpartyShippingAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The invoice issuer's business address.
-type InvoiceLineItemUpdateParamsInvoicerAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
-	// Region or State.
-	Region param.Field[string] `json:"region,required"`
-	Line2  param.Field[string] `json:"line2"`
-}
-
-func (r InvoiceLineItemUpdateParamsInvoicerAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The method by which the invoice can be paid. `ui` will show the embedded payment
-// collection flow. `automatic` will automatically initiate payment based upon the
-// account details of the receiving_account id.\nIf the invoice amount is positive,
-// the automatically initiated payment order's direction will be debit. If the
-// invoice amount is negative, the automatically initiated payment order's
-// direction will be credit. One of `manual`, `ui`, or `automatic`.
-type InvoiceLineItemUpdateParamsPaymentMethod string
-
-const (
-	InvoiceLineItemUpdateParamsPaymentMethodUi        InvoiceLineItemUpdateParamsPaymentMethod = "ui"
-	InvoiceLineItemUpdateParamsPaymentMethodManual    InvoiceLineItemUpdateParamsPaymentMethod = "manual"
-	InvoiceLineItemUpdateParamsPaymentMethodAutomatic InvoiceLineItemUpdateParamsPaymentMethod = "automatic"
-)
-
-// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-// `au_becs`, `interac`, `signet`, `provexchange`.
-type InvoiceLineItemUpdateParamsPaymentType string
-
-const (
-	InvoiceLineItemUpdateParamsPaymentTypeACH         InvoiceLineItemUpdateParamsPaymentType = "ach"
-	InvoiceLineItemUpdateParamsPaymentTypeAuBecs      InvoiceLineItemUpdateParamsPaymentType = "au_becs"
-	InvoiceLineItemUpdateParamsPaymentTypeBacs        InvoiceLineItemUpdateParamsPaymentType = "bacs"
-	InvoiceLineItemUpdateParamsPaymentTypeBook        InvoiceLineItemUpdateParamsPaymentType = "book"
-	InvoiceLineItemUpdateParamsPaymentTypeCard        InvoiceLineItemUpdateParamsPaymentType = "card"
-	InvoiceLineItemUpdateParamsPaymentTypeCheck       InvoiceLineItemUpdateParamsPaymentType = "check"
-	InvoiceLineItemUpdateParamsPaymentTypeEft         InvoiceLineItemUpdateParamsPaymentType = "eft"
-	InvoiceLineItemUpdateParamsPaymentTypeCrossBorder InvoiceLineItemUpdateParamsPaymentType = "cross_border"
-	InvoiceLineItemUpdateParamsPaymentTypeInterac     InvoiceLineItemUpdateParamsPaymentType = "interac"
-	InvoiceLineItemUpdateParamsPaymentTypeMasav       InvoiceLineItemUpdateParamsPaymentType = "masav"
-	InvoiceLineItemUpdateParamsPaymentTypeNeft        InvoiceLineItemUpdateParamsPaymentType = "neft"
-	InvoiceLineItemUpdateParamsPaymentTypeProvxchange InvoiceLineItemUpdateParamsPaymentType = "provxchange"
-	InvoiceLineItemUpdateParamsPaymentTypeRtp         InvoiceLineItemUpdateParamsPaymentType = "rtp"
-	InvoiceLineItemUpdateParamsPaymentTypeSen         InvoiceLineItemUpdateParamsPaymentType = "sen"
-	InvoiceLineItemUpdateParamsPaymentTypeSepa        InvoiceLineItemUpdateParamsPaymentType = "sepa"
-	InvoiceLineItemUpdateParamsPaymentTypeSignet      InvoiceLineItemUpdateParamsPaymentType = "signet"
-	InvoiceLineItemUpdateParamsPaymentTypeWire        InvoiceLineItemUpdateParamsPaymentType = "wire"
-)
 
 type InvoiceLineItemListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
@@ -328,7 +191,7 @@ type InvoiceLineItemListParams struct {
 // `url.Values`.
 func (r InvoiceLineItemListParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }

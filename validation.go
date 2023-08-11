@@ -162,7 +162,7 @@ type ValidationValidateRoutingNumberParams struct {
 // as `url.Values`.
 func (r ValidationValidateRoutingNumberParams) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatRepeat,
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
