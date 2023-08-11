@@ -1,5 +1,24 @@
 # Changelog
 
+## [1.2.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.1.0...v1.2.0) (2023-08-11)
+
+
+### Features
+
+* **api:** add `metadata` in several places it was missing; add `description` ([#56](https://github.com/Modern-Treasury/modern-treasury-go/issues/56)) ([316baf5](https://github.com/Modern-Treasury/modern-treasury-go/commit/316baf52321911f81dfeb6cc73371818304f5ea7))
+* **api:** support multiple `id`s in `ledger` `retrieve`/`list` endpoints ([#62](https://github.com/Modern-Treasury/modern-treasury-go/issues/62)) ([cb0455a](https://github.com/Modern-Treasury/modern-treasury-go/commit/cb0455a42195704d03c5df658171582688ca8664))
+* **api:** updates ([#58](https://github.com/Modern-Treasury/modern-treasury-go/issues/58)) ([dc58726](https://github.com/Modern-Treasury/modern-treasury-go/commit/dc587260961a2641f8214699b54d1fa96fa3c568))
+
+
+### Bug Fixes
+
+* **client:** correctly set multipart form data boundary ([#60](https://github.com/Modern-Treasury/modern-treasury-go/issues/60)) ([871be0a](https://github.com/Modern-Treasury/modern-treasury-go/commit/871be0ac5216ea7fd1051736a8be4d06727429b9))
+
+
+### Documentation
+
+* **readme:** remove beta status + document versioning policy ([#59](https://github.com/Modern-Treasury/modern-treasury-go/issues/59)) ([7dcbabf](https://github.com/Modern-Treasury/modern-treasury-go/commit/7dcbabf9af5083d7d1767dbd46f2733d955ad4b4))
+
 ## [1.1.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.0.0...v2.0.0) (2023-08-01)
 
 
