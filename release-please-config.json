@@ -56,6 +56,10 @@
       "hidden": true
     }
   ],
+  "reviewers": [
+    "cleb11",
+    "chen-annie"
+  ],
   "release-type": "go",
   "extra-files": [
     "internal/version.go",
