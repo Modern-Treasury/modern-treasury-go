@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.2.1 (2023-08-28)
+
+Full Changelog: [v1.2.0...v1.2.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.2.0...v1.2.1)
+
+### Chores
+
+* assign default reviewers to release PRs ([#64](https://github.com/Modern-Treasury/modern-treasury-go/issues/64)) ([af8da66](https://github.com/Modern-Treasury/modern-treasury-go/commit/af8da6624d97e94e989cf825a836a1d1e6ac0e73))
+* **ci:** setup workflows to create releases and release PRs ([#67](https://github.com/Modern-Treasury/modern-treasury-go/issues/67)) ([dcc4131](https://github.com/Modern-Treasury/modern-treasury-go/commit/dcc41318694ebe95a8770219517d24a834093bbc))
+
 ## [1.2.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.1.0...v1.2.0) (2023-08-11)
 
 
