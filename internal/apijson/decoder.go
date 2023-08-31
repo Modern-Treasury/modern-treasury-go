@@ -247,6 +247,7 @@ func (d *decoder) newStructTypeDecoder(t reflect.Type) decoderFunc {
 	// map of json field name to struct field decoders
 	decoderFields := map[string]decoderField{}
 	extraDecoder := (*decoderField)(nil)
+	inlineDecoder := (*decoderField)(nil)
 
 	// This helper allows us to recursively collect field encoders into a flat
 	// array. The parameter `index` keeps track of the access patterns necessary
@@ -278,6 +279,10 @@ func (d *decoder) newStructTypeDecoder(t reflect.Type) decoderFunc {
 				extraDecoder = &decoderField{ptag, d.typeDecoder(field.Type.Elem()), idx, field.Name}
 				continue
 			}
+			if ptag.inline && len(index) == 0 {
+				inlineDecoder = &decoderField{ptag, d.typeDecoder(field.Type), idx, field.Name}
+				continue
+			}
 			if ptag.metadata {
 				continue
 			}
@@ -299,6 +304,45 @@ func (d *decoder) newStructTypeDecoder(t reflect.Type) decoderFunc {
 	collectFieldDecoders(t, []int{})
 
 	return func(node gjson.Result, value reflect.Value) (err error) {
+		if field := value.FieldByName("JSON"); field.IsValid() {
+			if raw := field.FieldByName("raw"); raw.IsValid() {
+				setUnexportedField(raw, node.Raw)
+			}
+		}
+
+		if inlineDecoder != nil {
+			var meta Field
+			dest := value.FieldByIndex(inlineDecoder.idx)
+			isValid := false
+			if dest.IsValid() && node.Type != gjson.Null {
+				err = inlineDecoder.fn(node, dest)
+				if err == nil {
+					isValid = true
+				}
+			}
+
+			if node.Type == gjson.Null {
+				meta = Field{
+					raw:    node.Raw,
+					status: null,
+				}
+			} else if !isValid {
+				meta = Field{
+					raw:    node.Raw,
+					status: invalid,
+				}
+			} else if isValid {
+				meta = Field{
+					raw:    node.Raw,
+					status: valid,
+				}
+			}
+			if metadata := getSubField(value, inlineDecoder.idx, inlineDecoder.goname); metadata.IsValid() {
+				metadata.Set(reflect.ValueOf(meta))
+			}
+			return err
+		}
+
 		typedExtraType := reflect.Type(nil)
 		typedExtraFields := reflect.Value{}
 		if extraDecoder != nil {
@@ -366,11 +410,6 @@ func (d *decoder) newStructTypeDecoder(t reflect.Type) decoderFunc {
 		}
 		if metadata := getSubField(value, []int{-1}, "Extras"); metadata.IsValid() && len(untypedExtraFields) > 0 {
 			metadata.Set(reflect.ValueOf(untypedExtraFields))
-		}
-		if field := value.FieldByName("JSON"); field.IsValid() {
-			if raw := field.FieldByName("raw"); raw.IsValid() {
-				setUnexportedField(raw, node.Raw)
-			}
 		}
 		return nil
 	}

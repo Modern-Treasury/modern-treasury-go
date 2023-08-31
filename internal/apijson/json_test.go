@@ -89,6 +89,21 @@ type Union interface {
 	union()
 }
 
+type Inline struct {
+	InlineField Primitives `json:"-,inline"`
+	JSON        InlineJSON `json:"-,metadata"`
+}
+
+type InlineArray struct {
+	InlineField []string   `json:"-,inline"`
+	JSON        InlineJSON `json:"-,metadata"`
+}
+
+type InlineJSON struct {
+	InlineField Field
+	raw         string
+}
+
 func init() {
 	RegisterUnion(reflect.TypeOf((*Union)(nil)).Elem(), "type",
 		UnionVariant{
@@ -303,6 +318,28 @@ var tests = map[string]struct {
 		`{"union":"2010-05-23"}`,
 		UnionStruct{
 			Union: UnionTime(time.Date(2010, 05, 23, 0, 0, 0, 0, time.UTC)),
+		},
+	},
+
+	"inline_coerce": {
+		`{"a":false,"b":237628372683,"c":654,"d":9999.43,"e":43.76,"f":[1,2,3,4]}`,
+		Inline{
+			InlineField: Primitives{A: false, B: 237628372683, C: 0x28e, D: 9999.43, E: 43.76, F: []int{1, 2, 3, 4}},
+			JSON: InlineJSON{
+				InlineField: Field{raw: "{\"a\":false,\"b\":237628372683,\"c\":654,\"d\":9999.43,\"e\":43.76,\"f\":[1,2,3,4]}", status: 3},
+				raw:         "{\"a\":false,\"b\":237628372683,\"c\":654,\"d\":9999.43,\"e\":43.76,\"f\":[1,2,3,4]}",
+			},
+		},
+	},
+
+	"inline_array_coerce": {
+		`["Hello","foo","bar"]`,
+		InlineArray{
+			InlineField: []string{"Hello", "foo", "bar"},
+			JSON: InlineJSON{
+				InlineField: Field{raw: `["Hello","foo","bar"]`, status: 3},
+				raw:         `["Hello","foo","bar"]`,
+			},
 		},
 	},
 }
