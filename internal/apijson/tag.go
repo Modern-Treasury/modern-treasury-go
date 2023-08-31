@@ -13,6 +13,7 @@ type parsedStructTag struct {
 	required bool
 	extras   bool
 	metadata bool
+	inline   bool
 }
 
 func parseJSONStructTag(field reflect.StructField) (tag parsedStructTag, ok bool) {
@@ -33,6 +34,8 @@ func parseJSONStructTag(field reflect.StructField) (tag parsedStructTag, ok bool
 			tag.extras = true
 		case "metadata":
 			tag.metadata = true
+		case "inline":
+			tag.inline = true
 		}
 	}
 	return
