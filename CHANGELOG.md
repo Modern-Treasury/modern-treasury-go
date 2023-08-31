@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.2 (2023-08-31)
+
+Full Changelog: [v1.2.1...v1.2.2](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.2.1...v1.2.2)
+
+### Bug Fixes
+
+* make paginated requests deserialize properly ([#70](https://github.com/Modern-Treasury/modern-treasury-go/issues/70)) ([0f59a32](https://github.com/Modern-Treasury/modern-treasury-go/commit/0f59a329645edb00998d93598fe5b1ab697699e0))
+
 ## 1.2.1 (2023-08-28)
 
 Full Changelog: [v1.2.0...v1.2.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.2.0...v1.2.1)
