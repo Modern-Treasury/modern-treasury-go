@@ -33,10 +33,10 @@ func NewLedgerAccountStatementService(opts ...option.RequestOption) (r *LedgerAc
 }
 
 // Create a ledger account statement.
-func (r *LedgerAccountStatementService) New(ctx context.Context, params LedgerAccountStatementNewParams, opts ...option.RequestOption) (res *LedgerAccountStatementNewResponse, err error) {
+func (r *LedgerAccountStatementService) New(ctx context.Context, body LedgerAccountStatementNewParams, opts ...option.RequestOption) (res *LedgerAccountStatementNewResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/ledger_account_statements"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -704,8 +704,7 @@ type LedgerAccountStatementNewParams struct {
 	Description param.Field[string] `json:"description"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata       param.Field[map[string]string] `json:"metadata"`
-	IdempotencyKey param.Field[string]            `header:"Idempotency-Key"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
 func (r LedgerAccountStatementNewParams) MarshalJSON() (data []byte, err error) {

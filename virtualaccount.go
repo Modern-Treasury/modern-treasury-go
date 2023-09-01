@@ -36,10 +36,10 @@ func NewVirtualAccountService(opts ...option.RequestOption) (r *VirtualAccountSe
 }
 
 // create virtual_account
-func (r *VirtualAccountService) New(ctx context.Context, params VirtualAccountNewParams, opts ...option.RequestOption) (res *VirtualAccount, err error) {
+func (r *VirtualAccountService) New(ctx context.Context, body VirtualAccountNewParams, opts ...option.RequestOption) (res *VirtualAccount, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/virtual_accounts"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -175,7 +175,6 @@ type VirtualAccountNewParams struct {
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// An array of routing detail objects.
 	RoutingDetails param.Field[[]VirtualAccountNewParamsRoutingDetail] `json:"routing_details"`
-	IdempotencyKey param.Field[string]                                 `header:"Idempotency-Key"`
 }
 
 func (r VirtualAccountNewParams) MarshalJSON() (data []byte, err error) {

@@ -36,10 +36,10 @@ func NewCounterpartyService(opts ...option.RequestOption) (r *CounterpartyServic
 }
 
 // Create a new counterparty.
-func (r *CounterpartyService) New(ctx context.Context, params CounterpartyNewParams, opts ...option.RequestOption) (res *Counterparty, err error) {
+func (r *CounterpartyService) New(ctx context.Context, body CounterpartyNewParams, opts ...option.RequestOption) (res *Counterparty, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/counterparties"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -92,10 +92,10 @@ func (r *CounterpartyService) Delete(ctx context.Context, id string, opts ...opt
 }
 
 // Send an email requesting account details.
-func (r *CounterpartyService) CollectAccount(ctx context.Context, id string, params CounterpartyCollectAccountParams, opts ...option.RequestOption) (res *CounterpartyCollectAccountResponse, err error) {
+func (r *CounterpartyService) CollectAccount(ctx context.Context, id string, body CounterpartyCollectAccountParams, opts ...option.RequestOption) (res *CounterpartyCollectAccountResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/counterparties/%s/collect_account", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -368,7 +368,6 @@ type CounterpartyNewParams struct {
 	TaxpayerIdentifier param.Field[string] `json:"taxpayer_identifier"`
 	// The verification status of the counterparty.
 	VerificationStatus param.Field[CounterpartyNewParamsVerificationStatus] `json:"verification_status"`
-	IdempotencyKey     param.Field[string]                                  `header:"Idempotency-Key"`
 }
 
 func (r CounterpartyNewParams) MarshalJSON() (data []byte, err error) {
@@ -673,8 +672,7 @@ type CounterpartyCollectAccountParams struct {
 	// includes a link to the form they must fill out. However, if you would like to
 	// send the counterparty the link, you can set this parameter to `false`. The JSON
 	// body will include the link to the secure Modern Treasury form.
-	SendEmail      param.Field[bool]   `json:"send_email"`
-	IdempotencyKey param.Field[string] `header:"Idempotency-Key"`
+	SendEmail param.Field[bool] `json:"send_email"`
 }
 
 func (r CounterpartyCollectAccountParams) MarshalJSON() (data []byte, err error) {

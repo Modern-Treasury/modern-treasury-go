@@ -91,7 +91,6 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 			RoutingNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
 			PaymentType:       moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsPaymentTypeACH),
 		}}),
-		IdempotencyKey: moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -220,8 +219,7 @@ func TestExternalAccountCompleteVerificationWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"string",
 		moderntreasury.ExternalAccountCompleteVerificationParams{
-			Amounts:        moderntreasury.F([]int64{int64(0), int64(0)}),
-			IdempotencyKey: moderntreasury.F("string"),
+			Amounts: moderntreasury.F([]int64{int64(0), int64(0)}),
 		},
 	)
 	if err != nil {
@@ -249,7 +247,6 @@ func TestExternalAccountVerifyWithOptionalParams(t *testing.T) {
 			OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			PaymentType:          moderntreasury.F(moderntreasury.ExternalAccountVerifyParamsPaymentTypeACH),
 			Currency:             moderntreasury.F(shared.CurrencyAed),
-			IdempotencyKey:       moderntreasury.F("string"),
 		},
 	)
 	if err != nil {

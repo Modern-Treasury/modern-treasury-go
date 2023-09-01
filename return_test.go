@@ -29,7 +29,6 @@ func TestReturnNewWithOptionalParams(t *testing.T) {
 		Code:                  moderntreasury.F(moderntreasury.ReturnNewParamsCode901),
 		DateOfDeath:           moderntreasury.F(time.Now()),
 		Reason:                moderntreasury.F("string"),
-		IdempotencyKey:        moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

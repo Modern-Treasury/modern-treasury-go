@@ -36,10 +36,10 @@ func NewInvoiceLineItemService(opts ...option.RequestOption) (r *InvoiceLineItem
 }
 
 // create invoice_line_item
-func (r *InvoiceLineItemService) New(ctx context.Context, invoiceID string, params InvoiceLineItemNewParams, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
+func (r *InvoiceLineItemService) New(ctx context.Context, invoiceID string, body InvoiceLineItemNewParams, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/invoices/%s/invoice_line_items", invoiceID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -153,8 +153,7 @@ type InvoiceLineItemNewParams struct {
 	Direction param.Field[string] `json:"direction"`
 	// The number of units of a product or service that this line item is for. Must be
 	// a whole number. Defaults to 1 if not provided.
-	Quantity       param.Field[int64]  `json:"quantity"`
-	IdempotencyKey param.Field[string] `header:"Idempotency-Key"`
+	Quantity param.Field[int64] `json:"quantity"`
 }
 
 func (r InvoiceLineItemNewParams) MarshalJSON() (data []byte, err error) {

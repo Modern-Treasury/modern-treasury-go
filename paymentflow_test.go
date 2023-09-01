@@ -12,7 +12,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
-func TestPaymentFlowNewWithOptionalParams(t *testing.T) {
+func TestPaymentFlowNew(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
@@ -27,7 +27,6 @@ func TestPaymentFlowNewWithOptionalParams(t *testing.T) {
 		Currency:             moderntreasury.F("string"),
 		Direction:            moderntreasury.F(moderntreasury.PaymentFlowNewParamsDirectionCredit),
 		OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		IdempotencyKey:       moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -38,7 +37,7 @@ func TestPaymentFlowNewWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestPaymentFlowGetWithOptionalParams(t *testing.T) {
+func TestPaymentFlowGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
@@ -47,13 +46,7 @@ func TestPaymentFlowGetWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.PaymentFlows.Get(
-		context.TODO(),
-		"string",
-		moderntreasury.PaymentFlowGetParams{
-			IdempotencyKey: moderntreasury.F("string"),
-		},
-	)
+	_, err := client.PaymentFlows.Get(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -63,7 +56,7 @@ func TestPaymentFlowGetWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestPaymentFlowUpdateWithOptionalParams(t *testing.T) {
+func TestPaymentFlowUpdate(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
@@ -76,8 +69,7 @@ func TestPaymentFlowUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"string",
 		moderntreasury.PaymentFlowUpdateParams{
-			Status:         moderntreasury.F(moderntreasury.PaymentFlowUpdateParamsStatusCancelled),
-			IdempotencyKey: moderntreasury.F("string"),
+			Status: moderntreasury.F(moderntreasury.PaymentFlowUpdateParamsStatusCancelled),
 		},
 	)
 	if err != nil {

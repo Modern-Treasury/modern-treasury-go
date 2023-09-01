@@ -242,7 +242,6 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 		SendRemittanceAdvice: moderntreasury.F(true),
 		TaxpayerIdentifier:   moderntreasury.F("string"),
 		VerificationStatus:   moderntreasury.F(moderntreasury.CounterpartyNewParamsVerificationStatusDenied),
-		IdempotencyKey:       moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -368,7 +367,6 @@ func TestCounterpartyCollectAccountWithOptionalParams(t *testing.T) {
 			CustomRedirect: moderntreasury.F("https://example.com"),
 			Fields:         moderntreasury.F([]moderntreasury.CounterpartyCollectAccountParamsField{moderntreasury.CounterpartyCollectAccountParamsFieldName, moderntreasury.CounterpartyCollectAccountParamsFieldName, moderntreasury.CounterpartyCollectAccountParamsFieldName}),
 			SendEmail:      moderntreasury.F(true),
-			IdempotencyKey: moderntreasury.F("string"),
 		},
 	)
 	if err != nil {

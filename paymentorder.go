@@ -42,10 +42,10 @@ func NewPaymentOrderService(opts ...option.RequestOption) (r *PaymentOrderServic
 }
 
 // Create a new Payment Order
-func (r *PaymentOrderService) New(ctx context.Context, params PaymentOrderNewParams, opts ...option.RequestOption) (res *PaymentOrder, err error) {
+func (r *PaymentOrderService) New(ctx context.Context, body PaymentOrderNewParams, opts ...option.RequestOption) (res *PaymentOrder, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/payment_orders"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -89,10 +89,10 @@ func (r *PaymentOrderService) ListAutoPaging(ctx context.Context, query PaymentO
 }
 
 // Create a new payment order asynchronously
-func (r *PaymentOrderService) NewAsync(ctx context.Context, params PaymentOrderNewAsyncParams, opts ...option.RequestOption) (res *shared.AsyncResponse, err error) {
+func (r *PaymentOrderService) NewAsync(ctx context.Context, body PaymentOrderNewAsyncParams, opts ...option.RequestOption) (res *shared.AsyncResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/payment_orders/create_async"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -619,7 +619,6 @@ type PaymentOrderNewParams struct {
 	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
 	// Name of the ultimate funds recipient.
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
-	IdempotencyKey             param.Field[string] `header:"Idempotency-Key"`
 }
 
 func (r PaymentOrderNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
@@ -1684,7 +1683,6 @@ type PaymentOrderNewAsyncParams struct {
 	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
 	// Name of the ultimate funds recipient.
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
-	IdempotencyKey             param.Field[string] `header:"Idempotency-Key"`
 }
 
 func (r PaymentOrderNewAsyncParams) MarshalJSON() (data []byte, err error) {

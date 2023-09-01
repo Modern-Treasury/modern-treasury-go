@@ -30,7 +30,6 @@ func TestRoutingDetailNewWithOptionalParams(t *testing.T) {
 			RoutingNumber:     moderntreasury.F("string"),
 			RoutingNumberType: moderntreasury.F(moderntreasury.RoutingDetailNewParamsRoutingNumberTypeAba),
 			PaymentType:       moderntreasury.F(moderntreasury.RoutingDetailNewParamsPaymentTypeACH),
-			IdempotencyKey:    moderntreasury.F("string"),
 		},
 	)
 	if err != nil {

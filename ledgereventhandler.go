@@ -36,10 +36,10 @@ func NewLedgerEventHandlerService(opts ...option.RequestOption) (r *LedgerEventH
 }
 
 // create ledger_event_handler
-func (r *LedgerEventHandlerService) New(ctx context.Context, params LedgerEventHandlerNewParams, opts ...option.RequestOption) (res *LedgerEventHandlerNewResponse, err error) {
+func (r *LedgerEventHandlerService) New(ctx context.Context, body LedgerEventHandlerNewParams, opts ...option.RequestOption) (res *LedgerEventHandlerNewResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/ledger_event_handlers"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -587,8 +587,7 @@ type LedgerEventHandlerNewParams struct {
 	LedgerID param.Field[string] `json:"ledger_id" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata       param.Field[map[string]string] `json:"metadata"`
-	IdempotencyKey param.Field[string]            `header:"Idempotency-Key"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
 func (r LedgerEventHandlerNewParams) MarshalJSON() (data []byte, err error) {

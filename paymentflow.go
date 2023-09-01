@@ -36,26 +36,26 @@ func NewPaymentFlowService(opts ...option.RequestOption) (r *PaymentFlowService)
 }
 
 // create payment_flow
-func (r *PaymentFlowService) New(ctx context.Context, params PaymentFlowNewParams, opts ...option.RequestOption) (res *PaymentFlow, err error) {
+func (r *PaymentFlowService) New(ctx context.Context, body PaymentFlowNewParams, opts ...option.RequestOption) (res *PaymentFlow, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/payment_flows"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
 // get payment_flow
-func (r *PaymentFlowService) Get(ctx context.Context, id string, query PaymentFlowGetParams, opts ...option.RequestOption) (res *PaymentFlow, err error) {
+func (r *PaymentFlowService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *PaymentFlow, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/payment_flows/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
 // update payment_flow
-func (r *PaymentFlowService) Update(ctx context.Context, id string, params PaymentFlowUpdateParams, opts ...option.RequestOption) (res *PaymentFlow, err error) {
+func (r *PaymentFlowService) Update(ctx context.Context, id string, body PaymentFlowUpdateParams, opts ...option.RequestOption) (res *PaymentFlow, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/payment_flows/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
 }
 
@@ -174,7 +174,6 @@ type PaymentFlowNewParams struct {
 	Direction param.Field[PaymentFlowNewParamsDirection] `json:"direction,required"`
 	// Required. The ID of one of your organization's internal accounts.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
-	IdempotencyKey       param.Field[string] `header:"Idempotency-Key"`
 }
 
 func (r PaymentFlowNewParams) MarshalJSON() (data []byte, err error) {
@@ -190,15 +189,10 @@ const (
 	PaymentFlowNewParamsDirectionDebit  PaymentFlowNewParamsDirection = "debit"
 )
 
-type PaymentFlowGetParams struct {
-	IdempotencyKey param.Field[string] `header:"Idempotency-Key"`
-}
-
 type PaymentFlowUpdateParams struct {
 	// Required. The updated status of the payment flow. Can only be used to mark a
 	// flow as `cancelled`.
-	Status         param.Field[PaymentFlowUpdateParamsStatus] `json:"status,required"`
-	IdempotencyKey param.Field[string]                        `header:"Idempotency-Key"`
+	Status param.Field[PaymentFlowUpdateParamsStatus] `json:"status,required"`
 }
 
 func (r PaymentFlowUpdateParams) MarshalJSON() (data []byte, err error) {

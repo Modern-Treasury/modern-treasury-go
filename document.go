@@ -39,10 +39,10 @@ func NewDocumentService(opts ...option.RequestOption) (r *DocumentService) {
 }
 
 // Create a document.
-func (r *DocumentService) New(ctx context.Context, params DocumentNewParams, opts ...option.RequestOption) (res *Document, err error) {
+func (r *DocumentService) New(ctx context.Context, body DocumentNewParams, opts ...option.RequestOption) (res *Document, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/documents"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -204,8 +204,7 @@ type DocumentNewParams struct {
 	DocumentableType param.Field[DocumentNewParamsDocumentableType] `json:"documentable_type,required"`
 	File             param.Field[io.Reader]                         `json:"file,required" format:"binary"`
 	// A category given to the document, can be `null`.
-	DocumentType   param.Field[string] `json:"document_type"`
-	IdempotencyKey param.Field[string] `header:"Idempotency-Key"`
+	DocumentType param.Field[string] `json:"document_type"`
 }
 
 func (r DocumentNewParams) MarshalMultipart() (data []byte, contentType string, err error) {

@@ -109,7 +109,6 @@ func TestIncomingPaymentDetailNewAsyncWithOptionalParams(t *testing.T) {
 		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Type:              moderntreasury.F(moderntreasury.IncomingPaymentDetailNewAsyncParamsTypeACH),
 		VirtualAccountID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		IdempotencyKey:    moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

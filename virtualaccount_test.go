@@ -54,7 +54,6 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 			RoutingNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
 			PaymentType:       moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsPaymentTypeACH),
 		}}),
-		IdempotencyKey: moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

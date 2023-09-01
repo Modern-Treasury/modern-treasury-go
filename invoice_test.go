@@ -87,7 +87,6 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 		PaymentMethod:              moderntreasury.F(moderntreasury.InvoiceNewParamsPaymentMethodUi),
 		PaymentType:                moderntreasury.F(moderntreasury.InvoiceNewParamsPaymentTypeACH),
 		ReceivingAccountID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		IdempotencyKey:             moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

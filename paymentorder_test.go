@@ -251,7 +251,6 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 		UltimateOriginatingPartyName:       moderntreasury.F("string"),
 		UltimateReceivingPartyIdentifier:   moderntreasury.F("string"),
 		UltimateReceivingPartyName:         moderntreasury.F("string"),
-		IdempotencyKey:                     moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -694,7 +693,6 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 		UltimateOriginatingPartyName:       moderntreasury.F("string"),
 		UltimateReceivingPartyIdentifier:   moderntreasury.F("string"),
 		UltimateReceivingPartyName:         moderntreasury.F("string"),
-		IdempotencyKey:                     moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

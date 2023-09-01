@@ -36,10 +36,10 @@ func NewRoutingDetailService(opts ...option.RequestOption) (r *RoutingDetailServ
 }
 
 // Create a routing detail for a single external account.
-func (r *RoutingDetailService) New(ctx context.Context, accountsType RoutingDetailNewParamsAccountsType, accountID string, params RoutingDetailNewParams, opts ...option.RequestOption) (res *RoutingDetail, err error) {
+func (r *RoutingDetailService) New(ctx context.Context, accountsType RoutingDetailNewParamsAccountsType, accountID string, body RoutingDetailNewParams, opts ...option.RequestOption) (res *RoutingDetail, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/%v/%s/routing_details", accountsType, accountID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -216,8 +216,7 @@ type RoutingDetailNewParams struct {
 	RoutingNumberType param.Field[RoutingDetailNewParamsRoutingNumberType] `json:"routing_number_type,required"`
 	// If the routing detail is to be used for a specific payment type this field will
 	// be populated, otherwise null.
-	PaymentType    param.Field[RoutingDetailNewParamsPaymentType] `json:"payment_type"`
-	IdempotencyKey param.Field[string]                            `header:"Idempotency-Key"`
+	PaymentType param.Field[RoutingDetailNewParamsPaymentType] `json:"payment_type"`
 }
 
 func (r RoutingDetailNewParams) MarshalJSON() (data []byte, err error) {
