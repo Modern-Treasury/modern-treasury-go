@@ -35,10 +35,10 @@ func NewLedgerService(opts ...option.RequestOption) (r *LedgerService) {
 }
 
 // Create a ledger.
-func (r *LedgerService) New(ctx context.Context, params LedgerNewParams, opts ...option.RequestOption) (res *Ledger, err error) {
+func (r *LedgerService) New(ctx context.Context, body LedgerNewParams, opts ...option.RequestOption) (res *Ledger, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/ledgers"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -135,8 +135,7 @@ type LedgerNewParams struct {
 	Description param.Field[string] `json:"description"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata       param.Field[map[string]string] `json:"metadata"`
-	IdempotencyKey param.Field[string]            `header:"Idempotency-Key"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
 func (r LedgerNewParams) MarshalJSON() (data []byte, err error) {

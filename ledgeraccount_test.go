@@ -36,7 +36,6 @@ func TestLedgerAccountNewWithOptionalParams(t *testing.T) {
 			"foo":    "bar",
 			"modern": "treasury",
 		}),
-		IdempotencyKey: moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

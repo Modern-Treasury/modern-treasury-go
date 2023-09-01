@@ -38,10 +38,10 @@ func NewInternalAccountService(opts ...option.RequestOption) (r *InternalAccount
 }
 
 // create internal account
-func (r *InternalAccountService) New(ctx context.Context, params InternalAccountNewParams, opts ...option.RequestOption) (res *InternalAccount, err error) {
+func (r *InternalAccountService) New(ctx context.Context, body InternalAccountNewParams, opts ...option.RequestOption) (res *InternalAccount, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/internal_accounts"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -235,7 +235,6 @@ type InternalAccountNewParams struct {
 	// A hash of vendor specific attributes that will be used when creating the account
 	// at the vendor specified by the given connection.
 	VendorAttributes param.Field[map[string]string] `json:"vendor_attributes"`
-	IdempotencyKey   param.Field[string]            `header:"Idempotency-Key"`
 }
 
 func (r InternalAccountNewParams) MarshalJSON() (data []byte, err error) {

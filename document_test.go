@@ -28,7 +28,6 @@ func TestDocumentNewWithOptionalParams(t *testing.T) {
 		DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCases),
 		File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
 		DocumentType:     moderntreasury.F("string"),
-		IdempotencyKey:   moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

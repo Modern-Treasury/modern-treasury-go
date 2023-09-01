@@ -95,8 +95,7 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 			"foo":    "bar",
 			"modern": "treasury",
 		}),
-		Status:         moderntreasury.F(moderntreasury.LedgerTransactionNewParamsStatusArchived),
-		IdempotencyKey: moderntreasury.F("string"),
+		Status: moderntreasury.F(moderntreasury.LedgerTransactionNewParamsStatusArchived),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

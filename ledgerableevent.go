@@ -34,10 +34,10 @@ func NewLedgerableEventService(opts ...option.RequestOption) (r *LedgerableEvent
 
 // Translation missing:
 // en.openapi.descriptions.ledger.operations.create_ledgerable_event
-func (r *LedgerableEventService) New(ctx context.Context, params LedgerableEventNewParams, opts ...option.RequestOption) (res *LedgerableEvent, err error) {
+func (r *LedgerableEventService) New(ctx context.Context, body LedgerableEventNewParams, opts ...option.RequestOption) (res *LedgerableEvent, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/ledgerable_events"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -124,8 +124,7 @@ type LedgerableEventNewParams struct {
 	Direction param.Field[string] `json:"direction"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata       param.Field[map[string]string] `json:"metadata"`
-	IdempotencyKey param.Field[string]            `header:"Idempotency-Key"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
 func (r LedgerableEventNewParams) MarshalJSON() (data []byte, err error) {

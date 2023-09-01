@@ -33,7 +33,6 @@ func TestLedgerAccountPayoutNewWithOptionalParams(t *testing.T) {
 		}),
 		SkipPayoutLedgerTransaction: moderntreasury.F(true),
 		Status:                      moderntreasury.F(moderntreasury.LedgerAccountPayoutNewParamsStatusPending),
-		IdempotencyKey:              moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

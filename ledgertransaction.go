@@ -38,10 +38,10 @@ func NewLedgerTransactionService(opts ...option.RequestOption) (r *LedgerTransac
 }
 
 // Create a ledger transaction.
-func (r *LedgerTransactionService) New(ctx context.Context, params LedgerTransactionNewParams, opts ...option.RequestOption) (res *LedgerTransaction, err error) {
+func (r *LedgerTransactionService) New(ctx context.Context, body LedgerTransactionNewParams, opts ...option.RequestOption) (res *LedgerTransaction, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/ledger_transactions"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -215,8 +215,7 @@ type LedgerTransactionNewParams struct {
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// To post a ledger transaction at creation, use `posted`.
-	Status         param.Field[LedgerTransactionNewParamsStatus] `json:"status"`
-	IdempotencyKey param.Field[string]                           `header:"Idempotency-Key"`
+	Status param.Field[LedgerTransactionNewParamsStatus] `json:"status"`
 }
 
 func (r LedgerTransactionNewParams) MarshalJSON() (data []byte, err error) {
