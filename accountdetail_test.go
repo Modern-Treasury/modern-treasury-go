@@ -29,7 +29,6 @@ func TestAccountDetailNewWithOptionalParams(t *testing.T) {
 		moderntreasury.AccountDetailNewParams{
 			AccountNumber:     moderntreasury.F("string"),
 			AccountNumberType: moderntreasury.F(moderntreasury.AccountDetailNewParamsAccountNumberTypeClabe),
-			IdempotencyKey:    moderntreasury.F("string"),
 		},
 	)
 	if err != nil {

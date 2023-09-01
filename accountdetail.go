@@ -36,10 +36,10 @@ func NewAccountDetailService(opts ...option.RequestOption) (r *AccountDetailServ
 }
 
 // Create an account detail for an external account.
-func (r *AccountDetailService) New(ctx context.Context, accountsType AccountDetailNewParamsAccountsType, accountID string, params AccountDetailNewParams, opts ...option.RequestOption) (res *AccountDetail, err error) {
+func (r *AccountDetailService) New(ctx context.Context, accountsType AccountDetailNewParamsAccountsType, accountID string, body AccountDetailNewParams, opts ...option.RequestOption) (res *AccountDetail, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/%v/%s/account_details", accountsType, accountID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -139,7 +139,6 @@ type AccountDetailNewParams struct {
 	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
 	// account number is in a generic format.
 	AccountNumberType param.Field[AccountDetailNewParamsAccountNumberType] `json:"account_number_type"`
-	IdempotencyKey    param.Field[string]                                  `header:"Idempotency-Key"`
 }
 
 func (r AccountDetailNewParams) MarshalJSON() (data []byte, err error) {

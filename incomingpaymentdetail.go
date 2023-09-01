@@ -75,10 +75,10 @@ func (r *IncomingPaymentDetailService) ListAutoPaging(ctx context.Context, query
 }
 
 // Simulate Incoming Payment Detail
-func (r *IncomingPaymentDetailService) NewAsync(ctx context.Context, params IncomingPaymentDetailNewAsyncParams, opts ...option.RequestOption) (res *shared.AsyncResponse, err error) {
+func (r *IncomingPaymentDetailService) NewAsync(ctx context.Context, body IncomingPaymentDetailNewAsyncParams, opts ...option.RequestOption) (res *shared.AsyncResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/simulations/incoming_payment_details/create_async"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -337,7 +337,6 @@ type IncomingPaymentDetailNewAsyncParams struct {
 	// An optional parameter to associate the incoming payment detail to a virtual
 	// account.
 	VirtualAccountID param.Field[string] `json:"virtual_account_id" format:"uuid"`
-	IdempotencyKey   param.Field[string] `header:"Idempotency-Key"`
 }
 
 func (r IncomingPaymentDetailNewAsyncParams) MarshalJSON() (data []byte, err error) {

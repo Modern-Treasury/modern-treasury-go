@@ -36,26 +36,26 @@ func NewAccountCollectionFlowService(opts ...option.RequestOption) (r *AccountCo
 }
 
 // create account_collection_flow
-func (r *AccountCollectionFlowService) New(ctx context.Context, params AccountCollectionFlowNewParams, opts ...option.RequestOption) (res *AccountCollectionFlow, err error) {
+func (r *AccountCollectionFlowService) New(ctx context.Context, body AccountCollectionFlowNewParams, opts ...option.RequestOption) (res *AccountCollectionFlow, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/account_collection_flows"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
 // get account_collection_flow
-func (r *AccountCollectionFlowService) Get(ctx context.Context, id string, query AccountCollectionFlowGetParams, opts ...option.RequestOption) (res *AccountCollectionFlow, err error) {
+func (r *AccountCollectionFlowService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *AccountCollectionFlow, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/account_collection_flows/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
 
 // update account_collection_flow
-func (r *AccountCollectionFlowService) Update(ctx context.Context, id string, params AccountCollectionFlowUpdateParams, opts ...option.RequestOption) (res *AccountCollectionFlow, err error) {
+func (r *AccountCollectionFlowService) Update(ctx context.Context, id string, body AccountCollectionFlowUpdateParams, opts ...option.RequestOption) (res *AccountCollectionFlow, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/account_collection_flows/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
 }
 
@@ -149,22 +149,16 @@ type AccountCollectionFlowNewParams struct {
 	// Required.
 	CounterpartyID param.Field[string]   `json:"counterparty_id,required" format:"uuid"`
 	PaymentTypes   param.Field[[]string] `json:"payment_types,required"`
-	IdempotencyKey param.Field[string]   `header:"Idempotency-Key"`
 }
 
 func (r AccountCollectionFlowNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-type AccountCollectionFlowGetParams struct {
-	IdempotencyKey param.Field[string] `header:"Idempotency-Key"`
-}
-
 type AccountCollectionFlowUpdateParams struct {
 	// Required. The updated status of the account collection flow. Can only be used to
 	// mark a flow as `cancelled`.
-	Status         param.Field[AccountCollectionFlowUpdateParamsStatus] `json:"status,required"`
-	IdempotencyKey param.Field[string]                                  `header:"Idempotency-Key"`
+	Status param.Field[AccountCollectionFlowUpdateParamsStatus] `json:"status,required"`
 }
 
 func (r AccountCollectionFlowUpdateParams) MarshalJSON() (data []byte, err error) {

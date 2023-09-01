@@ -36,10 +36,10 @@ func NewExpectedPaymentService(opts ...option.RequestOption) (r *ExpectedPayment
 }
 
 // create expected payment
-func (r *ExpectedPaymentService) New(ctx context.Context, params ExpectedPaymentNewParams, opts ...option.RequestOption) (res *ExpectedPayment, err error) {
+func (r *ExpectedPaymentService) New(ctx context.Context, body ExpectedPaymentNewParams, opts ...option.RequestOption) (res *ExpectedPayment, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/expected_payments"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -281,8 +281,7 @@ type ExpectedPaymentNewParams struct {
 	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
 	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
 	// sepa, signet, wire.
-	Type           param.Field[ExpectedPaymentType] `json:"type"`
-	IdempotencyKey param.Field[string]              `header:"Idempotency-Key"`
+	Type param.Field[ExpectedPaymentType] `json:"type"`
 }
 
 func (r ExpectedPaymentNewParams) MarshalJSON() (data []byte, err error) {

@@ -35,10 +35,10 @@ func NewReturnService(opts ...option.RequestOption) (r *ReturnService) {
 }
 
 // Create a return.
-func (r *ReturnService) New(ctx context.Context, params ReturnNewParams, opts ...option.RequestOption) (res *ReturnObject, err error) {
+func (r *ReturnService) New(ctx context.Context, body ReturnNewParams, opts ...option.RequestOption) (res *ReturnObject, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/returns"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -369,8 +369,7 @@ type ReturnNewParams struct {
 	DateOfDeath param.Field[time.Time] `json:"date_of_death" format:"date"`
 	// An optional description of the reason for the return. This is for internal usage
 	// and will not be transmitted to the bank.”
-	Reason         param.Field[string] `json:"reason"`
-	IdempotencyKey param.Field[string] `header:"Idempotency-Key"`
+	Reason param.Field[string] `json:"reason"`
 }
 
 func (r ReturnNewParams) MarshalJSON() (data []byte, err error) {

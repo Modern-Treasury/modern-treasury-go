@@ -36,10 +36,10 @@ func NewPaymentOrderReversalService(opts ...option.RequestOption) (r *PaymentOrd
 }
 
 // Create a reversal for a payment order.
-func (r *PaymentOrderReversalService) New(ctx context.Context, paymentOrderID string, params PaymentOrderReversalNewParams, opts ...option.RequestOption) (res *Reversal, err error) {
+func (r *PaymentOrderReversalService) New(ctx context.Context, paymentOrderID string, body PaymentOrderReversalNewParams, opts ...option.RequestOption) (res *Reversal, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/payment_orders/%s/reversals", paymentOrderID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -147,8 +147,7 @@ type PaymentOrderReversalNewParams struct {
 	LedgerTransaction param.Field[PaymentOrderReversalNewParamsLedgerTransaction] `json:"ledger_transaction"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata       param.Field[map[string]string] `json:"metadata"`
-	IdempotencyKey param.Field[string]            `header:"Idempotency-Key"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
 func (r PaymentOrderReversalNewParams) MarshalJSON() (data []byte, err error) {

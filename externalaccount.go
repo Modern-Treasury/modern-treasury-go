@@ -36,10 +36,10 @@ func NewExternalAccountService(opts ...option.RequestOption) (r *ExternalAccount
 }
 
 // create external account
-func (r *ExternalAccountService) New(ctx context.Context, params ExternalAccountNewParams, opts ...option.RequestOption) (res *ExternalAccount, err error) {
+func (r *ExternalAccountService) New(ctx context.Context, body ExternalAccountNewParams, opts ...option.RequestOption) (res *ExternalAccount, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/external_accounts"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -92,18 +92,18 @@ func (r *ExternalAccountService) Delete(ctx context.Context, id string, opts ...
 }
 
 // complete verification of external account
-func (r *ExternalAccountService) CompleteVerification(ctx context.Context, id string, params ExternalAccountCompleteVerificationParams, opts ...option.RequestOption) (res *ExternalAccount, err error) {
+func (r *ExternalAccountService) CompleteVerification(ctx context.Context, id string, body ExternalAccountCompleteVerificationParams, opts ...option.RequestOption) (res *ExternalAccount, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/external_accounts/%s/complete_verification", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
 // verify external account
-func (r *ExternalAccountService) Verify(ctx context.Context, id string, params ExternalAccountVerifyParams, opts ...option.RequestOption) (res *ExternalAccount, err error) {
+func (r *ExternalAccountService) Verify(ctx context.Context, id string, body ExternalAccountVerifyParams, opts ...option.RequestOption) (res *ExternalAccount, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/external_accounts/%s/verify", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -312,7 +312,6 @@ type ExternalAccountNewParams struct {
 	// you can pass the processor token in this field.
 	PlaidProcessorToken param.Field[string]                                  `json:"plaid_processor_token"`
 	RoutingDetails      param.Field[[]ExternalAccountNewParamsRoutingDetail] `json:"routing_details"`
-	IdempotencyKey      param.Field[string]                                  `header:"Idempotency-Key"`
 }
 
 func (r ExternalAccountNewParams) MarshalJSON() (data []byte, err error) {
@@ -548,8 +547,7 @@ func (r ExternalAccountListParams) URLQuery() (v url.Values) {
 }
 
 type ExternalAccountCompleteVerificationParams struct {
-	Amounts        param.Field[[]int64] `json:"amounts"`
-	IdempotencyKey param.Field[string]  `header:"Idempotency-Key"`
+	Amounts param.Field[[]int64] `json:"amounts"`
 }
 
 func (r ExternalAccountCompleteVerificationParams) MarshalJSON() (data []byte, err error) {
@@ -563,8 +561,7 @@ type ExternalAccountVerifyParams struct {
 	// Both ach and eft are supported payment types.
 	PaymentType param.Field[ExternalAccountVerifyParamsPaymentType] `json:"payment_type,required"`
 	// Defaults to the currency of the originating account.
-	Currency       param.Field[shared.Currency] `json:"currency"`
-	IdempotencyKey param.Field[string]          `header:"Idempotency-Key"`
+	Currency param.Field[shared.Currency] `json:"currency"`
 }
 
 func (r ExternalAccountVerifyParams) MarshalJSON() (data []byte, err error) {

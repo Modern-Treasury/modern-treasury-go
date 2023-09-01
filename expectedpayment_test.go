@@ -71,7 +71,6 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 		RemittanceInformation: moderntreasury.F("string"),
 		StatementDescriptor:   moderntreasury.F("string"),
 		Type:                  moderntreasury.F(moderntreasury.ExpectedPaymentTypeACH),
-		IdempotencyKey:        moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

@@ -37,10 +37,10 @@ func NewInvoiceService(opts ...option.RequestOption) (r *InvoiceService) {
 }
 
 // create invoice
-func (r *InvoiceService) New(ctx context.Context, params InvoiceNewParams, opts ...option.RequestOption) (res *Invoice, err error) {
+func (r *InvoiceService) New(ctx context.Context, body InvoiceNewParams, opts ...option.RequestOption) (res *Invoice, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/invoices"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -391,7 +391,6 @@ type InvoiceNewParams struct {
 	PaymentType param.Field[InvoiceNewParamsPaymentType] `json:"payment_type"`
 	// The receiving account ID. Can be an `external_account`.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
-	IdempotencyKey     param.Field[string] `header:"Idempotency-Key"`
 }
 
 func (r InvoiceNewParams) MarshalJSON() (data []byte, err error) {

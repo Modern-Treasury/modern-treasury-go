@@ -36,10 +36,10 @@ func NewLedgerAccountPayoutService(opts ...option.RequestOption) (r *LedgerAccou
 }
 
 // Create a ledger account payout.
-func (r *LedgerAccountPayoutService) New(ctx context.Context, params LedgerAccountPayoutNewParams, opts ...option.RequestOption) (res *LedgerAccountPayout, err error) {
+func (r *LedgerAccountPayoutService) New(ctx context.Context, body LedgerAccountPayoutNewParams, opts ...option.RequestOption) (res *LedgerAccountPayout, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/ledger_account_payouts"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -181,8 +181,7 @@ type LedgerAccountPayoutNewParams struct {
 	SkipPayoutLedgerTransaction param.Field[bool] `json:"skip_payout_ledger_transaction"`
 	// The status of the ledger account payout. It is set to `pending` by default. To
 	// post a ledger account payout at creation, use `posted`.
-	Status         param.Field[LedgerAccountPayoutNewParamsStatus] `json:"status"`
-	IdempotencyKey param.Field[string]                             `header:"Idempotency-Key"`
+	Status param.Field[LedgerAccountPayoutNewParamsStatus] `json:"status"`
 }
 
 func (r LedgerAccountPayoutNewParams) MarshalJSON() (data []byte, err error) {
