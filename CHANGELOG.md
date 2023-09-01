@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.3.0 (2023-09-01)
+
+Full Changelog: [v1.2.2...v1.3.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.2.2...v1.3.0)
+
+### Features
+
+* **types:** remove incorrectly included Idempotency-Key param ([#72](https://github.com/Modern-Treasury/modern-treasury-go/issues/72)) ([3f2fca4](https://github.com/Modern-Treasury/modern-treasury-go/commit/3f2fca4967dc623aeb87ac35e9db8dcd82d5a6d9))
+
 ## 1.2.2 (2023-08-31)
 
 Full Changelog: [v1.2.1...v1.2.2](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.2.1...v1.2.2)
