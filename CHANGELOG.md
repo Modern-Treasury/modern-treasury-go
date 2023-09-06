@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.4.0 (2023-09-06)
+
+Full Changelog: [v1.3.0...v1.4.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.3.0...v1.4.0)
+
+### Features
+
+* fixes tests where an array has to have unique enum values ([#74](https://github.com/Modern-Treasury/modern-treasury-go/issues/74)) ([1b899fc](https://github.com/Modern-Treasury/modern-treasury-go/commit/1b899fc01e5f7e3ae1342f4fac2b63e42790e295))
+
+
+### Documentation
+
+* **readme:** add link to api.md ([#76](https://github.com/Modern-Treasury/modern-treasury-go/issues/76)) ([23bc6d7](https://github.com/Modern-Treasury/modern-treasury-go/commit/23bc6d7ea1a5625493ca618d6c91371f512cc127))
+
 ## 1.3.0 (2023-09-01)
 
 Full Changelog: [v1.2.2...v1.3.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.2.2...v1.3.0)
