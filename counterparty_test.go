@@ -365,7 +365,7 @@ func TestCounterpartyCollectAccountWithOptionalParams(t *testing.T) {
 		moderntreasury.CounterpartyCollectAccountParams{
 			Direction:      moderntreasury.F(moderntreasury.CounterpartyCollectAccountParamsDirectionCredit),
 			CustomRedirect: moderntreasury.F("https://example.com"),
-			Fields:         moderntreasury.F([]moderntreasury.CounterpartyCollectAccountParamsField{moderntreasury.CounterpartyCollectAccountParamsFieldName, moderntreasury.CounterpartyCollectAccountParamsFieldName, moderntreasury.CounterpartyCollectAccountParamsFieldName}),
+			Fields:         moderntreasury.F([]moderntreasury.CounterpartyCollectAccountParamsField{moderntreasury.CounterpartyCollectAccountParamsFieldName, moderntreasury.CounterpartyCollectAccountParamsFieldNameOnAccount, moderntreasury.CounterpartyCollectAccountParamsFieldTaxpayerIdentifier}),
 			SendEmail:      moderntreasury.F(true),
 		},
 	)
