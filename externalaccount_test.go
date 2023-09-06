@@ -219,7 +219,7 @@ func TestExternalAccountCompleteVerificationWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"string",
 		moderntreasury.ExternalAccountCompleteVerificationParams{
-			Amounts: moderntreasury.F([]int64{int64(0), int64(0)}),
+			Amounts: moderntreasury.F([]int64{int64(2), int64(4)}),
 		},
 	)
 	if err != nil {
