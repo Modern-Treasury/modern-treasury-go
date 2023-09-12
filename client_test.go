@@ -4,6 +4,8 @@ package moderntreasury_test
 
 import (
 	"context"
+	"fmt"
+	"net/http"
 	"testing"
 	"time"
 
@@ -23,9 +25,16 @@ func TestCancel(t *testing.T) {
 		CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),
 		Name:           moderntreasury.F("my bank"),
 	})
-	if err == nil && res != nil {
+	if err == nil || res != nil {
 		t.Error("Expected there to be a cancel error and for the response to be nil")
 	}
+}
+
+type neverTransport struct{}
+
+func (t *neverTransport) RoundTrip(req *http.Request) (*http.Response, error) {
+	<-req.Context().Done()
+	return nil, fmt.Errorf("cancelled")
 }
 
 func TestCancelDelay(t *testing.T) {
@@ -33,6 +42,7 @@ func TestCancelDelay(t *testing.T) {
 		option.WithBaseURL("http://127.0.0.1:4010"),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
+		option.WithHTTPClient(&http.Client{Transport: &neverTransport{}}),
 	)
 	cancelCtx, cancel := context.WithCancel(context.Background())
 	go func() {
@@ -43,7 +53,7 @@ func TestCancelDelay(t *testing.T) {
 		CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),
 		Name:           moderntreasury.F("my bank"),
 	})
-	if err == nil && res != nil {
+	if err == nil || res != nil {
 		t.Error("Expected there to be a cancel error and for the response to be nil")
 	}
 }
