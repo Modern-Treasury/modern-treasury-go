@@ -6,6 +6,20 @@ Full Changelog: [v1.4.0...v1.4.1](https://github.com/Modern-Treasury/modern-trea
 
 ### Bug Fixes
 
+* **core:** add null check to prevent segfault when canceling context ([#78](https://github.com/Modern-Treasury/modern-treasury-go/issues/78)) ([e120adf](https://github.com/Modern-Treasury/modern-treasury-go/commit/e120adf531e47e991cc6f51acd939eb89e4a2dc1))
+
+
+### Chores
+
+* **internal:** improve reliability of cancel delay test ([#80](https://github.com/Modern-Treasury/modern-treasury-go/issues/80)) ([53b87f8](https://github.com/Modern-Treasury/modern-treasury-go/commit/53b87f8535864878e36def5510150eae526f8493))
+* **next => main:** release 1.4.1 ([f92bada](https://github.com/Modern-Treasury/modern-treasury-go/commit/f92bada0692b4574d545deead0885a3220a408fb))
+
+## 1.4.1 (2023-09-12)
+
+Full Changelog: [v1.4.0...v1.4.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.4.0...v1.4.1)
+
+### Bug Fixes
+
 * **core:** add null check to prevent segfault when canceling context ([#78](https://github.com/Modern-Treasury/modern-treasury-go/issues/78)) ([974d02b](https://github.com/Modern-Treasury/modern-treasury-go/commit/974d02b77b6cab8c646cac7b829836263eff264b))
 
 
