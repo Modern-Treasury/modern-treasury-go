@@ -6,6 +6,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"math"
@@ -158,18 +159,59 @@ func applyMiddleware(middleware middleware, next middlewareNext) middlewareNext 
 	}
 }
 
-func (cfg *RequestConfig) Execute() error {
-	u, err := cfg.BaseURL.Parse(cfg.Request.URL.String())
+func shouldRetry(req *http.Request, res *http.Response) bool {
+	// If there is no way to recover the Body, then we shouldn't retry.
+	if req.Body != nil && req.GetBody == nil {
+		return false
+	}
+
+	// If there is no response, that indicates that there is a connection error
+	// so we retry the request.
+	if res == nil {
+		return true
+	}
+
+	// If the header explictly wants a retry behavior, respect that over the
+	// http status code.
+	if res.Header.Get("x-should-retry") == "true" {
+		return true
+	}
+	if res.Header.Get("x-should-retry") == "false" {
+		return false
+	}
+
+	return res.StatusCode == http.StatusRequestTimeout ||
+		res.StatusCode == http.StatusConflict ||
+		res.StatusCode == http.StatusTooManyRequests ||
+		res.StatusCode >= http.StatusInternalServerError
+}
+
+func retryDelay(res *http.Response, retryCount int) time.Duration {
+	maxDelay := 5 * time.Second
+	delay := time.Duration(500 * float64(time.Millisecond) * math.Pow(2, float64(retryCount)))
+	if res != nil {
+		if parsed, err := strconv.ParseInt(res.Header.Get("Retry-After"), 10, 64); err == nil {
+			delay = time.Duration(parsed) * time.Second
+		}
+	}
+	if delay > maxDelay {
+		delay = maxDelay
+	}
+	jitter := rand.Int63n(int64(delay / 4))
+	delay -= time.Duration(jitter)
+	return delay
+}
+
+func (cfg *RequestConfig) Execute() (err error) {
+	cfg.Request.URL, err = cfg.BaseURL.Parse(cfg.Request.URL.String())
 	if err != nil {
 		return err
 	}
-	cfg.Request.URL = u
 
 	if len(cfg.Buffer) != 0 && cfg.Request.Body == nil {
-		buf := bytes.NewReader(cfg.Buffer)
 		cfg.Request.ContentLength = int64(len(cfg.Buffer))
-		cfg.Request.Body = io.NopCloser(buf)
 		cfg.Request.GetBody = func() (io.ReadCloser, error) { return io.NopCloser(bytes.NewReader(cfg.Buffer)), nil }
+		cfg.Request.Body, _ = cfg.Request.GetBody()
 	}
 
 	handler := cfg.HTTPClient.Do
@@ -178,60 +220,45 @@ func (cfg *RequestConfig) Execute() error {
 	}
 
 	var res *http.Response
-	for i := 0; i <= cfg.MaxRetries; i += 1 {
+	for retryCount := 0; retryCount <= cfg.MaxRetries; retryCount += 1 {
 		ctx := cfg.Request.Context()
 		if cfg.RequestTimeout != time.Duration(0) {
-			nctx, cancel := context.WithTimeout(ctx, cfg.RequestTimeout)
-			ctx = nctx
+			var cancel context.CancelFunc
+			ctx, cancel = context.WithTimeout(ctx, cfg.RequestTimeout)
 			defer cancel()
 		}
 
-		req := cfg.Request.Clone(ctx)
-		res, err = handler(req)
-		if res == nil {
+		res, err = handler(cfg.Request.Clone(ctx))
+		if errors.Is(err, context.Canceled) {
+			return err
+		}
+		if !shouldRetry(cfg.Request, res) || retryCount >= cfg.MaxRetries {
 			break
 		}
 
-		shouldRetry := err != nil ||
-			res.StatusCode == http.StatusRequestTimeout ||
-			res.StatusCode == http.StatusConflict ||
-			res.StatusCode == http.StatusTooManyRequests ||
-			res.StatusCode >= http.StatusInternalServerError
-
-		if res.Header.Get("x-should-retry") == "true" {
-			shouldRetry = true
-		}
-		if res.Header.Get("x-should-retry") == "false" {
-			shouldRetry = false
-		}
-
-		if !shouldRetry || i >= cfg.MaxRetries {
-			break
-		}
-
-		duration := time.Duration(500) * time.Millisecond * time.Duration(math.Exp(float64(i)))
-		if res != nil {
-			if parsed, err := strconv.ParseInt(res.Header.Get("Retry-After"), 10, 64); err == nil {
-				duration = time.Duration(parsed) * time.Second
+		// Prepare next request and wait for the retry delay
+		if cfg.Request.GetBody != nil {
+			cfg.Request.Body, err = cfg.Request.GetBody()
+			if err != nil {
+				return err
 			}
 		}
-		if duration > time.Duration(60)*time.Second {
-			duration = time.Duration(60) * time.Second
-		}
-		duration += time.Millisecond * time.Duration(-500+rand.Intn(1000))
-		time.Sleep(duration)
+
+		time.Sleep(retryDelay(res, retryCount))
 	}
 
 	if err != nil {
 		return err
 	}
 
-	if res.StatusCode > 399 {
+	if res.StatusCode >= 400 {
 		aerr := apierror.Error{Request: cfg.Request, Response: res, StatusCode: res.StatusCode}
 		contents, err := io.ReadAll(res.Body)
 		if err != nil {
 			return err
 		}
+		// If there is an APIError, re-populate the response body so that debugging
+		// utilities can conveniently dump the response without issue.
 		res.Body = io.NopCloser(bytes.NewBuffer(contents))
 		err = aerr.UnmarshalJSON(contents)
 		if err != nil {
