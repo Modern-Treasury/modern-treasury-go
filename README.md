@@ -208,7 +208,6 @@ if err != nil {
 	if errors.As(err, &apierr) {
 		println(string(apierr.DumpRequest(true)))  // Prints the serialized HTTP request
 		println(string(apierr.DumpResponse(true))) // Prints the serialized HTTP response
-
 	}
 	panic(err.Error()) // GET "/api/external_accounts": 400 Bad Request { ... }
 }
@@ -241,8 +240,8 @@ client.ExternalAccounts.List(
 ## Retries
 
 Certain errors will be automatically retried 2 times by default, with a short exponential backoff.
-Connection errors (for example, due to a network connectivity problem), 408 Request Timeout, 409 Conflict,
-429 Rate Limit, and >=500 Internal errors will all be retried by default.
+We retry by default all connection errors, 408 Request Timeout, 409 Conflict, 429 Rate Limit,
+and >=500 Internal errors.
 
 You can use the `WithMaxRetries` option to configure or disable this:
 
