@@ -193,6 +193,7 @@ func (cfg *RequestConfig) Execute() error {
 		}
 
 		shouldRetry := err != nil ||
+			res.StatusCode == http.StatusRequestTimeout ||
 			res.StatusCode == http.StatusConflict ||
 			res.StatusCode == http.StatusTooManyRequests ||
 			res.StatusCode >= http.StatusInternalServerError
