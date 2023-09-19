@@ -201,16 +201,18 @@ const (
 type IncomingPaymentDetailOriginatingRoutingNumberType string
 
 const (
-	IncomingPaymentDetailOriginatingRoutingNumberTypeAba          IncomingPaymentDetailOriginatingRoutingNumberType = "aba"
-	IncomingPaymentDetailOriginatingRoutingNumberTypeAuBsb        IncomingPaymentDetailOriginatingRoutingNumberType = "au_bsb"
-	IncomingPaymentDetailOriginatingRoutingNumberTypeBrCodigo     IncomingPaymentDetailOriginatingRoutingNumberType = "br_codigo"
-	IncomingPaymentDetailOriginatingRoutingNumberTypeCaCpa        IncomingPaymentDetailOriginatingRoutingNumberType = "ca_cpa"
-	IncomingPaymentDetailOriginatingRoutingNumberTypeChips        IncomingPaymentDetailOriginatingRoutingNumberType = "chips"
-	IncomingPaymentDetailOriginatingRoutingNumberTypeCnaps        IncomingPaymentDetailOriginatingRoutingNumberType = "cnaps"
-	IncomingPaymentDetailOriginatingRoutingNumberTypeGBSortCode   IncomingPaymentDetailOriginatingRoutingNumberType = "gb_sort_code"
-	IncomingPaymentDetailOriginatingRoutingNumberTypeInIfsc       IncomingPaymentDetailOriginatingRoutingNumberType = "in_ifsc"
-	IncomingPaymentDetailOriginatingRoutingNumberTypeMyBranchCode IncomingPaymentDetailOriginatingRoutingNumberType = "my_branch_code"
-	IncomingPaymentDetailOriginatingRoutingNumberTypeSwift        IncomingPaymentDetailOriginatingRoutingNumberType = "swift"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeAba                    IncomingPaymentDetailOriginatingRoutingNumberType = "aba"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeAuBsb                  IncomingPaymentDetailOriginatingRoutingNumberType = "au_bsb"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeBrCodigo               IncomingPaymentDetailOriginatingRoutingNumberType = "br_codigo"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeCaCpa                  IncomingPaymentDetailOriginatingRoutingNumberType = "ca_cpa"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeChips                  IncomingPaymentDetailOriginatingRoutingNumberType = "chips"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeCnaps                  IncomingPaymentDetailOriginatingRoutingNumberType = "cnaps"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeGBSortCode             IncomingPaymentDetailOriginatingRoutingNumberType = "gb_sort_code"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeInIfsc                 IncomingPaymentDetailOriginatingRoutingNumberType = "in_ifsc"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeJpZenginCode           IncomingPaymentDetailOriginatingRoutingNumberType = "jp_zengin_code"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeMyBranchCode           IncomingPaymentDetailOriginatingRoutingNumberType = "my_branch_code"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeSeBankgiroClearingCode IncomingPaymentDetailOriginatingRoutingNumberType = "se_bankgiro_clearing_code"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeSwift                  IncomingPaymentDetailOriginatingRoutingNumberType = "swift"
 )
 
 // The current status of the incoming payment order. One of `pending`, `completed`,

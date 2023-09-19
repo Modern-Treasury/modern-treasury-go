@@ -15,38 +15,39 @@ import (
 // interacting with the Modern Treasury API. You should not instantiate this client
 // directly, and instead use the [NewClient] method instead.
 type Client struct {
-	Options                 []option.RequestOption
-	Connections             *ConnectionService
-	Counterparties          *CounterpartyService
-	Events                  *EventService
-	ExpectedPayments        *ExpectedPaymentService
-	ExternalAccounts        *ExternalAccountService
-	IncomingPaymentDetails  *IncomingPaymentDetailService
-	Invoices                *InvoiceService
-	Documents               *DocumentService
-	AccountCollectionFlows  *AccountCollectionFlowService
-	AccountDetails          *AccountDetailService
-	RoutingDetails          *RoutingDetailService
-	InternalAccounts        *InternalAccountService
-	Ledgers                 *LedgerService
-	LedgerableEvents        *LedgerableEventService
-	LedgerAccountCategories *LedgerAccountCategoryService
-	LedgerAccounts          *LedgerAccountService
-	LedgerAccountPayouts    *LedgerAccountPayoutService
-	LedgerAccountStatements *LedgerAccountStatementService
-	LedgerEntries           *LedgerEntryService
-	LedgerEventHandlers     *LedgerEventHandlerService
-	LedgerTransactions      *LedgerTransactionService
-	LineItems               *LineItemService
-	PaymentFlows            *PaymentFlowService
-	PaymentOrders           *PaymentOrderService
-	PaymentReferences       *PaymentReferenceService
-	Returns                 *ReturnService
-	Transactions            *TransactionService
-	Validations             *ValidationService
-	PaperItems              *PaperItemService
-	Webhooks                *WebhookService
-	VirtualAccounts         *VirtualAccountService
+	Options                      []option.RequestOption
+	Connections                  *ConnectionService
+	Counterparties               *CounterpartyService
+	Events                       *EventService
+	ExpectedPayments             *ExpectedPaymentService
+	ExternalAccounts             *ExternalAccountService
+	IncomingPaymentDetails       *IncomingPaymentDetailService
+	Invoices                     *InvoiceService
+	Documents                    *DocumentService
+	AccountCollectionFlows       *AccountCollectionFlowService
+	AccountDetails               *AccountDetailService
+	RoutingDetails               *RoutingDetailService
+	InternalAccounts             *InternalAccountService
+	Ledgers                      *LedgerService
+	LedgerableEvents             *LedgerableEventService
+	LedgerAccountCategories      *LedgerAccountCategoryService
+	LedgerAccounts               *LedgerAccountService
+	LedgerAccountBalanceMonitors *LedgerAccountBalanceMonitorService
+	LedgerAccountPayouts         *LedgerAccountPayoutService
+	LedgerAccountStatements      *LedgerAccountStatementService
+	LedgerEntries                *LedgerEntryService
+	LedgerEventHandlers          *LedgerEventHandlerService
+	LedgerTransactions           *LedgerTransactionService
+	LineItems                    *LineItemService
+	PaymentFlows                 *PaymentFlowService
+	PaymentOrders                *PaymentOrderService
+	PaymentReferences            *PaymentReferenceService
+	Returns                      *ReturnService
+	Transactions                 *TransactionService
+	Validations                  *ValidationService
+	PaperItems                   *PaperItemService
+	Webhooks                     *WebhookService
+	VirtualAccounts              *VirtualAccountService
 }
 
 // NewClient generates a new client with the default option read from the
@@ -85,6 +86,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.LedgerableEvents = NewLedgerableEventService(opts...)
 	r.LedgerAccountCategories = NewLedgerAccountCategoryService(opts...)
 	r.LedgerAccounts = NewLedgerAccountService(opts...)
+	r.LedgerAccountBalanceMonitors = NewLedgerAccountBalanceMonitorService(opts...)
 	r.LedgerAccountPayouts = NewLedgerAccountPayoutService(opts...)
 	r.LedgerAccountStatements = NewLedgerAccountStatementService(opts...)
 	r.LedgerEntries = NewLedgerEntryService(opts...)

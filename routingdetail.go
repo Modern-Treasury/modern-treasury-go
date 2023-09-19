@@ -185,28 +185,34 @@ const (
 	RoutingDetailPaymentTypeInterac     RoutingDetailPaymentType = "interac"
 	RoutingDetailPaymentTypeMasav       RoutingDetailPaymentType = "masav"
 	RoutingDetailPaymentTypeNeft        RoutingDetailPaymentType = "neft"
+	RoutingDetailPaymentTypeNics        RoutingDetailPaymentType = "nics"
 	RoutingDetailPaymentTypeProvxchange RoutingDetailPaymentType = "provxchange"
 	RoutingDetailPaymentTypeRtp         RoutingDetailPaymentType = "rtp"
+	RoutingDetailPaymentTypeSeBankgirot RoutingDetailPaymentType = "se_bankgirot"
 	RoutingDetailPaymentTypeSen         RoutingDetailPaymentType = "sen"
 	RoutingDetailPaymentTypeSepa        RoutingDetailPaymentType = "sepa"
+	RoutingDetailPaymentTypeSic         RoutingDetailPaymentType = "sic"
 	RoutingDetailPaymentTypeSignet      RoutingDetailPaymentType = "signet"
 	RoutingDetailPaymentTypeWire        RoutingDetailPaymentType = "wire"
+	RoutingDetailPaymentTypeZengin      RoutingDetailPaymentType = "zengin"
 )
 
 // One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
 type RoutingDetailRoutingNumberType string
 
 const (
-	RoutingDetailRoutingNumberTypeAba          RoutingDetailRoutingNumberType = "aba"
-	RoutingDetailRoutingNumberTypeAuBsb        RoutingDetailRoutingNumberType = "au_bsb"
-	RoutingDetailRoutingNumberTypeBrCodigo     RoutingDetailRoutingNumberType = "br_codigo"
-	RoutingDetailRoutingNumberTypeCaCpa        RoutingDetailRoutingNumberType = "ca_cpa"
-	RoutingDetailRoutingNumberTypeChips        RoutingDetailRoutingNumberType = "chips"
-	RoutingDetailRoutingNumberTypeCnaps        RoutingDetailRoutingNumberType = "cnaps"
-	RoutingDetailRoutingNumberTypeGBSortCode   RoutingDetailRoutingNumberType = "gb_sort_code"
-	RoutingDetailRoutingNumberTypeInIfsc       RoutingDetailRoutingNumberType = "in_ifsc"
-	RoutingDetailRoutingNumberTypeMyBranchCode RoutingDetailRoutingNumberType = "my_branch_code"
-	RoutingDetailRoutingNumberTypeSwift        RoutingDetailRoutingNumberType = "swift"
+	RoutingDetailRoutingNumberTypeAba                    RoutingDetailRoutingNumberType = "aba"
+	RoutingDetailRoutingNumberTypeAuBsb                  RoutingDetailRoutingNumberType = "au_bsb"
+	RoutingDetailRoutingNumberTypeBrCodigo               RoutingDetailRoutingNumberType = "br_codigo"
+	RoutingDetailRoutingNumberTypeCaCpa                  RoutingDetailRoutingNumberType = "ca_cpa"
+	RoutingDetailRoutingNumberTypeChips                  RoutingDetailRoutingNumberType = "chips"
+	RoutingDetailRoutingNumberTypeCnaps                  RoutingDetailRoutingNumberType = "cnaps"
+	RoutingDetailRoutingNumberTypeGBSortCode             RoutingDetailRoutingNumberType = "gb_sort_code"
+	RoutingDetailRoutingNumberTypeInIfsc                 RoutingDetailRoutingNumberType = "in_ifsc"
+	RoutingDetailRoutingNumberTypeJpZenginCode           RoutingDetailRoutingNumberType = "jp_zengin_code"
+	RoutingDetailRoutingNumberTypeMyBranchCode           RoutingDetailRoutingNumberType = "my_branch_code"
+	RoutingDetailRoutingNumberTypeSeBankgiroClearingCode RoutingDetailRoutingNumberType = "se_bankgiro_clearing_code"
+	RoutingDetailRoutingNumberTypeSwift                  RoutingDetailRoutingNumberType = "swift"
 )
 
 type RoutingDetailNewParams struct {
@@ -233,16 +239,18 @@ const (
 type RoutingDetailNewParamsRoutingNumberType string
 
 const (
-	RoutingDetailNewParamsRoutingNumberTypeAba          RoutingDetailNewParamsRoutingNumberType = "aba"
-	RoutingDetailNewParamsRoutingNumberTypeAuBsb        RoutingDetailNewParamsRoutingNumberType = "au_bsb"
-	RoutingDetailNewParamsRoutingNumberTypeBrCodigo     RoutingDetailNewParamsRoutingNumberType = "br_codigo"
-	RoutingDetailNewParamsRoutingNumberTypeCaCpa        RoutingDetailNewParamsRoutingNumberType = "ca_cpa"
-	RoutingDetailNewParamsRoutingNumberTypeChips        RoutingDetailNewParamsRoutingNumberType = "chips"
-	RoutingDetailNewParamsRoutingNumberTypeCnaps        RoutingDetailNewParamsRoutingNumberType = "cnaps"
-	RoutingDetailNewParamsRoutingNumberTypeGBSortCode   RoutingDetailNewParamsRoutingNumberType = "gb_sort_code"
-	RoutingDetailNewParamsRoutingNumberTypeInIfsc       RoutingDetailNewParamsRoutingNumberType = "in_ifsc"
-	RoutingDetailNewParamsRoutingNumberTypeMyBranchCode RoutingDetailNewParamsRoutingNumberType = "my_branch_code"
-	RoutingDetailNewParamsRoutingNumberTypeSwift        RoutingDetailNewParamsRoutingNumberType = "swift"
+	RoutingDetailNewParamsRoutingNumberTypeAba                    RoutingDetailNewParamsRoutingNumberType = "aba"
+	RoutingDetailNewParamsRoutingNumberTypeAuBsb                  RoutingDetailNewParamsRoutingNumberType = "au_bsb"
+	RoutingDetailNewParamsRoutingNumberTypeBrCodigo               RoutingDetailNewParamsRoutingNumberType = "br_codigo"
+	RoutingDetailNewParamsRoutingNumberTypeCaCpa                  RoutingDetailNewParamsRoutingNumberType = "ca_cpa"
+	RoutingDetailNewParamsRoutingNumberTypeChips                  RoutingDetailNewParamsRoutingNumberType = "chips"
+	RoutingDetailNewParamsRoutingNumberTypeCnaps                  RoutingDetailNewParamsRoutingNumberType = "cnaps"
+	RoutingDetailNewParamsRoutingNumberTypeGBSortCode             RoutingDetailNewParamsRoutingNumberType = "gb_sort_code"
+	RoutingDetailNewParamsRoutingNumberTypeInIfsc                 RoutingDetailNewParamsRoutingNumberType = "in_ifsc"
+	RoutingDetailNewParamsRoutingNumberTypeJpZenginCode           RoutingDetailNewParamsRoutingNumberType = "jp_zengin_code"
+	RoutingDetailNewParamsRoutingNumberTypeMyBranchCode           RoutingDetailNewParamsRoutingNumberType = "my_branch_code"
+	RoutingDetailNewParamsRoutingNumberTypeSeBankgiroClearingCode RoutingDetailNewParamsRoutingNumberType = "se_bankgiro_clearing_code"
+	RoutingDetailNewParamsRoutingNumberTypeSwift                  RoutingDetailNewParamsRoutingNumberType = "swift"
 )
 
 // If the routing detail is to be used for a specific payment type this field will
@@ -261,12 +269,16 @@ const (
 	RoutingDetailNewParamsPaymentTypeInterac     RoutingDetailNewParamsPaymentType = "interac"
 	RoutingDetailNewParamsPaymentTypeMasav       RoutingDetailNewParamsPaymentType = "masav"
 	RoutingDetailNewParamsPaymentTypeNeft        RoutingDetailNewParamsPaymentType = "neft"
+	RoutingDetailNewParamsPaymentTypeNics        RoutingDetailNewParamsPaymentType = "nics"
 	RoutingDetailNewParamsPaymentTypeProvxchange RoutingDetailNewParamsPaymentType = "provxchange"
 	RoutingDetailNewParamsPaymentTypeRtp         RoutingDetailNewParamsPaymentType = "rtp"
+	RoutingDetailNewParamsPaymentTypeSeBankgirot RoutingDetailNewParamsPaymentType = "se_bankgirot"
 	RoutingDetailNewParamsPaymentTypeSen         RoutingDetailNewParamsPaymentType = "sen"
 	RoutingDetailNewParamsPaymentTypeSepa        RoutingDetailNewParamsPaymentType = "sepa"
+	RoutingDetailNewParamsPaymentTypeSic         RoutingDetailNewParamsPaymentType = "sic"
 	RoutingDetailNewParamsPaymentTypeSignet      RoutingDetailNewParamsPaymentType = "signet"
 	RoutingDetailNewParamsPaymentTypeWire        RoutingDetailNewParamsPaymentType = "wire"
+	RoutingDetailNewParamsPaymentTypeZengin      RoutingDetailNewParamsPaymentType = "zengin"
 )
 
 type RoutingDetailListParams struct {

@@ -223,16 +223,18 @@ func (r VirtualAccountNewParamsRoutingDetail) MarshalJSON() (data []byte, err er
 type VirtualAccountNewParamsRoutingDetailsRoutingNumberType string
 
 const (
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba          VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "aba"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAuBsb        VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "au_bsb"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeBrCodigo     VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "br_codigo"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCaCpa        VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "ca_cpa"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeChips        VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "chips"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCnaps        VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "cnaps"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeGBSortCode   VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "gb_sort_code"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeInIfsc       VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "in_ifsc"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeMyBranchCode VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "my_branch_code"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSwift        VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "swift"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba                    VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "aba"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAuBsb                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "au_bsb"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeBrCodigo               VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "br_codigo"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCaCpa                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "ca_cpa"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeChips                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "chips"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCnaps                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "cnaps"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeGBSortCode             VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "gb_sort_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeInIfsc                 VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "in_ifsc"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeJpZenginCode           VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "jp_zengin_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeMyBranchCode           VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "my_branch_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSwift                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "swift"
 )
 
 // If the routing detail is to be used for a specific payment type this field will
@@ -251,12 +253,16 @@ const (
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeInterac     VirtualAccountNewParamsRoutingDetailsPaymentType = "interac"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeMasav       VirtualAccountNewParamsRoutingDetailsPaymentType = "masav"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeNeft        VirtualAccountNewParamsRoutingDetailsPaymentType = "neft"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeNics        VirtualAccountNewParamsRoutingDetailsPaymentType = "nics"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeProvxchange VirtualAccountNewParamsRoutingDetailsPaymentType = "provxchange"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeRtp         VirtualAccountNewParamsRoutingDetailsPaymentType = "rtp"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSeBankgirot VirtualAccountNewParamsRoutingDetailsPaymentType = "se_bankgirot"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeSen         VirtualAccountNewParamsRoutingDetailsPaymentType = "sen"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeSepa        VirtualAccountNewParamsRoutingDetailsPaymentType = "sepa"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSic         VirtualAccountNewParamsRoutingDetailsPaymentType = "sic"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeSignet      VirtualAccountNewParamsRoutingDetailsPaymentType = "signet"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeWire        VirtualAccountNewParamsRoutingDetailsPaymentType = "wire"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeZengin      VirtualAccountNewParamsRoutingDetailsPaymentType = "zengin"
 )
 
 type VirtualAccountUpdateParams struct {

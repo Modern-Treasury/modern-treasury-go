@@ -12,7 +12,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
-func TestLedgerAccountPayoutNewWithOptionalParams(t *testing.T) {
+func TestLedgerAccountBalanceMonitorNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
@@ -21,18 +21,19 @@ func TestLedgerAccountPayoutNewWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerAccountPayouts.New(context.TODO(), moderntreasury.LedgerAccountPayoutNewParams{
-		FundingLedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		PayoutLedgerAccountID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		Description:            moderntreasury.F("string"),
-		EffectiveAtUpperBound:  moderntreasury.F("14:15:22Z"),
+	_, err := client.LedgerAccountBalanceMonitors.New(context.TODO(), moderntreasury.LedgerAccountBalanceMonitorNewParams{
+		AlertCondition: moderntreasury.F(moderntreasury.LedgerAccountBalanceMonitorNewParamsAlertCondition{
+			Field:    moderntreasury.F("string"),
+			Operator: moderntreasury.F("string"),
+			Value:    moderntreasury.F(int64(0)),
+		}),
+		LedgerAccountID: moderntreasury.F("string"),
+		Description:     moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
 			"modern": "treasury",
 		}),
-		SkipPayoutLedgerTransaction: moderntreasury.F(true),
-		Status:                      moderntreasury.F(moderntreasury.LedgerAccountPayoutNewParamsStatusPending),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -43,7 +44,7 @@ func TestLedgerAccountPayoutNewWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestLedgerAccountPayoutGet(t *testing.T) {
+func TestLedgerAccountBalanceMonitorGet(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
@@ -52,7 +53,7 @@ func TestLedgerAccountPayoutGet(t *testing.T) {
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerAccountPayouts.Get(context.TODO(), "string")
+	_, err := client.LedgerAccountBalanceMonitors.Get(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -62,7 +63,7 @@ func TestLedgerAccountPayoutGet(t *testing.T) {
 	}
 }
 
-func TestLedgerAccountPayoutUpdateWithOptionalParams(t *testing.T) {
+func TestLedgerAccountBalanceMonitorUpdateWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
@@ -71,17 +72,16 @@ func TestLedgerAccountPayoutUpdateWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerAccountPayouts.Update(
+	_, err := client.LedgerAccountBalanceMonitors.Update(
 		context.TODO(),
 		"string",
-		moderntreasury.LedgerAccountPayoutUpdateParams{
+		moderntreasury.LedgerAccountBalanceMonitorUpdateParams{
 			Description: moderntreasury.F("string"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Status: moderntreasury.F(moderntreasury.LedgerAccountPayoutUpdateParamsStatusPosted),
 		},
 	)
 	if err != nil {
@@ -93,7 +93,7 @@ func TestLedgerAccountPayoutUpdateWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestLedgerAccountPayoutListWithOptionalParams(t *testing.T) {
+func TestLedgerAccountBalanceMonitorListWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
@@ -102,14 +102,14 @@ func TestLedgerAccountPayoutListWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerAccountPayouts.List(context.TODO(), moderntreasury.LedgerAccountPayoutListParams{
-		ID:          moderntreasury.F([]string{"string", "string", "string"}),
-		AfterCursor: moderntreasury.F("string"),
+	_, err := client.LedgerAccountBalanceMonitors.List(context.TODO(), moderntreasury.LedgerAccountBalanceMonitorListParams{
+		ID:              moderntreasury.F([]string{"string", "string", "string"}),
+		AfterCursor:     moderntreasury.F("string"),
+		LedgerAccountID: moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		PayoutLedgerAccountID: moderntreasury.F("string"),
-		PerPage:               moderntreasury.F(int64(0)),
+		PerPage: moderntreasury.F(int64(0)),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -120,7 +120,7 @@ func TestLedgerAccountPayoutListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestLedgerAccountPayoutRetireve(t *testing.T) {
+func TestLedgerAccountBalanceMonitorDelete(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
@@ -129,7 +129,7 @@ func TestLedgerAccountPayoutRetireve(t *testing.T) {
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerAccountPayouts.Retireve(context.TODO(), "string")
+	_, err := client.LedgerAccountBalanceMonitors.Delete(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

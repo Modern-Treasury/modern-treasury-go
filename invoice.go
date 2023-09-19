@@ -83,6 +83,15 @@ func (r *InvoiceService) ListAutoPaging(ctx context.Context, query InvoiceListPa
 	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
+// Add a payment order to an invoice.
+func (r *InvoiceService) AddPaymentOrder(ctx context.Context, id string, paymentOrderID string, opts ...option.RequestOption) (err error) {
+	opts = append(r.Options[:], opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	path := fmt.Sprintf("api/invoices/%s/payment_orders/%s", id, paymentOrderID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, nil, nil, opts...)
+	return
+}
+
 type Invoice struct {
 	ID string `json:"id,required" format:"uuid"`
 	// The invoicer's contact details displayed at the top of the invoice.
@@ -135,6 +144,12 @@ type Invoice struct {
 	PdfURL string `json:"pdf_url,required,nullable"`
 	// The receiving account ID. Can be an `internal_account`.
 	ReceivingAccountID string `json:"receiving_account_id,required,nullable" format:"uuid"`
+	// The email of the recipient of the invoice. Leaving this value as null will
+	// fallback to using the counterparty's name.
+	RecipientEmail string `json:"recipient_email,required,nullable"`
+	// The name of the recipient of the invoice. Leaving this value as null will
+	// fallback to using the counterparty's name.
+	RecipientName string `json:"recipient_name,required,nullable"`
 	// The status of the invoice.
 	Status InvoiceStatus `json:"status,required"`
 	// Total amount due in specified currency's smallest unit, e.g., $10 USD would be
@@ -143,7 +158,9 @@ type Invoice struct {
 	// IDs of transaction line items associated with an invoice.
 	TransactionLineItemIDs []string  `json:"transaction_line_item_ids,required" format:"uuid"`
 	UpdatedAt              time.Time `json:"updated_at,required" format:"date-time"`
-	JSON                   invoiceJSON
+	// The ID of the virtual account the invoice should be paid to.
+	VirtualAccountID string `json:"virtual_account_id,required,nullable"`
+	JSON             invoiceJSON
 }
 
 // invoiceJSON contains the JSON metadata for the struct [Invoice]
@@ -171,10 +188,13 @@ type invoiceJSON struct {
 	PaymentType                 apijson.Field
 	PdfURL                      apijson.Field
 	ReceivingAccountID          apijson.Field
+	RecipientEmail              apijson.Field
+	RecipientName               apijson.Field
 	Status                      apijson.Field
 	TotalAmount                 apijson.Field
 	TransactionLineItemIDs      apijson.Field
 	UpdatedAt                   apijson.Field
+	VirtualAccountID            apijson.Field
 	raw                         string
 	ExtraFields                 map[string]apijson.Field
 }
@@ -386,11 +406,20 @@ type InvoiceNewParams struct {
 	// invoice amount is negative, the automatically initiated payment order's
 	// direction will be credit. One of `manual`, `ui`, or `automatic`.
 	PaymentMethod param.Field[InvoiceNewParamsPaymentMethod] `json:"payment_method"`
-	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-	// `au_becs`, `interac`, `signet`, `provexchange`.
+	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
+	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `sic`, `signet`, `provexchange`,
+	// `zengin`.
 	PaymentType param.Field[InvoiceNewParamsPaymentType] `json:"payment_type"`
 	// The receiving account ID. Can be an `external_account`.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// The email of the recipient of the invoice. Leaving this value as null will
+	// fallback to using the counterparty's name.
+	RecipientEmail param.Field[string] `json:"recipient_email"`
+	// The name of the recipient of the invoice. Leaving this value as null will
+	// fallback to using the counterparty's name.
+	RecipientName param.Field[string] `json:"recipient_name"`
+	// The ID of the virtual account the invoice should be paid to.
+	VirtualAccountID param.Field[string] `json:"virtual_account_id"`
 }
 
 func (r InvoiceNewParams) MarshalJSON() (data []byte, err error) {
@@ -490,13 +519,15 @@ const (
 	InvoiceNewParamsPaymentMethodAutomatic InvoiceNewParamsPaymentMethod = "automatic"
 )
 
-// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-// `au_becs`, `interac`, `signet`, `provexchange`.
+// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
+// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `sic`, `signet`, `provexchange`,
+// `zengin`.
 type InvoiceNewParamsPaymentType string
 
 const (
 	InvoiceNewParamsPaymentTypeACH         InvoiceNewParamsPaymentType = "ach"
 	InvoiceNewParamsPaymentTypeAuBecs      InvoiceNewParamsPaymentType = "au_becs"
+	InvoiceNewParamsPaymentTypeSeBankgirot InvoiceNewParamsPaymentType = "se_bankgirot"
 	InvoiceNewParamsPaymentTypeBacs        InvoiceNewParamsPaymentType = "bacs"
 	InvoiceNewParamsPaymentTypeBook        InvoiceNewParamsPaymentType = "book"
 	InvoiceNewParamsPaymentTypeCard        InvoiceNewParamsPaymentType = "card"
@@ -506,12 +537,15 @@ const (
 	InvoiceNewParamsPaymentTypeInterac     InvoiceNewParamsPaymentType = "interac"
 	InvoiceNewParamsPaymentTypeMasav       InvoiceNewParamsPaymentType = "masav"
 	InvoiceNewParamsPaymentTypeNeft        InvoiceNewParamsPaymentType = "neft"
+	InvoiceNewParamsPaymentTypeNics        InvoiceNewParamsPaymentType = "nics"
 	InvoiceNewParamsPaymentTypeProvxchange InvoiceNewParamsPaymentType = "provxchange"
 	InvoiceNewParamsPaymentTypeRtp         InvoiceNewParamsPaymentType = "rtp"
 	InvoiceNewParamsPaymentTypeSen         InvoiceNewParamsPaymentType = "sen"
+	InvoiceNewParamsPaymentTypeSic         InvoiceNewParamsPaymentType = "sic"
 	InvoiceNewParamsPaymentTypeSepa        InvoiceNewParamsPaymentType = "sepa"
 	InvoiceNewParamsPaymentTypeSignet      InvoiceNewParamsPaymentType = "signet"
 	InvoiceNewParamsPaymentTypeWire        InvoiceNewParamsPaymentType = "wire"
+	InvoiceNewParamsPaymentTypeZengin      InvoiceNewParamsPaymentType = "zengin"
 )
 
 type InvoiceUpdateParams struct {
@@ -551,15 +585,24 @@ type InvoiceUpdateParams struct {
 	// invoice amount is negative, the automatically initiated payment order's
 	// direction will be credit. One of `manual`, `ui`, or `automatic`.
 	PaymentMethod param.Field[InvoiceUpdateParamsPaymentMethod] `json:"payment_method"`
-	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-	// `au_becs`, `interac`, `signet`, `provexchange`.
+	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
+	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `sic`, `signet`, `provexchange`,
+	// `zengin`.
 	PaymentType param.Field[InvoiceUpdateParamsPaymentType] `json:"payment_type"`
 	// The receiving account ID. Can be an `external_account`.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// The email of the recipient of the invoice. Leaving this value as null will
+	// fallback to using the counterparty's name.
+	RecipientEmail param.Field[string] `json:"recipient_email"`
+	// The name of the recipient of the invoice. Leaving this value as null will
+	// fallback to using the counterparty's name.
+	RecipientName param.Field[string] `json:"recipient_name"`
 	// Invoice status must be updated in a `PATCH` request that does not modify any
 	// other invoice attributes. Valid state transitions are `draft` to `unpaid`,
 	// `draft` or `unpaid` to `voided`, and `draft` or `unpaid` to `paid`.
 	Status param.Field[string] `json:"status"`
+	// The ID of the virtual account the invoice should be paid to.
+	VirtualAccountID param.Field[string] `json:"virtual_account_id"`
 }
 
 func (r InvoiceUpdateParams) MarshalJSON() (data []byte, err error) {
@@ -659,13 +702,15 @@ const (
 	InvoiceUpdateParamsPaymentMethodAutomatic InvoiceUpdateParamsPaymentMethod = "automatic"
 )
 
-// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-// `au_becs`, `interac`, `signet`, `provexchange`.
+// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
+// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `sic`, `signet`, `provexchange`,
+// `zengin`.
 type InvoiceUpdateParamsPaymentType string
 
 const (
 	InvoiceUpdateParamsPaymentTypeACH         InvoiceUpdateParamsPaymentType = "ach"
 	InvoiceUpdateParamsPaymentTypeAuBecs      InvoiceUpdateParamsPaymentType = "au_becs"
+	InvoiceUpdateParamsPaymentTypeSeBankgirot InvoiceUpdateParamsPaymentType = "se_bankgirot"
 	InvoiceUpdateParamsPaymentTypeBacs        InvoiceUpdateParamsPaymentType = "bacs"
 	InvoiceUpdateParamsPaymentTypeBook        InvoiceUpdateParamsPaymentType = "book"
 	InvoiceUpdateParamsPaymentTypeCard        InvoiceUpdateParamsPaymentType = "card"
@@ -675,12 +720,15 @@ const (
 	InvoiceUpdateParamsPaymentTypeInterac     InvoiceUpdateParamsPaymentType = "interac"
 	InvoiceUpdateParamsPaymentTypeMasav       InvoiceUpdateParamsPaymentType = "masav"
 	InvoiceUpdateParamsPaymentTypeNeft        InvoiceUpdateParamsPaymentType = "neft"
+	InvoiceUpdateParamsPaymentTypeNics        InvoiceUpdateParamsPaymentType = "nics"
 	InvoiceUpdateParamsPaymentTypeProvxchange InvoiceUpdateParamsPaymentType = "provxchange"
 	InvoiceUpdateParamsPaymentTypeRtp         InvoiceUpdateParamsPaymentType = "rtp"
 	InvoiceUpdateParamsPaymentTypeSen         InvoiceUpdateParamsPaymentType = "sen"
+	InvoiceUpdateParamsPaymentTypeSic         InvoiceUpdateParamsPaymentType = "sic"
 	InvoiceUpdateParamsPaymentTypeSepa        InvoiceUpdateParamsPaymentType = "sepa"
 	InvoiceUpdateParamsPaymentTypeSignet      InvoiceUpdateParamsPaymentType = "signet"
 	InvoiceUpdateParamsPaymentTypeWire        InvoiceUpdateParamsPaymentType = "wire"
+	InvoiceUpdateParamsPaymentTypeZengin      InvoiceUpdateParamsPaymentType = "zengin"
 )
 
 type InvoiceListParams struct {

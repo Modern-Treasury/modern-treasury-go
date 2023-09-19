@@ -185,12 +185,16 @@ const (
 	TransactionTypeInterac     TransactionType = "interac"
 	TransactionTypeMasav       TransactionType = "masav"
 	TransactionTypeNeft        TransactionType = "neft"
+	TransactionTypeNics        TransactionType = "nics"
 	TransactionTypeProvxchange TransactionType = "provxchange"
 	TransactionTypeRtp         TransactionType = "rtp"
+	TransactionTypeSeBankgirot TransactionType = "se_bankgirot"
 	TransactionTypeSen         TransactionType = "sen"
 	TransactionTypeSepa        TransactionType = "sepa"
+	TransactionTypeSic         TransactionType = "sic"
 	TransactionTypeSignet      TransactionType = "signet"
 	TransactionTypeWire        TransactionType = "wire"
+	TransactionTypeZengin      TransactionType = "zengin"
 )
 
 // The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,

@@ -211,9 +211,10 @@ const (
 type ExpectedPaymentStatus string
 
 const (
-	ExpectedPaymentStatusArchived     ExpectedPaymentStatus = "archived"
-	ExpectedPaymentStatusReconciled   ExpectedPaymentStatus = "reconciled"
-	ExpectedPaymentStatusUnreconciled ExpectedPaymentStatus = "unreconciled"
+	ExpectedPaymentStatusArchived            ExpectedPaymentStatus = "archived"
+	ExpectedPaymentStatusPartiallyReconciled ExpectedPaymentStatus = "partially_reconciled"
+	ExpectedPaymentStatusReconciled          ExpectedPaymentStatus = "reconciled"
+	ExpectedPaymentStatusUnreconciled        ExpectedPaymentStatus = "unreconciled"
 )
 
 // One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
@@ -232,12 +233,16 @@ const (
 	ExpectedPaymentTypeInterac     ExpectedPaymentType = "interac"
 	ExpectedPaymentTypeMasav       ExpectedPaymentType = "masav"
 	ExpectedPaymentTypeNeft        ExpectedPaymentType = "neft"
+	ExpectedPaymentTypeNics        ExpectedPaymentType = "nics"
 	ExpectedPaymentTypeProvxchange ExpectedPaymentType = "provxchange"
 	ExpectedPaymentTypeRtp         ExpectedPaymentType = "rtp"
+	ExpectedPaymentTypeSeBankgirot ExpectedPaymentType = "se_bankgirot"
 	ExpectedPaymentTypeSen         ExpectedPaymentType = "sen"
 	ExpectedPaymentTypeSepa        ExpectedPaymentType = "sepa"
+	ExpectedPaymentTypeSic         ExpectedPaymentType = "sic"
 	ExpectedPaymentTypeSignet      ExpectedPaymentType = "signet"
 	ExpectedPaymentTypeWire        ExpectedPaymentType = "wire"
+	ExpectedPaymentTypeZengin      ExpectedPaymentType = "zengin"
 )
 
 type ExpectedPaymentNewParams struct {
@@ -416,9 +421,10 @@ const (
 type ExpectedPaymentListParamsStatus string
 
 const (
-	ExpectedPaymentListParamsStatusArchived     ExpectedPaymentListParamsStatus = "archived"
-	ExpectedPaymentListParamsStatusReconciled   ExpectedPaymentListParamsStatus = "reconciled"
-	ExpectedPaymentListParamsStatusUnreconciled ExpectedPaymentListParamsStatus = "unreconciled"
+	ExpectedPaymentListParamsStatusArchived            ExpectedPaymentListParamsStatus = "archived"
+	ExpectedPaymentListParamsStatusPartiallyReconciled ExpectedPaymentListParamsStatus = "partially_reconciled"
+	ExpectedPaymentListParamsStatusReconciled          ExpectedPaymentListParamsStatus = "reconciled"
+	ExpectedPaymentListParamsStatusUnreconciled        ExpectedPaymentListParamsStatus = "unreconciled"
 )
 
 // One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp,sen,
@@ -437,10 +443,14 @@ const (
 	ExpectedPaymentListParamsTypeInterac     ExpectedPaymentListParamsType = "interac"
 	ExpectedPaymentListParamsTypeMasav       ExpectedPaymentListParamsType = "masav"
 	ExpectedPaymentListParamsTypeNeft        ExpectedPaymentListParamsType = "neft"
+	ExpectedPaymentListParamsTypeNics        ExpectedPaymentListParamsType = "nics"
 	ExpectedPaymentListParamsTypeProvxchange ExpectedPaymentListParamsType = "provxchange"
 	ExpectedPaymentListParamsTypeRtp         ExpectedPaymentListParamsType = "rtp"
+	ExpectedPaymentListParamsTypeSeBankgirot ExpectedPaymentListParamsType = "se_bankgirot"
 	ExpectedPaymentListParamsTypeSen         ExpectedPaymentListParamsType = "sen"
 	ExpectedPaymentListParamsTypeSepa        ExpectedPaymentListParamsType = "sepa"
+	ExpectedPaymentListParamsTypeSic         ExpectedPaymentListParamsType = "sic"
 	ExpectedPaymentListParamsTypeSignet      ExpectedPaymentListParamsType = "signet"
 	ExpectedPaymentListParamsTypeWire        ExpectedPaymentListParamsType = "wire"
+	ExpectedPaymentListParamsTypeZengin      ExpectedPaymentListParamsType = "zengin"
 )

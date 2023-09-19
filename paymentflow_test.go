@@ -6,13 +6,14 @@ import (
 	"context"
 	"errors"
 	"testing"
+	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
-func TestPaymentFlowNew(t *testing.T) {
+func TestPaymentFlowNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
@@ -27,6 +28,7 @@ func TestPaymentFlowNew(t *testing.T) {
 		Currency:             moderntreasury.F("string"),
 		Direction:            moderntreasury.F(moderntreasury.PaymentFlowNewParamsDirectionCredit),
 		OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		DueDate:              moderntreasury.F(time.Now()),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
