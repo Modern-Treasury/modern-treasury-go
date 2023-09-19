@@ -12,7 +12,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
-func TestAccountCollectionFlowNew(t *testing.T) {
+func TestAccountCollectionFlowNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t) {
 		return
 	}
@@ -22,8 +22,9 @@ func TestAccountCollectionFlowNew(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.AccountCollectionFlows.New(context.TODO(), moderntreasury.AccountCollectionFlowNewParams{
-		CounterpartyID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		PaymentTypes:   moderntreasury.F([]string{"string", "string", "string"}),
+		CounterpartyID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		PaymentTypes:       moderntreasury.F([]string{"string", "string", "string"}),
+		ReceivingCountries: moderntreasury.F([]moderntreasury.AccountCollectionFlowNewParamsReceivingCountry{moderntreasury.AccountCollectionFlowNewParamsReceivingCountryUsa, moderntreasury.AccountCollectionFlowNewParamsReceivingCountryAus, moderntreasury.AccountCollectionFlowNewParamsReceivingCountryBel}),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
