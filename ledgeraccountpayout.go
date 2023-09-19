@@ -43,6 +43,14 @@ func (r *LedgerAccountPayoutService) New(ctx context.Context, body LedgerAccount
 	return
 }
 
+// Get details on a single ledger account payout.
+func (r *LedgerAccountPayoutService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountPayout, err error) {
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("api/ledger_account_payouts/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	return
+}
+
 // Update the details of a ledger account payout.
 func (r *LedgerAccountPayoutService) Update(ctx context.Context, id string, body LedgerAccountPayoutUpdateParams, opts ...option.RequestOption) (res *LedgerAccountPayout, err error) {
 	opts = append(r.Options[:], opts...)
@@ -75,6 +83,8 @@ func (r *LedgerAccountPayoutService) ListAutoPaging(ctx context.Context, query L
 }
 
 // Get details on a single ledger account payout.
+//
+// Deprecated: use `retrieve` instead
 func (r *LedgerAccountPayoutService) Retireve(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountPayout, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/ledger_account_payouts/%s", id)

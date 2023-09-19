@@ -554,16 +554,18 @@ func (r CounterpartyNewParamsAccountsRoutingDetail) MarshalJSON() (data []byte, 
 type CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType string
 
 const (
-	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba          CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "aba"
-	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAuBsb        CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "au_bsb"
-	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeBrCodigo     CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "br_codigo"
-	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeCaCpa        CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "ca_cpa"
-	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeChips        CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "chips"
-	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeCnaps        CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "cnaps"
-	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeGBSortCode   CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "gb_sort_code"
-	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeInIfsc       CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "in_ifsc"
-	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeMyBranchCode CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "my_branch_code"
-	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeSwift        CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "swift"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba                    CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "aba"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAuBsb                  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "au_bsb"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeBrCodigo               CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "br_codigo"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeCaCpa                  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "ca_cpa"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeChips                  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "chips"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeCnaps                  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "cnaps"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeGBSortCode             CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "gb_sort_code"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeInIfsc                 CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "in_ifsc"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeMyBranchCode           CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "my_branch_code"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeSwift                  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "swift"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeJpZenginCode           CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "jp_zengin_code"
 )
 
 type CounterpartyNewParamsAccountsRoutingDetailsPaymentType string
@@ -571,6 +573,7 @@ type CounterpartyNewParamsAccountsRoutingDetailsPaymentType string
 const (
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH         CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "ach"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeAuBecs      CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "au_becs"
+	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSeBankgirot CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "se_bankgirot"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeBacs        CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "bacs"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeBook        CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "book"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCard        CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "card"
@@ -580,12 +583,15 @@ const (
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeInterac     CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "interac"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeMasav       CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "masav"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNeft        CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "neft"
+	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNics        CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "nics"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeProvxchange CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "provxchange"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeRtp         CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "rtp"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSen         CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "sen"
+	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSic         CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "sic"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSepa        CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "sepa"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSignet      CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "signet"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeWire        CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "wire"
+	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeZengin      CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "zengin"
 )
 
 // An optional type to auto-sync the counterparty to your ledger. Either `customer`
@@ -713,4 +719,5 @@ const (
 	CounterpartyCollectAccountParamsFieldBrCodigo             CounterpartyCollectAccountParamsField = "brCodigo"
 	CounterpartyCollectAccountParamsFieldRoutingNumberType    CounterpartyCollectAccountParamsField = "routingNumberType"
 	CounterpartyCollectAccountParamsFieldAddress              CounterpartyCollectAccountParamsField = "address"
+	CounterpartyCollectAccountParamsFieldJpZenginCode         CounterpartyCollectAccountParamsField = "jp_zengin_code"
 )

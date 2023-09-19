@@ -35,12 +35,20 @@ func NewTransactionLineItemService(opts ...option.RequestOption) (r *Transaction
 	return
 }
 
+// get transaction line item
+func (r *TransactionLineItemService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *TransactionLineItem, err error) {
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("api/transaction_line_items/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	return
+}
+
 // list transaction_line_items
-func (r *TransactionLineItemService) List(ctx context.Context, transactionID string, query TransactionLineItemListParams, opts ...option.RequestOption) (res *shared.Page[TransactionLineItem], err error) {
+func (r *TransactionLineItemService) List(ctx context.Context, query TransactionLineItemListParams, opts ...option.RequestOption) (res *shared.Page[TransactionLineItem], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := fmt.Sprintf("api/transactions/%s/line_items", transactionID)
+	path := "api/transaction_line_items"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
 		return nil, err
@@ -54,8 +62,8 @@ func (r *TransactionLineItemService) List(ctx context.Context, transactionID str
 }
 
 // list transaction_line_items
-func (r *TransactionLineItemService) ListAutoPaging(ctx context.Context, transactionID string, query TransactionLineItemListParams, opts ...option.RequestOption) *shared.PageAutoPager[TransactionLineItem] {
-	return shared.NewPageAutoPager(r.List(ctx, transactionID, query, opts...))
+func (r *TransactionLineItemService) ListAutoPaging(ctx context.Context, query TransactionLineItemListParams, opts ...option.RequestOption) *shared.PageAutoPager[TransactionLineItem] {
+	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type TransactionLineItem struct {
@@ -64,7 +72,7 @@ type TransactionLineItem struct {
 	// Value in specified currency's smallest unit (taken from parent Transaction).
 	Amount int64 `json:"amount,required"`
 	// The ID for the counterparty for this transaction line item.
-	CounterpartyID string    `json:"counterparty_id,required"`
+	CounterpartyID string    `json:"counterparty_id,required,nullable"`
 	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
 	// If no matching object is found, `description` will be a free-form text field
 	// describing the line item. This field may contain personally identifiable
@@ -74,7 +82,7 @@ type TransactionLineItem struct {
 	Description string    `json:"description,required"`
 	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
 	// The ID of the reconciled Expected Payment, otherwise `null`.
-	ExpectedPaymentID string `json:"expected_payment_id,required"`
+	ExpectedPaymentID string `json:"expected_payment_id,required,nullable"`
 	// This field will be true if this object exists in the live environment, or false
 	// if it exists in the test environment.
 	LiveMode bool   `json:"live_mode,required"`
@@ -85,6 +93,8 @@ type TransactionLineItem struct {
 	// If a matching object exists in Modern Treasury, the type will be populated here,
 	// otherwise `null`.
 	TransactableType TransactionLineItemTransactableType `json:"transactable_type,required,nullable"`
+	// The ID of the parent transaction.
+	TransactionID string `json:"transaction_id,required"`
 	// Indicates whether the line item is `originating` or `receiving` (see
 	// https://www.moderntreasury.com/journal/beginners-guide-to-ach for more).
 	Type      TransactionLineItemType `json:"type,required"`
@@ -106,6 +116,7 @@ type transactionLineItemJSON struct {
 	Object            apijson.Field
 	TransactableID    apijson.Field
 	TransactableType  apijson.Field
+	TransactionID     apijson.Field
 	Type              apijson.Field
 	UpdatedAt         apijson.Field
 	raw               string
@@ -139,9 +150,11 @@ const (
 )
 
 type TransactionLineItemListParams struct {
-	AfterCursor param.Field[string]                            `query:"after_cursor"`
-	PerPage     param.Field[int64]                             `query:"per_page"`
-	Type        param.Field[TransactionLineItemListParamsType] `query:"type"`
+	ID            param.Field[map[string]string]                 `query:"id"`
+	AfterCursor   param.Field[string]                            `query:"after_cursor"`
+	PerPage       param.Field[int64]                             `query:"per_page"`
+	TransactionID param.Field[string]                            `query:"transaction_id"`
+	Type          param.Field[TransactionLineItemListParamsType] `query:"type"`
 }
 
 // URLQuery serializes [TransactionLineItemListParams]'s query parameters as

@@ -99,6 +99,12 @@ type PaymentFlow struct {
 	// Describes the direction money is flowing in the transaction. Can only be
 	// `debit`. A `debit` pulls money from someone else's account to your own.
 	Direction PaymentFlowDirection `json:"direction"`
+	// The due date for the flow. Can only be passed in when
+	// `effective_date_selection_enabled` is `true`.
+	DueDate time.Time `json:"due_date,nullable" format:"date"`
+	// When `true`, your end-user can schedule the payment `effective_date` while
+	// completing the pre-built UI.
+	EffectiveDateSelectionEnabled bool `json:"effective_date_selection_enabled"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool   `json:"live_mode"`
@@ -109,6 +115,10 @@ type PaymentFlow struct {
 	PaymentOrderID string `json:"payment_order_id,nullable" format:"uuid"`
 	// If present, the ID of the external account created using this flow.
 	ReceivingAccountID string `json:"receiving_account_id,nullable" format:"uuid"`
+	// This field is set after your end-user selects a payment date while completing
+	// the pre-built UI. This field is always `null` unless
+	// `effective_date_selection_enabled` is `true`.
+	SelectedEffectiveDate time.Time `json:"selected_effective_date,nullable" format:"date"`
 	// The current status of the payment flow. One of `pending`, `completed`,
 	// `expired`, or `cancelled`.
 	Status    PaymentFlowStatus `json:"status"`
@@ -118,22 +128,25 @@ type PaymentFlow struct {
 
 // paymentFlowJSON contains the JSON metadata for the struct [PaymentFlow]
 type paymentFlowJSON struct {
-	ID                   apijson.Field
-	Amount               apijson.Field
-	ClientToken          apijson.Field
-	CounterpartyID       apijson.Field
-	CreatedAt            apijson.Field
-	Currency             apijson.Field
-	Direction            apijson.Field
-	LiveMode             apijson.Field
-	Object               apijson.Field
-	OriginatingAccountID apijson.Field
-	PaymentOrderID       apijson.Field
-	ReceivingAccountID   apijson.Field
-	Status               apijson.Field
-	UpdatedAt            apijson.Field
-	raw                  string
-	ExtraFields          map[string]apijson.Field
+	ID                            apijson.Field
+	Amount                        apijson.Field
+	ClientToken                   apijson.Field
+	CounterpartyID                apijson.Field
+	CreatedAt                     apijson.Field
+	Currency                      apijson.Field
+	Direction                     apijson.Field
+	DueDate                       apijson.Field
+	EffectiveDateSelectionEnabled apijson.Field
+	LiveMode                      apijson.Field
+	Object                        apijson.Field
+	OriginatingAccountID          apijson.Field
+	PaymentOrderID                apijson.Field
+	ReceivingAccountID            apijson.Field
+	SelectedEffectiveDate         apijson.Field
+	Status                        apijson.Field
+	UpdatedAt                     apijson.Field
+	raw                           string
+	ExtraFields                   map[string]apijson.Field
 }
 
 func (r *PaymentFlow) UnmarshalJSON(data []byte) (err error) {
@@ -174,6 +187,10 @@ type PaymentFlowNewParams struct {
 	Direction param.Field[PaymentFlowNewParamsDirection] `json:"direction,required"`
 	// Required. The ID of one of your organization's internal accounts.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
+	// Optional. Can only be passed in when `effective_date_selection_enabled` is
+	// `true`. When set, the due date is shown to your end-user in the pre-built UI as
+	// they are selecting a payment `effective_date`.
+	DueDate param.Field[time.Time] `json:"due_date" format:"date"`
 }
 
 func (r PaymentFlowNewParams) MarshalJSON() (data []byte, err error) {

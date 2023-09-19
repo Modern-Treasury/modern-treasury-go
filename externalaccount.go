@@ -445,16 +445,18 @@ func (r ExternalAccountNewParamsRoutingDetail) MarshalJSON() (data []byte, err e
 type ExternalAccountNewParamsRoutingDetailsRoutingNumberType string
 
 const (
-	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAba          ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "aba"
-	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAuBsb        ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "au_bsb"
-	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeBrCodigo     ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "br_codigo"
-	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeCaCpa        ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "ca_cpa"
-	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeChips        ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "chips"
-	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeCnaps        ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "cnaps"
-	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeGBSortCode   ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "gb_sort_code"
-	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeInIfsc       ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "in_ifsc"
-	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeMyBranchCode ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "my_branch_code"
-	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeSwift        ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "swift"
+	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAba                    ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "aba"
+	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAuBsb                  ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "au_bsb"
+	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
+	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeBrCodigo               ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "br_codigo"
+	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeCaCpa                  ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "ca_cpa"
+	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeChips                  ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "chips"
+	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeCnaps                  ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "cnaps"
+	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeGBSortCode             ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "gb_sort_code"
+	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeInIfsc                 ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "in_ifsc"
+	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeMyBranchCode           ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "my_branch_code"
+	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeSwift                  ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "swift"
+	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeJpZenginCode           ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "jp_zengin_code"
 )
 
 type ExternalAccountNewParamsRoutingDetailsPaymentType string
@@ -462,6 +464,7 @@ type ExternalAccountNewParamsRoutingDetailsPaymentType string
 const (
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeACH         ExternalAccountNewParamsRoutingDetailsPaymentType = "ach"
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeAuBecs      ExternalAccountNewParamsRoutingDetailsPaymentType = "au_becs"
+	ExternalAccountNewParamsRoutingDetailsPaymentTypeSeBankgirot ExternalAccountNewParamsRoutingDetailsPaymentType = "se_bankgirot"
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeBacs        ExternalAccountNewParamsRoutingDetailsPaymentType = "bacs"
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeBook        ExternalAccountNewParamsRoutingDetailsPaymentType = "book"
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeCard        ExternalAccountNewParamsRoutingDetailsPaymentType = "card"
@@ -471,12 +474,15 @@ const (
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeInterac     ExternalAccountNewParamsRoutingDetailsPaymentType = "interac"
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeMasav       ExternalAccountNewParamsRoutingDetailsPaymentType = "masav"
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeNeft        ExternalAccountNewParamsRoutingDetailsPaymentType = "neft"
+	ExternalAccountNewParamsRoutingDetailsPaymentTypeNics        ExternalAccountNewParamsRoutingDetailsPaymentType = "nics"
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeProvxchange ExternalAccountNewParamsRoutingDetailsPaymentType = "provxchange"
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeRtp         ExternalAccountNewParamsRoutingDetailsPaymentType = "rtp"
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeSen         ExternalAccountNewParamsRoutingDetailsPaymentType = "sen"
+	ExternalAccountNewParamsRoutingDetailsPaymentTypeSic         ExternalAccountNewParamsRoutingDetailsPaymentType = "sic"
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeSepa        ExternalAccountNewParamsRoutingDetailsPaymentType = "sepa"
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeSignet      ExternalAccountNewParamsRoutingDetailsPaymentType = "signet"
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeWire        ExternalAccountNewParamsRoutingDetailsPaymentType = "wire"
+	ExternalAccountNewParamsRoutingDetailsPaymentTypeZengin      ExternalAccountNewParamsRoutingDetailsPaymentType = "zengin"
 )
 
 type ExternalAccountUpdateParams struct {
@@ -583,10 +589,14 @@ const (
 	ExternalAccountVerifyParamsPaymentTypeInterac     ExternalAccountVerifyParamsPaymentType = "interac"
 	ExternalAccountVerifyParamsPaymentTypeMasav       ExternalAccountVerifyParamsPaymentType = "masav"
 	ExternalAccountVerifyParamsPaymentTypeNeft        ExternalAccountVerifyParamsPaymentType = "neft"
+	ExternalAccountVerifyParamsPaymentTypeNics        ExternalAccountVerifyParamsPaymentType = "nics"
 	ExternalAccountVerifyParamsPaymentTypeProvxchange ExternalAccountVerifyParamsPaymentType = "provxchange"
 	ExternalAccountVerifyParamsPaymentTypeRtp         ExternalAccountVerifyParamsPaymentType = "rtp"
+	ExternalAccountVerifyParamsPaymentTypeSeBankgirot ExternalAccountVerifyParamsPaymentType = "se_bankgirot"
 	ExternalAccountVerifyParamsPaymentTypeSen         ExternalAccountVerifyParamsPaymentType = "sen"
 	ExternalAccountVerifyParamsPaymentTypeSepa        ExternalAccountVerifyParamsPaymentType = "sepa"
+	ExternalAccountVerifyParamsPaymentTypeSic         ExternalAccountVerifyParamsPaymentType = "sic"
 	ExternalAccountVerifyParamsPaymentTypeSignet      ExternalAccountVerifyParamsPaymentType = "signet"
 	ExternalAccountVerifyParamsPaymentTypeWire        ExternalAccountVerifyParamsPaymentType = "wire"
+	ExternalAccountVerifyParamsPaymentTypeZengin      ExternalAccountVerifyParamsPaymentType = "zengin"
 )

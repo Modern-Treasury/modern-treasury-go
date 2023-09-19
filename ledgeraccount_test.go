@@ -120,6 +120,14 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 	_, err := client.LedgerAccounts.List(context.TODO(), moderntreasury.LedgerAccountListParams{
 		ID:          moderntreasury.F([]string{"string", "string", "string"}),
 		AfterCursor: moderntreasury.F("string"),
+		AvailableBalanceAmount: moderntreasury.F(moderntreasury.LedgerAccountListParamsAvailableBalanceAmount{
+			Gt:    moderntreasury.F(int64(0)),
+			Lt:    moderntreasury.F(int64(0)),
+			Gte:   moderntreasury.F(int64(0)),
+			Lte:   moderntreasury.F(int64(0)),
+			Eq:    moderntreasury.F(int64(0)),
+			NotEq: moderntreasury.F(int64(0)),
+		}),
 		Balances: moderntreasury.F(moderntreasury.LedgerAccountListParamsBalances{
 			AsOfDate:              moderntreasury.F(time.Now()),
 			EffectiveAt:           moderntreasury.F(time.Now()),
@@ -135,8 +143,24 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		Name:    moderntreasury.F("string"),
+		Name: moderntreasury.F("string"),
+		PendingBalanceAmount: moderntreasury.F(moderntreasury.LedgerAccountListParamsPendingBalanceAmount{
+			Gt:    moderntreasury.F(int64(0)),
+			Lt:    moderntreasury.F(int64(0)),
+			Gte:   moderntreasury.F(int64(0)),
+			Lte:   moderntreasury.F(int64(0)),
+			Eq:    moderntreasury.F(int64(0)),
+			NotEq: moderntreasury.F(int64(0)),
+		}),
 		PerPage: moderntreasury.F(int64(0)),
+		PostedBalanceAmount: moderntreasury.F(moderntreasury.LedgerAccountListParamsPostedBalanceAmount{
+			Gt:    moderntreasury.F(int64(0)),
+			Lt:    moderntreasury.F(int64(0)),
+			Gte:   moderntreasury.F(int64(0)),
+			Lte:   moderntreasury.F(int64(0)),
+			Eq:    moderntreasury.F(int64(0)),
+			NotEq: moderntreasury.F(int64(0)),
+		}),
 		UpdatedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),

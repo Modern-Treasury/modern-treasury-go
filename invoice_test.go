@@ -87,6 +87,9 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 		PaymentMethod:              moderntreasury.F(moderntreasury.InvoiceNewParamsPaymentMethodUi),
 		PaymentType:                moderntreasury.F(moderntreasury.InvoiceNewParamsPaymentTypeACH),
 		ReceivingAccountID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		RecipientEmail:             moderntreasury.F("string"),
+		RecipientName:              moderntreasury.F("string"),
+		VirtualAccountID:           moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -192,7 +195,10 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 			PaymentMethod:              moderntreasury.F(moderntreasury.InvoiceUpdateParamsPaymentMethodUi),
 			PaymentType:                moderntreasury.F(moderntreasury.InvoiceUpdateParamsPaymentTypeACH),
 			ReceivingAccountID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			RecipientEmail:             moderntreasury.F("string"),
+			RecipientName:              moderntreasury.F("string"),
 			Status:                     moderntreasury.F("string"),
+			VirtualAccountID:           moderntreasury.F("string"),
 		},
 	)
 	if err != nil {
@@ -217,6 +223,29 @@ func TestInvoiceListWithOptionalParams(t *testing.T) {
 		AfterCursor: moderntreasury.F("string"),
 		PerPage:     moderntreasury.F(int64(0)),
 	})
+	if err != nil {
+		var apierr *moderntreasury.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestInvoiceAddPaymentOrder(t *testing.T) {
+	if !testutil.CheckTestServer(t) {
+		return
+	}
+	client := moderntreasury.NewClient(
+		option.WithBaseURL("http://127.0.0.1:4010"),
+		option.WithAPIKey("APIKey"),
+		option.WithOrganizationID("my-organization-ID"),
+	)
+	err := client.Invoices.AddPaymentOrder(
+		context.TODO(),
+		"string",
+		"string",
+	)
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

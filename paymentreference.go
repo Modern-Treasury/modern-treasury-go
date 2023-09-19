@@ -35,6 +35,14 @@ func NewPaymentReferenceService(opts ...option.RequestOption) (r *PaymentReferen
 	return
 }
 
+// get payment_reference
+func (r *PaymentReferenceService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *PaymentReference, err error) {
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("api/payment_references/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+	return
+}
+
 // list payment_references
 func (r *PaymentReferenceService) List(ctx context.Context, query PaymentReferenceListParams, opts ...option.RequestOption) (res *shared.Page[PaymentReference], err error) {
 	var raw *http.Response
@@ -59,6 +67,8 @@ func (r *PaymentReferenceService) ListAutoPaging(ctx context.Context, query Paym
 }
 
 // get payment_reference
+//
+// Deprecated: use `retrieve` instead
 func (r *PaymentReferenceService) Retireve(ctx context.Context, id string, opts ...option.RequestOption) (res *PaymentReference, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/payment_references/%s", id)

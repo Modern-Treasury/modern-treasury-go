@@ -96,8 +96,9 @@ type AccountCollectionFlow struct {
 	ExternalAccountID string `json:"external_account_id,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode"`
-	Object   string `json:"object"`
+	LiveMode           bool                                    `json:"live_mode"`
+	Object             string                                  `json:"object"`
+	ReceivingCountries []AccountCollectionFlowReceivingCountry `json:"receiving_countries"`
 	// The current status of the account collection flow. One of `pending`,
 	// `completed`, `expired`, or `cancelled`.
 	Status    AccountCollectionFlowStatus `json:"status"`
@@ -108,18 +109,19 @@ type AccountCollectionFlow struct {
 // accountCollectionFlowJSON contains the JSON metadata for the struct
 // [AccountCollectionFlow]
 type accountCollectionFlowJSON struct {
-	CounterpartyID    apijson.Field
-	PaymentTypes      apijson.Field
-	ID                apijson.Field
-	ClientToken       apijson.Field
-	CreatedAt         apijson.Field
-	ExternalAccountID apijson.Field
-	LiveMode          apijson.Field
-	Object            apijson.Field
-	Status            apijson.Field
-	UpdatedAt         apijson.Field
-	raw               string
-	ExtraFields       map[string]apijson.Field
+	CounterpartyID     apijson.Field
+	PaymentTypes       apijson.Field
+	ID                 apijson.Field
+	ClientToken        apijson.Field
+	CreatedAt          apijson.Field
+	ExternalAccountID  apijson.Field
+	LiveMode           apijson.Field
+	Object             apijson.Field
+	ReceivingCountries apijson.Field
+	Status             apijson.Field
+	UpdatedAt          apijson.Field
+	raw                string
+	ExtraFields        map[string]apijson.Field
 }
 
 func (r *AccountCollectionFlow) UnmarshalJSON(data []byte) (err error) {
@@ -132,6 +134,30 @@ type AccountCollectionFlowPaymentType string
 const (
 	AccountCollectionFlowPaymentTypeACH  AccountCollectionFlowPaymentType = "ach"
 	AccountCollectionFlowPaymentTypeWire AccountCollectionFlowPaymentType = "wire"
+)
+
+// An account created with this flow will support wires from the US to these
+// countries.
+type AccountCollectionFlowReceivingCountry string
+
+const (
+	AccountCollectionFlowReceivingCountryUsa AccountCollectionFlowReceivingCountry = "USA"
+	AccountCollectionFlowReceivingCountryAus AccountCollectionFlowReceivingCountry = "AUS"
+	AccountCollectionFlowReceivingCountryBel AccountCollectionFlowReceivingCountry = "BEL"
+	AccountCollectionFlowReceivingCountryCan AccountCollectionFlowReceivingCountry = "CAN"
+	AccountCollectionFlowReceivingCountryChl AccountCollectionFlowReceivingCountry = "CHL"
+	AccountCollectionFlowReceivingCountryChn AccountCollectionFlowReceivingCountry = "CHN"
+	AccountCollectionFlowReceivingCountryCol AccountCollectionFlowReceivingCountry = "COL"
+	AccountCollectionFlowReceivingCountryFra AccountCollectionFlowReceivingCountry = "FRA"
+	AccountCollectionFlowReceivingCountryDeu AccountCollectionFlowReceivingCountry = "DEU"
+	AccountCollectionFlowReceivingCountryHkg AccountCollectionFlowReceivingCountry = "HKG"
+	AccountCollectionFlowReceivingCountryInd AccountCollectionFlowReceivingCountry = "IND"
+	AccountCollectionFlowReceivingCountryIrl AccountCollectionFlowReceivingCountry = "IRL"
+	AccountCollectionFlowReceivingCountryIta AccountCollectionFlowReceivingCountry = "ITA"
+	AccountCollectionFlowReceivingCountryMex AccountCollectionFlowReceivingCountry = "MEX"
+	AccountCollectionFlowReceivingCountryNld AccountCollectionFlowReceivingCountry = "NLD"
+	AccountCollectionFlowReceivingCountryPer AccountCollectionFlowReceivingCountry = "PER"
+	AccountCollectionFlowReceivingCountryEsp AccountCollectionFlowReceivingCountry = "ESP"
 )
 
 // The current status of the account collection flow. One of `pending`,
@@ -147,13 +173,37 @@ const (
 
 type AccountCollectionFlowNewParams struct {
 	// Required.
-	CounterpartyID param.Field[string]   `json:"counterparty_id,required" format:"uuid"`
-	PaymentTypes   param.Field[[]string] `json:"payment_types,required"`
+	CounterpartyID     param.Field[string]                                           `json:"counterparty_id,required" format:"uuid"`
+	PaymentTypes       param.Field[[]string]                                         `json:"payment_types,required"`
+	ReceivingCountries param.Field[[]AccountCollectionFlowNewParamsReceivingCountry] `json:"receiving_countries"`
 }
 
 func (r AccountCollectionFlowNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+// Optional. Array of 3-digit ISO country codes.
+type AccountCollectionFlowNewParamsReceivingCountry string
+
+const (
+	AccountCollectionFlowNewParamsReceivingCountryUsa AccountCollectionFlowNewParamsReceivingCountry = "USA"
+	AccountCollectionFlowNewParamsReceivingCountryAus AccountCollectionFlowNewParamsReceivingCountry = "AUS"
+	AccountCollectionFlowNewParamsReceivingCountryBel AccountCollectionFlowNewParamsReceivingCountry = "BEL"
+	AccountCollectionFlowNewParamsReceivingCountryCan AccountCollectionFlowNewParamsReceivingCountry = "CAN"
+	AccountCollectionFlowNewParamsReceivingCountryChl AccountCollectionFlowNewParamsReceivingCountry = "CHL"
+	AccountCollectionFlowNewParamsReceivingCountryChn AccountCollectionFlowNewParamsReceivingCountry = "CHN"
+	AccountCollectionFlowNewParamsReceivingCountryCol AccountCollectionFlowNewParamsReceivingCountry = "COL"
+	AccountCollectionFlowNewParamsReceivingCountryFra AccountCollectionFlowNewParamsReceivingCountry = "FRA"
+	AccountCollectionFlowNewParamsReceivingCountryDeu AccountCollectionFlowNewParamsReceivingCountry = "DEU"
+	AccountCollectionFlowNewParamsReceivingCountryHkg AccountCollectionFlowNewParamsReceivingCountry = "HKG"
+	AccountCollectionFlowNewParamsReceivingCountryInd AccountCollectionFlowNewParamsReceivingCountry = "IND"
+	AccountCollectionFlowNewParamsReceivingCountryIrl AccountCollectionFlowNewParamsReceivingCountry = "IRL"
+	AccountCollectionFlowNewParamsReceivingCountryIta AccountCollectionFlowNewParamsReceivingCountry = "ITA"
+	AccountCollectionFlowNewParamsReceivingCountryMex AccountCollectionFlowNewParamsReceivingCountry = "MEX"
+	AccountCollectionFlowNewParamsReceivingCountryNld AccountCollectionFlowNewParamsReceivingCountry = "NLD"
+	AccountCollectionFlowNewParamsReceivingCountryPer AccountCollectionFlowNewParamsReceivingCountry = "PER"
+	AccountCollectionFlowNewParamsReceivingCountryEsp AccountCollectionFlowNewParamsReceivingCountry = "ESP"
+)
 
 type AccountCollectionFlowUpdateParams struct {
 	// Required. The updated status of the account collection flow. Can only be used to

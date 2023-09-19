@@ -208,8 +208,9 @@ type PaymentOrder struct {
 	// A flag that determines whether a payment order should go through transaction
 	// monitoring.
 	TransactionMonitoringEnabled bool `json:"transaction_monitoring_enabled,required"`
-	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-	// `au_becs`, `interac`, `signet`, `provexchange`.
+	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
+	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `sic`, `signet`, `provexchange`,
+	// `zengin`.
 	Type PaymentOrderType `json:"type,required"`
 	// Identifier of the ultimate originator of the payment order.
 	UltimateOriginatingPartyIdentifier string `json:"ultimate_originating_party_identifier,required,nullable"`
@@ -481,8 +482,9 @@ const (
 	PaymentOrderSubtypeWeb                         PaymentOrderSubtype = "WEB"
 )
 
-// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-// `au_becs`, `interac`, `signet`, `provexchange`.
+// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
+// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `sic`, `signet`, `provexchange`,
+// `zengin`.
 type PaymentOrderType string
 
 const (
@@ -497,12 +499,16 @@ const (
 	PaymentOrderTypeInterac     PaymentOrderType = "interac"
 	PaymentOrderTypeMasav       PaymentOrderType = "masav"
 	PaymentOrderTypeNeft        PaymentOrderType = "neft"
+	PaymentOrderTypeNics        PaymentOrderType = "nics"
 	PaymentOrderTypeProvxchange PaymentOrderType = "provxchange"
 	PaymentOrderTypeRtp         PaymentOrderType = "rtp"
+	PaymentOrderTypeSeBankgirot PaymentOrderType = "se_bankgirot"
 	PaymentOrderTypeSen         PaymentOrderType = "sen"
 	PaymentOrderTypeSepa        PaymentOrderType = "sepa"
+	PaymentOrderTypeSic         PaymentOrderType = "sic"
 	PaymentOrderTypeSignet      PaymentOrderType = "signet"
 	PaymentOrderTypeWire        PaymentOrderType = "wire"
+	PaymentOrderTypeZengin      PaymentOrderType = "zengin"
 )
 
 type PaymentOrderNewParams struct {
@@ -516,8 +522,9 @@ type PaymentOrderNewParams struct {
 	Direction param.Field[PaymentOrderNewParamsDirection] `json:"direction,required"`
 	// The ID of one of your organization's internal accounts.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
-	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-	// `au_becs`, `interac`, `signet`, `provexchange`.
+	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
+	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `sic`, `signet`, `provexchange`,
+	// `zengin`.
 	Type       param.Field[PaymentOrderType]                `json:"type,required"`
 	Accounting param.Field[PaymentOrderNewParamsAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
@@ -1026,16 +1033,18 @@ func (r PaymentOrderNewParamsReceivingAccountRoutingDetail) MarshalJSON() (data 
 type PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType string
 
 const (
-	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba          PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "aba"
-	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb        PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "au_bsb"
-	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo     PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "br_codigo"
-	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa        PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "ca_cpa"
-	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips        PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "chips"
-	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps        PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "cnaps"
-	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode   PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
-	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc       PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
-	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
-	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift        PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba                    PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "aba"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb                  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "au_bsb"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo               PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "br_codigo"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa                  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "ca_cpa"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips                  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "chips"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps                  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "cnaps"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode             PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                 PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode           PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift                  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode           PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 )
 
 type PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType string
@@ -1043,6 +1052,7 @@ type PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType string
 const (
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeACH         PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "ach"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "au_becs"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeBacs        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "bacs"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeBook        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "book"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeCard        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "card"
@@ -1052,12 +1062,15 @@ const (
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeInterac     PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "interac"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeMasav       PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "masav"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNeft        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "neft"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNics        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "nics"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSen         PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sen"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSic         PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sic"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "signet"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "wire"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
 )
 
 type PaymentOrderUpdateParams struct {
@@ -1158,8 +1171,9 @@ type PaymentOrderUpdateParams struct {
 	// payment orders, the `subtype` represents the SEC code. We currently support
 	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
 	Subtype param.Field[PaymentOrderSubtype] `json:"subtype"`
-	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-	// `au_becs`, `interac`, `signet`, `provexchange`.
+	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
+	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `sic`, `signet`, `provexchange`,
+	// `zengin`.
 	Type param.Field[PaymentOrderType] `json:"type"`
 	// This represents the identifier by which the person is known to the receiver when
 	// using the CIE subtype for ACH payments. Only the first 22 characters of this
@@ -1430,16 +1444,18 @@ func (r PaymentOrderUpdateParamsReceivingAccountRoutingDetail) MarshalJSON() (da
 type PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType string
 
 const (
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba          PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "aba"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "au_bsb"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo     PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "br_codigo"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "ca_cpa"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "chips"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "cnaps"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode   PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba                    PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "aba"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb                  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "au_bsb"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo               PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "br_codigo"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa                  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "ca_cpa"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips                  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "chips"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps                  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "cnaps"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode             PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                 PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode           PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift                  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode           PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 )
 
 type PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType string
@@ -1447,6 +1463,7 @@ type PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType string
 const (
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeACH         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "ach"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "au_becs"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBacs        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "bacs"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBook        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "book"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCard        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "card"
@@ -1456,12 +1473,15 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeInterac     PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "interac"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMasav       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "masav"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNeft        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "neft"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNics        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "nics"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSen         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sen"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSic         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sic"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "signet"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "wire"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
 )
 
 // To cancel a payment order, use `cancelled`. To redraft a returned payment order,
@@ -1564,12 +1584,16 @@ const (
 	PaymentOrderListParamsTypeInterac     PaymentOrderListParamsType = "interac"
 	PaymentOrderListParamsTypeMasav       PaymentOrderListParamsType = "masav"
 	PaymentOrderListParamsTypeNeft        PaymentOrderListParamsType = "neft"
+	PaymentOrderListParamsTypeNics        PaymentOrderListParamsType = "nics"
 	PaymentOrderListParamsTypeProvxchange PaymentOrderListParamsType = "provxchange"
 	PaymentOrderListParamsTypeRtp         PaymentOrderListParamsType = "rtp"
+	PaymentOrderListParamsTypeSeBankgirot PaymentOrderListParamsType = "se_bankgirot"
 	PaymentOrderListParamsTypeSen         PaymentOrderListParamsType = "sen"
 	PaymentOrderListParamsTypeSepa        PaymentOrderListParamsType = "sepa"
+	PaymentOrderListParamsTypeSic         PaymentOrderListParamsType = "sic"
 	PaymentOrderListParamsTypeSignet      PaymentOrderListParamsType = "signet"
 	PaymentOrderListParamsTypeWire        PaymentOrderListParamsType = "wire"
+	PaymentOrderListParamsTypeZengin      PaymentOrderListParamsType = "zengin"
 )
 
 type PaymentOrderNewAsyncParams struct {
@@ -1583,8 +1607,9 @@ type PaymentOrderNewAsyncParams struct {
 	Direction param.Field[PaymentOrderNewAsyncParamsDirection] `json:"direction,required"`
 	// The ID of one of your organization's internal accounts.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
-	// One of `ach`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`, `bacs`,
-	// `au_becs`, `interac`, `signet`, `provexchange`.
+	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
+	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `sic`, `signet`, `provexchange`,
+	// `zengin`.
 	Type       param.Field[PaymentOrderType]                     `json:"type,required"`
 	Accounting param.Field[PaymentOrderNewAsyncParamsAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
@@ -2050,16 +2075,18 @@ func (r PaymentOrderNewAsyncParamsReceivingAccountRoutingDetail) MarshalJSON() (
 type PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType string
 
 const (
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba          PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "aba"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "au_bsb"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo     PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "br_codigo"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "ca_cpa"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "chips"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "cnaps"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode   PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba                    PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "aba"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb                  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "au_bsb"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo               PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "br_codigo"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa                  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "ca_cpa"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips                  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "chips"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps                  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "cnaps"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode             PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                 PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode           PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift                  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode           PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 )
 
 type PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType string
@@ -2067,6 +2094,7 @@ type PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType string
 const (
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeACH         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "ach"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "au_becs"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBacs        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "bacs"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBook        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "book"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCard        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "card"
@@ -2076,10 +2104,13 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeInterac     PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "interac"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMasav       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "masav"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNeft        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "neft"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNics        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "nics"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSen         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sen"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSic         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sic"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "signet"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "wire"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
 )

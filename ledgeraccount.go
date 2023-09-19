@@ -405,6 +405,9 @@ type LedgerAccountListParams struct {
 	// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
 	ID          param.Field[[]string] `query:"id"`
 	AfterCursor param.Field[string]   `query:"after_cursor"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), `eq` (=), or `not_eq` (!=) to
+	// filter by balance amount.
+	AvailableBalanceAmount param.Field[LedgerAccountListParamsAvailableBalanceAmount] `query:"available_balance_amount"`
 	// Use `balances[effective_at_lower_bound]` and
 	// `balances[effective_at_upper_bound]` to get the balances change between the two
 	// timestamps. The lower bound is inclusive while the upper bound is exclusive of
@@ -423,7 +426,13 @@ type LedgerAccountListParams struct {
 	// parameters.
 	Metadata param.Field[map[string]string] `query:"metadata"`
 	Name     param.Field[string]            `query:"name"`
-	PerPage  param.Field[int64]             `query:"per_page"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), `eq` (=), or `not_eq` (!=) to
+	// filter by balance amount.
+	PendingBalanceAmount param.Field[LedgerAccountListParamsPendingBalanceAmount] `query:"pending_balance_amount"`
+	PerPage              param.Field[int64]                                       `query:"per_page"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), `eq` (=), or `not_eq` (!=) to
+	// filter by balance amount.
+	PostedBalanceAmount param.Field[LedgerAccountListParamsPostedBalanceAmount] `query:"posted_balance_amount"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// updated at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// updated_at%5Bgt%5D=2000-01-01T12:00:00Z.
@@ -433,6 +442,26 @@ type LedgerAccountListParams struct {
 // URLQuery serializes [LedgerAccountListParams]'s query parameters as
 // `url.Values`.
 func (r LedgerAccountListParams) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), `eq` (=), or `not_eq` (!=) to
+// filter by balance amount.
+type LedgerAccountListParamsAvailableBalanceAmount struct {
+	Eq    param.Field[int64] `query:"eq"`
+	Gt    param.Field[int64] `query:"gt"`
+	Gte   param.Field[int64] `query:"gte"`
+	Lt    param.Field[int64] `query:"lt"`
+	Lte   param.Field[int64] `query:"lte"`
+	NotEq param.Field[int64] `query:"not_eq"`
+}
+
+// URLQuery serializes [LedgerAccountListParamsAvailableBalanceAmount]'s query
+// parameters as `url.Values`.
+func (r LedgerAccountListParamsAvailableBalanceAmount) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
@@ -454,6 +483,46 @@ type LedgerAccountListParamsBalances struct {
 // URLQuery serializes [LedgerAccountListParamsBalances]'s query parameters as
 // `url.Values`.
 func (r LedgerAccountListParamsBalances) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), `eq` (=), or `not_eq` (!=) to
+// filter by balance amount.
+type LedgerAccountListParamsPendingBalanceAmount struct {
+	Eq    param.Field[int64] `query:"eq"`
+	Gt    param.Field[int64] `query:"gt"`
+	Gte   param.Field[int64] `query:"gte"`
+	Lt    param.Field[int64] `query:"lt"`
+	Lte   param.Field[int64] `query:"lte"`
+	NotEq param.Field[int64] `query:"not_eq"`
+}
+
+// URLQuery serializes [LedgerAccountListParamsPendingBalanceAmount]'s query
+// parameters as `url.Values`.
+func (r LedgerAccountListParamsPendingBalanceAmount) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), `eq` (=), or `not_eq` (!=) to
+// filter by balance amount.
+type LedgerAccountListParamsPostedBalanceAmount struct {
+	Eq    param.Field[int64] `query:"eq"`
+	Gt    param.Field[int64] `query:"gt"`
+	Gte   param.Field[int64] `query:"gte"`
+	Lt    param.Field[int64] `query:"lt"`
+	Lte   param.Field[int64] `query:"lte"`
+	NotEq param.Field[int64] `query:"not_eq"`
+}
+
+// URLQuery serializes [LedgerAccountListParamsPostedBalanceAmount]'s query
+// parameters as `url.Values`.
+func (r LedgerAccountListParamsPostedBalanceAmount) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
