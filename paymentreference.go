@@ -68,7 +68,7 @@ func (r *PaymentReferenceService) ListAutoPaging(ctx context.Context, query Paym
 
 // get payment_reference
 //
-// Deprecated: use `retrieve` instead
+// Deprecated: use `Get` instead
 func (r *PaymentReferenceService) Retireve(ctx context.Context, id string, opts ...option.RequestOption) (res *PaymentReference, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/payment_references/%s", id)
