@@ -84,7 +84,7 @@ func (r *LedgerAccountPayoutService) ListAutoPaging(ctx context.Context, query L
 
 // Get details on a single ledger account payout.
 //
-// Deprecated: use `retrieve` instead
+// Deprecated: use `Get` instead
 func (r *LedgerAccountPayoutService) Retireve(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountPayout, err error) {
 	opts = append(r.Options[:], opts...)
 	path := fmt.Sprintf("api/ledger_account_payouts/%s", id)
