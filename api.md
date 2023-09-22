@@ -8,7 +8,7 @@
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared#AsyncResponse">AsyncResponse</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared#Currency">Currency</a>
 
-# Top Level
+# moderntreasury
 
 Response Types:
 
