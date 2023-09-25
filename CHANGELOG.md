@@ -1,5 +1,31 @@
 # Changelog
 
+## 1.5.0 (2023-09-25)
+
+Full Changelog: [v1.4.1...v1.5.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.4.1...v1.5.0)
+
+### Features
+
+* **api:** updates ([#89](https://github.com/Modern-Treasury/modern-treasury-go/issues/89)) ([26d932e](https://github.com/Modern-Treasury/modern-treasury-go/commit/26d932e2178f3d823d673b14818504673ecccc0f))
+* improve retry behavior on context deadline ([#92](https://github.com/Modern-Treasury/modern-treasury-go/issues/92)) ([852cca4](https://github.com/Modern-Treasury/modern-treasury-go/commit/852cca4c00794290dada40b85131e3ffa511dc72))
+* retry on 408 Request Timeout ([#85](https://github.com/Modern-Treasury/modern-treasury-go/issues/85)) ([df0dce5](https://github.com/Modern-Treasury/modern-treasury-go/commit/df0dce5be8f34219e33fc10a4f314794a29faf17))
+
+
+### Bug Fixes
+
+* **client:** fix alias comment ([#90](https://github.com/Modern-Treasury/modern-treasury-go/issues/90)) ([8b55479](https://github.com/Modern-Treasury/modern-treasury-go/commit/8b554795e6e9b21b867c108887c70ac4282b2b11))
+* **core:** improve retry behavior and related docs ([#86](https://github.com/Modern-Treasury/modern-treasury-go/issues/86)) ([06f6e59](https://github.com/Modern-Treasury/modern-treasury-go/commit/06f6e59e49138b494c08f7d346eb9a19fc02abe0))
+
+
+### Chores
+
+* **next => main:** release 1.4.1 ([240fd70](https://github.com/Modern-Treasury/modern-treasury-go/commit/240fd704fcfc1bfb6458b7023be02b76d6e7eab7))
+
+
+### Documentation
+
+* **api.md:** rename Top Level to client name ([#91](https://github.com/Modern-Treasury/modern-treasury-go/issues/91)) ([b2f1355](https://github.com/Modern-Treasury/modern-treasury-go/commit/b2f1355aae03ebac7d255c604ec016c58716e5c2))
+
 ## 1.4.1 (2023-09-12)
 
 Full Changelog: [v1.4.0...v1.4.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.4.0...v1.4.1)
