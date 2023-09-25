@@ -6,7 +6,6 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"io"
 	"math"
@@ -229,8 +228,8 @@ func (cfg *RequestConfig) Execute() (err error) {
 		}
 
 		res, err = handler(cfg.Request.Clone(ctx))
-		if errors.Is(err, context.Canceled) {
-			return err
+		if ctx != nil && ctx.Err() != nil {
+			return ctx.Err()
 		}
 		if !shouldRetry(cfg.Request, res) || retryCount >= cfg.MaxRetries {
 			break
