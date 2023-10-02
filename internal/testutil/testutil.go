@@ -7,8 +7,8 @@ import (
 	"testing"
 )
 
-func CheckTestServer(t *testing.T) bool {
-	if _, err := http.Get("http://127.0.0.1:4010"); err != nil {
+func CheckTestServer(t *testing.T, url string) bool {
+	if _, err := http.Get(url); err != nil {
 		str := os.Getenv("SKIP_MOCK_TESTS")
 		skip, err := strconv.ParseBool(str)
 		if err != nil {
