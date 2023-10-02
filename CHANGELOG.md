@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.5.1 (2023-10-02)
+
+Full Changelog: [v1.5.0...v1.5.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.5.0...v1.5.1)
+
 ## 1.5.0 (2023-09-25)
 
 Full Changelog: [v1.4.1...v1.5.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.4.1...v1.5.0)
