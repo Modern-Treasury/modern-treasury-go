@@ -76,7 +76,7 @@ func (r *PageAutoPager[T]) Next() bool {
 	if r.idx >= len(r.page.Items) {
 		r.idx = 0
 		r.page, r.err = r.page.GetNextPage()
-		if r.err != nil || r.page == nil {
+		if r.err != nil || r.page == nil || len(r.page.Items) == 0 {
 			return false
 		}
 	}
