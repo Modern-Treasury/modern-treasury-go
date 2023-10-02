@@ -5,6 +5,7 @@ package moderntreasury_test
 import (
 	"context"
 	"errors"
+	"os"
 	"testing"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
@@ -14,11 +15,15 @@ import (
 )
 
 func TestAccountDetailNewWithOptionalParams(t *testing.T) {
-	if !testutil.CheckTestServer(t) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
 	client := moderntreasury.NewClient(
-		option.WithBaseURL("http://127.0.0.1:4010"),
+		option.WithBaseURL(baseURL),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
@@ -41,11 +46,15 @@ func TestAccountDetailNewWithOptionalParams(t *testing.T) {
 }
 
 func TestAccountDetailGet(t *testing.T) {
-	if !testutil.CheckTestServer(t) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
 	client := moderntreasury.NewClient(
-		option.WithBaseURL("http://127.0.0.1:4010"),
+		option.WithBaseURL(baseURL),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
@@ -65,11 +74,15 @@ func TestAccountDetailGet(t *testing.T) {
 }
 
 func TestAccountDetailListWithOptionalParams(t *testing.T) {
-	if !testutil.CheckTestServer(t) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
 	client := moderntreasury.NewClient(
-		option.WithBaseURL("http://127.0.0.1:4010"),
+		option.WithBaseURL(baseURL),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
@@ -92,11 +105,15 @@ func TestAccountDetailListWithOptionalParams(t *testing.T) {
 }
 
 func TestAccountDetailDelete(t *testing.T) {
-	if !testutil.CheckTestServer(t) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
 	client := moderntreasury.NewClient(
-		option.WithBaseURL("http://127.0.0.1:4010"),
+		option.WithBaseURL(baseURL),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
