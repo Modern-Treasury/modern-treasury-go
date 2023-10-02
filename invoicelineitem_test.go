@@ -5,6 +5,7 @@ package moderntreasury_test
 import (
 	"context"
 	"errors"
+	"os"
 	"testing"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
@@ -13,11 +14,15 @@ import (
 )
 
 func TestInvoiceLineItemNewWithOptionalParams(t *testing.T) {
-	if !testutil.CheckTestServer(t) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
 	client := moderntreasury.NewClient(
-		option.WithBaseURL("http://127.0.0.1:4010"),
+		option.WithBaseURL(baseURL),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
@@ -42,11 +47,15 @@ func TestInvoiceLineItemNewWithOptionalParams(t *testing.T) {
 }
 
 func TestInvoiceLineItemGet(t *testing.T) {
-	if !testutil.CheckTestServer(t) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
 	client := moderntreasury.NewClient(
-		option.WithBaseURL("http://127.0.0.1:4010"),
+		option.WithBaseURL(baseURL),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
@@ -65,11 +74,15 @@ func TestInvoiceLineItemGet(t *testing.T) {
 }
 
 func TestInvoiceLineItemUpdateWithOptionalParams(t *testing.T) {
-	if !testutil.CheckTestServer(t) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
 	client := moderntreasury.NewClient(
-		option.WithBaseURL("http://127.0.0.1:4010"),
+		option.WithBaseURL(baseURL),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
@@ -95,11 +108,15 @@ func TestInvoiceLineItemUpdateWithOptionalParams(t *testing.T) {
 }
 
 func TestInvoiceLineItemListWithOptionalParams(t *testing.T) {
-	if !testutil.CheckTestServer(t) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
 	client := moderntreasury.NewClient(
-		option.WithBaseURL("http://127.0.0.1:4010"),
+		option.WithBaseURL(baseURL),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
@@ -121,11 +138,15 @@ func TestInvoiceLineItemListWithOptionalParams(t *testing.T) {
 }
 
 func TestInvoiceLineItemDelete(t *testing.T) {
-	if !testutil.CheckTestServer(t) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
 	client := moderntreasury.NewClient(
-		option.WithBaseURL("http://127.0.0.1:4010"),
+		option.WithBaseURL(baseURL),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)

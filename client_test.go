@@ -6,16 +6,25 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+	"os"
 	"testing"
 	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
 func TestContextCancel(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
 	client := moderntreasury.NewClient(
-		option.WithBaseURL("http://127.0.0.1:4010"),
+		option.WithBaseURL(baseURL),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
@@ -39,8 +48,15 @@ func (t *neverTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 }
 
 func TestContextCancelDelay(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
 	client := moderntreasury.NewClient(
-		option.WithBaseURL("http://127.0.0.1:4010"),
+		option.WithBaseURL(baseURL),
 		option.WithAPIKey("APIKey"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithHTTPClient(&http.Client{Transport: &neverTransport{}}),
@@ -60,6 +76,14 @@ func TestContextCancelDelay(t *testing.T) {
 }
 
 func TestContextDeadline(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+
 	testTimeout := time.After(3 * time.Second)
 	testDone := make(chan bool)
 
@@ -69,7 +93,7 @@ func TestContextDeadline(t *testing.T) {
 
 	go func() {
 		client := moderntreasury.NewClient(
-			option.WithBaseURL("http://127.0.0.1:4010"),
+			option.WithBaseURL(baseURL),
 			option.WithAPIKey("APIKey"),
 			option.WithOrganizationID("my-organization-ID"),
 			option.WithHTTPClient(&http.Client{Transport: &neverTransport{}}),
