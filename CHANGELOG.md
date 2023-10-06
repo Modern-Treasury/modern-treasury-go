@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.5.2 (2023-10-06)
+
+Full Changelog: [v1.5.1...v1.5.2](https://github.com/modern-treasury/modern-treasury-go/compare/v1.5.1...v1.5.2)
+
+### Bug Fixes
+
+* prevent index out of range bug during auto-pagination ([#98](https://github.com/modern-treasury/modern-treasury-go/issues/98)) ([6db501f](https://github.com/modern-treasury/modern-treasury-go/commit/6db501f1ef403e1d80209723cec0289c94d9b832))
+
 ## 1.5.1 (2023-10-02)
 
 Full Changelog: [v1.5.0...v1.5.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.5.0...v1.5.1)
