@@ -47,7 +47,7 @@ import (
 
 func main() {
 	client := moderntreasury.NewClient(
-		option.WithAPIKey("my api key"),                 // defaults to os.LookupEnv("MODERN_TREASURY_API_KEY")
+		option.WithAPIKey("My API Key"),                 // defaults to os.LookupEnv("MODERN_TREASURY_API_KEY")
 		option.WithOrganizationID("my-organization-ID"), // defaults to os.LookupEnv("MODERN_TREASURY_ORGANIZATION_ID")
 	)
 	externalAccount, err := client.ExternalAccounts.New(context.TODO(), moderntreasury.ExternalAccountNewParams{

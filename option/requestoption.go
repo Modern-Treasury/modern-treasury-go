@@ -182,15 +182,6 @@ func WithRequestTimeout(dur time.Duration) RequestOption {
 	}
 }
 
-// WithAPIKey returns a RequestOption that specifies a API Key
-// to be used as the basis for authentication.
-func WithAPIKey(key string) RequestOption {
-	return func(r *requestconfig.RequestConfig) error {
-		r.APIKey = key
-		return r.Apply(WithHeader("Authorization", fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(r.OrganizationID+":"+r.APIKey)))))
-	}
-}
-
 // WithEnvironmentProduction returns a RequestOption that sets the current
 // environment to be the "production" environment. An environment specifies which base URL
 // to use by default.
@@ -198,15 +189,19 @@ func WithEnvironmentProduction() RequestOption {
 	return WithBaseURL("https://app.moderntreasury.com/")
 }
 
+// WithAPIKey returns a RequestOption that sets the client setting "api_key".
+func WithAPIKey(value string) RequestOption {
+	return func(r *requestconfig.RequestConfig) error {
+		r.APIKey = value
+		return r.Apply(WithHeader("authorization", fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(r.OrganizationID+":"+r.APIKey)))))
+	}
+}
+
 // WithOrganizationID returns a RequestOption that sets the client setting "organization_id".
 func WithOrganizationID(value string) RequestOption {
 	return func(r *requestconfig.RequestConfig) error {
 		r.OrganizationID = value
-		err := r.Apply(WithHeader("Authorization", fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(r.OrganizationID+":"+r.APIKey)))))
-		if err != nil {
-			return err
-		}
-		return nil
+		return r.Apply(WithHeader("authorization", fmt.Sprintf("Basic %s", base64.StdEncoding.EncodeToString([]byte(r.OrganizationID+":"+r.APIKey)))))
 	}
 }
 
