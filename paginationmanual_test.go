@@ -22,7 +22,7 @@ func TestManualPagination(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	page, err := client.ExternalAccounts.List(context.TODO(), moderntreasury.ExternalAccountListParams{})

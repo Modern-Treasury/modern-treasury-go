@@ -24,7 +24,7 @@ func TestLedgerTransactionVersionListWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerTransactions.Versions.List(context.TODO(), moderntreasury.LedgerTransactionVersionListParams{

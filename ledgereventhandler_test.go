@@ -24,7 +24,7 @@ func TestLedgerEventHandlerNewWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerEventHandlers.New(context.TODO(), moderntreasury.LedgerEventHandlerNewParams{
@@ -83,7 +83,7 @@ func TestLedgerEventHandlerGet(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerEventHandlers.Get(context.TODO(), "string")
@@ -106,7 +106,7 @@ func TestLedgerEventHandlerListWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerEventHandlers.List(context.TODO(), moderntreasury.LedgerEventHandlerListParams{
@@ -139,7 +139,7 @@ func TestLedgerEventHandlerDelete(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerEventHandlers.Delete(context.TODO(), "string")

@@ -24,7 +24,7 @@ func TestLedgerAccountCategoryNewWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountCategories.New(context.TODO(), moderntreasury.LedgerAccountCategoryNewParams{
@@ -59,7 +59,7 @@ func TestLedgerAccountCategoryGetWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountCategories.Get(
@@ -91,7 +91,7 @@ func TestLedgerAccountCategoryUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountCategories.Update(
@@ -126,7 +126,7 @@ func TestLedgerAccountCategoryListWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountCategories.List(context.TODO(), moderntreasury.LedgerAccountCategoryListParams{
@@ -163,7 +163,7 @@ func TestLedgerAccountCategoryDelete(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountCategories.Delete(context.TODO(), "string")
@@ -186,7 +186,7 @@ func TestLedgerAccountCategoryAddLedgerAccount(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	err := client.LedgerAccountCategories.AddLedgerAccount(
@@ -213,7 +213,7 @@ func TestLedgerAccountCategoryAddNestedCategory(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	err := client.LedgerAccountCategories.AddNestedCategory(
@@ -240,7 +240,7 @@ func TestLedgerAccountCategoryRemoveLedgerAccount(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	err := client.LedgerAccountCategories.RemoveLedgerAccount(
@@ -267,7 +267,7 @@ func TestLedgerAccountCategoryRemoveNestedCategory(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	err := client.LedgerAccountCategories.RemoveNestedCategory(

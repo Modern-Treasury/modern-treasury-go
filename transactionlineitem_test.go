@@ -23,7 +23,7 @@ func TestTransactionLineItemGet(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Transactions.LineItems.Get(context.TODO(), "string")
@@ -46,7 +46,7 @@ func TestTransactionLineItemListWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Transactions.LineItems.List(context.TODO(), moderntreasury.TransactionLineItemListParams{
