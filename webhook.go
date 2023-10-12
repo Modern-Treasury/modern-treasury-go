@@ -54,7 +54,7 @@ func (r *WebhookService) GetSignature(payload []byte, key string) (res string, e
 func (r *WebhookService) ValidateSignature(payload []byte, key string, headers http.Header) (res bool, err error) {
 	expectedSignature := headers.Get("X-Signature")
 	if expectedSignature == "" {
-		return false, errors.New("Could not find an X-Signature header")
+		return false, errors.New("Could not find X-Signature header")
 	}
 
 	signature, err := r.GetSignature(payload, key)
