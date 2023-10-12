@@ -25,7 +25,7 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Invoices.New(context.TODO(), moderntreasury.InvoiceNewParams{
@@ -115,7 +115,7 @@ func TestInvoiceGet(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Invoices.Get(context.TODO(), "string")
@@ -138,7 +138,7 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Invoices.Update(
@@ -233,7 +233,7 @@ func TestInvoiceListWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Invoices.List(context.TODO(), moderntreasury.InvoiceListParams{
@@ -259,7 +259,7 @@ func TestInvoiceAddPaymentOrder(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	err := client.Invoices.AddPaymentOrder(

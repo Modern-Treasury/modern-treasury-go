@@ -24,7 +24,7 @@ func TestPaymentFlowNewWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.PaymentFlows.New(context.TODO(), moderntreasury.PaymentFlowNewParams{
@@ -54,7 +54,7 @@ func TestPaymentFlowGet(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.PaymentFlows.Get(context.TODO(), "string")
@@ -77,7 +77,7 @@ func TestPaymentFlowUpdate(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.PaymentFlows.Update(
@@ -106,7 +106,7 @@ func TestPaymentFlowListWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.PaymentFlows.List(context.TODO(), moderntreasury.PaymentFlowListParams{

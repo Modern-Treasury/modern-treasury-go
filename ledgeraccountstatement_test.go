@@ -24,7 +24,7 @@ func TestLedgerAccountStatementNewWithOptionalParams(t *testing.T) {
 	t.Skip("Prism is broken in this case")
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountStatements.New(context.TODO(), moderntreasury.LedgerAccountStatementNewParams{
@@ -57,7 +57,7 @@ func TestLedgerAccountStatementGet(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountStatements.Get(context.TODO(), "string")

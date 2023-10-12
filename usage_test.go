@@ -22,7 +22,7 @@ func TestUsage(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	externalAccount, err := client.ExternalAccounts.New(context.TODO(), moderntreasury.ExternalAccountNewParams{

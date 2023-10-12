@@ -24,7 +24,7 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.InternalAccounts.New(context.TODO(), moderntreasury.InternalAccountNewParams{
@@ -67,7 +67,7 @@ func TestInternalAccountGet(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.InternalAccounts.Get(context.TODO(), "string")
@@ -90,7 +90,7 @@ func TestInternalAccountUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.InternalAccounts.Update(
@@ -124,7 +124,7 @@ func TestInternalAccountListWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.InternalAccounts.List(context.TODO(), moderntreasury.InternalAccountListParams{

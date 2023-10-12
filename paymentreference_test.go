@@ -23,7 +23,7 @@ func TestPaymentReferenceGet(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.PaymentReferences.Get(context.TODO(), "string")
@@ -46,7 +46,7 @@ func TestPaymentReferenceListWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.PaymentReferences.List(context.TODO(), moderntreasury.PaymentReferenceListParams{
@@ -75,7 +75,7 @@ func TestPaymentReferenceRetireve(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.PaymentReferences.Retireve(context.TODO(), "string")

@@ -23,7 +23,7 @@ func TestLedgerAccountBalanceMonitorNewWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountBalanceMonitors.New(context.TODO(), moderntreasury.LedgerAccountBalanceMonitorNewParams{
@@ -59,7 +59,7 @@ func TestLedgerAccountBalanceMonitorGet(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountBalanceMonitors.Get(context.TODO(), "string")
@@ -82,7 +82,7 @@ func TestLedgerAccountBalanceMonitorUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountBalanceMonitors.Update(
@@ -116,7 +116,7 @@ func TestLedgerAccountBalanceMonitorListWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountBalanceMonitors.List(context.TODO(), moderntreasury.LedgerAccountBalanceMonitorListParams{
@@ -147,7 +147,7 @@ func TestLedgerAccountBalanceMonitorDelete(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountBalanceMonitors.Delete(context.TODO(), "string")

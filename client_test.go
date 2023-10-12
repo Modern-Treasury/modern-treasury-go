@@ -25,7 +25,7 @@ func TestContextCancel(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	cancelCtx, cancel := context.WithCancel(context.Background())
@@ -57,7 +57,7 @@ func TestContextCancelDelay(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 		option.WithHTTPClient(&http.Client{Transport: &neverTransport{}}),
 	)
@@ -94,7 +94,7 @@ func TestContextDeadline(t *testing.T) {
 	go func() {
 		client := moderntreasury.NewClient(
 			option.WithBaseURL(baseURL),
-			option.WithAPIKey("APIKey"),
+			option.WithAPIKey("My API Key"),
 			option.WithOrganizationID("my-organization-ID"),
 			option.WithHTTPClient(&http.Client{Transport: &neverTransport{}}),
 		)

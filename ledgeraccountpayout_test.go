@@ -23,7 +23,7 @@ func TestLedgerAccountPayoutNewWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountPayouts.New(context.TODO(), moderntreasury.LedgerAccountPayoutNewParams{
@@ -58,7 +58,7 @@ func TestLedgerAccountPayoutGet(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountPayouts.Get(context.TODO(), "string")
@@ -81,7 +81,7 @@ func TestLedgerAccountPayoutUpdateWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountPayouts.Update(
@@ -116,7 +116,7 @@ func TestLedgerAccountPayoutListWithOptionalParams(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountPayouts.List(context.TODO(), moderntreasury.LedgerAccountPayoutListParams{
@@ -147,7 +147,7 @@ func TestLedgerAccountPayoutRetireve(t *testing.T) {
 	}
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
-		option.WithAPIKey("APIKey"),
+		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountPayouts.Retireve(context.TODO(), "string")
