@@ -485,10 +485,10 @@ Methods:
 
 # Webhooks
 
-Custom Methods:
+Methods:
 
-- GetSignature
-- ValidateSignature
+- <code>client.Webhooks.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go#WebhookService.GetSignature">GetSignature</a>(payload []byte, key string) (string, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code>client.Webhooks.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go#WebhookService.ValidateSignature">ValidateSignature</a>(payload []byte, key string, headers http.Header) (bool, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # VirtualAccounts
 
