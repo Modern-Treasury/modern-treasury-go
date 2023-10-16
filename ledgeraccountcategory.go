@@ -149,9 +149,9 @@ type LedgerAccountCategory struct {
 	// The name of the ledger account category.
 	Name string `json:"name,required"`
 	// The normal balance of the ledger account category.
-	NormalBalance LedgerAccountCategoryNormalBalance `json:"normal_balance,required"`
-	Object        string                             `json:"object,required"`
-	UpdatedAt     time.Time                          `json:"updated_at,required" format:"date-time"`
+	NormalBalance shared.TransactionDirection `json:"normal_balance,required"`
+	Object        string                      `json:"object,required"`
+	UpdatedAt     time.Time                   `json:"updated_at,required" format:"date-time"`
 	JSON          ledgerAccountCategoryJSON
 }
 
@@ -297,14 +297,6 @@ func (r *LedgerAccountCategoryBalancesPostedBalance) UnmarshalJSON(data []byte) 
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The normal balance of the ledger account category.
-type LedgerAccountCategoryNormalBalance string
-
-const (
-	LedgerAccountCategoryNormalBalanceCredit LedgerAccountCategoryNormalBalance = "credit"
-	LedgerAccountCategoryNormalBalanceDebit  LedgerAccountCategoryNormalBalance = "debit"
-)
-
 type LedgerAccountCategoryNewParams struct {
 	// The currency of the ledger account category.
 	Currency param.Field[string] `json:"currency,required"`
@@ -313,7 +305,7 @@ type LedgerAccountCategoryNewParams struct {
 	// The name of the ledger account category.
 	Name param.Field[string] `json:"name,required"`
 	// The normal balance of the ledger account category.
-	NormalBalance param.Field[LedgerAccountCategoryNewParamsNormalBalance] `json:"normal_balance,required"`
+	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
 	// The currency exponent of the ledger account category.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account category.
@@ -326,14 +318,6 @@ type LedgerAccountCategoryNewParams struct {
 func (r LedgerAccountCategoryNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-// The normal balance of the ledger account category.
-type LedgerAccountCategoryNewParamsNormalBalance string
-
-const (
-	LedgerAccountCategoryNewParamsNormalBalanceCredit LedgerAccountCategoryNewParamsNormalBalance = "credit"
-	LedgerAccountCategoryNewParamsNormalBalanceDebit  LedgerAccountCategoryNewParamsNormalBalance = "debit"
-)
 
 type LedgerAccountCategoryGetParams struct {
 	// For example, if you want the balances as of a particular time (ISO8601), the

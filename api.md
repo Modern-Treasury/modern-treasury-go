@@ -2,11 +2,13 @@
 
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared#AccountsType">AccountsType</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared#Currency">Currency</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared#TransactionDirection">TransactionDirection</a>
 
 # Shared Response Types
 
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared#AsyncResponse">AsyncResponse</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared#Currency">Currency</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/internal/shared#TransactionDirection">TransactionDirection</a>
 
 # moderntreasury
 

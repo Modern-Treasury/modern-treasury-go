@@ -10,6 +10,7 @@ import (
 	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
@@ -77,7 +78,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			LedgerAccount: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccount{
 				Name:             moderntreasury.F("string"),
 				Description:      moderntreasury.F("string"),
-				NormalBalance:    moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountNormalBalanceCredit),
+				NormalBalance:    moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				Currency:         moderntreasury.F("string"),
 				CurrencyExponent: moderntreasury.F(int64(0)),
@@ -145,7 +146,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			LedgerAccount: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccount{
 				Name:             moderntreasury.F("string"),
 				Description:      moderntreasury.F("string"),
-				NormalBalance:    moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountNormalBalanceCredit),
+				NormalBalance:    moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				Currency:         moderntreasury.F("string"),
 				CurrencyExponent: moderntreasury.F(int64(0)),
@@ -213,7 +214,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			LedgerAccount: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccount{
 				Name:             moderntreasury.F("string"),
 				Description:      moderntreasury.F("string"),
-				NormalBalance:    moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountNormalBalanceCredit),
+				NormalBalance:    moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				Currency:         moderntreasury.F("string"),
 				CurrencyExponent: moderntreasury.F(int64(0)),
@@ -388,7 +389,7 @@ func TestCounterpartyCollectAccountWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"string",
 		moderntreasury.CounterpartyCollectAccountParams{
-			Direction:      moderntreasury.F(moderntreasury.CounterpartyCollectAccountParamsDirectionCredit),
+			Direction:      moderntreasury.F(shared.TransactionDirectionCredit),
 			CustomRedirect: moderntreasury.F("https://example.com"),
 			Fields:         moderntreasury.F([]moderntreasury.CounterpartyCollectAccountParamsField{moderntreasury.CounterpartyCollectAccountParamsFieldName, moderntreasury.CounterpartyCollectAccountParamsFieldNameOnAccount, moderntreasury.CounterpartyCollectAccountParamsFieldTaxpayerIdentifier}),
 			SendEmail:      moderntreasury.F(true),

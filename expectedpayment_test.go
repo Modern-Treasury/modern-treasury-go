@@ -31,7 +31,7 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 	_, err := client.ExpectedPayments.New(context.TODO(), moderntreasury.ExpectedPaymentNewParams{
 		AmountLowerBound:  moderntreasury.F(int64(0)),
 		AmountUpperBound:  moderntreasury.F(int64(0)),
-		Direction:         moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsDirectionCredit),
+		Direction:         moderntreasury.F(shared.TransactionDirectionCredit),
 		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		CounterpartyID:    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Currency:          moderntreasury.F(shared.CurrencyAed),
@@ -133,7 +133,7 @@ func TestExpectedPaymentUpdateWithOptionalParams(t *testing.T) {
 			DateLowerBound:    moderntreasury.F(time.Now()),
 			DateUpperBound:    moderntreasury.F(time.Now()),
 			Description:       moderntreasury.F("string"),
-			Direction:         moderntreasury.F(moderntreasury.ExpectedPaymentUpdateParamsDirectionCredit),
+			Direction:         moderntreasury.F(shared.TransactionDirectionCredit),
 			InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
@@ -174,7 +174,7 @@ func TestExpectedPaymentListWithOptionalParams(t *testing.T) {
 		CounterpartyID:      moderntreasury.F("string"),
 		CreatedAtLowerBound: moderntreasury.F(time.Now()),
 		CreatedAtUpperBound: moderntreasury.F(time.Now()),
-		Direction:           moderntreasury.F(moderntreasury.ExpectedPaymentListParamsDirectionCredit),
+		Direction:           moderntreasury.F(shared.TransactionDirectionCredit),
 		InternalAccountID:   moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",

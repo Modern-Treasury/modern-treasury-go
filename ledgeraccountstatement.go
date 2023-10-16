@@ -11,6 +11,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
 
@@ -71,7 +72,7 @@ type LedgerAccountStatementNewResponse struct {
 	// Lock version of the ledger account at the time of statement generation.
 	LedgerAccountLockVersion int64 `json:"ledger_account_lock_version,required"`
 	// The normal balance of the ledger account.
-	LedgerAccountNormalBalance LedgerAccountStatementNewResponseLedgerAccountNormalBalance `json:"ledger_account_normal_balance,required"`
+	LedgerAccountNormalBalance shared.TransactionDirection `json:"ledger_account_normal_balance,required"`
 	// The id of the ledger that this ledger account statement belongs to.
 	LedgerID string `json:"ledger_id,required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
@@ -239,14 +240,6 @@ func (r *LedgerAccountStatementNewResponseEndingBalancePostedBalance) UnmarshalJ
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// The normal balance of the ledger account.
-type LedgerAccountStatementNewResponseLedgerAccountNormalBalance string
-
-const (
-	LedgerAccountStatementNewResponseLedgerAccountNormalBalanceCredit LedgerAccountStatementNewResponseLedgerAccountNormalBalance = "credit"
-	LedgerAccountStatementNewResponseLedgerAccountNormalBalanceDebit  LedgerAccountStatementNewResponseLedgerAccountNormalBalance = "debit"
-)
-
 // The pending, posted, and available balances for this ledger account at the
 // `effective_at_lower_bound`. The posted balance is the sum of all posted entries
 // on the account. The pending balance is the sum of all pending and posted entries
@@ -392,7 +385,7 @@ type LedgerAccountStatementGetResponse struct {
 	// Lock version of the ledger account at the time of statement generation.
 	LedgerAccountLockVersion int64 `json:"ledger_account_lock_version,required"`
 	// The normal balance of the ledger account.
-	LedgerAccountNormalBalance LedgerAccountStatementGetResponseLedgerAccountNormalBalance `json:"ledger_account_normal_balance,required"`
+	LedgerAccountNormalBalance shared.TransactionDirection `json:"ledger_account_normal_balance,required"`
 	// The id of the ledger that this ledger account statement belongs to.
 	LedgerID string `json:"ledger_id,required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
@@ -559,14 +552,6 @@ type ledgerAccountStatementGetResponseEndingBalancePostedBalanceJSON struct {
 func (r *LedgerAccountStatementGetResponseEndingBalancePostedBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-// The normal balance of the ledger account.
-type LedgerAccountStatementGetResponseLedgerAccountNormalBalance string
-
-const (
-	LedgerAccountStatementGetResponseLedgerAccountNormalBalanceCredit LedgerAccountStatementGetResponseLedgerAccountNormalBalance = "credit"
-	LedgerAccountStatementGetResponseLedgerAccountNormalBalanceDebit  LedgerAccountStatementGetResponseLedgerAccountNormalBalance = "debit"
-)
 
 // The pending, posted, and available balances for this ledger account at the
 // `effective_at_lower_bound`. The posted balance is the sum of all posted entries

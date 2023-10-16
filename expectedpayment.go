@@ -111,7 +111,7 @@ type ExpectedPayment struct {
 	Description string `json:"description,required,nullable"`
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
-	Direction ExpectedPaymentDirection `json:"direction,required"`
+	Direction shared.TransactionDirection `json:"direction,required"`
 	// The ID of the Internal Account for the expected payment.
 	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
 	// The ID of the ledger transaction linked to the expected payment.
@@ -188,15 +188,6 @@ func (r *ExpectedPayment) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// One of credit or debit. When you are receiving money, use credit. When you are
-// being charged, use debit.
-type ExpectedPaymentDirection string
-
-const (
-	ExpectedPaymentDirectionCredit ExpectedPaymentDirection = "credit"
-	ExpectedPaymentDirectionDebit  ExpectedPaymentDirection = "debit"
-)
-
 // One of manual if this expected payment was manually reconciled in the dashboard,
 // automatic if it was automatically reconciled by Modern Treasury, or null if it
 // is unreconciled.
@@ -254,7 +245,7 @@ type ExpectedPaymentNewParams struct {
 	AmountUpperBound param.Field[int64] `json:"amount_upper_bound,required"`
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
-	Direction param.Field[ExpectedPaymentNewParamsDirection] `json:"direction,required"`
+	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
 	// The ID of the Internal Account for the expected payment.
 	InternalAccountID param.Field[string] `json:"internal_account_id,required" format:"uuid"`
 	// The ID of the counterparty you expect for this payment.
@@ -293,15 +284,6 @@ func (r ExpectedPaymentNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// One of credit or debit. When you are receiving money, use credit. When you are
-// being charged, use debit.
-type ExpectedPaymentNewParamsDirection string
-
-const (
-	ExpectedPaymentNewParamsDirectionCredit ExpectedPaymentNewParamsDirection = "credit"
-	ExpectedPaymentNewParamsDirectionDebit  ExpectedPaymentNewParamsDirection = "debit"
-)
-
 type ExpectedPaymentNewParamsLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
@@ -339,7 +321,7 @@ type ExpectedPaymentUpdateParams struct {
 	Description param.Field[string] `json:"description"`
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
-	Direction param.Field[ExpectedPaymentUpdateParamsDirection] `json:"direction"`
+	Direction param.Field[shared.TransactionDirection] `json:"direction"`
 	// The ID of the Internal Account for the expected payment.
 	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -367,15 +349,6 @@ func (r ExpectedPaymentUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// One of credit or debit. When you are receiving money, use credit. When you are
-// being charged, use debit.
-type ExpectedPaymentUpdateParamsDirection string
-
-const (
-	ExpectedPaymentUpdateParamsDirectionCredit ExpectedPaymentUpdateParamsDirection = "credit"
-	ExpectedPaymentUpdateParamsDirectionDebit  ExpectedPaymentUpdateParamsDirection = "debit"
-)
-
 type ExpectedPaymentListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
 	// Specify counterparty_id to see expected_payments for a specific account.
@@ -385,7 +358,7 @@ type ExpectedPaymentListParams struct {
 	// Used to return expected payments created before some datetime
 	CreatedAtUpperBound param.Field[time.Time] `query:"created_at_upper_bound" format:"date-time"`
 	// One of credit, debit
-	Direction param.Field[ExpectedPaymentListParamsDirection] `query:"direction"`
+	Direction param.Field[shared.TransactionDirection] `query:"direction"`
 	// Specify internal_account_id to see expected_payments for a specific account.
 	InternalAccountID param.Field[string] `query:"internal_account_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
@@ -408,14 +381,6 @@ func (r ExpectedPaymentListParams) URLQuery() (v url.Values) {
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
-
-// One of credit, debit
-type ExpectedPaymentListParamsDirection string
-
-const (
-	ExpectedPaymentListParamsDirectionCredit ExpectedPaymentListParamsDirection = "credit"
-	ExpectedPaymentListParamsDirectionDebit  ExpectedPaymentListParamsDirection = "debit"
-)
 
 // One of unreconciled, reconciled, or archived.
 type ExpectedPaymentListParamsStatus string

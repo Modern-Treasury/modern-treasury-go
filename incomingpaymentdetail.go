@@ -95,7 +95,7 @@ type IncomingPaymentDetail struct {
 	// The raw data from the payment pre-notification file that we get from the bank.
 	Data map[string]interface{} `json:"data,required"`
 	// One of `credit` or `debit`.
-	Direction IncomingPaymentDetailDirection `json:"direction,required"`
+	Direction shared.TransactionDirection `json:"direction,required"`
 	// The ID of the Internal Account for the incoming payment detail. This is always
 	// present.
 	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
@@ -178,14 +178,6 @@ func (r *IncomingPaymentDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// One of `credit` or `debit`.
-type IncomingPaymentDetailDirection string
-
-const (
-	IncomingPaymentDetailDirectionCredit IncomingPaymentDetailDirection = "credit"
-	IncomingPaymentDetailDirectionDebit  IncomingPaymentDetailDirection = "debit"
-)
-
 // The type of the originating account number for the incoming payment detail.
 type IncomingPaymentDetailOriginatingAccountNumberType string
 
@@ -260,7 +252,7 @@ type IncomingPaymentDetailListParams struct {
 	// specified date (YYYY-MM-DD).
 	AsOfDateStart param.Field[time.Time] `query:"as_of_date_start" format:"date"`
 	// One of `credit` or `debit`.
-	Direction param.Field[IncomingPaymentDetailListParamsDirection] `query:"direction"`
+	Direction param.Field[shared.TransactionDirection] `query:"direction"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
@@ -285,14 +277,6 @@ func (r IncomingPaymentDetailListParams) URLQuery() (v url.Values) {
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
-
-// One of `credit` or `debit`.
-type IncomingPaymentDetailListParamsDirection string
-
-const (
-	IncomingPaymentDetailListParamsDirectionCredit IncomingPaymentDetailListParamsDirection = "credit"
-	IncomingPaymentDetailListParamsDirectionDebit  IncomingPaymentDetailListParamsDirection = "debit"
-)
 
 // The current status of the incoming payment order. One of `pending`, `completed`,
 // or `returned`.

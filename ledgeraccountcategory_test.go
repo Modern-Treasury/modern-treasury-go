@@ -10,6 +10,7 @@ import (
 	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
@@ -31,7 +32,7 @@ func TestLedgerAccountCategoryNewWithOptionalParams(t *testing.T) {
 		Currency:         moderntreasury.F("string"),
 		LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Name:             moderntreasury.F("string"),
-		NormalBalance:    moderntreasury.F(moderntreasury.LedgerAccountCategoryNewParamsNormalBalanceCredit),
+		NormalBalance:    moderntreasury.F(shared.TransactionDirectionCredit),
 		CurrencyExponent: moderntreasury.F(int64(0)),
 		Description:      moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{

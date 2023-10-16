@@ -134,7 +134,7 @@ func TestInternalAccountListWithOptionalParams(t *testing.T) {
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		PaymentDirection: moderntreasury.F(moderntreasury.InternalAccountListParamsPaymentDirectionCredit),
+		PaymentDirection: moderntreasury.F(shared.TransactionDirectionCredit),
 		PaymentType:      moderntreasury.F(moderntreasury.InternalAccountListParamsPaymentTypeACH),
 		PerPage:          moderntreasury.F(int64(0)),
 	})
