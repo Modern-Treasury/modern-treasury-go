@@ -77,7 +77,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 			EffectiveDate: moderntreasury.F(time.Now()),
 			LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerEntry{{
 				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
+				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				LockVersion:     moderntreasury.F(int64(0)),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -97,7 +97,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
+				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				LockVersion:     moderntreasury.F(int64(0)),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -117,7 +117,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
+				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				LockVersion:     moderntreasury.F(int64(0)),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -222,7 +222,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 			LedgerAccount: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountLedgerAccount{
 				Name:             moderntreasury.F("string"),
 				Description:      moderntreasury.F("string"),
-				NormalBalance:    moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalanceCredit),
+				NormalBalance:    moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				Currency:         moderntreasury.F("string"),
 				CurrencyExponent: moderntreasury.F(int64(0)),
@@ -406,7 +406,7 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 				LedgerAccount: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountLedgerAccount{
 					Name:             moderntreasury.F("string"),
 					Description:      moderntreasury.F("string"),
-					NormalBalance:    moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalanceCredit),
+					NormalBalance:    moderntreasury.F(shared.TransactionDirectionCredit),
 					LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 					Currency:         moderntreasury.F("string"),
 					CurrencyExponent: moderntreasury.F(int64(0)),
@@ -468,7 +468,7 @@ func TestPaymentOrderListWithOptionalParams(t *testing.T) {
 	_, err := client.PaymentOrders.List(context.TODO(), moderntreasury.PaymentOrderListParams{
 		AfterCursor:        moderntreasury.F("string"),
 		CounterpartyID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		Direction:          moderntreasury.F(moderntreasury.PaymentOrderListParamsDirectionCredit),
+		Direction:          moderntreasury.F(shared.TransactionDirectionCredit),
 		EffectiveDateEnd:   moderntreasury.F(time.Now()),
 		EffectiveDateStart: moderntreasury.F(time.Now()),
 		Metadata: moderntreasury.F(map[string]string{
@@ -535,7 +535,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 			EffectiveDate: moderntreasury.F(time.Now()),
 			LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntry{{
 				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirectionCredit),
+				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				LockVersion:     moderntreasury.F(int64(0)),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -555,7 +555,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirectionCredit),
+				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				LockVersion:     moderntreasury.F(int64(0)),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -575,7 +575,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirectionCredit),
+				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				LockVersion:     moderntreasury.F(int64(0)),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -680,7 +680,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 			LedgerAccount: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount{
 				Name:             moderntreasury.F("string"),
 				Description:      moderntreasury.F("string"),
-				NormalBalance:    moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalanceCredit),
+				NormalBalance:    moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				Currency:         moderntreasury.F("string"),
 				CurrencyExponent: moderntreasury.F(int64(0)),

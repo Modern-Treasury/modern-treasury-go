@@ -295,7 +295,7 @@ type InternalAccountListParams struct {
 	// parameters.
 	Metadata param.Field[map[string]string] `query:"metadata"`
 	// The direction of payments that can be made by internal account.
-	PaymentDirection param.Field[InternalAccountListParamsPaymentDirection] `query:"payment_direction"`
+	PaymentDirection param.Field[shared.TransactionDirection] `query:"payment_direction"`
 	// The type of payment that can be made by the internal account.
 	PaymentType param.Field[InternalAccountListParamsPaymentType] `query:"payment_type"`
 	PerPage     param.Field[int64]                                `query:"per_page"`
@@ -309,14 +309,6 @@ func (r InternalAccountListParams) URLQuery() (v url.Values) {
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
-
-// The direction of payments that can be made by internal account.
-type InternalAccountListParamsPaymentDirection string
-
-const (
-	InternalAccountListParamsPaymentDirectionCredit InternalAccountListParamsPaymentDirection = "credit"
-	InternalAccountListParamsPaymentDirectionDebit  InternalAccountListParamsPaymentDirection = "debit"
-)
 
 // The type of payment that can be made by the internal account.
 type InternalAccountListParamsPaymentType string

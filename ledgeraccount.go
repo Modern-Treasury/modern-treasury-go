@@ -122,9 +122,9 @@ type LedgerAccount struct {
 	// The name of the ledger account.
 	Name string `json:"name,required"`
 	// The normal balance of the ledger account.
-	NormalBalance LedgerAccountNormalBalance `json:"normal_balance,required"`
-	Object        string                     `json:"object,required"`
-	UpdatedAt     time.Time                  `json:"updated_at,required" format:"date-time"`
+	NormalBalance shared.TransactionDirection `json:"normal_balance,required"`
+	Object        string                      `json:"object,required"`
+	UpdatedAt     time.Time                   `json:"updated_at,required" format:"date-time"`
 	JSON          ledgerAccountJSON
 }
 
@@ -290,14 +290,6 @@ const (
 	LedgerAccountLedgerableTypeInternalAccount LedgerAccountLedgerableType = "internal_account"
 )
 
-// The normal balance of the ledger account.
-type LedgerAccountNormalBalance string
-
-const (
-	LedgerAccountNormalBalanceCredit LedgerAccountNormalBalance = "credit"
-	LedgerAccountNormalBalanceDebit  LedgerAccountNormalBalance = "debit"
-)
-
 type LedgerAccountNewParams struct {
 	// The currency of the ledger account.
 	Currency param.Field[string] `json:"currency,required"`
@@ -306,7 +298,7 @@ type LedgerAccountNewParams struct {
 	// The name of the ledger account.
 	Name param.Field[string] `json:"name,required"`
 	// The normal balance of the ledger account.
-	NormalBalance param.Field[LedgerAccountNewParamsNormalBalance] `json:"normal_balance,required"`
+	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account.
@@ -326,14 +318,6 @@ type LedgerAccountNewParams struct {
 func (r LedgerAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-// The normal balance of the ledger account.
-type LedgerAccountNewParamsNormalBalance string
-
-const (
-	LedgerAccountNewParamsNormalBalanceCredit LedgerAccountNewParamsNormalBalance = "credit"
-	LedgerAccountNewParamsNormalBalanceDebit  LedgerAccountNewParamsNormalBalance = "debit"
-)
 
 // If the ledger account links to another object in Modern Treasury, the type will
 // be populated here, otherwise null. The value is one of internal_account or

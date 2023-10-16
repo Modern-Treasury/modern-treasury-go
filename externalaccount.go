@@ -367,7 +367,7 @@ type ExternalAccountNewParamsLedgerAccount struct {
 	// The name of the ledger account.
 	Name param.Field[string] `json:"name,required"`
 	// The normal balance of the ledger account.
-	NormalBalance param.Field[ExternalAccountNewParamsLedgerAccountNormalBalance] `json:"normal_balance,required"`
+	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account.
@@ -387,14 +387,6 @@ type ExternalAccountNewParamsLedgerAccount struct {
 func (r ExternalAccountNewParamsLedgerAccount) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-// The normal balance of the ledger account.
-type ExternalAccountNewParamsLedgerAccountNormalBalance string
-
-const (
-	ExternalAccountNewParamsLedgerAccountNormalBalanceCredit ExternalAccountNewParamsLedgerAccountNormalBalance = "credit"
-	ExternalAccountNewParamsLedgerAccountNormalBalanceDebit  ExternalAccountNewParamsLedgerAccountNormalBalance = "debit"
-)
 
 // If the ledger account links to another object in Modern Treasury, the type will
 // be populated here, otherwise null. The value is one of internal_account or

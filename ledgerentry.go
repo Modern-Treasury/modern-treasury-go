@@ -76,8 +76,8 @@ type LedgerEntry struct {
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
-	Direction   LedgerEntryDirection `json:"direction,required"`
-	DiscardedAt time.Time            `json:"discarded_at,required,nullable" format:"date-time"`
+	Direction   shared.TransactionDirection `json:"direction,required"`
+	DiscardedAt time.Time                   `json:"discarded_at,required,nullable" format:"date-time"`
 	// The currency of the ledger account.
 	LedgerAccountCurrency string `json:"ledger_account_currency,required"`
 	// The currency exponent of the ledger account.
@@ -138,17 +138,6 @@ type ledgerEntryJSON struct {
 func (r *LedgerEntry) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-// One of `credit`, `debit`. Describes the direction money is flowing in the
-// transaction. A `credit` moves money from your account to someone else's. A
-// `debit` pulls money from someone else's account to your own. Note that wire,
-// rtp, and check payments will always be `credit`.
-type LedgerEntryDirection string
-
-const (
-	LedgerEntryDirectionCredit LedgerEntryDirection = "credit"
-	LedgerEntryDirectionDebit  LedgerEntryDirection = "debit"
-)
 
 // The pending, posted, and available balances for this ledger entry's ledger
 // account. The posted balance is the sum of all posted entries on the account. The
@@ -308,7 +297,7 @@ type LedgerEntryListParams struct {
 	// If true, response will include ledger entries that were deleted. When you update
 	// a ledger transaction to specify a new set of entries, the previous entries are
 	// deleted.
-	Direction param.Field[LedgerEntryListParamsDirection] `query:"direction"`
+	Direction param.Field[shared.TransactionDirection] `query:"direction"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// transaction's effective time. Format ISO8601
 	EffectiveAt param.Field[map[string]string] `query:"effective_at" format:"time"`
@@ -360,16 +349,6 @@ func (r LedgerEntryListParams) URLQuery() (v url.Values) {
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
-
-// If true, response will include ledger entries that were deleted. When you update
-// a ledger transaction to specify a new set of entries, the previous entries are
-// deleted.
-type LedgerEntryListParamsDirection string
-
-const (
-	LedgerEntryListParamsDirectionCredit LedgerEntryListParamsDirection = "credit"
-	LedgerEntryListParamsDirectionDebit  LedgerEntryListParamsDirection = "debit"
-)
 
 // Order by `created_at` or `effective_at` in `asc` or `desc` order. For example,
 // to order by `effective_at asc`, use `order_by%5Beffective_at%5D=asc`. Ordering

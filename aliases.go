@@ -19,3 +19,6 @@ type AsyncResponse = shared.AsyncResponse
 //
 // This is an alias to an internal type.
 type Currency = shared.Currency
+
+// This is an alias to an internal type.
+type TransactionDirection = shared.TransactionDirection

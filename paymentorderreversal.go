@@ -210,7 +210,7 @@ type PaymentOrderReversalNewParamsLedgerTransactionLedgerEntry struct {
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
-	Direction param.Field[PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirection] `json:"direction,required"`
+	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
 	// The ledger account that this ledger entry is associated with.
 	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
@@ -241,17 +241,6 @@ type PaymentOrderReversalNewParamsLedgerTransactionLedgerEntry struct {
 func (r PaymentOrderReversalNewParamsLedgerTransactionLedgerEntry) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-// One of `credit`, `debit`. Describes the direction money is flowing in the
-// transaction. A `credit` moves money from your account to someone else's. A
-// `debit` pulls money from someone else's account to your own. Note that wire,
-// rtp, and check payments will always be `credit`.
-type PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirection string
-
-const (
-	PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionCredit PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirection = "credit"
-	PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionDebit  PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirection = "debit"
-)
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of

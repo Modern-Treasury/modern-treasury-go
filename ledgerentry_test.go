@@ -10,6 +10,7 @@ import (
 	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
@@ -60,7 +61,7 @@ func TestLedgerEntryListWithOptionalParams(t *testing.T) {
 		ID:              moderntreasury.F([]string{"string", "string", "string"}),
 		AfterCursor:     moderntreasury.F("string"),
 		AsOfLockVersion: moderntreasury.F(int64(0)),
-		Direction:       moderntreasury.F(moderntreasury.LedgerEntryListParamsDirectionCredit),
+		Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 		EffectiveAt: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),

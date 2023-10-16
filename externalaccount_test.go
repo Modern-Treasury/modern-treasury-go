@@ -53,7 +53,7 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 		LedgerAccount: moderntreasury.F(moderntreasury.ExternalAccountNewParamsLedgerAccount{
 			Name:             moderntreasury.F("string"),
 			Description:      moderntreasury.F("string"),
-			NormalBalance:    moderntreasury.F(moderntreasury.ExternalAccountNewParamsLedgerAccountNormalBalanceCredit),
+			NormalBalance:    moderntreasury.F(shared.TransactionDirectionCredit),
 			LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Currency:         moderntreasury.F("string"),
 			CurrencyExponent: moderntreasury.F(int64(0)),

@@ -225,3 +225,10 @@ const (
 	CurrencyZwn Currency = "ZWN"
 	CurrencyZwr Currency = "ZWR"
 )
+
+type TransactionDirection string
+
+const (
+	TransactionDirectionCredit TransactionDirection = "credit"
+	TransactionDirectionDebit  TransactionDirection = "debit"
+)
