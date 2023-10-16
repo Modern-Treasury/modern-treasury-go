@@ -86,7 +86,7 @@ func TestIncomingPaymentDetailListWithOptionalParams(t *testing.T) {
 		AfterCursor:   moderntreasury.F("string"),
 		AsOfDateEnd:   moderntreasury.F(time.Now()),
 		AsOfDateStart: moderntreasury.F(time.Now()),
-		Direction:     moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsDirectionCredit),
+		Direction:     moderntreasury.F(shared.TransactionDirectionCredit),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),

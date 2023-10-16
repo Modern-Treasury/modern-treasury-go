@@ -771,7 +771,7 @@ type PaymentOrderNewParamsLedgerTransactionLedgerEntry struct {
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
-	Direction param.Field[PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection] `json:"direction,required"`
+	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
 	// The ledger account that this ledger entry is associated with.
 	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
@@ -802,17 +802,6 @@ type PaymentOrderNewParamsLedgerTransactionLedgerEntry struct {
 func (r PaymentOrderNewParamsLedgerTransactionLedgerEntry) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-// One of `credit`, `debit`. Describes the direction money is flowing in the
-// transaction. A `credit` moves money from your account to someone else's. A
-// `debit` pulls money from someone else's account to your own. Note that wire,
-// rtp, and check payments will always be `credit`.
-type PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection string
-
-const (
-	PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirectionCredit PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection = "credit"
-	PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirectionDebit  PaymentOrderNewParamsLedgerTransactionLedgerEntriesDirection = "debit"
-)
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
@@ -955,7 +944,7 @@ type PaymentOrderNewParamsReceivingAccountLedgerAccount struct {
 	// The name of the ledger account.
 	Name param.Field[string] `json:"name,required"`
 	// The normal balance of the ledger account.
-	NormalBalance param.Field[PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalance] `json:"normal_balance,required"`
+	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account.
@@ -975,14 +964,6 @@ type PaymentOrderNewParamsReceivingAccountLedgerAccount struct {
 func (r PaymentOrderNewParamsReceivingAccountLedgerAccount) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-// The normal balance of the ledger account.
-type PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalance string
-
-const (
-	PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalanceCredit PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalance = "credit"
-	PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalanceDebit  PaymentOrderNewParamsReceivingAccountLedgerAccountNormalBalance = "debit"
-)
 
 // If the ledger account links to another object in Modern Treasury, the type will
 // be populated here, otherwise null. The value is one of internal_account or
@@ -1366,7 +1347,7 @@ type PaymentOrderUpdateParamsReceivingAccountLedgerAccount struct {
 	// The name of the ledger account.
 	Name param.Field[string] `json:"name,required"`
 	// The normal balance of the ledger account.
-	NormalBalance param.Field[PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalance] `json:"normal_balance,required"`
+	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account.
@@ -1386,14 +1367,6 @@ type PaymentOrderUpdateParamsReceivingAccountLedgerAccount struct {
 func (r PaymentOrderUpdateParamsReceivingAccountLedgerAccount) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-// The normal balance of the ledger account.
-type PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalance string
-
-const (
-	PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalanceCredit PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalance = "credit"
-	PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalanceDebit  PaymentOrderUpdateParamsReceivingAccountLedgerAccountNormalBalance = "debit"
-)
 
 // If the ledger account links to another object in Modern Treasury, the type will
 // be populated here, otherwise null. The value is one of internal_account or
@@ -1504,9 +1477,9 @@ const (
 )
 
 type PaymentOrderListParams struct {
-	AfterCursor    param.Field[string]                          `query:"after_cursor"`
-	CounterpartyID param.Field[string]                          `query:"counterparty_id" format:"uuid"`
-	Direction      param.Field[PaymentOrderListParamsDirection] `query:"direction"`
+	AfterCursor    param.Field[string]                      `query:"after_cursor"`
+	CounterpartyID param.Field[string]                      `query:"counterparty_id" format:"uuid"`
+	Direction      param.Field[shared.TransactionDirection] `query:"direction"`
 	// An inclusive upper bound for searching effective_date
 	EffectiveDateEnd param.Field[time.Time] `query:"effective_date_end" format:"date"`
 	// An inclusive lower bound for searching effective_date
@@ -1536,13 +1509,6 @@ func (r PaymentOrderListParams) URLQuery() (v url.Values) {
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
-
-type PaymentOrderListParamsDirection string
-
-const (
-	PaymentOrderListParamsDirectionCredit PaymentOrderListParamsDirection = "credit"
-	PaymentOrderListParamsDirectionDebit  PaymentOrderListParamsDirection = "debit"
-)
 
 // Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 // same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
@@ -1813,7 +1779,7 @@ type PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntry struct {
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
-	Direction param.Field[PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection] `json:"direction,required"`
+	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
 	// The ledger account that this ledger entry is associated with.
 	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
@@ -1844,17 +1810,6 @@ type PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntry struct {
 func (r PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntry) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-// One of `credit`, `debit`. Describes the direction money is flowing in the
-// transaction. A `credit` moves money from your account to someone else's. A
-// `debit` pulls money from someone else's account to your own. Note that wire,
-// rtp, and check payments will always be `credit`.
-type PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection string
-
-const (
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirectionCredit PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection = "credit"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirectionDebit  PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntriesDirection = "debit"
-)
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
@@ -1997,7 +1952,7 @@ type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount struct {
 	// The name of the ledger account.
 	Name param.Field[string] `json:"name,required"`
 	// The normal balance of the ledger account.
-	NormalBalance param.Field[PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalance] `json:"normal_balance,required"`
+	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account.
@@ -2017,14 +1972,6 @@ type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount struct {
 func (r PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-// The normal balance of the ledger account.
-type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalance string
-
-const (
-	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalanceCredit PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalance = "credit"
-	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalanceDebit  PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountNormalBalance = "debit"
-)
 
 // If the ledger account links to another object in Modern Treasury, the type will
 // be populated here, otherwise null. The value is one of internal_account or

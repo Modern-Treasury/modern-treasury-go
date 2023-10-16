@@ -139,7 +139,7 @@ type LedgerTransactionVersionLedgerEntry struct {
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
-	Direction LedgerTransactionVersionLedgerEntriesDirection `json:"direction,required"`
+	Direction shared.TransactionDirection `json:"direction,required"`
 	// The currency of the ledger account.
 	LedgerAccountCurrency string `json:"ledger_account_currency,required"`
 	// The currency exponent of the ledger account.
@@ -198,17 +198,6 @@ type ledgerTransactionVersionLedgerEntryJSON struct {
 func (r *LedgerTransactionVersionLedgerEntry) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
-
-// One of `credit`, `debit`. Describes the direction money is flowing in the
-// transaction. A `credit` moves money from your account to someone else's. A
-// `debit` pulls money from someone else's account to your own. Note that wire,
-// rtp, and check payments will always be `credit`.
-type LedgerTransactionVersionLedgerEntriesDirection string
-
-const (
-	LedgerTransactionVersionLedgerEntriesDirectionCredit LedgerTransactionVersionLedgerEntriesDirection = "credit"
-	LedgerTransactionVersionLedgerEntriesDirectionDebit  LedgerTransactionVersionLedgerEntriesDirection = "debit"
-)
 
 // The pending, posted, and available balances for this ledger entry's ledger
 // account. The posted balance is the sum of all posted entries on the account. The

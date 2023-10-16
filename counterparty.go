@@ -476,7 +476,7 @@ type CounterpartyNewParamsAccountsLedgerAccount struct {
 	// The name of the ledger account.
 	Name param.Field[string] `json:"name,required"`
 	// The normal balance of the ledger account.
-	NormalBalance param.Field[CounterpartyNewParamsAccountsLedgerAccountNormalBalance] `json:"normal_balance,required"`
+	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account.
@@ -496,14 +496,6 @@ type CounterpartyNewParamsAccountsLedgerAccount struct {
 func (r CounterpartyNewParamsAccountsLedgerAccount) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-// The normal balance of the ledger account.
-type CounterpartyNewParamsAccountsLedgerAccountNormalBalance string
-
-const (
-	CounterpartyNewParamsAccountsLedgerAccountNormalBalanceCredit CounterpartyNewParamsAccountsLedgerAccountNormalBalance = "credit"
-	CounterpartyNewParamsAccountsLedgerAccountNormalBalanceDebit  CounterpartyNewParamsAccountsLedgerAccountNormalBalance = "debit"
-)
 
 // If the ledger account links to another object in Modern Treasury, the type will
 // be populated here, otherwise null. The value is one of internal_account or
@@ -663,7 +655,7 @@ type CounterpartyCollectAccountParams struct {
 	// One of `credit` or `debit`. Use `credit` when you want to pay a counterparty.
 	// Use `debit` when you need to charge a counterparty. This field helps us send a
 	// more tailored email to your counterparties."
-	Direction param.Field[CounterpartyCollectAccountParamsDirection] `json:"direction,required"`
+	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
 	// The URL you want your customer to visit upon filling out the form. By default,
 	// they will be sent to a Modern Treasury landing page. This must be a valid HTTPS
 	// URL if set.
@@ -684,16 +676,6 @@ type CounterpartyCollectAccountParams struct {
 func (r CounterpartyCollectAccountParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
-
-// One of `credit` or `debit`. Use `credit` when you want to pay a counterparty.
-// Use `debit` when you need to charge a counterparty. This field helps us send a
-// more tailored email to your counterparties."
-type CounterpartyCollectAccountParamsDirection string
-
-const (
-	CounterpartyCollectAccountParamsDirectionCredit CounterpartyCollectAccountParamsDirection = "credit"
-	CounterpartyCollectAccountParamsDirectionDebit  CounterpartyCollectAccountParamsDirection = "debit"
-)
 
 type CounterpartyCollectAccountParamsField string
 

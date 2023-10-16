@@ -10,6 +10,7 @@ import (
 	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
@@ -44,7 +45,7 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 				EffectiveDate: moderntreasury.F(time.Now()),
 				LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntry{{
 					Amount:          moderntreasury.F(int64(0)),
-					Direction:       moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
+					Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 					LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 					LockVersion:     moderntreasury.F(int64(0)),
 					PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -64,7 +65,7 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 					}),
 				}, {
 					Amount:          moderntreasury.F(int64(0)),
-					Direction:       moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
+					Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 					LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 					LockVersion:     moderntreasury.F(int64(0)),
 					PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -84,7 +85,7 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 					}),
 				}, {
 					Amount:          moderntreasury.F(int64(0)),
-					Direction:       moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntriesDirectionCredit),
+					Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 					LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 					LockVersion:     moderntreasury.F(int64(0)),
 					PendingBalanceAmount: moderntreasury.F(map[string]int64{

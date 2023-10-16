@@ -10,6 +10,7 @@ import (
 	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
+	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/option"
 )
@@ -30,7 +31,7 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 	_, err := client.LedgerTransactions.New(context.TODO(), moderntreasury.LedgerTransactionNewParams{
 		LedgerEntries: moderntreasury.F([]moderntreasury.LedgerTransactionNewParamsLedgerEntry{{
 			Amount:          moderntreasury.F(int64(0)),
-			Direction:       moderntreasury.F(moderntreasury.LedgerTransactionNewParamsLedgerEntriesDirectionCredit),
+			Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 			LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			LockVersion:     moderntreasury.F(int64(0)),
 			PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -50,7 +51,7 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 			}),
 		}, {
 			Amount:          moderntreasury.F(int64(0)),
-			Direction:       moderntreasury.F(moderntreasury.LedgerTransactionNewParamsLedgerEntriesDirectionCredit),
+			Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 			LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			LockVersion:     moderntreasury.F(int64(0)),
 			PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -70,7 +71,7 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 			}),
 		}, {
 			Amount:          moderntreasury.F(int64(0)),
-			Direction:       moderntreasury.F(moderntreasury.LedgerTransactionNewParamsLedgerEntriesDirectionCredit),
+			Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 			LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			LockVersion:     moderntreasury.F(int64(0)),
 			PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -155,7 +156,7 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 			EffectiveAt: moderntreasury.F(time.Now()),
 			LedgerEntries: moderntreasury.F([]moderntreasury.LedgerTransactionUpdateParamsLedgerEntry{{
 				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(moderntreasury.LedgerTransactionUpdateParamsLedgerEntriesDirectionCredit),
+				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				LockVersion:     moderntreasury.F(int64(0)),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -175,7 +176,7 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(moderntreasury.LedgerTransactionUpdateParamsLedgerEntriesDirectionCredit),
+				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				LockVersion:     moderntreasury.F(int64(0)),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -195,7 +196,7 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(moderntreasury.LedgerTransactionUpdateParamsLedgerEntriesDirectionCredit),
+				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				LockVersion:     moderntreasury.F(int64(0)),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
