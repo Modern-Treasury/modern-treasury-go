@@ -169,19 +169,6 @@ func (r *ExternalAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// Can be `checking`, `savings` or `other`.
-type ExternalAccountType string
-
-const (
-	ExternalAccountTypeCash        ExternalAccountType = "cash"
-	ExternalAccountTypeChecking    ExternalAccountType = "checking"
-	ExternalAccountTypeLoan        ExternalAccountType = "loan"
-	ExternalAccountTypeNonResident ExternalAccountType = "non_resident"
-	ExternalAccountTypeOther       ExternalAccountType = "other"
-	ExternalAccountTypeOverdraft   ExternalAccountType = "overdraft"
-	ExternalAccountTypeSavings     ExternalAccountType = "savings"
-)
-
 type ExternalAccountContactDetail struct {
 	ID                    string                                             `json:"id,required" format:"uuid"`
 	ContactIdentifier     string                                             `json:"contact_identifier,required"`
@@ -281,6 +268,19 @@ const (
 	ExternalAccountVerificationStatusPendingVerification ExternalAccountVerificationStatus = "pending_verification"
 	ExternalAccountVerificationStatusUnverified          ExternalAccountVerificationStatus = "unverified"
 	ExternalAccountVerificationStatusVerified            ExternalAccountVerificationStatus = "verified"
+)
+
+// Can be `checking`, `savings` or `other`.
+type ExternalAccountType string
+
+const (
+	ExternalAccountTypeCash        ExternalAccountType = "cash"
+	ExternalAccountTypeChecking    ExternalAccountType = "checking"
+	ExternalAccountTypeLoan        ExternalAccountType = "loan"
+	ExternalAccountTypeNonResident ExternalAccountType = "non_resident"
+	ExternalAccountTypeOther       ExternalAccountType = "other"
+	ExternalAccountTypeOverdraft   ExternalAccountType = "overdraft"
+	ExternalAccountTypeSavings     ExternalAccountType = "savings"
 )
 
 type ExternalAccountNewParams struct {
