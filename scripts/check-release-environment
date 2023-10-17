@@ -3,7 +3,7 @@
 errors=()
 
 if [ -z "${STAINLESS_API_KEY}" ]; then
-  errors+=("The STAINLESS_API_KEY secret has not been set. Please contact Stainless for an API key & set it in your organisation secrets on GitHub.")
+  errors+=("The STAINLESS_API_KEY secret has not been set. Please contact Stainless for an API key & set it in your organization secrets on GitHub.")
 fi
 
 len=${#errors[@]}
