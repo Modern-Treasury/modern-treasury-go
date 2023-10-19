@@ -1,5 +1,36 @@
 # Changelog
 
+## 2.0.0 (2023-10-19)
+
+Full Changelog: [v1.5.2...v2.0.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.5.2...v2.0.0)
+
+### ⚠ BREAKING CHANGES
+
+* **types:** consolidate direction enums into a shared TransactionDirection type ([#107](https://github.com/Modern-Treasury/modern-treasury-go/issues/107))
+
+### Features
+
+* make webhook headers case insensitive ([#106](https://github.com/Modern-Treasury/modern-treasury-go/issues/106)) ([09d58d9](https://github.com/Modern-Treasury/modern-treasury-go/commit/09d58d9465d1f07b72e207a21c90b5652ad7847c))
+* **types:** consolidate direction enums into a shared TransactionDirection type ([#107](https://github.com/Modern-Treasury/modern-treasury-go/issues/107)) ([2c32ee7](https://github.com/Modern-Treasury/modern-treasury-go/commit/2c32ee7829dd82cab93af1f830cf30d8f2ade1f6))
+
+
+### Bug Fixes
+
+* **api:** use date-time for effective_at ([#111](https://github.com/Modern-Treasury/modern-treasury-go/issues/111)) ([9987e10](https://github.com/Modern-Treasury/modern-treasury-go/commit/9987e10a5d30c293d187127e5e5a137cb36c01d3))
+
+
+### Chores
+
+* **internal:** rearrange client arguments ([#103](https://github.com/Modern-Treasury/modern-treasury-go/issues/103)) ([d93e977](https://github.com/Modern-Treasury/modern-treasury-go/commit/d93e977e6a8a9e5577031567ca9c75b97eb2232c))
+* **internal:** reorder code ([#108](https://github.com/Modern-Treasury/modern-treasury-go/issues/108)) ([c6f25e4](https://github.com/Modern-Treasury/modern-treasury-go/commit/c6f25e4de17662ea119a5dd5a10c1da63a486b31))
+* update README ([#102](https://github.com/Modern-Treasury/modern-treasury-go/issues/102)) ([5df84eb](https://github.com/Modern-Treasury/modern-treasury-go/commit/5df84eb61d34a5a37343065147a01ad60d031af0))
+
+
+### Documentation
+
+* **api.md:** improve formatting of webhook helpers ([#105](https://github.com/Modern-Treasury/modern-treasury-go/issues/105)) ([731f0c5](https://github.com/Modern-Treasury/modern-treasury-go/commit/731f0c564db9c6ae32fc33c2087d7f0092d87cb5))
+* organisation -&gt; organization (UK to US English) ([#109](https://github.com/Modern-Treasury/modern-treasury-go/issues/109)) ([a15e655](https://github.com/Modern-Treasury/modern-treasury-go/commit/a15e6558a208a46d055603ee708b80a9939c3b02))
+
 ## 1.5.2 (2023-10-06)
 
 Full Changelog: [v1.5.1...v1.5.2](https://github.com/modern-treasury/modern-treasury-go/compare/v1.5.1...v1.5.2)
