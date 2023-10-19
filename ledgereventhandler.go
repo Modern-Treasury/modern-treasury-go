@@ -155,7 +155,7 @@ type LedgerEventHandlerNewResponseLedgerTransactionTemplate struct {
 	Description string `json:"description,required,nullable"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt string `json:"effective_at,required,nullable" format:"datetime"`
+	EffectiveAt time.Time `json:"effective_at,required,nullable" format:"date-time"`
 	// An array of ledger entry objects.
 	LedgerEntries []LedgerEventHandlerNewResponseLedgerTransactionTemplateLedgerEntry `json:"ledger_entries,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -278,7 +278,7 @@ type LedgerEventHandlerGetResponseLedgerTransactionTemplate struct {
 	Description string `json:"description,required,nullable"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt string `json:"effective_at,required,nullable" format:"datetime"`
+	EffectiveAt time.Time `json:"effective_at,required,nullable" format:"date-time"`
 	// An array of ledger entry objects.
 	LedgerEntries []LedgerEventHandlerGetResponseLedgerTransactionTemplateLedgerEntry `json:"ledger_entries,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -401,7 +401,7 @@ type LedgerEventHandlerListResponseLedgerTransactionTemplate struct {
 	Description string `json:"description,required,nullable"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt string `json:"effective_at,required,nullable" format:"datetime"`
+	EffectiveAt time.Time `json:"effective_at,required,nullable" format:"date-time"`
 	// An array of ledger entry objects.
 	LedgerEntries []LedgerEventHandlerListResponseLedgerTransactionTemplateLedgerEntry `json:"ledger_entries,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -525,7 +525,7 @@ type LedgerEventHandlerDeleteResponseLedgerTransactionTemplate struct {
 	Description string `json:"description,required,nullable"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt string `json:"effective_at,required,nullable" format:"datetime"`
+	EffectiveAt time.Time `json:"effective_at,required,nullable" format:"date-time"`
 	// An array of ledger entry objects.
 	LedgerEntries []LedgerEventHandlerDeleteResponseLedgerTransactionTemplateLedgerEntry `json:"ledger_entries,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -599,7 +599,7 @@ type LedgerEventHandlerNewParamsLedgerTransactionTemplate struct {
 	Description param.Field[string] `json:"description,required"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt param.Field[string] `json:"effective_at,required" format:"datetime"`
+	EffectiveAt param.Field[time.Time] `json:"effective_at,required" format:"date-time"`
 	// An array of ledger entry objects.
 	LedgerEntries param.Field[[]LedgerEventHandlerNewParamsLedgerTransactionTemplateLedgerEntry] `json:"ledger_entries,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be

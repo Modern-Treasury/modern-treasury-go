@@ -30,7 +30,7 @@ func TestLedgerEventHandlerNewWithOptionalParams(t *testing.T) {
 	_, err := client.LedgerEventHandlers.New(context.TODO(), moderntreasury.LedgerEventHandlerNewParams{
 		LedgerTransactionTemplate: moderntreasury.F(moderntreasury.LedgerEventHandlerNewParamsLedgerTransactionTemplate{
 			Description: moderntreasury.F("string"),
-			EffectiveAt: moderntreasury.F("string"),
+			EffectiveAt: moderntreasury.F(time.Now()),
 			LedgerEntries: moderntreasury.F([]moderntreasury.LedgerEventHandlerNewParamsLedgerTransactionTemplateLedgerEntry{{
 				Amount:          moderntreasury.F("string"),
 				Direction:       moderntreasury.F("string"),

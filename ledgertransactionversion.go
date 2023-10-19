@@ -64,7 +64,7 @@ type LedgerTransactionVersion struct {
 	Description string `json:"description,required,nullable"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt string `json:"effective_at,required" format:"time"`
+	EffectiveAt time.Time `json:"effective_at,required" format:"date-time"`
 	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
 	// purposes.
 	EffectiveDate time.Time `json:"effective_date,required" format:"date"`
