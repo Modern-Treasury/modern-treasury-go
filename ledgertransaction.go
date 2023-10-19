@@ -99,7 +99,7 @@ type LedgerTransaction struct {
 	Description string `json:"description,required,nullable"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt time.Time `json:"effective_at,required" format:"date"`
+	EffectiveAt time.Time `json:"effective_at,required" format:"date-time"`
 	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
 	// purposes.
 	EffectiveDate time.Time `json:"effective_date,required" format:"date"`
@@ -197,7 +197,7 @@ type LedgerTransactionNewParams struct {
 	Description param.Field[string] `json:"description"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date"`
+	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
 	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
 	// purposes.
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
@@ -294,7 +294,7 @@ type LedgerTransactionUpdateParams struct {
 	Description param.Field[string] `json:"description"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date"`
+	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
 	// An array of ledger entry objects.
 	LedgerEntries param.Field[[]LedgerTransactionUpdateParamsLedgerEntry] `json:"ledger_entries"`
 	// Additional data represented as key-value pairs. Both the key and value must be
