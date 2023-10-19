@@ -738,7 +738,7 @@ type PaymentOrderNewParamsLedgerTransaction struct {
 	Description param.Field[string] `json:"description"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date"`
+	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
 	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
 	// purposes.
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
@@ -1746,7 +1746,7 @@ type PaymentOrderNewAsyncParamsLedgerTransaction struct {
 	Description param.Field[string] `json:"description"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date"`
+	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
 	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
 	// purposes.
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
