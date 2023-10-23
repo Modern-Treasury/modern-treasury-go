@@ -8,10 +8,10 @@ import (
 	"os"
 	"testing"
 
-	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/testutil"
-	"github.com/Modern-Treasury/modern-treasury-go/option"
+	moderntreasury "github.com/Modern-Treasury/modern-treasury-go/v2"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/testutil"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
 func TestAccountDetailNewWithOptionalParams(t *testing.T) {

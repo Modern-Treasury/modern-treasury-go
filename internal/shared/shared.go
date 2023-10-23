@@ -3,7 +3,7 @@
 package shared
 
 import (
-	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 )
 
 type AccountsType string

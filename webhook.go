@@ -9,7 +9,7 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/Modern-Treasury/modern-treasury-go/option"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
 // WebhookService contains methods and other services that help with interacting

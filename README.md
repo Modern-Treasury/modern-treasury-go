@@ -1,6 +1,6 @@
 # Modern Treasury Go API Library
 
-<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go"><img src="https://pkg.go.dev/badge/github.com/Modern-Treasury/modern-treasury-go.svg" alt="Go Reference"></a>
+<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2"><img src="https://pkg.go.dev/badge/github.com/Modern-Treasury/modern-treasury-go/v2.svg" alt="Go Reference"></a>
 
 The Modern Treasury Go library provides convenient access to [the Modern Treasury REST
 API](https://docs.moderntreasury.com) from applications written in Go.
@@ -22,7 +22,7 @@ Or to pin the version:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/Modern-Treasury/modern-treasury-go@v2.0.1'
+go get -u 'github.com/Modern-Treasury/modern-treasury-go/v2@v2.0.1'
 ```
 
 <!-- x-release-please-end -->
@@ -41,8 +41,8 @@ package main
 import (
 	"context"
 	"fmt"
-	"github.com/Modern-Treasury/modern-treasury-go"
-	"github.com/Modern-Treasury/modern-treasury-go/option"
+	"github.com/Modern-Treasury/modern-treasury-go/v2"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
 func main() {
@@ -154,7 +154,7 @@ client.ExternalAccounts.New(context.TODO(), ...,
 )
 ```
 
-The full list of request options is [here](https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/option).
+The full list of request options is [here](https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/option).
 
 ### Pagination
 

@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 )
 
 type Struct struct {
