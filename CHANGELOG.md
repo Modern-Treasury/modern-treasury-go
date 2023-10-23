@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.1 (2023-10-23)
+
+Full Changelog: [v2.0.0...v2.0.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.0.0...v2.0.1)
+
+### Chores
+
+* **docs:** bump version in README ([#112](https://github.com/Modern-Treasury/modern-treasury-go/issues/112)) ([e05f134](https://github.com/Modern-Treasury/modern-treasury-go/commit/e05f134324347ce6be41ce25e3f132b3058907c2))
+
 ## 2.0.0 (2023-10-19)
 
 Full Changelog: [v1.5.2...v2.0.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v1.5.2...v2.0.0)
