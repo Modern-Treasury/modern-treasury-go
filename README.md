@@ -11,7 +11,7 @@ API](https://docs.moderntreasury.com) from applications written in Go.
 
 ```go
 import (
-	"github.com/Modern-Treasury/modern-treasury-go/v1" // imported as moderntreasury
+	"github.com/Modern-Treasury/modern-treasury-go/v2" // imported as moderntreasury
 )
 ```
 
