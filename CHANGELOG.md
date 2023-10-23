@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.0.2 (2023-10-23)
+
+Full Changelog: [v2.0.1...v2.0.2](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.0.1...v2.0.2)
+
+### Bug Fixes
+
+* use /v2 in all package imports ([#114](https://github.com/Modern-Treasury/modern-treasury-go/issues/114)) ([65105b7](https://github.com/Modern-Treasury/modern-treasury-go/commit/65105b7849b435a15c3b41d15bc34313501dc0ac))
+
 ## 2.0.1 (2023-10-23)
 
 Full Changelog: [v2.0.0...v2.0.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.0.0...v2.0.1)
