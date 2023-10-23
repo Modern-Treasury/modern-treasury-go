@@ -9,7 +9,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 )
 
 var encoders sync.Map // map[reflect.Type]encoderFunc

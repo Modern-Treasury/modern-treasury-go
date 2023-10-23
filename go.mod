@@ -1,4 +1,4 @@
-module github.com/Modern-Treasury/modern-treasury-go
+module github.com/Modern-Treasury/modern-treasury-go/v2
 
 go 1.19
 

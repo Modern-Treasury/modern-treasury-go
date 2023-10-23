@@ -10,7 +10,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/tidwall/sjson"
 )
 

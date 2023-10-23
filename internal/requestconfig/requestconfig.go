@@ -17,10 +17,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/Modern-Treasury/modern-treasury-go/internal"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/apierror"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/apiform"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apierror"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiform"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
 	"github.com/google/uuid"
 )
 

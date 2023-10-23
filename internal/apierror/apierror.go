@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 
-	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 )
 
 // Error represents an error that originates from the API, i.e. when a request is
