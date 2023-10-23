@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"testing"
 
-	moderntreasury "github.com/Modern-Treasury/modern-treasury-go"
-	"github.com/Modern-Treasury/modern-treasury-go/option"
+	moderntreasury "github.com/Modern-Treasury/modern-treasury-go/v2"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
 func TestGetSignature(t *testing.T) {

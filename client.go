@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/option"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
 // Client creates a struct with services and top level methods that help with

@@ -9,12 +9,12 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/param"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
-	"github.com/Modern-Treasury/modern-treasury-go/option"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
 // LineItemService contains methods and other services that help with interacting

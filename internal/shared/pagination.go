@@ -5,9 +5,9 @@ package shared
 import (
 	"net/http"
 
-	"github.com/Modern-Treasury/modern-treasury-go/internal/apijson"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/option"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
 type Page[T any] struct {

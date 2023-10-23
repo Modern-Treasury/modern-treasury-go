@@ -3,8 +3,8 @@
 package moderntreasury
 
 import (
-	"github.com/Modern-Treasury/modern-treasury-go/internal/apierror"
-	"github.com/Modern-Treasury/modern-treasury-go/internal/shared"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apierror"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 )
 
 type Error = apierror.Error
