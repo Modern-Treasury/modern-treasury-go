@@ -186,8 +186,8 @@ func shouldRetry(req *http.Request, res *http.Response) bool {
 }
 
 func retryDelay(res *http.Response, retryCount int) time.Duration {
-	maxDelay := 5 * time.Second
-	delay := time.Duration(500 * float64(time.Millisecond) * math.Pow(2, float64(retryCount)))
+	maxDelay := 8 * time.Second
+	delay := time.Duration(0.5 * float64(time.Second) * math.Pow(2, float64(retryCount)))
 	if res != nil {
 		if parsed, err := strconv.ParseInt(res.Header.Get("Retry-After"), 10, 64); err == nil {
 			delay = time.Duration(parsed) * time.Second
