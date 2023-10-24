@@ -151,6 +151,8 @@ func (r *VirtualAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r VirtualAccount) implementsPaymentOrderUltimateOriginatingAccount() {}
+
 type VirtualAccountNewParams struct {
 	// The ID of the internal account that this virtual account is associated with.
 	InternalAccountID param.Field[string] `json:"internal_account_id,required" format:"uuid"`
@@ -208,7 +210,9 @@ const (
 type VirtualAccountNewParamsRoutingDetail struct {
 	// The routing number of the bank.
 	RoutingNumber param.Field[string] `json:"routing_number,required"`
-	// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
+	// The type of routing number. See
+	// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
+	// more details.
 	RoutingNumberType param.Field[VirtualAccountNewParamsRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
 	// If the routing detail is to be used for a specific payment type this field will
 	// be populated, otherwise null.
@@ -219,22 +223,26 @@ func (r VirtualAccountNewParamsRoutingDetail) MarshalJSON() (data []byte, err er
 	return apijson.MarshalRoot(r)
 }
 
-// One of `aba`, `swift`, `ca_cpa`, `au_bsb`, `gb_sort_code`, `in_ifsc`, `cnaps`.
+// The type of routing number. See
+// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
+// more details.
 type VirtualAccountNewParamsRoutingDetailsRoutingNumberType string
 
 const (
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba                    VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "aba"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAuBsb                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "au_bsb"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeBrCodigo               VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "br_codigo"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCaCpa                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "ca_cpa"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeChips                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "chips"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCnaps                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "cnaps"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeGBSortCode             VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "gb_sort_code"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeInIfsc                 VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "in_ifsc"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeJpZenginCode           VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "jp_zengin_code"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeMyBranchCode           VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "my_branch_code"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
-	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSwift                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "swift"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba                     VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "aba"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAuBsb                   VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "au_bsb"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeBrCodigo                VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "br_codigo"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCaCpa                   VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "ca_cpa"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeChips                   VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "chips"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCnaps                   VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "cnaps"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeGBSortCode              VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "gb_sort_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeHkInterbankClearingCode VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeInIfsc                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "in_ifsc"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeJpZenginCode            VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "jp_zengin_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeMyBranchCode            VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "my_branch_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeNzNationalClearingCode  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSwift                   VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "swift"
 )
 
 // If the routing detail is to be used for a specific payment type this field will
@@ -247,6 +255,7 @@ const (
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeBacs        VirtualAccountNewParamsRoutingDetailsPaymentType = "bacs"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeBook        VirtualAccountNewParamsRoutingDetailsPaymentType = "book"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeCard        VirtualAccountNewParamsRoutingDetailsPaymentType = "card"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeChats       VirtualAccountNewParamsRoutingDetailsPaymentType = "chats"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeCheck       VirtualAccountNewParamsRoutingDetailsPaymentType = "check"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeCrossBorder VirtualAccountNewParamsRoutingDetailsPaymentType = "cross_border"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeEft         VirtualAccountNewParamsRoutingDetailsPaymentType = "eft"
@@ -254,6 +263,7 @@ const (
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeMasav       VirtualAccountNewParamsRoutingDetailsPaymentType = "masav"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeNeft        VirtualAccountNewParamsRoutingDetailsPaymentType = "neft"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeNics        VirtualAccountNewParamsRoutingDetailsPaymentType = "nics"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeNzBecs      VirtualAccountNewParamsRoutingDetailsPaymentType = "nz_becs"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeProvxchange VirtualAccountNewParamsRoutingDetailsPaymentType = "provxchange"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeRtp         VirtualAccountNewParamsRoutingDetailsPaymentType = "rtp"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeSeBankgirot VirtualAccountNewParamsRoutingDetailsPaymentType = "se_bankgirot"
@@ -277,8 +287,8 @@ func (r VirtualAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 
 type VirtualAccountListParams struct {
 	AfterCursor       param.Field[string] `query:"after_cursor"`
-	CounterpartyID    param.Field[string] `query:"counterparty_id" format:"uuid"`
-	InternalAccountID param.Field[string] `query:"internal_account_id" format:"uuid"`
+	CounterpartyID    param.Field[string] `query:"counterparty_id"`
+	InternalAccountID param.Field[string] `query:"internal_account_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.

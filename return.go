@@ -75,9 +75,6 @@ func (r *ReturnService) ListAutoPaging(ctx context.Context, query ReturnListPara
 
 type ReturnObject struct {
 	ID string `json:"id,required" format:"uuid"`
-	// Some returns may include additional information from the bank. In these cases,
-	// this string will be present.
-	AdditionalInformation string `json:"additional_information,required,nullable"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
 	Amount int64 `json:"amount,required"`
@@ -124,13 +121,15 @@ type ReturnObject struct {
 	// `interac`, `manual`, `paper_item`, `wire`.
 	Type      ReturnObjectType `json:"type,required"`
 	UpdatedAt time.Time        `json:"updated_at,required" format:"date-time"`
-	JSON      returnObjectJSON
+	// Some returns may include additional information from the bank. In these cases,
+	// this string will be present.
+	AdditionalInformation string `json:"additional_information,nullable"`
+	JSON                  returnObjectJSON
 }
 
 // returnObjectJSON contains the JSON metadata for the struct [ReturnObject]
 type returnObjectJSON struct {
 	ID                    apijson.Field
-	AdditionalInformation apijson.Field
 	Amount                apijson.Field
 	Code                  apijson.Field
 	CreatedAt             apijson.Field
@@ -152,6 +151,7 @@ type returnObjectJSON struct {
 	TransactionLineItemID apijson.Field
 	Type                  apijson.Field
 	UpdatedAt             apijson.Field
+	AdditionalInformation apijson.Field
 	raw                   string
 	ExtraFields           map[string]apijson.Field
 }

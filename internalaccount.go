@@ -151,6 +151,8 @@ func (r *InternalAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r InternalAccount) implementsPaymentOrderUltimateOriginatingAccount() {}
+
 // Can be checking, savings or other.
 type InternalAccountAccountType string
 
@@ -319,6 +321,7 @@ const (
 	InternalAccountListParamsPaymentTypeBacs        InternalAccountListParamsPaymentType = "bacs"
 	InternalAccountListParamsPaymentTypeBook        InternalAccountListParamsPaymentType = "book"
 	InternalAccountListParamsPaymentTypeCard        InternalAccountListParamsPaymentType = "card"
+	InternalAccountListParamsPaymentTypeChats       InternalAccountListParamsPaymentType = "chats"
 	InternalAccountListParamsPaymentTypeCheck       InternalAccountListParamsPaymentType = "check"
 	InternalAccountListParamsPaymentTypeCrossBorder InternalAccountListParamsPaymentType = "cross_border"
 	InternalAccountListParamsPaymentTypeEft         InternalAccountListParamsPaymentType = "eft"
@@ -326,6 +329,7 @@ const (
 	InternalAccountListParamsPaymentTypeMasav       InternalAccountListParamsPaymentType = "masav"
 	InternalAccountListParamsPaymentTypeNeft        InternalAccountListParamsPaymentType = "neft"
 	InternalAccountListParamsPaymentTypeNics        InternalAccountListParamsPaymentType = "nics"
+	InternalAccountListParamsPaymentTypeNzBecs      InternalAccountListParamsPaymentType = "nz_becs"
 	InternalAccountListParamsPaymentTypeProvxchange InternalAccountListParamsPaymentType = "provxchange"
 	InternalAccountListParamsPaymentTypeRtp         InternalAccountListParamsPaymentType = "rtp"
 	InternalAccountListParamsPaymentTypeSeBankgirot InternalAccountListParamsPaymentType = "se_bankgirot"

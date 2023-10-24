@@ -158,6 +158,7 @@ const (
 	AccountCollectionFlowReceivingCountryNld AccountCollectionFlowReceivingCountry = "NLD"
 	AccountCollectionFlowReceivingCountryPer AccountCollectionFlowReceivingCountry = "PER"
 	AccountCollectionFlowReceivingCountryEsp AccountCollectionFlowReceivingCountry = "ESP"
+	AccountCollectionFlowReceivingCountryGbr AccountCollectionFlowReceivingCountry = "GBR"
 )
 
 // The current status of the account collection flow. One of `pending`,
@@ -203,6 +204,7 @@ const (
 	AccountCollectionFlowNewParamsReceivingCountryNld AccountCollectionFlowNewParamsReceivingCountry = "NLD"
 	AccountCollectionFlowNewParamsReceivingCountryPer AccountCollectionFlowNewParamsReceivingCountry = "PER"
 	AccountCollectionFlowNewParamsReceivingCountryEsp AccountCollectionFlowNewParamsReceivingCountry = "ESP"
+	AccountCollectionFlowNewParamsReceivingCountryGbr AccountCollectionFlowNewParamsReceivingCountry = "GBR"
 )
 
 type AccountCollectionFlowUpdateParams struct {

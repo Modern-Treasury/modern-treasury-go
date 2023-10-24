@@ -93,7 +93,7 @@ type LedgerTransactionVersion struct {
 	Object   string            `json:"object,required"`
 	// The time on which the ledger transaction posted. This is null if the ledger
 	// transaction is pending.
-	PostedAt string `json:"posted_at,required,nullable" format:"time"`
+	PostedAt time.Time `json:"posted_at,required,nullable" format:"date-time"`
 	// One of `pending`, `posted`, or `archived`
 	Status LedgerTransactionVersionStatus `json:"status,required"`
 	// Version number of the ledger transaction.

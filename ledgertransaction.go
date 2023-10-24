@@ -126,7 +126,7 @@ type LedgerTransaction struct {
 	Object   string            `json:"object,required"`
 	// The time on which the ledger transaction posted. This is null if the ledger
 	// transaction is pending.
-	PostedAt string `json:"posted_at,required,nullable" format:"time"`
+	PostedAt time.Time `json:"posted_at,required,nullable" format:"date-time"`
 	// The ID of the original ledger transaction that this ledger transaction reverses.
 	ReversesLedgerTransactionID string `json:"reverses_ledger_transaction_id,required,nullable"`
 	// To post a ledger transaction at creation, use `posted`.
@@ -365,7 +365,7 @@ type LedgerTransactionListParams struct {
 	// Use "gt" (>), "gte" (>=), "lt" (<), "lte" (<=), or "eq" (=) to filter by
 	// effective at. For example, for all transactions after Jan 1 2000, use
 	// effective_at%5Bgt%5D=2000-01-01T00:00:00:00.000Z.
-	EffectiveAt param.Field[map[string]string] `query:"effective_at" format:"time"`
+	EffectiveAt param.Field[map[string]time.Time] `query:"effective_at" format:"date-time"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by
 	// effective date. For example, for all dates after Jan 1 2000, use
 	// effective_date%5Bgt%5D=2000-01-01.

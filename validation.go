@@ -47,10 +47,10 @@ type RoutingNumberLookupRequest struct {
 	BankName string `json:"bank_name"`
 	// The routing number of the bank.
 	RoutingNumber string `json:"routing_number"`
-	// One of `aba`, `au_bsb`, `br_codigo`, `ca_cpa`, `cnaps`, `gb_sort_code`,
-	// `in_ifsc`, `my_branch_code`, `se_bankgiro_clearing_code`, or `swift`. In sandbox
-	// mode we currently only support `aba` and `swift` with routing numbers
-	// '123456789' and 'GRINUST0XXX' respectively.
+	// The type of routing number. See
+	// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
+	// more details. In sandbox mode we currently only support `aba` and `swift` with
+	// routing numbers '123456789' and 'GRINUST0XXX' respectively.
 	RoutingNumberType RoutingNumberLookupRequestRoutingNumberType `json:"routing_number_type"`
 	// An object containing key-value pairs, each with a sanctions list as the key and
 	// a boolean value representing whether the bank is on that particular sanctions
@@ -111,10 +111,10 @@ func (r *RoutingNumberLookupRequestBankAddress) UnmarshalJSON(data []byte) (err 
 	return apijson.UnmarshalRoot(data, r)
 }
 
-// One of `aba`, `au_bsb`, `br_codigo`, `ca_cpa`, `cnaps`, `gb_sort_code`,
-// `in_ifsc`, `my_branch_code`, `se_bankgiro_clearing_code`, or `swift`. In sandbox
-// mode we currently only support `aba` and `swift` with routing numbers
-// '123456789' and 'GRINUST0XXX' respectively.
+// The type of routing number. See
+// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
+// more details. In sandbox mode we currently only support `aba` and `swift` with
+// routing numbers '123456789' and 'GRINUST0XXX' respectively.
 type RoutingNumberLookupRequestRoutingNumberType string
 
 const (
@@ -123,6 +123,7 @@ const (
 	RoutingNumberLookupRequestRoutingNumberTypeCaCpa                  RoutingNumberLookupRequestRoutingNumberType = "ca_cpa"
 	RoutingNumberLookupRequestRoutingNumberTypeGBSortCode             RoutingNumberLookupRequestRoutingNumberType = "gb_sort_code"
 	RoutingNumberLookupRequestRoutingNumberTypeInIfsc                 RoutingNumberLookupRequestRoutingNumberType = "in_ifsc"
+	RoutingNumberLookupRequestRoutingNumberTypeNzNationalClearingCode RoutingNumberLookupRequestRoutingNumberType = "nz_national_clearing_code"
 	RoutingNumberLookupRequestRoutingNumberTypeSeBankgiroClearingCode RoutingNumberLookupRequestRoutingNumberType = "se_bankgiro_clearing_code"
 	RoutingNumberLookupRequestRoutingNumberTypeSwift                  RoutingNumberLookupRequestRoutingNumberType = "swift"
 )
@@ -135,6 +136,7 @@ const (
 	RoutingNumberLookupRequestSupportedPaymentTypeBacs        RoutingNumberLookupRequestSupportedPaymentType = "bacs"
 	RoutingNumberLookupRequestSupportedPaymentTypeBook        RoutingNumberLookupRequestSupportedPaymentType = "book"
 	RoutingNumberLookupRequestSupportedPaymentTypeCard        RoutingNumberLookupRequestSupportedPaymentType = "card"
+	RoutingNumberLookupRequestSupportedPaymentTypeChats       RoutingNumberLookupRequestSupportedPaymentType = "chats"
 	RoutingNumberLookupRequestSupportedPaymentTypeCheck       RoutingNumberLookupRequestSupportedPaymentType = "check"
 	RoutingNumberLookupRequestSupportedPaymentTypeCrossBorder RoutingNumberLookupRequestSupportedPaymentType = "cross_border"
 	RoutingNumberLookupRequestSupportedPaymentTypeEft         RoutingNumberLookupRequestSupportedPaymentType = "eft"
@@ -142,6 +144,7 @@ const (
 	RoutingNumberLookupRequestSupportedPaymentTypeMasav       RoutingNumberLookupRequestSupportedPaymentType = "masav"
 	RoutingNumberLookupRequestSupportedPaymentTypeNeft        RoutingNumberLookupRequestSupportedPaymentType = "neft"
 	RoutingNumberLookupRequestSupportedPaymentTypeNics        RoutingNumberLookupRequestSupportedPaymentType = "nics"
+	RoutingNumberLookupRequestSupportedPaymentTypeNzBecs      RoutingNumberLookupRequestSupportedPaymentType = "nz_becs"
 	RoutingNumberLookupRequestSupportedPaymentTypeProvxchange RoutingNumberLookupRequestSupportedPaymentType = "provxchange"
 	RoutingNumberLookupRequestSupportedPaymentTypeRtp         RoutingNumberLookupRequestSupportedPaymentType = "rtp"
 	RoutingNumberLookupRequestSupportedPaymentTypeSeBankgirot RoutingNumberLookupRequestSupportedPaymentType = "se_bankgirot"
@@ -156,10 +159,10 @@ const (
 type ValidationValidateRoutingNumberParams struct {
 	// The routing number that is being validated.
 	RoutingNumber param.Field[string] `query:"routing_number,required"`
-	// One of `aba`, `au_bsb`, `br_codigo`, `ca_cpa`, `cnaps`, `gb_sort_code`,
-	// `in_ifsc`, `my_branch_code`, `se_bankgiro_clearing_code`, or `swift`. In sandbox
-	// mode we currently only support `aba` and `swift` with routing numbers
-	// '123456789' and 'GRINUST0XXX' respectively.
+	// The type of routing number. See
+	// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
+	// more details. In sandbox mode we currently only support `aba` and `swift` with
+	// routing numbers '123456789' and 'GRINUST0XXX' respectively.
 	RoutingNumberType param.Field[ValidationValidateRoutingNumberParamsRoutingNumberType] `query:"routing_number_type,required"`
 }
 
@@ -172,23 +175,25 @@ func (r ValidationValidateRoutingNumberParams) URLQuery() (v url.Values) {
 	})
 }
 
-// One of `aba`, `au_bsb`, `br_codigo`, `ca_cpa`, `cnaps`, `gb_sort_code`,
-// `in_ifsc`, `my_branch_code`, `se_bankgiro_clearing_code`, or `swift`. In sandbox
-// mode we currently only support `aba` and `swift` with routing numbers
-// '123456789' and 'GRINUST0XXX' respectively.
+// The type of routing number. See
+// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
+// more details. In sandbox mode we currently only support `aba` and `swift` with
+// routing numbers '123456789' and 'GRINUST0XXX' respectively.
 type ValidationValidateRoutingNumberParamsRoutingNumberType string
 
 const (
-	ValidationValidateRoutingNumberParamsRoutingNumberTypeAba                    ValidationValidateRoutingNumberParamsRoutingNumberType = "aba"
-	ValidationValidateRoutingNumberParamsRoutingNumberTypeAuBsb                  ValidationValidateRoutingNumberParamsRoutingNumberType = "au_bsb"
-	ValidationValidateRoutingNumberParamsRoutingNumberTypeBrCodigo               ValidationValidateRoutingNumberParamsRoutingNumberType = "br_codigo"
-	ValidationValidateRoutingNumberParamsRoutingNumberTypeCaCpa                  ValidationValidateRoutingNumberParamsRoutingNumberType = "ca_cpa"
-	ValidationValidateRoutingNumberParamsRoutingNumberTypeChips                  ValidationValidateRoutingNumberParamsRoutingNumberType = "chips"
-	ValidationValidateRoutingNumberParamsRoutingNumberTypeCnaps                  ValidationValidateRoutingNumberParamsRoutingNumberType = "cnaps"
-	ValidationValidateRoutingNumberParamsRoutingNumberTypeGBSortCode             ValidationValidateRoutingNumberParamsRoutingNumberType = "gb_sort_code"
-	ValidationValidateRoutingNumberParamsRoutingNumberTypeInIfsc                 ValidationValidateRoutingNumberParamsRoutingNumberType = "in_ifsc"
-	ValidationValidateRoutingNumberParamsRoutingNumberTypeJpZenginCode           ValidationValidateRoutingNumberParamsRoutingNumberType = "jp_zengin_code"
-	ValidationValidateRoutingNumberParamsRoutingNumberTypeMyBranchCode           ValidationValidateRoutingNumberParamsRoutingNumberType = "my_branch_code"
-	ValidationValidateRoutingNumberParamsRoutingNumberTypeSeBankgiroClearingCode ValidationValidateRoutingNumberParamsRoutingNumberType = "se_bankgiro_clearing_code"
-	ValidationValidateRoutingNumberParamsRoutingNumberTypeSwift                  ValidationValidateRoutingNumberParamsRoutingNumberType = "swift"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeAba                     ValidationValidateRoutingNumberParamsRoutingNumberType = "aba"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeAuBsb                   ValidationValidateRoutingNumberParamsRoutingNumberType = "au_bsb"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeBrCodigo                ValidationValidateRoutingNumberParamsRoutingNumberType = "br_codigo"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeCaCpa                   ValidationValidateRoutingNumberParamsRoutingNumberType = "ca_cpa"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeChips                   ValidationValidateRoutingNumberParamsRoutingNumberType = "chips"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeCnaps                   ValidationValidateRoutingNumberParamsRoutingNumberType = "cnaps"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeGBSortCode              ValidationValidateRoutingNumberParamsRoutingNumberType = "gb_sort_code"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeHkInterbankClearingCode ValidationValidateRoutingNumberParamsRoutingNumberType = "hk_interbank_clearing_code"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeInIfsc                  ValidationValidateRoutingNumberParamsRoutingNumberType = "in_ifsc"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeJpZenginCode            ValidationValidateRoutingNumberParamsRoutingNumberType = "jp_zengin_code"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeMyBranchCode            ValidationValidateRoutingNumberParamsRoutingNumberType = "my_branch_code"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeNzNationalClearingCode  ValidationValidateRoutingNumberParamsRoutingNumberType = "nz_national_clearing_code"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeSeBankgiroClearingCode  ValidationValidateRoutingNumberParamsRoutingNumberType = "se_bankgiro_clearing_code"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeSwift                   ValidationValidateRoutingNumberParamsRoutingNumberType = "swift"
 )

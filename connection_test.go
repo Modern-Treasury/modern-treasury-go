@@ -30,7 +30,7 @@ func TestConnectionListWithOptionalParams(t *testing.T) {
 		AfterCursor:      moderntreasury.F("string"),
 		Entity:           moderntreasury.F("string"),
 		PerPage:          moderntreasury.F(int64(0)),
-		VendorCustomerID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		VendorCustomerID: moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

@@ -29,8 +29,9 @@ func TestLedgerEventHandlerNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerEventHandlers.New(context.TODO(), moderntreasury.LedgerEventHandlerNewParams{
 		LedgerTransactionTemplate: moderntreasury.F(moderntreasury.LedgerEventHandlerNewParamsLedgerTransactionTemplate{
-			Description: moderntreasury.F("string"),
-			EffectiveAt: moderntreasury.F(time.Now()),
+			Description: moderntreasury.F("My Ledger Transaction Template Description"),
+			EffectiveAt: moderntreasury.F("{{ledgerable_event.custom_data.effective_at}}"),
+			Status:      moderntreasury.F("posted"),
 			LedgerEntries: moderntreasury.F([]moderntreasury.LedgerEventHandlerNewParamsLedgerTransactionTemplateLedgerEntry{{
 				Amount:          moderntreasury.F("string"),
 				Direction:       moderntreasury.F("string"),
@@ -44,17 +45,12 @@ func TestLedgerEventHandlerNewWithOptionalParams(t *testing.T) {
 				Direction:       moderntreasury.F("string"),
 				LedgerAccountID: moderntreasury.F("string"),
 			}}),
-			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
-				"foo":    "bar",
-				"modern": "treasury",
-			}),
 		}),
 		Name: moderntreasury.F("string"),
 		Conditions: moderntreasury.F(moderntreasury.LedgerEventHandlerNewParamsConditions{
-			Field:    moderntreasury.F("string"),
-			Operator: moderntreasury.F("string"),
-			Value:    moderntreasury.F("string"),
+			Field:    moderntreasury.F("ledgerable_event.name"),
+			Operator: moderntreasury.F("equals"),
+			Value:    moderntreasury.F("credit_card_swipe"),
 		}),
 		Description: moderntreasury.F("string"),
 		LedgerID:    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -62,6 +58,16 @@ func TestLedgerEventHandlerNewWithOptionalParams(t *testing.T) {
 			"key":    "value",
 			"foo":    "bar",
 			"modern": "treasury",
+		}),
+		Variables: moderntreasury.F(map[string]moderntreasury.LedgerEventHandlerVariableParam{
+			"credit_account": {
+				Type: moderntreasury.F("ledger_account"),
+				Query: moderntreasury.F(moderntreasury.LedgerEventHandlerVariableQueryParam{
+					Field:    moderntreasury.F("name"),
+					Operator: moderntreasury.F("equals"),
+					Value:    moderntreasury.F("my_credit_account"),
+				}),
+			},
 		}),
 	})
 	if err != nil {

@@ -30,7 +30,7 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.PaymentOrders.Reversals.New(
 		context.TODO(),
-		"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+		"string",
 		moderntreasury.PaymentOrderReversalNewParams{
 			Reason: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsReasonDuplicate),
 			LedgerTransaction: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransaction{
@@ -139,8 +139,8 @@ func TestPaymentOrderReversalGet(t *testing.T) {
 	)
 	_, err := client.PaymentOrders.Reversals.Get(
 		context.TODO(),
-		"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
-		"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e",
+		"string",
+		"string",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

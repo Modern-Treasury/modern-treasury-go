@@ -85,10 +85,10 @@ func TestTransactionListWithOptionalParams(t *testing.T) {
 		AfterCursor:       moderntreasury.F("string"),
 		AsOfDateEnd:       moderntreasury.F(time.Now()),
 		AsOfDateStart:     moderntreasury.F(time.Now()),
-		CounterpartyID:    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		CounterpartyID:    moderntreasury.F("string"),
 		Description:       moderntreasury.F("string"),
 		Direction:         moderntreasury.F("string"),
-		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		InternalAccountID: moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
@@ -97,7 +97,7 @@ func TestTransactionListWithOptionalParams(t *testing.T) {
 		Posted:           moderntreasury.F(true),
 		TransactableType: moderntreasury.F("string"),
 		VendorID:         moderntreasury.F("string"),
-		VirtualAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		VirtualAccountID: moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
