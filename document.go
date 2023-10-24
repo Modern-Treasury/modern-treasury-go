@@ -162,17 +162,18 @@ func (r *DocumentDocumentDetail) UnmarshalJSON(data []byte) (err error) {
 type DocumentDocumentableType string
 
 const (
-	DocumentDocumentableTypeCase            DocumentDocumentableType = "case"
-	DocumentDocumentableTypeCounterparty    DocumentDocumentableType = "counterparty"
-	DocumentDocumentableTypeExpectedPayment DocumentDocumentableType = "expected_payment"
-	DocumentDocumentableTypeExternalAccount DocumentDocumentableType = "external_account"
-	DocumentDocumentableTypeInternalAccount DocumentDocumentableType = "internal_account"
-	DocumentDocumentableTypeOrganization    DocumentDocumentableType = "organization"
-	DocumentDocumentableTypePaperItem       DocumentDocumentableType = "paper_item"
-	DocumentDocumentableTypePaymentOrder    DocumentDocumentableType = "payment_order"
-	DocumentDocumentableTypeTransaction     DocumentDocumentableType = "transaction"
-	DocumentDocumentableTypeDecision        DocumentDocumentableType = "decision"
-	DocumentDocumentableTypeConnection      DocumentDocumentableType = "connection"
+	DocumentDocumentableTypeCase                  DocumentDocumentableType = "case"
+	DocumentDocumentableTypeCounterparty          DocumentDocumentableType = "counterparty"
+	DocumentDocumentableTypeExpectedPayment       DocumentDocumentableType = "expected_payment"
+	DocumentDocumentableTypeExternalAccount       DocumentDocumentableType = "external_account"
+	DocumentDocumentableTypeIncomingPaymentDetail DocumentDocumentableType = "incoming_payment_detail"
+	DocumentDocumentableTypeInternalAccount       DocumentDocumentableType = "internal_account"
+	DocumentDocumentableTypeOrganization          DocumentDocumentableType = "organization"
+	DocumentDocumentableTypePaperItem             DocumentDocumentableType = "paper_item"
+	DocumentDocumentableTypePaymentOrder          DocumentDocumentableType = "payment_order"
+	DocumentDocumentableTypeTransaction           DocumentDocumentableType = "transaction"
+	DocumentDocumentableTypeDecision              DocumentDocumentableType = "decision"
+	DocumentDocumentableTypeConnection            DocumentDocumentableType = "connection"
 )
 
 type DocumentFile struct {
@@ -225,17 +226,18 @@ func (r DocumentNewParams) MarshalMultipart() (data []byte, contentType string, 
 type DocumentNewParamsDocumentableType string
 
 const (
-	DocumentNewParamsDocumentableTypeCases            DocumentNewParamsDocumentableType = "cases"
-	DocumentNewParamsDocumentableTypeCounterparties   DocumentNewParamsDocumentableType = "counterparties"
-	DocumentNewParamsDocumentableTypeExpectedPayments DocumentNewParamsDocumentableType = "expected_payments"
-	DocumentNewParamsDocumentableTypeExternalAccounts DocumentNewParamsDocumentableType = "external_accounts"
-	DocumentNewParamsDocumentableTypeInternalAccounts DocumentNewParamsDocumentableType = "internal_accounts"
-	DocumentNewParamsDocumentableTypeOrganizations    DocumentNewParamsDocumentableType = "organizations"
-	DocumentNewParamsDocumentableTypePaperItems       DocumentNewParamsDocumentableType = "paper_items"
-	DocumentNewParamsDocumentableTypePaymentOrders    DocumentNewParamsDocumentableType = "payment_orders"
-	DocumentNewParamsDocumentableTypeTransactions     DocumentNewParamsDocumentableType = "transactions"
-	DocumentNewParamsDocumentableTypeDecisions        DocumentNewParamsDocumentableType = "decisions"
-	DocumentNewParamsDocumentableTypeConnections      DocumentNewParamsDocumentableType = "connections"
+	DocumentNewParamsDocumentableTypeCases                  DocumentNewParamsDocumentableType = "cases"
+	DocumentNewParamsDocumentableTypeCounterparties         DocumentNewParamsDocumentableType = "counterparties"
+	DocumentNewParamsDocumentableTypeExpectedPayments       DocumentNewParamsDocumentableType = "expected_payments"
+	DocumentNewParamsDocumentableTypeExternalAccounts       DocumentNewParamsDocumentableType = "external_accounts"
+	DocumentNewParamsDocumentableTypeIncomingPaymentDetails DocumentNewParamsDocumentableType = "incoming_payment_details"
+	DocumentNewParamsDocumentableTypeInternalAccounts       DocumentNewParamsDocumentableType = "internal_accounts"
+	DocumentNewParamsDocumentableTypeOrganizations          DocumentNewParamsDocumentableType = "organizations"
+	DocumentNewParamsDocumentableTypePaperItems             DocumentNewParamsDocumentableType = "paper_items"
+	DocumentNewParamsDocumentableTypePaymentOrders          DocumentNewParamsDocumentableType = "payment_orders"
+	DocumentNewParamsDocumentableTypeTransactions           DocumentNewParamsDocumentableType = "transactions"
+	DocumentNewParamsDocumentableTypeDecisions              DocumentNewParamsDocumentableType = "decisions"
+	DocumentNewParamsDocumentableTypeConnections            DocumentNewParamsDocumentableType = "connections"
 )
 
 type DocumentListParams struct {
@@ -263,15 +265,16 @@ func (r DocumentListParams) URLQuery() (v url.Values) {
 type DocumentListParamsDocumentableType string
 
 const (
-	DocumentListParamsDocumentableTypeCases            DocumentListParamsDocumentableType = "cases"
-	DocumentListParamsDocumentableTypeCounterparties   DocumentListParamsDocumentableType = "counterparties"
-	DocumentListParamsDocumentableTypeExpectedPayments DocumentListParamsDocumentableType = "expected_payments"
-	DocumentListParamsDocumentableTypeExternalAccounts DocumentListParamsDocumentableType = "external_accounts"
-	DocumentListParamsDocumentableTypeInternalAccounts DocumentListParamsDocumentableType = "internal_accounts"
-	DocumentListParamsDocumentableTypeOrganizations    DocumentListParamsDocumentableType = "organizations"
-	DocumentListParamsDocumentableTypePaperItems       DocumentListParamsDocumentableType = "paper_items"
-	DocumentListParamsDocumentableTypePaymentOrders    DocumentListParamsDocumentableType = "payment_orders"
-	DocumentListParamsDocumentableTypeTransactions     DocumentListParamsDocumentableType = "transactions"
-	DocumentListParamsDocumentableTypeDecisions        DocumentListParamsDocumentableType = "decisions"
-	DocumentListParamsDocumentableTypeConnections      DocumentListParamsDocumentableType = "connections"
+	DocumentListParamsDocumentableTypeCases                  DocumentListParamsDocumentableType = "cases"
+	DocumentListParamsDocumentableTypeCounterparties         DocumentListParamsDocumentableType = "counterparties"
+	DocumentListParamsDocumentableTypeExpectedPayments       DocumentListParamsDocumentableType = "expected_payments"
+	DocumentListParamsDocumentableTypeExternalAccounts       DocumentListParamsDocumentableType = "external_accounts"
+	DocumentListParamsDocumentableTypeIncomingPaymentDetails DocumentListParamsDocumentableType = "incoming_payment_details"
+	DocumentListParamsDocumentableTypeInternalAccounts       DocumentListParamsDocumentableType = "internal_accounts"
+	DocumentListParamsDocumentableTypeOrganizations          DocumentListParamsDocumentableType = "organizations"
+	DocumentListParamsDocumentableTypePaperItems             DocumentListParamsDocumentableType = "paper_items"
+	DocumentListParamsDocumentableTypePaymentOrders          DocumentListParamsDocumentableType = "payment_orders"
+	DocumentListParamsDocumentableTypeTransactions           DocumentListParamsDocumentableType = "transactions"
+	DocumentListParamsDocumentableTypeDecisions              DocumentListParamsDocumentableType = "decisions"
+	DocumentListParamsDocumentableTypeConnections            DocumentListParamsDocumentableType = "connections"
 )

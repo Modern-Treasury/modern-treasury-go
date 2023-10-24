@@ -99,7 +99,7 @@ type ConnectionListParams struct {
 	Entity  param.Field[string] `query:"entity"`
 	PerPage param.Field[int64]  `query:"per_page"`
 	// An identifier assigned by the vendor to your organization.
-	VendorCustomerID param.Field[string] `query:"vendor_customer_id" format:"uuid"`
+	VendorCustomerID param.Field[string] `query:"vendor_customer_id"`
 }
 
 // URLQuery serializes [ConnectionListParams]'s query parameters as `url.Values`.

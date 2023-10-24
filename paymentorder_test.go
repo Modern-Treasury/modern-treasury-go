@@ -467,19 +467,19 @@ func TestPaymentOrderListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.PaymentOrders.List(context.TODO(), moderntreasury.PaymentOrderListParams{
 		AfterCursor:        moderntreasury.F("string"),
-		CounterpartyID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		CounterpartyID:     moderntreasury.F("string"),
 		Direction:          moderntreasury.F(shared.TransactionDirectionCredit),
 		EffectiveDateEnd:   moderntreasury.F(time.Now()),
 		EffectiveDateStart: moderntreasury.F(time.Now()),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		OriginatingAccountID: moderntreasury.F("string"),
 		PerPage:              moderntreasury.F(int64(0)),
 		Priority:             moderntreasury.F(moderntreasury.PaymentOrderListParamsPriorityHigh),
 		ReferenceNumber:      moderntreasury.F("string"),
 		Status:               moderntreasury.F(moderntreasury.PaymentOrderListParamsStatusApproved),
-		TransactionID:        moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		TransactionID:        moderntreasury.F("string"),
 		Type:                 moderntreasury.F(moderntreasury.PaymentOrderListParamsTypeACH),
 	})
 	if err != nil {

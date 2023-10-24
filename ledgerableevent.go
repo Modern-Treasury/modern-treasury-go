@@ -32,8 +32,7 @@ func NewLedgerableEventService(opts ...option.RequestOption) (r *LedgerableEvent
 	return
 }
 
-// Translation missing:
-// en.openapi.descriptions.ledger.operations.create_ledgerable_event
+// Create a ledgerable event.
 func (r *LedgerableEventService) New(ctx context.Context, body LedgerableEventNewParams, opts ...option.RequestOption) (res *LedgerableEvent, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/ledgerable_events"
@@ -50,22 +49,12 @@ func (r *LedgerableEventService) Get(ctx context.Context, id string, opts ...opt
 }
 
 type LedgerableEvent struct {
-	ID string `json:"id,required" format:"uuid"`
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount    int64     `json:"amount,required"`
+	ID        string    `json:"id,required" format:"uuid"`
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	// An ISO 4217 conformed currency or a custom currency.
-	Currency string `json:"currency,required"`
-	// Must be included if currency is a custom currency. The currency_exponent cannot
-	// exceed 30.
-	CurrencyExponent int64 `json:"currency_exponent,required,nullable"`
 	// Additionally data to be used by the Ledger Event Handler.
 	CustomData interface{} `json:"custom_data,required,nullable"`
 	// Description of the ledgerable event.
 	Description string `json:"description,required,nullable"`
-	// One of `credit`, `debit`.
-	Direction string `json:"direction,required,nullable"`
 	// Id of the ledger event handler that is used to create a ledger transaction.
 	LedgerEventHandlerID string `json:"ledger_event_handler_id,required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
@@ -84,13 +73,9 @@ type LedgerableEvent struct {
 // ledgerableEventJSON contains the JSON metadata for the struct [LedgerableEvent]
 type ledgerableEventJSON struct {
 	ID                   apijson.Field
-	Amount               apijson.Field
 	CreatedAt            apijson.Field
-	Currency             apijson.Field
-	CurrencyExponent     apijson.Field
 	CustomData           apijson.Field
 	Description          apijson.Field
-	Direction            apijson.Field
 	LedgerEventHandlerID apijson.Field
 	LiveMode             apijson.Field
 	Metadata             apijson.Field
@@ -106,22 +91,12 @@ func (r *LedgerableEvent) UnmarshalJSON(data []byte) (err error) {
 }
 
 type LedgerableEventNewParams struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
 	// Name of the ledgerable event.
 	Name param.Field[string] `json:"name,required"`
-	// An ISO 4217 conformed currency or a custom currency.
-	Currency param.Field[string] `json:"currency"`
-	// Must be included if currency is a custom currency. The currency_exponent cannot
-	// exceed 30.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// Additionally data to be used by the Ledger Event Handler.
 	CustomData param.Field[interface{}] `json:"custom_data"`
 	// Description of the ledgerable event.
 	Description param.Field[string] `json:"description"`
-	// One of `credit`, `debit`.
-	Direction param.Field[string] `json:"direction"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`

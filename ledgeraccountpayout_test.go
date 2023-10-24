@@ -29,6 +29,7 @@ func TestLedgerAccountPayoutNewWithOptionalParams(t *testing.T) {
 	_, err := client.LedgerAccountPayouts.New(context.TODO(), moderntreasury.LedgerAccountPayoutNewParams{
 		FundingLedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		PayoutLedgerAccountID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		AllowEitherDirection:   moderntreasury.F(true),
 		Description:            moderntreasury.F("string"),
 		EffectiveAtUpperBound:  moderntreasury.F("14:15:22Z"),
 		Metadata: moderntreasury.F(map[string]string{
@@ -125,6 +126,7 @@ func TestLedgerAccountPayoutListWithOptionalParams(t *testing.T) {
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
+		PayoutEntryDirection:  moderntreasury.F("string"),
 		PayoutLedgerAccountID: moderntreasury.F("string"),
 		PerPage:               moderntreasury.F(int64(0)),
 	})
