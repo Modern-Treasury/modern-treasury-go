@@ -7,6 +7,7 @@ import (
 	"errors"
 	"os"
 	"testing"
+	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go/v2"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/testutil"
@@ -28,8 +29,8 @@ func TestLedgerAccountStatementNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountStatements.New(context.TODO(), moderntreasury.LedgerAccountStatementNewParams{
-		EffectiveAtLowerBound: moderntreasury.F("string"),
-		EffectiveAtUpperBound: moderntreasury.F("string"),
+		EffectiveAtLowerBound: moderntreasury.F(time.Now()),
+		EffectiveAtUpperBound: moderntreasury.F(time.Now()),
 		LedgerAccountID:       moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Description:           moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{

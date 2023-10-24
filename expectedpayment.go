@@ -131,6 +131,8 @@ type ExpectedPayment struct {
 	// automatic if it was automatically reconciled by Modern Treasury, or null if it
 	// is unreconciled.
 	ReconciliationMethod ExpectedPaymentReconciliationMethod `json:"reconciliation_method,required,nullable"`
+	// An array of reconciliation rule variables for this payment.
+	ReconciliationRuleVariables []interface{} `json:"reconciliation_rule_variables,required,nullable"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -155,33 +157,34 @@ type ExpectedPayment struct {
 
 // expectedPaymentJSON contains the JSON metadata for the struct [ExpectedPayment]
 type expectedPaymentJSON struct {
-	ID                    apijson.Field
-	AmountLowerBound      apijson.Field
-	AmountUpperBound      apijson.Field
-	CounterpartyID        apijson.Field
-	CreatedAt             apijson.Field
-	Currency              apijson.Field
-	DateLowerBound        apijson.Field
-	DateUpperBound        apijson.Field
-	Description           apijson.Field
-	Direction             apijson.Field
-	InternalAccountID     apijson.Field
-	LedgerTransactionID   apijson.Field
-	LiveMode              apijson.Field
-	Metadata              apijson.Field
-	Object                apijson.Field
-	ReconciliationFilters apijson.Field
-	ReconciliationGroups  apijson.Field
-	ReconciliationMethod  apijson.Field
-	RemittanceInformation apijson.Field
-	StatementDescriptor   apijson.Field
-	Status                apijson.Field
-	TransactionID         apijson.Field
-	TransactionLineItemID apijson.Field
-	Type                  apijson.Field
-	UpdatedAt             apijson.Field
-	raw                   string
-	ExtraFields           map[string]apijson.Field
+	ID                          apijson.Field
+	AmountLowerBound            apijson.Field
+	AmountUpperBound            apijson.Field
+	CounterpartyID              apijson.Field
+	CreatedAt                   apijson.Field
+	Currency                    apijson.Field
+	DateLowerBound              apijson.Field
+	DateUpperBound              apijson.Field
+	Description                 apijson.Field
+	Direction                   apijson.Field
+	InternalAccountID           apijson.Field
+	LedgerTransactionID         apijson.Field
+	LiveMode                    apijson.Field
+	Metadata                    apijson.Field
+	Object                      apijson.Field
+	ReconciliationFilters       apijson.Field
+	ReconciliationGroups        apijson.Field
+	ReconciliationMethod        apijson.Field
+	ReconciliationRuleVariables apijson.Field
+	RemittanceInformation       apijson.Field
+	StatementDescriptor         apijson.Field
+	Status                      apijson.Field
+	TransactionID               apijson.Field
+	TransactionLineItemID       apijson.Field
+	Type                        apijson.Field
+	UpdatedAt                   apijson.Field
+	raw                         string
+	ExtraFields                 map[string]apijson.Field
 }
 
 func (r *ExpectedPayment) UnmarshalJSON(data []byte) (err error) {
@@ -218,6 +221,7 @@ const (
 	ExpectedPaymentTypeBacs        ExpectedPaymentType = "bacs"
 	ExpectedPaymentTypeBook        ExpectedPaymentType = "book"
 	ExpectedPaymentTypeCard        ExpectedPaymentType = "card"
+	ExpectedPaymentTypeChats       ExpectedPaymentType = "chats"
 	ExpectedPaymentTypeCheck       ExpectedPaymentType = "check"
 	ExpectedPaymentTypeCrossBorder ExpectedPaymentType = "cross_border"
 	ExpectedPaymentTypeEft         ExpectedPaymentType = "eft"
@@ -225,6 +229,7 @@ const (
 	ExpectedPaymentTypeMasav       ExpectedPaymentType = "masav"
 	ExpectedPaymentTypeNeft        ExpectedPaymentType = "neft"
 	ExpectedPaymentTypeNics        ExpectedPaymentType = "nics"
+	ExpectedPaymentTypeNzBecs      ExpectedPaymentType = "nz_becs"
 	ExpectedPaymentTypeProvxchange ExpectedPaymentType = "provxchange"
 	ExpectedPaymentTypeRtp         ExpectedPaymentType = "rtp"
 	ExpectedPaymentTypeSeBankgirot ExpectedPaymentType = "se_bankgirot"
@@ -266,6 +271,8 @@ type ExpectedPaymentNewParams struct {
 	ReconciliationFilters param.Field[interface{}] `json:"reconciliation_filters"`
 	// The reconciliation groups you have for this payment.
 	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
+	// An array of reconciliation rule variables for this payment.
+	ReconciliationRuleVariables param.Field[[]interface{}] `json:"reconciliation_rule_variables"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -331,6 +338,8 @@ type ExpectedPaymentUpdateParams struct {
 	ReconciliationFilters param.Field[interface{}] `json:"reconciliation_filters"`
 	// The reconciliation groups you have for this payment.
 	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
+	// An array of reconciliation rule variables for this payment.
+	ReconciliationRuleVariables param.Field[[]interface{}] `json:"reconciliation_rule_variables"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -402,6 +411,7 @@ const (
 	ExpectedPaymentListParamsTypeBacs        ExpectedPaymentListParamsType = "bacs"
 	ExpectedPaymentListParamsTypeBook        ExpectedPaymentListParamsType = "book"
 	ExpectedPaymentListParamsTypeCard        ExpectedPaymentListParamsType = "card"
+	ExpectedPaymentListParamsTypeChats       ExpectedPaymentListParamsType = "chats"
 	ExpectedPaymentListParamsTypeCheck       ExpectedPaymentListParamsType = "check"
 	ExpectedPaymentListParamsTypeCrossBorder ExpectedPaymentListParamsType = "cross_border"
 	ExpectedPaymentListParamsTypeEft         ExpectedPaymentListParamsType = "eft"
@@ -409,6 +419,7 @@ const (
 	ExpectedPaymentListParamsTypeMasav       ExpectedPaymentListParamsType = "masav"
 	ExpectedPaymentListParamsTypeNeft        ExpectedPaymentListParamsType = "neft"
 	ExpectedPaymentListParamsTypeNics        ExpectedPaymentListParamsType = "nics"
+	ExpectedPaymentListParamsTypeNzBecs      ExpectedPaymentListParamsType = "nz_becs"
 	ExpectedPaymentListParamsTypeProvxchange ExpectedPaymentListParamsType = "provxchange"
 	ExpectedPaymentListParamsTypeRtp         ExpectedPaymentListParamsType = "rtp"
 	ExpectedPaymentListParamsTypeSeBankgirot ExpectedPaymentListParamsType = "se_bankgirot"

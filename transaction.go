@@ -89,14 +89,6 @@ type Transaction struct {
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	// Currency that this transaction is denominated in.
 	Currency shared.Currency `json:"currency,required,nullable"`
-	// This field contains additional information that the bank provided about the
-	// transaction. This is structured data. Some of the data in here might overlap
-	// with what is in the `vendor_description`. For example, the OBI could be a part
-	// of the vendor description, and it would also be included in here. The attributes
-	// that are passed through the details field will vary based on your banking
-	// partner. Currently, the following keys may be in the details object:
-	// `originator_name`, `originator_to_beneficiary_information`.
-	Details map[string]string `json:"details,required"`
 	// Either `credit` or `debit`.
 	Direction   string    `json:"direction,required"`
 	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
@@ -129,12 +121,20 @@ type Transaction struct {
 	VendorCodeType TransactionVendorCodeType `json:"vendor_code_type,required,nullable"`
 	// An identifier given to this transaction by the bank, often `null`.
 	VendorCustomerID string `json:"vendor_customer_id,required,nullable"`
-	// The transaction detail text that often appears in on your bank statement and in
-	// your banking portal.
-	VendorDescription string `json:"vendor_description,required,nullable"`
 	// An identifier given to this transaction by the bank.
 	VendorID string `json:"vendor_id,required,nullable"`
-	JSON     transactionJSON
+	// This field contains additional information that the bank provided about the
+	// transaction. This is structured data. Some of the data in here might overlap
+	// with what is in the `vendor_description`. For example, the OBI could be a part
+	// of the vendor description, and it would also be included in here. The attributes
+	// that are passed through the details field will vary based on your banking
+	// partner. Currently, the following keys may be in the details object:
+	// `originator_name`, `originator_to_beneficiary_information`.
+	Details map[string]string `json:"details"`
+	// The transaction detail text that often appears in on your bank statement and in
+	// your banking portal.
+	VendorDescription string `json:"vendor_description,nullable"`
+	JSON              transactionJSON
 }
 
 // transactionJSON contains the JSON metadata for the struct [Transaction]
@@ -145,7 +145,6 @@ type transactionJSON struct {
 	AsOfTime          apijson.Field
 	CreatedAt         apijson.Field
 	Currency          apijson.Field
-	Details           apijson.Field
 	Direction         apijson.Field
 	DiscardedAt       apijson.Field
 	InternalAccountID apijson.Field
@@ -159,8 +158,9 @@ type transactionJSON struct {
 	VendorCode        apijson.Field
 	VendorCodeType    apijson.Field
 	VendorCustomerID  apijson.Field
-	VendorDescription apijson.Field
 	VendorID          apijson.Field
+	Details           apijson.Field
+	VendorDescription apijson.Field
 	raw               string
 	ExtraFields       map[string]apijson.Field
 }
@@ -179,6 +179,7 @@ const (
 	TransactionTypeBacs        TransactionType = "bacs"
 	TransactionTypeBook        TransactionType = "book"
 	TransactionTypeCard        TransactionType = "card"
+	TransactionTypeChats       TransactionType = "chats"
 	TransactionTypeCheck       TransactionType = "check"
 	TransactionTypeCrossBorder TransactionType = "cross_border"
 	TransactionTypeEft         TransactionType = "eft"
@@ -186,6 +187,7 @@ const (
 	TransactionTypeMasav       TransactionType = "masav"
 	TransactionTypeNeft        TransactionType = "neft"
 	TransactionTypeNics        TransactionType = "nics"
+	TransactionTypeNzBecs      TransactionType = "nz_becs"
 	TransactionTypeProvxchange TransactionType = "provxchange"
 	TransactionTypeRtp         TransactionType = "rtp"
 	TransactionTypeSeBankgirot TransactionType = "se_bankgirot"
@@ -244,13 +246,13 @@ type TransactionListParams struct {
 	// Filters transactions with an `as_of_date` starting on or after the specified
 	// date (YYYY-MM-DD).
 	AsOfDateStart  param.Field[time.Time] `query:"as_of_date_start" format:"date"`
-	CounterpartyID param.Field[string]    `query:"counterparty_id" format:"uuid"`
+	CounterpartyID param.Field[string]    `query:"counterparty_id"`
 	// Filters for transactions including the queried string in the description.
 	Description param.Field[string] `query:"description"`
 	Direction   param.Field[string] `query:"direction"`
 	// Specify `internal_account_id` if you wish to see transactions to/from a specific
 	// account.
-	InternalAccountID param.Field[string] `query:"internal_account_id" format:"uuid"`
+	InternalAccountID param.Field[string] `query:"internal_account_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
@@ -263,7 +265,7 @@ type TransactionListParams struct {
 	// Filters for transactions including the queried vendor id (an identifier given to
 	// transactions by the bank).
 	VendorID         param.Field[string] `query:"vendor_id"`
-	VirtualAccountID param.Field[string] `query:"virtual_account_id" format:"uuid"`
+	VirtualAccountID param.Field[string] `query:"virtual_account_id"`
 }
 
 // URLQuery serializes [TransactionListParams]'s query parameters as `url.Values`.

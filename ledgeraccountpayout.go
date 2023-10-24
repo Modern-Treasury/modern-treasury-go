@@ -106,7 +106,7 @@ type LedgerAccountPayout struct {
 	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account payout. The default value is the created_at
 	// timestamp of the ledger account payout.
-	EffectiveAtUpperBound string `json:"effective_at_upper_bound,required" format:"time"`
+	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound,required" format:"date-time"`
 	// The id of the funding ledger account that sends to or receives funds from the
 	// payout ledger account.
 	FundingLedgerAccountID string `json:"funding_ledger_account_id,required" format:"uuid"`
@@ -121,6 +121,8 @@ type LedgerAccountPayout struct {
 	// strings.
 	Metadata map[string]string `json:"metadata,required"`
 	Object   string            `json:"object,required"`
+	// The direction of the ledger entry with the payout_ledger_account.
+	PayoutEntryDirection string `json:"payout_entry_direction,required,nullable"`
 	// The id of the payout ledger account whose ledger entries are queried against,
 	// and its balance is reduced as a result.
 	PayoutLedgerAccountID string `json:"payout_ledger_account_id,required" format:"uuid"`
@@ -147,6 +149,7 @@ type ledgerAccountPayoutJSON struct {
 	LiveMode               apijson.Field
 	Metadata               apijson.Field
 	Object                 apijson.Field
+	PayoutEntryDirection   apijson.Field
 	PayoutLedgerAccountID  apijson.Field
 	Status                 apijson.Field
 	UpdatedAt              apijson.Field
@@ -177,6 +180,9 @@ type LedgerAccountPayoutNewParams struct {
 	// The id of the payout ledger account whose ledger entries are queried against,
 	// and its balance is reduced as a result.
 	PayoutLedgerAccountID param.Field[string] `json:"payout_ledger_account_id,required" format:"uuid"`
+	// If true, the payout amount and payout_entry_direction will bring the payout
+	// ledger account’s balance closer to zero, even if the balance is negative.
+	AllowEitherDirection param.Field[bool] `json:"allow_either_direction"`
 	// The description of the ledger account payout.
 	Description param.Field[string] `json:"description"`
 	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
@@ -240,6 +246,7 @@ type LedgerAccountPayoutListParams struct {
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
 	Metadata              param.Field[map[string]string] `query:"metadata"`
+	PayoutEntryDirection  param.Field[string]            `query:"payout_entry_direction"`
 	PayoutLedgerAccountID param.Field[string]            `query:"payout_ledger_account_id"`
 	PerPage               param.Field[int64]             `query:"per_page"`
 }

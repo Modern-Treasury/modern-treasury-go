@@ -56,10 +56,10 @@ type LedgerAccountStatementNewResponse struct {
 	Description string `json:"description,required,nullable"`
 	// The inclusive lower bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account statement.
-	EffectiveAtLowerBound string `json:"effective_at_lower_bound,required" format:"time"`
+	EffectiveAtLowerBound time.Time `json:"effective_at_lower_bound,required" format:"date-time"`
 	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account statement.
-	EffectiveAtUpperBound string `json:"effective_at_upper_bound,required" format:"time"`
+	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound,required" format:"date-time"`
 	// The pending, posted, and available balances for this ledger account at the
 	// `effective_at_upper_bound`. The posted balance is the sum of all posted entries
 	// on the account. The pending balance is the sum of all pending and posted entries
@@ -369,10 +369,10 @@ type LedgerAccountStatementGetResponse struct {
 	Description string `json:"description,required,nullable"`
 	// The inclusive lower bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account statement.
-	EffectiveAtLowerBound string `json:"effective_at_lower_bound,required" format:"time"`
+	EffectiveAtLowerBound time.Time `json:"effective_at_lower_bound,required" format:"date-time"`
 	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account statement.
-	EffectiveAtUpperBound string `json:"effective_at_upper_bound,required" format:"time"`
+	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound,required" format:"date-time"`
 	// The pending, posted, and available balances for this ledger account at the
 	// `effective_at_upper_bound`. The posted balance is the sum of all posted entries
 	// on the account. The pending balance is the sum of all pending and posted entries
@@ -678,10 +678,10 @@ func (r *LedgerAccountStatementGetResponseStartingBalancePostedBalance) Unmarsha
 type LedgerAccountStatementNewParams struct {
 	// The inclusive lower bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account statement.
-	EffectiveAtLowerBound param.Field[string] `json:"effective_at_lower_bound,required" format:"time"`
+	EffectiveAtLowerBound param.Field[time.Time] `json:"effective_at_lower_bound,required" format:"date-time"`
 	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account statement.
-	EffectiveAtUpperBound param.Field[string] `json:"effective_at_upper_bound,required" format:"time"`
+	EffectiveAtUpperBound param.Field[time.Time] `json:"effective_at_upper_bound,required" format:"date-time"`
 	// The id of the ledger account whose ledger entries are queried against, and its
 	// balances are computed as a result.
 	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`

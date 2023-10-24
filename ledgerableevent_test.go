@@ -27,13 +27,9 @@ func TestLedgerableEventNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerableEvents.New(context.TODO(), moderntreasury.LedgerableEventNewParams{
-		Amount:           moderntreasury.F(int64(0)),
-		Name:             moderntreasury.F("string"),
-		Currency:         moderntreasury.F("string"),
-		CurrencyExponent: moderntreasury.F(int64(0)),
-		CustomData:       moderntreasury.F[any](map[string]interface{}{}),
-		Description:      moderntreasury.F("string"),
-		Direction:        moderntreasury.F("string"),
+		Name:        moderntreasury.F("string"),
+		CustomData:  moderntreasury.F[any](map[string]interface{}{}),
+		Description: moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",

@@ -140,8 +140,8 @@ func TestVirtualAccountListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.VirtualAccounts.List(context.TODO(), moderntreasury.VirtualAccountListParams{
 		AfterCursor:       moderntreasury.F("string"),
-		CounterpartyID:    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		CounterpartyID:    moderntreasury.F("string"),
+		InternalAccountID: moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),

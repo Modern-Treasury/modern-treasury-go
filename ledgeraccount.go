@@ -166,10 +166,10 @@ type LedgerAccountBalances struct {
 	AvailableBalance LedgerAccountBalancesAvailableBalance `json:"available_balance,required"`
 	// The inclusive lower bound of the effective_at timestamp for the returned
 	// balances.
-	EffectiveAtLowerBound string `json:"effective_at_lower_bound,required,nullable" format:"time"`
+	EffectiveAtLowerBound time.Time `json:"effective_at_lower_bound,required,nullable" format:"date-time"`
 	// The exclusive upper bound of the effective_at timestamp for the returned
 	// balances.
-	EffectiveAtUpperBound string `json:"effective_at_upper_bound,required,nullable" format:"time"`
+	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound,required,nullable" format:"date-time"`
 	// The pending_balance is the sum of all pending and posted entries.
 	PendingBalance LedgerAccountBalancesPendingBalance `json:"pending_balance,required"`
 	// The posted_balance is the sum of all posted entries.

@@ -87,6 +87,9 @@ type TransactionLineItem struct {
 	// if it exists in the test environment.
 	LiveMode bool   `json:"live_mode,required"`
 	Object   string `json:"object,required"`
+	// Describes whether this line item should be counted towards the corresponding
+	// transaction’s reconciliation.
+	Reconcilable bool `json:"reconcilable,required"`
 	// If a matching object exists in Modern Treasury, the ID will be populated here,
 	// otherwise `null`.
 	TransactableID string `json:"transactable_id,required,nullable"`
@@ -114,6 +117,7 @@ type transactionLineItemJSON struct {
 	ExpectedPaymentID apijson.Field
 	LiveMode          apijson.Field
 	Object            apijson.Field
+	Reconcilable      apijson.Field
 	TransactableID    apijson.Field
 	TransactableType  apijson.Field
 	TransactionID     apijson.Field
