@@ -537,6 +537,7 @@ const (
 	PaymentOrderTypeSeBankgirot PaymentOrderType = "se_bankgirot"
 	PaymentOrderTypeSen         PaymentOrderType = "sen"
 	PaymentOrderTypeSepa        PaymentOrderType = "sepa"
+	PaymentOrderTypeSgGiro      PaymentOrderType = "sg_giro"
 	PaymentOrderTypeSic         PaymentOrderType = "sic"
 	PaymentOrderTypeSignet      PaymentOrderType = "signet"
 	PaymentOrderTypeWire        PaymentOrderType = "wire"
@@ -598,6 +599,11 @@ type PaymentOrderNewParams struct {
 	// creation will fail. The resulting ledger transaction will mirror the status of
 	// the payment order.
 	LedgerTransaction param.Field[PaymentOrderNewParamsLedgerTransaction] `json:"ledger_transaction"`
+	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
+	// pending ledger transaction can be attached upon payment order creation. Once the
+	// payment order is created, the status of the ledger transaction tracks the
+	// payment order automatically.
+	LedgerTransactionID param.Field[string] `json:"ledger_transaction_id" format:"uuid"`
 	// An array of line items that must sum up to the amount of the payment order.
 	LineItems param.Field[[]PaymentOrderNewParamsLineItem] `json:"line_items"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -1082,6 +1088,7 @@ const (
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "nz_becs"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sg_giro"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSen         PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sen"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
@@ -1489,6 +1496,7 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "nz_becs"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sg_giro"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSen         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sen"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
@@ -1599,6 +1607,7 @@ const (
 	PaymentOrderListParamsTypeSeBankgirot PaymentOrderListParamsType = "se_bankgirot"
 	PaymentOrderListParamsTypeSen         PaymentOrderListParamsType = "sen"
 	PaymentOrderListParamsTypeSepa        PaymentOrderListParamsType = "sepa"
+	PaymentOrderListParamsTypeSgGiro      PaymentOrderListParamsType = "sg_giro"
 	PaymentOrderListParamsTypeSic         PaymentOrderListParamsType = "sic"
 	PaymentOrderListParamsTypeSignet      PaymentOrderListParamsType = "signet"
 	PaymentOrderListParamsTypeWire        PaymentOrderListParamsType = "wire"
@@ -1657,6 +1666,11 @@ type PaymentOrderNewAsyncParams struct {
 	// creation will fail. The resulting ledger transaction will mirror the status of
 	// the payment order.
 	LedgerTransaction param.Field[PaymentOrderNewAsyncParamsLedgerTransaction] `json:"ledger_transaction"`
+	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
+	// pending ledger transaction can be attached upon payment order creation. Once the
+	// payment order is created, the status of the ledger transaction tracks the
+	// payment order automatically.
+	LedgerTransactionID param.Field[string] `json:"ledger_transaction_id" format:"uuid"`
 	// An array of line items that must sum up to the amount of the payment order.
 	LineItems param.Field[[]PaymentOrderNewAsyncParamsLineItem] `json:"line_items"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -2100,6 +2114,7 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "nz_becs"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sg_giro"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSen         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sen"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sepa"

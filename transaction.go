@@ -193,6 +193,7 @@ const (
 	TransactionTypeSeBankgirot TransactionType = "se_bankgirot"
 	TransactionTypeSen         TransactionType = "sen"
 	TransactionTypeSepa        TransactionType = "sepa"
+	TransactionTypeSgGiro      TransactionType = "sg_giro"
 	TransactionTypeSic         TransactionType = "sic"
 	TransactionTypeSignet      TransactionType = "signet"
 	TransactionTypeWire        TransactionType = "wire"

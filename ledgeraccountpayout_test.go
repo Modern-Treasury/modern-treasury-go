@@ -7,6 +7,7 @@ import (
 	"errors"
 	"os"
 	"testing"
+	"time"
 
 	moderntreasury "github.com/Modern-Treasury/modern-treasury-go/v2"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/testutil"
@@ -31,7 +32,7 @@ func TestLedgerAccountPayoutNewWithOptionalParams(t *testing.T) {
 		PayoutLedgerAccountID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		AllowEitherDirection:   moderntreasury.F(true),
 		Description:            moderntreasury.F("string"),
-		EffectiveAtUpperBound:  moderntreasury.F("14:15:22Z"),
+		EffectiveAtUpperBound:  moderntreasury.F(time.Now()),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
