@@ -581,6 +581,7 @@ const (
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNzBecs      CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "nz_becs"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeProvxchange CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "provxchange"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeRtp         CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "rtp"
+	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSgGiro      CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "sg_giro"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSeBankgirot CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "se_bankgirot"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSen         CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "sen"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSepa        CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "sepa"

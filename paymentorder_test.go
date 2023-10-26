@@ -140,6 +140,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 			LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerableTypeCounterparty),
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		}),
+		LedgerTransactionID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		LineItems: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsLineItem{{
 			Amount: moderntreasury.F(int64(0)),
 			Metadata: moderntreasury.F(map[string]string{
@@ -598,6 +599,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 			LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeCounterparty),
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		}),
+		LedgerTransactionID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		LineItems: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsLineItem{{
 			Amount: moderntreasury.F(int64(0)),
 			Metadata: moderntreasury.F(map[string]string{

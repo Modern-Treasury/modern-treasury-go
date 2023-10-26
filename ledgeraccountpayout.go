@@ -181,14 +181,14 @@ type LedgerAccountPayoutNewParams struct {
 	// and its balance is reduced as a result.
 	PayoutLedgerAccountID param.Field[string] `json:"payout_ledger_account_id,required" format:"uuid"`
 	// If true, the payout amount and payout_entry_direction will bring the payout
-	// ledger account’s balance closer to zero, even if the balance is negative.
+	// ledger account's balance closer to zero, even if the balance is negative.
 	AllowEitherDirection param.Field[bool] `json:"allow_either_direction"`
 	// The description of the ledger account payout.
 	Description param.Field[string] `json:"description"`
 	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account payout. The default value is the created_at
 	// timestamp of the ledger account payout.
-	EffectiveAtUpperBound param.Field[string] `json:"effective_at_upper_bound" format:"time"`
+	EffectiveAtUpperBound param.Field[time.Time] `json:"effective_at_upper_bound" format:"date-time"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`

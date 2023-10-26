@@ -300,7 +300,7 @@ type LedgerEntryListParams struct {
 	Direction param.Field[shared.TransactionDirection] `query:"direction"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// transaction's effective time. Format ISO8601
-	EffectiveAt param.Field[map[string]string] `query:"effective_at" format:"time"`
+	EffectiveAt param.Field[map[string]time.Time] `query:"effective_at" format:"date-time"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// transaction's effective date. Format YYYY-MM-DD
 	EffectiveDate param.Field[map[string]time.Time] `query:"effective_date" format:"date"`

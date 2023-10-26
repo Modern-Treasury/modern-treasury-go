@@ -273,6 +273,8 @@ func (r InternalAccountNewParamsPartyAddress) MarshalJSON() (data []byte, err er
 type InternalAccountUpdateParams struct {
 	// The Counterparty associated to this account.
 	CounterpartyID param.Field[string] `json:"counterparty_id"`
+	// The Ledger Account associated to this account.
+	LedgerAccountID param.Field[string] `json:"ledger_account_id"`
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
 	// an empty string or `null` as the value.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -335,6 +337,7 @@ const (
 	InternalAccountListParamsPaymentTypeSeBankgirot InternalAccountListParamsPaymentType = "se_bankgirot"
 	InternalAccountListParamsPaymentTypeSen         InternalAccountListParamsPaymentType = "sen"
 	InternalAccountListParamsPaymentTypeSepa        InternalAccountListParamsPaymentType = "sepa"
+	InternalAccountListParamsPaymentTypeSgGiro      InternalAccountListParamsPaymentType = "sg_giro"
 	InternalAccountListParamsPaymentTypeSic         InternalAccountListParamsPaymentType = "sic"
 	InternalAccountListParamsPaymentTypeSignet      InternalAccountListParamsPaymentType = "signet"
 	InternalAccountListParamsPaymentTypeWire        InternalAccountListParamsPaymentType = "wire"

@@ -150,6 +150,7 @@ const (
 	RoutingNumberLookupRequestSupportedPaymentTypeSeBankgirot RoutingNumberLookupRequestSupportedPaymentType = "se_bankgirot"
 	RoutingNumberLookupRequestSupportedPaymentTypeSen         RoutingNumberLookupRequestSupportedPaymentType = "sen"
 	RoutingNumberLookupRequestSupportedPaymentTypeSepa        RoutingNumberLookupRequestSupportedPaymentType = "sepa"
+	RoutingNumberLookupRequestSupportedPaymentTypeSgGiro      RoutingNumberLookupRequestSupportedPaymentType = "sg_giro"
 	RoutingNumberLookupRequestSupportedPaymentTypeSic         RoutingNumberLookupRequestSupportedPaymentType = "sic"
 	RoutingNumberLookupRequestSupportedPaymentTypeSignet      RoutingNumberLookupRequestSupportedPaymentType = "signet"
 	RoutingNumberLookupRequestSupportedPaymentTypeWire        RoutingNumberLookupRequestSupportedPaymentType = "wire"
