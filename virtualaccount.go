@@ -269,6 +269,7 @@ const (
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeSeBankgirot VirtualAccountNewParamsRoutingDetailsPaymentType = "se_bankgirot"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeSen         VirtualAccountNewParamsRoutingDetailsPaymentType = "sen"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeSepa        VirtualAccountNewParamsRoutingDetailsPaymentType = "sepa"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSgGiro      VirtualAccountNewParamsRoutingDetailsPaymentType = "sg_giro"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeSic         VirtualAccountNewParamsRoutingDetailsPaymentType = "sic"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeSignet      VirtualAccountNewParamsRoutingDetailsPaymentType = "signet"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeWire        VirtualAccountNewParamsRoutingDetailsPaymentType = "wire"

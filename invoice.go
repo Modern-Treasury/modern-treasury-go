@@ -421,7 +421,7 @@ type InvoiceNewParams struct {
 	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
 	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
 	// `sic`, `signet`, `provexchange`, `zengin`.
-	PaymentType param.Field[PaymentOrderType] `json:"payment_type"`
+	PaymentType param.Field[InvoiceNewParamsPaymentType] `json:"payment_type"`
 	// The receiving account ID. Can be an `external_account`.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
 	// The email of the recipient of the invoice. Leaving this value as null will
@@ -531,6 +531,38 @@ const (
 	InvoiceNewParamsPaymentMethodAutomatic InvoiceNewParamsPaymentMethod = "automatic"
 )
 
+// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
+// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
+// `sic`, `signet`, `provexchange`, `zengin`.
+type InvoiceNewParamsPaymentType string
+
+const (
+	InvoiceNewParamsPaymentTypeACH         InvoiceNewParamsPaymentType = "ach"
+	InvoiceNewParamsPaymentTypeAuBecs      InvoiceNewParamsPaymentType = "au_becs"
+	InvoiceNewParamsPaymentTypeBacs        InvoiceNewParamsPaymentType = "bacs"
+	InvoiceNewParamsPaymentTypeBook        InvoiceNewParamsPaymentType = "book"
+	InvoiceNewParamsPaymentTypeCard        InvoiceNewParamsPaymentType = "card"
+	InvoiceNewParamsPaymentTypeChats       InvoiceNewParamsPaymentType = "chats"
+	InvoiceNewParamsPaymentTypeCheck       InvoiceNewParamsPaymentType = "check"
+	InvoiceNewParamsPaymentTypeCrossBorder InvoiceNewParamsPaymentType = "cross_border"
+	InvoiceNewParamsPaymentTypeEft         InvoiceNewParamsPaymentType = "eft"
+	InvoiceNewParamsPaymentTypeInterac     InvoiceNewParamsPaymentType = "interac"
+	InvoiceNewParamsPaymentTypeMasav       InvoiceNewParamsPaymentType = "masav"
+	InvoiceNewParamsPaymentTypeNeft        InvoiceNewParamsPaymentType = "neft"
+	InvoiceNewParamsPaymentTypeNics        InvoiceNewParamsPaymentType = "nics"
+	InvoiceNewParamsPaymentTypeNzBecs      InvoiceNewParamsPaymentType = "nz_becs"
+	InvoiceNewParamsPaymentTypeProvxchange InvoiceNewParamsPaymentType = "provxchange"
+	InvoiceNewParamsPaymentTypeRtp         InvoiceNewParamsPaymentType = "rtp"
+	InvoiceNewParamsPaymentTypeSgGiro      InvoiceNewParamsPaymentType = "sg_giro"
+	InvoiceNewParamsPaymentTypeSeBankgirot InvoiceNewParamsPaymentType = "se_bankgirot"
+	InvoiceNewParamsPaymentTypeSen         InvoiceNewParamsPaymentType = "sen"
+	InvoiceNewParamsPaymentTypeSepa        InvoiceNewParamsPaymentType = "sepa"
+	InvoiceNewParamsPaymentTypeSic         InvoiceNewParamsPaymentType = "sic"
+	InvoiceNewParamsPaymentTypeSignet      InvoiceNewParamsPaymentType = "signet"
+	InvoiceNewParamsPaymentTypeWire        InvoiceNewParamsPaymentType = "wire"
+	InvoiceNewParamsPaymentTypeZengin      InvoiceNewParamsPaymentType = "zengin"
+)
+
 type InvoiceUpdateParams struct {
 	// The invoicer's contact details displayed at the top of the invoice.
 	ContactDetails param.Field[[]InvoiceUpdateParamsContactDetail] `json:"contact_details"`
@@ -571,7 +603,7 @@ type InvoiceUpdateParams struct {
 	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
 	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
 	// `sic`, `signet`, `provexchange`, `zengin`.
-	PaymentType param.Field[PaymentOrderType] `json:"payment_type"`
+	PaymentType param.Field[InvoiceUpdateParamsPaymentType] `json:"payment_type"`
 	// The receiving account ID. Can be an `external_account`.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
 	// The email of the recipient of the invoice. Leaving this value as null will
@@ -683,6 +715,38 @@ const (
 	InvoiceUpdateParamsPaymentMethodUi        InvoiceUpdateParamsPaymentMethod = "ui"
 	InvoiceUpdateParamsPaymentMethodManual    InvoiceUpdateParamsPaymentMethod = "manual"
 	InvoiceUpdateParamsPaymentMethodAutomatic InvoiceUpdateParamsPaymentMethod = "automatic"
+)
+
+// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
+// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
+// `sic`, `signet`, `provexchange`, `zengin`.
+type InvoiceUpdateParamsPaymentType string
+
+const (
+	InvoiceUpdateParamsPaymentTypeACH         InvoiceUpdateParamsPaymentType = "ach"
+	InvoiceUpdateParamsPaymentTypeAuBecs      InvoiceUpdateParamsPaymentType = "au_becs"
+	InvoiceUpdateParamsPaymentTypeBacs        InvoiceUpdateParamsPaymentType = "bacs"
+	InvoiceUpdateParamsPaymentTypeBook        InvoiceUpdateParamsPaymentType = "book"
+	InvoiceUpdateParamsPaymentTypeCard        InvoiceUpdateParamsPaymentType = "card"
+	InvoiceUpdateParamsPaymentTypeChats       InvoiceUpdateParamsPaymentType = "chats"
+	InvoiceUpdateParamsPaymentTypeCheck       InvoiceUpdateParamsPaymentType = "check"
+	InvoiceUpdateParamsPaymentTypeCrossBorder InvoiceUpdateParamsPaymentType = "cross_border"
+	InvoiceUpdateParamsPaymentTypeEft         InvoiceUpdateParamsPaymentType = "eft"
+	InvoiceUpdateParamsPaymentTypeInterac     InvoiceUpdateParamsPaymentType = "interac"
+	InvoiceUpdateParamsPaymentTypeMasav       InvoiceUpdateParamsPaymentType = "masav"
+	InvoiceUpdateParamsPaymentTypeNeft        InvoiceUpdateParamsPaymentType = "neft"
+	InvoiceUpdateParamsPaymentTypeNics        InvoiceUpdateParamsPaymentType = "nics"
+	InvoiceUpdateParamsPaymentTypeNzBecs      InvoiceUpdateParamsPaymentType = "nz_becs"
+	InvoiceUpdateParamsPaymentTypeProvxchange InvoiceUpdateParamsPaymentType = "provxchange"
+	InvoiceUpdateParamsPaymentTypeRtp         InvoiceUpdateParamsPaymentType = "rtp"
+	InvoiceUpdateParamsPaymentTypeSgGiro      InvoiceUpdateParamsPaymentType = "sg_giro"
+	InvoiceUpdateParamsPaymentTypeSeBankgirot InvoiceUpdateParamsPaymentType = "se_bankgirot"
+	InvoiceUpdateParamsPaymentTypeSen         InvoiceUpdateParamsPaymentType = "sen"
+	InvoiceUpdateParamsPaymentTypeSepa        InvoiceUpdateParamsPaymentType = "sepa"
+	InvoiceUpdateParamsPaymentTypeSic         InvoiceUpdateParamsPaymentType = "sic"
+	InvoiceUpdateParamsPaymentTypeSignet      InvoiceUpdateParamsPaymentType = "signet"
+	InvoiceUpdateParamsPaymentTypeWire        InvoiceUpdateParamsPaymentType = "wire"
+	InvoiceUpdateParamsPaymentTypeZengin      InvoiceUpdateParamsPaymentType = "zengin"
 )
 
 type InvoiceListParams struct {

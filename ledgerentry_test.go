@@ -62,8 +62,8 @@ func TestLedgerEntryListWithOptionalParams(t *testing.T) {
 		AfterCursor:     moderntreasury.F("string"),
 		AsOfLockVersion: moderntreasury.F(int64(0)),
 		Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
-		EffectiveAt: moderntreasury.F(map[string]string{
-			"foo": "string",
+		EffectiveAt: moderntreasury.F(map[string]time.Time{
+			"foo": time.Now(),
 		}),
 		EffectiveDate: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
