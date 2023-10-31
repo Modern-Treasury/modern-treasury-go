@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.1.0 (2023-10-31)
+
+Full Changelog: [v2.0.2...v2.1.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.0.2...v2.1.0)
+
+### Features
+
+* **api:** updates ([#116](https://github.com/Modern-Treasury/modern-treasury-go/issues/116)) ([5b1a909](https://github.com/Modern-Treasury/modern-treasury-go/commit/5b1a9094d01ed28ba41a4ab5beb837c9d2b7a71b))
+* **api:** updates ([#121](https://github.com/Modern-Treasury/modern-treasury-go/issues/121)) ([28ed217](https://github.com/Modern-Treasury/modern-treasury-go/commit/28ed217cd027361b68b3f633efb481cae6c0fb23))
+* **client:** adjust retry behavior ([#118](https://github.com/Modern-Treasury/modern-treasury-go/issues/118)) ([5cd5611](https://github.com/Modern-Treasury/modern-treasury-go/commit/5cd5611218255d26801ee11e2b0e1fabfac5213f))
+* **github:** include a devcontainer setup ([#124](https://github.com/Modern-Treasury/modern-treasury-go/issues/124)) ([25fbe09](https://github.com/Modern-Treasury/modern-treasury-go/commit/25fbe093413bc8c08671061bd0471d8c04b323bf))
+* type alias enum values from shared in package root ([#123](https://github.com/Modern-Treasury/modern-treasury-go/issues/123)) ([821b67c](https://github.com/Modern-Treasury/modern-treasury-go/commit/821b67c321582c5e7503bce3f7fc1145624d9192))
+
+
+### Chores
+
+* **internal:** update gitignore ([#122](https://github.com/Modern-Treasury/modern-treasury-go/issues/122)) ([65eeeab](https://github.com/Modern-Treasury/modern-treasury-go/commit/65eeeab7d51b878f959e40dc5fa0fbc16464bd68))
+
 ## 2.0.2 (2023-10-23)
 
 Full Changelog: [v2.0.1...v2.0.2](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.0.1...v2.0.2)
