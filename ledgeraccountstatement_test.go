@@ -15,6 +15,7 @@ import (
 )
 
 func TestLedgerAccountStatementNewWithOptionalParams(t *testing.T) {
+	t.Skip("Prism is broken in this case")
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -22,7 +23,6 @@ func TestLedgerAccountStatementNewWithOptionalParams(t *testing.T) {
 	if !testutil.CheckTestServer(t, baseURL) {
 		return
 	}
-	t.Skip("Prism is broken in this case")
 	client := moderntreasury.NewClient(
 		option.WithBaseURL(baseURL),
 		option.WithAPIKey("My API Key"),
