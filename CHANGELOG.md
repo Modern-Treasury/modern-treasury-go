@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.2.0 (2023-11-05)
+
+Full Changelog: [v2.1.0...v2.2.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.1.0...v2.2.0)
+
+### Features
+
+* **client:** allow binary returns ([#125](https://github.com/Modern-Treasury/modern-treasury-go/issues/125)) ([68970b0](https://github.com/Modern-Treasury/modern-treasury-go/commit/68970b06367d463875503e04bcfb6d3ed811bd8b))
+
+
+### Documentation
+
+* **readme:** improve example snippets ([#127](https://github.com/Modern-Treasury/modern-treasury-go/issues/127)) ([4b3283b](https://github.com/Modern-Treasury/modern-treasury-go/commit/4b3283bc6bb432f4c39585c8de94896eba56c04c))
+
 ## 2.1.0 (2023-10-31)
 
 Full Changelog: [v2.0.2...v2.1.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.0.2...v2.1.0)
