@@ -30,7 +30,7 @@ func TestManualPagination(t *testing.T) {
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 	for _, externalAccount := range page.Items {
-		t.Logf("%+v\n", externalAccount)
+		t.Logf("%+v\n", externalAccount.ID)
 	}
 	// Prism mock isn't going to give us real pagination
 	page, err = page.GetNextPage()
@@ -39,7 +39,7 @@ func TestManualPagination(t *testing.T) {
 	}
 	if page != nil {
 		for _, externalAccount := range page.Items {
-			t.Logf("%+v\n", externalAccount)
+			t.Logf("%+v\n", externalAccount.ID)
 		}
 	}
 }
