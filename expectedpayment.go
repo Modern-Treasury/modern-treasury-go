@@ -191,6 +191,8 @@ func (r *ExpectedPayment) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ExpectedPayment) implementsBulkResultEntity() {}
+
 // One of manual if this expected payment was manually reconciled in the dashboard,
 // automatic if it was automatically reconciled by Modern Treasury, or null if it
 // is unreconciled.

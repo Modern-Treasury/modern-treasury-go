@@ -113,26 +113,31 @@ type InvoiceLineItem struct {
 	Quantity int64 `json:"quantity,required"`
 	// The cost per unit of the product or service that this line item is for,
 	// specified in the invoice currency's smallest unit.
-	UnitAmount int64     `json:"unit_amount,required"`
-	UpdatedAt  time.Time `json:"updated_at,required" format:"date-time"`
-	JSON       invoiceLineItemJSON
+	UnitAmount int64 `json:"unit_amount,required"`
+	// The cost per unit of the product or service that this line item is for,
+	// specified in the invoice currency's smallest unit. Accepts decimal strings with
+	// up to 12 decimals
+	UnitAmountDecimal string    `json:"unit_amount_decimal,required"`
+	UpdatedAt         time.Time `json:"updated_at,required" format:"date-time"`
+	JSON              invoiceLineItemJSON
 }
 
 // invoiceLineItemJSON contains the JSON metadata for the struct [InvoiceLineItem]
 type invoiceLineItemJSON struct {
-	ID          apijson.Field
-	Amount      apijson.Field
-	CreatedAt   apijson.Field
-	Description apijson.Field
-	Direction   apijson.Field
-	LiveMode    apijson.Field
-	Name        apijson.Field
-	Object      apijson.Field
-	Quantity    apijson.Field
-	UnitAmount  apijson.Field
-	UpdatedAt   apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+	ID                apijson.Field
+	Amount            apijson.Field
+	CreatedAt         apijson.Field
+	Description       apijson.Field
+	Direction         apijson.Field
+	LiveMode          apijson.Field
+	Name              apijson.Field
+	Object            apijson.Field
+	Quantity          apijson.Field
+	UnitAmount        apijson.Field
+	UnitAmountDecimal apijson.Field
+	UpdatedAt         apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
 }
 
 func (r *InvoiceLineItem) UnmarshalJSON(data []byte) (err error) {
@@ -154,6 +159,10 @@ type InvoiceLineItemNewParams struct {
 	// The number of units of a product or service that this line item is for. Must be
 	// a whole number. Defaults to 1 if not provided.
 	Quantity param.Field[int64] `json:"quantity"`
+	// The cost per unit of the product or service that this line item is for,
+	// specified in the invoice currency's smallest unit. Accepts decimal strings with
+	// up to 12 decimals
+	UnitAmountDecimal param.Field[string] `json:"unit_amount_decimal"`
 }
 
 func (r InvoiceLineItemNewParams) MarshalJSON() (data []byte, err error) {
@@ -175,6 +184,10 @@ type InvoiceLineItemUpdateParams struct {
 	// The cost per unit of the product or service that this line item is for,
 	// specified in the invoice currency's smallest unit.
 	UnitAmount param.Field[int64] `json:"unit_amount"`
+	// The cost per unit of the product or service that this line item is for,
+	// specified in the invoice currency's smallest unit. Accepts decimal strings with
+	// up to 12 decimals
+	UnitAmountDecimal param.Field[string] `json:"unit_amount_decimal"`
 }
 
 func (r InvoiceLineItemUpdateParams) MarshalJSON() (data []byte, err error) {

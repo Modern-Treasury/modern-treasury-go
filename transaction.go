@@ -37,6 +37,14 @@ func NewTransactionService(opts ...option.RequestOption) (r *TransactionService)
 	return
 }
 
+// create transaction
+func (r *TransactionService) New(ctx context.Context, body TransactionNewParams, opts ...option.RequestOption) (res *Transaction, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "api/transactions"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Get details on a single transaction.
 func (r *TransactionService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *Transaction, err error) {
 	opts = append(r.Options[:], opts...)
@@ -74,6 +82,15 @@ func (r *TransactionService) List(ctx context.Context, query TransactionListPara
 // Get a list of all transactions.
 func (r *TransactionService) ListAutoPaging(ctx context.Context, query TransactionListParams, opts ...option.RequestOption) *shared.PageAutoPager[Transaction] {
 	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+}
+
+// delete transaction
+func (r *TransactionService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (err error) {
+	opts = append(r.Options[:], opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	path := fmt.Sprintf("api/transactions/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
+	return
 }
 
 type Transaction struct {
@@ -117,7 +134,7 @@ type Transaction struct {
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
 	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
-	// `swift`, or `us_bank`.
+	// `swift`, `us_bank`, or others.
 	VendorCodeType TransactionVendorCodeType `json:"vendor_code_type,required,nullable"`
 	// An identifier given to this transaction by the bank, often `null`.
 	VendorCustomerID string `json:"vendor_customer_id,required,nullable"`
@@ -203,7 +220,7 @@ const (
 // The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 // `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
 // `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
-// `swift`, or `us_bank`.
+// `swift`, `us_bank`, or others.
 type TransactionVendorCodeType string
 
 const (
@@ -228,6 +245,38 @@ const (
 	TransactionVendorCodeTypeSwift         TransactionVendorCodeType = "swift"
 	TransactionVendorCodeTypeUsBank        TransactionVendorCodeType = "us_bank"
 )
+
+type TransactionNewParams struct {
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000.
+	Amount param.Field[int64] `json:"amount,required"`
+	// The date on which the transaction occurred.
+	AsOfDate param.Field[time.Time] `json:"as_of_date,required" format:"date"`
+	// Either `credit` or `debit`.
+	Direction param.Field[string] `json:"direction,required"`
+	// When applicable, the bank-given code that determines the transaction's category.
+	// For most banks this is the BAI2/BTRS transaction code.
+	VendorCode param.Field[string] `json:"vendor_code,required"`
+	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
+	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
+	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
+	// `swift`, `us_bank`, or others.
+	VendorCodeType param.Field[string] `json:"vendor_code_type,required"`
+	// The ID of the relevant Internal Account.
+	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// This field will be `true` if the transaction has posted to the account.
+	Posted param.Field[bool] `json:"posted"`
+	// The transaction detail text that often appears in on your bank statement and in
+	// your banking portal.
+	VendorDescription param.Field[string] `json:"vendor_description"`
+}
+
+func (r TransactionNewParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
 
 type TransactionUpdateParams struct {
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing

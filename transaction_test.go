@@ -14,6 +14,43 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
+func TestTransactionNewWithOptionalParams(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := moderntreasury.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+		option.WithOrganizationID("my-organization-ID"),
+	)
+	_, err := client.Transactions.New(context.TODO(), moderntreasury.TransactionNewParams{
+		Amount:            moderntreasury.F(int64(0)),
+		AsOfDate:          moderntreasury.F(time.Now()),
+		Direction:         moderntreasury.F("string"),
+		VendorCode:        moderntreasury.F("string"),
+		VendorCodeType:    moderntreasury.F("string"),
+		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		Metadata: moderntreasury.F(map[string]string{
+			"key":    "value",
+			"foo":    "bar",
+			"modern": "treasury",
+		}),
+		Posted:            moderntreasury.F(true),
+		VendorDescription: moderntreasury.F("string"),
+	})
+	if err != nil {
+		var apierr *moderntreasury.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
 func TestTransactionGet(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -99,6 +136,29 @@ func TestTransactionListWithOptionalParams(t *testing.T) {
 		VendorID:         moderntreasury.F("string"),
 		VirtualAccountID: moderntreasury.F("string"),
 	})
+	if err != nil {
+		var apierr *moderntreasury.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestTransactionDelete(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := moderntreasury.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+		option.WithOrganizationID("my-organization-ID"),
+	)
+	err := client.Transactions.Delete(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

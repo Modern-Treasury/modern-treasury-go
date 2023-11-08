@@ -105,6 +105,14 @@ type PaymentFlow struct {
 	// When `true`, your end-user can schedule the payment `effective_date` while
 	// completing the pre-built UI.
 	EffectiveDateSelectionEnabled bool `json:"effective_date_selection_enabled"`
+	// When `verified` and `external_account_collection` is `enabled`, filters the list
+	// of external accounts your end-user can select to those with a
+	// `verification_status` of `verified`.
+	ExistingExternalAccountsFilter PaymentFlowExistingExternalAccountsFilter `json:"existing_external_accounts_filter,nullable"`
+	// When `enabled`, your end-user can select from an existing external account when
+	// completing the flow. When `disabled`, your end-user must add new payment details
+	// when completing the flow.
+	ExternalAccountCollection PaymentFlowExternalAccountCollection `json:"external_account_collection"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool   `json:"live_mode"`
@@ -128,25 +136,27 @@ type PaymentFlow struct {
 
 // paymentFlowJSON contains the JSON metadata for the struct [PaymentFlow]
 type paymentFlowJSON struct {
-	ID                            apijson.Field
-	Amount                        apijson.Field
-	ClientToken                   apijson.Field
-	CounterpartyID                apijson.Field
-	CreatedAt                     apijson.Field
-	Currency                      apijson.Field
-	Direction                     apijson.Field
-	DueDate                       apijson.Field
-	EffectiveDateSelectionEnabled apijson.Field
-	LiveMode                      apijson.Field
-	Object                        apijson.Field
-	OriginatingAccountID          apijson.Field
-	PaymentOrderID                apijson.Field
-	ReceivingAccountID            apijson.Field
-	SelectedEffectiveDate         apijson.Field
-	Status                        apijson.Field
-	UpdatedAt                     apijson.Field
-	raw                           string
-	ExtraFields                   map[string]apijson.Field
+	ID                             apijson.Field
+	Amount                         apijson.Field
+	ClientToken                    apijson.Field
+	CounterpartyID                 apijson.Field
+	CreatedAt                      apijson.Field
+	Currency                       apijson.Field
+	Direction                      apijson.Field
+	DueDate                        apijson.Field
+	EffectiveDateSelectionEnabled  apijson.Field
+	ExistingExternalAccountsFilter apijson.Field
+	ExternalAccountCollection      apijson.Field
+	LiveMode                       apijson.Field
+	Object                         apijson.Field
+	OriginatingAccountID           apijson.Field
+	PaymentOrderID                 apijson.Field
+	ReceivingAccountID             apijson.Field
+	SelectedEffectiveDate          apijson.Field
+	Status                         apijson.Field
+	UpdatedAt                      apijson.Field
+	raw                            string
+	ExtraFields                    map[string]apijson.Field
 }
 
 func (r *PaymentFlow) UnmarshalJSON(data []byte) (err error) {
@@ -160,6 +170,25 @@ type PaymentFlowDirection string
 const (
 	PaymentFlowDirectionCredit PaymentFlowDirection = "credit"
 	PaymentFlowDirectionDebit  PaymentFlowDirection = "debit"
+)
+
+// When `verified` and `external_account_collection` is `enabled`, filters the list
+// of external accounts your end-user can select to those with a
+// `verification_status` of `verified`.
+type PaymentFlowExistingExternalAccountsFilter string
+
+const (
+	PaymentFlowExistingExternalAccountsFilterVerified PaymentFlowExistingExternalAccountsFilter = "verified"
+)
+
+// When `enabled`, your end-user can select from an existing external account when
+// completing the flow. When `disabled`, your end-user must add new payment details
+// when completing the flow.
+type PaymentFlowExternalAccountCollection string
+
+const (
+	PaymentFlowExternalAccountCollectionDisabled PaymentFlowExternalAccountCollection = "disabled"
+	PaymentFlowExternalAccountCollectionEnabled  PaymentFlowExternalAccountCollection = "enabled"
 )
 
 // The current status of the payment flow. One of `pending`, `completed`,
