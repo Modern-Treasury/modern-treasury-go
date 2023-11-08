@@ -127,7 +127,7 @@ type LedgerAccountPayout struct {
 	// and its balance is reduced as a result.
 	PayoutLedgerAccountID string `json:"payout_ledger_account_id,required" format:"uuid"`
 	// The status of the ledger account payout. One of `processing`, `pending`,
-	// `posted`, `archiving` or `archived`.
+	// `posted`, `archiving`, `archived`, `reversing` or `reversed`.
 	Status    LedgerAccountPayoutStatus `json:"status,required"`
 	UpdatedAt time.Time                 `json:"updated_at,required" format:"date-time"`
 	JSON      ledgerAccountPayoutJSON
@@ -162,7 +162,7 @@ func (r *LedgerAccountPayout) UnmarshalJSON(data []byte) (err error) {
 }
 
 // The status of the ledger account payout. One of `processing`, `pending`,
-// `posted`, `archiving` or `archived`.
+// `posted`, `archiving`, `archived`, `reversing` or `reversed`.
 type LedgerAccountPayoutStatus string
 
 const (
@@ -171,6 +171,8 @@ const (
 	LedgerAccountPayoutStatusPending    LedgerAccountPayoutStatus = "pending"
 	LedgerAccountPayoutStatusPosted     LedgerAccountPayoutStatus = "posted"
 	LedgerAccountPayoutStatusProcessing LedgerAccountPayoutStatus = "processing"
+	LedgerAccountPayoutStatusReversed   LedgerAccountPayoutStatus = "reversed"
+	LedgerAccountPayoutStatusReversing  LedgerAccountPayoutStatus = "reversing"
 )
 
 type LedgerAccountPayoutNewParams struct {
