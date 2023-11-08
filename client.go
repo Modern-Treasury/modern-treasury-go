@@ -48,6 +48,8 @@ type Client struct {
 	PaperItems                   *PaperItemService
 	Webhooks                     *WebhookService
 	VirtualAccounts              *VirtualAccountService
+	BulkRequests                 *BulkRequestService
+	BulkResults                  *BulkResultService
 }
 
 // NewClient generates a new client with the default option read from the
@@ -102,6 +104,8 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.PaperItems = NewPaperItemService(opts...)
 	r.Webhooks = NewWebhookService(opts...)
 	r.VirtualAccounts = NewVirtualAccountService(opts...)
+	r.BulkRequests = NewBulkRequestService(opts...)
+	r.BulkResults = NewBulkResultService(opts...)
 
 	return
 }
