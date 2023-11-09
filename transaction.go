@@ -199,6 +199,7 @@ const (
 	TransactionTypeChats       TransactionType = "chats"
 	TransactionTypeCheck       TransactionType = "check"
 	TransactionTypeCrossBorder TransactionType = "cross_border"
+	TransactionTypeDkNets      TransactionType = "dk_nets"
 	TransactionTypeEft         TransactionType = "eft"
 	TransactionTypeInterac     TransactionType = "interac"
 	TransactionTypeMasav       TransactionType = "masav"
@@ -254,6 +255,8 @@ type TransactionNewParams struct {
 	AsOfDate param.Field[time.Time] `json:"as_of_date,required" format:"date"`
 	// Either `credit` or `debit`.
 	Direction param.Field[string] `json:"direction,required"`
+	// The ID of the relevant Internal Account.
+	InternalAccountID param.Field[string] `json:"internal_account_id,required" format:"uuid"`
 	// When applicable, the bank-given code that determines the transaction's category.
 	// For most banks this is the BAI2/BTRS transaction code.
 	VendorCode param.Field[string] `json:"vendor_code,required"`
@@ -262,8 +265,6 @@ type TransactionNewParams struct {
 	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
 	// `swift`, `us_bank`, or others.
 	VendorCodeType param.Field[string] `json:"vendor_code_type,required"`
-	// The ID of the relevant Internal Account.
-	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`

@@ -199,6 +199,7 @@ const (
 	IncomingPaymentDetailOriginatingRoutingNumberTypeCaCpa                   IncomingPaymentDetailOriginatingRoutingNumberType = "ca_cpa"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeChips                   IncomingPaymentDetailOriginatingRoutingNumberType = "chips"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeCnaps                   IncomingPaymentDetailOriginatingRoutingNumberType = "cnaps"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeDkInterbankClearingCode IncomingPaymentDetailOriginatingRoutingNumberType = "dk_interbank_clearing_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeGBSortCode              IncomingPaymentDetailOriginatingRoutingNumberType = "gb_sort_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeHkInterbankClearingCode IncomingPaymentDetailOriginatingRoutingNumberType = "hk_interbank_clearing_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeInIfsc                  IncomingPaymentDetailOriginatingRoutingNumberType = "in_ifsc"

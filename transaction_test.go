@@ -31,9 +31,9 @@ func TestTransactionNewWithOptionalParams(t *testing.T) {
 		Amount:            moderntreasury.F(int64(0)),
 		AsOfDate:          moderntreasury.F(time.Now()),
 		Direction:         moderntreasury.F("string"),
+		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		VendorCode:        moderntreasury.F("string"),
 		VendorCodeType:    moderntreasury.F("string"),
-		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",

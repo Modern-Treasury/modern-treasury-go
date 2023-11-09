@@ -326,6 +326,7 @@ const (
 	InternalAccountListParamsPaymentTypeChats       InternalAccountListParamsPaymentType = "chats"
 	InternalAccountListParamsPaymentTypeCheck       InternalAccountListParamsPaymentType = "check"
 	InternalAccountListParamsPaymentTypeCrossBorder InternalAccountListParamsPaymentType = "cross_border"
+	InternalAccountListParamsPaymentTypeDkNets      InternalAccountListParamsPaymentType = "dk_nets"
 	InternalAccountListParamsPaymentTypeEft         InternalAccountListParamsPaymentType = "eft"
 	InternalAccountListParamsPaymentTypeInterac     InternalAccountListParamsPaymentType = "interac"
 	InternalAccountListParamsPaymentTypeMasav       InternalAccountListParamsPaymentType = "masav"
