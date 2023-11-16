@@ -229,8 +229,8 @@ type PaymentOrder struct {
 	UpdatedAt                        time.Time `json:"updated_at,required" format:"date-time"`
 	// This field will be populated if a vendor (e.g. Currencycloud) failure occurs.
 	// Logic shouldn't be built on its value as it is free-form.
-	VendorFailureReason string `json:"vendor_failure_reason,required,nullable"`
-	JSON                paymentOrderJSON
+	VendorFailureReason string           `json:"vendor_failure_reason,required,nullable"`
+	JSON                paymentOrderJSON `json:"-"`
 }
 
 // paymentOrderJSON contains the JSON metadata for the struct [PaymentOrder]
@@ -299,8 +299,8 @@ type PaymentOrderAccounting struct {
 	// The ID of one of the class objects in your accounting system. Class objects
 	// track segments of your business independent of client or project. Note that
 	// these will only be accessible if your accounting system has been connected.
-	ClassID string `json:"class_id,nullable" format:"uuid"`
-	JSON    paymentOrderAccountingJSON
+	ClassID string                     `json:"class_id,nullable" format:"uuid"`
+	JSON    paymentOrderAccountingJSON `json:"-"`
 }
 
 // paymentOrderAccountingJSON contains the JSON metadata for the struct
@@ -377,7 +377,7 @@ type PaymentOrderReferenceNumber struct {
 	// The type of the reference number. Referring to the vendor payment id.
 	ReferenceNumberType PaymentOrderReferenceNumbersReferenceNumberType `json:"reference_number_type,required"`
 	UpdatedAt           time.Time                                       `json:"updated_at,required" format:"date-time"`
-	JSON                paymentOrderReferenceNumberJSON
+	JSON                paymentOrderReferenceNumberJSON                 `json:"-"`
 }
 
 // paymentOrderReferenceNumberJSON contains the JSON metadata for the struct

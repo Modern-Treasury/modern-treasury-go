@@ -138,7 +138,7 @@ type ExternalAccount struct {
 	RoutingDetails     []RoutingDetail                   `json:"routing_details,required"`
 	UpdatedAt          time.Time                         `json:"updated_at,required" format:"date-time"`
 	VerificationStatus ExternalAccountVerificationStatus `json:"verification_status,required"`
-	JSON               externalAccountJSON
+	JSON               externalAccountJSON               `json:"-"`
 }
 
 // externalAccountJSON contains the JSON metadata for the struct [ExternalAccount]
@@ -177,10 +177,10 @@ type ExternalAccountContactDetail struct {
 	DiscardedAt           time.Time                                          `json:"discarded_at,required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	Object    string    `json:"object,required"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	JSON      externalAccountContactDetailJSON
+	LiveMode  bool                             `json:"live_mode,required"`
+	Object    string                           `json:"object,required"`
+	UpdatedAt time.Time                        `json:"updated_at,required" format:"date-time"`
+	JSON      externalAccountContactDetailJSON `json:"-"`
 }
 
 // externalAccountContactDetailJSON contains the JSON metadata for the struct
@@ -227,9 +227,9 @@ type ExternalAccountPartyAddress struct {
 	// The postal code of the address.
 	PostalCode string `json:"postal_code,required,nullable"`
 	// Region or State.
-	Region    string    `json:"region,required,nullable"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	JSON      externalAccountPartyAddressJSON
+	Region    string                          `json:"region,required,nullable"`
+	UpdatedAt time.Time                       `json:"updated_at,required" format:"date-time"`
+	JSON      externalAccountPartyAddressJSON `json:"-"`
 }
 
 // externalAccountPartyAddressJSON contains the JSON metadata for the struct

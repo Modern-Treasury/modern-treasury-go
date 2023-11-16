@@ -132,7 +132,7 @@ type LedgerTransaction struct {
 	// To post a ledger transaction at creation, use `posted`.
 	Status    LedgerTransactionStatus `json:"status,required"`
 	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
-	JSON      ledgerTransactionJSON
+	JSON      ledgerTransactionJSON   `json:"-"`
 }
 
 // ledgerTransactionJSON contains the JSON metadata for the struct

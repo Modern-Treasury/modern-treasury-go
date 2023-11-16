@@ -152,7 +152,7 @@ type LedgerAccountCategory struct {
 	NormalBalance shared.TransactionDirection `json:"normal_balance,required"`
 	Object        string                      `json:"object,required"`
 	UpdatedAt     time.Time                   `json:"updated_at,required" format:"date-time"`
-	JSON          ledgerAccountCategoryJSON
+	JSON          ledgerAccountCategoryJSON   `json:"-"`
 }
 
 // ledgerAccountCategoryJSON contains the JSON metadata for the struct
@@ -193,7 +193,7 @@ type LedgerAccountCategoryBalances struct {
 	PendingBalance LedgerAccountCategoryBalancesPendingBalance `json:"pending_balance,required"`
 	// The posted_balance is the sum of all posted entries.
 	PostedBalance LedgerAccountCategoryBalancesPostedBalance `json:"posted_balance,required"`
-	JSON          ledgerAccountCategoryBalancesJSON
+	JSON          ledgerAccountCategoryBalancesJSON          `json:"-"`
 }
 
 // ledgerAccountCategoryBalancesJSON contains the JSON metadata for the struct
@@ -220,9 +220,9 @@ type LedgerAccountCategoryBalancesAvailableBalance struct {
 	// The currency of the ledger account.
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
-	CurrencyExponent int64 `json:"currency_exponent,required"`
-	Debits           int64 `json:"debits,required"`
-	JSON             ledgerAccountCategoryBalancesAvailableBalanceJSON
+	CurrencyExponent int64                                             `json:"currency_exponent,required"`
+	Debits           int64                                             `json:"debits,required"`
+	JSON             ledgerAccountCategoryBalancesAvailableBalanceJSON `json:"-"`
 }
 
 // ledgerAccountCategoryBalancesAvailableBalanceJSON contains the JSON metadata for
@@ -248,9 +248,9 @@ type LedgerAccountCategoryBalancesPendingBalance struct {
 	// The currency of the ledger account.
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
-	CurrencyExponent int64 `json:"currency_exponent,required"`
-	Debits           int64 `json:"debits,required"`
-	JSON             ledgerAccountCategoryBalancesPendingBalanceJSON
+	CurrencyExponent int64                                           `json:"currency_exponent,required"`
+	Debits           int64                                           `json:"debits,required"`
+	JSON             ledgerAccountCategoryBalancesPendingBalanceJSON `json:"-"`
 }
 
 // ledgerAccountCategoryBalancesPendingBalanceJSON contains the JSON metadata for
@@ -276,9 +276,9 @@ type LedgerAccountCategoryBalancesPostedBalance struct {
 	// The currency of the ledger account.
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
-	CurrencyExponent int64 `json:"currency_exponent,required"`
-	Debits           int64 `json:"debits,required"`
-	JSON             ledgerAccountCategoryBalancesPostedBalanceJSON
+	CurrencyExponent int64                                          `json:"currency_exponent,required"`
+	Debits           int64                                          `json:"debits,required"`
+	JSON             ledgerAccountCategoryBalancesPostedBalanceJSON `json:"-"`
 }
 
 // ledgerAccountCategoryBalancesPostedBalanceJSON contains the JSON metadata for

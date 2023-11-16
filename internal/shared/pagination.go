@@ -11,8 +11,8 @@ import (
 )
 
 type Page[T any] struct {
-	Items []T `json:"-,inline"`
-	JSON  pageJSON
+	Items []T      `json:"-,inline"`
+	JSON  pageJSON `json:"-"`
 	cfg   *requestconfig.RequestConfig
 	res   *http.Response
 }

@@ -91,7 +91,7 @@ type Reversal struct {
 	// The current status of the reversal.
 	Status    ReversalStatus `json:"status,required"`
 	UpdatedAt time.Time      `json:"updated_at,required" format:"date-time"`
-	JSON      reversalJSON
+	JSON      reversalJSON   `json:"-"`
 }
 
 // reversalJSON contains the JSON metadata for the struct [Reversal]

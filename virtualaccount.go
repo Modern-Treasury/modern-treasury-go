@@ -121,9 +121,9 @@ type VirtualAccount struct {
 	Object string `json:"object,required"`
 	// An array of routing detail objects. These will be the routing details of the
 	// internal account.
-	RoutingDetails []RoutingDetail `json:"routing_details,required"`
-	UpdatedAt      time.Time       `json:"updated_at,required" format:"date-time"`
-	JSON           virtualAccountJSON
+	RoutingDetails []RoutingDetail    `json:"routing_details,required"`
+	UpdatedAt      time.Time          `json:"updated_at,required" format:"date-time"`
+	JSON           virtualAccountJSON `json:"-"`
 }
 
 // virtualAccountJSON contains the JSON metadata for the struct [VirtualAccount]

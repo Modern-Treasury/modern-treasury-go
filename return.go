@@ -123,8 +123,8 @@ type ReturnObject struct {
 	UpdatedAt time.Time        `json:"updated_at,required" format:"date-time"`
 	// Some returns may include additional information from the bank. In these cases,
 	// this string will be present.
-	AdditionalInformation string `json:"additional_information,nullable"`
-	JSON                  returnObjectJSON
+	AdditionalInformation string           `json:"additional_information,nullable"`
+	JSON                  returnObjectJSON `json:"-"`
 }
 
 // returnObjectJSON contains the JSON metadata for the struct [ReturnObject]
@@ -221,7 +221,7 @@ type ReturnObjectReferenceNumber struct {
 	// The type of the reference number. Referring to the vendor payment id.
 	ReferenceNumberType ReturnObjectReferenceNumbersReferenceNumberType `json:"reference_number_type,required"`
 	UpdatedAt           time.Time                                       `json:"updated_at,required" format:"date-time"`
-	JSON                returnObjectReferenceNumberJSON
+	JSON                returnObjectReferenceNumberJSON                 `json:"-"`
 }
 
 // returnObjectReferenceNumberJSON contains the JSON metadata for the struct
