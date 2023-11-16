@@ -122,7 +122,7 @@ type Counterparty struct {
 	UpdatedAt            time.Time `json:"updated_at,required" format:"date-time"`
 	// The verification status of the counterparty.
 	VerificationStatus CounterpartyVerificationStatus `json:"verification_status,required"`
-	JSON               counterpartyJSON
+	JSON               counterpartyJSON               `json:"-"`
 }
 
 // counterpartyJSON contains the JSON metadata for the struct [Counterparty]
@@ -177,7 +177,7 @@ type CounterpartyAccount struct {
 	RoutingDetails     []RoutingDetail                        `json:"routing_details"`
 	UpdatedAt          time.Time                              `json:"updated_at" format:"date-time"`
 	VerificationStatus CounterpartyAccountsVerificationStatus `json:"verification_status"`
-	JSON               counterpartyAccountJSON
+	JSON               counterpartyAccountJSON                `json:"-"`
 }
 
 // counterpartyAccountJSON contains the JSON metadata for the struct
@@ -216,10 +216,10 @@ type CounterpartyAccountsContactDetail struct {
 	DiscardedAt           time.Time                                               `json:"discarded_at,required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	Object    string    `json:"object,required"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	JSON      counterpartyAccountsContactDetailJSON
+	LiveMode  bool                                  `json:"live_mode,required"`
+	Object    string                                `json:"object,required"`
+	UpdatedAt time.Time                             `json:"updated_at,required" format:"date-time"`
+	JSON      counterpartyAccountsContactDetailJSON `json:"-"`
 }
 
 // counterpartyAccountsContactDetailJSON contains the JSON metadata for the struct
@@ -266,9 +266,9 @@ type CounterpartyAccountsPartyAddress struct {
 	// The postal code of the address.
 	PostalCode string `json:"postal_code,required,nullable"`
 	// Region or State.
-	Region    string    `json:"region,required,nullable"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	JSON      counterpartyAccountsPartyAddressJSON
+	Region    string                               `json:"region,required,nullable"`
+	UpdatedAt time.Time                            `json:"updated_at,required" format:"date-time"`
+	JSON      counterpartyAccountsPartyAddressJSON `json:"-"`
 }
 
 // counterpartyAccountsPartyAddressJSON contains the JSON metadata for the struct
@@ -329,8 +329,8 @@ type CounterpartyCollectAccountResponse struct {
 	FormLink string `json:"form_link,required" format:"uri"`
 	// This field will be `true` if an email requesting account details has already
 	// been sent to this counterparty.
-	IsResend bool `json:"is_resend,required"`
-	JSON     counterpartyCollectAccountResponseJSON
+	IsResend bool                                   `json:"is_resend,required"`
+	JSON     counterpartyCollectAccountResponseJSON `json:"-"`
 }
 
 // counterpartyCollectAccountResponseJSON contains the JSON metadata for the struct

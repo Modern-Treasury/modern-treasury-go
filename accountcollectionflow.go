@@ -103,7 +103,7 @@ type AccountCollectionFlow struct {
 	// `completed`, `expired`, or `cancelled`.
 	Status    AccountCollectionFlowStatus `json:"status"`
 	UpdatedAt time.Time                   `json:"updated_at" format:"date-time"`
-	JSON      accountCollectionFlowJSON
+	JSON      accountCollectionFlowJSON   `json:"-"`
 }
 
 // accountCollectionFlowJSON contains the JSON metadata for the struct

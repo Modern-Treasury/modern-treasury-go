@@ -96,9 +96,9 @@ type Document struct {
 	LiveMode bool   `json:"live_mode,required"`
 	Object   string `json:"object,required"`
 	// The source of the document. Can be `vendor`, `customer`, or `modern_treasury`.
-	Source    string    `json:"source,required"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	JSON      documentJSON
+	Source    string       `json:"source,required"`
+	UpdatedAt time.Time    `json:"updated_at,required" format:"date-time"`
+	JSON      documentJSON `json:"-"`
 }
 
 // documentJSON contains the JSON metadata for the struct [Document]
@@ -131,10 +131,10 @@ type DocumentDocumentDetail struct {
 	DocumentIdentifierType string    `json:"document_identifier_type,required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	Object    string    `json:"object,required"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	JSON      documentDocumentDetailJSON
+	LiveMode  bool                       `json:"live_mode,required"`
+	Object    string                     `json:"object,required"`
+	UpdatedAt time.Time                  `json:"updated_at,required" format:"date-time"`
+	JSON      documentDocumentDetailJSON `json:"-"`
 }
 
 // documentDocumentDetailJSON contains the JSON metadata for the struct
@@ -182,8 +182,8 @@ type DocumentFile struct {
 	// The original filename of the document.
 	Filename string `json:"filename"`
 	// The size of the document in bytes.
-	Size int64 `json:"size"`
-	JSON documentFileJSON
+	Size int64            `json:"size"`
+	JSON documentFileJSON `json:"-"`
 }
 
 // documentFileJSON contains the JSON metadata for the struct [DocumentFile]

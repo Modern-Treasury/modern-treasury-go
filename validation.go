@@ -59,7 +59,7 @@ type RoutingNumberLookupRequest struct {
 	// An array of payment types that are supported for this routing number. This can
 	// include `ach`, `wire`, `rtp`, `sepa`, `bacs`, `au_becs` currently.
 	SupportedPaymentTypes []RoutingNumberLookupRequestSupportedPaymentType `json:"supported_payment_types"`
-	JSON                  routingNumberLookupRequestJSON
+	JSON                  routingNumberLookupRequestJSON                   `json:"-"`
 }
 
 // routingNumberLookupRequestJSON contains the JSON metadata for the struct
@@ -90,8 +90,8 @@ type RoutingNumberLookupRequestBankAddress struct {
 	// The postal code of the address.
 	PostalCode string `json:"postal_code,nullable"`
 	// Region or State.
-	Region string `json:"region,nullable"`
-	JSON   routingNumberLookupRequestBankAddressJSON
+	Region string                                    `json:"region,nullable"`
+	JSON   routingNumberLookupRequestBankAddressJSON `json:"-"`
 }
 
 // routingNumberLookupRequestBankAddressJSON contains the JSON metadata for the

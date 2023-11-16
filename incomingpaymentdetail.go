@@ -138,8 +138,8 @@ type IncomingPaymentDetail struct {
 	// Account.
 	VirtualAccountID string `json:"virtual_account_id,required,nullable" format:"uuid"`
 	// The account number of the originating account for the incoming payment detail.
-	OriginatingAccountNumber string `json:"originating_account_number,nullable"`
-	JSON                     incomingPaymentDetailJSON
+	OriginatingAccountNumber string                    `json:"originating_account_number,nullable"`
+	JSON                     incomingPaymentDetailJSON `json:"-"`
 }
 
 // incomingPaymentDetailJSON contains the JSON metadata for the struct

@@ -104,7 +104,7 @@ type RoutingDetail struct {
 	// more details.
 	RoutingNumberType RoutingDetailRoutingNumberType `json:"routing_number_type,required"`
 	UpdatedAt         time.Time                      `json:"updated_at,required" format:"date-time"`
-	JSON              routingDetailJSON
+	JSON              routingDetailJSON              `json:"-"`
 }
 
 // routingDetailJSON contains the JSON metadata for the struct [RoutingDetail]
@@ -144,9 +144,9 @@ type RoutingDetailBankAddress struct {
 	// The postal code of the address.
 	PostalCode string `json:"postal_code,required,nullable"`
 	// Region or State.
-	Region    string    `json:"region,required,nullable"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	JSON      routingDetailBankAddressJSON
+	Region    string                       `json:"region,required,nullable"`
+	UpdatedAt time.Time                    `json:"updated_at,required" format:"date-time"`
+	JSON      routingDetailBankAddressJSON `json:"-"`
 }
 
 // routingDetailBankAddressJSON contains the JSON metadata for the struct

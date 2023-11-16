@@ -83,7 +83,7 @@ type Event struct {
 	// The type of resource for the event.
 	Resource  string    `json:"resource,required"`
 	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	JSON      eventJSON
+	JSON      eventJSON `json:"-"`
 }
 
 // eventJSON contains the JSON metadata for the struct [Event]

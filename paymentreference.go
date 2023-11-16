@@ -94,7 +94,7 @@ type PaymentReference struct {
 	// referenceable or will return an error.
 	ReferenceableType PaymentReferenceReferenceableType `json:"referenceable_type,required"`
 	UpdatedAt         time.Time                         `json:"updated_at,required" format:"date-time"`
-	JSON              paymentReferenceJSON
+	JSON              paymentReferenceJSON              `json:"-"`
 }
 
 // paymentReferenceJSON contains the JSON metadata for the struct

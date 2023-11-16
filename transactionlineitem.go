@@ -102,7 +102,7 @@ type TransactionLineItem struct {
 	// https://www.moderntreasury.com/journal/beginners-guide-to-ach for more).
 	Type      TransactionLineItemType `json:"type,required"`
 	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
-	JSON      transactionLineItemJSON
+	JSON      transactionLineItemJSON `json:"-"`
 }
 
 // transactionLineItemJSON contains the JSON metadata for the struct

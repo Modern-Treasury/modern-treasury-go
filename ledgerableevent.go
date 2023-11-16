@@ -64,10 +64,10 @@ type LedgerableEvent struct {
 	// strings.
 	Metadata map[string]string `json:"metadata,required,nullable"`
 	// Name of the ledgerable event.
-	Name      string    `json:"name,required"`
-	Object    string    `json:"object,required"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	JSON      ledgerableEventJSON
+	Name      string              `json:"name,required"`
+	Object    string              `json:"object,required"`
+	UpdatedAt time.Time           `json:"updated_at,required" format:"date-time"`
+	JSON      ledgerableEventJSON `json:"-"`
 }
 
 // ledgerableEventJSON contains the JSON metadata for the struct [LedgerableEvent]

@@ -103,7 +103,7 @@ type LedgerEventHandler struct {
 	Object    string                                `json:"object,required"`
 	UpdatedAt time.Time                             `json:"updated_at,required" format:"date-time"`
 	Variables map[string]LedgerEventHandlerVariable `json:"variables,required,nullable"`
-	JSON      ledgerEventHandlerJSON
+	JSON      ledgerEventHandlerJSON                `json:"-"`
 }
 
 // ledgerEventHandlerJSON contains the JSON metadata for the struct
@@ -136,8 +136,8 @@ type LedgerEventHandlerConditions struct {
 	// What the operator between the `field` and `value` is.
 	Operator string `json:"operator,required"`
 	// The RHS of the conditional.
-	Value string `json:"value,required"`
-	JSON  ledgerEventHandlerConditionsJSON
+	Value string                           `json:"value,required"`
+	JSON  ledgerEventHandlerConditionsJSON `json:"-"`
 }
 
 // ledgerEventHandlerConditionsJSON contains the JSON metadata for the struct
@@ -163,8 +163,8 @@ type LedgerEventHandlerLedgerTransactionTemplate struct {
 	// An array of ledger entry objects.
 	LedgerEntries []LedgerEventHandlerLedgerTransactionTemplateLedgerEntry `json:"ledger_entries,required"`
 	// To post a ledger transaction at creation, use `posted`.
-	Status string `json:"status,required,nullable"`
-	JSON   ledgerEventHandlerLedgerTransactionTemplateJSON
+	Status string                                          `json:"status,required,nullable"`
+	JSON   ledgerEventHandlerLedgerTransactionTemplateJSON `json:"-"`
 }
 
 // ledgerEventHandlerLedgerTransactionTemplateJSON contains the JSON metadata for
@@ -188,8 +188,8 @@ type LedgerEventHandlerLedgerTransactionTemplateLedgerEntry struct {
 	// What the operator between the `field` and `value` is.
 	Direction string `json:"direction,required"`
 	// The RHS of the conditional.
-	LedgerAccountID string `json:"ledger_account_id,required"`
-	JSON            ledgerEventHandlerLedgerTransactionTemplateLedgerEntryJSON
+	LedgerAccountID string                                                     `json:"ledger_account_id,required"`
+	JSON            ledgerEventHandlerLedgerTransactionTemplateLedgerEntryJSON `json:"-"`
 }
 
 // ledgerEventHandlerLedgerTransactionTemplateLedgerEntryJSON contains the JSON
@@ -210,8 +210,8 @@ type LedgerEventHandlerVariable struct {
 	Query LedgerEventHandlerVariableQuery `json:"query,required"`
 	// The type of object this variable is. Currently, only "ledger_account" is
 	// supported.
-	Type string `json:"type,required"`
-	JSON ledgerEventHandlerVariableJSON
+	Type string                         `json:"type,required"`
+	JSON ledgerEventHandlerVariableJSON `json:"-"`
 }
 
 // ledgerEventHandlerVariableJSON contains the JSON metadata for the struct
@@ -233,8 +233,8 @@ type LedgerEventHandlerVariableQuery struct {
 	// What the operator between the `field` and `value` is.
 	Operator string `json:"operator,required"`
 	// The RHS of the conditional.
-	Value string `json:"value,required"`
-	JSON  ledgerEventHandlerVariableQueryJSON
+	Value string                              `json:"value,required"`
+	JSON  ledgerEventHandlerVariableQueryJSON `json:"-"`
 }
 
 // ledgerEventHandlerVariableQueryJSON contains the JSON metadata for the struct

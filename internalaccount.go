@@ -118,9 +118,9 @@ type InternalAccount struct {
 	// Either individual or business.
 	PartyType InternalAccountPartyType `json:"party_type,required,nullable"`
 	// An array of routing detail objects.
-	RoutingDetails []RoutingDetail `json:"routing_details,required"`
-	UpdatedAt      time.Time       `json:"updated_at,required" format:"date-time"`
-	JSON           internalAccountJSON
+	RoutingDetails []RoutingDetail     `json:"routing_details,required"`
+	UpdatedAt      time.Time           `json:"updated_at,required" format:"date-time"`
+	JSON           internalAccountJSON `json:"-"`
 }
 
 // internalAccountJSON contains the JSON metadata for the struct [InternalAccount]
@@ -183,9 +183,9 @@ type InternalAccountPartyAddress struct {
 	// The postal code of the address.
 	PostalCode string `json:"postal_code,required,nullable"`
 	// Region or State.
-	Region    string    `json:"region,required,nullable"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	JSON      internalAccountPartyAddressJSON
+	Region    string                          `json:"region,required,nullable"`
+	UpdatedAt time.Time                       `json:"updated_at,required" format:"date-time"`
+	JSON      internalAccountPartyAddressJSON `json:"-"`
 }
 
 // internalAccountPartyAddressJSON contains the JSON metadata for the struct
