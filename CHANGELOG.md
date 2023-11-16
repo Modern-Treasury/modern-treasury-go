@@ -1,5 +1,29 @@
 # Changelog
 
+## 2.3.0 (2023-11-16)
+
+Full Changelog: [v2.2.0...v2.3.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.2.0...v2.3.0)
+
+### Features
+
+* **api:** add dk_interbank_clearing_code and dk_nets enum members ([#131](https://github.com/Modern-Treasury/modern-treasury-go/issues/131)) ([913f398](https://github.com/Modern-Treasury/modern-treasury-go/commit/913f3987ada5295def5f161bbb3907dc26ecf481))
+* **api:** updates ([#128](https://github.com/Modern-Treasury/modern-treasury-go/issues/128)) ([8210a29](https://github.com/Modern-Treasury/modern-treasury-go/commit/8210a29fb80e73f252559bd12c90ddf699f7f6f3))
+
+
+### Bug Fixes
+
+* make options.WithHeader utils case-insensitive ([#130](https://github.com/Modern-Treasury/modern-treasury-go/issues/130)) ([52b942e](https://github.com/Modern-Treasury/modern-treasury-go/commit/52b942e2579754fc03629e80b3dbfa90818ea880))
+
+
+### Chores
+
+* **internal:** skip bulk requests tests ([#132](https://github.com/Modern-Treasury/modern-treasury-go/issues/132)) ([e5df103](https://github.com/Modern-Treasury/modern-treasury-go/commit/e5df1036b95b49200fdacbb90aa310432c1a65a0))
+
+
+### Refactors
+
+* do not include `JSON` fields when serialising back to json ([#133](https://github.com/Modern-Treasury/modern-treasury-go/issues/133)) ([b54fb6c](https://github.com/Modern-Treasury/modern-treasury-go/commit/b54fb6cbfb74000c512c71ffb5d0a15d8a765244))
+
 ## 2.2.0 (2023-11-05)
 
 Full Changelog: [v2.1.0...v2.2.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.1.0...v2.2.0)
