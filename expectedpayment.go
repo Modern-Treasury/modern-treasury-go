@@ -152,7 +152,7 @@ type ExpectedPayment struct {
 	// sepa, signet, wire.
 	Type      ExpectedPaymentType `json:"type,required,nullable"`
 	UpdatedAt time.Time           `json:"updated_at,required" format:"date-time"`
-	JSON      expectedPaymentJSON
+	JSON      expectedPaymentJSON `json:"-"`
 }
 
 // expectedPaymentJSON contains the JSON metadata for the struct [ExpectedPayment]

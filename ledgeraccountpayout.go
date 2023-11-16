@@ -130,7 +130,7 @@ type LedgerAccountPayout struct {
 	// `posted`, `archiving`, `archived`, `reversing` or `reversed`.
 	Status    LedgerAccountPayoutStatus `json:"status,required"`
 	UpdatedAt time.Time                 `json:"updated_at,required" format:"date-time"`
-	JSON      ledgerAccountPayoutJSON
+	JSON      ledgerAccountPayoutJSON   `json:"-"`
 }
 
 // ledgerAccountPayoutJSON contains the JSON metadata for the struct

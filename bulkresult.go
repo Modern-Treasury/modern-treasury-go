@@ -96,7 +96,7 @@ type BulkResult struct {
 	// One of successful or failed.
 	Status    BulkResultStatus `json:"status,required"`
 	UpdatedAt time.Time        `json:"updated_at,required" format:"date-time"`
-	JSON      bulkResultJSON
+	JSON      bulkResultJSON   `json:"-"`
 }
 
 // bulkResultJSON contains the JSON metadata for the struct [BulkResult]
@@ -144,7 +144,7 @@ type BulkResultEntityBulkError struct {
 	Object        string                                  `json:"object,required"`
 	RequestErrors []BulkResultEntityBulkErrorRequestError `json:"request_errors,required"`
 	UpdatedAt     time.Time                               `json:"updated_at,required" format:"date-time"`
-	JSON          bulkResultEntityBulkErrorJSON
+	JSON          bulkResultEntityBulkErrorJSON           `json:"-"`
 }
 
 // bulkResultEntityBulkErrorJSON contains the JSON metadata for the struct
@@ -167,10 +167,10 @@ func (r *BulkResultEntityBulkError) UnmarshalJSON(data []byte) (err error) {
 func (r BulkResultEntityBulkError) implementsBulkResultEntity() {}
 
 type BulkResultEntityBulkErrorRequestError struct {
-	Code      string `json:"code"`
-	Message   string `json:"message"`
-	Parameter string `json:"parameter"`
-	JSON      bulkResultEntityBulkErrorRequestErrorJSON
+	Code      string                                    `json:"code"`
+	Message   string                                    `json:"message"`
+	Parameter string                                    `json:"parameter"`
+	JSON      bulkResultEntityBulkErrorRequestErrorJSON `json:"-"`
 }
 
 // bulkResultEntityBulkErrorRequestErrorJSON contains the JSON metadata for the

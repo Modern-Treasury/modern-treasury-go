@@ -98,8 +98,8 @@ type AccountDetail struct {
 	Object    string    `json:"object,required"`
 	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
 	// The account number for the bank account.
-	AccountNumber string `json:"account_number"`
-	JSON          accountDetailJSON
+	AccountNumber string            `json:"account_number"`
+	JSON          accountDetailJSON `json:"-"`
 }
 
 // accountDetailJSON contains the JSON metadata for the struct [AccountDetail]

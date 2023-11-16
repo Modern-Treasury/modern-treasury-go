@@ -117,9 +117,9 @@ type InvoiceLineItem struct {
 	// The cost per unit of the product or service that this line item is for,
 	// specified in the invoice currency's smallest unit. Accepts decimal strings with
 	// up to 12 decimals
-	UnitAmountDecimal string    `json:"unit_amount_decimal,required"`
-	UpdatedAt         time.Time `json:"updated_at,required" format:"date-time"`
-	JSON              invoiceLineItemJSON
+	UnitAmountDecimal string              `json:"unit_amount_decimal,required"`
+	UpdatedAt         time.Time           `json:"updated_at,required" format:"date-time"`
+	JSON              invoiceLineItemJSON `json:"-"`
 }
 
 // invoiceLineItemJSON contains the JSON metadata for the struct [InvoiceLineItem]

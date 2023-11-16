@@ -101,9 +101,9 @@ type BulkRequest struct {
 	// Total number of items in the `resources` array. Once a bulk request is
 	// completed, `success_result_count` + `failed_result_count` will be equal to
 	// `total_result_count`.
-	TotalResourceCount int64     `json:"total_resource_count,required"`
-	UpdatedAt          time.Time `json:"updated_at,required" format:"date-time"`
-	JSON               bulkRequestJSON
+	TotalResourceCount int64           `json:"total_resource_count,required"`
+	UpdatedAt          time.Time       `json:"updated_at,required" format:"date-time"`
+	JSON               bulkRequestJSON `json:"-"`
 }
 
 // bulkRequestJSON contains the JSON metadata for the struct [BulkRequest]

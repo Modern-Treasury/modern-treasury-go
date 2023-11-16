@@ -7,8 +7,8 @@ import (
 )
 
 type PingResponse struct {
-	Ping string `json:"ping,required"`
-	JSON pingResponseJSON
+	Ping string           `json:"ping,required"`
+	JSON pingResponseJSON `json:"-"`
 }
 
 // pingResponseJSON contains the JSON metadata for the struct [PingResponse]

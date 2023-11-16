@@ -106,7 +106,7 @@ type Ledger struct {
 	Object      string                 `json:"object,required"`
 	UpdatedAt   time.Time              `json:"updated_at,required" format:"date-time"`
 	ExtraFields map[string]interface{} `json:"-,extras"`
-	JSON        ledgerJSON
+	JSON        ledgerJSON             `json:"-"`
 }
 
 // ledgerJSON contains the JSON metadata for the struct [Ledger]

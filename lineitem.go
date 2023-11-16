@@ -101,7 +101,7 @@ type LineItem struct {
 	Metadata  map[string]string `json:"metadata,required"`
 	Object    string            `json:"object,required"`
 	UpdatedAt time.Time         `json:"updated_at,required" format:"date-time"`
-	JSON      lineItemJSON
+	JSON      lineItemJSON      `json:"-"`
 }
 
 // lineItemJSON contains the JSON metadata for the struct [LineItem]
@@ -134,8 +134,8 @@ type LineItemAccounting struct {
 	// The ID of one of the class objects in your accounting system. Class objects
 	// track segments of your business independent of client or project. Note that
 	// these will only be accessible if your accounting system has been connected.
-	ClassID string `json:"class_id,nullable" format:"uuid"`
-	JSON    lineItemAccountingJSON
+	ClassID string                 `json:"class_id,nullable" format:"uuid"`
+	JSON    lineItemAccountingJSON `json:"-"`
 }
 
 // lineItemAccountingJSON contains the JSON metadata for the struct

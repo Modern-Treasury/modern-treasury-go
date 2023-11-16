@@ -131,7 +131,7 @@ type PaymentFlow struct {
 	// `expired`, or `cancelled`.
 	Status    PaymentFlowStatus `json:"status"`
 	UpdatedAt time.Time         `json:"updated_at" format:"date-time"`
-	JSON      paymentFlowJSON
+	JSON      paymentFlowJSON   `json:"-"`
 }
 
 // paymentFlowJSON contains the JSON metadata for the struct [PaymentFlow]

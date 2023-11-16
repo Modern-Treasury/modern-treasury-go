@@ -82,10 +82,10 @@ type BalanceReport struct {
 	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	Object    string    `json:"object,required"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	JSON      balanceReportJSON
+	LiveMode  bool              `json:"live_mode,required"`
+	Object    string            `json:"object,required"`
+	UpdatedAt time.Time         `json:"updated_at,required" format:"date-time"`
+	JSON      balanceReportJSON `json:"-"`
 }
 
 // balanceReportJSON contains the JSON metadata for the struct [BalanceReport]
@@ -140,7 +140,7 @@ type BalanceReportBalance struct {
 	VendorCode string `json:"vendor_code,required"`
 	// The code used by the bank when reporting this specific balance.
 	VendorCodeType BalanceReportBalancesVendorCodeType `json:"vendor_code_type,required,nullable"`
-	JSON           balanceReportBalanceJSON
+	JSON           balanceReportBalanceJSON            `json:"-"`
 }
 
 // balanceReportBalanceJSON contains the JSON metadata for the struct

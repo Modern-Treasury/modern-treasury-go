@@ -14,9 +14,9 @@ const (
 )
 
 type AsyncResponse struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
-	JSON   asyncResponseJSON
+	ID     string            `json:"id,required" format:"uuid"`
+	Object string            `json:"object,required"`
+	JSON   asyncResponseJSON `json:"-"`
 }
 
 // asyncResponseJSON contains the JSON metadata for the struct [AsyncResponse]

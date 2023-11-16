@@ -70,8 +70,8 @@ type Connection struct {
 	// Unique identifier for the bank or vendor.
 	VendorID string `json:"vendor_id,required" format:"uuid"`
 	// A human-friendly name for the bank or vendor.
-	VendorName string `json:"vendor_name,required"`
-	JSON       connectionJSON
+	VendorName string         `json:"vendor_name,required"`
+	JSON       connectionJSON `json:"-"`
 }
 
 // connectionJSON contains the JSON metadata for the struct [Connection]

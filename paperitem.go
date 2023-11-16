@@ -98,9 +98,9 @@ type PaperItem struct {
 	// The ID of the reconciled Transaction or `null`.
 	TransactionID string `json:"transaction_id,required,nullable" format:"uuid"`
 	// The ID of the reconciled Transaction Line Item or `null`.
-	TransactionLineItemID string    `json:"transaction_line_item_id,required,nullable" format:"uuid"`
-	UpdatedAt             time.Time `json:"updated_at,required" format:"date-time"`
-	JSON                  paperItemJSON
+	TransactionLineItemID string        `json:"transaction_line_item_id,required,nullable" format:"uuid"`
+	UpdatedAt             time.Time     `json:"updated_at,required" format:"date-time"`
+	JSON                  paperItemJSON `json:"-"`
 }
 
 // paperItemJSON contains the JSON metadata for the struct [PaperItem]

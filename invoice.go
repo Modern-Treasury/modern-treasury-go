@@ -167,8 +167,8 @@ type Invoice struct {
 	TransactionLineItemIDs []string  `json:"transaction_line_item_ids,required" format:"uuid"`
 	UpdatedAt              time.Time `json:"updated_at,required" format:"date-time"`
 	// The ID of the virtual account the invoice should be paid to.
-	VirtualAccountID string `json:"virtual_account_id,required,nullable"`
-	JSON             invoiceJSON
+	VirtualAccountID string      `json:"virtual_account_id,required,nullable"`
+	JSON             invoiceJSON `json:"-"`
 }
 
 // invoiceJSON contains the JSON metadata for the struct [Invoice]
@@ -222,10 +222,10 @@ type InvoiceContactDetail struct {
 	DiscardedAt           time.Time                                  `json:"discarded_at,required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	Object    string    `json:"object,required"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	JSON      invoiceContactDetailJSON
+	LiveMode  bool                     `json:"live_mode,required"`
+	Object    string                   `json:"object,required"`
+	UpdatedAt time.Time                `json:"updated_at,required" format:"date-time"`
+	JSON      invoiceContactDetailJSON `json:"-"`
 }
 
 // invoiceContactDetailJSON contains the JSON metadata for the struct
@@ -265,9 +265,9 @@ type InvoiceCounterpartyBillingAddress struct {
 	// The postal code of the address.
 	PostalCode string `json:"postal_code,required"`
 	// Region or State.
-	Region string `json:"region,required"`
-	Line2  string `json:"line2"`
-	JSON   invoiceCounterpartyBillingAddressJSON
+	Region string                                `json:"region,required"`
+	Line2  string                                `json:"line2"`
+	JSON   invoiceCounterpartyBillingAddressJSON `json:"-"`
 }
 
 // invoiceCounterpartyBillingAddressJSON contains the JSON metadata for the struct
@@ -297,9 +297,9 @@ type InvoiceCounterpartyShippingAddress struct {
 	// The postal code of the address.
 	PostalCode string `json:"postal_code,required"`
 	// Region or State.
-	Region string `json:"region,required"`
-	Line2  string `json:"line2"`
-	JSON   invoiceCounterpartyShippingAddressJSON
+	Region string                                 `json:"region,required"`
+	Line2  string                                 `json:"line2"`
+	JSON   invoiceCounterpartyShippingAddressJSON `json:"-"`
 }
 
 // invoiceCounterpartyShippingAddressJSON contains the JSON metadata for the struct
@@ -329,9 +329,9 @@ type InvoiceInvoicerAddress struct {
 	// The postal code of the address.
 	PostalCode string `json:"postal_code,required"`
 	// Region or State.
-	Region string `json:"region,required"`
-	Line2  string `json:"line2"`
-	JSON   invoiceInvoicerAddressJSON
+	Region string                     `json:"region,required"`
+	Line2  string                     `json:"line2"`
+	JSON   invoiceInvoicerAddressJSON `json:"-"`
 }
 
 // invoiceInvoicerAddressJSON contains the JSON metadata for the struct

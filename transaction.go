@@ -150,8 +150,8 @@ type Transaction struct {
 	Details map[string]string `json:"details"`
 	// The transaction detail text that often appears in on your bank statement and in
 	// your banking portal.
-	VendorDescription string `json:"vendor_description,nullable"`
-	JSON              transactionJSON
+	VendorDescription string          `json:"vendor_description,nullable"`
+	JSON              transactionJSON `json:"-"`
 }
 
 // transactionJSON contains the JSON metadata for the struct [Transaction]

@@ -108,10 +108,10 @@ type LedgerAccountBalanceMonitor struct {
 	LiveMode bool `json:"live_mode,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata  map[string]string `json:"metadata,required"`
-	Object    string            `json:"object,required"`
-	UpdatedAt time.Time         `json:"updated_at,required" format:"date-time"`
-	JSON      ledgerAccountBalanceMonitorJSON
+	Metadata  map[string]string               `json:"metadata,required"`
+	Object    string                          `json:"object,required"`
+	UpdatedAt time.Time                       `json:"updated_at,required" format:"date-time"`
+	JSON      ledgerAccountBalanceMonitorJSON `json:"-"`
 }
 
 // ledgerAccountBalanceMonitorJSON contains the JSON metadata for the struct
@@ -148,8 +148,8 @@ type LedgerAccountBalanceMonitorAlertCondition struct {
 	// The monitor's `current_ledger_account_balance_state.triggered` will be `true`
 	// when comparing the `field` to this integer value using the `operator` is
 	// logically true.
-	Value int64 `json:"value,required"`
-	JSON  ledgerAccountBalanceMonitorAlertConditionJSON
+	Value int64                                         `json:"value,required"`
+	JSON  ledgerAccountBalanceMonitorAlertConditionJSON `json:"-"`
 }
 
 // ledgerAccountBalanceMonitorAlertConditionJSON contains the JSON metadata for the
@@ -174,8 +174,8 @@ type LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceState struct {
 	LedgerAccountLockVersion int64 `json:"ledger_account_lock_version,required"`
 	// If `true`, the ledger account's balances satisfy the `alert_condition` at this
 	// lock version.
-	Triggered bool `json:"triggered,required"`
-	JSON      ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateJSON
+	Triggered bool                                                            `json:"triggered,required"`
+	JSON      ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateJSON `json:"-"`
 }
 
 // ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateJSON contains the
@@ -203,7 +203,7 @@ type LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalances struct 
 	PendingBalance LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPendingBalance `json:"pending_balance,required"`
 	// The posted_balance is the sum of all posted entries.
 	PostedBalance LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPostedBalance `json:"posted_balance,required"`
-	JSON          ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesJSON
+	JSON          ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesJSON          `json:"-"`
 }
 
 // ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesJSON contains
@@ -231,9 +231,9 @@ type LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesAvailabl
 	// The currency of the ledger account.
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
-	CurrencyExponent int64 `json:"currency_exponent,required"`
-	Debits           int64 `json:"debits,required"`
-	JSON             ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesAvailableBalanceJSON
+	CurrencyExponent int64                                                                                   `json:"currency_exponent,required"`
+	Debits           int64                                                                                   `json:"debits,required"`
+	JSON             ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesAvailableBalanceJSON `json:"-"`
 }
 
 // ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesAvailableBalanceJSON
@@ -260,9 +260,9 @@ type LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPendingB
 	// The currency of the ledger account.
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
-	CurrencyExponent int64 `json:"currency_exponent,required"`
-	Debits           int64 `json:"debits,required"`
-	JSON             ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPendingBalanceJSON
+	CurrencyExponent int64                                                                                 `json:"currency_exponent,required"`
+	Debits           int64                                                                                 `json:"debits,required"`
+	JSON             ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPendingBalanceJSON `json:"-"`
 }
 
 // ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPendingBalanceJSON
@@ -289,9 +289,9 @@ type LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPostedBa
 	// The currency of the ledger account.
 	Currency string `json:"currency,required"`
 	// The currency exponent of the ledger account.
-	CurrencyExponent int64 `json:"currency_exponent,required"`
-	Debits           int64 `json:"debits,required"`
-	JSON             ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPostedBalanceJSON
+	CurrencyExponent int64                                                                                `json:"currency_exponent,required"`
+	Debits           int64                                                                                `json:"debits,required"`
+	JSON             ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPostedBalanceJSON `json:"-"`
 }
 
 // ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPostedBalanceJSON
