@@ -98,7 +98,10 @@ func NewRequestConfig(ctx context.Context, method string, u string, body interfa
 	if b != nil {
 		req.Header.Set("Content-Type", contentType)
 	}
-	req.Header.Set("Idempotency-Key", "stainless-go-"+uuid.New().String())
+	if method != http.MethodGet {
+		// Note this can be overridden with `WithHeader("Idempotency-Key", myIdempotencyKey)`
+		req.Header.Set("Idempotency-Key", "stainless-go-"+uuid.New().String())
+	}
 	req.Header.Set("Accept", "application/json")
 
 	for k, v := range getPlatformProperties() {
