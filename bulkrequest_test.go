@@ -3,10 +3,8 @@
 package moderntreasury_test
 
 import (
-	"bytes"
 	"context"
 	"errors"
-	"io"
 	"os"
 	"testing"
 	"time"
@@ -34,15 +32,15 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 	_, err := client.BulkRequests.New(context.TODO(), moderntreasury.BulkRequestNewParams{
 		ActionType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsActionTypeCreate),
 		ResourceType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourceTypePaymentOrder),
-		Resources: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResource{moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequest(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequest{
+		Resources: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResource{moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest{
 			Type:                 moderntreasury.F(moderntreasury.PaymentOrderTypeACH),
 			Subtype:              moderntreasury.F(moderntreasury.PaymentOrderSubtypeBacsNewInstruction),
 			Amount:               moderntreasury.F(int64(0)),
-			Direction:            moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDirectionCredit),
-			Priority:             moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestPriorityHigh),
+			Direction:            moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestDirectionCredit),
+			Priority:             moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriorityHigh),
 			OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			ReceivingAccountID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			Accounting: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestAccounting{
+			Accounting: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestAccounting{
 				AccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				ClassID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			}),
@@ -59,8 +57,8 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			ChargeBearer:                       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestChargeBearerShared),
-			ForeignExchangeIndicator:           moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestForeignExchangeIndicatorFixedToVariable),
+			ChargeBearer:                       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestChargeBearerShared),
+			ForeignExchangeIndicator:           moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchangeIndicatorFixedToVariable),
 			ForeignExchangeContract:            moderntreasury.F("string"),
 			NsfProtected:                       moderntreasury.F(true),
 			OriginatingPartyName:               moderntreasury.F("string"),
@@ -70,11 +68,11 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 			UltimateReceivingPartyIdentifier:   moderntreasury.F("string"),
 			SendRemittanceAdvice:               moderntreasury.F(true),
 			ExpiresAt:                          moderntreasury.F(time.Now()),
-			FallbackType:                       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestFallbackTypeACH),
-			ReceivingAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccount{
+			FallbackType:                       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestFallbackTypeACH),
+			ReceivingAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccount{
 				AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
-				PartyType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountPartyTypeBusiness),
-				PartyAddress: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountPartyAddress{
+				PartyType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyTypeBusiness),
+				PartyAddress: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyAddress{
 					Line1:      moderntreasury.F("string"),
 					Line2:      moderntreasury.F("string"),
 					Locality:   moderntreasury.F("string"),
@@ -83,28 +81,28 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					Country:    moderntreasury.F("string"),
 				}),
 				Name: moderntreasury.F("string"),
-				AccountDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountAccountDetail{{
+				AccountDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetail{{
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
 				}}),
-				RoutingDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetail{{
+				RoutingDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetail{{
 					RoutingNumber:     moderntreasury.F("string"),
-					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
-					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
+					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
+					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
 				}, {
 					RoutingNumber:     moderntreasury.F("string"),
-					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
-					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
+					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
+					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
 				}, {
 					RoutingNumber:     moderntreasury.F("string"),
-					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
-					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
+					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
+					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
 				}}),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
@@ -113,7 +111,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				}),
 				PartyName:       moderntreasury.F("string"),
 				PartyIdentifier: moderntreasury.F("string"),
-				LedgerAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountLedgerAccount{
+				LedgerAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccount{
 					Name:             moderntreasury.F("string"),
 					Description:      moderntreasury.F("string"),
 					NormalBalance:    moderntreasury.F(shared.TransactionDirectionCredit),
@@ -121,7 +119,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					Currency:         moderntreasury.F("string"),
 					CurrencyExponent: moderntreasury.F(int64(0)),
 					LedgerableID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-					LedgerableType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountLedgerAccountLedgerableTypeExternalAccount),
+					LedgerableType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeExternalAccount),
 					Metadata: moderntreasury.F(map[string]string{
 						"key":    "value",
 						"foo":    "bar",
@@ -129,20 +127,20 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					}),
 				}),
 				PlaidProcessorToken: moderntreasury.F("string"),
-				ContactDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountContactDetail{{
+				ContactDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetail{{
 					ContactIdentifier:     moderntreasury.F("string"),
-					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
+					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
 				}, {
 					ContactIdentifier:     moderntreasury.F("string"),
-					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
+					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
 				}, {
 					ContactIdentifier:     moderntreasury.F("string"),
-					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
+					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
 				}}),
 			}),
-			LedgerTransaction: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLedgerTransaction{
+			LedgerTransaction: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransaction{
 				Description: moderntreasury.F("string"),
-				Status:      moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLedgerTransactionStatusArchived),
+				Status:      moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusArchived),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
 					"foo":    "bar",
@@ -150,7 +148,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				}),
 				EffectiveAt:   moderntreasury.F(time.Now()),
 				EffectiveDate: moderntreasury.F(time.Now()),
-				LedgerEntries: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLedgerTransactionLedgerEntry{{
+				LedgerEntries: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerEntry{{
 					Amount:          moderntreasury.F(int64(0)),
 					Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 					LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -212,11 +210,11 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					}),
 				}}),
 				ExternalID:     moderntreasury.F("string"),
-				LedgerableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLedgerTransactionLedgerableTypeCounterparty),
+				LedgerableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeCounterparty),
 				LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			}),
 			LedgerTransactionID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			LineItems: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLineItem{{
+			LineItems: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLineItem{{
 				Amount: moderntreasury.F(int64(0)),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
@@ -245,31 +243,15 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				AccountingCategoryID: moderntreasury.F("string"),
 			}}),
 			TransactionMonitoringEnabled: moderntreasury.F(true),
-			Documents: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDocument{{
-				DocumentableID:   moderntreasury.F("string"),
-				DocumentableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDocumentsDocumentableTypeCases),
-				DocumentType:     moderntreasury.F("string"),
-				File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
-			}, {
-				DocumentableID:   moderntreasury.F("string"),
-				DocumentableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDocumentsDocumentableTypeCases),
-				DocumentType:     moderntreasury.F("string"),
-				File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
-			}, {
-				DocumentableID:   moderntreasury.F("string"),
-				DocumentableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDocumentsDocumentableTypeCases),
-				DocumentType:     moderntreasury.F("string"),
-				File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
-			}}),
-		}), moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequest(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequest{
+		}), moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest{
 			Type:                 moderntreasury.F(moderntreasury.PaymentOrderTypeACH),
 			Subtype:              moderntreasury.F(moderntreasury.PaymentOrderSubtypeBacsNewInstruction),
 			Amount:               moderntreasury.F(int64(0)),
-			Direction:            moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDirectionCredit),
-			Priority:             moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestPriorityHigh),
+			Direction:            moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestDirectionCredit),
+			Priority:             moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriorityHigh),
 			OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			ReceivingAccountID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			Accounting: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestAccounting{
+			Accounting: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestAccounting{
 				AccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				ClassID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			}),
@@ -286,8 +268,8 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			ChargeBearer:                       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestChargeBearerShared),
-			ForeignExchangeIndicator:           moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestForeignExchangeIndicatorFixedToVariable),
+			ChargeBearer:                       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestChargeBearerShared),
+			ForeignExchangeIndicator:           moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchangeIndicatorFixedToVariable),
 			ForeignExchangeContract:            moderntreasury.F("string"),
 			NsfProtected:                       moderntreasury.F(true),
 			OriginatingPartyName:               moderntreasury.F("string"),
@@ -297,11 +279,11 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 			UltimateReceivingPartyIdentifier:   moderntreasury.F("string"),
 			SendRemittanceAdvice:               moderntreasury.F(true),
 			ExpiresAt:                          moderntreasury.F(time.Now()),
-			FallbackType:                       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestFallbackTypeACH),
-			ReceivingAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccount{
+			FallbackType:                       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestFallbackTypeACH),
+			ReceivingAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccount{
 				AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
-				PartyType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountPartyTypeBusiness),
-				PartyAddress: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountPartyAddress{
+				PartyType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyTypeBusiness),
+				PartyAddress: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyAddress{
 					Line1:      moderntreasury.F("string"),
 					Line2:      moderntreasury.F("string"),
 					Locality:   moderntreasury.F("string"),
@@ -310,28 +292,28 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					Country:    moderntreasury.F("string"),
 				}),
 				Name: moderntreasury.F("string"),
-				AccountDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountAccountDetail{{
+				AccountDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetail{{
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
 				}}),
-				RoutingDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetail{{
+				RoutingDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetail{{
 					RoutingNumber:     moderntreasury.F("string"),
-					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
-					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
+					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
+					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
 				}, {
 					RoutingNumber:     moderntreasury.F("string"),
-					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
-					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
+					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
+					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
 				}, {
 					RoutingNumber:     moderntreasury.F("string"),
-					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
-					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
+					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
+					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
 				}}),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
@@ -340,7 +322,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				}),
 				PartyName:       moderntreasury.F("string"),
 				PartyIdentifier: moderntreasury.F("string"),
-				LedgerAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountLedgerAccount{
+				LedgerAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccount{
 					Name:             moderntreasury.F("string"),
 					Description:      moderntreasury.F("string"),
 					NormalBalance:    moderntreasury.F(shared.TransactionDirectionCredit),
@@ -348,7 +330,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					Currency:         moderntreasury.F("string"),
 					CurrencyExponent: moderntreasury.F(int64(0)),
 					LedgerableID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-					LedgerableType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountLedgerAccountLedgerableTypeExternalAccount),
+					LedgerableType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeExternalAccount),
 					Metadata: moderntreasury.F(map[string]string{
 						"key":    "value",
 						"foo":    "bar",
@@ -356,20 +338,20 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					}),
 				}),
 				PlaidProcessorToken: moderntreasury.F("string"),
-				ContactDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountContactDetail{{
+				ContactDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetail{{
 					ContactIdentifier:     moderntreasury.F("string"),
-					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
+					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
 				}, {
 					ContactIdentifier:     moderntreasury.F("string"),
-					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
+					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
 				}, {
 					ContactIdentifier:     moderntreasury.F("string"),
-					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
+					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
 				}}),
 			}),
-			LedgerTransaction: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLedgerTransaction{
+			LedgerTransaction: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransaction{
 				Description: moderntreasury.F("string"),
-				Status:      moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLedgerTransactionStatusArchived),
+				Status:      moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusArchived),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
 					"foo":    "bar",
@@ -377,7 +359,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				}),
 				EffectiveAt:   moderntreasury.F(time.Now()),
 				EffectiveDate: moderntreasury.F(time.Now()),
-				LedgerEntries: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLedgerTransactionLedgerEntry{{
+				LedgerEntries: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerEntry{{
 					Amount:          moderntreasury.F(int64(0)),
 					Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 					LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -439,11 +421,11 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					}),
 				}}),
 				ExternalID:     moderntreasury.F("string"),
-				LedgerableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLedgerTransactionLedgerableTypeCounterparty),
+				LedgerableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeCounterparty),
 				LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			}),
 			LedgerTransactionID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			LineItems: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLineItem{{
+			LineItems: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLineItem{{
 				Amount: moderntreasury.F(int64(0)),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
@@ -472,31 +454,15 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				AccountingCategoryID: moderntreasury.F("string"),
 			}}),
 			TransactionMonitoringEnabled: moderntreasury.F(true),
-			Documents: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDocument{{
-				DocumentableID:   moderntreasury.F("string"),
-				DocumentableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDocumentsDocumentableTypeCases),
-				DocumentType:     moderntreasury.F("string"),
-				File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
-			}, {
-				DocumentableID:   moderntreasury.F("string"),
-				DocumentableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDocumentsDocumentableTypeCases),
-				DocumentType:     moderntreasury.F("string"),
-				File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
-			}, {
-				DocumentableID:   moderntreasury.F("string"),
-				DocumentableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDocumentsDocumentableTypeCases),
-				DocumentType:     moderntreasury.F("string"),
-				File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
-			}}),
-		}), moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequest(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequest{
+		}), moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest{
 			Type:                 moderntreasury.F(moderntreasury.PaymentOrderTypeACH),
 			Subtype:              moderntreasury.F(moderntreasury.PaymentOrderSubtypeBacsNewInstruction),
 			Amount:               moderntreasury.F(int64(0)),
-			Direction:            moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDirectionCredit),
-			Priority:             moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestPriorityHigh),
+			Direction:            moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestDirectionCredit),
+			Priority:             moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriorityHigh),
 			OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			ReceivingAccountID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			Accounting: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestAccounting{
+			Accounting: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestAccounting{
 				AccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				ClassID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			}),
@@ -513,8 +479,8 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			ChargeBearer:                       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestChargeBearerShared),
-			ForeignExchangeIndicator:           moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestForeignExchangeIndicatorFixedToVariable),
+			ChargeBearer:                       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestChargeBearerShared),
+			ForeignExchangeIndicator:           moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchangeIndicatorFixedToVariable),
 			ForeignExchangeContract:            moderntreasury.F("string"),
 			NsfProtected:                       moderntreasury.F(true),
 			OriginatingPartyName:               moderntreasury.F("string"),
@@ -524,11 +490,11 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 			UltimateReceivingPartyIdentifier:   moderntreasury.F("string"),
 			SendRemittanceAdvice:               moderntreasury.F(true),
 			ExpiresAt:                          moderntreasury.F(time.Now()),
-			FallbackType:                       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestFallbackTypeACH),
-			ReceivingAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccount{
+			FallbackType:                       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestFallbackTypeACH),
+			ReceivingAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccount{
 				AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
-				PartyType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountPartyTypeBusiness),
-				PartyAddress: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountPartyAddress{
+				PartyType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyTypeBusiness),
+				PartyAddress: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyAddress{
 					Line1:      moderntreasury.F("string"),
 					Line2:      moderntreasury.F("string"),
 					Locality:   moderntreasury.F("string"),
@@ -537,28 +503,28 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					Country:    moderntreasury.F("string"),
 				}),
 				Name: moderntreasury.F("string"),
-				AccountDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountAccountDetail{{
+				AccountDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetail{{
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
 				}}),
-				RoutingDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetail{{
+				RoutingDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetail{{
 					RoutingNumber:     moderntreasury.F("string"),
-					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
-					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
+					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
+					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
 				}, {
 					RoutingNumber:     moderntreasury.F("string"),
-					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
-					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
+					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
+					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
 				}, {
 					RoutingNumber:     moderntreasury.F("string"),
-					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
-					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
+					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
+					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
 				}}),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
@@ -567,7 +533,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				}),
 				PartyName:       moderntreasury.F("string"),
 				PartyIdentifier: moderntreasury.F("string"),
-				LedgerAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountLedgerAccount{
+				LedgerAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccount{
 					Name:             moderntreasury.F("string"),
 					Description:      moderntreasury.F("string"),
 					NormalBalance:    moderntreasury.F(shared.TransactionDirectionCredit),
@@ -575,7 +541,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					Currency:         moderntreasury.F("string"),
 					CurrencyExponent: moderntreasury.F(int64(0)),
 					LedgerableID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-					LedgerableType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountLedgerAccountLedgerableTypeExternalAccount),
+					LedgerableType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeExternalAccount),
 					Metadata: moderntreasury.F(map[string]string{
 						"key":    "value",
 						"foo":    "bar",
@@ -583,20 +549,20 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					}),
 				}),
 				PlaidProcessorToken: moderntreasury.F("string"),
-				ContactDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountContactDetail{{
+				ContactDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetail{{
 					ContactIdentifier:     moderntreasury.F("string"),
-					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
+					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
 				}, {
 					ContactIdentifier:     moderntreasury.F("string"),
-					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
+					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
 				}, {
 					ContactIdentifier:     moderntreasury.F("string"),
-					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
+					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),
 				}}),
 			}),
-			LedgerTransaction: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLedgerTransaction{
+			LedgerTransaction: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransaction{
 				Description: moderntreasury.F("string"),
-				Status:      moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLedgerTransactionStatusArchived),
+				Status:      moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusArchived),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
 					"foo":    "bar",
@@ -604,7 +570,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				}),
 				EffectiveAt:   moderntreasury.F(time.Now()),
 				EffectiveDate: moderntreasury.F(time.Now()),
-				LedgerEntries: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLedgerTransactionLedgerEntry{{
+				LedgerEntries: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerEntry{{
 					Amount:          moderntreasury.F(int64(0)),
 					Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 					LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -666,11 +632,11 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					}),
 				}}),
 				ExternalID:     moderntreasury.F("string"),
-				LedgerableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLedgerTransactionLedgerableTypeCounterparty),
+				LedgerableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeCounterparty),
 				LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			}),
 			LedgerTransactionID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			LineItems: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestLineItem{{
+			LineItems: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLineItem{{
 				Amount: moderntreasury.F(int64(0)),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
@@ -699,22 +665,6 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				AccountingCategoryID: moderntreasury.F("string"),
 			}}),
 			TransactionMonitoringEnabled: moderntreasury.F(true),
-			Documents: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDocument{{
-				DocumentableID:   moderntreasury.F("string"),
-				DocumentableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDocumentsDocumentableTypeCases),
-				DocumentType:     moderntreasury.F("string"),
-				File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
-			}, {
-				DocumentableID:   moderntreasury.F("string"),
-				DocumentableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDocumentsDocumentableTypeCases),
-				DocumentType:     moderntreasury.F("string"),
-				File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
-			}, {
-				DocumentableID:   moderntreasury.F("string"),
-				DocumentableType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderCreateRequestDocumentsDocumentableTypeCases),
-				DocumentType:     moderntreasury.F("string"),
-				File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
-			}}),
 		})}),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",

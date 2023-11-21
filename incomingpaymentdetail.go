@@ -202,6 +202,7 @@ const (
 	IncomingPaymentDetailOriginatingRoutingNumberTypeDkInterbankClearingCode IncomingPaymentDetailOriginatingRoutingNumberType = "dk_interbank_clearing_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeGBSortCode              IncomingPaymentDetailOriginatingRoutingNumberType = "gb_sort_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeHkInterbankClearingCode IncomingPaymentDetailOriginatingRoutingNumberType = "hk_interbank_clearing_code"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeHuInterbankClearingCode IncomingPaymentDetailOriginatingRoutingNumberType = "hu_interbank_clearing_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeInIfsc                  IncomingPaymentDetailOriginatingRoutingNumberType = "in_ifsc"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeJpZenginCode            IncomingPaymentDetailOriginatingRoutingNumberType = "jp_zengin_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeMyBranchCode            IncomingPaymentDetailOriginatingRoutingNumberType = "my_branch_code"
