@@ -548,7 +548,6 @@ type CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType string
 const (
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba                     CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "aba"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAuBsb                   CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "au_bsb"
-	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeBrCodigo                CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "br_codigo"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeCaCpa                   CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "ca_cpa"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeChips                   CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "chips"
@@ -556,11 +555,13 @@ const (
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeDkInterbankClearingCode CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "dk_interbank_clearing_code"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeGBSortCode              CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "gb_sort_code"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeHkInterbankClearingCode CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeHuInterbankClearingCode CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeInIfsc                  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "in_ifsc"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeJpZenginCode            CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeMyBranchCode            CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "my_branch_code"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeNzNationalClearingCode  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeSwift                   CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "swift"
-	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeJpZenginCode            CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "jp_zengin_code"
 )
 
 type CounterpartyNewParamsAccountsRoutingDetailsPaymentType string
@@ -576,12 +577,14 @@ const (
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCrossBorder CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "cross_border"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeDkNets      CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "dk_nets"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeEft         CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "eft"
+	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeHuIcs       CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "hu_ics"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeInterac     CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "interac"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeMasav       CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "masav"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNeft        CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "neft"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNics        CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "nics"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNzBecs      CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "nz_becs"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeProvxchange CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "provxchange"
+	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeRoSent      CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "ro_sent"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeRtp         CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "rtp"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSgGiro      CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "sg_giro"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSeBankgirot CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "se_bankgirot"
