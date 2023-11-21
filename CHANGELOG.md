@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.4.0 (2023-11-21)
+
+Full Changelog: [v2.3.0...v2.4.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.3.0...v2.4.0)
+
+### Features
+
+* **api:** updates ([#136](https://github.com/Modern-Treasury/modern-treasury-go/issues/136)) ([c8e98e0](https://github.com/Modern-Treasury/modern-treasury-go/commit/c8e98e087d8594399014cab00cc9974e4cfbe0fd))
+
+
+### Bug Fixes
+
+* stop sending default idempotency headers with GET requests ([#134](https://github.com/Modern-Treasury/modern-treasury-go/issues/134)) ([2372568](https://github.com/Modern-Treasury/modern-treasury-go/commit/2372568abfa9fd5f71cb7a28b9cd034442d4b407))
+
 ## 2.3.0 (2023-11-16)
 
 Full Changelog: [v2.2.0...v2.3.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.2.0...v2.3.0)
