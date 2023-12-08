@@ -201,6 +201,7 @@ type VirtualAccountNewParamsAccountDetailsAccountNumberType string
 
 const (
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypeClabe         VirtualAccountNewParamsAccountDetailsAccountNumberType = "clabe"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeHkNumber      VirtualAccountNewParamsAccountDetailsAccountNumberType = "hk_number"
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypeIban          VirtualAccountNewParamsAccountDetailsAccountNumberType = "iban"
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypeOther         VirtualAccountNewParamsAccountDetailsAccountNumberType = "other"
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypePan           VirtualAccountNewParamsAccountDetailsAccountNumberType = "pan"
@@ -239,10 +240,12 @@ const (
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeGBSortCode              VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "gb_sort_code"
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeHkInterbankClearingCode VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeHuInterbankClearingCode VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeIDSknbiCode             VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "id_sknbi_code"
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeInIfsc                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "in_ifsc"
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeJpZenginCode            VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeMyBranchCode            VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "my_branch_code"
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeNzNationalClearingCode  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypePlNationalClearingCode  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSwift                   VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "swift"
 )
@@ -265,9 +268,11 @@ const (
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeHuIcs       VirtualAccountNewParamsRoutingDetailsPaymentType = "hu_ics"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeInterac     VirtualAccountNewParamsRoutingDetailsPaymentType = "interac"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeMasav       VirtualAccountNewParamsRoutingDetailsPaymentType = "masav"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeMxCcen      VirtualAccountNewParamsRoutingDetailsPaymentType = "mx_ccen"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeNeft        VirtualAccountNewParamsRoutingDetailsPaymentType = "neft"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeNics        VirtualAccountNewParamsRoutingDetailsPaymentType = "nics"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeNzBecs      VirtualAccountNewParamsRoutingDetailsPaymentType = "nz_becs"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypePlElixir    VirtualAccountNewParamsRoutingDetailsPaymentType = "pl_elixir"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeProvxchange VirtualAccountNewParamsRoutingDetailsPaymentType = "provxchange"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeRoSent      VirtualAccountNewParamsRoutingDetailsPaymentType = "ro_sent"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeRtp         VirtualAccountNewParamsRoutingDetailsPaymentType = "rtp"
@@ -277,6 +282,7 @@ const (
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeSgGiro      VirtualAccountNewParamsRoutingDetailsPaymentType = "sg_giro"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeSic         VirtualAccountNewParamsRoutingDetailsPaymentType = "sic"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeSignet      VirtualAccountNewParamsRoutingDetailsPaymentType = "signet"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSknbi       VirtualAccountNewParamsRoutingDetailsPaymentType = "sknbi"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeWire        VirtualAccountNewParamsRoutingDetailsPaymentType = "wire"
 	VirtualAccountNewParamsRoutingDetailsPaymentTypeZengin      VirtualAccountNewParamsRoutingDetailsPaymentType = "zengin"
 )

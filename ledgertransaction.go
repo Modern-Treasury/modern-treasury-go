@@ -371,14 +371,15 @@ type LedgerTransactionListParams struct {
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by
 	// effective date. For example, for all dates after Jan 1 2000, use
 	// effective_date%5Bgt%5D=2000-01-01.
-	EffectiveDate           param.Field[map[string]time.Time]                      `query:"effective_date" format:"date-time"`
-	ExternalID              param.Field[string]                                    `query:"external_id"`
-	LedgerAccountCategoryID param.Field[string]                                    `query:"ledger_account_category_id"`
-	LedgerAccountID         param.Field[string]                                    `query:"ledger_account_id"`
-	LedgerAccountPayoutID   param.Field[string]                                    `query:"ledger_account_payout_id"`
-	LedgerID                param.Field[string]                                    `query:"ledger_id"`
-	LedgerableID            param.Field[string]                                    `query:"ledgerable_id"`
-	LedgerableType          param.Field[LedgerTransactionListParamsLedgerableType] `query:"ledgerable_type"`
+	EffectiveDate             param.Field[map[string]time.Time]                      `query:"effective_date" format:"date-time"`
+	ExternalID                param.Field[string]                                    `query:"external_id"`
+	LedgerAccountCategoryID   param.Field[string]                                    `query:"ledger_account_category_id"`
+	LedgerAccountID           param.Field[string]                                    `query:"ledger_account_id"`
+	LedgerAccountPayoutID     param.Field[string]                                    `query:"ledger_account_payout_id"`
+	LedgerAccountSettlementID param.Field[string]                                    `query:"ledger_account_settlement_id"`
+	LedgerID                  param.Field[string]                                    `query:"ledger_id"`
+	LedgerableID              param.Field[string]                                    `query:"ledgerable_id"`
+	LedgerableType            param.Field[LedgerTransactionListParamsLedgerableType] `query:"ledgerable_type"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
