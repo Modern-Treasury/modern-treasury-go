@@ -44,6 +44,39 @@ func TestLedgerEntryGetWithOptionalParams(t *testing.T) {
 	}
 }
 
+func TestLedgerEntryUpdateWithOptionalParams(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := moderntreasury.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+		option.WithOrganizationID("my-organization-ID"),
+	)
+	_, err := client.LedgerEntries.Update(
+		context.TODO(),
+		"string",
+		moderntreasury.LedgerEntryUpdateParams{
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
+		},
+	)
+	if err != nil {
+		var apierr *moderntreasury.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
 func TestLedgerEntryListWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -73,9 +106,10 @@ func TestLedgerEntryListWithOptionalParams(t *testing.T) {
 		LedgerAccountLockVersion: moderntreasury.F(map[string]int64{
 			"foo": int64(0),
 		}),
-		LedgerAccountPayoutID:    moderntreasury.F("string"),
-		LedgerAccountStatementID: moderntreasury.F("string"),
-		LedgerTransactionID:      moderntreasury.F("string"),
+		LedgerAccountPayoutID:     moderntreasury.F("string"),
+		LedgerAccountSettlementID: moderntreasury.F("string"),
+		LedgerAccountStatementID:  moderntreasury.F("string"),
+		LedgerTransactionID:       moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),

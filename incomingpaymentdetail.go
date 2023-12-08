@@ -183,6 +183,7 @@ type IncomingPaymentDetailOriginatingAccountNumberType string
 
 const (
 	IncomingPaymentDetailOriginatingAccountNumberTypeClabe         IncomingPaymentDetailOriginatingAccountNumberType = "clabe"
+	IncomingPaymentDetailOriginatingAccountNumberTypeHkNumber      IncomingPaymentDetailOriginatingAccountNumberType = "hk_number"
 	IncomingPaymentDetailOriginatingAccountNumberTypeIban          IncomingPaymentDetailOriginatingAccountNumberType = "iban"
 	IncomingPaymentDetailOriginatingAccountNumberTypeOther         IncomingPaymentDetailOriginatingAccountNumberType = "other"
 	IncomingPaymentDetailOriginatingAccountNumberTypePan           IncomingPaymentDetailOriginatingAccountNumberType = "pan"
@@ -203,10 +204,12 @@ const (
 	IncomingPaymentDetailOriginatingRoutingNumberTypeGBSortCode              IncomingPaymentDetailOriginatingRoutingNumberType = "gb_sort_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeHkInterbankClearingCode IncomingPaymentDetailOriginatingRoutingNumberType = "hk_interbank_clearing_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeHuInterbankClearingCode IncomingPaymentDetailOriginatingRoutingNumberType = "hu_interbank_clearing_code"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeIDSknbiCode             IncomingPaymentDetailOriginatingRoutingNumberType = "id_sknbi_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeInIfsc                  IncomingPaymentDetailOriginatingRoutingNumberType = "in_ifsc"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeJpZenginCode            IncomingPaymentDetailOriginatingRoutingNumberType = "jp_zengin_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeMyBranchCode            IncomingPaymentDetailOriginatingRoutingNumberType = "my_branch_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeNzNationalClearingCode  IncomingPaymentDetailOriginatingRoutingNumberType = "nz_national_clearing_code"
+	IncomingPaymentDetailOriginatingRoutingNumberTypePlNationalClearingCode  IncomingPaymentDetailOriginatingRoutingNumberType = "pl_national_clearing_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeSeBankgiroClearingCode  IncomingPaymentDetailOriginatingRoutingNumberType = "se_bankgiro_clearing_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeSwift                   IncomingPaymentDetailOriginatingRoutingNumberType = "swift"
 )

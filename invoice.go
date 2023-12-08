@@ -117,6 +117,9 @@ type Invoice struct {
 	DueDate time.Time `json:"due_date,required" format:"date-time"`
 	// The expected payments created for an unpaid invoice.
 	ExpectedPayments []ExpectedPayment `json:"expected_payments,required"`
+	// When payment_method is automatic, the fallback payment method to use when an
+	// automatic payment fails. One of `manual` or `ui`.
+	FallbackPaymentMethod string `json:"fallback_payment_method,required,nullable"`
 	// The URL of the hosted web UI where the invoice can be viewed.
 	HostedURL string `json:"hosted_url,required"`
 	// The invoice issuer's business address.
@@ -124,6 +127,9 @@ type Invoice struct {
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata map[string]string `json:"metadata,required"`
 	// Emails in addition to the counterparty email to send invoice status
 	// notifications to. At least one email is required if notifications are enabled
 	// and the counterparty doesn't have an email.
@@ -185,9 +191,11 @@ type invoiceJSON struct {
 	Description                 apijson.Field
 	DueDate                     apijson.Field
 	ExpectedPayments            apijson.Field
+	FallbackPaymentMethod       apijson.Field
 	HostedURL                   apijson.Field
 	InvoicerAddress             apijson.Field
 	LiveMode                    apijson.Field
+	Metadata                    apijson.Field
 	NotificationEmailAddresses  apijson.Field
 	NotificationsEnabled        apijson.Field
 	Number                      apijson.Field
@@ -398,6 +406,9 @@ type InvoiceNewParams struct {
 	Currency param.Field[shared.Currency] `json:"currency"`
 	// A free-form description of the invoice.
 	Description param.Field[string] `json:"description"`
+	// When payment_method is automatic, the fallback payment method to use when an
+	// automatic payment fails. One of `manual` or `ui`.
+	FallbackPaymentMethod param.Field[string] `json:"fallback_payment_method"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceNewParamsInvoicerAddress] `json:"invoicer_address"`
 	// Emails in addition to the counterparty email to send invoice status
@@ -550,9 +561,11 @@ const (
 	InvoiceNewParamsPaymentTypeHuIcs       InvoiceNewParamsPaymentType = "hu_ics"
 	InvoiceNewParamsPaymentTypeInterac     InvoiceNewParamsPaymentType = "interac"
 	InvoiceNewParamsPaymentTypeMasav       InvoiceNewParamsPaymentType = "masav"
+	InvoiceNewParamsPaymentTypeMxCcen      InvoiceNewParamsPaymentType = "mx_ccen"
 	InvoiceNewParamsPaymentTypeNeft        InvoiceNewParamsPaymentType = "neft"
 	InvoiceNewParamsPaymentTypeNics        InvoiceNewParamsPaymentType = "nics"
 	InvoiceNewParamsPaymentTypeNzBecs      InvoiceNewParamsPaymentType = "nz_becs"
+	InvoiceNewParamsPaymentTypePlElixir    InvoiceNewParamsPaymentType = "pl_elixir"
 	InvoiceNewParamsPaymentTypeProvxchange InvoiceNewParamsPaymentType = "provxchange"
 	InvoiceNewParamsPaymentTypeRoSent      InvoiceNewParamsPaymentType = "ro_sent"
 	InvoiceNewParamsPaymentTypeRtp         InvoiceNewParamsPaymentType = "rtp"
@@ -562,6 +575,7 @@ const (
 	InvoiceNewParamsPaymentTypeSepa        InvoiceNewParamsPaymentType = "sepa"
 	InvoiceNewParamsPaymentTypeSic         InvoiceNewParamsPaymentType = "sic"
 	InvoiceNewParamsPaymentTypeSignet      InvoiceNewParamsPaymentType = "signet"
+	InvoiceNewParamsPaymentTypeSknbi       InvoiceNewParamsPaymentType = "sknbi"
 	InvoiceNewParamsPaymentTypeWire        InvoiceNewParamsPaymentType = "wire"
 	InvoiceNewParamsPaymentTypeZengin      InvoiceNewParamsPaymentType = "zengin"
 )
@@ -581,6 +595,9 @@ type InvoiceUpdateParams struct {
 	Description param.Field[string] `json:"description"`
 	// A future date by when the invoice needs to be paid.
 	DueDate param.Field[time.Time] `json:"due_date" format:"date-time"`
+	// When payment_method is automatic, the fallback payment method to use when an
+	// automatic payment fails. One of `manual` or `ui`.
+	FallbackPaymentMethod param.Field[string] `json:"fallback_payment_method"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceUpdateParamsInvoicerAddress] `json:"invoicer_address"`
 	// Emails in addition to the counterparty email to send invoice status
@@ -739,9 +756,11 @@ const (
 	InvoiceUpdateParamsPaymentTypeHuIcs       InvoiceUpdateParamsPaymentType = "hu_ics"
 	InvoiceUpdateParamsPaymentTypeInterac     InvoiceUpdateParamsPaymentType = "interac"
 	InvoiceUpdateParamsPaymentTypeMasav       InvoiceUpdateParamsPaymentType = "masav"
+	InvoiceUpdateParamsPaymentTypeMxCcen      InvoiceUpdateParamsPaymentType = "mx_ccen"
 	InvoiceUpdateParamsPaymentTypeNeft        InvoiceUpdateParamsPaymentType = "neft"
 	InvoiceUpdateParamsPaymentTypeNics        InvoiceUpdateParamsPaymentType = "nics"
 	InvoiceUpdateParamsPaymentTypeNzBecs      InvoiceUpdateParamsPaymentType = "nz_becs"
+	InvoiceUpdateParamsPaymentTypePlElixir    InvoiceUpdateParamsPaymentType = "pl_elixir"
 	InvoiceUpdateParamsPaymentTypeProvxchange InvoiceUpdateParamsPaymentType = "provxchange"
 	InvoiceUpdateParamsPaymentTypeRoSent      InvoiceUpdateParamsPaymentType = "ro_sent"
 	InvoiceUpdateParamsPaymentTypeRtp         InvoiceUpdateParamsPaymentType = "rtp"
@@ -751,6 +770,7 @@ const (
 	InvoiceUpdateParamsPaymentTypeSepa        InvoiceUpdateParamsPaymentType = "sepa"
 	InvoiceUpdateParamsPaymentTypeSic         InvoiceUpdateParamsPaymentType = "sic"
 	InvoiceUpdateParamsPaymentTypeSignet      InvoiceUpdateParamsPaymentType = "signet"
+	InvoiceUpdateParamsPaymentTypeSknbi       InvoiceUpdateParamsPaymentType = "sknbi"
 	InvoiceUpdateParamsPaymentTypeWire        InvoiceUpdateParamsPaymentType = "wire"
 	InvoiceUpdateParamsPaymentTypeZengin      InvoiceUpdateParamsPaymentType = "zengin"
 )

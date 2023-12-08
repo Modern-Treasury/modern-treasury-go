@@ -535,9 +535,11 @@ const (
 	PaymentOrderTypeHuIcs       PaymentOrderType = "hu_ics"
 	PaymentOrderTypeInterac     PaymentOrderType = "interac"
 	PaymentOrderTypeMasav       PaymentOrderType = "masav"
+	PaymentOrderTypeMxCcen      PaymentOrderType = "mx_ccen"
 	PaymentOrderTypeNeft        PaymentOrderType = "neft"
 	PaymentOrderTypeNics        PaymentOrderType = "nics"
 	PaymentOrderTypeNzBecs      PaymentOrderType = "nz_becs"
+	PaymentOrderTypePlElixir    PaymentOrderType = "pl_elixir"
 	PaymentOrderTypeProvxchange PaymentOrderType = "provxchange"
 	PaymentOrderTypeRoSent      PaymentOrderType = "ro_sent"
 	PaymentOrderTypeRtp         PaymentOrderType = "rtp"
@@ -547,6 +549,7 @@ const (
 	PaymentOrderTypeSgGiro      PaymentOrderType = "sg_giro"
 	PaymentOrderTypeSic         PaymentOrderType = "sic"
 	PaymentOrderTypeSignet      PaymentOrderType = "signet"
+	PaymentOrderTypeSknbi       PaymentOrderType = "sknbi"
 	PaymentOrderTypeWire        PaymentOrderType = "wire"
 	PaymentOrderTypeZengin      PaymentOrderType = "zengin"
 )
@@ -954,6 +957,7 @@ type PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType string
 
 const (
 	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeIban          PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "iban"
+	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber      PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "hk_number"
 	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeClabe         PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "clabe"
 	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
 	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypePan           PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "pan"
@@ -1070,10 +1074,12 @@ const (
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode              PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
 )
@@ -1094,9 +1100,11 @@ const (
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs       PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "hu_ics"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeInterac     PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "interac"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeMasav       PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "masav"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "mx_ccen"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNeft        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "neft"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNics        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "nics"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "nz_becs"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypePlElixir    PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "pl_elixir"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeRoSent      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "ro_sent"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
@@ -1106,6 +1114,7 @@ const (
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSic         PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sic"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "signet"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSknbi       PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sknbi"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "wire"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
 )
@@ -1367,6 +1376,7 @@ type PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType str
 
 const (
 	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIban          PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "iban"
+	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber      PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "hk_number"
 	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeClabe         PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "clabe"
 	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
 	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypePan           PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "pan"
@@ -1483,10 +1493,12 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode              PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
 )
@@ -1507,9 +1519,11 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "hu_ics"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeInterac     PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "interac"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMasav       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "masav"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "mx_ccen"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNeft        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "neft"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNics        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "nics"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "nz_becs"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypePlElixir    PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "pl_elixir"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRoSent      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "ro_sent"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
@@ -1519,6 +1533,7 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSic         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sic"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "signet"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSknbi       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sknbi"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "wire"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
 )
@@ -1543,8 +1558,12 @@ const (
 )
 
 type PaymentOrderListParams struct {
-	AfterCursor    param.Field[string]                      `query:"after_cursor"`
-	CounterpartyID param.Field[string]                      `query:"counterparty_id"`
+	AfterCursor    param.Field[string] `query:"after_cursor"`
+	CounterpartyID param.Field[string] `query:"counterparty_id"`
+	// An inclusive upper bound for searching created_at
+	CreatedAtEnd param.Field[time.Time] `query:"created_at_end" format:"date"`
+	// An inclusive lower bound for searching created_at
+	CreatedAtStart param.Field[time.Time]                   `query:"created_at_start" format:"date"`
 	Direction      param.Field[shared.TransactionDirection] `query:"direction"`
 	// An inclusive upper bound for searching effective_date
 	EffectiveDateEnd param.Field[time.Time] `query:"effective_date_end" format:"date"`
@@ -1618,9 +1637,11 @@ const (
 	PaymentOrderListParamsTypeHuIcs       PaymentOrderListParamsType = "hu_ics"
 	PaymentOrderListParamsTypeInterac     PaymentOrderListParamsType = "interac"
 	PaymentOrderListParamsTypeMasav       PaymentOrderListParamsType = "masav"
+	PaymentOrderListParamsTypeMxCcen      PaymentOrderListParamsType = "mx_ccen"
 	PaymentOrderListParamsTypeNeft        PaymentOrderListParamsType = "neft"
 	PaymentOrderListParamsTypeNics        PaymentOrderListParamsType = "nics"
 	PaymentOrderListParamsTypeNzBecs      PaymentOrderListParamsType = "nz_becs"
+	PaymentOrderListParamsTypePlElixir    PaymentOrderListParamsType = "pl_elixir"
 	PaymentOrderListParamsTypeProvxchange PaymentOrderListParamsType = "provxchange"
 	PaymentOrderListParamsTypeRoSent      PaymentOrderListParamsType = "ro_sent"
 	PaymentOrderListParamsTypeRtp         PaymentOrderListParamsType = "rtp"
@@ -1630,6 +1651,7 @@ const (
 	PaymentOrderListParamsTypeSgGiro      PaymentOrderListParamsType = "sg_giro"
 	PaymentOrderListParamsTypeSic         PaymentOrderListParamsType = "sic"
 	PaymentOrderListParamsTypeSignet      PaymentOrderListParamsType = "signet"
+	PaymentOrderListParamsTypeSknbi       PaymentOrderListParamsType = "sknbi"
 	PaymentOrderListParamsTypeWire        PaymentOrderListParamsType = "wire"
 	PaymentOrderListParamsTypeZengin      PaymentOrderListParamsType = "zengin"
 )
@@ -1993,6 +2015,7 @@ type PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType s
 
 const (
 	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIban          PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "iban"
+	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber      PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "hk_number"
 	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeClabe         PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "clabe"
 	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
 	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypePan           PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "pan"
@@ -2109,10 +2132,12 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode              PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
 )
@@ -2133,9 +2158,11 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "hu_ics"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeInterac     PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "interac"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMasav       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "masav"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "mx_ccen"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNeft        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "neft"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNics        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "nics"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "nz_becs"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypePlElixir    PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "pl_elixir"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRoSent      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "ro_sent"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
@@ -2145,6 +2172,7 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSic         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sic"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "signet"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSknbi       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sknbi"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "wire"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
 )

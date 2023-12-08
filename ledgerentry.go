@@ -43,6 +43,14 @@ func (r *LedgerEntryService) Get(ctx context.Context, id string, query LedgerEnt
 	return
 }
 
+// Update the details of a ledger entry.
+func (r *LedgerEntryService) Update(ctx context.Context, id string, body LedgerEntryUpdateParams, opts ...option.RequestOption) (res *LedgerEntry, err error) {
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("api/ledger_entries/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+	return
+}
+
 // Get a list of all ledger entries.
 func (r *LedgerEntryService) List(ctx context.Context, query LedgerEntryListParams, opts ...option.RequestOption) (res *shared.Page[LedgerEntry], err error) {
 	var raw *http.Response
@@ -286,6 +294,16 @@ func (r LedgerEntryGetParams) URLQuery() (v url.Values) {
 	})
 }
 
+type LedgerEntryUpdateParams struct {
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+}
+
+func (r LedgerEntryUpdateParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type LedgerEntryListParams struct {
 	// If you have specific IDs to retrieve in bulk, you can pass them as query
 	// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
@@ -312,8 +330,9 @@ type LedgerEntryListParams struct {
 	// lock_version of a ledger account. For example, for all entries created at or
 	// before before lock_version 1000 of a ledger account, use
 	// `ledger_account_lock_version%5Blte%5D=1000`.
-	LedgerAccountLockVersion param.Field[map[string]int64] `query:"ledger_account_lock_version"`
-	LedgerAccountPayoutID    param.Field[string]           `query:"ledger_account_payout_id"`
+	LedgerAccountLockVersion  param.Field[map[string]int64] `query:"ledger_account_lock_version"`
+	LedgerAccountPayoutID     param.Field[string]           `query:"ledger_account_payout_id"`
+	LedgerAccountSettlementID param.Field[string]           `query:"ledger_account_settlement_id"`
 	// Get all ledger entries that are included in the ledger account statement.
 	LedgerAccountStatementID param.Field[string] `query:"ledger_account_statement_id"`
 	LedgerTransactionID      param.Field[string] `query:"ledger_transaction_id"`

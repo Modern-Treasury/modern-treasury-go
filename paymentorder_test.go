@@ -469,6 +469,8 @@ func TestPaymentOrderListWithOptionalParams(t *testing.T) {
 	_, err := client.PaymentOrders.List(context.TODO(), moderntreasury.PaymentOrderListParams{
 		AfterCursor:        moderntreasury.F("string"),
 		CounterpartyID:     moderntreasury.F("string"),
+		CreatedAtEnd:       moderntreasury.F(time.Now()),
+		CreatedAtStart:     moderntreasury.F(time.Now()),
 		Direction:          moderntreasury.F(shared.TransactionDirectionCredit),
 		EffectiveDateEnd:   moderntreasury.F(time.Now()),
 		EffectiveDateStart: moderntreasury.F(time.Now()),

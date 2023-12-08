@@ -127,6 +127,7 @@ type AccountDetailAccountNumberType string
 
 const (
 	AccountDetailAccountNumberTypeClabe         AccountDetailAccountNumberType = "clabe"
+	AccountDetailAccountNumberTypeHkNumber      AccountDetailAccountNumberType = "hk_number"
 	AccountDetailAccountNumberTypeIban          AccountDetailAccountNumberType = "iban"
 	AccountDetailAccountNumberTypeOther         AccountDetailAccountNumberType = "other"
 	AccountDetailAccountNumberTypePan           AccountDetailAccountNumberType = "pan"
@@ -157,6 +158,7 @@ type AccountDetailNewParamsAccountNumberType string
 
 const (
 	AccountDetailNewParamsAccountNumberTypeClabe         AccountDetailNewParamsAccountNumberType = "clabe"
+	AccountDetailNewParamsAccountNumberTypeHkNumber      AccountDetailNewParamsAccountNumberType = "hk_number"
 	AccountDetailNewParamsAccountNumberTypeIban          AccountDetailNewParamsAccountNumberType = "iban"
 	AccountDetailNewParamsAccountNumberTypeOther         AccountDetailNewParamsAccountNumberType = "other"
 	AccountDetailNewParamsAccountNumberTypePan           AccountDetailNewParamsAccountNumberType = "pan"
