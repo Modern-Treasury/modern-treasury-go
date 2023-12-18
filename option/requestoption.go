@@ -18,7 +18,7 @@ import (
 // which can be supplied to clients, services, and methods. You can read more about this functional
 // options pattern in our [README].
 //
-// [README]: https://pkg.go.dev/SDK_PackagePath#readme-requestoptions
+// [README]: https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#readme-requestoptions
 type RequestOption = func(*requestconfig.RequestConfig) error
 
 // WithBaseURL returns a RequestOption that sets the BaseURL for the client.
