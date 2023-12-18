@@ -161,8 +161,6 @@ const (
 	LedgerAccountSettlementStatusPending    LedgerAccountSettlementStatus = "pending"
 	LedgerAccountSettlementStatusPosted     LedgerAccountSettlementStatus = "posted"
 	LedgerAccountSettlementStatusProcessing LedgerAccountSettlementStatus = "processing"
-	LedgerAccountSettlementStatusReversed   LedgerAccountSettlementStatus = "reversed"
-	LedgerAccountSettlementStatusReversing  LedgerAccountSettlementStatus = "reversing"
 )
 
 type LedgerAccountSettlementNewParams struct {
