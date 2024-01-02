@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.5.0 (2024-01-02)
+
+Full Changelog: [v2.4.1...v2.5.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.4.1...v2.5.0)
+
+### Features
+
+* **api:** remove reversed and reversing ledger account status type ([#144](https://github.com/Modern-Treasury/modern-treasury-go/issues/144)) ([c199f39](https://github.com/Modern-Treasury/modern-treasury-go/commit/c199f39cc7d6008bffeb43a6d6797b0dfac6d21b))
+* **api:** updates ([#141](https://github.com/Modern-Treasury/modern-treasury-go/issues/141)) ([3de6b78](https://github.com/Modern-Treasury/modern-treasury-go/commit/3de6b787f8886c3e020328c9ee57bafb4aa38df9))
+* **internal:** fallback to json serialization if no serialization methods are defined ([#142](https://github.com/Modern-Treasury/modern-treasury-go/issues/142)) ([650bd85](https://github.com/Modern-Treasury/modern-treasury-go/commit/650bd854e309c487862a0c39e73389b53d6b7b4c))
+
+
+### Chores
+
+* **ci:** run release workflow once per day ([#143](https://github.com/Modern-Treasury/modern-treasury-go/issues/143)) ([3a93291](https://github.com/Modern-Treasury/modern-treasury-go/commit/3a93291b2a6f2704357cdfc6c0360f41da614444))
+* **internal:** bump license ([#146](https://github.com/Modern-Treasury/modern-treasury-go/issues/146)) ([9f0d312](https://github.com/Modern-Treasury/modern-treasury-go/commit/9f0d312dbe06baa875e6fede7cefd0cac89e5c47))
+
+
+### Documentation
+
+* **options:** fix link to readme ([#145](https://github.com/Modern-Treasury/modern-treasury-go/issues/145)) ([6bb5888](https://github.com/Modern-Treasury/modern-treasury-go/commit/6bb588809ce63e31d97374388acebd1a0cfbd27e))
+
 ## 2.4.1 (2023-12-04)
 
 Full Changelog: [v2.4.0...v2.4.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.4.0...v2.4.1)
