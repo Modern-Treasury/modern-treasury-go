@@ -47,7 +47,6 @@ func (r *WebhookService) GetSignature(payload []byte, key string) (res string, e
 
 	signature := hex.EncodeToString(h.Sum(nil))
 	return signature, nil
-
 }
 
 // Returns whether or not the webhook payload was sent by Modern Treasury.
@@ -63,7 +62,6 @@ func (r *WebhookService) ValidateSignature(payload []byte, key string, headers h
 	}
 
 	return signature == expectedSignature, nil
-
 }
 
 type WebhookGetSignatureParams struct {
