@@ -127,6 +127,8 @@ type LedgerTransaction struct {
 	// The time on which the ledger transaction posted. This is null if the ledger
 	// transaction is pending.
 	PostedAt time.Time `json:"posted_at,required,nullable" format:"date-time"`
+	// The ID of the ledger transaction that reversed this ledger transaction.
+	ReversedByLedgerTransactionID string `json:"reversed_by_ledger_transaction_id,required,nullable"`
 	// The ID of the original ledger transaction that this ledger transaction reverses.
 	ReversesLedgerTransactionID string `json:"reverses_ledger_transaction_id,required,nullable"`
 	// To post a ledger transaction at creation, use `posted`.
@@ -138,25 +140,26 @@ type LedgerTransaction struct {
 // ledgerTransactionJSON contains the JSON metadata for the struct
 // [LedgerTransaction]
 type ledgerTransactionJSON struct {
-	ID                          apijson.Field
-	CreatedAt                   apijson.Field
-	Description                 apijson.Field
-	EffectiveAt                 apijson.Field
-	EffectiveDate               apijson.Field
-	ExternalID                  apijson.Field
-	LedgerEntries               apijson.Field
-	LedgerID                    apijson.Field
-	LedgerableID                apijson.Field
-	LedgerableType              apijson.Field
-	LiveMode                    apijson.Field
-	Metadata                    apijson.Field
-	Object                      apijson.Field
-	PostedAt                    apijson.Field
-	ReversesLedgerTransactionID apijson.Field
-	Status                      apijson.Field
-	UpdatedAt                   apijson.Field
-	raw                         string
-	ExtraFields                 map[string]apijson.Field
+	ID                            apijson.Field
+	CreatedAt                     apijson.Field
+	Description                   apijson.Field
+	EffectiveAt                   apijson.Field
+	EffectiveDate                 apijson.Field
+	ExternalID                    apijson.Field
+	LedgerEntries                 apijson.Field
+	LedgerID                      apijson.Field
+	LedgerableID                  apijson.Field
+	LedgerableType                apijson.Field
+	LiveMode                      apijson.Field
+	Metadata                      apijson.Field
+	Object                        apijson.Field
+	PostedAt                      apijson.Field
+	ReversedByLedgerTransactionID apijson.Field
+	ReversesLedgerTransactionID   apijson.Field
+	Status                        apijson.Field
+	UpdatedAt                     apijson.Field
+	raw                           string
+	ExtraFields                   map[string]apijson.Field
 }
 
 func (r *LedgerTransaction) UnmarshalJSON(data []byte) (err error) {
