@@ -79,6 +79,7 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 		Currency:              moderntreasury.F(shared.CurrencyAed),
 		Description:           moderntreasury.F("string"),
 		FallbackPaymentMethod: moderntreasury.F("string"),
+		IngestLedgerEntries:   moderntreasury.F(true),
 		InvoicerAddress: moderntreasury.F(moderntreasury.InvoiceNewParamsInvoicerAddress{
 			Line1:      moderntreasury.F("string"),
 			Line2:      moderntreasury.F("string"),
@@ -87,6 +88,7 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 			PostalCode: moderntreasury.F("string"),
 			Country:    moderntreasury.F("string"),
 		}),
+		LedgerAccountSettlementID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		NotificationEmailAddresses: moderntreasury.F([]string{"string", "string", "string"}),
 		NotificationsEnabled:       moderntreasury.F(true),
 		PaymentEffectiveDate:       moderntreasury.F(time.Now()),
@@ -95,7 +97,7 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 		ReceivingAccountID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		RecipientEmail:             moderntreasury.F("string"),
 		RecipientName:              moderntreasury.F("string"),
-		VirtualAccountID:           moderntreasury.F("string"),
+		VirtualAccountID:           moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -195,6 +197,7 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 			Description:           moderntreasury.F("string"),
 			DueDate:               moderntreasury.F(time.Now()),
 			FallbackPaymentMethod: moderntreasury.F("string"),
+			IngestLedgerEntries:   moderntreasury.F(true),
 			InvoicerAddress: moderntreasury.F(moderntreasury.InvoiceUpdateParamsInvoicerAddress{
 				Line1:      moderntreasury.F("string"),
 				Line2:      moderntreasury.F("string"),
@@ -203,6 +206,7 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 				PostalCode: moderntreasury.F("string"),
 				Country:    moderntreasury.F("string"),
 			}),
+			LedgerAccountSettlementID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			NotificationEmailAddresses: moderntreasury.F([]string{"string", "string", "string"}),
 			NotificationsEnabled:       moderntreasury.F(true),
 			OriginatingAccountID:       moderntreasury.F("string"),
@@ -213,7 +217,7 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 			RecipientEmail:             moderntreasury.F("string"),
 			RecipientName:              moderntreasury.F("string"),
 			Status:                     moderntreasury.F("string"),
-			VirtualAccountID:           moderntreasury.F("string"),
+			VirtualAccountID:           moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		},
 	)
 	if err != nil {

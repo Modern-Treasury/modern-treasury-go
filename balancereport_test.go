@@ -14,6 +14,54 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
+func TestBalanceReportNew(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := moderntreasury.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+		option.WithOrganizationID("my-organization-ID"),
+	)
+	_, err := client.InternalAccounts.BalanceReports.New(
+		context.TODO(),
+		"string",
+		moderntreasury.BalanceReportNewParams{
+			Amount:            moderntreasury.F(int64(0)),
+			AsOfDate:          moderntreasury.F(time.Now()),
+			AsOfTime:          moderntreasury.F("string"),
+			BalanceReportType: moderntreasury.F(moderntreasury.BalanceReportNewParamsBalanceReportTypeIntraday),
+			Balances: moderntreasury.F([]moderntreasury.BalanceReportNewParamsBalance{{
+				Amount:         moderntreasury.F(int64(0)),
+				BalanceType:    moderntreasury.F(moderntreasury.BalanceReportNewParamsBalancesBalanceTypeClosingAvailable),
+				VendorCode:     moderntreasury.F("string"),
+				VendorCodeType: moderntreasury.F("string"),
+			}, {
+				Amount:         moderntreasury.F(int64(0)),
+				BalanceType:    moderntreasury.F(moderntreasury.BalanceReportNewParamsBalancesBalanceTypeClosingAvailable),
+				VendorCode:     moderntreasury.F("string"),
+				VendorCodeType: moderntreasury.F("string"),
+			}, {
+				Amount:         moderntreasury.F(int64(0)),
+				BalanceType:    moderntreasury.F(moderntreasury.BalanceReportNewParamsBalancesBalanceTypeClosingAvailable),
+				VendorCode:     moderntreasury.F("string"),
+				VendorCodeType: moderntreasury.F("string"),
+			}}),
+		},
+	)
+	if err != nil {
+		var apierr *moderntreasury.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
 func TestBalanceReportGet(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -63,6 +111,33 @@ func TestBalanceReportListWithOptionalParams(t *testing.T) {
 			BalanceReportType: moderntreasury.F(moderntreasury.BalanceReportListParamsBalanceReportTypeIntraday),
 			PerPage:           moderntreasury.F(int64(0)),
 		},
+	)
+	if err != nil {
+		var apierr *moderntreasury.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestBalanceReportDelete(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := moderntreasury.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+		option.WithOrganizationID("my-organization-ID"),
+	)
+	err := client.InternalAccounts.BalanceReports.Delete(
+		context.TODO(),
+		"string",
+		"string",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

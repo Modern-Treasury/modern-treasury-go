@@ -35,6 +35,14 @@ func NewInternalAccountBalanceReportService(opts ...option.RequestOption) (r *In
 	return
 }
 
+// create balance reports
+func (r *InternalAccountBalanceReportService) New(ctx context.Context, internalAccountID string, body BalanceReportNewParams, opts ...option.RequestOption) (res *BalanceReport, err error) {
+	opts = append(r.Options[:], opts...)
+	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports", internalAccountID)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Get a single balance report for a given internal account.
 func (r *InternalAccountBalanceReportService) Get(ctx context.Context, internalAccountID string, id string, opts ...option.RequestOption) (res *BalanceReport, err error) {
 	opts = append(r.Options[:], opts...)
@@ -64,6 +72,15 @@ func (r *InternalAccountBalanceReportService) List(ctx context.Context, internal
 // Get all balance reports for a given internal account.
 func (r *InternalAccountBalanceReportService) ListAutoPaging(ctx context.Context, internalAccountID string, query BalanceReportListParams, opts ...option.RequestOption) *shared.PageAutoPager[BalanceReport] {
 	return shared.NewPageAutoPager(r.List(ctx, internalAccountID, query, opts...))
+}
+
+// Deletes a given balance report.
+func (r *InternalAccountBalanceReportService) Delete(ctx context.Context, internalAccountID string, id string, opts ...option.RequestOption) (err error) {
+	opts = append(r.Options[:], opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports/%s", internalAccountID, id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
+	return
 }
 
 type BalanceReport struct {
@@ -138,9 +155,12 @@ type BalanceReportBalance struct {
 	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
 	// The code used by the bank when reporting this specific balance.
 	VendorCode string `json:"vendor_code,required"`
-	// The code used by the bank when reporting this specific balance.
-	VendorCodeType BalanceReportBalancesVendorCodeType `json:"vendor_code_type,required,nullable"`
-	JSON           balanceReportBalanceJSON            `json:"-"`
+	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
+	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
+	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
+	// `swift`, or `us_bank`.
+	VendorCodeType string                   `json:"vendor_code_type,required,nullable"`
+	JSON           balanceReportBalanceJSON `json:"-"`
 }
 
 // balanceReportBalanceJSON contains the JSON metadata for the struct
@@ -181,30 +201,72 @@ const (
 	BalanceReportBalancesBalanceTypeOther                           BalanceReportBalancesBalanceType = "other"
 )
 
-// The code used by the bank when reporting this specific balance.
-type BalanceReportBalancesVendorCodeType string
+type BalanceReportNewParams struct {
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000.
+	Amount param.Field[int64] `json:"amount,required"`
+	// The date of the balance report in local time.
+	AsOfDate param.Field[time.Time] `json:"as_of_date,required" format:"date"`
+	// The time (24-hour clock) of the balance report in local time.
+	AsOfTime param.Field[string] `json:"as_of_time,required"`
+	// The specific type of balance report. One of `intraday`, `previous_day`,
+	// `real_time`, or `other`.
+	BalanceReportType param.Field[BalanceReportNewParamsBalanceReportType] `json:"balance_report_type,required"`
+	// An array of `Balance` objects.
+	Balances param.Field[[]BalanceReportNewParamsBalance] `json:"balances,required"`
+}
+
+func (r BalanceReportNewParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The specific type of balance report. One of `intraday`, `previous_day`,
+// `real_time`, or `other`.
+type BalanceReportNewParamsBalanceReportType string
 
 const (
-	BalanceReportBalancesVendorCodeTypeBai2          BalanceReportBalancesVendorCodeType = "bai2"
-	BalanceReportBalancesVendorCodeTypeBankprov      BalanceReportBalancesVendorCodeType = "bankprov"
-	BalanceReportBalancesVendorCodeTypeBnkDev        BalanceReportBalancesVendorCodeType = "bnk_dev"
-	BalanceReportBalancesVendorCodeTypeCleartouch    BalanceReportBalancesVendorCodeType = "cleartouch"
-	BalanceReportBalancesVendorCodeTypeColumn        BalanceReportBalancesVendorCodeType = "column"
-	BalanceReportBalancesVendorCodeTypeCrossRiver    BalanceReportBalancesVendorCodeType = "cross_river"
-	BalanceReportBalancesVendorCodeTypeCurrencycloud BalanceReportBalancesVendorCodeType = "currencycloud"
-	BalanceReportBalancesVendorCodeTypeDcBank        BalanceReportBalancesVendorCodeType = "dc_bank"
-	BalanceReportBalancesVendorCodeTypeDwolla        BalanceReportBalancesVendorCodeType = "dwolla"
-	BalanceReportBalancesVendorCodeTypeEvolve        BalanceReportBalancesVendorCodeType = "evolve"
-	BalanceReportBalancesVendorCodeTypeGoldmanSachs  BalanceReportBalancesVendorCodeType = "goldman_sachs"
-	BalanceReportBalancesVendorCodeTypeIso20022      BalanceReportBalancesVendorCodeType = "iso20022"
-	BalanceReportBalancesVendorCodeTypeJpmc          BalanceReportBalancesVendorCodeType = "jpmc"
-	BalanceReportBalancesVendorCodeTypeMx            BalanceReportBalancesVendorCodeType = "mx"
-	BalanceReportBalancesVendorCodeTypePlaid         BalanceReportBalancesVendorCodeType = "plaid"
-	BalanceReportBalancesVendorCodeTypeRspecVendor   BalanceReportBalancesVendorCodeType = "rspec_vendor"
-	BalanceReportBalancesVendorCodeTypeSignet        BalanceReportBalancesVendorCodeType = "signet"
-	BalanceReportBalancesVendorCodeTypeSilvergate    BalanceReportBalancesVendorCodeType = "silvergate"
-	BalanceReportBalancesVendorCodeTypeSwift         BalanceReportBalancesVendorCodeType = "swift"
-	BalanceReportBalancesVendorCodeTypeUsBank        BalanceReportBalancesVendorCodeType = "us_bank"
+	BalanceReportNewParamsBalanceReportTypeIntraday    BalanceReportNewParamsBalanceReportType = "intraday"
+	BalanceReportNewParamsBalanceReportTypeOther       BalanceReportNewParamsBalanceReportType = "other"
+	BalanceReportNewParamsBalanceReportTypePreviousDay BalanceReportNewParamsBalanceReportType = "previous_day"
+	BalanceReportNewParamsBalanceReportTypeRealTime    BalanceReportNewParamsBalanceReportType = "real_time"
+)
+
+type BalanceReportNewParamsBalance struct {
+	// The balance amount.
+	Amount param.Field[int64] `json:"amount,required"`
+	// The specific type of balance reported. One of `opening_ledger`,
+	// `closing_ledger`, `current_ledger`, `opening_available`,
+	// `opening_available_next_business_day`, `closing_available`, `current_available`,
+	// or `other`.
+	BalanceType param.Field[BalanceReportNewParamsBalancesBalanceType] `json:"balance_type,required"`
+	// The code used by the bank when reporting this specific balance.
+	VendorCode param.Field[string] `json:"vendor_code,required"`
+	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
+	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
+	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
+	// `swift`, or `us_bank`.
+	VendorCodeType param.Field[string] `json:"vendor_code_type,required"`
+}
+
+func (r BalanceReportNewParamsBalance) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The specific type of balance reported. One of `opening_ledger`,
+// `closing_ledger`, `current_ledger`, `opening_available`,
+// `opening_available_next_business_day`, `closing_available`, `current_available`,
+// or `other`.
+type BalanceReportNewParamsBalancesBalanceType string
+
+const (
+	BalanceReportNewParamsBalancesBalanceTypeClosingAvailable                BalanceReportNewParamsBalancesBalanceType = "closing_available"
+	BalanceReportNewParamsBalancesBalanceTypeClosingLedger                   BalanceReportNewParamsBalancesBalanceType = "closing_ledger"
+	BalanceReportNewParamsBalancesBalanceTypeCurrentAvailable                BalanceReportNewParamsBalancesBalanceType = "current_available"
+	BalanceReportNewParamsBalancesBalanceTypeCurrentLedger                   BalanceReportNewParamsBalancesBalanceType = "current_ledger"
+	BalanceReportNewParamsBalancesBalanceTypeOpeningAvailable                BalanceReportNewParamsBalancesBalanceType = "opening_available"
+	BalanceReportNewParamsBalancesBalanceTypeOpeningAvailableNextBusinessDay BalanceReportNewParamsBalancesBalanceType = "opening_available_next_business_day"
+	BalanceReportNewParamsBalancesBalanceTypeOpeningLedger                   BalanceReportNewParamsBalancesBalanceType = "opening_ledger"
+	BalanceReportNewParamsBalancesBalanceTypeOther                           BalanceReportNewParamsBalancesBalanceType = "other"
 )
 
 type BalanceReportListParams struct {

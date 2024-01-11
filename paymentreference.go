@@ -178,6 +178,7 @@ const (
 	PaymentReferenceReferenceNumberTypeSvbTransactionHeldForSanctionsReview    PaymentReferenceReferenceNumberType = "svb_transaction_held_for_sanctions_review"
 	PaymentReferenceReferenceNumberTypeSwiftMir                                PaymentReferenceReferenceNumberType = "swift_mir"
 	PaymentReferenceReferenceNumberTypeSwiftUetr                               PaymentReferenceReferenceNumberType = "swift_uetr"
+	PaymentReferenceReferenceNumberTypeUmbProductPartnerAccountNumber          PaymentReferenceReferenceNumberType = "umb_product_partner_account_number"
 	PaymentReferenceReferenceNumberTypeUsbankPaymentID                         PaymentReferenceReferenceNumberType = "usbank_payment_id"
 	PaymentReferenceReferenceNumberTypeWellsFargoPaymentID                     PaymentReferenceReferenceNumberType = "wells_fargo_payment_id"
 	PaymentReferenceReferenceNumberTypeWellsFargoTraceNumber                   PaymentReferenceReferenceNumberType = "wells_fargo_trace_number"

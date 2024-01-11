@@ -303,6 +303,7 @@ const (
 	ReturnObjectReferenceNumbersReferenceNumberTypeSvbTransactionHeldForSanctionsReview    ReturnObjectReferenceNumbersReferenceNumberType = "svb_transaction_held_for_sanctions_review"
 	ReturnObjectReferenceNumbersReferenceNumberTypeSwiftMir                                ReturnObjectReferenceNumbersReferenceNumberType = "swift_mir"
 	ReturnObjectReferenceNumbersReferenceNumberTypeSwiftUetr                               ReturnObjectReferenceNumbersReferenceNumberType = "swift_uetr"
+	ReturnObjectReferenceNumbersReferenceNumberTypeUmbProductPartnerAccountNumber          ReturnObjectReferenceNumbersReferenceNumberType = "umb_product_partner_account_number"
 	ReturnObjectReferenceNumbersReferenceNumberTypeUsbankPaymentID                         ReturnObjectReferenceNumbersReferenceNumberType = "usbank_payment_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoPaymentID                     ReturnObjectReferenceNumbersReferenceNumberType = "wells_fargo_payment_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoTraceNumber                   ReturnObjectReferenceNumbersReferenceNumberType = "wells_fargo_trace_number"
