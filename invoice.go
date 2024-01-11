@@ -124,6 +124,8 @@ type Invoice struct {
 	HostedURL string `json:"hosted_url,required"`
 	// The invoice issuer's business address.
 	InvoicerAddress InvoiceInvoicerAddress `json:"invoicer_address,required,nullable"`
+	// The ledger account settlment object linked to the invoice.
+	LedgerAccountSettlementID string `json:"ledger_account_settlement_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode,required"`
@@ -173,7 +175,7 @@ type Invoice struct {
 	TransactionLineItemIDs []string  `json:"transaction_line_item_ids,required" format:"uuid"`
 	UpdatedAt              time.Time `json:"updated_at,required" format:"date-time"`
 	// The ID of the virtual account the invoice should be paid to.
-	VirtualAccountID string      `json:"virtual_account_id,required,nullable"`
+	VirtualAccountID string      `json:"virtual_account_id,required,nullable" format:"uuid"`
 	JSON             invoiceJSON `json:"-"`
 }
 
@@ -194,6 +196,7 @@ type invoiceJSON struct {
 	FallbackPaymentMethod       apijson.Field
 	HostedURL                   apijson.Field
 	InvoicerAddress             apijson.Field
+	LedgerAccountSettlementID   apijson.Field
 	LiveMode                    apijson.Field
 	Metadata                    apijson.Field
 	NotificationEmailAddresses  apijson.Field
@@ -409,8 +412,14 @@ type InvoiceNewParams struct {
 	// When payment_method is automatic, the fallback payment method to use when an
 	// automatic payment fails. One of `manual` or `ui`.
 	FallbackPaymentMethod param.Field[string] `json:"fallback_payment_method"`
+	// Whether to ingest the ledger_entries to populate the invoice line items. If this
+	// is false, then a line item must be provided. If this is true, line_items must be
+	// empty. Ignored if ledger_account_settlement_id is empty.
+	IngestLedgerEntries param.Field[bool] `json:"ingest_ledger_entries"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceNewParamsInvoicerAddress] `json:"invoicer_address"`
+	// The ID of the virtual account the invoice should be paid to.
+	LedgerAccountSettlementID param.Field[string] `json:"ledger_account_settlement_id" format:"uuid"`
 	// Emails in addition to the counterparty email to send invoice status
 	// notifications to. At least one email is required if notifications are enabled
 	// and the counterparty doesn't have an email.
@@ -442,7 +451,7 @@ type InvoiceNewParams struct {
 	// fallback to using the counterparty's name.
 	RecipientName param.Field[string] `json:"recipient_name"`
 	// The ID of the virtual account the invoice should be paid to.
-	VirtualAccountID param.Field[string] `json:"virtual_account_id"`
+	VirtualAccountID param.Field[string] `json:"virtual_account_id" format:"uuid"`
 }
 
 func (r InvoiceNewParams) MarshalJSON() (data []byte, err error) {
@@ -598,8 +607,14 @@ type InvoiceUpdateParams struct {
 	// When payment_method is automatic, the fallback payment method to use when an
 	// automatic payment fails. One of `manual` or `ui`.
 	FallbackPaymentMethod param.Field[string] `json:"fallback_payment_method"`
+	// Whether to ingest the ledger_entries to populate the invoice line items. If this
+	// is false, then a line item must be provided. If this is true, line_items must be
+	// empty. Ignored if ledger_account_settlement_id is empty.
+	IngestLedgerEntries param.Field[bool] `json:"ingest_ledger_entries"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceUpdateParamsInvoicerAddress] `json:"invoicer_address"`
+	// The ID of the virtual account the invoice should be paid to.
+	LedgerAccountSettlementID param.Field[string] `json:"ledger_account_settlement_id" format:"uuid"`
 	// Emails in addition to the counterparty email to send invoice status
 	// notifications to. At least one email is required if notifications are enabled
 	// and the counterparty doesn't have an email.
@@ -637,7 +652,7 @@ type InvoiceUpdateParams struct {
 	// `draft` or `unpaid` to `voided`, and `draft` or `unpaid` to `paid`.
 	Status param.Field[string] `json:"status"`
 	// The ID of the virtual account the invoice should be paid to.
-	VirtualAccountID param.Field[string] `json:"virtual_account_id"`
+	VirtualAccountID param.Field[string] `json:"virtual_account_id" format:"uuid"`
 }
 
 func (r InvoiceUpdateParams) MarshalJSON() (data []byte, err error) {
