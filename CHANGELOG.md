@@ -1,5 +1,29 @@
 # Changelog
 
+## 2.6.0 (2024-01-16)
+
+Full Changelog: [v2.5.0...v2.6.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.5.0...v2.6.0)
+
+### Features
+
+* **api:** add `ledger_transactions` to expected payment request ([#149](https://github.com/Modern-Treasury/modern-treasury-go/issues/149)) ([cab1d97](https://github.com/Modern-Treasury/modern-treasury-go/commit/cab1d97ab70209985001a3d64719e7799e2ac150))
+* **api:** add create and delete operations for internal accounts balance reports ([#151](https://github.com/Modern-Treasury/modern-treasury-go/issues/151)) ([6e54baf](https://github.com/Modern-Treasury/modern-treasury-go/commit/6e54baf76970a577ec5be9fd999067260af80150))
+
+
+### Chores
+
+* add .keep files for examples and custom code directories ([#150](https://github.com/Modern-Treasury/modern-treasury-go/issues/150)) ([8a18c2c](https://github.com/Modern-Treasury/modern-treasury-go/commit/8a18c2cb197edc914c3f4441bbc9e691b14a1b21))
+
+
+### Documentation
+
+* **readme:** improve api reference ([#152](https://github.com/Modern-Treasury/modern-treasury-go/issues/152)) ([6bdb2b8](https://github.com/Modern-Treasury/modern-treasury-go/commit/6bdb2b82efd7b97e5e1782ec31ec2c28da7f60f2))
+
+
+### Refactors
+
+* remove excess whitespace ([#147](https://github.com/Modern-Treasury/modern-treasury-go/issues/147)) ([8f49166](https://github.com/Modern-Treasury/modern-treasury-go/commit/8f491663b473304bf57b85f0fbaa7bb2153ba7e6))
+
 ## 2.5.0 (2024-01-02)
 
 Full Changelog: [v2.4.1...v2.5.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.4.1...v2.5.0)
