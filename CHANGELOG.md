@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.6.1 (2024-01-30)
+
+Full Changelog: [v2.6.0...v2.6.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.6.0...v2.6.1)
+
+### Bug Fixes
+
+* **ci:** ignore stainless-app edits to release PR title ([#156](https://github.com/Modern-Treasury/modern-treasury-go/issues/156)) ([4415794](https://github.com/Modern-Treasury/modern-treasury-go/commit/44157943346e3a7f1ed02ad90c0bdb4352bbeebc))
+* **test:** avoid test failures when SKIP_MOCK_TESTS is not set ([#155](https://github.com/Modern-Treasury/modern-treasury-go/issues/155)) ([10c1db0](https://github.com/Modern-Treasury/modern-treasury-go/commit/10c1db047adc3919d4e85bedef65ae32ea06b9c7))
+
+
+### Chores
+
+* **internal:** parse date-time strings more leniently ([#157](https://github.com/Modern-Treasury/modern-treasury-go/issues/157)) ([39a761b](https://github.com/Modern-Treasury/modern-treasury-go/commit/39a761b427b9795890a56902e49feda631104140))
+* **internal:** speculative retry-after-ms support ([#153](https://github.com/Modern-Treasury/modern-treasury-go/issues/153)) ([324e894](https://github.com/Modern-Treasury/modern-treasury-go/commit/324e8949183ac91987e3249d9044257f56299514))
+
 ## 2.6.0 (2024-01-16)
 
 Full Changelog: [v2.5.0...v2.6.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.5.0...v2.6.0)
