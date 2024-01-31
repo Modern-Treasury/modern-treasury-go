@@ -482,6 +482,9 @@ type CounterpartyNewParamsAccountsLedgerAccount struct {
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account.
 	Description param.Field[string] `json:"description"`
+	// The array of ledger account category ids that this ledger account should be a
+	// child of.
+	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
 	// populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
@@ -561,6 +564,7 @@ const (
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeInIfsc                  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "in_ifsc"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeJpZenginCode            CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeMyBranchCode            CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "my_branch_code"
+	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeMxBankIdentifier        CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "mx_bank_identifier"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeNzNationalClearingCode  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypePlNationalClearingCode  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"

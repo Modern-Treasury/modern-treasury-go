@@ -231,8 +231,9 @@ const (
 type LedgerAccountSettlementListParams struct {
 	// If you have specific IDs to retrieve in bulk, you can pass them as query
 	// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
-	ID          param.Field[[]string] `query:"id"`
-	AfterCursor param.Field[string]   `query:"after_cursor"`
+	ID                  param.Field[[]string] `query:"id"`
+	AfterCursor         param.Field[string]   `query:"after_cursor"`
+	LedgerTransactionID param.Field[string]   `query:"ledger_transaction_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.

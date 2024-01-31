@@ -124,7 +124,7 @@ type Invoice struct {
 	HostedURL string `json:"hosted_url,required"`
 	// The invoice issuer's business address.
 	InvoicerAddress InvoiceInvoicerAddress `json:"invoicer_address,required,nullable"`
-	// The ledger account settlment object linked to the invoice.
+	// The ledger account settlement object linked to the invoice.
 	LedgerAccountSettlementID string `json:"ledger_account_settlement_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
