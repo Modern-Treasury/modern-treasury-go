@@ -171,6 +171,9 @@ type PaymentOrder struct {
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
 	Priority PaymentOrderPriority `json:"priority,required"`
+	// If present, the time until which the payment may not be processed. Format is
+	// ISO8601 timestamp.
+	ProcessAfter time.Time `json:"process_after,required,nullable" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
 	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
 	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
@@ -261,6 +264,7 @@ type paymentOrderJSON struct {
 	OriginatingAccountID               apijson.Field
 	OriginatingPartyName               apijson.Field
 	Priority                           apijson.Field
+	ProcessAfter                       apijson.Field
 	Purpose                            apijson.Field
 	ReceivingAccountID                 apijson.Field
 	ReceivingAccountType               apijson.Field
@@ -635,6 +639,9 @@ type PaymentOrderNewParams struct {
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
 	Priority param.Field[PaymentOrderNewParamsPriority] `json:"priority"`
+	// If present, the time until which the payment may not be processed. Format is
+	// ISO8601 timestamp.
+	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
 	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
 	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
@@ -1003,6 +1010,9 @@ type PaymentOrderNewParamsReceivingAccountLedgerAccount struct {
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account.
 	Description param.Field[string] `json:"description"`
+	// The array of ledger account category ids that this ledger account should be a
+	// child of.
+	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
 	// populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
@@ -1082,6 +1092,7 @@ const (
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier        PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "mx_bank_identifier"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
@@ -1185,6 +1196,9 @@ type PaymentOrderUpdateParams struct {
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
 	Priority param.Field[PaymentOrderUpdateParamsPriority] `json:"priority"`
+	// If present, the time until which the payment may not be processed. Format is
+	// ISO8601 timestamp.
+	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
 	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
 	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
@@ -1422,6 +1436,9 @@ type PaymentOrderUpdateParamsReceivingAccountLedgerAccount struct {
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account.
 	Description param.Field[string] `json:"description"`
+	// The array of ledger account category ids that this ledger account should be a
+	// child of.
+	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
 	// populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
@@ -1501,6 +1518,7 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "mx_bank_identifier"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
@@ -1583,6 +1601,10 @@ type PaymentOrderListParams struct {
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
 	Priority param.Field[PaymentOrderListParamsPriority] `query:"priority"`
+	// An inclusive upper bound for searching process_after
+	ProcessAfterEnd param.Field[time.Time] `query:"process_after_end" format:"date-time"`
+	// An inclusive lower bound for searching process_after
+	ProcessAfterStart param.Field[time.Time] `query:"process_after_start" format:"date-time"`
 	// Query for records with the provided reference number
 	ReferenceNumber param.Field[string]                       `query:"reference_number"`
 	Status          param.Field[PaymentOrderListParamsStatus] `query:"status"`
@@ -1734,6 +1756,9 @@ type PaymentOrderNewAsyncParams struct {
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
 	Priority param.Field[PaymentOrderNewAsyncParamsPriority] `json:"priority"`
+	// If present, the time until which the payment may not be processed. Format is
+	// ISO8601 timestamp.
+	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
 	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
 	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
@@ -2061,6 +2086,9 @@ type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount struct {
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account.
 	Description param.Field[string] `json:"description"`
+	// The array of ledger account category ids that this ledger account should be a
+	// child of.
+	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
 	// populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
@@ -2140,6 +2168,7 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "mx_bank_identifier"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"

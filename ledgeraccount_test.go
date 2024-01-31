@@ -29,14 +29,15 @@ func TestLedgerAccountNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccounts.New(context.TODO(), moderntreasury.LedgerAccountNewParams{
-		Currency:         moderntreasury.F("string"),
-		LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		Name:             moderntreasury.F("string"),
-		NormalBalance:    moderntreasury.F(shared.TransactionDirectionCredit),
-		CurrencyExponent: moderntreasury.F(int64(0)),
-		Description:      moderntreasury.F("string"),
-		LedgerableID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		LedgerableType:   moderntreasury.F(moderntreasury.LedgerAccountNewParamsLedgerableTypeExternalAccount),
+		Currency:                 moderntreasury.F("string"),
+		LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		Name:                     moderntreasury.F("string"),
+		NormalBalance:            moderntreasury.F(shared.TransactionDirectionCredit),
+		CurrencyExponent:         moderntreasury.F(int64(0)),
+		Description:              moderntreasury.F("string"),
+		LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
+		LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		LedgerableType:           moderntreasury.F(moderntreasury.LedgerAccountNewParamsLedgerableTypeExternalAccount),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",

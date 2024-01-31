@@ -207,6 +207,7 @@ const (
 	IncomingPaymentDetailOriginatingRoutingNumberTypeIDSknbiCode             IncomingPaymentDetailOriginatingRoutingNumberType = "id_sknbi_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeInIfsc                  IncomingPaymentDetailOriginatingRoutingNumberType = "in_ifsc"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeJpZenginCode            IncomingPaymentDetailOriginatingRoutingNumberType = "jp_zengin_code"
+	IncomingPaymentDetailOriginatingRoutingNumberTypeMxBankIdentifier        IncomingPaymentDetailOriginatingRoutingNumberType = "mx_bank_identifier"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeMyBranchCode            IncomingPaymentDetailOriginatingRoutingNumberType = "my_branch_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypeNzNationalClearingCode  IncomingPaymentDetailOriginatingRoutingNumberType = "nz_national_clearing_code"
 	IncomingPaymentDetailOriginatingRoutingNumberTypePlNationalClearingCode  IncomingPaymentDetailOriginatingRoutingNumberType = "pl_national_clearing_code"

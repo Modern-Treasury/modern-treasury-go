@@ -268,6 +268,9 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
 	Priority param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriority] `json:"priority"`
+	// If present, the time until which the payment may not be processed. Format is
+	// ISO8601 timestamp.
+	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
 	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
 	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
@@ -598,6 +601,9 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccount
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account.
 	Description param.Field[string] `json:"description"`
+	// The array of ledger account category ids that this ledger account should be a
+	// child of.
+	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
 	// populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
@@ -677,6 +683,7 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
+	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier        BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberType = "mx_bank_identifier"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
@@ -1067,6 +1074,9 @@ type BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID struct {
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
 	Priority param.Field[BulkRequestNewParamsResourcesObjectPriority] `json:"priority"`
+	// If present, the time until which the payment may not be processed. Format is
+	// ISO8601 timestamp.
+	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
 	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
 	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
@@ -1307,6 +1317,9 @@ type BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccount struct {
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account.
 	Description param.Field[string] `json:"description"`
+	// The array of ledger account category ids that this ledger account should be a
+	// child of.
+	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
 	// populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
@@ -1386,6 +1399,7 @@ const (
 	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
+	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier        BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "mx_bank_identifier"
 	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
 	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
 	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"

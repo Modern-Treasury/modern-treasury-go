@@ -243,6 +243,7 @@ const (
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeIDSknbiCode             VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "id_sknbi_code"
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeInIfsc                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "in_ifsc"
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeJpZenginCode            VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "jp_zengin_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeMxBankIdentifier        VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "mx_bank_identifier"
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeMyBranchCode            VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "my_branch_code"
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeNzNationalClearingCode  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
 	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypePlNationalClearingCode  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
