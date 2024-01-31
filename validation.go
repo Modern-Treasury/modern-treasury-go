@@ -202,6 +202,7 @@ const (
 	ValidationValidateRoutingNumberParamsRoutingNumberTypeIDSknbiCode             ValidationValidateRoutingNumberParamsRoutingNumberType = "id_sknbi_code"
 	ValidationValidateRoutingNumberParamsRoutingNumberTypeInIfsc                  ValidationValidateRoutingNumberParamsRoutingNumberType = "in_ifsc"
 	ValidationValidateRoutingNumberParamsRoutingNumberTypeJpZenginCode            ValidationValidateRoutingNumberParamsRoutingNumberType = "jp_zengin_code"
+	ValidationValidateRoutingNumberParamsRoutingNumberTypeMxBankIdentifier        ValidationValidateRoutingNumberParamsRoutingNumberType = "mx_bank_identifier"
 	ValidationValidateRoutingNumberParamsRoutingNumberTypeMyBranchCode            ValidationValidateRoutingNumberParamsRoutingNumberType = "my_branch_code"
 	ValidationValidateRoutingNumberParamsRoutingNumberTypeNzNationalClearingCode  ValidationValidateRoutingNumberParamsRoutingNumberType = "nz_national_clearing_code"
 	ValidationValidateRoutingNumberParamsRoutingNumberTypePlNationalClearingCode  ValidationValidateRoutingNumberParamsRoutingNumberType = "pl_national_clearing_code"
