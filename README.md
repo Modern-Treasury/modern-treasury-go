@@ -3,7 +3,7 @@
 <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2"><img src="https://pkg.go.dev/badge/github.com/Modern-Treasury/modern-treasury-go/v2.svg" alt="Go Reference"></a>
 
 The Modern Treasury Go library provides convenient access to [the Modern Treasury REST
-API](https://docs.moderntreasury.com) from applications written in Go. The full API of this library can be found in [api.md](https://www.github.com/Modern-Treasury/modern-treasury-go/blob/main/api.md).
+API](https://docs.moderntreasury.com) from applications written in Go. The full API of this library can be found in [api.md](api.md).
 
 ## Installation
 
@@ -33,7 +33,7 @@ This library requires Go 1.18+.
 
 ## Usage
 
-The full API of this library can be found in [api.md](https://www.github.com/Modern-Treasury/modern-treasury-go/blob/main/api.md).
+The full API of this library can be found in [api.md](api.md).
 
 ```go
 package main
