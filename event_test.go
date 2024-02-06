@@ -9,7 +9,7 @@ import (
 	"testing"
 	"time"
 
-	moderntreasury "github.com/Modern-Treasury/modern-treasury-go/v2"
+	"github.com/Modern-Treasury/modern-treasury-go/v2"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
