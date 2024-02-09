@@ -288,6 +288,7 @@ type LedgerAccountLedgerableType string
 const (
 	LedgerAccountLedgerableTypeExternalAccount LedgerAccountLedgerableType = "external_account"
 	LedgerAccountLedgerableTypeInternalAccount LedgerAccountLedgerableType = "internal_account"
+	LedgerAccountLedgerableTypeVirtualAccount  LedgerAccountLedgerableType = "virtual_account"
 )
 
 type LedgerAccountNewParams struct {
@@ -330,6 +331,7 @@ type LedgerAccountNewParamsLedgerableType string
 const (
 	LedgerAccountNewParamsLedgerableTypeExternalAccount LedgerAccountNewParamsLedgerableType = "external_account"
 	LedgerAccountNewParamsLedgerableTypeInternalAccount LedgerAccountNewParamsLedgerableType = "internal_account"
+	LedgerAccountNewParamsLedgerableTypeVirtualAccount  LedgerAccountNewParamsLedgerableType = "virtual_account"
 )
 
 type LedgerAccountGetParams struct {

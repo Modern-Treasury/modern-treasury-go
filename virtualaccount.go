@@ -110,6 +110,9 @@ type VirtualAccount struct {
 	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
 	// The ID of the internal account that the virtual account is in.
 	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	// If the virtual account links to a ledger account in Modern Treasury, the id of
+	// the ledger account will be populated here.
+	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode,required"`
@@ -137,6 +140,7 @@ type virtualAccountJSON struct {
 	Description           apijson.Field
 	DiscardedAt           apijson.Field
 	InternalAccountID     apijson.Field
+	LedgerAccountID       apijson.Field
 	LiveMode              apijson.Field
 	Metadata              apijson.Field
 	Name                  apijson.Field
@@ -172,6 +176,10 @@ type VirtualAccountNewParams struct {
 	DebitLedgerAccountID param.Field[string] `json:"debit_ledger_account_id" format:"uuid"`
 	// An optional description for internal use.
 	Description param.Field[string] `json:"description"`
+	// Specifies a ledger account object that will be created with the virtual account.
+	// The resulting ledger account is linked to the virtual account for auto-ledgering
+	// IPDs.
+	LedgerAccount param.Field[VirtualAccountNewParamsLedgerAccount] `json:"ledger_account"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -206,6 +214,52 @@ const (
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypeOther         VirtualAccountNewParamsAccountDetailsAccountNumberType = "other"
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypePan           VirtualAccountNewParamsAccountDetailsAccountNumberType = "pan"
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress VirtualAccountNewParamsAccountDetailsAccountNumberType = "wallet_address"
+)
+
+// Specifies a ledger account object that will be created with the virtual account.
+// The resulting ledger account is linked to the virtual account for auto-ledgering
+// IPDs.
+type VirtualAccountNewParamsLedgerAccount struct {
+	// The currency of the ledger account.
+	Currency param.Field[string] `json:"currency,required"`
+	// The id of the ledger that this account belongs to.
+	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
+	// The name of the ledger account.
+	Name param.Field[string] `json:"name,required"`
+	// The normal balance of the ledger account.
+	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
+	// The currency exponent of the ledger account.
+	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
+	// The description of the ledger account.
+	Description param.Field[string] `json:"description"`
+	// The array of ledger account category ids that this ledger account should be a
+	// child of.
+	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
+	// If the ledger account links to another object in Modern Treasury, the id will be
+	// populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// If the ledger account links to another object in Modern Treasury, the type will
+	// be populated here, otherwise null. The value is one of internal_account or
+	// external_account.
+	LedgerableType param.Field[VirtualAccountNewParamsLedgerAccountLedgerableType] `json:"ledgerable_type"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+}
+
+func (r VirtualAccountNewParamsLedgerAccount) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// If the ledger account links to another object in Modern Treasury, the type will
+// be populated here, otherwise null. The value is one of internal_account or
+// external_account.
+type VirtualAccountNewParamsLedgerAccountLedgerableType string
+
+const (
+	VirtualAccountNewParamsLedgerAccountLedgerableTypeExternalAccount VirtualAccountNewParamsLedgerAccountLedgerableType = "external_account"
+	VirtualAccountNewParamsLedgerAccountLedgerableTypeInternalAccount VirtualAccountNewParamsLedgerAccountLedgerableType = "internal_account"
+	VirtualAccountNewParamsLedgerAccountLedgerableTypeVirtualAccount  VirtualAccountNewParamsLedgerAccountLedgerableType = "virtual_account"
 )
 
 type VirtualAccountNewParamsRoutingDetail struct {
@@ -289,9 +343,11 @@ const (
 )
 
 type VirtualAccountUpdateParams struct {
-	CounterpartyID param.Field[string]            `json:"counterparty_id" format:"uuid"`
-	Metadata       param.Field[map[string]string] `json:"metadata"`
-	Name           param.Field[string]            `json:"name"`
+	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
+	// The ledger account that you'd like to link to the virtual account.
+	LedgerAccountID param.Field[string]            `json:"ledger_account_id" format:"uuid"`
+	Metadata        param.Field[map[string]string] `json:"metadata"`
+	Name            param.Field[string]            `json:"name"`
 }
 
 func (r VirtualAccountUpdateParams) MarshalJSON() (data []byte, err error) {

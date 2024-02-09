@@ -274,13 +274,14 @@ const (
 type ExternalAccountType string
 
 const (
-	ExternalAccountTypeCash        ExternalAccountType = "cash"
-	ExternalAccountTypeChecking    ExternalAccountType = "checking"
-	ExternalAccountTypeLoan        ExternalAccountType = "loan"
-	ExternalAccountTypeNonResident ExternalAccountType = "non_resident"
-	ExternalAccountTypeOther       ExternalAccountType = "other"
-	ExternalAccountTypeOverdraft   ExternalAccountType = "overdraft"
-	ExternalAccountTypeSavings     ExternalAccountType = "savings"
+	ExternalAccountTypeCash          ExternalAccountType = "cash"
+	ExternalAccountTypeChecking      ExternalAccountType = "checking"
+	ExternalAccountTypeGeneralLedger ExternalAccountType = "general_ledger"
+	ExternalAccountTypeLoan          ExternalAccountType = "loan"
+	ExternalAccountTypeNonResident   ExternalAccountType = "non_resident"
+	ExternalAccountTypeOther         ExternalAccountType = "other"
+	ExternalAccountTypeOverdraft     ExternalAccountType = "overdraft"
+	ExternalAccountTypeSavings       ExternalAccountType = "savings"
 )
 
 type ExternalAccountNewParams struct {
@@ -400,6 +401,7 @@ type ExternalAccountNewParamsLedgerAccountLedgerableType string
 const (
 	ExternalAccountNewParamsLedgerAccountLedgerableTypeExternalAccount ExternalAccountNewParamsLedgerAccountLedgerableType = "external_account"
 	ExternalAccountNewParamsLedgerAccountLedgerableTypeInternalAccount ExternalAccountNewParamsLedgerAccountLedgerableType = "internal_account"
+	ExternalAccountNewParamsLedgerAccountLedgerableTypeVirtualAccount  ExternalAccountNewParamsLedgerAccountLedgerableType = "virtual_account"
 )
 
 // Required if receiving wire payments.
