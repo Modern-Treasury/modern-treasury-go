@@ -51,6 +51,7 @@ type Client struct {
 	BulkRequests                 *BulkRequestService
 	BulkResults                  *BulkResultService
 	LedgerAccountSettlements     *LedgerAccountSettlementService
+	ForeignExchangeQuotes        *ForeignExchangeQuoteService
 }
 
 // NewClient generates a new client with the default option read from the
@@ -108,6 +109,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.BulkRequests = NewBulkRequestService(opts...)
 	r.BulkResults = NewBulkResultService(opts...)
 	r.LedgerAccountSettlements = NewLedgerAccountSettlementService(opts...)
+	r.ForeignExchangeQuotes = NewForeignExchangeQuoteService(opts...)
 
 	return
 }

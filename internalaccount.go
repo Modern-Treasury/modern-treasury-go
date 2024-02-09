@@ -157,13 +157,14 @@ func (r InternalAccount) implementsPaymentOrderUltimateOriginatingAccount() {}
 type InternalAccountAccountType string
 
 const (
-	InternalAccountAccountTypeCash        InternalAccountAccountType = "cash"
-	InternalAccountAccountTypeChecking    InternalAccountAccountType = "checking"
-	InternalAccountAccountTypeLoan        InternalAccountAccountType = "loan"
-	InternalAccountAccountTypeNonResident InternalAccountAccountType = "non_resident"
-	InternalAccountAccountTypeOther       InternalAccountAccountType = "other"
-	InternalAccountAccountTypeOverdraft   InternalAccountAccountType = "overdraft"
-	InternalAccountAccountTypeSavings     InternalAccountAccountType = "savings"
+	InternalAccountAccountTypeCash          InternalAccountAccountType = "cash"
+	InternalAccountAccountTypeChecking      InternalAccountAccountType = "checking"
+	InternalAccountAccountTypeGeneralLedger InternalAccountAccountType = "general_ledger"
+	InternalAccountAccountTypeLoan          InternalAccountAccountType = "loan"
+	InternalAccountAccountTypeNonResident   InternalAccountAccountType = "non_resident"
+	InternalAccountAccountTypeOther         InternalAccountAccountType = "other"
+	InternalAccountAccountTypeOverdraft     InternalAccountAccountType = "overdraft"
+	InternalAccountAccountTypeSavings       InternalAccountAccountType = "savings"
 )
 
 // The address associated with the owner or null.
