@@ -509,6 +509,7 @@ type CounterpartyNewParamsAccountsLedgerAccountLedgerableType string
 const (
 	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "external_account"
 	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeInternalAccount CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "internal_account"
+	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeVirtualAccount  CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "virtual_account"
 )
 
 // Required if receiving wire payments.

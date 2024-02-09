@@ -171,8 +171,11 @@ type PaymentOrder struct {
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
 	Priority PaymentOrderPriority `json:"priority,required"`
-	// If present, the time until which the payment may not be processed. Format is
-	// ISO8601 timestamp.
+	// If present, Modern Treasury will not process the payment until after this time.
+	// If `process_after` is past the cutoff for `effective_date`, `process_after` will
+	// take precedence and `effective_date` will automatically update to reflect the
+	// earliest possible sending date after `process_after`. Format is ISO8601
+	// timestamp.
 	ProcessAfter time.Time `json:"process_after,required,nullable" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
 	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
@@ -639,8 +642,11 @@ type PaymentOrderNewParams struct {
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
 	Priority param.Field[PaymentOrderNewParamsPriority] `json:"priority"`
-	// If present, the time until which the payment may not be processed. Format is
-	// ISO8601 timestamp.
+	// If present, Modern Treasury will not process the payment until after this time.
+	// If `process_after` is past the cutoff for `effective_date`, `process_after` will
+	// take precedence and `effective_date` will automatically update to reflect the
+	// earliest possible sending date after `process_after`. Format is ISO8601
+	// timestamp.
 	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
 	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
@@ -1037,6 +1043,7 @@ type PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType string
 const (
 	PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType = "external_account"
 	PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType = "internal_account"
+	PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType = "virtual_account"
 )
 
 // Required if receiving wire payments.
@@ -1196,8 +1203,11 @@ type PaymentOrderUpdateParams struct {
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
 	Priority param.Field[PaymentOrderUpdateParamsPriority] `json:"priority"`
-	// If present, the time until which the payment may not be processed. Format is
-	// ISO8601 timestamp.
+	// If present, Modern Treasury will not process the payment until after this time.
+	// If `process_after` is past the cutoff for `effective_date`, `process_after` will
+	// take precedence and `effective_date` will automatically update to reflect the
+	// earliest possible sending date after `process_after`. Format is ISO8601
+	// timestamp.
 	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
 	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
@@ -1463,6 +1473,7 @@ type PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType string
 const (
 	PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType = "external_account"
 	PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType = "internal_account"
+	PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType = "virtual_account"
 )
 
 // Required if receiving wire payments.
@@ -1756,8 +1767,11 @@ type PaymentOrderNewAsyncParams struct {
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
 	Priority param.Field[PaymentOrderNewAsyncParamsPriority] `json:"priority"`
-	// If present, the time until which the payment may not be processed. Format is
-	// ISO8601 timestamp.
+	// If present, Modern Treasury will not process the payment until after this time.
+	// If `process_after` is past the cutoff for `effective_date`, `process_after` will
+	// take precedence and `effective_date` will automatically update to reflect the
+	// earliest possible sending date after `process_after`. Format is ISO8601
+	// timestamp.
 	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
 	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
@@ -2113,6 +2127,7 @@ type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType strin
 const (
 	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType = "external_account"
 	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType = "internal_account"
+	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType = "virtual_account"
 )
 
 // Required if receiving wire payments.

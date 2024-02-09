@@ -221,6 +221,7 @@ const (
 	TransactionTypeSknbi       TransactionType = "sknbi"
 	TransactionTypeWire        TransactionType = "wire"
 	TransactionTypeZengin      TransactionType = "zengin"
+	TransactionTypeOther       TransactionType = "other"
 )
 
 // The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
