@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.7.0 (2024-02-13)
+
+Full Changelog: [v2.6.1...v2.7.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.6.1...v2.7.0)
+
+### Features
+
+* **api:** updates ([#164](https://github.com/Modern-Treasury/modern-treasury-go/issues/164)) ([4e1de14](https://github.com/Modern-Treasury/modern-treasury-go/commit/4e1de1471f22a08682aa2920fca6a39038372d56))
+* **api:** updates parameters, error codes ([#160](https://github.com/Modern-Treasury/modern-treasury-go/issues/160)) ([bc91638](https://github.com/Modern-Treasury/modern-treasury-go/commit/bc9163872ad62ed94d16f78dc8eef64c9369a2ae))
+
+
+### Chores
+
+* **interal:** make link to api.md relative ([#161](https://github.com/Modern-Treasury/modern-treasury-go/issues/161)) ([7777eeb](https://github.com/Modern-Treasury/modern-treasury-go/commit/7777eeb96bcc36d9ed7f0ed12a9b6dd5348fc391))
+* **internal:** adjust formatting ([#162](https://github.com/Modern-Treasury/modern-treasury-go/issues/162)) ([4162967](https://github.com/Modern-Treasury/modern-treasury-go/commit/4162967fd03ebaa3f88483516ac4af3a76acec49))
+* **internal:** bump timeout threshold in tests ([#163](https://github.com/Modern-Treasury/modern-treasury-go/issues/163)) ([a78a751](https://github.com/Modern-Treasury/modern-treasury-go/commit/a78a751469ef3200c20f0f9088b26b6f43e6c189))
+* **internal:** support pre-release versioning ([#158](https://github.com/Modern-Treasury/modern-treasury-go/issues/158)) ([89392d2](https://github.com/Modern-Treasury/modern-treasury-go/commit/89392d2a515a8b5060c1358603da76f0288971f9))
+
 ## 2.6.1 (2024-01-30)
 
 Full Changelog: [v2.6.0...v2.6.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.6.0...v2.6.1)
