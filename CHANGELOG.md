@@ -1,5 +1,69 @@
 # Changelog
 
+## 0.0.1 (2024-02-15)
+
+Full Changelog: [...abc-v0.0.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/...abc-v0.0.1)
+
+### ⚠ BREAKING CHANGES
+
+* **types:** consolidate direction enums into a shared TransactionDirection type ([#107](https://github.com/Modern-Treasury/modern-treasury-go/issues/107))
+* **types:** rename account connection flow to account collection flow ([#49](https://github.com/Modern-Treasury/modern-treasury-go/issues/49))
+* **api:** update parameters for virtual account create request ([#48](https://github.com/Modern-Treasury/modern-treasury-go/issues/48))
+
+### Features
+
+* add `Bool` param field helper ([#51](https://github.com/Modern-Treasury/modern-treasury-go/issues/51)) ([a8d7b8f](https://github.com/Modern-Treasury/modern-treasury-go/commit/a8d7b8fbe64ea66a430d01b8a7ece472a35b3c5e))
+* **api:** add `ledger_transactions` to expected payment request ([#149](https://github.com/Modern-Treasury/modern-treasury-go/issues/149)) ([6759e76](https://github.com/Modern-Treasury/modern-treasury-go/commit/6759e76014b1dfc4b5461a4594aef58c82fa94e3))
+* **api:** add `metadata` in several places it was missing; add `description` ([#56](https://github.com/Modern-Treasury/modern-treasury-go/issues/56)) ([316baf5](https://github.com/Modern-Treasury/modern-treasury-go/commit/316baf52321911f81dfeb6cc73371818304f5ea7))
+* **api:** add create and delete operations for internal accounts balance reports ([#151](https://github.com/Modern-Treasury/modern-treasury-go/issues/151)) ([f249cfb](https://github.com/Modern-Treasury/modern-treasury-go/commit/f249cfbc5db755ccb29592b43036bdf252d45c52))
+* **api:** add dk_interbank_clearing_code and dk_nets enum members ([#131](https://github.com/Modern-Treasury/modern-treasury-go/issues/131)) ([2826c3f](https://github.com/Modern-Treasury/modern-treasury-go/commit/2826c3f818c3b2bc71f78cdcfe2f28c74cde75f7))
+* **api:** remove reversed and reversing ledger account status type ([#144](https://github.com/Modern-Treasury/modern-treasury-go/issues/144)) ([0dbe55e](https://github.com/Modern-Treasury/modern-treasury-go/commit/0dbe55e22e8ed6c494d1297cd517e0ecb36813c6))
+* **api:** support multiple `id`s in `ledger` `retrieve`/`list` endpoints ([#62](https://github.com/Modern-Treasury/modern-treasury-go/issues/62)) ([cb0455a](https://github.com/Modern-Treasury/modern-treasury-go/commit/cb0455a42195704d03c5df658171582688ca8664))
+* **api:** update parameters for virtual account create request ([#48](https://github.com/Modern-Treasury/modern-treasury-go/issues/48)) ([17ff81b](https://github.com/Modern-Treasury/modern-treasury-go/commit/17ff81b903acef27a9a08ee6d81f89a3d91df2ef))
+* **api:** updates ([#116](https://github.com/Modern-Treasury/modern-treasury-go/issues/116)) ([a426f0a](https://github.com/Modern-Treasury/modern-treasury-go/commit/a426f0a497057b7a87027b2c7a33f2459d71eee2))
+* **api:** updates ([#121](https://github.com/Modern-Treasury/modern-treasury-go/issues/121)) ([99bdce9](https://github.com/Modern-Treasury/modern-treasury-go/commit/99bdce90cba085f9bd21330c03b6d2e386abdcd2))
+* **api:** updates ([#128](https://github.com/Modern-Treasury/modern-treasury-go/issues/128)) ([e0da301](https://github.com/Modern-Treasury/modern-treasury-go/commit/e0da30166e1ae07312a907f79201317a90c27fec))
+* **api:** updates ([#136](https://github.com/Modern-Treasury/modern-treasury-go/issues/136)) ([eec4960](https://github.com/Modern-Treasury/modern-treasury-go/commit/eec496040f18d7f53a2fa50481553f7b0309d0c7))
+* **api:** updates ([#141](https://github.com/Modern-Treasury/modern-treasury-go/issues/141)) ([88174fc](https://github.com/Modern-Treasury/modern-treasury-go/commit/88174fc8d9790262953644422979d6b9e7bc6c11))
+* **api:** updates ([#164](https://github.com/Modern-Treasury/modern-treasury-go/issues/164)) ([3be2fe8](https://github.com/Modern-Treasury/modern-treasury-go/commit/3be2fe817b6cd3c55e6bfdebf0ebcfece16c1759))
+* **api:** updates ([#53](https://github.com/Modern-Treasury/modern-treasury-go/issues/53)) ([a97abe0](https://github.com/Modern-Treasury/modern-treasury-go/commit/a97abe09b8157dcc2da60a8a31caa07d1b95fcf2))
+* **api:** updates ([#54](https://github.com/Modern-Treasury/modern-treasury-go/issues/54)) ([9a45f0d](https://github.com/Modern-Treasury/modern-treasury-go/commit/9a45f0d502b798451fb544359a0c8ef8f086fde1))
+* **api:** updates ([#58](https://github.com/Modern-Treasury/modern-treasury-go/issues/58)) ([dc58726](https://github.com/Modern-Treasury/modern-treasury-go/commit/dc587260961a2641f8214699b54d1fa96fa3c568))
+* **api:** updates ([#89](https://github.com/Modern-Treasury/modern-treasury-go/issues/89)) ([7346717](https://github.com/Modern-Treasury/modern-treasury-go/commit/73467174ecfdba4c1d4f7f27be2d6e654078cf14))
+* **api:** updates parameters, error codes ([#160](https://github.com/Modern-Treasury/modern-treasury-go/issues/160)) ([57dbdd6](https://github.com/Modern-Treasury/modern-treasury-go/commit/57dbdd6ca20ec048622a864dffa5205114bc0db5))
+* **client:** adjust retry behavior ([#118](https://github.com/Modern-Treasury/modern-treasury-go/issues/118)) ([cc2c127](https://github.com/Modern-Treasury/modern-treasury-go/commit/cc2c127cd970543c4cedb9dcb237af438292ed46))
+* **client:** allow binary returns ([#125](https://github.com/Modern-Treasury/modern-treasury-go/issues/125)) ([bfd54d2](https://github.com/Modern-Treasury/modern-treasury-go/commit/bfd54d2997e3f0372b88b62792fa1e759b95817f))
+* fixes tests where an array has to have unique enum values ([#74](https://github.com/Modern-Treasury/modern-treasury-go/issues/74)) ([0e2c2ee](https://github.com/Modern-Treasury/modern-treasury-go/commit/0e2c2ee71d790145e34eee8cc4e8af6787989414))
+* **github:** include a devcontainer setup ([#124](https://github.com/Modern-Treasury/modern-treasury-go/issues/124)) ([e4f4a3e](https://github.com/Modern-Treasury/modern-treasury-go/commit/e4f4a3eae0455c2c183dbfa31c048ed2331cd0c1))
+* improve retry behavior on context deadline ([#92](https://github.com/Modern-Treasury/modern-treasury-go/issues/92)) ([c9b7234](https://github.com/Modern-Treasury/modern-treasury-go/commit/c9b72343cb144243fb63356f6f28e29cdc6c0454))
+* **internal:** fallback to json serialization if no serialization methods are defined ([#142](https://github.com/Modern-Treasury/modern-treasury-go/issues/142)) ([1d01ace](https://github.com/Modern-Treasury/modern-treasury-go/commit/1d01ace98272036a3cbd95690de0834af5069732))
+* make webhook headers case insensitive ([#106](https://github.com/Modern-Treasury/modern-treasury-go/issues/106)) ([ec250c9](https://github.com/Modern-Treasury/modern-treasury-go/commit/ec250c902bb5c85b93241ed06b878efb654f7e3e))
+* retry on 408 Request Timeout ([#85](https://github.com/Modern-Treasury/modern-treasury-go/issues/85)) ([1ac1b33](https://github.com/Modern-Treasury/modern-treasury-go/commit/1ac1b33b48f68222dcc2e6a029ba092187ab5b77))
+* type alias enum values from shared in package root ([#123](https://github.com/Modern-Treasury/modern-treasury-go/issues/123)) ([bc2f829](https://github.com/Modern-Treasury/modern-treasury-go/commit/bc2f8298b93a5b5495861b2d098e2394447f9058))
+* **types:** consolidate direction enums into a shared TransactionDirection type ([#107](https://github.com/Modern-Treasury/modern-treasury-go/issues/107)) ([b6eec25](https://github.com/Modern-Treasury/modern-treasury-go/commit/b6eec250c434cbc2b9f493f021e00f56f627d100))
+* **types:** remove incorrectly included Idempotency-Key param ([#72](https://github.com/Modern-Treasury/modern-treasury-go/issues/72)) ([8d68d20](https://github.com/Modern-Treasury/modern-treasury-go/commit/8d68d20230f3af10216900b5a3ef8483070828c4))
+
+
+### Bug Fixes
+
+* **api:** use date-time for effective_at ([#111](https://github.com/Modern-Treasury/modern-treasury-go/issues/111)) ([471d1bf](https://github.com/Modern-Treasury/modern-treasury-go/commit/471d1bf891016fa617b49f8a4dae6e18f7826722))
+* **ci:** ignore stainless-app edits to release PR title ([#156](https://github.com/Modern-Treasury/modern-treasury-go/issues/156)) ([e88d513](https://github.com/Modern-Treasury/modern-treasury-go/commit/e88d513dd6c225fe0af61e2ce7749c96dbe05467))
+* **client:** correctly set multipart form data boundary ([#60](https://github.com/Modern-Treasury/modern-treasury-go/issues/60)) ([871be0a](https://github.com/Modern-Treasury/modern-treasury-go/commit/871be0ac5216ea7fd1051736a8be4d06727429b9))
+* **client:** fix alias comment ([#90](https://github.com/Modern-Treasury/modern-treasury-go/issues/90)) ([dedd00d](https://github.com/Modern-Treasury/modern-treasury-go/commit/dedd00d5ced087e66ddaef2d6717a2ae846b04cd))
+* **core:** add null check to prevent segfault when canceling context ([#78](https://github.com/Modern-Treasury/modern-treasury-go/issues/78)) ([e120adf](https://github.com/Modern-Treasury/modern-treasury-go/commit/e120adf531e47e991cc6f51acd939eb89e4a2dc1))
+* **core:** improve retry behavior and related docs ([#86](https://github.com/Modern-Treasury/modern-treasury-go/issues/86)) ([79be321](https://github.com/Modern-Treasury/modern-treasury-go/commit/79be32122e142eb9f5d3c06e816676ebe68ac186))
+* make options.WithHeader utils case-insensitive ([#130](https://github.com/Modern-Treasury/modern-treasury-go/issues/130)) ([7b7aeee](https://github.com/Modern-Treasury/modern-treasury-go/commit/7b7aeeebda43e90c2c3b489e2951a6489e50f617))
+* make paginated requests deserialize properly ([#70](https://github.com/Modern-Treasury/modern-treasury-go/issues/70)) ([2490f88](https://github.com/Modern-Treasury/modern-treasury-go/commit/2490f88a4ff26daea4ccdfd23797cfa81fe2f831))
+* prevent index out of range bug during auto-pagination ([#98](https://github.com/Modern-Treasury/modern-treasury-go/issues/98)) ([cda66b5](https://github.com/Modern-Treasury/modern-treasury-go/commit/cda66b54b1ebe6595b910d000182a3e929304f1b))
+* stop sending default idempotency headers with GET requests ([#134](https://github.com/Modern-Treasury/modern-treasury-go/issues/134)) ([2868369](https://github.com/Modern-Treasury/modern-treasury-go/commit/286836932f664bbef6c3d71c47db5ca8149e3904))
+* **test:** avoid test failures when SKIP_MOCK_TESTS is not set ([#155](https://github.com/Modern-Treasury/modern-treasury-go/issues/155)) ([8788be8](https://github.com/Modern-Treasury/modern-treasury-go/commit/8788be8bdc2c96fa7575e6b241550bae95e9a1c1))
+* use /v2 in all package imports ([#114](https://github.com/Modern-Treasury/modern-treasury-go/issues/114)) ([72e789f](https://github.com/Modern-Treasury/modern-treasury-go/commit/72e789fb772cda1794035fe9a2e53bd27a721895))
+
+
+### Code Refactoring
+
+* **types:** rename account connection flow to account collection flow ([#49](https://github.com/Modern-Treasury/modern-treasury-go/issues/49)) ([ca8dac5](https://github.com/Modern-Treasury/modern-treasury-go/commit/ca8dac5137e961d3e5a13e09712c9f82668e3fe8))
+
 ## 2.7.0 (2024-02-13)
 
 Full Changelog: [v2.6.1...v2.7.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.6.1...v2.7.0)
