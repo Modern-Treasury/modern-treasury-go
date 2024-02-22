@@ -148,6 +148,8 @@ type PaymentOrder struct {
 	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
 	// currency matches the originating account currency.
 	ForeignExchangeIndicator PaymentOrderForeignExchangeIndicator `json:"foreign_exchange_indicator,required,nullable"`
+	// Associated serialized foreign exchange rate information.
+	ForeignExchangeRate PaymentOrderForeignExchangeRate `json:"foreign_exchange_rate,required,nullable"`
 	// The ID of the ledger transaction linked to the payment order.
 	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
@@ -259,6 +261,7 @@ type paymentOrderJSON struct {
 	ExpiresAt                          apijson.Field
 	ForeignExchangeContract            apijson.Field
 	ForeignExchangeIndicator           apijson.Field
+	ForeignExchangeRate                apijson.Field
 	LedgerTransactionID                apijson.Field
 	LiveMode                           apijson.Field
 	Metadata                           apijson.Field
@@ -354,6 +357,47 @@ const (
 	PaymentOrderForeignExchangeIndicatorFixedToVariable PaymentOrderForeignExchangeIndicator = "fixed_to_variable"
 	PaymentOrderForeignExchangeIndicatorVariableToFixed PaymentOrderForeignExchangeIndicator = "variable_to_fixed"
 )
+
+// Associated serialized foreign exchange rate information.
+type PaymentOrderForeignExchangeRate struct {
+	// Amount in the lowest denomination of the `base_currency` to convert, often
+	// called the "sell" amount.
+	BaseAmount int64 `json:"base_amount,required"`
+	// Currency to convert, often called the "sell" currency.
+	BaseCurrency shared.Currency `json:"base_currency,required,nullable"`
+	// The exponent component of the rate. The decimal is calculated as `value` / (10 ^
+	// `exponent`).
+	Exponent int64 `json:"exponent,required"`
+	// A string representation of the rate.
+	RateString string `json:"rate_string,required"`
+	// Amount in the lowest denomination of the `target_currency`, often called the
+	// "buy" amount.
+	TargetAmount int64 `json:"target_amount,required"`
+	// Currency to convert the `base_currency` to, often called the "buy" currency.
+	TargetCurrency shared.Currency `json:"target_currency,required,nullable"`
+	// The whole number component of the rate. The decimal is calculated as `value` /
+	// (10 ^ `exponent`).
+	Value int64                               `json:"value,required"`
+	JSON  paymentOrderForeignExchangeRateJSON `json:"-"`
+}
+
+// paymentOrderForeignExchangeRateJSON contains the JSON metadata for the struct
+// [PaymentOrderForeignExchangeRate]
+type paymentOrderForeignExchangeRateJSON struct {
+	BaseAmount     apijson.Field
+	BaseCurrency   apijson.Field
+	Exponent       apijson.Field
+	RateString     apijson.Field
+	TargetAmount   apijson.Field
+	TargetCurrency apijson.Field
+	Value          apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *PaymentOrderForeignExchangeRate) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
 
 // Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 // same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
