@@ -100,6 +100,8 @@ type InternalAccount struct {
 	// If the internal account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
 	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
+	// The Legal Entity associated to this account
+	LegalEntityID string `json:"legal_entity_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode,required"`
@@ -133,6 +135,7 @@ type internalAccountJSON struct {
 	CreatedAt       apijson.Field
 	Currency        apijson.Field
 	LedgerAccountID apijson.Field
+	LegalEntityID   apijson.Field
 	LiveMode        apijson.Field
 	Metadata        apijson.Field
 	Name            apijson.Field
@@ -231,6 +234,8 @@ type InternalAccountNewParams struct {
 	PartyName param.Field[string] `json:"party_name,required"`
 	// The Counterparty associated to this account.
 	CounterpartyID param.Field[string] `json:"counterparty_id"`
+	// The LegalEntity associated to this account.
+	LegalEntityID param.Field[string] `json:"legal_entity_id"`
 	// The parent internal account of this new account.
 	ParentAccountID param.Field[string] `json:"parent_account_id"`
 	// The address associated with the owner or null.
@@ -291,17 +296,19 @@ func (r InternalAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 
 type InternalAccountListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
-	// The counterparty associated with the internal account.
+	// Only return internal accounts associated with this counterparty.
 	CounterpartyID param.Field[string] `query:"counterparty_id"`
-	// The currency associated with the internal account.
+	// Only return internal accounts with this currency.
 	Currency param.Field[shared.Currency] `query:"currency"`
+	// Only return internal accounts associated with this legal entity.
+	LegalEntityID param.Field[string] `query:"legal_entity_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
 	Metadata param.Field[map[string]string] `query:"metadata"`
-	// The direction of payments that can be made by internal account.
+	// Only return internal accounts that can originate payments with this direction.
 	PaymentDirection param.Field[shared.TransactionDirection] `query:"payment_direction"`
-	// The type of payment that can be made by the internal account.
+	// Only return internal accounts that can make this type of payment.
 	PaymentType param.Field[InternalAccountListParamsPaymentType] `query:"payment_type"`
 	PerPage     param.Field[int64]                                `query:"per_page"`
 }
@@ -315,7 +322,7 @@ func (r InternalAccountListParams) URLQuery() (v url.Values) {
 	})
 }
 
-// The type of payment that can be made by the internal account.
+// Only return internal accounts that can make this type of payment.
 type InternalAccountListParamsPaymentType string
 
 const (

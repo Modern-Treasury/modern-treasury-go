@@ -31,7 +31,6 @@ func TestBalanceReportNew(t *testing.T) {
 		context.TODO(),
 		"string",
 		moderntreasury.BalanceReportNewParams{
-			Amount:            moderntreasury.F(int64(0)),
 			AsOfDate:          moderntreasury.F(time.Now()),
 			AsOfTime:          moderntreasury.F("string"),
 			BalanceReportType: moderntreasury.F(moderntreasury.BalanceReportNewParamsBalanceReportTypeIntraday),

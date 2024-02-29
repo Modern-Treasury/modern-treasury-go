@@ -107,6 +107,8 @@ type Counterparty struct {
 	DiscardedAt time.Time             `json:"discarded_at,required,nullable" format:"date-time"`
 	// The counterparty's email.
 	Email string `json:"email,required,nullable" format:"email"`
+	// The id of the legal entity.
+	LegalEntityID string `json:"legal_entity_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode,required"`
@@ -132,6 +134,7 @@ type counterpartyJSON struct {
 	CreatedAt            apijson.Field
 	DiscardedAt          apijson.Field
 	Email                apijson.Field
+	LegalEntityID        apijson.Field
 	LiveMode             apijson.Field
 	Metadata             apijson.Field
 	Name                 apijson.Field
@@ -357,7 +360,10 @@ type CounterpartyNewParams struct {
 	Email param.Field[string] `json:"email" format:"email"`
 	// An optional type to auto-sync the counterparty to your ledger. Either `customer`
 	// or `vendor`.
-	LedgerType param.Field[CounterpartyNewParamsLedgerType] `json:"ledger_type"`
+	LedgerType  param.Field[CounterpartyNewParamsLedgerType]  `json:"ledger_type"`
+	LegalEntity param.Field[CounterpartyNewParamsLegalEntity] `json:"legal_entity"`
+	// The id of the legal entity.
+	LegalEntityID param.Field[string] `json:"legal_entity_id" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -616,6 +622,105 @@ const (
 	CounterpartyNewParamsLedgerTypeVendor   CounterpartyNewParamsLedgerType = "vendor"
 )
 
+type CounterpartyNewParamsLegalEntity struct {
+	// The type of legal entity.
+	LegalEntityType param.Field[CounterpartyNewParamsLegalEntityLegalEntityType] `json:"legal_entity_type,required"`
+	// A list of addresses for the entity.
+	Addresses param.Field[[]CounterpartyNewParamsLegalEntityAddress] `json:"addresses"`
+	// The business's legal business name.
+	BusinessName param.Field[string] `json:"business_name"`
+	// An individual's data of birth (YYYY-MM-DD).
+	DateOfBirth          param.Field[time.Time] `json:"date_of_birth" format:"date"`
+	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
+	// The entity's primary email.
+	Email param.Field[string] `json:"email"`
+	// An individual's first name.
+	FirstName param.Field[string] `json:"first_name"`
+	// A list of identifications for the legal entity.
+	Identifications param.Field[[]CounterpartyNewParamsLegalEntityIdentification] `json:"identifications"`
+	// An individual's last name.
+	LastName param.Field[string] `json:"last_name"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata     param.Field[map[string]string]                             `json:"metadata"`
+	PhoneNumbers param.Field[[]CounterpartyNewParamsLegalEntityPhoneNumber] `json:"phone_numbers"`
+	// The entity's primary website URL.
+	Website param.Field[string] `json:"website"`
+}
+
+func (r CounterpartyNewParamsLegalEntity) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The type of legal entity.
+type CounterpartyNewParamsLegalEntityLegalEntityType string
+
+const (
+	CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness   CounterpartyNewParamsLegalEntityLegalEntityType = "business"
+	CounterpartyNewParamsLegalEntityLegalEntityTypeIndividual CounterpartyNewParamsLegalEntityLegalEntityType = "individual"
+)
+
+type CounterpartyNewParamsLegalEntityAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country param.Field[string] `json:"country,required"`
+	Line1   param.Field[string] `json:"line1,required"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality,required"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code,required"`
+	// Region or State.
+	Region param.Field[string] `json:"region,required"`
+	// The types of this address.
+	AddressTypes param.Field[[]string] `json:"address_types"`
+	Line2        param.Field[string]   `json:"line2"`
+}
+
+func (r CounterpartyNewParamsLegalEntityAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type CounterpartyNewParamsLegalEntityIdentification struct {
+	// The ID number of identification document.
+	IDNumber param.Field[string] `json:"id_number,required"`
+	// The type of ID number.
+	IDType param.Field[CounterpartyNewParamsLegalEntityIdentificationsIDType] `json:"id_type,required"`
+	// The ISO 3166-1 alpha-2 country code of the country that issued the
+	// identification
+	IssuingCountry param.Field[string] `json:"issuing_country"`
+}
+
+func (r CounterpartyNewParamsLegalEntityIdentification) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The type of ID number.
+type CounterpartyNewParamsLegalEntityIdentificationsIDType string
+
+const (
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuil    CounterpartyNewParamsLegalEntityIdentificationsIDType = "ar_cuil"
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuit    CounterpartyNewParamsLegalEntityIdentificationsIDType = "ar_cuit"
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCnpj    CounterpartyNewParamsLegalEntityIdentificationsIDType = "br_cnpj"
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCpf     CounterpartyNewParamsLegalEntityIdentificationsIDType = "br_cpf"
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypeClNut     CounterpartyNewParamsLegalEntityIdentificationsIDType = "cl_nut"
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoCedulas CounterpartyNewParamsLegalEntityIdentificationsIDType = "co_cedulas"
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoNit     CounterpartyNewParamsLegalEntityIdentificationsIDType = "co_nit"
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypeHnID      CounterpartyNewParamsLegalEntityIdentificationsIDType = "hn_id"
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypeHnRtn     CounterpartyNewParamsLegalEntityIdentificationsIDType = "hn_rtn"
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypePassport  CounterpartyNewParamsLegalEntityIdentificationsIDType = "passport"
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsEin     CounterpartyNewParamsLegalEntityIdentificationsIDType = "us_ein"
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsItin    CounterpartyNewParamsLegalEntityIdentificationsIDType = "us_itin"
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsSsn     CounterpartyNewParamsLegalEntityIdentificationsIDType = "us_ssn"
+)
+
+// A list of phone numbers in E.164 format.
+type CounterpartyNewParamsLegalEntityPhoneNumber struct {
+	PhoneNumber param.Field[string] `json:"phone_number"`
+}
+
+func (r CounterpartyNewParamsLegalEntityPhoneNumber) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 // The verification status of the counterparty.
 type CounterpartyNewParamsVerificationStatus string
 
@@ -629,6 +734,8 @@ const (
 type CounterpartyUpdateParams struct {
 	// A new email for the counterparty.
 	Email param.Field[string] `json:"email" format:"email"`
+	// The id of the legal entity.
+	LegalEntityID param.Field[string] `json:"legal_entity_id" format:"uuid"`
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
 	// an empty string or `null` as the value.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -654,6 +761,8 @@ type CounterpartyListParams struct {
 	// Performs a partial string match of the email field. This is also case
 	// insensitive.
 	Email param.Field[string] `query:"email" format:"email"`
+	// Filters for counterparties with the given legal entity ID.
+	LegalEntityID param.Field[string] `query:"legal_entity_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
