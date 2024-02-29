@@ -243,6 +243,67 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 		}}),
 		Email:      moderntreasury.F("dev@stainlessapi.com"),
 		LedgerType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
+		LegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntity{
+			LegalEntityType:      moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness),
+			FirstName:            moderntreasury.F("string"),
+			LastName:             moderntreasury.F("string"),
+			DateOfBirth:          moderntreasury.F(time.Now()),
+			BusinessName:         moderntreasury.F("string"),
+			DoingBusinessAsNames: moderntreasury.F([]string{"string", "string", "string"}),
+			PhoneNumbers: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityPhoneNumber{{
+				PhoneNumber: moderntreasury.F("string"),
+			}, {
+				PhoneNumber: moderntreasury.F("string"),
+			}, {
+				PhoneNumber: moderntreasury.F("string"),
+			}}),
+			Email:   moderntreasury.F("string"),
+			Website: moderntreasury.F("string"),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
+			Addresses: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityAddress{{
+				AddressTypes: moderntreasury.F([]string{"string", "string", "string"}),
+				Line1:        moderntreasury.F("string"),
+				Line2:        moderntreasury.F("string"),
+				Locality:     moderntreasury.F("string"),
+				Region:       moderntreasury.F("string"),
+				PostalCode:   moderntreasury.F("string"),
+				Country:      moderntreasury.F("string"),
+			}, {
+				AddressTypes: moderntreasury.F([]string{"string", "string", "string"}),
+				Line1:        moderntreasury.F("string"),
+				Line2:        moderntreasury.F("string"),
+				Locality:     moderntreasury.F("string"),
+				Region:       moderntreasury.F("string"),
+				PostalCode:   moderntreasury.F("string"),
+				Country:      moderntreasury.F("string"),
+			}, {
+				AddressTypes: moderntreasury.F([]string{"string", "string", "string"}),
+				Line1:        moderntreasury.F("string"),
+				Line2:        moderntreasury.F("string"),
+				Locality:     moderntreasury.F("string"),
+				Region:       moderntreasury.F("string"),
+				PostalCode:   moderntreasury.F("string"),
+				Country:      moderntreasury.F("string"),
+			}}),
+			Identifications: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityIdentification{{
+				IDNumber:       moderntreasury.F("string"),
+				IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuil),
+				IssuingCountry: moderntreasury.F("string"),
+			}, {
+				IDNumber:       moderntreasury.F("string"),
+				IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuil),
+				IssuingCountry: moderntreasury.F("string"),
+			}, {
+				IDNumber:       moderntreasury.F("string"),
+				IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuil),
+				IssuingCountry: moderntreasury.F("string"),
+			}}),
+		}),
+		LegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
@@ -301,7 +362,8 @@ func TestCounterpartyUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"string",
 		moderntreasury.CounterpartyUpdateParams{
-			Email: moderntreasury.F("dev@stainlessapi.com"),
+			Email:         moderntreasury.F("dev@stainlessapi.com"),
+			LegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Metadata: moderntreasury.F(map[string]string{
 				"foo": "string",
 			}),
@@ -337,6 +399,7 @@ func TestCounterpartyListWithOptionalParams(t *testing.T) {
 		CreatedAtLowerBound: moderntreasury.F(time.Now()),
 		CreatedAtUpperBound: moderntreasury.F(time.Now()),
 		Email:               moderntreasury.F("dev@stainlessapi.com"),
+		LegalEntityID:       moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),

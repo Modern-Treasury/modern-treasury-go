@@ -84,7 +84,8 @@ func TestForeignExchangeQuoteListWithOptionalParams(t *testing.T) {
 	_, err := client.ForeignExchangeQuotes.List(context.TODO(), moderntreasury.ForeignExchangeQuoteListParams{
 		AfterCursor:       moderntreasury.F("string"),
 		BaseCurrency:      moderntreasury.F("string"),
-		EffectiveAt:       moderntreasury.F(time.Now()),
+		EffectiveAtEnd:    moderntreasury.F(time.Now()),
+		EffectiveAtStart:  moderntreasury.F(time.Now()),
 		ExpiresAt:         moderntreasury.F(time.Now()),
 		InternalAccountID: moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{

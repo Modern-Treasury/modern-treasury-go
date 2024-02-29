@@ -191,8 +191,10 @@ type ForeignExchangeQuoteListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
 	// Currency to convert, often called the "sell" currency.
 	BaseCurrency param.Field[string] `query:"base_currency"`
-	// The timestamp until when the quoted rate is valid.
-	EffectiveAt param.Field[time.Time] `query:"effective_at" format:"date-time"`
+	// An inclusive upper bound for searching effective_at
+	EffectiveAtEnd param.Field[time.Time] `query:"effective_at_end" format:"date"`
+	// An inclusive lower bound for searching effective_at
+	EffectiveAtStart param.Field[time.Time] `query:"effective_at_start" format:"date"`
 	// The timestamp until which the quote must be booked by.
 	ExpiresAt param.Field[time.Time] `query:"expires_at" format:"date-time"`
 	// The ID for the `InternalAccount` this quote is associated with.
