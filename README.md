@@ -155,7 +155,7 @@ client.ExternalAccounts.New(context.TODO(), ...,
 )
 ```
 
-The full list of request options is [here](https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/option).
+See the [full list of request options](https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/option).
 
 ### Pagination
 
