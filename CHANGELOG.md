@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.8.0 (2024-02-29)
+
+Full Changelog: [v2.7.0...v2.8.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.7.0...v2.8.0)
+
+### Features
+
+* **api:** add legal_entities resource ([#172](https://github.com/Modern-Treasury/modern-treasury-go/issues/172)) ([8fa4207](https://github.com/Modern-Treasury/modern-treasury-go/commit/8fa42079c41b2367d67018b00449ba5429151af2))
+* **api:** added foreign exchange rate information ([#169](https://github.com/Modern-Treasury/modern-treasury-go/issues/169)) ([3d10c72](https://github.com/Modern-Treasury/modern-treasury-go/commit/3d10c72fdd0f3f6e053bdac97ba46eb95acced00))
+
+
+### Chores
+
+* **ci:** uses Stainless GitHub App for releases ([#165](https://github.com/Modern-Treasury/modern-treasury-go/issues/165)) ([56829ab](https://github.com/Modern-Treasury/modern-treasury-go/commit/56829ab4fe666fd647fc8afe58b6dc6919200c08))
+* **internal:** refactor release environment script ([#167](https://github.com/Modern-Treasury/modern-treasury-go/issues/167)) ([04be1be](https://github.com/Modern-Treasury/modern-treasury-go/commit/04be1bed1be805a5f6c4602c016f1ee50bced38b))
+* **internal:** update deps ([#170](https://github.com/Modern-Treasury/modern-treasury-go/issues/170)) ([b900168](https://github.com/Modern-Treasury/modern-treasury-go/commit/b9001683dbed621456e66db4caec15425b52e82f))
+
+
+### Documentation
+
+* **readme:** improve wording ([#171](https://github.com/Modern-Treasury/modern-treasury-go/issues/171)) ([74944f4](https://github.com/Modern-Treasury/modern-treasury-go/commit/74944f48ecd77a36945f6ce63144cbd3adbf55c5))
+
 ## 2.7.0 (2024-02-13)
 
 Full Changelog: [v2.6.1...v2.7.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.6.1...v2.7.0)
