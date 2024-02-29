@@ -202,9 +202,6 @@ const (
 )
 
 type BalanceReportNewParams struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
 	// The date of the balance report in local time.
 	AsOfDate param.Field[time.Time] `json:"as_of_date,required" format:"date"`
 	// The time (24-hour clock) of the balance report in local time.
