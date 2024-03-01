@@ -36,6 +36,7 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 			DateOfBirth:          moderntreasury.F(time.Now()),
 			BusinessName:         moderntreasury.F("string"),
 			DoingBusinessAsNames: moderntreasury.F([]string{"string", "string", "string"}),
+			LegalStructure:       moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureCorporation),
 			PhoneNumbers: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityPhoneNumber{{
 				PhoneNumber: moderntreasury.F("string"),
 			}, {
@@ -51,7 +52,7 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 				"modern": "treasury",
 			}),
 			Addresses: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddress{{
-				AddressTypes: moderntreasury.F([]string{"string", "string", "string"}),
+				AddressTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType{moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeBusiness, moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeMailing, moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeOther}),
 				Line1:        moderntreasury.F("string"),
 				Line2:        moderntreasury.F("string"),
 				Locality:     moderntreasury.F("string"),
@@ -59,7 +60,7 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 				PostalCode:   moderntreasury.F("string"),
 				Country:      moderntreasury.F("string"),
 			}, {
-				AddressTypes: moderntreasury.F([]string{"string", "string", "string"}),
+				AddressTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType{moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeBusiness, moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeMailing, moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeOther}),
 				Line1:        moderntreasury.F("string"),
 				Line2:        moderntreasury.F("string"),
 				Locality:     moderntreasury.F("string"),
@@ -67,7 +68,7 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 				PostalCode:   moderntreasury.F("string"),
 				Country:      moderntreasury.F("string"),
 			}, {
-				AddressTypes: moderntreasury.F([]string{"string", "string", "string"}),
+				AddressTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType{moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeBusiness, moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeMailing, moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeOther}),
 				Line1:        moderntreasury.F("string"),
 				Line2:        moderntreasury.F("string"),
 				Locality:     moderntreasury.F("string"),
