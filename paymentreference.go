@@ -134,6 +134,7 @@ const (
 	PaymentReferenceReferenceNumberTypeColumnReversalPairTransferID            PaymentReferenceReferenceNumberType = "column_reversal_pair_transfer_id"
 	PaymentReferenceReferenceNumberTypeColumnTransferID                        PaymentReferenceReferenceNumberType = "column_transfer_id"
 	PaymentReferenceReferenceNumberTypeCrossRiverPaymentID                     PaymentReferenceReferenceNumberType = "cross_river_payment_id"
+	PaymentReferenceReferenceNumberTypeCrossRiverServiceMessage                PaymentReferenceReferenceNumberType = "cross_river_service_message"
 	PaymentReferenceReferenceNumberTypeCrossRiverTransactionID                 PaymentReferenceReferenceNumberType = "cross_river_transaction_id"
 	PaymentReferenceReferenceNumberTypeCurrencycloudConversionID               PaymentReferenceReferenceNumberType = "currencycloud_conversion_id"
 	PaymentReferenceReferenceNumberTypeCurrencycloudPaymentID                  PaymentReferenceReferenceNumberType = "currencycloud_payment_id"

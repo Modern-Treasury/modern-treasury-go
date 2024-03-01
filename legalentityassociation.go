@@ -105,6 +105,8 @@ type LegalEntityAssociationAssociatedLegalEntity struct {
 	LastName string `json:"last_name,nullable"`
 	// The type of legal entity.
 	LegalEntityType LegalEntityAssociationAssociatedLegalEntityLegalEntityType `json:"legal_entity_type"`
+	// The business's legal structure.
+	LegalStructure LegalEntityAssociationAssociatedLegalEntityLegalStructure `json:"legal_structure,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode"`
@@ -134,6 +136,7 @@ type legalEntityAssociationAssociatedLegalEntityJSON struct {
 	Identifications      apijson.Field
 	LastName             apijson.Field
 	LegalEntityType      apijson.Field
+	LegalStructure       apijson.Field
 	LiveMode             apijson.Field
 	Metadata             apijson.Field
 	Object               apijson.Field
@@ -151,7 +154,7 @@ func (r *LegalEntityAssociationAssociatedLegalEntity) UnmarshalJSON(data []byte)
 type LegalEntityAssociationAssociatedLegalEntityAddress struct {
 	ID string `json:"id,required" format:"uuid"`
 	// The types of this address.
-	AddressTypes []string `json:"address_types,required"`
+	AddressTypes []LegalEntityAssociationAssociatedLegalEntityAddressesAddressType `json:"address_types,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country     string    `json:"country,required,nullable"`
 	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
@@ -195,6 +198,16 @@ type legalEntityAssociationAssociatedLegalEntityAddressJSON struct {
 func (r *LegalEntityAssociationAssociatedLegalEntityAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+type LegalEntityAssociationAssociatedLegalEntityAddressesAddressType string
+
+const (
+	LegalEntityAssociationAssociatedLegalEntityAddressesAddressTypeBusiness    LegalEntityAssociationAssociatedLegalEntityAddressesAddressType = "business"
+	LegalEntityAssociationAssociatedLegalEntityAddressesAddressTypeMailing     LegalEntityAssociationAssociatedLegalEntityAddressesAddressType = "mailing"
+	LegalEntityAssociationAssociatedLegalEntityAddressesAddressTypeOther       LegalEntityAssociationAssociatedLegalEntityAddressesAddressType = "other"
+	LegalEntityAssociationAssociatedLegalEntityAddressesAddressTypePoBox       LegalEntityAssociationAssociatedLegalEntityAddressesAddressType = "po_box"
+	LegalEntityAssociationAssociatedLegalEntityAddressesAddressTypeResidential LegalEntityAssociationAssociatedLegalEntityAddressesAddressType = "residential"
+)
 
 type LegalEntityAssociationAssociatedLegalEntityIdentification struct {
 	ID          string    `json:"id,required" format:"uuid"`
@@ -259,6 +272,18 @@ const (
 	LegalEntityAssociationAssociatedLegalEntityLegalEntityTypeBusiness   LegalEntityAssociationAssociatedLegalEntityLegalEntityType = "business"
 	LegalEntityAssociationAssociatedLegalEntityLegalEntityTypeIndividual LegalEntityAssociationAssociatedLegalEntityLegalEntityType = "individual"
 	LegalEntityAssociationAssociatedLegalEntityLegalEntityTypeJoint      LegalEntityAssociationAssociatedLegalEntityLegalEntityType = "joint"
+)
+
+// The business's legal structure.
+type LegalEntityAssociationAssociatedLegalEntityLegalStructure string
+
+const (
+	LegalEntityAssociationAssociatedLegalEntityLegalStructureCorporation        LegalEntityAssociationAssociatedLegalEntityLegalStructure = "corporation"
+	LegalEntityAssociationAssociatedLegalEntityLegalStructureLlc                LegalEntityAssociationAssociatedLegalEntityLegalStructure = "llc"
+	LegalEntityAssociationAssociatedLegalEntityLegalStructureNonProfit          LegalEntityAssociationAssociatedLegalEntityLegalStructure = "non_profit"
+	LegalEntityAssociationAssociatedLegalEntityLegalStructurePartnership        LegalEntityAssociationAssociatedLegalEntityLegalStructure = "partnership"
+	LegalEntityAssociationAssociatedLegalEntityLegalStructureSoleProprietorship LegalEntityAssociationAssociatedLegalEntityLegalStructure = "sole_proprietorship"
+	LegalEntityAssociationAssociatedLegalEntityLegalStructureTrust              LegalEntityAssociationAssociatedLegalEntityLegalStructure = "trust"
 )
 
 // A list of phone numbers in E.164 format.
@@ -335,6 +360,8 @@ type LegalEntityAssociationNewParamsAssociatedLegalEntity struct {
 	LastName param.Field[string] `json:"last_name"`
 	// The type of legal entity.
 	LegalEntityType param.Field[LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityType] `json:"legal_entity_type"`
+	// The business's legal structure.
+	LegalStructure param.Field[LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata     param.Field[map[string]string]                                                 `json:"metadata"`
@@ -358,13 +385,23 @@ type LegalEntityAssociationNewParamsAssociatedLegalEntityAddress struct {
 	// Region or State.
 	Region param.Field[string] `json:"region,required"`
 	// The types of this address.
-	AddressTypes param.Field[[]string] `json:"address_types"`
-	Line2        param.Field[string]   `json:"line2"`
+	AddressTypes param.Field[[]LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType] `json:"address_types"`
+	Line2        param.Field[string]                                                                     `json:"line2"`
 }
 
 func (r LegalEntityAssociationNewParamsAssociatedLegalEntityAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+type LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType string
+
+const (
+	LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeBusiness    LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType = "business"
+	LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeMailing     LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType = "mailing"
+	LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeOther       LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType = "other"
+	LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypePoBox       LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType = "po_box"
+	LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeResidential LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType = "residential"
+)
 
 type LegalEntityAssociationNewParamsAssociatedLegalEntityIdentification struct {
 	// The ID number of identification document.
@@ -405,6 +442,18 @@ type LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityType string
 const (
 	LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityTypeBusiness   LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityType = "business"
 	LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityTypeIndividual LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityType = "individual"
+)
+
+// The business's legal structure.
+type LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructure string
+
+const (
+	LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureCorporation        LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructure = "corporation"
+	LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureLlc                LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructure = "llc"
+	LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureNonProfit          LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructure = "non_profit"
+	LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructurePartnership        LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructure = "partnership"
+	LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureSoleProprietorship LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructure = "sole_proprietorship"
+	LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureTrust              LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructure = "trust"
 )
 
 // A list of phone numbers in E.164 format.

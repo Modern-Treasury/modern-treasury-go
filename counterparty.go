@@ -640,6 +640,8 @@ type CounterpartyNewParamsLegalEntity struct {
 	Identifications param.Field[[]CounterpartyNewParamsLegalEntityIdentification] `json:"identifications"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
+	// The business's legal structure.
+	LegalStructure param.Field[CounterpartyNewParamsLegalEntityLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata     param.Field[map[string]string]                             `json:"metadata"`
@@ -671,13 +673,23 @@ type CounterpartyNewParamsLegalEntityAddress struct {
 	// Region or State.
 	Region param.Field[string] `json:"region,required"`
 	// The types of this address.
-	AddressTypes param.Field[[]string] `json:"address_types"`
-	Line2        param.Field[string]   `json:"line2"`
+	AddressTypes param.Field[[]CounterpartyNewParamsLegalEntityAddressesAddressType] `json:"address_types"`
+	Line2        param.Field[string]                                                 `json:"line2"`
 }
 
 func (r CounterpartyNewParamsLegalEntityAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+type CounterpartyNewParamsLegalEntityAddressesAddressType string
+
+const (
+	CounterpartyNewParamsLegalEntityAddressesAddressTypeBusiness    CounterpartyNewParamsLegalEntityAddressesAddressType = "business"
+	CounterpartyNewParamsLegalEntityAddressesAddressTypeMailing     CounterpartyNewParamsLegalEntityAddressesAddressType = "mailing"
+	CounterpartyNewParamsLegalEntityAddressesAddressTypeOther       CounterpartyNewParamsLegalEntityAddressesAddressType = "other"
+	CounterpartyNewParamsLegalEntityAddressesAddressTypePoBox       CounterpartyNewParamsLegalEntityAddressesAddressType = "po_box"
+	CounterpartyNewParamsLegalEntityAddressesAddressTypeResidential CounterpartyNewParamsLegalEntityAddressesAddressType = "residential"
+)
 
 type CounterpartyNewParamsLegalEntityIdentification struct {
 	// The ID number of identification document.
@@ -710,6 +722,18 @@ const (
 	CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsEin     CounterpartyNewParamsLegalEntityIdentificationsIDType = "us_ein"
 	CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsItin    CounterpartyNewParamsLegalEntityIdentificationsIDType = "us_itin"
 	CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsSsn     CounterpartyNewParamsLegalEntityIdentificationsIDType = "us_ssn"
+)
+
+// The business's legal structure.
+type CounterpartyNewParamsLegalEntityLegalStructure string
+
+const (
+	CounterpartyNewParamsLegalEntityLegalStructureCorporation        CounterpartyNewParamsLegalEntityLegalStructure = "corporation"
+	CounterpartyNewParamsLegalEntityLegalStructureLlc                CounterpartyNewParamsLegalEntityLegalStructure = "llc"
+	CounterpartyNewParamsLegalEntityLegalStructureNonProfit          CounterpartyNewParamsLegalEntityLegalStructure = "non_profit"
+	CounterpartyNewParamsLegalEntityLegalStructurePartnership        CounterpartyNewParamsLegalEntityLegalStructure = "partnership"
+	CounterpartyNewParamsLegalEntityLegalStructureSoleProprietorship CounterpartyNewParamsLegalEntityLegalStructure = "sole_proprietorship"
+	CounterpartyNewParamsLegalEntityLegalStructureTrust              CounterpartyNewParamsLegalEntityLegalStructure = "trust"
 )
 
 // A list of phone numbers in E.164 format.
