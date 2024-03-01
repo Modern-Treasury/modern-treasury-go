@@ -269,6 +269,7 @@ const (
 	ReturnObjectReferenceNumbersReferenceNumberTypeColumnReversalPairTransferID            ReturnObjectReferenceNumbersReferenceNumberType = "column_reversal_pair_transfer_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeColumnTransferID                        ReturnObjectReferenceNumbersReferenceNumberType = "column_transfer_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverPaymentID                     ReturnObjectReferenceNumbersReferenceNumberType = "cross_river_payment_id"
+	ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverServiceMessage                ReturnObjectReferenceNumbersReferenceNumberType = "cross_river_service_message"
 	ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverTransactionID                 ReturnObjectReferenceNumbersReferenceNumberType = "cross_river_transaction_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeCurrencycloudConversionID               ReturnObjectReferenceNumbersReferenceNumberType = "currencycloud_conversion_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeCurrencycloudPaymentID                  ReturnObjectReferenceNumbersReferenceNumberType = "currencycloud_payment_id"

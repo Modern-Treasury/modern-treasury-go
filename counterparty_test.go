@@ -250,6 +250,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			DateOfBirth:          moderntreasury.F(time.Now()),
 			BusinessName:         moderntreasury.F("string"),
 			DoingBusinessAsNames: moderntreasury.F([]string{"string", "string", "string"}),
+			LegalStructure:       moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalStructureCorporation),
 			PhoneNumbers: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityPhoneNumber{{
 				PhoneNumber: moderntreasury.F("string"),
 			}, {
@@ -265,7 +266,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				"modern": "treasury",
 			}),
 			Addresses: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityAddress{{
-				AddressTypes: moderntreasury.F([]string{"string", "string", "string"}),
+				AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeOther}),
 				Line1:        moderntreasury.F("string"),
 				Line2:        moderntreasury.F("string"),
 				Locality:     moderntreasury.F("string"),
@@ -273,7 +274,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				PostalCode:   moderntreasury.F("string"),
 				Country:      moderntreasury.F("string"),
 			}, {
-				AddressTypes: moderntreasury.F([]string{"string", "string", "string"}),
+				AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeOther}),
 				Line1:        moderntreasury.F("string"),
 				Line2:        moderntreasury.F("string"),
 				Locality:     moderntreasury.F("string"),
@@ -281,7 +282,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				PostalCode:   moderntreasury.F("string"),
 				Country:      moderntreasury.F("string"),
 			}, {
-				AddressTypes: moderntreasury.F([]string{"string", "string", "string"}),
+				AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeOther}),
 				Line1:        moderntreasury.F("string"),
 				Line2:        moderntreasury.F("string"),
 				Locality:     moderntreasury.F("string"),

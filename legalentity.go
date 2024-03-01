@@ -103,6 +103,8 @@ type LegalEntity struct {
 	LastName string `json:"last_name,nullable"`
 	// The type of legal entity.
 	LegalEntityType LegalEntityLegalEntityType `json:"legal_entity_type"`
+	// The business's legal structure.
+	LegalStructure LegalEntityLegalStructure `json:"legal_structure,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode"`
@@ -131,6 +133,7 @@ type legalEntityJSON struct {
 	Identifications      apijson.Field
 	LastName             apijson.Field
 	LegalEntityType      apijson.Field
+	LegalStructure       apijson.Field
 	LiveMode             apijson.Field
 	Metadata             apijson.Field
 	Object               apijson.Field
@@ -148,7 +151,7 @@ func (r *LegalEntity) UnmarshalJSON(data []byte) (err error) {
 type LegalEntityAddress struct {
 	ID string `json:"id,required" format:"uuid"`
 	// The types of this address.
-	AddressTypes []string `json:"address_types,required"`
+	AddressTypes []LegalEntityAddressesAddressType `json:"address_types,required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country     string    `json:"country,required,nullable"`
 	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
@@ -192,6 +195,16 @@ type legalEntityAddressJSON struct {
 func (r *LegalEntityAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+type LegalEntityAddressesAddressType string
+
+const (
+	LegalEntityAddressesAddressTypeBusiness    LegalEntityAddressesAddressType = "business"
+	LegalEntityAddressesAddressTypeMailing     LegalEntityAddressesAddressType = "mailing"
+	LegalEntityAddressesAddressTypeOther       LegalEntityAddressesAddressType = "other"
+	LegalEntityAddressesAddressTypePoBox       LegalEntityAddressesAddressType = "po_box"
+	LegalEntityAddressesAddressTypeResidential LegalEntityAddressesAddressType = "residential"
+)
 
 type LegalEntityIdentification struct {
 	ID          string    `json:"id,required" format:"uuid"`
@@ -257,6 +270,18 @@ const (
 	LegalEntityLegalEntityTypeJoint      LegalEntityLegalEntityType = "joint"
 )
 
+// The business's legal structure.
+type LegalEntityLegalStructure string
+
+const (
+	LegalEntityLegalStructureCorporation        LegalEntityLegalStructure = "corporation"
+	LegalEntityLegalStructureLlc                LegalEntityLegalStructure = "llc"
+	LegalEntityLegalStructureNonProfit          LegalEntityLegalStructure = "non_profit"
+	LegalEntityLegalStructurePartnership        LegalEntityLegalStructure = "partnership"
+	LegalEntityLegalStructureSoleProprietorship LegalEntityLegalStructure = "sole_proprietorship"
+	LegalEntityLegalStructureTrust              LegalEntityLegalStructure = "trust"
+)
+
 // A list of phone numbers in E.164 format.
 type LegalEntityPhoneNumber struct {
 	PhoneNumber string                     `json:"phone_number"`
@@ -293,6 +318,8 @@ type LegalEntityNewParams struct {
 	Identifications param.Field[[]LegalEntityNewParamsIdentification] `json:"identifications"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
+	// The business's legal structure.
+	LegalStructure param.Field[LegalEntityNewParamsLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata     param.Field[map[string]string]                 `json:"metadata"`
@@ -324,13 +351,23 @@ type LegalEntityNewParamsAddress struct {
 	// Region or State.
 	Region param.Field[string] `json:"region,required"`
 	// The types of this address.
-	AddressTypes param.Field[[]string] `json:"address_types"`
-	Line2        param.Field[string]   `json:"line2"`
+	AddressTypes param.Field[[]LegalEntityNewParamsAddressesAddressType] `json:"address_types"`
+	Line2        param.Field[string]                                     `json:"line2"`
 }
 
 func (r LegalEntityNewParamsAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+type LegalEntityNewParamsAddressesAddressType string
+
+const (
+	LegalEntityNewParamsAddressesAddressTypeBusiness    LegalEntityNewParamsAddressesAddressType = "business"
+	LegalEntityNewParamsAddressesAddressTypeMailing     LegalEntityNewParamsAddressesAddressType = "mailing"
+	LegalEntityNewParamsAddressesAddressTypeOther       LegalEntityNewParamsAddressesAddressType = "other"
+	LegalEntityNewParamsAddressesAddressTypePoBox       LegalEntityNewParamsAddressesAddressType = "po_box"
+	LegalEntityNewParamsAddressesAddressTypeResidential LegalEntityNewParamsAddressesAddressType = "residential"
+)
 
 type LegalEntityNewParamsIdentification struct {
 	// The ID number of identification document.
@@ -365,6 +402,18 @@ const (
 	LegalEntityNewParamsIdentificationsIDTypeUsSsn     LegalEntityNewParamsIdentificationsIDType = "us_ssn"
 )
 
+// The business's legal structure.
+type LegalEntityNewParamsLegalStructure string
+
+const (
+	LegalEntityNewParamsLegalStructureCorporation        LegalEntityNewParamsLegalStructure = "corporation"
+	LegalEntityNewParamsLegalStructureLlc                LegalEntityNewParamsLegalStructure = "llc"
+	LegalEntityNewParamsLegalStructureNonProfit          LegalEntityNewParamsLegalStructure = "non_profit"
+	LegalEntityNewParamsLegalStructurePartnership        LegalEntityNewParamsLegalStructure = "partnership"
+	LegalEntityNewParamsLegalStructureSoleProprietorship LegalEntityNewParamsLegalStructure = "sole_proprietorship"
+	LegalEntityNewParamsLegalStructureTrust              LegalEntityNewParamsLegalStructure = "trust"
+)
+
 // A list of phone numbers in E.164 format.
 type LegalEntityNewParamsPhoneNumber struct {
 	PhoneNumber param.Field[string] `json:"phone_number"`
@@ -386,6 +435,8 @@ type LegalEntityUpdateParams struct {
 	FirstName param.Field[string] `json:"first_name"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
+	// The business's legal structure.
+	LegalStructure param.Field[LegalEntityUpdateParamsLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata     param.Field[map[string]string]                    `json:"metadata"`
@@ -397,6 +448,18 @@ type LegalEntityUpdateParams struct {
 func (r LegalEntityUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+// The business's legal structure.
+type LegalEntityUpdateParamsLegalStructure string
+
+const (
+	LegalEntityUpdateParamsLegalStructureCorporation        LegalEntityUpdateParamsLegalStructure = "corporation"
+	LegalEntityUpdateParamsLegalStructureLlc                LegalEntityUpdateParamsLegalStructure = "llc"
+	LegalEntityUpdateParamsLegalStructureNonProfit          LegalEntityUpdateParamsLegalStructure = "non_profit"
+	LegalEntityUpdateParamsLegalStructurePartnership        LegalEntityUpdateParamsLegalStructure = "partnership"
+	LegalEntityUpdateParamsLegalStructureSoleProprietorship LegalEntityUpdateParamsLegalStructure = "sole_proprietorship"
+	LegalEntityUpdateParamsLegalStructureTrust              LegalEntityUpdateParamsLegalStructure = "trust"
+)
 
 // A list of phone numbers in E.164 format.
 type LegalEntityUpdateParamsPhoneNumber struct {

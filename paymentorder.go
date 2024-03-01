@@ -466,6 +466,7 @@ const (
 	PaymentOrderReferenceNumbersReferenceNumberTypeColumnReversalPairTransferID            PaymentOrderReferenceNumbersReferenceNumberType = "column_reversal_pair_transfer_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeColumnTransferID                        PaymentOrderReferenceNumbersReferenceNumberType = "column_transfer_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverPaymentID                     PaymentOrderReferenceNumbersReferenceNumberType = "cross_river_payment_id"
+	PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverServiceMessage                PaymentOrderReferenceNumbersReferenceNumberType = "cross_river_service_message"
 	PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverTransactionID                 PaymentOrderReferenceNumbersReferenceNumberType = "cross_river_transaction_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeCurrencycloudConversionID               PaymentOrderReferenceNumbersReferenceNumberType = "currencycloud_conversion_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeCurrencycloudPaymentID                  PaymentOrderReferenceNumbersReferenceNumberType = "currencycloud_payment_id"

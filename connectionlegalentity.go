@@ -162,6 +162,8 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	LastName param.Field[string] `json:"last_name"`
 	// The type of legal entity.
 	LegalEntityType param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityType] `json:"legal_entity_type"`
+	// The business's legal structure.
+	LegalStructure param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata     param.Field[map[string]string]                                      `json:"metadata"`
@@ -185,13 +187,23 @@ type ConnectionLegalEntityNewParamsLegalEntityAddress struct {
 	// Region or State.
 	Region param.Field[string] `json:"region,required"`
 	// The types of this address.
-	AddressTypes param.Field[[]string] `json:"address_types"`
-	Line2        param.Field[string]   `json:"line2"`
+	AddressTypes param.Field[[]ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType] `json:"address_types"`
+	Line2        param.Field[string]                                                          `json:"line2"`
 }
 
 func (r ConnectionLegalEntityNewParamsLegalEntityAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
+
+type ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType string
+
+const (
+	ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeBusiness    ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType = "business"
+	ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeMailing     ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType = "mailing"
+	ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeOther       ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType = "other"
+	ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypePoBox       ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType = "po_box"
+	ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeResidential ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType = "residential"
+)
 
 type ConnectionLegalEntityNewParamsLegalEntityIdentification struct {
 	// The ID number of identification document.
@@ -232,6 +244,18 @@ type ConnectionLegalEntityNewParamsLegalEntityLegalEntityType string
 const (
 	ConnectionLegalEntityNewParamsLegalEntityLegalEntityTypeBusiness   ConnectionLegalEntityNewParamsLegalEntityLegalEntityType = "business"
 	ConnectionLegalEntityNewParamsLegalEntityLegalEntityTypeIndividual ConnectionLegalEntityNewParamsLegalEntityLegalEntityType = "individual"
+)
+
+// The business's legal structure.
+type ConnectionLegalEntityNewParamsLegalEntityLegalStructure string
+
+const (
+	ConnectionLegalEntityNewParamsLegalEntityLegalStructureCorporation        ConnectionLegalEntityNewParamsLegalEntityLegalStructure = "corporation"
+	ConnectionLegalEntityNewParamsLegalEntityLegalStructureLlc                ConnectionLegalEntityNewParamsLegalEntityLegalStructure = "llc"
+	ConnectionLegalEntityNewParamsLegalEntityLegalStructureNonProfit          ConnectionLegalEntityNewParamsLegalEntityLegalStructure = "non_profit"
+	ConnectionLegalEntityNewParamsLegalEntityLegalStructurePartnership        ConnectionLegalEntityNewParamsLegalEntityLegalStructure = "partnership"
+	ConnectionLegalEntityNewParamsLegalEntityLegalStructureSoleProprietorship ConnectionLegalEntityNewParamsLegalEntityLegalStructure = "sole_proprietorship"
+	ConnectionLegalEntityNewParamsLegalEntityLegalStructureTrust              ConnectionLegalEntityNewParamsLegalEntityLegalStructure = "trust"
 )
 
 // A list of phone numbers in E.164 format.
