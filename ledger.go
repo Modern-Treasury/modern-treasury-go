@@ -128,6 +128,10 @@ func (r *Ledger) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerJSON) RawJSON() string {
+	return r.raw
+}
+
 type LedgerNewParams struct {
 	// The name of the ledger.
 	Name param.Field[string] `json:"name,required"`

@@ -166,6 +166,10 @@ func (r *LedgerTransaction) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerTransactionJSON) RawJSON() string {
+	return r.raw
+}
+
 func (r LedgerTransaction) implementsBulkResultEntity() {}
 
 // If the ledger transaction can be reconciled to another object in Modern

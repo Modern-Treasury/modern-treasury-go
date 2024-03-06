@@ -118,6 +118,10 @@ func (r *LedgerAccountStatementNewResponse) UnmarshalJSON(data []byte) (err erro
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountStatementNewResponseJSON) RawJSON() string {
+	return r.raw
+}
+
 // The pending, posted, and available balances for this ledger account at the
 // `effective_at_upper_bound`. The posted balance is the sum of all posted entries
 // on the account. The pending balance is the sum of all pending and posted entries
@@ -148,6 +152,10 @@ type ledgerAccountStatementNewResponseEndingBalanceJSON struct {
 
 func (r *LedgerAccountStatementNewResponseEndingBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerAccountStatementNewResponseEndingBalanceJSON) RawJSON() string {
+	return r.raw
 }
 
 // The available_balance is the sum of all posted inbound entries and pending
@@ -182,6 +190,10 @@ func (r *LedgerAccountStatementNewResponseEndingBalanceAvailableBalance) Unmarsh
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountStatementNewResponseEndingBalanceAvailableBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The pending_balance is the sum of all pending and posted entries.
 type LedgerAccountStatementNewResponseEndingBalancePendingBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -211,6 +223,10 @@ func (r *LedgerAccountStatementNewResponseEndingBalancePendingBalance) Unmarshal
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountStatementNewResponseEndingBalancePendingBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The posted_balance is the sum of all posted entries.
 type LedgerAccountStatementNewResponseEndingBalancePostedBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -238,6 +254,10 @@ type ledgerAccountStatementNewResponseEndingBalancePostedBalanceJSON struct {
 
 func (r *LedgerAccountStatementNewResponseEndingBalancePostedBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerAccountStatementNewResponseEndingBalancePostedBalanceJSON) RawJSON() string {
+	return r.raw
 }
 
 // The pending, posted, and available balances for this ledger account at the
@@ -272,6 +292,10 @@ func (r *LedgerAccountStatementNewResponseStartingBalance) UnmarshalJSON(data []
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountStatementNewResponseStartingBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The available_balance is the sum of all posted inbound entries and pending
 // outbound entries. For credit normal, available_amount = posted_credits -
 // pending_debits; for debit normal, available_amount = posted_debits -
@@ -304,6 +328,10 @@ func (r *LedgerAccountStatementNewResponseStartingBalanceAvailableBalance) Unmar
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountStatementNewResponseStartingBalanceAvailableBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The pending_balance is the sum of all pending and posted entries.
 type LedgerAccountStatementNewResponseStartingBalancePendingBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -333,6 +361,10 @@ func (r *LedgerAccountStatementNewResponseStartingBalancePendingBalance) Unmarsh
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountStatementNewResponseStartingBalancePendingBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The posted_balance is the sum of all posted entries.
 type LedgerAccountStatementNewResponseStartingBalancePostedBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -360,6 +392,10 @@ type ledgerAccountStatementNewResponseStartingBalancePostedBalanceJSON struct {
 
 func (r *LedgerAccountStatementNewResponseStartingBalancePostedBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerAccountStatementNewResponseStartingBalancePostedBalanceJSON) RawJSON() string {
+	return r.raw
 }
 
 type LedgerAccountStatementGetResponse struct {
@@ -431,6 +467,10 @@ func (r *LedgerAccountStatementGetResponse) UnmarshalJSON(data []byte) (err erro
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountStatementGetResponseJSON) RawJSON() string {
+	return r.raw
+}
+
 // The pending, posted, and available balances for this ledger account at the
 // `effective_at_upper_bound`. The posted balance is the sum of all posted entries
 // on the account. The pending balance is the sum of all pending and posted entries
@@ -461,6 +501,10 @@ type ledgerAccountStatementGetResponseEndingBalanceJSON struct {
 
 func (r *LedgerAccountStatementGetResponseEndingBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerAccountStatementGetResponseEndingBalanceJSON) RawJSON() string {
+	return r.raw
 }
 
 // The available_balance is the sum of all posted inbound entries and pending
@@ -495,6 +539,10 @@ func (r *LedgerAccountStatementGetResponseEndingBalanceAvailableBalance) Unmarsh
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountStatementGetResponseEndingBalanceAvailableBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The pending_balance is the sum of all pending and posted entries.
 type LedgerAccountStatementGetResponseEndingBalancePendingBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -524,6 +572,10 @@ func (r *LedgerAccountStatementGetResponseEndingBalancePendingBalance) Unmarshal
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountStatementGetResponseEndingBalancePendingBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The posted_balance is the sum of all posted entries.
 type LedgerAccountStatementGetResponseEndingBalancePostedBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -551,6 +603,10 @@ type ledgerAccountStatementGetResponseEndingBalancePostedBalanceJSON struct {
 
 func (r *LedgerAccountStatementGetResponseEndingBalancePostedBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerAccountStatementGetResponseEndingBalancePostedBalanceJSON) RawJSON() string {
+	return r.raw
 }
 
 // The pending, posted, and available balances for this ledger account at the
@@ -585,6 +641,10 @@ func (r *LedgerAccountStatementGetResponseStartingBalance) UnmarshalJSON(data []
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountStatementGetResponseStartingBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The available_balance is the sum of all posted inbound entries and pending
 // outbound entries. For credit normal, available_amount = posted_credits -
 // pending_debits; for debit normal, available_amount = posted_debits -
@@ -617,6 +677,10 @@ func (r *LedgerAccountStatementGetResponseStartingBalanceAvailableBalance) Unmar
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountStatementGetResponseStartingBalanceAvailableBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The pending_balance is the sum of all pending and posted entries.
 type LedgerAccountStatementGetResponseStartingBalancePendingBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -646,6 +710,10 @@ func (r *LedgerAccountStatementGetResponseStartingBalancePendingBalance) Unmarsh
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountStatementGetResponseStartingBalancePendingBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The posted_balance is the sum of all posted entries.
 type LedgerAccountStatementGetResponseStartingBalancePostedBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -673,6 +741,10 @@ type ledgerAccountStatementGetResponseStartingBalancePostedBalanceJSON struct {
 
 func (r *LedgerAccountStatementGetResponseStartingBalancePostedBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerAccountStatementGetResponseStartingBalancePostedBalanceJSON) RawJSON() string {
+	return r.raw
 }
 
 type LedgerAccountStatementNewParams struct {

@@ -93,6 +93,10 @@ func (r *Connection) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r connectionJSON) RawJSON() string {
+	return r.raw
+}
+
 type ConnectionListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
 	// A string code representing the vendor (i.e. bank).

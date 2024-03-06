@@ -155,6 +155,10 @@ func (r *VirtualAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r virtualAccountJSON) RawJSON() string {
+	return r.raw
+}
+
 func (r VirtualAccount) implementsPaymentOrderUltimateOriginatingAccount() {}
 
 type VirtualAccountNewParams struct {

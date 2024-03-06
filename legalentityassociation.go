@@ -83,6 +83,10 @@ func (r *LegalEntityAssociation) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r legalEntityAssociationJSON) RawJSON() string {
+	return r.raw
+}
+
 // The associated legal entity.
 type LegalEntityAssociationAssociatedLegalEntity struct {
 	ID string `json:"id" format:"uuid"`
@@ -151,6 +155,10 @@ func (r *LegalEntityAssociationAssociatedLegalEntity) UnmarshalJSON(data []byte)
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r legalEntityAssociationAssociatedLegalEntityJSON) RawJSON() string {
+	return r.raw
+}
+
 type LegalEntityAssociationAssociatedLegalEntityAddress struct {
 	ID string `json:"id,required" format:"uuid"`
 	// The types of this address.
@@ -199,6 +207,10 @@ func (r *LegalEntityAssociationAssociatedLegalEntityAddress) UnmarshalJSON(data 
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r legalEntityAssociationAssociatedLegalEntityAddressJSON) RawJSON() string {
+	return r.raw
+}
+
 type LegalEntityAssociationAssociatedLegalEntityAddressesAddressType string
 
 const (
@@ -244,6 +256,10 @@ type legalEntityAssociationAssociatedLegalEntityIdentificationJSON struct {
 
 func (r *LegalEntityAssociationAssociatedLegalEntityIdentification) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r legalEntityAssociationAssociatedLegalEntityIdentificationJSON) RawJSON() string {
+	return r.raw
 }
 
 // The type of ID number.
@@ -302,6 +318,10 @@ type legalEntityAssociationAssociatedLegalEntityPhoneNumberJSON struct {
 
 func (r *LegalEntityAssociationAssociatedLegalEntityPhoneNumber) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r legalEntityAssociationAssociatedLegalEntityPhoneNumberJSON) RawJSON() string {
+	return r.raw
 }
 
 // A list of relationship types for how the associated entity relates to associator

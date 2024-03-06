@@ -79,6 +79,10 @@ func (r *RoutingNumberLookupRequest) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r routingNumberLookupRequestJSON) RawJSON() string {
+	return r.raw
+}
+
 // The address of the bank.
 type RoutingNumberLookupRequestBankAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -109,6 +113,10 @@ type routingNumberLookupRequestBankAddressJSON struct {
 
 func (r *RoutingNumberLookupRequestBankAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r routingNumberLookupRequestBankAddressJSON) RawJSON() string {
+	return r.raw
 }
 
 // The type of routing number. See

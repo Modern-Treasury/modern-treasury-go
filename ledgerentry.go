@@ -147,6 +147,10 @@ func (r *LedgerEntry) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerEntryJSON) RawJSON() string {
+	return r.raw
+}
+
 // The pending, posted, and available balances for this ledger entry's ledger
 // account. The posted balance is the sum of all posted entries on the account. The
 // pending balance is the sum of all pending and posted entries on the account. The
@@ -181,6 +185,10 @@ func (r *LedgerEntryResultingLedgerAccountBalances) UnmarshalJSON(data []byte) (
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerEntryResultingLedgerAccountBalancesJSON) RawJSON() string {
+	return r.raw
+}
+
 // The available_balance is the sum of all posted inbound entries and pending
 // outbound entries. For credit normal, available_amount = posted_credits -
 // pending_debits; for debit normal, available_amount = posted_debits -
@@ -213,6 +221,10 @@ func (r *LedgerEntryResultingLedgerAccountBalancesAvailableBalance) UnmarshalJSO
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The pending_balance is the sum of all pending and posted entries.
 type LedgerEntryResultingLedgerAccountBalancesPendingBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -242,6 +254,10 @@ func (r *LedgerEntryResultingLedgerAccountBalancesPendingBalance) UnmarshalJSON(
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerEntryResultingLedgerAccountBalancesPendingBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The posted_balance is the sum of all posted entries.
 type LedgerEntryResultingLedgerAccountBalancesPostedBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -268,6 +284,10 @@ type ledgerEntryResultingLedgerAccountBalancesPostedBalanceJSON struct {
 
 func (r *LedgerEntryResultingLedgerAccountBalancesPostedBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerEntryResultingLedgerAccountBalancesPostedBalanceJSON) RawJSON() string {
+	return r.raw
 }
 
 // Equal to the state of the ledger transaction when the ledger entry was created.

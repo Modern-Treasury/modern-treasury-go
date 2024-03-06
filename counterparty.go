@@ -150,6 +150,10 @@ func (r *Counterparty) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r counterpartyJSON) RawJSON() string {
+	return r.raw
+}
+
 type CounterpartyAccount struct {
 	ID             string          `json:"id" format:"uuid"`
 	AccountDetails []AccountDetail `json:"account_details"`
@@ -211,6 +215,10 @@ func (r *CounterpartyAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r counterpartyAccountJSON) RawJSON() string {
+	return r.raw
+}
+
 type CounterpartyAccountsContactDetail struct {
 	ID                    string                                                  `json:"id,required" format:"uuid"`
 	ContactIdentifier     string                                                  `json:"contact_identifier,required"`
@@ -242,6 +250,10 @@ type counterpartyAccountsContactDetailJSON struct {
 
 func (r *CounterpartyAccountsContactDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r counterpartyAccountsContactDetailJSON) RawJSON() string {
+	return r.raw
 }
 
 type CounterpartyAccountsContactDetailsContactIdentifierType string
@@ -296,6 +308,10 @@ func (r *CounterpartyAccountsPartyAddress) UnmarshalJSON(data []byte) (err error
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r counterpartyAccountsPartyAddressJSON) RawJSON() string {
+	return r.raw
+}
+
 // Either `individual` or `business`.
 type CounterpartyAccountsPartyType string
 
@@ -348,6 +364,10 @@ type counterpartyCollectAccountResponseJSON struct {
 
 func (r *CounterpartyCollectAccountResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r counterpartyCollectAccountResponseJSON) RawJSON() string {
+	return r.raw
 }
 
 type CounterpartyNewParams struct {

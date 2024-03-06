@@ -121,6 +121,10 @@ func (r *AccountDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r accountDetailJSON) RawJSON() string {
+	return r.raw
+}
+
 // One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
 // account number is in a generic format.
 type AccountDetailAccountNumberType string

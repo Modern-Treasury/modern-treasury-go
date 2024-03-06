@@ -300,6 +300,10 @@ func (r *PaymentOrder) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r paymentOrderJSON) RawJSON() string {
+	return r.raw
+}
+
 func (r PaymentOrder) implementsBulkResultEntity() {}
 
 type PaymentOrderAccounting struct {
@@ -324,6 +328,10 @@ type paymentOrderAccountingJSON struct {
 
 func (r *PaymentOrderAccounting) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r paymentOrderAccountingJSON) RawJSON() string {
+	return r.raw
 }
 
 // The party that will pay the fees for the payment order. Only applies to wire
@@ -399,6 +407,10 @@ func (r *PaymentOrderForeignExchangeRate) UnmarshalJSON(data []byte) (err error)
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r paymentOrderForeignExchangeRateJSON) RawJSON() string {
+	return r.raw
+}
+
 // Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 // same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 // an overnight check rather than standard mail.
@@ -447,6 +459,10 @@ type paymentOrderReferenceNumberJSON struct {
 
 func (r *PaymentOrderReferenceNumber) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r paymentOrderReferenceNumberJSON) RawJSON() string {
+	return r.raw
 }
 
 // The type of the reference number. Referring to the vendor payment id.

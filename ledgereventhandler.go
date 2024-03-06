@@ -130,6 +130,10 @@ func (r *LedgerEventHandler) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerEventHandlerJSON) RawJSON() string {
+	return r.raw
+}
+
 type LedgerEventHandlerConditions struct {
 	// The LHS of the conditional.
 	Field string `json:"field,required"`
@@ -152,6 +156,10 @@ type ledgerEventHandlerConditionsJSON struct {
 
 func (r *LedgerEventHandlerConditions) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerEventHandlerConditionsJSON) RawJSON() string {
+	return r.raw
 }
 
 type LedgerEventHandlerLedgerTransactionTemplate struct {
@@ -182,6 +190,10 @@ func (r *LedgerEventHandlerLedgerTransactionTemplate) UnmarshalJSON(data []byte)
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerEventHandlerLedgerTransactionTemplateJSON) RawJSON() string {
+	return r.raw
+}
+
 type LedgerEventHandlerLedgerTransactionTemplateLedgerEntry struct {
 	// The LHS of the conditional.
 	Amount string `json:"amount,required"`
@@ -206,6 +218,10 @@ func (r *LedgerEventHandlerLedgerTransactionTemplateLedgerEntry) UnmarshalJSON(d
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerEventHandlerLedgerTransactionTemplateLedgerEntryJSON) RawJSON() string {
+	return r.raw
+}
+
 type LedgerEventHandlerVariable struct {
 	Query LedgerEventHandlerVariableQuery `json:"query,required"`
 	// The type of object this variable is. Currently, only "ledger_account" is
@@ -225,6 +241,10 @@ type ledgerEventHandlerVariableJSON struct {
 
 func (r *LedgerEventHandlerVariable) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerEventHandlerVariableJSON) RawJSON() string {
+	return r.raw
 }
 
 type LedgerEventHandlerVariableQuery struct {
@@ -249,6 +269,10 @@ type ledgerEventHandlerVariableQueryJSON struct {
 
 func (r *LedgerEventHandlerVariableQuery) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerEventHandlerVariableQueryJSON) RawJSON() string {
+	return r.raw
 }
 
 type LedgerEventHandlerVariableParam struct {

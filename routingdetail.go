@@ -128,6 +128,10 @@ func (r *RoutingDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r routingDetailJSON) RawJSON() string {
+	return r.raw
+}
+
 type RoutingDetailBankAddress struct {
 	ID string `json:"id,required" format:"uuid"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -169,6 +173,10 @@ type routingDetailBankAddressJSON struct {
 
 func (r *RoutingDetailBankAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r routingDetailBankAddressJSON) RawJSON() string {
+	return r.raw
 }
 
 // If the routing detail is to be used for a specific payment type this field will

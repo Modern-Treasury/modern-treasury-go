@@ -128,6 +128,10 @@ func (r *AccountCollectionFlow) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r accountCollectionFlowJSON) RawJSON() string {
+	return r.raw
+}
+
 // An account created with this flow will support payments of one of these types.
 type AccountCollectionFlowPaymentType string
 

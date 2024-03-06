@@ -106,6 +106,10 @@ func (r *Event) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r eventJSON) RawJSON() string {
+	return r.raw
+}
+
 type EventListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
 	EntityID    param.Field[string] `query:"entity_id"`

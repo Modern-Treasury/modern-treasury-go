@@ -186,6 +186,10 @@ func (r *Transaction) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r transactionJSON) RawJSON() string {
+	return r.raw
+}
+
 // The type of the transaction. Can be one of `ach`, `wire`, `check`, `rtp`,
 // `book`, or `sen`.
 type TransactionType string

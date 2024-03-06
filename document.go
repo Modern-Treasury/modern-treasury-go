@@ -123,6 +123,10 @@ func (r *Document) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r documentJSON) RawJSON() string {
+	return r.raw
+}
+
 type DocumentDocumentDetail struct {
 	ID                     string    `json:"id,required" format:"uuid"`
 	CreatedAt              time.Time `json:"created_at,required" format:"date-time"`
@@ -154,6 +158,10 @@ type documentDocumentDetailJSON struct {
 
 func (r *DocumentDocumentDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r documentDocumentDetailJSON) RawJSON() string {
+	return r.raw
 }
 
 // The type of the associated object. Currently can be one of `payment_order`,
@@ -197,6 +205,10 @@ type documentFileJSON struct {
 
 func (r *DocumentFile) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r documentFileJSON) RawJSON() string {
+	return r.raw
 }
 
 type DocumentNewParams struct {
