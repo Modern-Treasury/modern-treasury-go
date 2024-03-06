@@ -16,6 +16,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
+	"github.com/tidwall/gjson"
 )
 
 // BulkResultService contains methods and other services that help with interacting
@@ -136,7 +137,26 @@ type BulkResultEntity interface {
 }
 
 func init() {
-	apijson.RegisterUnion(reflect.TypeOf((*BulkResultEntity)(nil)).Elem(), "")
+	apijson.RegisterUnion(
+		reflect.TypeOf((*BulkResultEntity)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(PaymentOrder{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(ExpectedPayment{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(LedgerTransaction{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(BulkResultEntityBulkError{}),
+		},
+	)
 }
 
 type BulkResultEntityBulkError struct {
