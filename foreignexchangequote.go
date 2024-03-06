@@ -125,6 +125,10 @@ func (r *ForeignExchangeQuote) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r foreignExchangeQuoteJSON) RawJSON() string {
+	return r.raw
+}
+
 // The serialized rate information represented by this quote.
 type ForeignExchangeQuoteForeignExchangeRate struct {
 	// Amount in the lowest denomination of the `base_currency` to convert, often
@@ -164,6 +168,10 @@ type foreignExchangeQuoteForeignExchangeRateJSON struct {
 
 func (r *ForeignExchangeQuoteForeignExchangeRate) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r foreignExchangeQuoteForeignExchangeRateJSON) RawJSON() string {
+	return r.raw
 }
 
 type ForeignExchangeQuoteNewParams struct {

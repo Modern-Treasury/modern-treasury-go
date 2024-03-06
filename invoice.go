@@ -225,6 +225,10 @@ func (r *Invoice) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r invoiceJSON) RawJSON() string {
+	return r.raw
+}
+
 type InvoiceContactDetail struct {
 	ID                    string                                     `json:"id,required" format:"uuid"`
 	ContactIdentifier     string                                     `json:"contact_identifier,required"`
@@ -256,6 +260,10 @@ type invoiceContactDetailJSON struct {
 
 func (r *InvoiceContactDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r invoiceContactDetailJSON) RawJSON() string {
+	return r.raw
 }
 
 type InvoiceContactDetailsContactIdentifierType string
@@ -298,6 +306,10 @@ func (r *InvoiceCounterpartyBillingAddress) UnmarshalJSON(data []byte) (err erro
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r invoiceCounterpartyBillingAddressJSON) RawJSON() string {
+	return r.raw
+}
+
 // The counterparty's shipping address where physical goods should be delivered.
 type InvoiceCounterpartyShippingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -330,6 +342,10 @@ func (r *InvoiceCounterpartyShippingAddress) UnmarshalJSON(data []byte) (err err
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r invoiceCounterpartyShippingAddressJSON) RawJSON() string {
+	return r.raw
+}
+
 // The invoice issuer's business address.
 type InvoiceInvoicerAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -360,6 +376,10 @@ type invoiceInvoicerAddressJSON struct {
 
 func (r *InvoiceInvoicerAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r invoiceInvoicerAddressJSON) RawJSON() string {
+	return r.raw
 }
 
 // When opening an invoice, whether to show the embedded payment UI , automatically

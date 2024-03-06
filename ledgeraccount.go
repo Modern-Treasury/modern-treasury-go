@@ -153,6 +153,10 @@ func (r *LedgerAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountJSON) RawJSON() string {
+	return r.raw
+}
+
 // The pending, posted, and available balances for this ledger account. The posted
 // balance is the sum of all posted entries on the account. The pending balance is
 // the sum of all pending and posted entries on the account. The available balance
@@ -193,6 +197,10 @@ func (r *LedgerAccountBalances) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountBalancesJSON) RawJSON() string {
+	return r.raw
+}
+
 // The available_balance is the sum of all posted inbound entries and pending
 // outbound entries. For credit normal, available_amount = posted_credits -
 // pending_debits; for debit normal, available_amount = posted_debits -
@@ -224,6 +232,10 @@ func (r *LedgerAccountBalancesAvailableBalance) UnmarshalJSON(data []byte) (err 
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountBalancesAvailableBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The pending_balance is the sum of all pending and posted entries.
 type LedgerAccountBalancesPendingBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -252,6 +264,10 @@ func (r *LedgerAccountBalancesPendingBalance) UnmarshalJSON(data []byte) (err er
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountBalancesPendingBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The posted_balance is the sum of all posted entries.
 type LedgerAccountBalancesPostedBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -278,6 +294,10 @@ type ledgerAccountBalancesPostedBalanceJSON struct {
 
 func (r *LedgerAccountBalancesPostedBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerAccountBalancesPostedBalanceJSON) RawJSON() string {
+	return r.raw
 }
 
 // If the ledger account links to another object in Modern Treasury, the type will

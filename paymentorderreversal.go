@@ -113,6 +113,10 @@ func (r *Reversal) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r reversalJSON) RawJSON() string {
+	return r.raw
+}
+
 // The reason for the reversal.
 type ReversalReason string
 

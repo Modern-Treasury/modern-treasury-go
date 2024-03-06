@@ -117,6 +117,10 @@ func (r *PaymentReference) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r paymentReferenceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The type of reference number.
 type PaymentReferenceReferenceNumberType string
 

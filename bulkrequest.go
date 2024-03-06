@@ -124,6 +124,10 @@ func (r *BulkRequest) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r bulkRequestJSON) RawJSON() string {
+	return r.raw
+}
+
 // One of create, or update.
 type BulkRequestActionType string
 

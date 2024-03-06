@@ -136,6 +136,10 @@ func (r *LedgerAccountBalanceMonitor) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountBalanceMonitorJSON) RawJSON() string {
+	return r.raw
+}
+
 // Describes the condition that must be satisfied for the monitor to be triggered.
 type LedgerAccountBalanceMonitorAlertCondition struct {
 	// One of `available_balance_amount`, `pending_balance_amount`,
@@ -166,6 +170,10 @@ func (r *LedgerAccountBalanceMonitorAlertCondition) UnmarshalJSON(data []byte) (
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountBalanceMonitorAlertConditionJSON) RawJSON() string {
+	return r.raw
+}
+
 // The ledger account's balances and the monitor state as of the current ledger
 // account lock version.
 type LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceState struct {
@@ -191,6 +199,10 @@ type ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateJSON struct {
 
 func (r *LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceState) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateJSON) RawJSON() string {
+	return r.raw
 }
 
 type LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalances struct {
@@ -219,6 +231,10 @@ type ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesJSON str
 
 func (r *LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalances) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesJSON) RawJSON() string {
+	return r.raw
 }
 
 // The available_balance is the sum of all posted inbound entries and pending
@@ -253,6 +269,10 @@ func (r *LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesAvai
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesAvailableBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The pending_balance is the sum of all pending and posted entries.
 type LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPendingBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -282,6 +302,10 @@ func (r *LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPend
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPendingBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
 // The posted_balance is the sum of all posted entries.
 type LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPostedBalance struct {
 	Amount  int64 `json:"amount,required"`
@@ -309,6 +333,10 @@ type ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPostedBa
 
 func (r *LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPostedBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateBalancesPostedBalanceJSON) RawJSON() string {
+	return r.raw
 }
 
 type LedgerAccountBalanceMonitorNewParams struct {

@@ -154,6 +154,10 @@ func (r *InternalAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r internalAccountJSON) RawJSON() string {
+	return r.raw
+}
+
 func (r InternalAccount) implementsPaymentOrderUltimateOriginatingAccount() {}
 
 // Can be checking, savings or other.
@@ -212,6 +216,10 @@ type internalAccountPartyAddressJSON struct {
 
 func (r *InternalAccountPartyAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r internalAccountPartyAddressJSON) RawJSON() string {
+	return r.raw
 }
 
 // Either individual or business.

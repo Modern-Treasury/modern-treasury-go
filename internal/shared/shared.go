@@ -31,6 +31,10 @@ func (r *AsyncResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r asyncResponseJSON) RawJSON() string {
+	return r.raw
+}
+
 // Three-letter ISO currency code.
 type Currency string
 

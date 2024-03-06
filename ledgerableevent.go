@@ -90,6 +90,10 @@ func (r *LedgerableEvent) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerableEventJSON) RawJSON() string {
+	return r.raw
+}
+
 type LedgerableEventNewParams struct {
 	// Name of the ledgerable event.
 	Name param.Field[string] `json:"name,required"`
