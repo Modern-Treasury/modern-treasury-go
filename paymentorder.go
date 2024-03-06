@@ -20,6 +20,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
+	"github.com/tidwall/gjson"
 )
 
 // PaymentOrderService contains methods and other services that help with
@@ -559,7 +560,18 @@ type PaymentOrderUltimateOriginatingAccount interface {
 }
 
 func init() {
-	apijson.RegisterUnion(reflect.TypeOf((*PaymentOrderUltimateOriginatingAccount)(nil)).Elem(), "")
+	apijson.RegisterUnion(
+		reflect.TypeOf((*PaymentOrderUltimateOriginatingAccount)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(VirtualAccount{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(InternalAccount{}),
+		},
+	)
 }
 
 type PaymentOrderUltimateOriginatingAccountType string
