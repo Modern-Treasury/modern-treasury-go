@@ -120,6 +120,10 @@ func (r *ConnectionLegalEntity) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r connectionLegalEntityJSON) RawJSON() string {
+	return r.raw
+}
+
 // The status of the connection legal entity.
 type ConnectionLegalEntityStatus string
 

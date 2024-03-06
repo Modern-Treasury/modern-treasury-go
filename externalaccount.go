@@ -169,6 +169,10 @@ func (r *ExternalAccount) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r externalAccountJSON) RawJSON() string {
+	return r.raw
+}
+
 type ExternalAccountContactDetail struct {
 	ID                    string                                             `json:"id,required" format:"uuid"`
 	ContactIdentifier     string                                             `json:"contact_identifier,required"`
@@ -200,6 +204,10 @@ type externalAccountContactDetailJSON struct {
 
 func (r *ExternalAccountContactDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r externalAccountContactDetailJSON) RawJSON() string {
+	return r.raw
 }
 
 type ExternalAccountContactDetailsContactIdentifierType string
@@ -252,6 +260,10 @@ type externalAccountPartyAddressJSON struct {
 
 func (r *ExternalAccountPartyAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r externalAccountPartyAddressJSON) RawJSON() string {
+	return r.raw
 }
 
 // Either `individual` or `business`.

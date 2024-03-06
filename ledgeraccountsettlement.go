@@ -151,6 +151,10 @@ func (r *LedgerAccountSettlement) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountSettlementJSON) RawJSON() string {
+	return r.raw
+}
+
 // The status of the ledger account settlement. One of `processing`, `pending`,
 // `posted`, `archiving` or `archived`.
 type LedgerAccountSettlementStatus string

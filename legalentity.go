@@ -148,6 +148,10 @@ func (r *LegalEntity) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r legalEntityJSON) RawJSON() string {
+	return r.raw
+}
+
 type LegalEntityAddress struct {
 	ID string `json:"id,required" format:"uuid"`
 	// The types of this address.
@@ -196,6 +200,10 @@ func (r *LegalEntityAddress) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r legalEntityAddressJSON) RawJSON() string {
+	return r.raw
+}
+
 type LegalEntityAddressesAddressType string
 
 const (
@@ -240,6 +248,10 @@ type legalEntityIdentificationJSON struct {
 
 func (r *LegalEntityIdentification) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r legalEntityIdentificationJSON) RawJSON() string {
+	return r.raw
 }
 
 // The type of ID number.
@@ -298,6 +310,10 @@ type legalEntityPhoneNumberJSON struct {
 
 func (r *LegalEntityPhoneNumber) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r legalEntityPhoneNumberJSON) RawJSON() string {
+	return r.raw
 }
 
 type LegalEntityNewParams struct {

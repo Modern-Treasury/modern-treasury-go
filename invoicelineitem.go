@@ -144,6 +144,10 @@ func (r *InvoiceLineItem) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r invoiceLineItemJSON) RawJSON() string {
+	return r.raw
+}
+
 type InvoiceLineItemNewParams struct {
 	// The name of the line item, typically a product or SKU name.
 	Name param.Field[string] `json:"name,required"`

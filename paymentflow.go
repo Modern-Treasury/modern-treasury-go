@@ -163,6 +163,10 @@ func (r *PaymentFlow) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r paymentFlowJSON) RawJSON() string {
+	return r.raw
+}
+
 // Describes the direction money is flowing in the transaction. Can only be
 // `debit`. A `debit` pulls money from someone else's account to your own.
 type PaymentFlowDirection string

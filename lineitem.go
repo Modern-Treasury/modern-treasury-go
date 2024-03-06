@@ -127,6 +127,10 @@ func (r *LineItem) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r lineItemJSON) RawJSON() string {
+	return r.raw
+}
+
 type LineItemAccounting struct {
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
@@ -149,6 +153,10 @@ type lineItemAccountingJSON struct {
 
 func (r *LineItemAccounting) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r lineItemAccountingJSON) RawJSON() string {
+	return r.raw
 }
 
 // One of `payment_orders` or `expected_payments`.

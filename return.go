@@ -160,6 +160,10 @@ func (r *ReturnObject) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r returnObjectJSON) RawJSON() string {
+	return r.raw
+}
+
 // The return code. For ACH returns, this is the required ACH return code.
 type ReturnObjectCode string
 
@@ -250,6 +254,10 @@ type returnObjectReferenceNumberJSON struct {
 
 func (r *ReturnObjectReferenceNumber) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r returnObjectReferenceNumberJSON) RawJSON() string {
+	return r.raw
 }
 
 // The type of the reference number. Referring to the vendor payment id.

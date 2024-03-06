@@ -191,6 +191,10 @@ func (r *ExpectedPayment) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r expectedPaymentJSON) RawJSON() string {
+	return r.raw
+}
+
 func (r ExpectedPayment) implementsBulkResultEntity() {}
 
 // One of manual if this expected payment was manually reconciled in the dashboard,

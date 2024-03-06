@@ -131,6 +131,10 @@ func (r *PaperItem) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r paperItemJSON) RawJSON() string {
+	return r.raw
+}
+
 // The current status of the paper item. One of `pending`, `completed`, or
 // `returned`.
 type PaperItemStatus string

@@ -178,6 +178,10 @@ func (r *IncomingPaymentDetail) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r incomingPaymentDetailJSON) RawJSON() string {
+	return r.raw
+}
+
 // The type of the originating account number for the incoming payment detail.
 type IncomingPaymentDetailOriginatingAccountNumberType string
 

@@ -21,3 +21,7 @@ type pingResponseJSON struct {
 func (r *PingResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
+
+func (r pingResponseJSON) RawJSON() string {
+	return r.raw
+}

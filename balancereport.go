@@ -125,6 +125,10 @@ func (r *BalanceReport) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r balanceReportJSON) RawJSON() string {
+	return r.raw
+}
+
 // The specific type of balance report. One of `intraday`, `previous_day`,
 // `real_time`, or `other`.
 type BalanceReportBalanceReportType string
@@ -182,6 +186,10 @@ type balanceReportBalanceJSON struct {
 
 func (r *BalanceReportBalance) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r balanceReportBalanceJSON) RawJSON() string {
+	return r.raw
 }
 
 // The specific type of balance reported. One of `opening_ledger`,

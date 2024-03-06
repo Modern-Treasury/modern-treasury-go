@@ -161,6 +161,10 @@ func (r *LedgerAccountPayout) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
+func (r ledgerAccountPayoutJSON) RawJSON() string {
+	return r.raw
+}
+
 // The status of the ledger account payout. One of `processing`, `pending`,
 // `posted`, `archiving`, `archived`.
 type LedgerAccountPayoutStatus string
