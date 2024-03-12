@@ -34,6 +34,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 			FirstName:            moderntreasury.F("string"),
 			LastName:             moderntreasury.F("string"),
 			DateOfBirth:          moderntreasury.F(time.Now()),
+			DateFormed:           moderntreasury.F(time.Now()),
 			BusinessName:         moderntreasury.F("string"),
 			DoingBusinessAsNames: moderntreasury.F([]string{"string", "string", "string"}),
 			LegalStructure:       moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalStructureCorporation),
