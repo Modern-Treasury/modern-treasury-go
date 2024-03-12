@@ -153,7 +153,9 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	Addresses param.Field[[]ConnectionLegalEntityNewParamsLegalEntityAddress] `json:"addresses"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
-	// An individual's data of birth (YYYY-MM-DD).
+	// A business's formation date (YYYY-MM-DD).
+	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
+	// An individual's date of birth (YYYY-MM-DD).
 	DateOfBirth          param.Field[time.Time] `json:"date_of_birth" format:"date"`
 	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
 	// The entity's primary email.

@@ -95,7 +95,9 @@ type LegalEntityAssociationAssociatedLegalEntity struct {
 	// The business's legal business name.
 	BusinessName string    `json:"business_name,nullable"`
 	CreatedAt    time.Time `json:"created_at" format:"date-time"`
-	// An individual's data of birth (YYYY-MM-DD).
+	// A business's formation date (YYYY-MM-DD).
+	DateFormed time.Time `json:"date_formed,nullable" format:"date"`
+	// An individual's date of birth (YYYY-MM-DD).
 	DateOfBirth          time.Time `json:"date_of_birth,nullable" format:"date"`
 	DiscardedAt          time.Time `json:"discarded_at,nullable" format:"date-time"`
 	DoingBusinessAsNames []string  `json:"doing_business_as_names"`
@@ -132,6 +134,7 @@ type legalEntityAssociationAssociatedLegalEntityJSON struct {
 	Addresses            apijson.Field
 	BusinessName         apijson.Field
 	CreatedAt            apijson.Field
+	DateFormed           apijson.Field
 	DateOfBirth          apijson.Field
 	DiscardedAt          apijson.Field
 	DoingBusinessAsNames apijson.Field
@@ -367,7 +370,9 @@ type LegalEntityAssociationNewParamsAssociatedLegalEntity struct {
 	Addresses param.Field[[]LegalEntityAssociationNewParamsAssociatedLegalEntityAddress] `json:"addresses"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
-	// An individual's data of birth (YYYY-MM-DD).
+	// A business's formation date (YYYY-MM-DD).
+	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
+	// An individual's date of birth (YYYY-MM-DD).
 	DateOfBirth          param.Field[time.Time] `json:"date_of_birth" format:"date"`
 	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
 	// The entity's primary email.

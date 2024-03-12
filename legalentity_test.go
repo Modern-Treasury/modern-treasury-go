@@ -55,6 +55,7 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 			Country:      moderntreasury.F("string"),
 		}}),
 		BusinessName:         moderntreasury.F("string"),
+		DateFormed:           moderntreasury.F(time.Now()),
 		DateOfBirth:          moderntreasury.F(time.Now()),
 		DoingBusinessAsNames: moderntreasury.F([]string{"string", "string", "string"}),
 		Email:                moderntreasury.F("string"),
@@ -138,6 +139,7 @@ func TestLegalEntityUpdateWithOptionalParams(t *testing.T) {
 		"string",
 		moderntreasury.LegalEntityUpdateParams{
 			BusinessName:         moderntreasury.F("string"),
+			DateFormed:           moderntreasury.F(time.Now()),
 			DateOfBirth:          moderntreasury.F(time.Now()),
 			DoingBusinessAsNames: moderntreasury.F([]string{"string", "string", "string"}),
 			Email:                moderntreasury.F("string"),
