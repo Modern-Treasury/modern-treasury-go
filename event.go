@@ -71,7 +71,7 @@ type Event struct {
 	// The body of the event.
 	Data map[string]interface{} `json:"data,required"`
 	// The ID of the entity for the event.
-	EntityID string `json:"entity_id,required"`
+	EntityID string `json:"entity_id,required" format:"uuid"`
 	// The name of the event.
 	EventName string `json:"event_name,required"`
 	// The time of the event.
