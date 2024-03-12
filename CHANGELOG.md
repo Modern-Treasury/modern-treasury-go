@@ -1,5 +1,31 @@
 # Changelog
 
+## 2.9.0 (2024-03-12)
+
+Full Changelog: [v2.8.0...v2.9.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.8.0...v2.9.0)
+
+### Features
+
+* **api:** add legal_structure enum member ([#173](https://github.com/Modern-Treasury/modern-treasury-go/issues/173)) ([a587b8b](https://github.com/Modern-Treasury/modern-treasury-go/commit/a587b8bbe87231ddadd665fb6766145c56b7ea7f))
+* implement public RawJSON of response structs ([#175](https://github.com/Modern-Treasury/modern-treasury-go/issues/175)) ([856c7db](https://github.com/Modern-Treasury/modern-treasury-go/commit/856c7dbd40a0091848b74ba762dcbffaba1d8667))
+
+
+### Bug Fixes
+
+* **client:** don't include ? in path unless necessary ([#180](https://github.com/Modern-Treasury/modern-treasury-go/issues/180)) ([d07c304](https://github.com/Modern-Treasury/modern-treasury-go/commit/d07c30429a86cdb397666a9832e13999b12da344))
+* fix String() behavior of param.Field ([#179](https://github.com/Modern-Treasury/modern-treasury-go/issues/179)) ([9fd583a](https://github.com/Modern-Treasury/modern-treasury-go/commit/9fd583a91d7ef10588edee405bd0d5d86a339c38))
+* fix union deserialization for multiple objects ([#176](https://github.com/Modern-Treasury/modern-treasury-go/issues/176)) ([8e03bd0](https://github.com/Modern-Treasury/modern-treasury-go/commit/8e03bd0e7fbfc78b0878b578c1081ed873a2ac02))
+
+
+### Chores
+
+* **internal:** improve union deserialization logic ([#177](https://github.com/Modern-Treasury/modern-treasury-go/issues/177)) ([29b1769](https://github.com/Modern-Treasury/modern-treasury-go/commit/29b17693e1d4a31aba478c92157c4283227ea2d6))
+
+
+### Documentation
+
+* **contributing:** add a CONTRIBUTING.md ([#178](https://github.com/Modern-Treasury/modern-treasury-go/issues/178)) ([714b7f9](https://github.com/Modern-Treasury/modern-treasury-go/commit/714b7f9330e5aaaf72e8e456307e59384949ea9b))
+
 ## 2.8.0 (2024-02-29)
 
 Full Changelog: [v2.7.0...v2.8.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.7.0...v2.8.0)
