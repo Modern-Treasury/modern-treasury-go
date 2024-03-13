@@ -4,11 +4,13 @@ package moderntreasury_test
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"testing"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
@@ -18,6 +20,29 @@ type closureTransport struct {
 
 func (t *closureTransport) RoundTrip(req *http.Request) (*http.Response, error) {
 	return t.fn(req)
+}
+
+func TestUserAgentHeader(t *testing.T) {
+	var userAgent string
+	client := moderntreasury.NewClient(
+		option.WithHTTPClient(&http.Client{
+			Transport: &closureTransport{
+				fn: func(req *http.Request) (*http.Response, error) {
+					userAgent = req.Header.Get("User-Agent")
+					return &http.Response{
+						StatusCode: http.StatusOK,
+					}, nil
+				},
+			},
+		}),
+	)
+	client.ExternalAccounts.New(context.Background(), moderntreasury.ExternalAccountNewParams{
+		CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),
+		Name:           moderntreasury.F("my bank"),
+	})
+	if userAgent != fmt.Sprintf("ModernTreasury/Go %s", internal.PackageVersion) {
+		t.Errorf("Expected User-Agent to be correct, but got: %#v", userAgent)
+	}
 }
 
 func TestRetryAfter(t *testing.T) {
