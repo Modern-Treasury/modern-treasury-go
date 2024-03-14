@@ -166,6 +166,8 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	Identifications param.Field[[]ConnectionLegalEntityNewParamsLegalEntityIdentification] `json:"identifications"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
+	// The legal entity associations and its associated legal entities.
+	LegalEntityAssociations param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociation] `json:"legal_entity_associations"`
 	// The type of legal entity.
 	LegalEntityType param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityType] `json:"legal_entity_type"`
 	// The business's legal structure.
@@ -243,6 +245,157 @@ const (
 	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeUsItin    ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "us_itin"
 	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeUsSsn     ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "us_ssn"
 )
+
+type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociation struct {
+	RelationshipTypes param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType] `json:"relationship_types,required"`
+	// The associated legal entity.
+	AssociatedLegalEntity param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntity] `json:"associated_legal_entity"`
+	// The ID of the associated legal entity.
+	AssociatedLegalEntityID param.Field[string] `json:"associated_legal_entity_id"`
+	// The associated entity's ownership percentage iff they are a beneficial owner.
+	OwnershipPercentage param.Field[int64] `json:"ownership_percentage"`
+	// The job title of the associated entity at the associator entity.
+	Title param.Field[string] `json:"title"`
+}
+
+func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociation) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A list of relationship types for how the associated entity relates to associator
+// entity.
+type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType string
+
+const (
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType = "beneficial_owner"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeControlPerson   ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType = "control_person"
+)
+
+// The associated legal entity.
+type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntity struct {
+	// A list of addresses for the entity.
+	Addresses param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddress] `json:"addresses"`
+	// The business's legal business name.
+	BusinessName param.Field[string] `json:"business_name"`
+	// A business's formation date (YYYY-MM-DD).
+	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
+	// An individual's date of birth (YYYY-MM-DD).
+	DateOfBirth          param.Field[time.Time] `json:"date_of_birth" format:"date"`
+	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
+	// The entity's primary email.
+	Email param.Field[string] `json:"email"`
+	// An individual's first name.
+	FirstName param.Field[string] `json:"first_name"`
+	// A list of identifications for the legal entity.
+	Identifications param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentification] `json:"identifications"`
+	// An individual's last name.
+	LastName param.Field[string] `json:"last_name"`
+	// The type of legal entity.
+	LegalEntityType param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType] `json:"legal_entity_type"`
+	// The business's legal structure.
+	LegalStructure param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure] `json:"legal_structure"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata     param.Field[map[string]string]                                                                                  `json:"metadata"`
+	PhoneNumbers param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityPhoneNumber] `json:"phone_numbers"`
+	// The entity's primary website URL.
+	Website param.Field[string] `json:"website"`
+}
+
+func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntity) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country param.Field[string] `json:"country,required"`
+	Line1   param.Field[string] `json:"line1,required"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality,required"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code,required"`
+	// Region or State.
+	Region param.Field[string] `json:"region,required"`
+	// The types of this address.
+	AddressTypes param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType] `json:"address_types"`
+	Line2        param.Field[string]                                                                                                      `json:"line2"`
+}
+
+func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType string
+
+const (
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeBusiness    ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "business"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeMailing     ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "mailing"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeOther       ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "other"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypePoBox       ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "po_box"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeResidential ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "residential"
+)
+
+type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentification struct {
+	// The ID number of identification document.
+	IDNumber param.Field[string] `json:"id_number,required"`
+	// The type of ID number.
+	IDType param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType] `json:"id_type,required"`
+	// The ISO 3166-1 alpha-2 country code of the country that issued the
+	// identification
+	IssuingCountry param.Field[string] `json:"issuing_country"`
+}
+
+func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentification) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The type of ID number.
+type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType string
+
+const (
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeArCuil    ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "ar_cuil"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeArCuit    ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "ar_cuit"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeBrCnpj    ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "br_cnpj"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeBrCpf     ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "br_cpf"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeClNut     ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "cl_nut"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeCoCedulas ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "co_cedulas"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeCoNit     ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "co_nit"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeHnID      ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "hn_id"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeHnRtn     ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "hn_rtn"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypePassport  ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "passport"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsEin     ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "us_ein"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsItin    ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "us_itin"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsSsn     ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "us_ssn"
+)
+
+// The type of legal entity.
+type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType string
+
+const (
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeBusiness   ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType = "business"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeIndividual ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType = "individual"
+)
+
+// The business's legal structure.
+type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure string
+
+const (
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureCorporation        ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "corporation"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureLlc                ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "llc"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureNonProfit          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "non_profit"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructurePartnership        ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "partnership"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureSoleProprietorship ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "sole_proprietorship"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureTrust              ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "trust"
+)
+
+// A list of phone numbers in E.164 format.
+type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityPhoneNumber struct {
+	PhoneNumber param.Field[string] `json:"phone_number"`
+}
+
+func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityPhoneNumber) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
 
 // The type of legal entity.
 type ConnectionLegalEntityNewParamsLegalEntityLegalEntityType string
