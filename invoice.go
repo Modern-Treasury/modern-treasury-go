@@ -811,8 +811,23 @@ const (
 )
 
 type InvoiceListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor"`
-	PerPage     param.Field[int64]  `query:"per_page"`
+	AfterCursor    param.Field[string] `query:"after_cursor"`
+	CounterpartyID param.Field[string] `query:"counterparty_id"`
+	// An inclusive upper bound for searching due_date
+	DueDateEnd param.Field[time.Time] `query:"due_date_end" format:"date"`
+	// An inclusive lower bound for searching due_date
+	DueDateStart      param.Field[time.Time] `query:"due_date_start" format:"date"`
+	ExpectedPaymentID param.Field[string]    `query:"expected_payment_id"`
+	// For example, if you want to query for records with metadata key `Type` and value
+	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
+	// parameters.
+	Metadata param.Field[map[string]string] `query:"metadata"`
+	// A unique record number assigned to each invoice that is issued.
+	Number               param.Field[string]                  `query:"number"`
+	OriginatingAccountID param.Field[string]                  `query:"originating_account_id"`
+	PaymentOrderID       param.Field[string]                  `query:"payment_order_id"`
+	PerPage              param.Field[int64]                   `query:"per_page"`
+	Status               param.Field[InvoiceListParamsStatus] `query:"status"`
 }
 
 // URLQuery serializes [InvoiceListParams]'s query parameters as `url.Values`.
@@ -822,3 +837,14 @@ func (r InvoiceListParams) URLQuery() (v url.Values) {
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
 	})
 }
+
+type InvoiceListParamsStatus string
+
+const (
+	InvoiceListParamsStatusDraft          InvoiceListParamsStatus = "draft"
+	InvoiceListParamsStatusPaid           InvoiceListParamsStatus = "paid"
+	InvoiceListParamsStatusPartiallyPaid  InvoiceListParamsStatus = "partially_paid"
+	InvoiceListParamsStatusPaymentPending InvoiceListParamsStatus = "payment_pending"
+	InvoiceListParamsStatusUnpaid         InvoiceListParamsStatus = "unpaid"
+	InvoiceListParamsStatusVoided         InvoiceListParamsStatus = "voided"
+)

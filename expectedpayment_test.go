@@ -147,12 +147,18 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 			"foo":    "bar",
 			"modern": "treasury",
 		}),
-		ReconciliationFilters:       moderntreasury.F[any](map[string]interface{}{}),
-		ReconciliationGroups:        moderntreasury.F[any](map[string]interface{}{}),
-		ReconciliationRuleVariables: moderntreasury.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}, map[string]interface{}{}}),
-		RemittanceInformation:       moderntreasury.F("string"),
-		StatementDescriptor:         moderntreasury.F("string"),
-		Type:                        moderntreasury.F(moderntreasury.ExpectedPaymentTypeACH),
+		ReconciliationFilters: moderntreasury.F[any](map[string]interface{}{}),
+		ReconciliationGroups:  moderntreasury.F[any](map[string]interface{}{}),
+		ReconciliationRuleVariables: moderntreasury.F([]map[string]string{{
+			"foo": "string",
+		}, {
+			"foo": "string",
+		}, {
+			"foo": "string",
+		}}),
+		RemittanceInformation: moderntreasury.F("string"),
+		StatementDescriptor:   moderntreasury.F("string"),
+		Type:                  moderntreasury.F(moderntreasury.ExpectedPaymentTypeACH),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -217,12 +223,18 @@ func TestExpectedPaymentUpdateWithOptionalParams(t *testing.T) {
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			ReconciliationFilters:       moderntreasury.F[any](map[string]interface{}{}),
-			ReconciliationGroups:        moderntreasury.F[any](map[string]interface{}{}),
-			ReconciliationRuleVariables: moderntreasury.F([]interface{}{map[string]interface{}{}, map[string]interface{}{}, map[string]interface{}{}}),
-			RemittanceInformation:       moderntreasury.F("string"),
-			StatementDescriptor:         moderntreasury.F("string"),
-			Type:                        moderntreasury.F(moderntreasury.ExpectedPaymentTypeACH),
+			ReconciliationFilters: moderntreasury.F[any](map[string]interface{}{}),
+			ReconciliationGroups:  moderntreasury.F[any](map[string]interface{}{}),
+			ReconciliationRuleVariables: moderntreasury.F([]map[string]string{{
+				"foo": "string",
+			}, {
+				"foo": "string",
+			}, {
+				"foo": "string",
+			}}),
+			RemittanceInformation: moderntreasury.F("string"),
+			StatementDescriptor:   moderntreasury.F("string"),
+			Type:                  moderntreasury.F(moderntreasury.ExpectedPaymentTypeACH),
 		},
 	)
 	if err != nil {

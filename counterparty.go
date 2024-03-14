@@ -533,6 +533,7 @@ func (r CounterpartyNewParamsAccountsLedgerAccount) MarshalJSON() (data []byte, 
 type CounterpartyNewParamsAccountsLedgerAccountLedgerableType string
 
 const (
+	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeCounterparty    CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "counterparty"
 	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "external_account"
 	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeInternalAccount CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "internal_account"
 	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeVirtualAccount  CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "virtual_account"
@@ -662,6 +663,8 @@ type CounterpartyNewParamsLegalEntity struct {
 	Identifications param.Field[[]CounterpartyNewParamsLegalEntityIdentification] `json:"identifications"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
+	// The legal entity associations and its associated legal entities.
+	LegalEntityAssociations param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociation] `json:"legal_entity_associations"`
 	// The business's legal structure.
 	LegalStructure param.Field[CounterpartyNewParamsLegalEntityLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -745,6 +748,157 @@ const (
 	CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsItin    CounterpartyNewParamsLegalEntityIdentificationsIDType = "us_itin"
 	CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsSsn     CounterpartyNewParamsLegalEntityIdentificationsIDType = "us_ssn"
 )
+
+type CounterpartyNewParamsLegalEntityLegalEntityAssociation struct {
+	RelationshipTypes param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType] `json:"relationship_types,required"`
+	// The associated legal entity.
+	AssociatedLegalEntity param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntity] `json:"associated_legal_entity"`
+	// The ID of the associated legal entity.
+	AssociatedLegalEntityID param.Field[string] `json:"associated_legal_entity_id"`
+	// The associated entity's ownership percentage iff they are a beneficial owner.
+	OwnershipPercentage param.Field[int64] `json:"ownership_percentage"`
+	// The job title of the associated entity at the associator entity.
+	Title param.Field[string] `json:"title"`
+}
+
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociation) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A list of relationship types for how the associated entity relates to associator
+// entity.
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType string
+
+const (
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType = "beneficial_owner"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeControlPerson   CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType = "control_person"
+)
+
+// The associated legal entity.
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntity struct {
+	// A list of addresses for the entity.
+	Addresses param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddress] `json:"addresses"`
+	// The business's legal business name.
+	BusinessName param.Field[string] `json:"business_name"`
+	// A business's formation date (YYYY-MM-DD).
+	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
+	// An individual's date of birth (YYYY-MM-DD).
+	DateOfBirth          param.Field[time.Time] `json:"date_of_birth" format:"date"`
+	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
+	// The entity's primary email.
+	Email param.Field[string] `json:"email"`
+	// An individual's first name.
+	FirstName param.Field[string] `json:"first_name"`
+	// A list of identifications for the legal entity.
+	Identifications param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentification] `json:"identifications"`
+	// An individual's last name.
+	LastName param.Field[string] `json:"last_name"`
+	// The type of legal entity.
+	LegalEntityType param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType] `json:"legal_entity_type"`
+	// The business's legal structure.
+	LegalStructure param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure] `json:"legal_structure"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata     param.Field[map[string]string]                                                                         `json:"metadata"`
+	PhoneNumbers param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityPhoneNumber] `json:"phone_numbers"`
+	// The entity's primary website URL.
+	Website param.Field[string] `json:"website"`
+}
+
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntity) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country param.Field[string] `json:"country,required"`
+	Line1   param.Field[string] `json:"line1,required"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality,required"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code,required"`
+	// Region or State.
+	Region param.Field[string] `json:"region,required"`
+	// The types of this address.
+	AddressTypes param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType] `json:"address_types"`
+	Line2        param.Field[string]                                                                                             `json:"line2"`
+}
+
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType string
+
+const (
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeBusiness    CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "business"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeMailing     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "mailing"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeOther       CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "other"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypePoBox       CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "po_box"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeResidential CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "residential"
+)
+
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentification struct {
+	// The ID number of identification document.
+	IDNumber param.Field[string] `json:"id_number,required"`
+	// The type of ID number.
+	IDType param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType] `json:"id_type,required"`
+	// The ISO 3166-1 alpha-2 country code of the country that issued the
+	// identification
+	IssuingCountry param.Field[string] `json:"issuing_country"`
+}
+
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentification) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The type of ID number.
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType string
+
+const (
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeArCuil    CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "ar_cuil"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeArCuit    CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "ar_cuit"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeBrCnpj    CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "br_cnpj"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeBrCpf     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "br_cpf"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeClNut     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "cl_nut"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeCoCedulas CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "co_cedulas"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeCoNit     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "co_nit"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeHnID      CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "hn_id"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeHnRtn     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "hn_rtn"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypePassport  CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "passport"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsEin     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "us_ein"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsItin    CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "us_itin"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsSsn     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "us_ssn"
+)
+
+// The type of legal entity.
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType string
+
+const (
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeBusiness   CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType = "business"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeIndividual CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType = "individual"
+)
+
+// The business's legal structure.
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure string
+
+const (
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureCorporation        CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "corporation"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureLlc                CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "llc"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureNonProfit          CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "non_profit"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructurePartnership        CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "partnership"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureSoleProprietorship CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "sole_proprietorship"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureTrust              CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "trust"
+)
+
+// A list of phone numbers in E.164 format.
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityPhoneNumber struct {
+	PhoneNumber param.Field[string] `json:"phone_number"`
+}
+
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityPhoneNumber) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
 
 // The business's legal structure.
 type CounterpartyNewParamsLegalEntityLegalStructure string

@@ -261,6 +261,7 @@ func (r VirtualAccountNewParamsLedgerAccount) MarshalJSON() (data []byte, err er
 type VirtualAccountNewParamsLedgerAccountLedgerableType string
 
 const (
+	VirtualAccountNewParamsLedgerAccountLedgerableTypeCounterparty    VirtualAccountNewParamsLedgerAccountLedgerableType = "counterparty"
 	VirtualAccountNewParamsLedgerAccountLedgerableTypeExternalAccount VirtualAccountNewParamsLedgerAccountLedgerableType = "external_account"
 	VirtualAccountNewParamsLedgerAccountLedgerableTypeInternalAccount VirtualAccountNewParamsLedgerAccountLedgerableType = "internal_account"
 	VirtualAccountNewParamsLedgerAccountLedgerableTypeVirtualAccount  VirtualAccountNewParamsLedgerAccountLedgerableType = "virtual_account"
