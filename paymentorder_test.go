@@ -230,7 +230,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				CurrencyExponent:         moderntreasury.F(int64(0)),
 				LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 				LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				LedgerableType:           moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount),
+				LedgerableType:           moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
 					"foo":    "bar",
@@ -416,7 +416,7 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 					CurrencyExponent:         moderntreasury.F(int64(0)),
 					LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 					LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-					LedgerableType:           moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount),
+					LedgerableType:           moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty),
 					Metadata: moderntreasury.F(map[string]string{
 						"key":    "value",
 						"foo":    "bar",
@@ -697,7 +697,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 				CurrencyExponent:         moderntreasury.F(int64(0)),
 				LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 				LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				LedgerableType:           moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount),
+				LedgerableType:           moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
 					"foo":    "bar",

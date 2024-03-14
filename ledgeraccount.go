@@ -306,6 +306,7 @@ func (r ledgerAccountBalancesPostedBalanceJSON) RawJSON() string {
 type LedgerAccountLedgerableType string
 
 const (
+	LedgerAccountLedgerableTypeCounterparty    LedgerAccountLedgerableType = "counterparty"
 	LedgerAccountLedgerableTypeExternalAccount LedgerAccountLedgerableType = "external_account"
 	LedgerAccountLedgerableTypeInternalAccount LedgerAccountLedgerableType = "internal_account"
 	LedgerAccountLedgerableTypeVirtualAccount  LedgerAccountLedgerableType = "virtual_account"
@@ -349,6 +350,7 @@ func (r LedgerAccountNewParams) MarshalJSON() (data []byte, err error) {
 type LedgerAccountNewParamsLedgerableType string
 
 const (
+	LedgerAccountNewParamsLedgerableTypeCounterparty    LedgerAccountNewParamsLedgerableType = "counterparty"
 	LedgerAccountNewParamsLedgerableTypeExternalAccount LedgerAccountNewParamsLedgerableType = "external_account"
 	LedgerAccountNewParamsLedgerableTypeInternalAccount LedgerAccountNewParamsLedgerableType = "internal_account"
 	LedgerAccountNewParamsLedgerableTypeVirtualAccount  LedgerAccountNewParamsLedgerableType = "virtual_account"

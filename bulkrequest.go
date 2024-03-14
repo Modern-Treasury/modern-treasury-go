@@ -633,6 +633,7 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAcco
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType string
 
 const (
+	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeCounterparty    BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType = "counterparty"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeExternalAccount BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType = "external_account"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeInternalAccount BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType = "internal_account"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType = "virtual_account"
@@ -774,7 +775,7 @@ type BulkRequestNewParamsResourcesExpectedPaymentCreateRequest struct {
 	// The reconciliation groups you have for this payment.
 	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
 	// An array of reconciliation rule variables for this payment.
-	ReconciliationRuleVariables param.Field[[]interface{}] `json:"reconciliation_rule_variables"`
+	ReconciliationRuleVariables param.Field[[]map[string]string] `json:"reconciliation_rule_variables"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -1353,6 +1354,7 @@ func (r BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccount) Marsha
 type BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType string
 
 const (
+	BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeCounterparty    BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType = "counterparty"
 	BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeExternalAccount BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType = "external_account"
 	BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeInternalAccount BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType = "internal_account"
 	BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType = "virtual_account"
@@ -1503,7 +1505,7 @@ type BulkRequestNewParamsResourceExpectedPaymentUpdateRequestWithID struct {
 	// The reconciliation groups you have for this payment.
 	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
 	// An array of reconciliation rule variables for this payment.
-	ReconciliationRuleVariables param.Field[[]interface{}] `json:"reconciliation_rule_variables"`
+	ReconciliationRuleVariables param.Field[[]map[string]string] `json:"reconciliation_rule_variables"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.

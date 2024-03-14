@@ -132,7 +132,7 @@ type ExpectedPayment struct {
 	// is unreconciled.
 	ReconciliationMethod ExpectedPaymentReconciliationMethod `json:"reconciliation_method,required,nullable"`
 	// An array of reconciliation rule variables for this payment.
-	ReconciliationRuleVariables []interface{} `json:"reconciliation_rule_variables,required,nullable"`
+	ReconciliationRuleVariables []map[string]string `json:"reconciliation_rule_variables,required,nullable"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -295,7 +295,7 @@ type ExpectedPaymentNewParams struct {
 	// The reconciliation groups you have for this payment.
 	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
 	// An array of reconciliation rule variables for this payment.
-	ReconciliationRuleVariables param.Field[[]interface{}] `json:"reconciliation_rule_variables"`
+	ReconciliationRuleVariables param.Field[[]map[string]string] `json:"reconciliation_rule_variables"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -465,7 +465,7 @@ type ExpectedPaymentUpdateParams struct {
 	// The reconciliation groups you have for this payment.
 	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
 	// An array of reconciliation rule variables for this payment.
-	ReconciliationRuleVariables param.Field[[]interface{}] `json:"reconciliation_rule_variables"`
+	ReconciliationRuleVariables param.Field[[]map[string]string] `json:"reconciliation_rule_variables"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.

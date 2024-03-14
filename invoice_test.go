@@ -243,8 +243,19 @@ func TestInvoiceListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Invoices.List(context.TODO(), moderntreasury.InvoiceListParams{
-		AfterCursor: moderntreasury.F("string"),
-		PerPage:     moderntreasury.F(int64(0)),
+		AfterCursor:       moderntreasury.F("string"),
+		CounterpartyID:    moderntreasury.F("string"),
+		DueDateEnd:        moderntreasury.F(time.Now()),
+		DueDateStart:      moderntreasury.F(time.Now()),
+		ExpectedPaymentID: moderntreasury.F("string"),
+		Metadata: moderntreasury.F(map[string]string{
+			"foo": "string",
+		}),
+		Number:               moderntreasury.F("string"),
+		OriginatingAccountID: moderntreasury.F("string"),
+		PaymentOrderID:       moderntreasury.F("string"),
+		PerPage:              moderntreasury.F(int64(0)),
+		Status:               moderntreasury.F(moderntreasury.InvoiceListParamsStatusDraft),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
