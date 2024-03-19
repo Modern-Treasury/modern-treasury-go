@@ -194,6 +194,14 @@ const (
 	IncomingPaymentDetailOriginatingAccountNumberTypeWalletAddress IncomingPaymentDetailOriginatingAccountNumberType = "wallet_address"
 )
 
+func (r IncomingPaymentDetailOriginatingAccountNumberType) IsKnown() bool {
+	switch r {
+	case IncomingPaymentDetailOriginatingAccountNumberTypeClabe, IncomingPaymentDetailOriginatingAccountNumberTypeHkNumber, IncomingPaymentDetailOriginatingAccountNumberTypeIban, IncomingPaymentDetailOriginatingAccountNumberTypeOther, IncomingPaymentDetailOriginatingAccountNumberTypePan, IncomingPaymentDetailOriginatingAccountNumberTypeWalletAddress:
+		return true
+	}
+	return false
+}
+
 // The type of the originating routing number for the incoming payment detail.
 type IncomingPaymentDetailOriginatingRoutingNumberType string
 
@@ -219,6 +227,14 @@ const (
 	IncomingPaymentDetailOriginatingRoutingNumberTypeSwift                   IncomingPaymentDetailOriginatingRoutingNumberType = "swift"
 )
 
+func (r IncomingPaymentDetailOriginatingRoutingNumberType) IsKnown() bool {
+	switch r {
+	case IncomingPaymentDetailOriginatingRoutingNumberTypeAba, IncomingPaymentDetailOriginatingRoutingNumberTypeAuBsb, IncomingPaymentDetailOriginatingRoutingNumberTypeBrCodigo, IncomingPaymentDetailOriginatingRoutingNumberTypeCaCpa, IncomingPaymentDetailOriginatingRoutingNumberTypeChips, IncomingPaymentDetailOriginatingRoutingNumberTypeCnaps, IncomingPaymentDetailOriginatingRoutingNumberTypeDkInterbankClearingCode, IncomingPaymentDetailOriginatingRoutingNumberTypeGBSortCode, IncomingPaymentDetailOriginatingRoutingNumberTypeHkInterbankClearingCode, IncomingPaymentDetailOriginatingRoutingNumberTypeHuInterbankClearingCode, IncomingPaymentDetailOriginatingRoutingNumberTypeIDSknbiCode, IncomingPaymentDetailOriginatingRoutingNumberTypeInIfsc, IncomingPaymentDetailOriginatingRoutingNumberTypeJpZenginCode, IncomingPaymentDetailOriginatingRoutingNumberTypeMxBankIdentifier, IncomingPaymentDetailOriginatingRoutingNumberTypeMyBranchCode, IncomingPaymentDetailOriginatingRoutingNumberTypeNzNationalClearingCode, IncomingPaymentDetailOriginatingRoutingNumberTypePlNationalClearingCode, IncomingPaymentDetailOriginatingRoutingNumberTypeSeBankgiroClearingCode, IncomingPaymentDetailOriginatingRoutingNumberTypeSwift:
+		return true
+	}
+	return false
+}
+
 // The current status of the incoming payment order. One of `pending`, `completed`,
 // or `returned`.
 type IncomingPaymentDetailStatus string
@@ -228,6 +244,14 @@ const (
 	IncomingPaymentDetailStatusPending   IncomingPaymentDetailStatus = "pending"
 	IncomingPaymentDetailStatusReturned  IncomingPaymentDetailStatus = "returned"
 )
+
+func (r IncomingPaymentDetailStatus) IsKnown() bool {
+	switch r {
+	case IncomingPaymentDetailStatusCompleted, IncomingPaymentDetailStatusPending, IncomingPaymentDetailStatusReturned:
+		return true
+	}
+	return false
+}
 
 // One of: `ach`, `book`, `check`, `eft`, `interac`, `rtp`, `sepa`, `signet`, or
 // `wire`.
@@ -244,6 +268,14 @@ const (
 	IncomingPaymentDetailTypeSignet  IncomingPaymentDetailType = "signet"
 	IncomingPaymentDetailTypeWire    IncomingPaymentDetailType = "wire"
 )
+
+func (r IncomingPaymentDetailType) IsKnown() bool {
+	switch r {
+	case IncomingPaymentDetailTypeACH, IncomingPaymentDetailTypeBook, IncomingPaymentDetailTypeCheck, IncomingPaymentDetailTypeEft, IncomingPaymentDetailTypeInterac, IncomingPaymentDetailTypeRtp, IncomingPaymentDetailTypeSepa, IncomingPaymentDetailTypeSignet, IncomingPaymentDetailTypeWire:
+		return true
+	}
+	return false
+}
 
 type IncomingPaymentDetailUpdateParams struct {
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
@@ -300,6 +332,14 @@ const (
 	IncomingPaymentDetailListParamsStatusReturned  IncomingPaymentDetailListParamsStatus = "returned"
 )
 
+func (r IncomingPaymentDetailListParamsStatus) IsKnown() bool {
+	switch r {
+	case IncomingPaymentDetailListParamsStatusCompleted, IncomingPaymentDetailListParamsStatusPending, IncomingPaymentDetailListParamsStatusReturned:
+		return true
+	}
+	return false
+}
+
 // One of: `ach`, `book`, `check`, `eft`, `interac`, `rtp`, `sepa`, `signet`, or
 // `wire`.
 type IncomingPaymentDetailListParamsType string
@@ -315,6 +355,14 @@ const (
 	IncomingPaymentDetailListParamsTypeSignet  IncomingPaymentDetailListParamsType = "signet"
 	IncomingPaymentDetailListParamsTypeWire    IncomingPaymentDetailListParamsType = "wire"
 )
+
+func (r IncomingPaymentDetailListParamsType) IsKnown() bool {
+	switch r {
+	case IncomingPaymentDetailListParamsTypeACH, IncomingPaymentDetailListParamsTypeBook, IncomingPaymentDetailListParamsTypeCheck, IncomingPaymentDetailListParamsTypeEft, IncomingPaymentDetailListParamsTypeInterac, IncomingPaymentDetailListParamsTypeRtp, IncomingPaymentDetailListParamsTypeSepa, IncomingPaymentDetailListParamsTypeSignet, IncomingPaymentDetailListParamsTypeWire:
+		return true
+	}
+	return false
+}
 
 type IncomingPaymentDetailNewAsyncParams struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
@@ -349,6 +397,14 @@ const (
 	IncomingPaymentDetailNewAsyncParamsDirectionDebit  IncomingPaymentDetailNewAsyncParamsDirection = "debit"
 )
 
+func (r IncomingPaymentDetailNewAsyncParamsDirection) IsKnown() bool {
+	switch r {
+	case IncomingPaymentDetailNewAsyncParamsDirectionCredit, IncomingPaymentDetailNewAsyncParamsDirectionDebit:
+		return true
+	}
+	return false
+}
+
 // One of `ach`, `wire`, `check`.
 type IncomingPaymentDetailNewAsyncParamsType string
 
@@ -363,3 +419,11 @@ const (
 	IncomingPaymentDetailNewAsyncParamsTypeSignet  IncomingPaymentDetailNewAsyncParamsType = "signet"
 	IncomingPaymentDetailNewAsyncParamsTypeWire    IncomingPaymentDetailNewAsyncParamsType = "wire"
 )
+
+func (r IncomingPaymentDetailNewAsyncParamsType) IsKnown() bool {
+	switch r {
+	case IncomingPaymentDetailNewAsyncParamsTypeACH, IncomingPaymentDetailNewAsyncParamsTypeBook, IncomingPaymentDetailNewAsyncParamsTypeCheck, IncomingPaymentDetailNewAsyncParamsTypeEft, IncomingPaymentDetailNewAsyncParamsTypeInterac, IncomingPaymentDetailNewAsyncParamsTypeRtp, IncomingPaymentDetailNewAsyncParamsTypeSepa, IncomingPaymentDetailNewAsyncParamsTypeSignet, IncomingPaymentDetailNewAsyncParamsTypeWire:
+		return true
+	}
+	return false
+}

@@ -218,6 +218,14 @@ const (
 	ExternalAccountContactDetailsContactIdentifierTypeWebsite     ExternalAccountContactDetailsContactIdentifierType = "website"
 )
 
+func (r ExternalAccountContactDetailsContactIdentifierType) IsKnown() bool {
+	switch r {
+	case ExternalAccountContactDetailsContactIdentifierTypeEmail, ExternalAccountContactDetailsContactIdentifierTypePhoneNumber, ExternalAccountContactDetailsContactIdentifierTypeWebsite:
+		return true
+	}
+	return false
+}
+
 // The address associated with the owner or `null`.
 type ExternalAccountPartyAddress struct {
 	ID string `json:"id,required" format:"uuid"`
@@ -274,6 +282,14 @@ const (
 	ExternalAccountPartyTypeIndividual ExternalAccountPartyType = "individual"
 )
 
+func (r ExternalAccountPartyType) IsKnown() bool {
+	switch r {
+	case ExternalAccountPartyTypeBusiness, ExternalAccountPartyTypeIndividual:
+		return true
+	}
+	return false
+}
+
 type ExternalAccountVerificationStatus string
 
 const (
@@ -281,6 +297,14 @@ const (
 	ExternalAccountVerificationStatusUnverified          ExternalAccountVerificationStatus = "unverified"
 	ExternalAccountVerificationStatusVerified            ExternalAccountVerificationStatus = "verified"
 )
+
+func (r ExternalAccountVerificationStatus) IsKnown() bool {
+	switch r {
+	case ExternalAccountVerificationStatusPendingVerification, ExternalAccountVerificationStatusUnverified, ExternalAccountVerificationStatusVerified:
+		return true
+	}
+	return false
+}
 
 // Can be `checking`, `savings` or `other`.
 type ExternalAccountType string
@@ -295,6 +319,14 @@ const (
 	ExternalAccountTypeOverdraft     ExternalAccountType = "overdraft"
 	ExternalAccountTypeSavings       ExternalAccountType = "savings"
 )
+
+func (r ExternalAccountType) IsKnown() bool {
+	switch r {
+	case ExternalAccountTypeCash, ExternalAccountTypeChecking, ExternalAccountTypeGeneralLedger, ExternalAccountTypeLoan, ExternalAccountTypeNonResident, ExternalAccountTypeOther, ExternalAccountTypeOverdraft, ExternalAccountTypeSavings:
+		return true
+	}
+	return false
+}
 
 type ExternalAccountNewParams struct {
 	CounterpartyID param.Field[string]                                  `json:"counterparty_id,required" format:"uuid"`
@@ -351,6 +383,14 @@ const (
 	ExternalAccountNewParamsAccountDetailsAccountNumberTypeOther         ExternalAccountNewParamsAccountDetailsAccountNumberType = "other"
 )
 
+func (r ExternalAccountNewParamsAccountDetailsAccountNumberType) IsKnown() bool {
+	switch r {
+	case ExternalAccountNewParamsAccountDetailsAccountNumberTypeIban, ExternalAccountNewParamsAccountDetailsAccountNumberTypeHkNumber, ExternalAccountNewParamsAccountDetailsAccountNumberTypeClabe, ExternalAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress, ExternalAccountNewParamsAccountDetailsAccountNumberTypePan, ExternalAccountNewParamsAccountDetailsAccountNumberTypeOther:
+		return true
+	}
+	return false
+}
+
 type ExternalAccountNewParamsContactDetail struct {
 	ContactIdentifier     param.Field[string]                                                      `json:"contact_identifier"`
 	ContactIdentifierType param.Field[ExternalAccountNewParamsContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
@@ -367,6 +407,14 @@ const (
 	ExternalAccountNewParamsContactDetailsContactIdentifierTypePhoneNumber ExternalAccountNewParamsContactDetailsContactIdentifierType = "phone_number"
 	ExternalAccountNewParamsContactDetailsContactIdentifierTypeWebsite     ExternalAccountNewParamsContactDetailsContactIdentifierType = "website"
 )
+
+func (r ExternalAccountNewParamsContactDetailsContactIdentifierType) IsKnown() bool {
+	switch r {
+	case ExternalAccountNewParamsContactDetailsContactIdentifierTypeEmail, ExternalAccountNewParamsContactDetailsContactIdentifierTypePhoneNumber, ExternalAccountNewParamsContactDetailsContactIdentifierTypeWebsite:
+		return true
+	}
+	return false
+}
 
 // Specifies a ledger account object that will be created with the external
 // account. The resulting ledger account is linked to the external account for
@@ -417,6 +465,14 @@ const (
 	ExternalAccountNewParamsLedgerAccountLedgerableTypeVirtualAccount  ExternalAccountNewParamsLedgerAccountLedgerableType = "virtual_account"
 )
 
+func (r ExternalAccountNewParamsLedgerAccountLedgerableType) IsKnown() bool {
+	switch r {
+	case ExternalAccountNewParamsLedgerAccountLedgerableTypeCounterparty, ExternalAccountNewParamsLedgerAccountLedgerableTypeExternalAccount, ExternalAccountNewParamsLedgerAccountLedgerableTypeInternalAccount, ExternalAccountNewParamsLedgerAccountLedgerableTypeVirtualAccount:
+		return true
+	}
+	return false
+}
+
 // Required if receiving wire payments.
 type ExternalAccountNewParamsPartyAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -442,6 +498,14 @@ const (
 	ExternalAccountNewParamsPartyTypeBusiness   ExternalAccountNewParamsPartyType = "business"
 	ExternalAccountNewParamsPartyTypeIndividual ExternalAccountNewParamsPartyType = "individual"
 )
+
+func (r ExternalAccountNewParamsPartyType) IsKnown() bool {
+	switch r {
+	case ExternalAccountNewParamsPartyTypeBusiness, ExternalAccountNewParamsPartyTypeIndividual:
+		return true
+	}
+	return false
+}
 
 type ExternalAccountNewParamsRoutingDetail struct {
 	RoutingNumber     param.Field[string]                                                  `json:"routing_number,required"`
@@ -477,6 +541,14 @@ const (
 	ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeSwift                   ExternalAccountNewParamsRoutingDetailsRoutingNumberType = "swift"
 )
 
+func (r ExternalAccountNewParamsRoutingDetailsRoutingNumberType) IsKnown() bool {
+	switch r {
+	case ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAba, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAuBsb, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeBrCodigo, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeCaCpa, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeChips, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeCnaps, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeGBSortCode, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeIDSknbiCode, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeInIfsc, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeJpZenginCode, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeMyBranchCode, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeMxBankIdentifier, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeNzNationalClearingCode, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypePlNationalClearingCode, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeSwift:
+		return true
+	}
+	return false
+}
+
 type ExternalAccountNewParamsRoutingDetailsPaymentType string
 
 const (
@@ -511,6 +583,14 @@ const (
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeWire        ExternalAccountNewParamsRoutingDetailsPaymentType = "wire"
 	ExternalAccountNewParamsRoutingDetailsPaymentTypeZengin      ExternalAccountNewParamsRoutingDetailsPaymentType = "zengin"
 )
+
+func (r ExternalAccountNewParamsRoutingDetailsPaymentType) IsKnown() bool {
+	switch r {
+	case ExternalAccountNewParamsRoutingDetailsPaymentTypeACH, ExternalAccountNewParamsRoutingDetailsPaymentTypeAuBecs, ExternalAccountNewParamsRoutingDetailsPaymentTypeBacs, ExternalAccountNewParamsRoutingDetailsPaymentTypeBook, ExternalAccountNewParamsRoutingDetailsPaymentTypeCard, ExternalAccountNewParamsRoutingDetailsPaymentTypeChats, ExternalAccountNewParamsRoutingDetailsPaymentTypeCheck, ExternalAccountNewParamsRoutingDetailsPaymentTypeCrossBorder, ExternalAccountNewParamsRoutingDetailsPaymentTypeDkNets, ExternalAccountNewParamsRoutingDetailsPaymentTypeEft, ExternalAccountNewParamsRoutingDetailsPaymentTypeHuIcs, ExternalAccountNewParamsRoutingDetailsPaymentTypeInterac, ExternalAccountNewParamsRoutingDetailsPaymentTypeMasav, ExternalAccountNewParamsRoutingDetailsPaymentTypeMxCcen, ExternalAccountNewParamsRoutingDetailsPaymentTypeNeft, ExternalAccountNewParamsRoutingDetailsPaymentTypeNics, ExternalAccountNewParamsRoutingDetailsPaymentTypeNzBecs, ExternalAccountNewParamsRoutingDetailsPaymentTypePlElixir, ExternalAccountNewParamsRoutingDetailsPaymentTypeProvxchange, ExternalAccountNewParamsRoutingDetailsPaymentTypeRoSent, ExternalAccountNewParamsRoutingDetailsPaymentTypeRtp, ExternalAccountNewParamsRoutingDetailsPaymentTypeSgGiro, ExternalAccountNewParamsRoutingDetailsPaymentTypeSeBankgirot, ExternalAccountNewParamsRoutingDetailsPaymentTypeSen, ExternalAccountNewParamsRoutingDetailsPaymentTypeSepa, ExternalAccountNewParamsRoutingDetailsPaymentTypeSic, ExternalAccountNewParamsRoutingDetailsPaymentTypeSignet, ExternalAccountNewParamsRoutingDetailsPaymentTypeSknbi, ExternalAccountNewParamsRoutingDetailsPaymentTypeWire, ExternalAccountNewParamsRoutingDetailsPaymentTypeZengin:
+		return true
+	}
+	return false
+}
 
 type ExternalAccountUpdateParams struct {
 	// Can be `checking`, `savings` or `other`.
@@ -557,6 +637,14 @@ const (
 	ExternalAccountUpdateParamsPartyTypeBusiness   ExternalAccountUpdateParamsPartyType = "business"
 	ExternalAccountUpdateParamsPartyTypeIndividual ExternalAccountUpdateParamsPartyType = "individual"
 )
+
+func (r ExternalAccountUpdateParamsPartyType) IsKnown() bool {
+	switch r {
+	case ExternalAccountUpdateParamsPartyTypeBusiness, ExternalAccountUpdateParamsPartyTypeIndividual:
+		return true
+	}
+	return false
+}
 
 type ExternalAccountListParams struct {
 	AfterCursor    param.Field[string] `query:"after_cursor"`
@@ -636,3 +724,11 @@ const (
 	ExternalAccountVerifyParamsPaymentTypeWire        ExternalAccountVerifyParamsPaymentType = "wire"
 	ExternalAccountVerifyParamsPaymentTypeZengin      ExternalAccountVerifyParamsPaymentType = "zengin"
 )
+
+func (r ExternalAccountVerifyParamsPaymentType) IsKnown() bool {
+	switch r {
+	case ExternalAccountVerifyParamsPaymentTypeACH, ExternalAccountVerifyParamsPaymentTypeAuBecs, ExternalAccountVerifyParamsPaymentTypeBacs, ExternalAccountVerifyParamsPaymentTypeBook, ExternalAccountVerifyParamsPaymentTypeCard, ExternalAccountVerifyParamsPaymentTypeChats, ExternalAccountVerifyParamsPaymentTypeCheck, ExternalAccountVerifyParamsPaymentTypeCrossBorder, ExternalAccountVerifyParamsPaymentTypeDkNets, ExternalAccountVerifyParamsPaymentTypeEft, ExternalAccountVerifyParamsPaymentTypeHuIcs, ExternalAccountVerifyParamsPaymentTypeInterac, ExternalAccountVerifyParamsPaymentTypeMasav, ExternalAccountVerifyParamsPaymentTypeMxCcen, ExternalAccountVerifyParamsPaymentTypeNeft, ExternalAccountVerifyParamsPaymentTypeNics, ExternalAccountVerifyParamsPaymentTypeNzBecs, ExternalAccountVerifyParamsPaymentTypePlElixir, ExternalAccountVerifyParamsPaymentTypeProvxchange, ExternalAccountVerifyParamsPaymentTypeRoSent, ExternalAccountVerifyParamsPaymentTypeRtp, ExternalAccountVerifyParamsPaymentTypeSeBankgirot, ExternalAccountVerifyParamsPaymentTypeSen, ExternalAccountVerifyParamsPaymentTypeSepa, ExternalAccountVerifyParamsPaymentTypeSgGiro, ExternalAccountVerifyParamsPaymentTypeSic, ExternalAccountVerifyParamsPaymentTypeSignet, ExternalAccountVerifyParamsPaymentTypeSknbi, ExternalAccountVerifyParamsPaymentTypeWire, ExternalAccountVerifyParamsPaymentTypeZengin:
+		return true
+	}
+	return false
+}

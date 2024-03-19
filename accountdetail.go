@@ -138,6 +138,14 @@ const (
 	AccountDetailAccountNumberTypeWalletAddress AccountDetailAccountNumberType = "wallet_address"
 )
 
+func (r AccountDetailAccountNumberType) IsKnown() bool {
+	switch r {
+	case AccountDetailAccountNumberTypeClabe, AccountDetailAccountNumberTypeHkNumber, AccountDetailAccountNumberTypeIban, AccountDetailAccountNumberTypeOther, AccountDetailAccountNumberTypePan, AccountDetailAccountNumberTypeWalletAddress:
+		return true
+	}
+	return false
+}
+
 type AccountDetailNewParams struct {
 	// The account number for the bank account.
 	AccountNumber param.Field[string] `json:"account_number,required"`
@@ -156,6 +164,14 @@ const (
 	AccountDetailNewParamsAccountsTypeExternalAccounts AccountDetailNewParamsAccountsType = "external_accounts"
 )
 
+func (r AccountDetailNewParamsAccountsType) IsKnown() bool {
+	switch r {
+	case AccountDetailNewParamsAccountsTypeExternalAccounts:
+		return true
+	}
+	return false
+}
+
 // One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
 // account number is in a generic format.
 type AccountDetailNewParamsAccountNumberType string
@@ -168,6 +184,14 @@ const (
 	AccountDetailNewParamsAccountNumberTypePan           AccountDetailNewParamsAccountNumberType = "pan"
 	AccountDetailNewParamsAccountNumberTypeWalletAddress AccountDetailNewParamsAccountNumberType = "wallet_address"
 )
+
+func (r AccountDetailNewParamsAccountNumberType) IsKnown() bool {
+	switch r {
+	case AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypeWalletAddress:
+		return true
+	}
+	return false
+}
 
 type AccountDetailListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
@@ -188,3 +212,11 @@ type AccountDetailDeleteParamsAccountsType string
 const (
 	AccountDetailDeleteParamsAccountsTypeExternalAccounts AccountDetailDeleteParamsAccountsType = "external_accounts"
 )
+
+func (r AccountDetailDeleteParamsAccountsType) IsKnown() bool {
+	switch r {
+	case AccountDetailDeleteParamsAccountsTypeExternalAccounts:
+		return true
+	}
+	return false
+}

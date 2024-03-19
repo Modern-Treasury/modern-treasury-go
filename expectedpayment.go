@@ -207,6 +207,14 @@ const (
 	ExpectedPaymentReconciliationMethodManual    ExpectedPaymentReconciliationMethod = "manual"
 )
 
+func (r ExpectedPaymentReconciliationMethod) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentReconciliationMethodAutomatic, ExpectedPaymentReconciliationMethodManual:
+		return true
+	}
+	return false
+}
+
 // One of unreconciled, reconciled, or archived.
 type ExpectedPaymentStatus string
 
@@ -216,6 +224,14 @@ const (
 	ExpectedPaymentStatusReconciled          ExpectedPaymentStatus = "reconciled"
 	ExpectedPaymentStatusUnreconciled        ExpectedPaymentStatus = "unreconciled"
 )
+
+func (r ExpectedPaymentStatus) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentStatusArchived, ExpectedPaymentStatusPartiallyReconciled, ExpectedPaymentStatusReconciled, ExpectedPaymentStatusUnreconciled:
+		return true
+	}
+	return false
+}
 
 // One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
 // sepa, signet, wire.
@@ -253,6 +269,14 @@ const (
 	ExpectedPaymentTypeWire        ExpectedPaymentType = "wire"
 	ExpectedPaymentTypeZengin      ExpectedPaymentType = "zengin"
 )
+
+func (r ExpectedPaymentType) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentTypeACH, ExpectedPaymentTypeAuBecs, ExpectedPaymentTypeBacs, ExpectedPaymentTypeBook, ExpectedPaymentTypeCard, ExpectedPaymentTypeChats, ExpectedPaymentTypeCheck, ExpectedPaymentTypeCrossBorder, ExpectedPaymentTypeDkNets, ExpectedPaymentTypeEft, ExpectedPaymentTypeHuIcs, ExpectedPaymentTypeInterac, ExpectedPaymentTypeMasav, ExpectedPaymentTypeMxCcen, ExpectedPaymentTypeNeft, ExpectedPaymentTypeNics, ExpectedPaymentTypeNzBecs, ExpectedPaymentTypePlElixir, ExpectedPaymentTypeProvxchange, ExpectedPaymentTypeRoSent, ExpectedPaymentTypeRtp, ExpectedPaymentTypeSeBankgirot, ExpectedPaymentTypeSen, ExpectedPaymentTypeSepa, ExpectedPaymentTypeSgGiro, ExpectedPaymentTypeSic, ExpectedPaymentTypeSignet, ExpectedPaymentTypeSknbi, ExpectedPaymentTypeWire, ExpectedPaymentTypeZengin:
+		return true
+	}
+	return false
+}
 
 type ExpectedPaymentNewParams struct {
 	// The lowest amount this expected payment may be equal to. Value in specified
@@ -408,6 +432,14 @@ const (
 	ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeReversal              ExpectedPaymentNewParamsLedgerTransactionLedgerableType = "reversal"
 )
 
+func (r ExpectedPaymentNewParamsLedgerTransactionLedgerableType) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeCounterparty, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeExpectedPayment, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeInternalAccount, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeLineItem, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypePaperItem, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypePaymentOrder, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypePaymentOrderAttempt, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeReturn, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // To post a ledger transaction at creation, use `posted`.
 type ExpectedPaymentNewParamsLedgerTransactionStatus string
 
@@ -416,6 +448,14 @@ const (
 	ExpectedPaymentNewParamsLedgerTransactionStatusPending  ExpectedPaymentNewParamsLedgerTransactionStatus = "pending"
 	ExpectedPaymentNewParamsLedgerTransactionStatusPosted   ExpectedPaymentNewParamsLedgerTransactionStatus = "posted"
 )
+
+func (r ExpectedPaymentNewParamsLedgerTransactionStatus) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentNewParamsLedgerTransactionStatusArchived, ExpectedPaymentNewParamsLedgerTransactionStatusPending, ExpectedPaymentNewParamsLedgerTransactionStatusPosted:
+		return true
+	}
+	return false
+}
 
 type ExpectedPaymentNewParamsLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
@@ -527,6 +567,14 @@ const (
 	ExpectedPaymentListParamsStatusUnreconciled        ExpectedPaymentListParamsStatus = "unreconciled"
 )
 
+func (r ExpectedPaymentListParamsStatus) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentListParamsStatusArchived, ExpectedPaymentListParamsStatusPartiallyReconciled, ExpectedPaymentListParamsStatusReconciled, ExpectedPaymentListParamsStatusUnreconciled:
+		return true
+	}
+	return false
+}
+
 // One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp,sen,
 // sepa, signet, wire
 type ExpectedPaymentListParamsType string
@@ -563,3 +611,11 @@ const (
 	ExpectedPaymentListParamsTypeWire        ExpectedPaymentListParamsType = "wire"
 	ExpectedPaymentListParamsTypeZengin      ExpectedPaymentListParamsType = "zengin"
 )
+
+func (r ExpectedPaymentListParamsType) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentListParamsTypeACH, ExpectedPaymentListParamsTypeAuBecs, ExpectedPaymentListParamsTypeBacs, ExpectedPaymentListParamsTypeBook, ExpectedPaymentListParamsTypeCard, ExpectedPaymentListParamsTypeChats, ExpectedPaymentListParamsTypeCheck, ExpectedPaymentListParamsTypeCrossBorder, ExpectedPaymentListParamsTypeDkNets, ExpectedPaymentListParamsTypeEft, ExpectedPaymentListParamsTypeHuIcs, ExpectedPaymentListParamsTypeInterac, ExpectedPaymentListParamsTypeMasav, ExpectedPaymentListParamsTypeMxCcen, ExpectedPaymentListParamsTypeNeft, ExpectedPaymentListParamsTypeNics, ExpectedPaymentListParamsTypeNzBecs, ExpectedPaymentListParamsTypePlElixir, ExpectedPaymentListParamsTypeProvxchange, ExpectedPaymentListParamsTypeRoSent, ExpectedPaymentListParamsTypeRtp, ExpectedPaymentListParamsTypeSeBankgirot, ExpectedPaymentListParamsTypeSen, ExpectedPaymentListParamsTypeSepa, ExpectedPaymentListParamsTypeSgGiro, ExpectedPaymentListParamsTypeSic, ExpectedPaymentListParamsTypeSignet, ExpectedPaymentListParamsTypeSknbi, ExpectedPaymentListParamsTypeWire, ExpectedPaymentListParamsTypeZengin:
+		return true
+	}
+	return false
+}

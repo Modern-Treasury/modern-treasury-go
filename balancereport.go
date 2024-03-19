@@ -140,6 +140,14 @@ const (
 	BalanceReportBalanceReportTypeRealTime    BalanceReportBalanceReportType = "real_time"
 )
 
+func (r BalanceReportBalanceReportType) IsKnown() bool {
+	switch r {
+	case BalanceReportBalanceReportTypeIntraday, BalanceReportBalanceReportTypeOther, BalanceReportBalanceReportTypePreviousDay, BalanceReportBalanceReportTypeRealTime:
+		return true
+	}
+	return false
+}
+
 type BalanceReportBalance struct {
 	ID string `json:"id,required" format:"uuid"`
 	// The balance amount.
@@ -209,6 +217,14 @@ const (
 	BalanceReportBalancesBalanceTypeOther                           BalanceReportBalancesBalanceType = "other"
 )
 
+func (r BalanceReportBalancesBalanceType) IsKnown() bool {
+	switch r {
+	case BalanceReportBalancesBalanceTypeClosingAvailable, BalanceReportBalancesBalanceTypeClosingLedger, BalanceReportBalancesBalanceTypeCurrentAvailable, BalanceReportBalancesBalanceTypeCurrentLedger, BalanceReportBalancesBalanceTypeOpeningAvailable, BalanceReportBalancesBalanceTypeOpeningAvailableNextBusinessDay, BalanceReportBalancesBalanceTypeOpeningLedger, BalanceReportBalancesBalanceTypeOther:
+		return true
+	}
+	return false
+}
+
 type BalanceReportNewParams struct {
 	// The date of the balance report in local time.
 	AsOfDate param.Field[time.Time] `json:"as_of_date,required" format:"date"`
@@ -235,6 +251,14 @@ const (
 	BalanceReportNewParamsBalanceReportTypePreviousDay BalanceReportNewParamsBalanceReportType = "previous_day"
 	BalanceReportNewParamsBalanceReportTypeRealTime    BalanceReportNewParamsBalanceReportType = "real_time"
 )
+
+func (r BalanceReportNewParamsBalanceReportType) IsKnown() bool {
+	switch r {
+	case BalanceReportNewParamsBalanceReportTypeIntraday, BalanceReportNewParamsBalanceReportTypeOther, BalanceReportNewParamsBalanceReportTypePreviousDay, BalanceReportNewParamsBalanceReportTypeRealTime:
+		return true
+	}
+	return false
+}
 
 type BalanceReportNewParamsBalance struct {
 	// The balance amount.
@@ -274,6 +298,14 @@ const (
 	BalanceReportNewParamsBalancesBalanceTypeOther                           BalanceReportNewParamsBalancesBalanceType = "other"
 )
 
+func (r BalanceReportNewParamsBalancesBalanceType) IsKnown() bool {
+	switch r {
+	case BalanceReportNewParamsBalancesBalanceTypeClosingAvailable, BalanceReportNewParamsBalancesBalanceTypeClosingLedger, BalanceReportNewParamsBalancesBalanceTypeCurrentAvailable, BalanceReportNewParamsBalancesBalanceTypeCurrentLedger, BalanceReportNewParamsBalancesBalanceTypeOpeningAvailable, BalanceReportNewParamsBalancesBalanceTypeOpeningAvailableNextBusinessDay, BalanceReportNewParamsBalancesBalanceTypeOpeningLedger, BalanceReportNewParamsBalancesBalanceTypeOther:
+		return true
+	}
+	return false
+}
+
 type BalanceReportListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
 	// The date of the balance report in local time.
@@ -303,3 +335,11 @@ const (
 	BalanceReportListParamsBalanceReportTypePreviousDay BalanceReportListParamsBalanceReportType = "previous_day"
 	BalanceReportListParamsBalanceReportTypeRealTime    BalanceReportListParamsBalanceReportType = "real_time"
 )
+
+func (r BalanceReportListParamsBalanceReportType) IsKnown() bool {
+	switch r {
+	case BalanceReportListParamsBalanceReportTypeIntraday, BalanceReportListParamsBalanceReportTypeOther, BalanceReportListParamsBalanceReportTypePreviousDay, BalanceReportListParamsBalanceReportTypeRealTime:
+		return true
+	}
+	return false
+}

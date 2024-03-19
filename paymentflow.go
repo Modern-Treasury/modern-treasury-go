@@ -176,6 +176,14 @@ const (
 	PaymentFlowDirectionDebit  PaymentFlowDirection = "debit"
 )
 
+func (r PaymentFlowDirection) IsKnown() bool {
+	switch r {
+	case PaymentFlowDirectionCredit, PaymentFlowDirectionDebit:
+		return true
+	}
+	return false
+}
+
 // When `verified` and `external_account_collection` is `enabled`, filters the list
 // of external accounts your end-user can select to those with a
 // `verification_status` of `verified`.
@@ -184,6 +192,14 @@ type PaymentFlowExistingExternalAccountsFilter string
 const (
 	PaymentFlowExistingExternalAccountsFilterVerified PaymentFlowExistingExternalAccountsFilter = "verified"
 )
+
+func (r PaymentFlowExistingExternalAccountsFilter) IsKnown() bool {
+	switch r {
+	case PaymentFlowExistingExternalAccountsFilterVerified:
+		return true
+	}
+	return false
+}
 
 // When `enabled`, your end-user can select from an existing external account when
 // completing the flow. When `disabled`, your end-user must add new payment details
@@ -195,6 +211,14 @@ const (
 	PaymentFlowExternalAccountCollectionEnabled  PaymentFlowExternalAccountCollection = "enabled"
 )
 
+func (r PaymentFlowExternalAccountCollection) IsKnown() bool {
+	switch r {
+	case PaymentFlowExternalAccountCollectionDisabled, PaymentFlowExternalAccountCollectionEnabled:
+		return true
+	}
+	return false
+}
+
 // The current status of the payment flow. One of `pending`, `completed`,
 // `expired`, or `cancelled`.
 type PaymentFlowStatus string
@@ -205,6 +229,14 @@ const (
 	PaymentFlowStatusExpired   PaymentFlowStatus = "expired"
 	PaymentFlowStatusPending   PaymentFlowStatus = "pending"
 )
+
+func (r PaymentFlowStatus) IsKnown() bool {
+	switch r {
+	case PaymentFlowStatusCancelled, PaymentFlowStatusCompleted, PaymentFlowStatusExpired, PaymentFlowStatusPending:
+		return true
+	}
+	return false
+}
 
 type PaymentFlowNewParams struct {
 	// Required. Value in specified currency's smallest unit. e.g. $10 would be
@@ -239,6 +271,14 @@ const (
 	PaymentFlowNewParamsDirectionDebit  PaymentFlowNewParamsDirection = "debit"
 )
 
+func (r PaymentFlowNewParamsDirection) IsKnown() bool {
+	switch r {
+	case PaymentFlowNewParamsDirectionCredit, PaymentFlowNewParamsDirectionDebit:
+		return true
+	}
+	return false
+}
+
 type PaymentFlowUpdateParams struct {
 	// Required. The updated status of the payment flow. Can only be used to mark a
 	// flow as `cancelled`.
@@ -256,6 +296,14 @@ type PaymentFlowUpdateParamsStatus string
 const (
 	PaymentFlowUpdateParamsStatusCancelled PaymentFlowUpdateParamsStatus = "cancelled"
 )
+
+func (r PaymentFlowUpdateParamsStatus) IsKnown() bool {
+	switch r {
+	case PaymentFlowUpdateParamsStatusCancelled:
+		return true
+	}
+	return false
+}
 
 type PaymentFlowListParams struct {
 	AfterCursor          param.Field[string] `query:"after_cursor"`
