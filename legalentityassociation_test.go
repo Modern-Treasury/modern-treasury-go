@@ -29,16 +29,16 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LegalEntityAssociations.New(context.TODO(), moderntreasury.LegalEntityAssociationNewParams{
 		RelationshipTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsRelationshipType{moderntreasury.LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner, moderntreasury.LegalEntityAssociationNewParamsRelationshipTypeControlPerson}),
-		AssociatedLegalEntity: moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntity{
-			LegalEntityType:      moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityTypeBusiness),
+		ChildLegalEntity: moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntity{
+			LegalEntityType:      moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityLegalEntityTypeBusiness),
 			FirstName:            moderntreasury.F("string"),
 			LastName:             moderntreasury.F("string"),
 			DateOfBirth:          moderntreasury.F(time.Now()),
 			DateFormed:           moderntreasury.F(time.Now()),
 			BusinessName:         moderntreasury.F("string"),
 			DoingBusinessAsNames: moderntreasury.F([]string{"string", "string", "string"}),
-			LegalStructure:       moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureCorporation),
-			PhoneNumbers: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityPhoneNumber{{
+			LegalStructure:       moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityLegalStructureCorporation),
+			PhoneNumbers: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityPhoneNumber{{
 				PhoneNumber: moderntreasury.F("string"),
 			}, {
 				PhoneNumber: moderntreasury.F("string"),
@@ -52,8 +52,8 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Addresses: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddress{{
-				AddressTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType{moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeBusiness, moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeMailing, moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeOther}),
+			Addresses: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddress{{
+				AddressTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressType{moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressTypeBusiness, moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressTypeMailing, moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressTypeOther}),
 				Line1:        moderntreasury.F("string"),
 				Line2:        moderntreasury.F("string"),
 				Locality:     moderntreasury.F("string"),
@@ -61,7 +61,7 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 				PostalCode:   moderntreasury.F("string"),
 				Country:      moderntreasury.F("string"),
 			}, {
-				AddressTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType{moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeBusiness, moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeMailing, moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeOther}),
+				AddressTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressType{moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressTypeBusiness, moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressTypeMailing, moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressTypeOther}),
 				Line1:        moderntreasury.F("string"),
 				Line2:        moderntreasury.F("string"),
 				Locality:     moderntreasury.F("string"),
@@ -69,7 +69,7 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 				PostalCode:   moderntreasury.F("string"),
 				Country:      moderntreasury.F("string"),
 			}, {
-				AddressTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType{moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeBusiness, moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeMailing, moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeOther}),
+				AddressTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressType{moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressTypeBusiness, moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressTypeMailing, moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressTypeOther}),
 				Line1:        moderntreasury.F("string"),
 				Line2:        moderntreasury.F("string"),
 				Locality:     moderntreasury.F("string"),
@@ -77,24 +77,24 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 				PostalCode:   moderntreasury.F("string"),
 				Country:      moderntreasury.F("string"),
 			}}),
-			Identifications: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityIdentification{{
+			Identifications: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityIdentification{{
 				IDNumber:       moderntreasury.F("string"),
-				IDType:         moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeArCuil),
+				IDType:         moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeArCuil),
 				IssuingCountry: moderntreasury.F("string"),
 			}, {
 				IDNumber:       moderntreasury.F("string"),
-				IDType:         moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeArCuil),
+				IDType:         moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeArCuil),
 				IssuingCountry: moderntreasury.F("string"),
 			}, {
 				IDNumber:       moderntreasury.F("string"),
-				IDType:         moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeArCuil),
+				IDType:         moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeArCuil),
 				IssuingCountry: moderntreasury.F("string"),
 			}}),
 		}),
-		AssociatedLegalEntityID: moderntreasury.F("string"),
-		AssociatorLegalEntityID: moderntreasury.F("string"),
-		OwnershipPercentage:     moderntreasury.F(int64(0)),
-		Title:                   moderntreasury.F("string"),
+		ChildLegalEntityID:  moderntreasury.F("string"),
+		OwnershipPercentage: moderntreasury.F(int64(0)),
+		ParentLegalEntityID: moderntreasury.F("string"),
+		Title:               moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
