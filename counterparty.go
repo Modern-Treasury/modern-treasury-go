@@ -759,7 +759,7 @@ type CounterpartyNewParamsLegalEntity struct {
 	Identifications param.Field[[]CounterpartyNewParamsLegalEntityIdentification] `json:"identifications"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
-	// The legal entity associations and its associated legal entities.
+	// The legal entity associations and its child legal entities.
 	LegalEntityAssociations param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociation] `json:"legal_entity_associations"`
 	// The business's legal structure.
 	LegalStructure param.Field[CounterpartyNewParamsLegalEntityLegalStructure] `json:"legal_structure"`
@@ -850,7 +850,7 @@ const (
 	CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuit    CounterpartyNewParamsLegalEntityIdentificationsIDType = "ar_cuit"
 	CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCnpj    CounterpartyNewParamsLegalEntityIdentificationsIDType = "br_cnpj"
 	CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCpf     CounterpartyNewParamsLegalEntityIdentificationsIDType = "br_cpf"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeClNut     CounterpartyNewParamsLegalEntityIdentificationsIDType = "cl_nut"
+	CounterpartyNewParamsLegalEntityIdentificationsIDTypeClRut     CounterpartyNewParamsLegalEntityIdentificationsIDType = "cl_rut"
 	CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoCedulas CounterpartyNewParamsLegalEntityIdentificationsIDType = "co_cedulas"
 	CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoNit     CounterpartyNewParamsLegalEntityIdentificationsIDType = "co_nit"
 	CounterpartyNewParamsLegalEntityIdentificationsIDTypeHnID      CounterpartyNewParamsLegalEntityIdentificationsIDType = "hn_id"
@@ -863,7 +863,7 @@ const (
 
 func (r CounterpartyNewParamsLegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuil, CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuit, CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCnpj, CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCpf, CounterpartyNewParamsLegalEntityIdentificationsIDTypeClNut, CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoCedulas, CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoNit, CounterpartyNewParamsLegalEntityIdentificationsIDTypeHnID, CounterpartyNewParamsLegalEntityIdentificationsIDTypeHnRtn, CounterpartyNewParamsLegalEntityIdentificationsIDTypePassport, CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsEin, CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsItin, CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsSsn:
+	case CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuil, CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuit, CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCnpj, CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCpf, CounterpartyNewParamsLegalEntityIdentificationsIDTypeClRut, CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoCedulas, CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoNit, CounterpartyNewParamsLegalEntityIdentificationsIDTypeHnID, CounterpartyNewParamsLegalEntityIdentificationsIDTypeHnRtn, CounterpartyNewParamsLegalEntityIdentificationsIDTypePassport, CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsEin, CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsItin, CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsSsn:
 		return true
 	}
 	return false
@@ -871,13 +871,13 @@ func (r CounterpartyNewParamsLegalEntityIdentificationsIDType) IsKnown() bool {
 
 type CounterpartyNewParamsLegalEntityLegalEntityAssociation struct {
 	RelationshipTypes param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType] `json:"relationship_types,required"`
-	// The associated legal entity.
-	AssociatedLegalEntity param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntity] `json:"associated_legal_entity"`
-	// The ID of the associated legal entity.
-	AssociatedLegalEntityID param.Field[string] `json:"associated_legal_entity_id"`
-	// The associated entity's ownership percentage iff they are a beneficial owner.
+	// The child legal entity.
+	ChildLegalEntity param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity] `json:"child_legal_entity"`
+	// The ID of the child legal entity.
+	ChildLegalEntityID param.Field[string] `json:"child_legal_entity_id"`
+	// The child entity's ownership percentage iff they are a beneficial owner.
 	OwnershipPercentage param.Field[int64] `json:"ownership_percentage"`
-	// The job title of the associated entity at the associator entity.
+	// The job title of the child entity at the parent entity.
 	Title param.Field[string] `json:"title"`
 }
 
@@ -885,8 +885,7 @@ func (r CounterpartyNewParamsLegalEntityLegalEntityAssociation) MarshalJSON() (d
 	return apijson.MarshalRoot(r)
 }
 
-// A list of relationship types for how the associated entity relates to associator
-// entity.
+// A list of relationship types for how the child entity relates to parent entity.
 type CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType string
 
 const (
@@ -902,10 +901,10 @@ func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType)
 	return false
 }
 
-// The associated legal entity.
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntity struct {
+// The child legal entity.
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity struct {
 	// A list of addresses for the entity.
-	Addresses param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddress] `json:"addresses"`
+	Addresses param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress] `json:"addresses"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// A business's formation date (YYYY-MM-DD).
@@ -918,26 +917,26 @@ type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntit
 	// An individual's first name.
 	FirstName param.Field[string] `json:"first_name"`
 	// A list of identifications for the legal entity.
-	Identifications param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentification] `json:"identifications"`
+	Identifications param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification] `json:"identifications"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
 	// The type of legal entity.
-	LegalEntityType param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType] `json:"legal_entity_type"`
+	LegalEntityType param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType] `json:"legal_entity_type"`
 	// The business's legal structure.
-	LegalStructure param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure] `json:"legal_structure"`
+	LegalStructure param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata     param.Field[map[string]string]                                                                         `json:"metadata"`
-	PhoneNumbers param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityPhoneNumber] `json:"phone_numbers"`
+	Metadata     param.Field[map[string]string]                                                                    `json:"metadata"`
+	PhoneNumbers param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber] `json:"phone_numbers"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
 
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntity) MarshalJSON() (data []byte, err error) {
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddress struct {
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country,required"`
 	Line1   param.Field[string] `json:"line1,required"`
@@ -948,115 +947,115 @@ type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntit
 	// Region or State.
 	Region param.Field[string] `json:"region,required"`
 	// The types of this address.
-	AddressTypes param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType] `json:"address_types"`
-	Line2        param.Field[string]                                                                                             `json:"line2"`
+	AddressTypes param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType] `json:"address_types"`
+	Line2        param.Field[string]                                                                                        `json:"line2"`
 }
 
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddress) MarshalJSON() (data []byte, err error) {
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType string
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType string
 
 const (
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeBusiness    CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "business"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeMailing     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "mailing"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeOther       CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "other"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypePoBox       CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "po_box"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeResidential CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "residential"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness    CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "business"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing     CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "mailing"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther       CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "other"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypePoBox       CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "po_box"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeResidential CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "residential"
 )
 
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType) IsKnown() bool {
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType) IsKnown() bool {
 	switch r {
-	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeBusiness, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeMailing, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeOther, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypePoBox, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeResidential:
+	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypePoBox, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeResidential:
 		return true
 	}
 	return false
 }
 
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentification struct {
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification struct {
 	// The ID number of identification document.
 	IDNumber param.Field[string] `json:"id_number,required"`
 	// The type of ID number.
-	IDType param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType] `json:"id_type,required"`
+	IDType param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType] `json:"id_type,required"`
 	// The ISO 3166-1 alpha-2 country code of the country that issued the
 	// identification
 	IssuingCountry param.Field[string] `json:"issuing_country"`
 }
 
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentification) MarshalJSON() (data []byte, err error) {
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 // The type of ID number.
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType string
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType string
 
 const (
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeArCuil    CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "ar_cuil"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeArCuit    CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "ar_cuit"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeBrCnpj    CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "br_cnpj"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeBrCpf     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "br_cpf"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeClNut     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "cl_nut"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeCoCedulas CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "co_cedulas"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeCoNit     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "co_nit"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeHnID      CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "hn_id"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeHnRtn     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "hn_rtn"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypePassport  CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "passport"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsEin     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "us_ein"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsItin    CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "us_itin"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsSsn     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "us_ssn"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil    CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "ar_cuil"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuit    CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "ar_cuit"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCnpj    CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "br_cnpj"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCpf     CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "br_cpf"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRut     CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "cl_rut"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoCedulas CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "co_cedulas"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoNit     CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "co_nit"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnID      CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "hn_id"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnRtn     CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "hn_rtn"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypePassport  CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "passport"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsEin     CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_ein"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsItin    CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_itin"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsSsn     CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_ssn"
 )
 
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType) IsKnown() bool {
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeArCuil, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeArCuit, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeBrCnpj, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeBrCpf, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeClNut, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeCoCedulas, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeCoNit, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeHnID, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeHnRtn, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypePassport, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsEin, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsItin, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsSsn:
+	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuit, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCnpj, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCpf, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRut, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoCedulas, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoNit, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnID, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnRtn, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypePassport, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsEin, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsItin, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsSsn:
 		return true
 	}
 	return false
 }
 
 // The type of legal entity.
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType string
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType string
 
 const (
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeBusiness   CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType = "business"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeIndividual CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType = "individual"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness   CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType = "business"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeIndividual CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType = "individual"
 )
 
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType) IsKnown() bool {
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType) IsKnown() bool {
 	switch r {
-	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeBusiness, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeIndividual:
+	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeIndividual:
 		return true
 	}
 	return false
 }
 
 // The business's legal structure.
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure string
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure string
 
 const (
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureCorporation        CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "corporation"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureLlc                CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "llc"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureNonProfit          CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "non_profit"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructurePartnership        CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "partnership"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureSoleProprietorship CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "sole_proprietorship"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureTrust              CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "trust"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureCorporation        CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "corporation"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureLlc                CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "llc"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureNonProfit          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "non_profit"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructurePartnership        CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "partnership"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureSoleProprietorship CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "sole_proprietorship"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureTrust              CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "trust"
 )
 
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure) IsKnown() bool {
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure) IsKnown() bool {
 	switch r {
-	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureCorporation, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureLlc, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureNonProfit, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructurePartnership, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureSoleProprietorship, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureTrust:
+	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureCorporation, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureLlc, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureNonProfit, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructurePartnership, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureSoleProprietorship, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureTrust:
 		return true
 	}
 	return false
 }
 
 // A list of phone numbers in E.164 format.
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityPhoneNumber struct {
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber struct {
 	PhoneNumber param.Field[string] `json:"phone_number"`
 }
 
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityPhoneNumber) MarshalJSON() (data []byte, err error) {
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
