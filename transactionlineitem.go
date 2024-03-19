@@ -148,6 +148,14 @@ const (
 	TransactionLineItemTransactableTypeReversal              TransactionLineItemTransactableType = "reversal"
 )
 
+func (r TransactionLineItemTransactableType) IsKnown() bool {
+	switch r {
+	case TransactionLineItemTransactableTypeIncomingPaymentDetail, TransactionLineItemTransactableTypePaperItem, TransactionLineItemTransactableTypePaymentOrder, TransactionLineItemTransactableTypePaymentOrderAttempt, TransactionLineItemTransactableTypeReturn, TransactionLineItemTransactableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // Indicates whether the line item is `originating` or `receiving` (see
 // https://www.moderntreasury.com/journal/beginners-guide-to-ach for more).
 type TransactionLineItemType string
@@ -156,6 +164,14 @@ const (
 	TransactionLineItemTypeOriginating TransactionLineItemType = "originating"
 	TransactionLineItemTypeReceiving   TransactionLineItemType = "receiving"
 )
+
+func (r TransactionLineItemType) IsKnown() bool {
+	switch r {
+	case TransactionLineItemTypeOriginating, TransactionLineItemTypeReceiving:
+		return true
+	}
+	return false
+}
 
 type TransactionLineItemListParams struct {
 	ID            param.Field[map[string]string]                 `query:"id"`
@@ -180,3 +196,11 @@ const (
 	TransactionLineItemListParamsTypeOriginating TransactionLineItemListParamsType = "originating"
 	TransactionLineItemListParamsTypeReceiving   TransactionLineItemListParamsType = "receiving"
 )
+
+func (r TransactionLineItemListParamsType) IsKnown() bool {
+	switch r {
+	case TransactionLineItemListParamsTypeOriginating, TransactionLineItemListParamsTypeReceiving:
+		return true
+	}
+	return false
+}

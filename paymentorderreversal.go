@@ -128,6 +128,14 @@ const (
 	ReversalReasonDateLaterThanIntended     ReversalReason = "date_later_than_intended"
 )
 
+func (r ReversalReason) IsKnown() bool {
+	switch r {
+	case ReversalReasonDuplicate, ReversalReasonIncorrectAmount, ReversalReasonIncorrectReceivingAccount, ReversalReasonDateEarlierThanIntended, ReversalReasonDateLaterThanIntended:
+		return true
+	}
+	return false
+}
+
 // The current status of the reversal.
 type ReversalStatus string
 
@@ -139,6 +147,14 @@ const (
 	ReversalStatusReturned   ReversalStatus = "returned"
 	ReversalStatusSent       ReversalStatus = "sent"
 )
+
+func (r ReversalStatus) IsKnown() bool {
+	switch r {
+	case ReversalStatusCompleted, ReversalStatusFailed, ReversalStatusPending, ReversalStatusProcessing, ReversalStatusReturned, ReversalStatusSent:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderReversalNewParams struct {
 	// The reason for the reversal. Must be one of `duplicate`, `incorrect_amount`,
@@ -170,6 +186,14 @@ const (
 	PaymentOrderReversalNewParamsReasonDateEarlierThanIntended   PaymentOrderReversalNewParamsReason = "date_earlier_than_intended"
 	PaymentOrderReversalNewParamsReasonDateLaterThanIntended     PaymentOrderReversalNewParamsReason = "date_later_than_intended"
 )
+
+func (r PaymentOrderReversalNewParamsReason) IsKnown() bool {
+	switch r {
+	case PaymentOrderReversalNewParamsReasonDuplicate, PaymentOrderReversalNewParamsReasonIncorrectAmount, PaymentOrderReversalNewParamsReasonIncorrectReceivingAccount, PaymentOrderReversalNewParamsReasonDateEarlierThanIntended, PaymentOrderReversalNewParamsReasonDateLaterThanIntended:
+		return true
+	}
+	return false
+}
 
 // Specifies a ledger transaction object that will be created with the reversal. If
 // the ledger transaction cannot be created, then the reversal creation will fail.
@@ -264,6 +288,14 @@ const (
 	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "reversal"
 )
 
+func (r PaymentOrderReversalNewParamsLedgerTransactionLedgerableType) IsKnown() bool {
+	switch r {
+	case PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeCounterparty, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeExpectedPayment, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeInternalAccount, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeLineItem, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaperItem, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaymentOrder, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaymentOrderAttempt, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReturn, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // To post a ledger transaction at creation, use `posted`.
 type PaymentOrderReversalNewParamsLedgerTransactionStatus string
 
@@ -272,6 +304,14 @@ const (
 	PaymentOrderReversalNewParamsLedgerTransactionStatusPending  PaymentOrderReversalNewParamsLedgerTransactionStatus = "pending"
 	PaymentOrderReversalNewParamsLedgerTransactionStatusPosted   PaymentOrderReversalNewParamsLedgerTransactionStatus = "posted"
 )
+
+func (r PaymentOrderReversalNewParamsLedgerTransactionStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderReversalNewParamsLedgerTransactionStatusArchived, PaymentOrderReversalNewParamsLedgerTransactionStatusPending, PaymentOrderReversalNewParamsLedgerTransactionStatusPosted:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderReversalListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`

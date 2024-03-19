@@ -134,6 +134,14 @@ const (
 	ConnectionLegalEntityStatusProcessing ConnectionLegalEntityStatus = "processing"
 )
 
+func (r ConnectionLegalEntityStatus) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityStatusCompleted, ConnectionLegalEntityStatusDenied, ConnectionLegalEntityStatusFailed, ConnectionLegalEntityStatusProcessing:
+		return true
+	}
+	return false
+}
+
 type ConnectionLegalEntityNewParams struct {
 	// The ID of the connection.
 	ConnectionID param.Field[string] `json:"connection_id,required"`
@@ -213,6 +221,14 @@ const (
 	ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeResidential ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType = "residential"
 )
 
+func (r ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeBusiness, ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeMailing, ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeOther, ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypePoBox, ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeResidential:
+		return true
+	}
+	return false
+}
+
 type ConnectionLegalEntityNewParamsLegalEntityIdentification struct {
 	// The ID number of identification document.
 	IDNumber param.Field[string] `json:"id_number,required"`
@@ -246,6 +262,14 @@ const (
 	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeUsSsn     ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "us_ssn"
 )
 
+func (r ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeArCuil, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeArCuit, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeBrCnpj, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeBrCpf, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeClNut, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeCoCedulas, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeCoNit, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeHnID, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeHnRtn, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypePassport, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeUsEin, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeUsItin, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeUsSsn:
+		return true
+	}
+	return false
+}
+
 type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociation struct {
 	RelationshipTypes param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType] `json:"relationship_types,required"`
 	// The associated legal entity.
@@ -270,6 +294,14 @@ const (
 	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType = "beneficial_owner"
 	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeControlPerson   ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType = "control_person"
 )
+
+func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeControlPerson:
+		return true
+	}
+	return false
+}
 
 // The associated legal entity.
 type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntity struct {
@@ -335,6 +367,14 @@ const (
 	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeResidential ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "residential"
 )
 
+func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeBusiness, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeMailing, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeOther, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypePoBox, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeResidential:
+		return true
+	}
+	return false
+}
+
 type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentification struct {
 	// The ID number of identification document.
 	IDNumber param.Field[string] `json:"id_number,required"`
@@ -368,6 +408,14 @@ const (
 	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsSsn     ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "us_ssn"
 )
 
+func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeArCuil, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeArCuit, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeBrCnpj, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeBrCpf, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeClNut, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeCoCedulas, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeCoNit, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeHnID, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeHnRtn, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypePassport, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsEin, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsItin, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsSsn:
+		return true
+	}
+	return false
+}
+
 // The type of legal entity.
 type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType string
 
@@ -375,6 +423,14 @@ const (
 	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeBusiness   ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType = "business"
 	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeIndividual ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType = "individual"
 )
+
+func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeBusiness, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeIndividual:
+		return true
+	}
+	return false
+}
 
 // The business's legal structure.
 type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure string
@@ -387,6 +443,14 @@ const (
 	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureSoleProprietorship ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "sole_proprietorship"
 	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureTrust              ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "trust"
 )
+
+func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureCorporation, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureLlc, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureNonProfit, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructurePartnership, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureSoleProprietorship, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureTrust:
+		return true
+	}
+	return false
+}
 
 // A list of phone numbers in E.164 format.
 type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityPhoneNumber struct {
@@ -405,6 +469,14 @@ const (
 	ConnectionLegalEntityNewParamsLegalEntityLegalEntityTypeIndividual ConnectionLegalEntityNewParamsLegalEntityLegalEntityType = "individual"
 )
 
+func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityType) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityTypeBusiness, ConnectionLegalEntityNewParamsLegalEntityLegalEntityTypeIndividual:
+		return true
+	}
+	return false
+}
+
 // The business's legal structure.
 type ConnectionLegalEntityNewParamsLegalEntityLegalStructure string
 
@@ -416,6 +488,14 @@ const (
 	ConnectionLegalEntityNewParamsLegalEntityLegalStructureSoleProprietorship ConnectionLegalEntityNewParamsLegalEntityLegalStructure = "sole_proprietorship"
 	ConnectionLegalEntityNewParamsLegalEntityLegalStructureTrust              ConnectionLegalEntityNewParamsLegalEntityLegalStructure = "trust"
 )
+
+func (r ConnectionLegalEntityNewParamsLegalEntityLegalStructure) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityNewParamsLegalEntityLegalStructureCorporation, ConnectionLegalEntityNewParamsLegalEntityLegalStructureLlc, ConnectionLegalEntityNewParamsLegalEntityLegalStructureNonProfit, ConnectionLegalEntityNewParamsLegalEntityLegalStructurePartnership, ConnectionLegalEntityNewParamsLegalEntityLegalStructureSoleProprietorship, ConnectionLegalEntityNewParamsLegalEntityLegalStructureTrust:
+		return true
+	}
+	return false
+}
 
 // A list of phone numbers in E.164 format.
 type ConnectionLegalEntityNewParamsLegalEntityPhoneNumber struct {
@@ -442,6 +522,14 @@ const (
 	ConnectionLegalEntityUpdateParamsStatusProcessing ConnectionLegalEntityUpdateParamsStatus = "processing"
 )
 
+func (r ConnectionLegalEntityUpdateParamsStatus) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityUpdateParamsStatusProcessing:
+		return true
+	}
+	return false
+}
+
 type ConnectionLegalEntityListParams struct {
 	AfterCursor   param.Field[string]                                `query:"after_cursor"`
 	ConnectionID  param.Field[string]                                `query:"connection_id"`
@@ -467,3 +555,11 @@ const (
 	ConnectionLegalEntityListParamsStatusFailed     ConnectionLegalEntityListParamsStatus = "failed"
 	ConnectionLegalEntityListParamsStatusProcessing ConnectionLegalEntityListParamsStatus = "processing"
 )
+
+func (r ConnectionLegalEntityListParamsStatus) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityListParamsStatusCompleted, ConnectionLegalEntityListParamsStatusDenied, ConnectionLegalEntityListParamsStatusFailed, ConnectionLegalEntityListParamsStatusProcessing:
+		return true
+	}
+	return false
+}

@@ -231,6 +231,14 @@ const (
 	BulkResultEntityTypeBulkError         BulkResultEntityType = "bulk_error"
 )
 
+func (r BulkResultEntityType) IsKnown() bool {
+	switch r {
+	case BulkResultEntityTypePaymentOrder, BulkResultEntityTypeLedgerTransaction, BulkResultEntityTypeExpectedPayment, BulkResultEntityTypeBulkError:
+		return true
+	}
+	return false
+}
+
 // The type of the request that created this result. bulk_request is the only
 // supported `request_type`
 type BulkResultRequestType string
@@ -238,6 +246,14 @@ type BulkResultRequestType string
 const (
 	BulkResultRequestTypeBulkRequest BulkResultRequestType = "bulk_request"
 )
+
+func (r BulkResultRequestType) IsKnown() bool {
+	switch r {
+	case BulkResultRequestTypeBulkRequest:
+		return true
+	}
+	return false
+}
 
 // One of successful or failed.
 type BulkResultStatus string
@@ -247,6 +263,14 @@ const (
 	BulkResultStatusSuccessful BulkResultStatus = "successful"
 	BulkResultStatusFailed     BulkResultStatus = "failed"
 )
+
+func (r BulkResultStatus) IsKnown() bool {
+	switch r {
+	case BulkResultStatusPending, BulkResultStatusSuccessful, BulkResultStatusFailed:
+		return true
+	}
+	return false
+}
 
 type BulkResultListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
@@ -285,6 +309,14 @@ const (
 	BulkResultListParamsEntityTypeBulkError         BulkResultListParamsEntityType = "bulk_error"
 )
 
+func (r BulkResultListParamsEntityType) IsKnown() bool {
+	switch r {
+	case BulkResultListParamsEntityTypePaymentOrder, BulkResultListParamsEntityTypeLedgerTransaction, BulkResultListParamsEntityTypeExpectedPayment, BulkResultListParamsEntityTypeBulkError:
+		return true
+	}
+	return false
+}
+
 // The type of the request that created this result. bulk_request is the only
 // supported `request_type`
 type BulkResultListParamsRequestType string
@@ -292,6 +324,14 @@ type BulkResultListParamsRequestType string
 const (
 	BulkResultListParamsRequestTypeBulkRequest BulkResultListParamsRequestType = "bulk_request"
 )
+
+func (r BulkResultListParamsRequestType) IsKnown() bool {
+	switch r {
+	case BulkResultListParamsRequestTypeBulkRequest:
+		return true
+	}
+	return false
+}
 
 // One of successful or failed.
 type BulkResultListParamsStatus string
@@ -301,3 +341,11 @@ const (
 	BulkResultListParamsStatusSuccessful BulkResultListParamsStatus = "successful"
 	BulkResultListParamsStatusFailed     BulkResultListParamsStatus = "failed"
 )
+
+func (r BulkResultListParamsStatus) IsKnown() bool {
+	switch r {
+	case BulkResultListParamsStatusPending, BulkResultListParamsStatusSuccessful, BulkResultListParamsStatusFailed:
+		return true
+	}
+	return false
+}

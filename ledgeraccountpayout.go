@@ -177,6 +177,14 @@ const (
 	LedgerAccountPayoutStatusProcessing LedgerAccountPayoutStatus = "processing"
 )
 
+func (r LedgerAccountPayoutStatus) IsKnown() bool {
+	switch r {
+	case LedgerAccountPayoutStatusArchived, LedgerAccountPayoutStatusArchiving, LedgerAccountPayoutStatusPending, LedgerAccountPayoutStatusPosted, LedgerAccountPayoutStatusProcessing:
+		return true
+	}
+	return false
+}
+
 type LedgerAccountPayoutNewParams struct {
 	// The id of the funding ledger account that sends to or receives funds from the
 	// payout ledger account.
@@ -217,6 +225,14 @@ const (
 	LedgerAccountPayoutNewParamsStatusPosted  LedgerAccountPayoutNewParamsStatus = "posted"
 )
 
+func (r LedgerAccountPayoutNewParamsStatus) IsKnown() bool {
+	switch r {
+	case LedgerAccountPayoutNewParamsStatusPending, LedgerAccountPayoutNewParamsStatusPosted:
+		return true
+	}
+	return false
+}
+
 type LedgerAccountPayoutUpdateParams struct {
 	// The description of the ledger account payout.
 	Description param.Field[string] `json:"description"`
@@ -240,6 +256,14 @@ const (
 	LedgerAccountPayoutUpdateParamsStatusPosted   LedgerAccountPayoutUpdateParamsStatus = "posted"
 	LedgerAccountPayoutUpdateParamsStatusArchived LedgerAccountPayoutUpdateParamsStatus = "archived"
 )
+
+func (r LedgerAccountPayoutUpdateParamsStatus) IsKnown() bool {
+	switch r {
+	case LedgerAccountPayoutUpdateParamsStatusPosted, LedgerAccountPayoutUpdateParamsStatusArchived:
+		return true
+	}
+	return false
+}
 
 type LedgerAccountPayoutListParams struct {
 	// If you have specific IDs to retrieve in bulk, you can pass them as query

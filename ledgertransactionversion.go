@@ -365,6 +365,14 @@ const (
 	LedgerTransactionVersionLedgerEntriesStatusPosted   LedgerTransactionVersionLedgerEntriesStatus = "posted"
 )
 
+func (r LedgerTransactionVersionLedgerEntriesStatus) IsKnown() bool {
+	switch r {
+	case LedgerTransactionVersionLedgerEntriesStatusArchived, LedgerTransactionVersionLedgerEntriesStatusPending, LedgerTransactionVersionLedgerEntriesStatusPosted:
+		return true
+	}
+	return false
+}
+
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
 // payment_order, incoming_payment_detail, expected_payment, return, or reversal.
@@ -383,6 +391,14 @@ const (
 	LedgerTransactionVersionLedgerableTypeReversal              LedgerTransactionVersionLedgerableType = "reversal"
 )
 
+func (r LedgerTransactionVersionLedgerableType) IsKnown() bool {
+	switch r {
+	case LedgerTransactionVersionLedgerableTypeCounterparty, LedgerTransactionVersionLedgerableTypeExpectedPayment, LedgerTransactionVersionLedgerableTypeIncomingPaymentDetail, LedgerTransactionVersionLedgerableTypeInternalAccount, LedgerTransactionVersionLedgerableTypeLineItem, LedgerTransactionVersionLedgerableTypePaperItem, LedgerTransactionVersionLedgerableTypePaymentOrder, LedgerTransactionVersionLedgerableTypePaymentOrderAttempt, LedgerTransactionVersionLedgerableTypeReturn, LedgerTransactionVersionLedgerableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // One of `pending`, `posted`, or `archived`.
 type LedgerTransactionVersionStatus string
 
@@ -391,6 +407,14 @@ const (
 	LedgerTransactionVersionStatusPending  LedgerTransactionVersionStatus = "pending"
 	LedgerTransactionVersionStatusPosted   LedgerTransactionVersionStatus = "posted"
 )
+
+func (r LedgerTransactionVersionStatus) IsKnown() bool {
+	switch r {
+	case LedgerTransactionVersionStatusArchived, LedgerTransactionVersionStatusPending, LedgerTransactionVersionStatusPosted:
+		return true
+	}
+	return false
+}
 
 type LedgerTransactionVersionListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`

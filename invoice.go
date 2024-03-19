@@ -274,6 +274,14 @@ const (
 	InvoiceContactDetailsContactIdentifierTypeWebsite     InvoiceContactDetailsContactIdentifierType = "website"
 )
 
+func (r InvoiceContactDetailsContactIdentifierType) IsKnown() bool {
+	switch r {
+	case InvoiceContactDetailsContactIdentifierTypeEmail, InvoiceContactDetailsContactIdentifierTypePhoneNumber, InvoiceContactDetailsContactIdentifierTypeWebsite:
+		return true
+	}
+	return false
+}
+
 // The counterparty's billing address.
 type InvoiceCounterpartyBillingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -392,6 +400,14 @@ const (
 	InvoicePaymentMethodAutomatic InvoicePaymentMethod = "automatic"
 )
 
+func (r InvoicePaymentMethod) IsKnown() bool {
+	switch r {
+	case InvoicePaymentMethodUi, InvoicePaymentMethodManual, InvoicePaymentMethodAutomatic:
+		return true
+	}
+	return false
+}
+
 // One of `ach` or `eft`.
 type InvoicePaymentType string
 
@@ -399,6 +415,14 @@ const (
 	InvoicePaymentTypeEft InvoicePaymentType = "eft"
 	InvoicePaymentTypeACH InvoicePaymentType = "ach"
 )
+
+func (r InvoicePaymentType) IsKnown() bool {
+	switch r {
+	case InvoicePaymentTypeEft, InvoicePaymentTypeACH:
+		return true
+	}
+	return false
+}
 
 // The status of the invoice.
 type InvoiceStatus string
@@ -411,6 +435,14 @@ const (
 	InvoiceStatusUnpaid         InvoiceStatus = "unpaid"
 	InvoiceStatusVoided         InvoiceStatus = "voided"
 )
+
+func (r InvoiceStatus) IsKnown() bool {
+	switch r {
+	case InvoiceStatusDraft, InvoiceStatusPaid, InvoiceStatusPartiallyPaid, InvoiceStatusPaymentPending, InvoiceStatusUnpaid, InvoiceStatusVoided:
+		return true
+	}
+	return false
+}
 
 type InvoiceNewParams struct {
 	// The ID of the counterparty receiving the invoice.
@@ -503,6 +535,14 @@ const (
 	InvoiceNewParamsContactDetailsContactIdentifierTypeWebsite     InvoiceNewParamsContactDetailsContactIdentifierType = "website"
 )
 
+func (r InvoiceNewParamsContactDetailsContactIdentifierType) IsKnown() bool {
+	switch r {
+	case InvoiceNewParamsContactDetailsContactIdentifierTypeEmail, InvoiceNewParamsContactDetailsContactIdentifierTypePhoneNumber, InvoiceNewParamsContactDetailsContactIdentifierTypeWebsite:
+		return true
+	}
+	return false
+}
+
 // The counterparty's billing address.
 type InvoiceNewParamsCounterpartyBillingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -571,6 +611,14 @@ const (
 	InvoiceNewParamsPaymentMethodAutomatic InvoiceNewParamsPaymentMethod = "automatic"
 )
 
+func (r InvoiceNewParamsPaymentMethod) IsKnown() bool {
+	switch r {
+	case InvoiceNewParamsPaymentMethodUi, InvoiceNewParamsPaymentMethodManual, InvoiceNewParamsPaymentMethodAutomatic:
+		return true
+	}
+	return false
+}
+
 // One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
 // `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
 // `sic`, `signet`, `provexchange`, `zengin`.
@@ -608,6 +656,14 @@ const (
 	InvoiceNewParamsPaymentTypeWire        InvoiceNewParamsPaymentType = "wire"
 	InvoiceNewParamsPaymentTypeZengin      InvoiceNewParamsPaymentType = "zengin"
 )
+
+func (r InvoiceNewParamsPaymentType) IsKnown() bool {
+	switch r {
+	case InvoiceNewParamsPaymentTypeACH, InvoiceNewParamsPaymentTypeAuBecs, InvoiceNewParamsPaymentTypeBacs, InvoiceNewParamsPaymentTypeBook, InvoiceNewParamsPaymentTypeCard, InvoiceNewParamsPaymentTypeChats, InvoiceNewParamsPaymentTypeCheck, InvoiceNewParamsPaymentTypeCrossBorder, InvoiceNewParamsPaymentTypeDkNets, InvoiceNewParamsPaymentTypeEft, InvoiceNewParamsPaymentTypeHuIcs, InvoiceNewParamsPaymentTypeInterac, InvoiceNewParamsPaymentTypeMasav, InvoiceNewParamsPaymentTypeMxCcen, InvoiceNewParamsPaymentTypeNeft, InvoiceNewParamsPaymentTypeNics, InvoiceNewParamsPaymentTypeNzBecs, InvoiceNewParamsPaymentTypePlElixir, InvoiceNewParamsPaymentTypeProvxchange, InvoiceNewParamsPaymentTypeRoSent, InvoiceNewParamsPaymentTypeRtp, InvoiceNewParamsPaymentTypeSgGiro, InvoiceNewParamsPaymentTypeSeBankgirot, InvoiceNewParamsPaymentTypeSen, InvoiceNewParamsPaymentTypeSepa, InvoiceNewParamsPaymentTypeSic, InvoiceNewParamsPaymentTypeSignet, InvoiceNewParamsPaymentTypeSknbi, InvoiceNewParamsPaymentTypeWire, InvoiceNewParamsPaymentTypeZengin:
+		return true
+	}
+	return false
+}
 
 type InvoiceUpdateParams struct {
 	// The invoicer's contact details displayed at the top of the invoice.
@@ -704,6 +760,14 @@ const (
 	InvoiceUpdateParamsContactDetailsContactIdentifierTypeWebsite     InvoiceUpdateParamsContactDetailsContactIdentifierType = "website"
 )
 
+func (r InvoiceUpdateParamsContactDetailsContactIdentifierType) IsKnown() bool {
+	switch r {
+	case InvoiceUpdateParamsContactDetailsContactIdentifierTypeEmail, InvoiceUpdateParamsContactDetailsContactIdentifierTypePhoneNumber, InvoiceUpdateParamsContactDetailsContactIdentifierTypeWebsite:
+		return true
+	}
+	return false
+}
+
 // The counterparty's billing address.
 type InvoiceUpdateParamsCounterpartyBillingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -772,6 +836,14 @@ const (
 	InvoiceUpdateParamsPaymentMethodAutomatic InvoiceUpdateParamsPaymentMethod = "automatic"
 )
 
+func (r InvoiceUpdateParamsPaymentMethod) IsKnown() bool {
+	switch r {
+	case InvoiceUpdateParamsPaymentMethodUi, InvoiceUpdateParamsPaymentMethodManual, InvoiceUpdateParamsPaymentMethodAutomatic:
+		return true
+	}
+	return false
+}
+
 // One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
 // `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
 // `sic`, `signet`, `provexchange`, `zengin`.
@@ -809,6 +881,14 @@ const (
 	InvoiceUpdateParamsPaymentTypeWire        InvoiceUpdateParamsPaymentType = "wire"
 	InvoiceUpdateParamsPaymentTypeZengin      InvoiceUpdateParamsPaymentType = "zengin"
 )
+
+func (r InvoiceUpdateParamsPaymentType) IsKnown() bool {
+	switch r {
+	case InvoiceUpdateParamsPaymentTypeACH, InvoiceUpdateParamsPaymentTypeAuBecs, InvoiceUpdateParamsPaymentTypeBacs, InvoiceUpdateParamsPaymentTypeBook, InvoiceUpdateParamsPaymentTypeCard, InvoiceUpdateParamsPaymentTypeChats, InvoiceUpdateParamsPaymentTypeCheck, InvoiceUpdateParamsPaymentTypeCrossBorder, InvoiceUpdateParamsPaymentTypeDkNets, InvoiceUpdateParamsPaymentTypeEft, InvoiceUpdateParamsPaymentTypeHuIcs, InvoiceUpdateParamsPaymentTypeInterac, InvoiceUpdateParamsPaymentTypeMasav, InvoiceUpdateParamsPaymentTypeMxCcen, InvoiceUpdateParamsPaymentTypeNeft, InvoiceUpdateParamsPaymentTypeNics, InvoiceUpdateParamsPaymentTypeNzBecs, InvoiceUpdateParamsPaymentTypePlElixir, InvoiceUpdateParamsPaymentTypeProvxchange, InvoiceUpdateParamsPaymentTypeRoSent, InvoiceUpdateParamsPaymentTypeRtp, InvoiceUpdateParamsPaymentTypeSgGiro, InvoiceUpdateParamsPaymentTypeSeBankgirot, InvoiceUpdateParamsPaymentTypeSen, InvoiceUpdateParamsPaymentTypeSepa, InvoiceUpdateParamsPaymentTypeSic, InvoiceUpdateParamsPaymentTypeSignet, InvoiceUpdateParamsPaymentTypeSknbi, InvoiceUpdateParamsPaymentTypeWire, InvoiceUpdateParamsPaymentTypeZengin:
+		return true
+	}
+	return false
+}
 
 type InvoiceListParams struct {
 	AfterCursor    param.Field[string] `query:"after_cursor"`
@@ -848,3 +928,11 @@ const (
 	InvoiceListParamsStatusUnpaid         InvoiceListParamsStatus = "unpaid"
 	InvoiceListParamsStatusVoided         InvoiceListParamsStatus = "voided"
 )
+
+func (r InvoiceListParamsStatus) IsKnown() bool {
+	switch r {
+	case InvoiceListParamsStatusDraft, InvoiceListParamsStatusPaid, InvoiceListParamsStatusPartiallyPaid, InvoiceListParamsStatusPaymentPending, InvoiceListParamsStatusUnpaid, InvoiceListParamsStatusVoided:
+		return true
+	}
+	return false
+}

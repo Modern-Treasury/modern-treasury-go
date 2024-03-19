@@ -145,6 +145,14 @@ const (
 	PaperItemStatusReturned  PaperItemStatus = "returned"
 )
 
+func (r PaperItemStatus) IsKnown() bool {
+	switch r {
+	case PaperItemStatusCompleted, PaperItemStatusPending, PaperItemStatusReturned:
+		return true
+	}
+	return false
+}
+
 type PaperItemListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
 	// Specify an inclusive end date (YYYY-MM-DD) when filtering by deposit_date

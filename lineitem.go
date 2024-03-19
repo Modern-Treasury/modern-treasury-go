@@ -167,12 +167,28 @@ const (
 	LineItemItemizableTypePaymentOrder    LineItemItemizableType = "PaymentOrder"
 )
 
+func (r LineItemItemizableType) IsKnown() bool {
+	switch r {
+	case LineItemItemizableTypeExpectedPayment, LineItemItemizableTypePaymentOrder:
+		return true
+	}
+	return false
+}
+
 type LineItemGetParamsItemizableType string
 
 const (
 	LineItemGetParamsItemizableTypeExpectedPayments LineItemGetParamsItemizableType = "expected_payments"
 	LineItemGetParamsItemizableTypePaymentOrders    LineItemGetParamsItemizableType = "payment_orders"
 )
+
+func (r LineItemGetParamsItemizableType) IsKnown() bool {
+	switch r {
+	case LineItemGetParamsItemizableTypeExpectedPayments, LineItemGetParamsItemizableTypePaymentOrders:
+		return true
+	}
+	return false
+}
 
 type LineItemUpdateParams struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -190,6 +206,14 @@ const (
 	LineItemUpdateParamsItemizableTypeExpectedPayments LineItemUpdateParamsItemizableType = "expected_payments"
 	LineItemUpdateParamsItemizableTypePaymentOrders    LineItemUpdateParamsItemizableType = "payment_orders"
 )
+
+func (r LineItemUpdateParamsItemizableType) IsKnown() bool {
+	switch r {
+	case LineItemUpdateParamsItemizableTypeExpectedPayments, LineItemUpdateParamsItemizableTypePaymentOrders:
+		return true
+	}
+	return false
+}
 
 type LineItemListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
@@ -210,3 +234,11 @@ const (
 	LineItemListParamsItemizableTypeExpectedPayments LineItemListParamsItemizableType = "expected_payments"
 	LineItemListParamsItemizableTypePaymentOrders    LineItemListParamsItemizableType = "payment_orders"
 )
+
+func (r LineItemListParamsItemizableType) IsKnown() bool {
+	switch r {
+	case LineItemListParamsItemizableTypeExpectedPayments, LineItemListParamsItemizableTypePaymentOrders:
+		return true
+	}
+	return false
+}

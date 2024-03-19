@@ -184,6 +184,14 @@ const (
 	DocumentDocumentableTypeConnection            DocumentDocumentableType = "connection"
 )
 
+func (r DocumentDocumentableType) IsKnown() bool {
+	switch r {
+	case DocumentDocumentableTypeCase, DocumentDocumentableTypeCounterparty, DocumentDocumentableTypeExpectedPayment, DocumentDocumentableTypeExternalAccount, DocumentDocumentableTypeIncomingPaymentDetail, DocumentDocumentableTypeInternalAccount, DocumentDocumentableTypeOrganization, DocumentDocumentableTypePaperItem, DocumentDocumentableTypePaymentOrder, DocumentDocumentableTypeTransaction, DocumentDocumentableTypeDecision, DocumentDocumentableTypeConnection:
+		return true
+	}
+	return false
+}
+
 type DocumentFile struct {
 	// The MIME content type of the document.
 	ContentType string `json:"content_type"`
@@ -252,6 +260,14 @@ const (
 	DocumentNewParamsDocumentableTypeConnections            DocumentNewParamsDocumentableType = "connections"
 )
 
+func (r DocumentNewParamsDocumentableType) IsKnown() bool {
+	switch r {
+	case DocumentNewParamsDocumentableTypeCases, DocumentNewParamsDocumentableTypeCounterparties, DocumentNewParamsDocumentableTypeExpectedPayments, DocumentNewParamsDocumentableTypeExternalAccounts, DocumentNewParamsDocumentableTypeIncomingPaymentDetails, DocumentNewParamsDocumentableTypeInternalAccounts, DocumentNewParamsDocumentableTypeOrganizations, DocumentNewParamsDocumentableTypePaperItems, DocumentNewParamsDocumentableTypePaymentOrders, DocumentNewParamsDocumentableTypeTransactions, DocumentNewParamsDocumentableTypeDecisions, DocumentNewParamsDocumentableTypeConnections:
+		return true
+	}
+	return false
+}
+
 type DocumentListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
 	// The unique identifier for the associated object.
@@ -290,3 +306,11 @@ const (
 	DocumentListParamsDocumentableTypeDecisions              DocumentListParamsDocumentableType = "decisions"
 	DocumentListParamsDocumentableTypeConnections            DocumentListParamsDocumentableType = "connections"
 )
+
+func (r DocumentListParamsDocumentableType) IsKnown() bool {
+	switch r {
+	case DocumentListParamsDocumentableTypeCases, DocumentListParamsDocumentableTypeCounterparties, DocumentListParamsDocumentableTypeExpectedPayments, DocumentListParamsDocumentableTypeExternalAccounts, DocumentListParamsDocumentableTypeIncomingPaymentDetails, DocumentListParamsDocumentableTypeInternalAccounts, DocumentListParamsDocumentableTypeOrganizations, DocumentListParamsDocumentableTypePaperItems, DocumentListParamsDocumentableTypePaymentOrders, DocumentListParamsDocumentableTypeTransactions, DocumentListParamsDocumentableTypeDecisions, DocumentListParamsDocumentableTypeConnections:
+		return true
+	}
+	return false
+}

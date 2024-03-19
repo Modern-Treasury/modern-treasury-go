@@ -312,6 +312,14 @@ const (
 	LedgerAccountLedgerableTypeVirtualAccount  LedgerAccountLedgerableType = "virtual_account"
 )
 
+func (r LedgerAccountLedgerableType) IsKnown() bool {
+	switch r {
+	case LedgerAccountLedgerableTypeCounterparty, LedgerAccountLedgerableTypeExternalAccount, LedgerAccountLedgerableTypeInternalAccount, LedgerAccountLedgerableTypeVirtualAccount:
+		return true
+	}
+	return false
+}
+
 type LedgerAccountNewParams struct {
 	// The currency of the ledger account.
 	Currency param.Field[string] `json:"currency,required"`
@@ -355,6 +363,14 @@ const (
 	LedgerAccountNewParamsLedgerableTypeInternalAccount LedgerAccountNewParamsLedgerableType = "internal_account"
 	LedgerAccountNewParamsLedgerableTypeVirtualAccount  LedgerAccountNewParamsLedgerableType = "virtual_account"
 )
+
+func (r LedgerAccountNewParamsLedgerableType) IsKnown() bool {
+	switch r {
+	case LedgerAccountNewParamsLedgerableTypeCounterparty, LedgerAccountNewParamsLedgerableTypeExternalAccount, LedgerAccountNewParamsLedgerableTypeInternalAccount, LedgerAccountNewParamsLedgerableTypeVirtualAccount:
+		return true
+	}
+	return false
+}
 
 type LedgerAccountGetParams struct {
 	// Use `balances[effective_at_lower_bound]` and
