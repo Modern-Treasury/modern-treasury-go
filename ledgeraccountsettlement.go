@@ -167,6 +167,14 @@ const (
 	LedgerAccountSettlementStatusProcessing LedgerAccountSettlementStatus = "processing"
 )
 
+func (r LedgerAccountSettlementStatus) IsKnown() bool {
+	switch r {
+	case LedgerAccountSettlementStatusArchived, LedgerAccountSettlementStatusArchiving, LedgerAccountSettlementStatusPending, LedgerAccountSettlementStatusPosted, LedgerAccountSettlementStatusProcessing:
+		return true
+	}
+	return false
+}
+
 type LedgerAccountSettlementNewParams struct {
 	// The id of the contra ledger account that sends to or receives funds from the
 	// settled ledger account.
@@ -208,6 +216,14 @@ const (
 	LedgerAccountSettlementNewParamsStatusPosted  LedgerAccountSettlementNewParamsStatus = "posted"
 )
 
+func (r LedgerAccountSettlementNewParamsStatus) IsKnown() bool {
+	switch r {
+	case LedgerAccountSettlementNewParamsStatusPending, LedgerAccountSettlementNewParamsStatusPosted:
+		return true
+	}
+	return false
+}
+
 type LedgerAccountSettlementUpdateParams struct {
 	// The description of the ledger account settlement.
 	Description param.Field[string] `json:"description"`
@@ -231,6 +247,14 @@ const (
 	LedgerAccountSettlementUpdateParamsStatusPosted   LedgerAccountSettlementUpdateParamsStatus = "posted"
 	LedgerAccountSettlementUpdateParamsStatusArchived LedgerAccountSettlementUpdateParamsStatus = "archived"
 )
+
+func (r LedgerAccountSettlementUpdateParamsStatus) IsKnown() bool {
+	switch r {
+	case LedgerAccountSettlementUpdateParamsStatusPosted, LedgerAccountSettlementUpdateParamsStatusArchived:
+		return true
+	}
+	return false
+}
 
 type LedgerAccountSettlementListParams struct {
 	// If you have specific IDs to retrieve in bulk, you can pass them as query

@@ -223,6 +223,14 @@ const (
 	ReturnObjectCodeCurrencycloud ReturnObjectCode = "currencycloud"
 )
 
+func (r ReturnObjectCode) IsKnown() bool {
+	switch r {
+	case ReturnObjectCode901, ReturnObjectCode902, ReturnObjectCode903, ReturnObjectCode904, ReturnObjectCode905, ReturnObjectCode907, ReturnObjectCode908, ReturnObjectCode909, ReturnObjectCode910, ReturnObjectCode911, ReturnObjectCode912, ReturnObjectCode914, ReturnObjectCodeC01, ReturnObjectCodeC02, ReturnObjectCodeC03, ReturnObjectCodeC05, ReturnObjectCodeC06, ReturnObjectCodeC07, ReturnObjectCodeC08, ReturnObjectCodeC09, ReturnObjectCodeC13, ReturnObjectCodeC14, ReturnObjectCodeR01, ReturnObjectCodeR02, ReturnObjectCodeR03, ReturnObjectCodeR04, ReturnObjectCodeR05, ReturnObjectCodeR06, ReturnObjectCodeR07, ReturnObjectCodeR08, ReturnObjectCodeR09, ReturnObjectCodeR10, ReturnObjectCodeR11, ReturnObjectCodeR12, ReturnObjectCodeR14, ReturnObjectCodeR15, ReturnObjectCodeR16, ReturnObjectCodeR17, ReturnObjectCodeR20, ReturnObjectCodeR21, ReturnObjectCodeR22, ReturnObjectCodeR23, ReturnObjectCodeR24, ReturnObjectCodeR29, ReturnObjectCodeR31, ReturnObjectCodeR33, ReturnObjectCodeR37, ReturnObjectCodeR38, ReturnObjectCodeR39, ReturnObjectCodeR51, ReturnObjectCodeR52, ReturnObjectCodeR53, ReturnObjectCodeCurrencycloud:
+		return true
+	}
+	return false
+}
+
 type ReturnObjectReferenceNumber struct {
 	ID        string    `json:"id,required" format:"uuid"`
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
@@ -328,6 +336,14 @@ const (
 	ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoTraceNumber                   ReturnObjectReferenceNumbersReferenceNumberType = "wells_fargo_trace_number"
 )
 
+func (r ReturnObjectReferenceNumbersReferenceNumberType) IsKnown() bool {
+	switch r {
+	case ReturnObjectReferenceNumbersReferenceNumberTypeACHOriginalTraceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeACHTraceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeBankprovPaymentActivityDate, ReturnObjectReferenceNumbersReferenceNumberTypeBankprovPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeBnkDevPrenotificationID, ReturnObjectReferenceNumbersReferenceNumberTypeBnkDevTransferID, ReturnObjectReferenceNumbersReferenceNumberTypeBofaEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeBofaTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeCheckNumber, ReturnObjectReferenceNumbersReferenceNumberTypeColumnFxQuoteID, ReturnObjectReferenceNumbersReferenceNumberTypeColumnReversalPairTransferID, ReturnObjectReferenceNumbersReferenceNumberTypeColumnTransferID, ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverServiceMessage, ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeCurrencycloudConversionID, ReturnObjectReferenceNumbersReferenceNumberTypeCurrencycloudPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeDcBankTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeDwollaTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeEftTraceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeEvolveTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeFedwireImad, ReturnObjectReferenceNumbersReferenceNumberTypeFedwireOmad, ReturnObjectReferenceNumbersReferenceNumberTypeFirstRepublicInternalID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsCollectionRequestID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsPaymentRequestID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsRequestID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsUniquePaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeInteracMessageID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcCcn, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcClearingSystemReference, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcCustomerReferenceID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcFirmRootID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcP3ID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentBatchID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentInformationID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentReturnedDatetime, ReturnObjectReferenceNumbersReferenceNumberTypeLobCheckID, ReturnObjectReferenceNumbersReferenceNumberTypeOther, ReturnObjectReferenceNumbersReferenceNumberTypePartialSwiftMir, ReturnObjectReferenceNumbersReferenceNumberTypePncClearingReference, ReturnObjectReferenceNumbersReferenceNumberTypePncInstructionID, ReturnObjectReferenceNumbersReferenceNumberTypePncMultipaymentID, ReturnObjectReferenceNumbersReferenceNumberTypePncPaymentTraceID, ReturnObjectReferenceNumbersReferenceNumberTypeRspecVendorPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeRtpInstructionID, ReturnObjectReferenceNumbersReferenceNumberTypeSignetAPIReferenceID, ReturnObjectReferenceNumbersReferenceNumberTypeSignetConfirmationID, ReturnObjectReferenceNumbersReferenceNumberTypeSignetRequestID, ReturnObjectReferenceNumbersReferenceNumberTypeSilvergatePaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeSvbEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeSvbPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeSvbTransactionClearedForSanctionsReview, ReturnObjectReferenceNumbersReferenceNumberTypeSvbTransactionHeldForSanctionsReview, ReturnObjectReferenceNumbersReferenceNumberTypeSwiftMir, ReturnObjectReferenceNumbersReferenceNumberTypeSwiftUetr, ReturnObjectReferenceNumbersReferenceNumberTypeUmbProductPartnerAccountNumber, ReturnObjectReferenceNumbersReferenceNumberTypeUsbankPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoTraceNumber:
+		return true
+	}
+	return false
+}
+
 // The type of object being returned or `null`.
 type ReturnObjectReturnableType string
 
@@ -339,6 +355,14 @@ const (
 	ReturnObjectReturnableTypeReversal              ReturnObjectReturnableType = "reversal"
 )
 
+func (r ReturnObjectReturnableType) IsKnown() bool {
+	switch r {
+	case ReturnObjectReturnableTypeIncomingPaymentDetail, ReturnObjectReturnableTypePaperItem, ReturnObjectReturnableTypePaymentOrder, ReturnObjectReturnableTypeReturn, ReturnObjectReturnableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // The role of the return, can be `originating` or `receiving`.
 type ReturnObjectRole string
 
@@ -346,6 +370,14 @@ const (
 	ReturnObjectRoleOriginating ReturnObjectRole = "originating"
 	ReturnObjectRoleReceiving   ReturnObjectRole = "receiving"
 )
+
+func (r ReturnObjectRole) IsKnown() bool {
+	switch r {
+	case ReturnObjectRoleOriginating, ReturnObjectRoleReceiving:
+		return true
+	}
+	return false
+}
 
 // The current status of the return.
 type ReturnObjectStatus string
@@ -358,6 +390,14 @@ const (
 	ReturnObjectStatusReturned   ReturnObjectStatus = "returned"
 	ReturnObjectStatusSent       ReturnObjectStatus = "sent"
 )
+
+func (r ReturnObjectStatus) IsKnown() bool {
+	switch r {
+	case ReturnObjectStatusCompleted, ReturnObjectStatusFailed, ReturnObjectStatusPending, ReturnObjectStatusProcessing, ReturnObjectStatusReturned, ReturnObjectStatusSent:
+		return true
+	}
+	return false
+}
 
 // The type of return. Can be one of: `ach`, `ach_noc`, `au_becs`, `bacs`, `eft`,
 // `interac`, `manual`, `paper_item`, `wire`.
@@ -378,6 +418,14 @@ const (
 	ReturnObjectTypeSepa        ReturnObjectType = "sepa"
 	ReturnObjectTypeWire        ReturnObjectType = "wire"
 )
+
+func (r ReturnObjectType) IsKnown() bool {
+	switch r {
+	case ReturnObjectTypeACH, ReturnObjectTypeACHNoc, ReturnObjectTypeAuBecs, ReturnObjectTypeBacs, ReturnObjectTypeBook, ReturnObjectTypeCheck, ReturnObjectTypeCrossBorder, ReturnObjectTypeEft, ReturnObjectTypeInterac, ReturnObjectTypeManual, ReturnObjectTypePaperItem, ReturnObjectTypeSepa, ReturnObjectTypeWire:
+		return true
+	}
+	return false
+}
 
 type ReturnNewParams struct {
 	// The ID of the object being returned or `null`.
@@ -409,6 +457,14 @@ type ReturnNewParamsReturnableType string
 const (
 	ReturnNewParamsReturnableTypeIncomingPaymentDetail ReturnNewParamsReturnableType = "incoming_payment_detail"
 )
+
+func (r ReturnNewParamsReturnableType) IsKnown() bool {
+	switch r {
+	case ReturnNewParamsReturnableTypeIncomingPaymentDetail:
+		return true
+	}
+	return false
+}
 
 // The return code. For ACH returns, this is the required ACH return code.
 type ReturnNewParamsCode string
@@ -469,6 +525,14 @@ const (
 	ReturnNewParamsCodeCurrencycloud ReturnNewParamsCode = "currencycloud"
 )
 
+func (r ReturnNewParamsCode) IsKnown() bool {
+	switch r {
+	case ReturnNewParamsCode901, ReturnNewParamsCode902, ReturnNewParamsCode903, ReturnNewParamsCode904, ReturnNewParamsCode905, ReturnNewParamsCode907, ReturnNewParamsCode908, ReturnNewParamsCode909, ReturnNewParamsCode910, ReturnNewParamsCode911, ReturnNewParamsCode912, ReturnNewParamsCode914, ReturnNewParamsCodeC01, ReturnNewParamsCodeC02, ReturnNewParamsCodeC03, ReturnNewParamsCodeC05, ReturnNewParamsCodeC06, ReturnNewParamsCodeC07, ReturnNewParamsCodeC08, ReturnNewParamsCodeC09, ReturnNewParamsCodeC13, ReturnNewParamsCodeC14, ReturnNewParamsCodeR01, ReturnNewParamsCodeR02, ReturnNewParamsCodeR03, ReturnNewParamsCodeR04, ReturnNewParamsCodeR05, ReturnNewParamsCodeR06, ReturnNewParamsCodeR07, ReturnNewParamsCodeR08, ReturnNewParamsCodeR09, ReturnNewParamsCodeR10, ReturnNewParamsCodeR11, ReturnNewParamsCodeR12, ReturnNewParamsCodeR14, ReturnNewParamsCodeR15, ReturnNewParamsCodeR16, ReturnNewParamsCodeR17, ReturnNewParamsCodeR20, ReturnNewParamsCodeR21, ReturnNewParamsCodeR22, ReturnNewParamsCodeR23, ReturnNewParamsCodeR24, ReturnNewParamsCodeR29, ReturnNewParamsCodeR31, ReturnNewParamsCodeR33, ReturnNewParamsCodeR37, ReturnNewParamsCodeR38, ReturnNewParamsCodeR39, ReturnNewParamsCodeR51, ReturnNewParamsCodeR52, ReturnNewParamsCodeR53, ReturnNewParamsCodeCurrencycloud:
+		return true
+	}
+	return false
+}
+
 type ReturnListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
 	// Specify `counterparty_id` if you wish to see returns that occurred with a
@@ -504,3 +568,11 @@ const (
 	ReturnListParamsReturnableTypeReturn                ReturnListParamsReturnableType = "return"
 	ReturnListParamsReturnableTypeReversal              ReturnListParamsReturnableType = "reversal"
 )
+
+func (r ReturnListParamsReturnableType) IsKnown() bool {
+	switch r {
+	case ReturnListParamsReturnableTypeIncomingPaymentDetail, ReturnListParamsReturnableTypePaperItem, ReturnListParamsReturnableTypePaymentOrder, ReturnListParamsReturnableTypeReturn, ReturnListParamsReturnableTypeReversal:
+		return true
+	}
+	return false
+}

@@ -300,6 +300,14 @@ const (
 	LedgerEntryStatusPosted   LedgerEntryStatus = "posted"
 )
 
+func (r LedgerEntryStatus) IsKnown() bool {
+	switch r {
+	case LedgerEntryStatusArchived, LedgerEntryStatusPending, LedgerEntryStatusPosted:
+		return true
+	}
+	return false
+}
+
 type LedgerEntryGetParams struct {
 	// If true, response will include the balances attached to the ledger entry. If
 	// there is no balance available, null will be returned instead.
@@ -413,12 +421,28 @@ const (
 	LedgerEntryListParamsOrderByCreatedAtDesc LedgerEntryListParamsOrderByCreatedAt = "desc"
 )
 
+func (r LedgerEntryListParamsOrderByCreatedAt) IsKnown() bool {
+	switch r {
+	case LedgerEntryListParamsOrderByCreatedAtAsc, LedgerEntryListParamsOrderByCreatedAtDesc:
+		return true
+	}
+	return false
+}
+
 type LedgerEntryListParamsOrderByEffectiveAt string
 
 const (
 	LedgerEntryListParamsOrderByEffectiveAtAsc  LedgerEntryListParamsOrderByEffectiveAt = "asc"
 	LedgerEntryListParamsOrderByEffectiveAtDesc LedgerEntryListParamsOrderByEffectiveAt = "desc"
 )
+
+func (r LedgerEntryListParamsOrderByEffectiveAt) IsKnown() bool {
+	switch r {
+	case LedgerEntryListParamsOrderByEffectiveAtAsc, LedgerEntryListParamsOrderByEffectiveAtDesc:
+		return true
+	}
+	return false
+}
 
 // Get all ledger entries that match the status specified. One of `pending`,
 // `posted`, or `archived`.
@@ -429,3 +453,11 @@ const (
 	LedgerEntryListParamsStatusPosted   LedgerEntryListParamsStatus = "posted"
 	LedgerEntryListParamsStatusArchived LedgerEntryListParamsStatus = "archived"
 )
+
+func (r LedgerEntryListParamsStatus) IsKnown() bool {
+	switch r {
+	case LedgerEntryListParamsStatusPending, LedgerEntryListParamsStatusPosted, LedgerEntryListParamsStatusArchived:
+		return true
+	}
+	return false
+}

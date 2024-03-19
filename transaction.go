@@ -228,6 +228,14 @@ const (
 	TransactionTypeOther       TransactionType = "other"
 )
 
+func (r TransactionType) IsKnown() bool {
+	switch r {
+	case TransactionTypeACH, TransactionTypeAuBecs, TransactionTypeBacs, TransactionTypeBook, TransactionTypeCard, TransactionTypeChats, TransactionTypeCheck, TransactionTypeCrossBorder, TransactionTypeDkNets, TransactionTypeEft, TransactionTypeHuIcs, TransactionTypeInterac, TransactionTypeMasav, TransactionTypeMxCcen, TransactionTypeNeft, TransactionTypeNics, TransactionTypeNzBecs, TransactionTypePlElixir, TransactionTypeProvxchange, TransactionTypeRoSent, TransactionTypeRtp, TransactionTypeSeBankgirot, TransactionTypeSen, TransactionTypeSepa, TransactionTypeSgGiro, TransactionTypeSic, TransactionTypeSignet, TransactionTypeSknbi, TransactionTypeWire, TransactionTypeZengin, TransactionTypeOther:
+		return true
+	}
+	return false
+}
+
 // The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 // `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
 // `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
@@ -256,6 +264,14 @@ const (
 	TransactionVendorCodeTypeSwift         TransactionVendorCodeType = "swift"
 	TransactionVendorCodeTypeUsBank        TransactionVendorCodeType = "us_bank"
 )
+
+func (r TransactionVendorCodeType) IsKnown() bool {
+	switch r {
+	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePlaid, TransactionVendorCodeTypeRspecVendor, TransactionVendorCodeTypeSignet, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeUsBank:
+		return true
+	}
+	return false
+}
 
 type TransactionNewParams struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented

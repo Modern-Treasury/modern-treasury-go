@@ -174,6 +174,14 @@ const (
 	InternalAccountAccountTypeSavings       InternalAccountAccountType = "savings"
 )
 
+func (r InternalAccountAccountType) IsKnown() bool {
+	switch r {
+	case InternalAccountAccountTypeCash, InternalAccountAccountTypeChecking, InternalAccountAccountTypeGeneralLedger, InternalAccountAccountTypeLoan, InternalAccountAccountTypeNonResident, InternalAccountAccountTypeOther, InternalAccountAccountTypeOverdraft, InternalAccountAccountTypeSavings:
+		return true
+	}
+	return false
+}
+
 // The address associated with the owner or null.
 type InternalAccountPartyAddress struct {
 	ID string `json:"id,required" format:"uuid"`
@@ -230,6 +238,14 @@ const (
 	InternalAccountPartyTypeIndividual InternalAccountPartyType = "individual"
 )
 
+func (r InternalAccountPartyType) IsKnown() bool {
+	switch r {
+	case InternalAccountPartyTypeBusiness, InternalAccountPartyTypeIndividual:
+		return true
+	}
+	return false
+}
+
 type InternalAccountNewParams struct {
 	// The identifier of the financial institution the account belongs to.
 	ConnectionID param.Field[string] `json:"connection_id,required"`
@@ -265,6 +281,14 @@ const (
 	InternalAccountNewParamsCurrencyUsd InternalAccountNewParamsCurrency = "USD"
 	InternalAccountNewParamsCurrencyCad InternalAccountNewParamsCurrency = "CAD"
 )
+
+func (r InternalAccountNewParamsCurrency) IsKnown() bool {
+	switch r {
+	case InternalAccountNewParamsCurrencyUsd, InternalAccountNewParamsCurrencyCad:
+		return true
+	}
+	return false
+}
 
 // The address associated with the owner or null.
 type InternalAccountNewParamsPartyAddress struct {
@@ -365,3 +389,11 @@ const (
 	InternalAccountListParamsPaymentTypeWire        InternalAccountListParamsPaymentType = "wire"
 	InternalAccountListParamsPaymentTypeZengin      InternalAccountListParamsPaymentType = "zengin"
 )
+
+func (r InternalAccountListParamsPaymentType) IsKnown() bool {
+	switch r {
+	case InternalAccountListParamsPaymentTypeACH, InternalAccountListParamsPaymentTypeAuBecs, InternalAccountListParamsPaymentTypeBacs, InternalAccountListParamsPaymentTypeBook, InternalAccountListParamsPaymentTypeCard, InternalAccountListParamsPaymentTypeChats, InternalAccountListParamsPaymentTypeCheck, InternalAccountListParamsPaymentTypeCrossBorder, InternalAccountListParamsPaymentTypeDkNets, InternalAccountListParamsPaymentTypeEft, InternalAccountListParamsPaymentTypeHuIcs, InternalAccountListParamsPaymentTypeInterac, InternalAccountListParamsPaymentTypeMasav, InternalAccountListParamsPaymentTypeMxCcen, InternalAccountListParamsPaymentTypeNeft, InternalAccountListParamsPaymentTypeNics, InternalAccountListParamsPaymentTypeNzBecs, InternalAccountListParamsPaymentTypePlElixir, InternalAccountListParamsPaymentTypeProvxchange, InternalAccountListParamsPaymentTypeRoSent, InternalAccountListParamsPaymentTypeRtp, InternalAccountListParamsPaymentTypeSeBankgirot, InternalAccountListParamsPaymentTypeSen, InternalAccountListParamsPaymentTypeSepa, InternalAccountListParamsPaymentTypeSgGiro, InternalAccountListParamsPaymentTypeSic, InternalAccountListParamsPaymentTypeSignet, InternalAccountListParamsPaymentTypeSknbi, InternalAccountListParamsPaymentTypeWire, InternalAccountListParamsPaymentTypeZengin:
+		return true
+	}
+	return false
+}

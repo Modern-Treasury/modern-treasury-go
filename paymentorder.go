@@ -346,6 +346,14 @@ const (
 	PaymentOrderChargeBearerReceiver PaymentOrderChargeBearer = "receiver"
 )
 
+func (r PaymentOrderChargeBearer) IsKnown() bool {
+	switch r {
+	case PaymentOrderChargeBearerShared, PaymentOrderChargeBearerSender, PaymentOrderChargeBearerReceiver:
+		return true
+	}
+	return false
+}
+
 // One of `credit`, `debit`. Describes the direction money is flowing in the
 // transaction. A `credit` moves money from your account to someone else's. A
 // `debit` pulls money from someone else's account to your own. Note that wire,
@@ -357,6 +365,14 @@ const (
 	PaymentOrderDirectionDebit  PaymentOrderDirection = "debit"
 )
 
+func (r PaymentOrderDirection) IsKnown() bool {
+	switch r {
+	case PaymentOrderDirectionCredit, PaymentOrderDirectionDebit:
+		return true
+	}
+	return false
+}
+
 // Indicates the type of FX transfer to initiate, can be either
 // `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
 // currency matches the originating account currency.
@@ -366,6 +382,14 @@ const (
 	PaymentOrderForeignExchangeIndicatorFixedToVariable PaymentOrderForeignExchangeIndicator = "fixed_to_variable"
 	PaymentOrderForeignExchangeIndicatorVariableToFixed PaymentOrderForeignExchangeIndicator = "variable_to_fixed"
 )
+
+func (r PaymentOrderForeignExchangeIndicator) IsKnown() bool {
+	switch r {
+	case PaymentOrderForeignExchangeIndicatorFixedToVariable, PaymentOrderForeignExchangeIndicatorVariableToFixed:
+		return true
+	}
+	return false
+}
 
 // Associated serialized foreign exchange rate information.
 type PaymentOrderForeignExchangeRate struct {
@@ -422,12 +446,28 @@ const (
 	PaymentOrderPriorityNormal PaymentOrderPriority = "normal"
 )
 
+func (r PaymentOrderPriority) IsKnown() bool {
+	switch r {
+	case PaymentOrderPriorityHigh, PaymentOrderPriorityNormal:
+		return true
+	}
+	return false
+}
+
 type PaymentOrderReceivingAccountType string
 
 const (
 	PaymentOrderReceivingAccountTypeInternalAccount PaymentOrderReceivingAccountType = "internal_account"
 	PaymentOrderReceivingAccountTypeExternalAccount PaymentOrderReceivingAccountType = "external_account"
 )
+
+func (r PaymentOrderReceivingAccountType) IsKnown() bool {
+	switch r {
+	case PaymentOrderReceivingAccountTypeInternalAccount, PaymentOrderReceivingAccountTypeExternalAccount:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderReferenceNumber struct {
 	ID        string    `json:"id,required" format:"uuid"`
@@ -534,6 +574,14 @@ const (
 	PaymentOrderReferenceNumbersReferenceNumberTypeWellsFargoTraceNumber                   PaymentOrderReferenceNumbersReferenceNumberType = "wells_fargo_trace_number"
 )
 
+func (r PaymentOrderReferenceNumbersReferenceNumberType) IsKnown() bool {
+	switch r {
+	case PaymentOrderReferenceNumbersReferenceNumberTypeACHOriginalTraceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeACHTraceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeBankprovPaymentActivityDate, PaymentOrderReferenceNumbersReferenceNumberTypeBankprovPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeBnkDevPrenotificationID, PaymentOrderReferenceNumbersReferenceNumberTypeBnkDevTransferID, PaymentOrderReferenceNumbersReferenceNumberTypeBofaEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeBofaTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeCheckNumber, PaymentOrderReferenceNumbersReferenceNumberTypeColumnFxQuoteID, PaymentOrderReferenceNumbersReferenceNumberTypeColumnReversalPairTransferID, PaymentOrderReferenceNumbersReferenceNumberTypeColumnTransferID, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverServiceMessage, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeCurrencycloudConversionID, PaymentOrderReferenceNumbersReferenceNumberTypeCurrencycloudPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeDcBankTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeDwollaTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeEftTraceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeEvolveTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeFedwireImad, PaymentOrderReferenceNumbersReferenceNumberTypeFedwireOmad, PaymentOrderReferenceNumbersReferenceNumberTypeFirstRepublicInternalID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsCollectionRequestID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsPaymentRequestID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsRequestID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsUniquePaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeInteracMessageID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcCcn, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcClearingSystemReference, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcCustomerReferenceID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcFirmRootID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcP3ID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcPaymentBatchID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcPaymentInformationID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcPaymentReturnedDatetime, PaymentOrderReferenceNumbersReferenceNumberTypeLobCheckID, PaymentOrderReferenceNumbersReferenceNumberTypeOther, PaymentOrderReferenceNumbersReferenceNumberTypePartialSwiftMir, PaymentOrderReferenceNumbersReferenceNumberTypePncClearingReference, PaymentOrderReferenceNumbersReferenceNumberTypePncInstructionID, PaymentOrderReferenceNumbersReferenceNumberTypePncMultipaymentID, PaymentOrderReferenceNumbersReferenceNumberTypePncPaymentTraceID, PaymentOrderReferenceNumbersReferenceNumberTypeRspecVendorPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeRtpInstructionID, PaymentOrderReferenceNumbersReferenceNumberTypeSignetAPIReferenceID, PaymentOrderReferenceNumbersReferenceNumberTypeSignetConfirmationID, PaymentOrderReferenceNumbersReferenceNumberTypeSignetRequestID, PaymentOrderReferenceNumbersReferenceNumberTypeSilvergatePaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeSvbEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeSvbPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeSvbTransactionClearedForSanctionsReview, PaymentOrderReferenceNumbersReferenceNumberTypeSvbTransactionHeldForSanctionsReview, PaymentOrderReferenceNumbersReferenceNumberTypeSwiftMir, PaymentOrderReferenceNumbersReferenceNumberTypeSwiftUetr, PaymentOrderReferenceNumbersReferenceNumberTypeUmbProductPartnerAccountNumber, PaymentOrderReferenceNumbersReferenceNumberTypeUsbankPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeWellsFargoPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeWellsFargoTraceNumber:
+		return true
+	}
+	return false
+}
+
 // The current status of the payment order.
 type PaymentOrderStatus string
 
@@ -550,6 +598,14 @@ const (
 	PaymentOrderStatusReversed      PaymentOrderStatus = "reversed"
 	PaymentOrderStatusSent          PaymentOrderStatus = "sent"
 )
+
+func (r PaymentOrderStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderStatusApproved, PaymentOrderStatusCancelled, PaymentOrderStatusCompleted, PaymentOrderStatusDenied, PaymentOrderStatusFailed, PaymentOrderStatusNeedsApproval, PaymentOrderStatusPending, PaymentOrderStatusProcessing, PaymentOrderStatusReturned, PaymentOrderStatusReversed, PaymentOrderStatusSent:
+		return true
+	}
+	return false
+}
 
 // The account to which the originating of this payment should be attributed to.
 // Can be a `virtual_account` or `internal_account`.
@@ -581,6 +637,14 @@ const (
 	PaymentOrderUltimateOriginatingAccountTypeVirtualAccount  PaymentOrderUltimateOriginatingAccountType = "virtual_account"
 )
 
+func (r PaymentOrderUltimateOriginatingAccountType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUltimateOriginatingAccountTypeInternalAccount, PaymentOrderUltimateOriginatingAccountTypeVirtualAccount:
+		return true
+	}
+	return false
+}
+
 // An additional layer of classification for the type of payment order you are
 // doing. This field is only used for `ach` payment orders currently. For `ach`
 // payment orders, the `subtype` represents the SEC code. We currently support
@@ -599,6 +663,14 @@ const (
 	PaymentOrderSubtypeTel                         PaymentOrderSubtype = "TEL"
 	PaymentOrderSubtypeWeb                         PaymentOrderSubtype = "WEB"
 )
+
+func (r PaymentOrderSubtype) IsKnown() bool {
+	switch r {
+	case PaymentOrderSubtypeBacsNewInstruction, PaymentOrderSubtypeBacsCancellationInstruction, PaymentOrderSubtypeBacsConversionInstruction, PaymentOrderSubtypeCcd, PaymentOrderSubtypeCie, PaymentOrderSubtypeCtx, PaymentOrderSubtypeIat, PaymentOrderSubtypePpd, PaymentOrderSubtypeTel, PaymentOrderSubtypeWeb:
+		return true
+	}
+	return false
+}
 
 // One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
 // `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
@@ -637,6 +709,14 @@ const (
 	PaymentOrderTypeWire        PaymentOrderType = "wire"
 	PaymentOrderTypeZengin      PaymentOrderType = "zengin"
 )
+
+func (r PaymentOrderType) IsKnown() bool {
+	switch r {
+	case PaymentOrderTypeACH, PaymentOrderTypeAuBecs, PaymentOrderTypeBacs, PaymentOrderTypeBook, PaymentOrderTypeCard, PaymentOrderTypeChats, PaymentOrderTypeCheck, PaymentOrderTypeCrossBorder, PaymentOrderTypeDkNets, PaymentOrderTypeEft, PaymentOrderTypeHuIcs, PaymentOrderTypeInterac, PaymentOrderTypeMasav, PaymentOrderTypeMxCcen, PaymentOrderTypeNeft, PaymentOrderTypeNics, PaymentOrderTypeNzBecs, PaymentOrderTypePlElixir, PaymentOrderTypeProvxchange, PaymentOrderTypeRoSent, PaymentOrderTypeRtp, PaymentOrderTypeSeBankgirot, PaymentOrderTypeSen, PaymentOrderTypeSepa, PaymentOrderTypeSgGiro, PaymentOrderTypeSic, PaymentOrderTypeSignet, PaymentOrderTypeSknbi, PaymentOrderTypeWire, PaymentOrderTypeZengin:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderNewParams struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
@@ -792,6 +872,14 @@ const (
 	PaymentOrderNewParamsDirectionDebit  PaymentOrderNewParamsDirection = "debit"
 )
 
+func (r PaymentOrderNewParamsDirection) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsDirectionCredit, PaymentOrderNewParamsDirectionDebit:
+		return true
+	}
+	return false
+}
+
 type PaymentOrderNewParamsAccounting struct {
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
@@ -816,6 +904,14 @@ const (
 	PaymentOrderNewParamsChargeBearerSender   PaymentOrderNewParamsChargeBearer = "sender"
 	PaymentOrderNewParamsChargeBearerReceiver PaymentOrderNewParamsChargeBearer = "receiver"
 )
+
+func (r PaymentOrderNewParamsChargeBearer) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsChargeBearerShared, PaymentOrderNewParamsChargeBearerSender, PaymentOrderNewParamsChargeBearerReceiver:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderNewParamsDocument struct {
 	// The unique identifier for the associated object.
@@ -847,6 +943,14 @@ const (
 	PaymentOrderNewParamsDocumentsDocumentableTypeConnections            PaymentOrderNewParamsDocumentsDocumentableType = "connections"
 )
 
+func (r PaymentOrderNewParamsDocumentsDocumentableType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsDocumentsDocumentableTypeCases, PaymentOrderNewParamsDocumentsDocumentableTypeCounterparties, PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayments, PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccounts, PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetails, PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccounts, PaymentOrderNewParamsDocumentsDocumentableTypeOrganizations, PaymentOrderNewParamsDocumentsDocumentableTypePaperItems, PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrders, PaymentOrderNewParamsDocumentsDocumentableTypeTransactions, PaymentOrderNewParamsDocumentsDocumentableTypeDecisions, PaymentOrderNewParamsDocumentsDocumentableTypeConnections:
+		return true
+	}
+	return false
+}
+
 // A payment type to fallback to if the original type is not valid for the
 // receiving account. Currently, this only supports falling back from RTP to ACH
 // (type=rtp and fallback_type=ach)
@@ -855,6 +959,14 @@ type PaymentOrderNewParamsFallbackType string
 const (
 	PaymentOrderNewParamsFallbackTypeACH PaymentOrderNewParamsFallbackType = "ach"
 )
+
+func (r PaymentOrderNewParamsFallbackType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsFallbackTypeACH:
+		return true
+	}
+	return false
+}
 
 // Indicates the type of FX transfer to initiate, can be either
 // `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
@@ -865,6 +977,14 @@ const (
 	PaymentOrderNewParamsForeignExchangeIndicatorFixedToVariable PaymentOrderNewParamsForeignExchangeIndicator = "fixed_to_variable"
 	PaymentOrderNewParamsForeignExchangeIndicatorVariableToFixed PaymentOrderNewParamsForeignExchangeIndicator = "variable_to_fixed"
 )
+
+func (r PaymentOrderNewParamsForeignExchangeIndicator) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsForeignExchangeIndicatorFixedToVariable, PaymentOrderNewParamsForeignExchangeIndicatorVariableToFixed:
+		return true
+	}
+	return false
+}
 
 // Specifies a ledger transaction object that will be created with the payment
 // order. If the ledger transaction cannot be created, then the payment order
@@ -960,6 +1080,14 @@ const (
 	PaymentOrderNewParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderNewParamsLedgerTransactionLedgerableType = "reversal"
 )
 
+func (r PaymentOrderNewParamsLedgerTransactionLedgerableType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsLedgerTransactionLedgerableTypeCounterparty, PaymentOrderNewParamsLedgerTransactionLedgerableTypeExpectedPayment, PaymentOrderNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, PaymentOrderNewParamsLedgerTransactionLedgerableTypeInternalAccount, PaymentOrderNewParamsLedgerTransactionLedgerableTypeLineItem, PaymentOrderNewParamsLedgerTransactionLedgerableTypePaperItem, PaymentOrderNewParamsLedgerTransactionLedgerableTypePaymentOrder, PaymentOrderNewParamsLedgerTransactionLedgerableTypePaymentOrderAttempt, PaymentOrderNewParamsLedgerTransactionLedgerableTypeReturn, PaymentOrderNewParamsLedgerTransactionLedgerableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // To post a ledger transaction at creation, use `posted`.
 type PaymentOrderNewParamsLedgerTransactionStatus string
 
@@ -968,6 +1096,14 @@ const (
 	PaymentOrderNewParamsLedgerTransactionStatusPending  PaymentOrderNewParamsLedgerTransactionStatus = "pending"
 	PaymentOrderNewParamsLedgerTransactionStatusPosted   PaymentOrderNewParamsLedgerTransactionStatus = "posted"
 )
+
+func (r PaymentOrderNewParamsLedgerTransactionStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsLedgerTransactionStatusArchived, PaymentOrderNewParamsLedgerTransactionStatusPending, PaymentOrderNewParamsLedgerTransactionStatusPosted:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderNewParamsLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
@@ -996,6 +1132,14 @@ const (
 	PaymentOrderNewParamsPriorityHigh   PaymentOrderNewParamsPriority = "high"
 	PaymentOrderNewParamsPriorityNormal PaymentOrderNewParamsPriority = "normal"
 )
+
+func (r PaymentOrderNewParamsPriority) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsPriorityHigh, PaymentOrderNewParamsPriorityNormal:
+		return true
+	}
+	return false
+}
 
 // Either `receiving_account` or `receiving_account_id` must be present. When using
 // `receiving_account_id`, you may pass the id of an external account or an
@@ -1054,6 +1198,14 @@ const (
 	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeOther         PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "other"
 )
 
+func (r PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeIban, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeClabe, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypePan, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeOther:
+		return true
+	}
+	return false
+}
+
 type PaymentOrderNewParamsReceivingAccountContactDetail struct {
 	ContactIdentifier     param.Field[string]                                                                   `json:"contact_identifier"`
 	ContactIdentifierType param.Field[PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
@@ -1070,6 +1222,14 @@ const (
 	PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType = "phone_number"
 	PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite     PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType = "website"
 )
+
+func (r PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypeEmail, PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber, PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite:
+		return true
+	}
+	return false
+}
 
 // Specifies a ledger account object that will be created with the external
 // account. The resulting ledger account is linked to the external account for
@@ -1120,6 +1280,14 @@ const (
 	PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType = "virtual_account"
 )
 
+func (r PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty, PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount, PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount, PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount:
+		return true
+	}
+	return false
+}
+
 // Required if receiving wire payments.
 type PaymentOrderNewParamsReceivingAccountPartyAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -1145,6 +1313,14 @@ const (
 	PaymentOrderNewParamsReceivingAccountPartyTypeBusiness   PaymentOrderNewParamsReceivingAccountPartyType = "business"
 	PaymentOrderNewParamsReceivingAccountPartyTypeIndividual PaymentOrderNewParamsReceivingAccountPartyType = "individual"
 )
+
+func (r PaymentOrderNewParamsReceivingAccountPartyType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsReceivingAccountPartyTypeBusiness, PaymentOrderNewParamsReceivingAccountPartyTypeIndividual:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderNewParamsReceivingAccountRoutingDetail struct {
 	RoutingNumber     param.Field[string]                                                               `json:"routing_number,required"`
@@ -1180,6 +1356,14 @@ const (
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
 )
 
+func (r PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift:
+		return true
+	}
+	return false
+}
+
 type PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType string
 
 const (
@@ -1214,6 +1398,14 @@ const (
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "wire"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
 )
+
+func (r PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeInterac, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeRoSent, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSen, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSignet, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSknbi, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeZengin:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderUpdateParams struct {
 	Accounting param.Field[PaymentOrderUpdateParamsAccounting] `json:"accounting"`
@@ -1370,6 +1562,14 @@ const (
 	PaymentOrderUpdateParamsChargeBearerReceiver PaymentOrderUpdateParamsChargeBearer = "receiver"
 )
 
+func (r PaymentOrderUpdateParamsChargeBearer) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateParamsChargeBearerShared, PaymentOrderUpdateParamsChargeBearerSender, PaymentOrderUpdateParamsChargeBearerReceiver:
+		return true
+	}
+	return false
+}
+
 // One of `credit`, `debit`. Describes the direction money is flowing in the
 // transaction. A `credit` moves money from your account to someone else's. A
 // `debit` pulls money from someone else's account to your own. Note that wire,
@@ -1381,6 +1581,14 @@ const (
 	PaymentOrderUpdateParamsDirectionDebit  PaymentOrderUpdateParamsDirection = "debit"
 )
 
+func (r PaymentOrderUpdateParamsDirection) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateParamsDirectionCredit, PaymentOrderUpdateParamsDirectionDebit:
+		return true
+	}
+	return false
+}
+
 // A payment type to fallback to if the original type is not valid for the
 // receiving account. Currently, this only supports falling back from RTP to ACH
 // (type=rtp and fallback_type=ach)
@@ -1389,6 +1597,14 @@ type PaymentOrderUpdateParamsFallbackType string
 const (
 	PaymentOrderUpdateParamsFallbackTypeACH PaymentOrderUpdateParamsFallbackType = "ach"
 )
+
+func (r PaymentOrderUpdateParamsFallbackType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateParamsFallbackTypeACH:
+		return true
+	}
+	return false
+}
 
 // Indicates the type of FX transfer to initiate, can be either
 // `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
@@ -1399,6 +1615,14 @@ const (
 	PaymentOrderUpdateParamsForeignExchangeIndicatorFixedToVariable PaymentOrderUpdateParamsForeignExchangeIndicator = "fixed_to_variable"
 	PaymentOrderUpdateParamsForeignExchangeIndicatorVariableToFixed PaymentOrderUpdateParamsForeignExchangeIndicator = "variable_to_fixed"
 )
+
+func (r PaymentOrderUpdateParamsForeignExchangeIndicator) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateParamsForeignExchangeIndicatorFixedToVariable, PaymentOrderUpdateParamsForeignExchangeIndicatorVariableToFixed:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderUpdateParamsLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
@@ -1427,6 +1651,14 @@ const (
 	PaymentOrderUpdateParamsPriorityHigh   PaymentOrderUpdateParamsPriority = "high"
 	PaymentOrderUpdateParamsPriorityNormal PaymentOrderUpdateParamsPriority = "normal"
 )
+
+func (r PaymentOrderUpdateParamsPriority) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateParamsPriorityHigh, PaymentOrderUpdateParamsPriorityNormal:
+		return true
+	}
+	return false
+}
 
 // Either `receiving_account` or `receiving_account_id` must be present. When using
 // `receiving_account_id`, you may pass the id of an external account or an
@@ -1485,6 +1717,14 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeOther         PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "other"
 )
 
+func (r PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIban, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeClabe, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypePan, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeOther:
+		return true
+	}
+	return false
+}
+
 type PaymentOrderUpdateParamsReceivingAccountContactDetail struct {
 	ContactIdentifier     param.Field[string]                                                                      `json:"contact_identifier"`
 	ContactIdentifierType param.Field[PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
@@ -1501,6 +1741,14 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType = "phone_number"
 	PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite     PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType = "website"
 )
+
+func (r PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypeEmail, PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber, PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite:
+		return true
+	}
+	return false
+}
 
 // Specifies a ledger account object that will be created with the external
 // account. The resulting ledger account is linked to the external account for
@@ -1551,6 +1799,14 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType = "virtual_account"
 )
 
+func (r PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty, PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount, PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount, PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount:
+		return true
+	}
+	return false
+}
+
 // Required if receiving wire payments.
 type PaymentOrderUpdateParamsReceivingAccountPartyAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -1576,6 +1832,14 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountPartyTypeBusiness   PaymentOrderUpdateParamsReceivingAccountPartyType = "business"
 	PaymentOrderUpdateParamsReceivingAccountPartyTypeIndividual PaymentOrderUpdateParamsReceivingAccountPartyType = "individual"
 )
+
+func (r PaymentOrderUpdateParamsReceivingAccountPartyType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateParamsReceivingAccountPartyTypeBusiness, PaymentOrderUpdateParamsReceivingAccountPartyTypeIndividual:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderUpdateParamsReceivingAccountRoutingDetail struct {
 	RoutingNumber     param.Field[string]                                                                  `json:"routing_number,required"`
@@ -1610,6 +1874,14 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
 )
+
+func (r PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType string
 
@@ -1646,6 +1918,14 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
 )
 
+func (r PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeInterac, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRoSent, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSen, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSignet, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSknbi, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeZengin:
+		return true
+	}
+	return false
+}
+
 // To cancel a payment order, use `cancelled`. To redraft a returned payment order,
 // use `approved`. To undo approval on a denied or approved payment order, use
 // `needs_approval`.
@@ -1664,6 +1944,14 @@ const (
 	PaymentOrderUpdateParamsStatusReversed      PaymentOrderUpdateParamsStatus = "reversed"
 	PaymentOrderUpdateParamsStatusSent          PaymentOrderUpdateParamsStatus = "sent"
 )
+
+func (r PaymentOrderUpdateParamsStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateParamsStatusApproved, PaymentOrderUpdateParamsStatusCancelled, PaymentOrderUpdateParamsStatusCompleted, PaymentOrderUpdateParamsStatusDenied, PaymentOrderUpdateParamsStatusFailed, PaymentOrderUpdateParamsStatusNeedsApproval, PaymentOrderUpdateParamsStatusPending, PaymentOrderUpdateParamsStatusProcessing, PaymentOrderUpdateParamsStatusReturned, PaymentOrderUpdateParamsStatusReversed, PaymentOrderUpdateParamsStatusSent:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderListParams struct {
 	AfterCursor    param.Field[string] `query:"after_cursor"`
@@ -1717,6 +2005,14 @@ const (
 	PaymentOrderListParamsPriorityNormal PaymentOrderListParamsPriority = "normal"
 )
 
+func (r PaymentOrderListParamsPriority) IsKnown() bool {
+	switch r {
+	case PaymentOrderListParamsPriorityHigh, PaymentOrderListParamsPriorityNormal:
+		return true
+	}
+	return false
+}
+
 type PaymentOrderListParamsStatus string
 
 const (
@@ -1732,6 +2028,14 @@ const (
 	PaymentOrderListParamsStatusReversed      PaymentOrderListParamsStatus = "reversed"
 	PaymentOrderListParamsStatusSent          PaymentOrderListParamsStatus = "sent"
 )
+
+func (r PaymentOrderListParamsStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderListParamsStatusApproved, PaymentOrderListParamsStatusCancelled, PaymentOrderListParamsStatusCompleted, PaymentOrderListParamsStatusDenied, PaymentOrderListParamsStatusFailed, PaymentOrderListParamsStatusNeedsApproval, PaymentOrderListParamsStatusPending, PaymentOrderListParamsStatusProcessing, PaymentOrderListParamsStatusReturned, PaymentOrderListParamsStatusReversed, PaymentOrderListParamsStatusSent:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderListParamsType string
 
@@ -1767,6 +2071,14 @@ const (
 	PaymentOrderListParamsTypeWire        PaymentOrderListParamsType = "wire"
 	PaymentOrderListParamsTypeZengin      PaymentOrderListParamsType = "zengin"
 )
+
+func (r PaymentOrderListParamsType) IsKnown() bool {
+	switch r {
+	case PaymentOrderListParamsTypeACH, PaymentOrderListParamsTypeAuBecs, PaymentOrderListParamsTypeBacs, PaymentOrderListParamsTypeBook, PaymentOrderListParamsTypeCard, PaymentOrderListParamsTypeChats, PaymentOrderListParamsTypeCheck, PaymentOrderListParamsTypeCrossBorder, PaymentOrderListParamsTypeDkNets, PaymentOrderListParamsTypeEft, PaymentOrderListParamsTypeHuIcs, PaymentOrderListParamsTypeInterac, PaymentOrderListParamsTypeMasav, PaymentOrderListParamsTypeMxCcen, PaymentOrderListParamsTypeNeft, PaymentOrderListParamsTypeNics, PaymentOrderListParamsTypeNzBecs, PaymentOrderListParamsTypePlElixir, PaymentOrderListParamsTypeProvxchange, PaymentOrderListParamsTypeRoSent, PaymentOrderListParamsTypeRtp, PaymentOrderListParamsTypeSeBankgirot, PaymentOrderListParamsTypeSen, PaymentOrderListParamsTypeSepa, PaymentOrderListParamsTypeSgGiro, PaymentOrderListParamsTypeSic, PaymentOrderListParamsTypeSignet, PaymentOrderListParamsTypeSknbi, PaymentOrderListParamsTypeWire, PaymentOrderListParamsTypeZengin:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderNewAsyncParams struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
@@ -1908,6 +2220,14 @@ const (
 	PaymentOrderNewAsyncParamsDirectionDebit  PaymentOrderNewAsyncParamsDirection = "debit"
 )
 
+func (r PaymentOrderNewAsyncParamsDirection) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsDirectionCredit, PaymentOrderNewAsyncParamsDirectionDebit:
+		return true
+	}
+	return false
+}
+
 type PaymentOrderNewAsyncParamsAccounting struct {
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
@@ -1933,6 +2253,14 @@ const (
 	PaymentOrderNewAsyncParamsChargeBearerReceiver PaymentOrderNewAsyncParamsChargeBearer = "receiver"
 )
 
+func (r PaymentOrderNewAsyncParamsChargeBearer) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsChargeBearerShared, PaymentOrderNewAsyncParamsChargeBearerSender, PaymentOrderNewAsyncParamsChargeBearerReceiver:
+		return true
+	}
+	return false
+}
+
 // A payment type to fallback to if the original type is not valid for the
 // receiving account. Currently, this only supports falling back from RTP to ACH
 // (type=rtp and fallback_type=ach)
@@ -1941,6 +2269,14 @@ type PaymentOrderNewAsyncParamsFallbackType string
 const (
 	PaymentOrderNewAsyncParamsFallbackTypeACH PaymentOrderNewAsyncParamsFallbackType = "ach"
 )
+
+func (r PaymentOrderNewAsyncParamsFallbackType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsFallbackTypeACH:
+		return true
+	}
+	return false
+}
 
 // Indicates the type of FX transfer to initiate, can be either
 // `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
@@ -1951,6 +2287,14 @@ const (
 	PaymentOrderNewAsyncParamsForeignExchangeIndicatorFixedToVariable PaymentOrderNewAsyncParamsForeignExchangeIndicator = "fixed_to_variable"
 	PaymentOrderNewAsyncParamsForeignExchangeIndicatorVariableToFixed PaymentOrderNewAsyncParamsForeignExchangeIndicator = "variable_to_fixed"
 )
+
+func (r PaymentOrderNewAsyncParamsForeignExchangeIndicator) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsForeignExchangeIndicatorFixedToVariable, PaymentOrderNewAsyncParamsForeignExchangeIndicatorVariableToFixed:
+		return true
+	}
+	return false
+}
 
 // Specifies a ledger transaction object that will be created with the payment
 // order. If the ledger transaction cannot be created, then the payment order
@@ -2046,6 +2390,14 @@ const (
 	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "reversal"
 )
 
+func (r PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeCounterparty, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeExpectedPayment, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeInternalAccount, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeLineItem, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaperItem, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaymentOrder, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaymentOrderAttempt, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReturn, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // To post a ledger transaction at creation, use `posted`.
 type PaymentOrderNewAsyncParamsLedgerTransactionStatus string
 
@@ -2054,6 +2406,14 @@ const (
 	PaymentOrderNewAsyncParamsLedgerTransactionStatusPending  PaymentOrderNewAsyncParamsLedgerTransactionStatus = "pending"
 	PaymentOrderNewAsyncParamsLedgerTransactionStatusPosted   PaymentOrderNewAsyncParamsLedgerTransactionStatus = "posted"
 )
+
+func (r PaymentOrderNewAsyncParamsLedgerTransactionStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsLedgerTransactionStatusArchived, PaymentOrderNewAsyncParamsLedgerTransactionStatusPending, PaymentOrderNewAsyncParamsLedgerTransactionStatusPosted:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderNewAsyncParamsLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
@@ -2082,6 +2442,14 @@ const (
 	PaymentOrderNewAsyncParamsPriorityHigh   PaymentOrderNewAsyncParamsPriority = "high"
 	PaymentOrderNewAsyncParamsPriorityNormal PaymentOrderNewAsyncParamsPriority = "normal"
 )
+
+func (r PaymentOrderNewAsyncParamsPriority) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsPriorityHigh, PaymentOrderNewAsyncParamsPriorityNormal:
+		return true
+	}
+	return false
+}
 
 // Either `receiving_account` or `receiving_account_id` must be present. When using
 // `receiving_account_id`, you may pass the id of an external account or an
@@ -2140,6 +2508,14 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeOther         PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "other"
 )
 
+func (r PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIban, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeClabe, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypePan, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeOther:
+		return true
+	}
+	return false
+}
+
 type PaymentOrderNewAsyncParamsReceivingAccountContactDetail struct {
 	ContactIdentifier     param.Field[string]                                                                        `json:"contact_identifier"`
 	ContactIdentifierType param.Field[PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
@@ -2156,6 +2532,14 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType = "phone_number"
 	PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite     PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType = "website"
 )
+
+func (r PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypeEmail, PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber, PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite:
+		return true
+	}
+	return false
+}
 
 // Specifies a ledger account object that will be created with the external
 // account. The resulting ledger account is linked to the external account for
@@ -2206,6 +2590,14 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType = "virtual_account"
 )
 
+func (r PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty, PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount, PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount, PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount:
+		return true
+	}
+	return false
+}
+
 // Required if receiving wire payments.
 type PaymentOrderNewAsyncParamsReceivingAccountPartyAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -2231,6 +2623,14 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountPartyTypeBusiness   PaymentOrderNewAsyncParamsReceivingAccountPartyType = "business"
 	PaymentOrderNewAsyncParamsReceivingAccountPartyTypeIndividual PaymentOrderNewAsyncParamsReceivingAccountPartyType = "individual"
 )
+
+func (r PaymentOrderNewAsyncParamsReceivingAccountPartyType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsReceivingAccountPartyTypeBusiness, PaymentOrderNewAsyncParamsReceivingAccountPartyTypeIndividual:
+		return true
+	}
+	return false
+}
 
 type PaymentOrderNewAsyncParamsReceivingAccountRoutingDetail struct {
 	RoutingNumber     param.Field[string]                                                                    `json:"routing_number,required"`
@@ -2266,6 +2666,14 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
 )
 
+func (r PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift:
+		return true
+	}
+	return false
+}
+
 type PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType string
 
 const (
@@ -2300,3 +2708,11 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "wire"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
 )
+
+func (r PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeInterac, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRoSent, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSen, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSignet, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSknbi, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeZengin:
+		return true
+	}
+	return false
+}

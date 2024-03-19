@@ -140,6 +140,14 @@ const (
 	AccountCollectionFlowPaymentTypeWire AccountCollectionFlowPaymentType = "wire"
 )
 
+func (r AccountCollectionFlowPaymentType) IsKnown() bool {
+	switch r {
+	case AccountCollectionFlowPaymentTypeACH, AccountCollectionFlowPaymentTypeWire:
+		return true
+	}
+	return false
+}
+
 // An account created with this flow will support wires from the US to these
 // countries.
 type AccountCollectionFlowReceivingCountry string
@@ -165,6 +173,14 @@ const (
 	AccountCollectionFlowReceivingCountryGbr AccountCollectionFlowReceivingCountry = "GBR"
 )
 
+func (r AccountCollectionFlowReceivingCountry) IsKnown() bool {
+	switch r {
+	case AccountCollectionFlowReceivingCountryUsa, AccountCollectionFlowReceivingCountryAus, AccountCollectionFlowReceivingCountryBel, AccountCollectionFlowReceivingCountryCan, AccountCollectionFlowReceivingCountryChl, AccountCollectionFlowReceivingCountryChn, AccountCollectionFlowReceivingCountryCol, AccountCollectionFlowReceivingCountryFra, AccountCollectionFlowReceivingCountryDeu, AccountCollectionFlowReceivingCountryHkg, AccountCollectionFlowReceivingCountryInd, AccountCollectionFlowReceivingCountryIrl, AccountCollectionFlowReceivingCountryIta, AccountCollectionFlowReceivingCountryMex, AccountCollectionFlowReceivingCountryNld, AccountCollectionFlowReceivingCountryPer, AccountCollectionFlowReceivingCountryEsp, AccountCollectionFlowReceivingCountryGbr:
+		return true
+	}
+	return false
+}
+
 // The current status of the account collection flow. One of `pending`,
 // `completed`, `expired`, or `cancelled`.
 type AccountCollectionFlowStatus string
@@ -175,6 +191,14 @@ const (
 	AccountCollectionFlowStatusExpired   AccountCollectionFlowStatus = "expired"
 	AccountCollectionFlowStatusPending   AccountCollectionFlowStatus = "pending"
 )
+
+func (r AccountCollectionFlowStatus) IsKnown() bool {
+	switch r {
+	case AccountCollectionFlowStatusCancelled, AccountCollectionFlowStatusCompleted, AccountCollectionFlowStatusExpired, AccountCollectionFlowStatusPending:
+		return true
+	}
+	return false
+}
 
 type AccountCollectionFlowNewParams struct {
 	// Required.
@@ -211,6 +235,14 @@ const (
 	AccountCollectionFlowNewParamsReceivingCountryGbr AccountCollectionFlowNewParamsReceivingCountry = "GBR"
 )
 
+func (r AccountCollectionFlowNewParamsReceivingCountry) IsKnown() bool {
+	switch r {
+	case AccountCollectionFlowNewParamsReceivingCountryUsa, AccountCollectionFlowNewParamsReceivingCountryAus, AccountCollectionFlowNewParamsReceivingCountryBel, AccountCollectionFlowNewParamsReceivingCountryCan, AccountCollectionFlowNewParamsReceivingCountryChl, AccountCollectionFlowNewParamsReceivingCountryChn, AccountCollectionFlowNewParamsReceivingCountryCol, AccountCollectionFlowNewParamsReceivingCountryFra, AccountCollectionFlowNewParamsReceivingCountryDeu, AccountCollectionFlowNewParamsReceivingCountryHkg, AccountCollectionFlowNewParamsReceivingCountryInd, AccountCollectionFlowNewParamsReceivingCountryIrl, AccountCollectionFlowNewParamsReceivingCountryIta, AccountCollectionFlowNewParamsReceivingCountryMex, AccountCollectionFlowNewParamsReceivingCountryNld, AccountCollectionFlowNewParamsReceivingCountryPer, AccountCollectionFlowNewParamsReceivingCountryEsp, AccountCollectionFlowNewParamsReceivingCountryGbr:
+		return true
+	}
+	return false
+}
+
 type AccountCollectionFlowUpdateParams struct {
 	// Required. The updated status of the account collection flow. Can only be used to
 	// mark a flow as `cancelled`.
@@ -228,6 +260,14 @@ type AccountCollectionFlowUpdateParamsStatus string
 const (
 	AccountCollectionFlowUpdateParamsStatusCancelled AccountCollectionFlowUpdateParamsStatus = "cancelled"
 )
+
+func (r AccountCollectionFlowUpdateParamsStatus) IsKnown() bool {
+	switch r {
+	case AccountCollectionFlowUpdateParamsStatusCancelled:
+		return true
+	}
+	return false
+}
 
 type AccountCollectionFlowListParams struct {
 	AfterCursor       param.Field[string] `query:"after_cursor"`

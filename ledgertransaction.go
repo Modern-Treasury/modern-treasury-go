@@ -190,6 +190,14 @@ const (
 	LedgerTransactionLedgerableTypeReversal              LedgerTransactionLedgerableType = "reversal"
 )
 
+func (r LedgerTransactionLedgerableType) IsKnown() bool {
+	switch r {
+	case LedgerTransactionLedgerableTypeCounterparty, LedgerTransactionLedgerableTypeExpectedPayment, LedgerTransactionLedgerableTypeIncomingPaymentDetail, LedgerTransactionLedgerableTypeInternalAccount, LedgerTransactionLedgerableTypeLineItem, LedgerTransactionLedgerableTypePaperItem, LedgerTransactionLedgerableTypePaymentOrder, LedgerTransactionLedgerableTypePaymentOrderAttempt, LedgerTransactionLedgerableTypeReturn, LedgerTransactionLedgerableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // To post a ledger transaction at creation, use `posted`.
 type LedgerTransactionStatus string
 
@@ -198,6 +206,14 @@ const (
 	LedgerTransactionStatusPending  LedgerTransactionStatus = "pending"
 	LedgerTransactionStatusPosted   LedgerTransactionStatus = "posted"
 )
+
+func (r LedgerTransactionStatus) IsKnown() bool {
+	switch r {
+	case LedgerTransactionStatusArchived, LedgerTransactionStatusPending, LedgerTransactionStatusPosted:
+		return true
+	}
+	return false
+}
 
 type LedgerTransactionNewParams struct {
 	// An array of ledger entry objects.
@@ -289,6 +305,14 @@ const (
 	LedgerTransactionNewParamsLedgerableTypeReversal              LedgerTransactionNewParamsLedgerableType = "reversal"
 )
 
+func (r LedgerTransactionNewParamsLedgerableType) IsKnown() bool {
+	switch r {
+	case LedgerTransactionNewParamsLedgerableTypeCounterparty, LedgerTransactionNewParamsLedgerableTypeExpectedPayment, LedgerTransactionNewParamsLedgerableTypeIncomingPaymentDetail, LedgerTransactionNewParamsLedgerableTypeInternalAccount, LedgerTransactionNewParamsLedgerableTypeLineItem, LedgerTransactionNewParamsLedgerableTypePaperItem, LedgerTransactionNewParamsLedgerableTypePaymentOrder, LedgerTransactionNewParamsLedgerableTypePaymentOrderAttempt, LedgerTransactionNewParamsLedgerableTypeReturn, LedgerTransactionNewParamsLedgerableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // To post a ledger transaction at creation, use `posted`.
 type LedgerTransactionNewParamsStatus string
 
@@ -297,6 +321,14 @@ const (
 	LedgerTransactionNewParamsStatusPending  LedgerTransactionNewParamsStatus = "pending"
 	LedgerTransactionNewParamsStatusPosted   LedgerTransactionNewParamsStatus = "posted"
 )
+
+func (r LedgerTransactionNewParamsStatus) IsKnown() bool {
+	switch r {
+	case LedgerTransactionNewParamsStatusArchived, LedgerTransactionNewParamsStatusPending, LedgerTransactionNewParamsStatusPosted:
+		return true
+	}
+	return false
+}
 
 type LedgerTransactionUpdateParams struct {
 	// An optional description for internal use.
@@ -366,6 +398,14 @@ const (
 	LedgerTransactionUpdateParamsStatusPosted   LedgerTransactionUpdateParamsStatus = "posted"
 )
 
+func (r LedgerTransactionUpdateParamsStatus) IsKnown() bool {
+	switch r {
+	case LedgerTransactionUpdateParamsStatusArchived, LedgerTransactionUpdateParamsStatusPending, LedgerTransactionUpdateParamsStatusPosted:
+		return true
+	}
+	return false
+}
+
 type LedgerTransactionListParams struct {
 	// If you have specific IDs to retrieve in bulk, you can pass them as query
 	// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
@@ -432,6 +472,14 @@ const (
 	LedgerTransactionListParamsLedgerableTypeReversal              LedgerTransactionListParamsLedgerableType = "reversal"
 )
 
+func (r LedgerTransactionListParamsLedgerableType) IsKnown() bool {
+	switch r {
+	case LedgerTransactionListParamsLedgerableTypeCounterparty, LedgerTransactionListParamsLedgerableTypeExpectedPayment, LedgerTransactionListParamsLedgerableTypeIncomingPaymentDetail, LedgerTransactionListParamsLedgerableTypeInternalAccount, LedgerTransactionListParamsLedgerableTypeLineItem, LedgerTransactionListParamsLedgerableTypePaperItem, LedgerTransactionListParamsLedgerableTypePaymentOrder, LedgerTransactionListParamsLedgerableTypePaymentOrderAttempt, LedgerTransactionListParamsLedgerableTypeReturn, LedgerTransactionListParamsLedgerableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // Order by `created_at` or `effective_at` in `asc` or `desc` order. For example,
 // to order by `effective_at asc`, use `order_by%5Beffective_at%5D=asc`. Ordering
 // by only one field at a time is supported.
@@ -456,12 +504,28 @@ const (
 	LedgerTransactionListParamsOrderByCreatedAtDesc LedgerTransactionListParamsOrderByCreatedAt = "desc"
 )
 
+func (r LedgerTransactionListParamsOrderByCreatedAt) IsKnown() bool {
+	switch r {
+	case LedgerTransactionListParamsOrderByCreatedAtAsc, LedgerTransactionListParamsOrderByCreatedAtDesc:
+		return true
+	}
+	return false
+}
+
 type LedgerTransactionListParamsOrderByEffectiveAt string
 
 const (
 	LedgerTransactionListParamsOrderByEffectiveAtAsc  LedgerTransactionListParamsOrderByEffectiveAt = "asc"
 	LedgerTransactionListParamsOrderByEffectiveAtDesc LedgerTransactionListParamsOrderByEffectiveAt = "desc"
 )
+
+func (r LedgerTransactionListParamsOrderByEffectiveAt) IsKnown() bool {
+	switch r {
+	case LedgerTransactionListParamsOrderByEffectiveAtAsc, LedgerTransactionListParamsOrderByEffectiveAtDesc:
+		return true
+	}
+	return false
+}
 
 type LedgerTransactionListParamsStatus string
 
@@ -470,6 +534,14 @@ const (
 	LedgerTransactionListParamsStatusPosted   LedgerTransactionListParamsStatus = "posted"
 	LedgerTransactionListParamsStatusArchived LedgerTransactionListParamsStatus = "archived"
 )
+
+func (r LedgerTransactionListParamsStatus) IsKnown() bool {
+	switch r {
+	case LedgerTransactionListParamsStatusPending, LedgerTransactionListParamsStatusPosted, LedgerTransactionListParamsStatusArchived:
+		return true
+	}
+	return false
+}
 
 type LedgerTransactionNewReversalParams struct {
 	// An optional free-form description for the reversal ledger transaction. Maximum
@@ -516,6 +588,14 @@ const (
 	LedgerTransactionNewReversalParamsLedgerableTypeReversal              LedgerTransactionNewReversalParamsLedgerableType = "reversal"
 )
 
+func (r LedgerTransactionNewReversalParamsLedgerableType) IsKnown() bool {
+	switch r {
+	case LedgerTransactionNewReversalParamsLedgerableTypeCounterparty, LedgerTransactionNewReversalParamsLedgerableTypeExpectedPayment, LedgerTransactionNewReversalParamsLedgerableTypeIncomingPaymentDetail, LedgerTransactionNewReversalParamsLedgerableTypeInternalAccount, LedgerTransactionNewReversalParamsLedgerableTypeLineItem, LedgerTransactionNewReversalParamsLedgerableTypePaperItem, LedgerTransactionNewReversalParamsLedgerableTypePaymentOrder, LedgerTransactionNewReversalParamsLedgerableTypePaymentOrderAttempt, LedgerTransactionNewReversalParamsLedgerableTypeReturn, LedgerTransactionNewReversalParamsLedgerableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // Status of the reversal ledger transaction. It defaults to `posted` if not
 // provided.
 type LedgerTransactionNewReversalParamsStatus string
@@ -525,3 +605,11 @@ const (
 	LedgerTransactionNewReversalParamsStatusPending  LedgerTransactionNewReversalParamsStatus = "pending"
 	LedgerTransactionNewReversalParamsStatusPosted   LedgerTransactionNewReversalParamsStatus = "posted"
 )
+
+func (r LedgerTransactionNewReversalParamsStatus) IsKnown() bool {
+	switch r {
+	case LedgerTransactionNewReversalParamsStatusArchived, LedgerTransactionNewReversalParamsStatusPending, LedgerTransactionNewReversalParamsStatusPosted:
+		return true
+	}
+	return false
+}

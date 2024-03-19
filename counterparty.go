@@ -264,6 +264,14 @@ const (
 	CounterpartyAccountsContactDetailsContactIdentifierTypeWebsite     CounterpartyAccountsContactDetailsContactIdentifierType = "website"
 )
 
+func (r CounterpartyAccountsContactDetailsContactIdentifierType) IsKnown() bool {
+	switch r {
+	case CounterpartyAccountsContactDetailsContactIdentifierTypeEmail, CounterpartyAccountsContactDetailsContactIdentifierTypePhoneNumber, CounterpartyAccountsContactDetailsContactIdentifierTypeWebsite:
+		return true
+	}
+	return false
+}
+
 // The address associated with the owner or `null`.
 type CounterpartyAccountsPartyAddress struct {
 	ID string `json:"id,required" format:"uuid"`
@@ -320,6 +328,14 @@ const (
 	CounterpartyAccountsPartyTypeIndividual CounterpartyAccountsPartyType = "individual"
 )
 
+func (r CounterpartyAccountsPartyType) IsKnown() bool {
+	switch r {
+	case CounterpartyAccountsPartyTypeBusiness, CounterpartyAccountsPartyTypeIndividual:
+		return true
+	}
+	return false
+}
+
 type CounterpartyAccountsVerificationStatus string
 
 const (
@@ -327,6 +343,14 @@ const (
 	CounterpartyAccountsVerificationStatusUnverified          CounterpartyAccountsVerificationStatus = "unverified"
 	CounterpartyAccountsVerificationStatusVerified            CounterpartyAccountsVerificationStatus = "verified"
 )
+
+func (r CounterpartyAccountsVerificationStatus) IsKnown() bool {
+	switch r {
+	case CounterpartyAccountsVerificationStatusPendingVerification, CounterpartyAccountsVerificationStatusUnverified, CounterpartyAccountsVerificationStatusVerified:
+		return true
+	}
+	return false
+}
 
 // The verification status of the counterparty.
 type CounterpartyVerificationStatus string
@@ -337,6 +361,14 @@ const (
 	CounterpartyVerificationStatusUnverified    CounterpartyVerificationStatus = "unverified"
 	CounterpartyVerificationStatusVerified      CounterpartyVerificationStatus = "verified"
 )
+
+func (r CounterpartyVerificationStatus) IsKnown() bool {
+	switch r {
+	case CounterpartyVerificationStatusDenied, CounterpartyVerificationStatusNeedsApproval, CounterpartyVerificationStatusUnverified, CounterpartyVerificationStatusVerified:
+		return true
+	}
+	return false
+}
 
 type CounterpartyCollectAccountResponse struct {
 	// The id of the existing counterparty.
@@ -419,6 +451,14 @@ const (
 	CounterpartyNewParamsAccountingTypeVendor   CounterpartyNewParamsAccountingType = "vendor"
 )
 
+func (r CounterpartyNewParamsAccountingType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsAccountingTypeCustomer, CounterpartyNewParamsAccountingTypeVendor:
+		return true
+	}
+	return false
+}
+
 type CounterpartyNewParamsAccount struct {
 	AccountDetails param.Field[[]CounterpartyNewParamsAccountsAccountDetail] `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
@@ -473,6 +513,14 @@ const (
 	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeOther         CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "other"
 )
 
+func (r CounterpartyNewParamsAccountsAccountDetailsAccountNumberType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeHkNumber, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeClabe, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeWalletAddress, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypePan, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeOther:
+		return true
+	}
+	return false
+}
+
 type CounterpartyNewParamsAccountsContactDetail struct {
 	ContactIdentifier     param.Field[string]                                                           `json:"contact_identifier"`
 	ContactIdentifierType param.Field[CounterpartyNewParamsAccountsContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
@@ -489,6 +537,14 @@ const (
 	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypePhoneNumber CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "phone_number"
 	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeWebsite     CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "website"
 )
+
+func (r CounterpartyNewParamsAccountsContactDetailsContactIdentifierType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail, CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypePhoneNumber, CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeWebsite:
+		return true
+	}
+	return false
+}
 
 // Specifies a ledger account object that will be created with the external
 // account. The resulting ledger account is linked to the external account for
@@ -539,6 +595,14 @@ const (
 	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeVirtualAccount  CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "virtual_account"
 )
 
+func (r CounterpartyNewParamsAccountsLedgerAccountLedgerableType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeCounterparty, CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount, CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeInternalAccount, CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeVirtualAccount:
+		return true
+	}
+	return false
+}
+
 // Required if receiving wire payments.
 type CounterpartyNewParamsAccountsPartyAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -564,6 +628,14 @@ const (
 	CounterpartyNewParamsAccountsPartyTypeBusiness   CounterpartyNewParamsAccountsPartyType = "business"
 	CounterpartyNewParamsAccountsPartyTypeIndividual CounterpartyNewParamsAccountsPartyType = "individual"
 )
+
+func (r CounterpartyNewParamsAccountsPartyType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsAccountsPartyTypeBusiness, CounterpartyNewParamsAccountsPartyTypeIndividual:
+		return true
+	}
+	return false
+}
 
 type CounterpartyNewParamsAccountsRoutingDetail struct {
 	RoutingNumber     param.Field[string]                                                       `json:"routing_number,required"`
@@ -598,6 +670,14 @@ const (
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
 	CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeSwift                   CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType = "swift"
 )
+
+func (r CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAuBsb, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeBrCodigo, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeCaCpa, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeChips, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeCnaps, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeGBSortCode, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeIDSknbiCode, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeInIfsc, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeJpZenginCode, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeMyBranchCode, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeMxBankIdentifier, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeNzNationalClearingCode, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypePlNationalClearingCode, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeSwift:
+		return true
+	}
+	return false
+}
 
 type CounterpartyNewParamsAccountsRoutingDetailsPaymentType string
 
@@ -634,6 +714,14 @@ const (
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeZengin      CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "zengin"
 )
 
+func (r CounterpartyNewParamsAccountsRoutingDetailsPaymentType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeAuBecs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeBacs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeBook, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCard, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeChats, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCheck, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCrossBorder, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeDkNets, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeEft, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeHuIcs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeInterac, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeMasav, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeMxCcen, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNeft, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNics, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNzBecs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypePlElixir, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeProvxchange, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeRoSent, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeRtp, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSgGiro, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSeBankgirot, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSen, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSepa, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSic, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSignet, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSknbi, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeWire, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeZengin:
+		return true
+	}
+	return false
+}
+
 // An optional type to auto-sync the counterparty to your ledger. Either `customer`
 // or `vendor`.
 type CounterpartyNewParamsLedgerType string
@@ -642,6 +730,14 @@ const (
 	CounterpartyNewParamsLedgerTypeCustomer CounterpartyNewParamsLedgerType = "customer"
 	CounterpartyNewParamsLedgerTypeVendor   CounterpartyNewParamsLedgerType = "vendor"
 )
+
+func (r CounterpartyNewParamsLedgerType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLedgerTypeCustomer, CounterpartyNewParamsLedgerTypeVendor:
+		return true
+	}
+	return false
+}
 
 type CounterpartyNewParamsLegalEntity struct {
 	// The type of legal entity.
@@ -687,6 +783,14 @@ const (
 	CounterpartyNewParamsLegalEntityLegalEntityTypeIndividual CounterpartyNewParamsLegalEntityLegalEntityType = "individual"
 )
 
+func (r CounterpartyNewParamsLegalEntityLegalEntityType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness, CounterpartyNewParamsLegalEntityLegalEntityTypeIndividual:
+		return true
+	}
+	return false
+}
+
 type CounterpartyNewParamsLegalEntityAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country,required"`
@@ -715,6 +819,14 @@ const (
 	CounterpartyNewParamsLegalEntityAddressesAddressTypePoBox       CounterpartyNewParamsLegalEntityAddressesAddressType = "po_box"
 	CounterpartyNewParamsLegalEntityAddressesAddressTypeResidential CounterpartyNewParamsLegalEntityAddressesAddressType = "residential"
 )
+
+func (r CounterpartyNewParamsLegalEntityAddressesAddressType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityAddressesAddressTypeBusiness, CounterpartyNewParamsLegalEntityAddressesAddressTypeMailing, CounterpartyNewParamsLegalEntityAddressesAddressTypeOther, CounterpartyNewParamsLegalEntityAddressesAddressTypePoBox, CounterpartyNewParamsLegalEntityAddressesAddressTypeResidential:
+		return true
+	}
+	return false
+}
 
 type CounterpartyNewParamsLegalEntityIdentification struct {
 	// The ID number of identification document.
@@ -749,6 +861,14 @@ const (
 	CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsSsn     CounterpartyNewParamsLegalEntityIdentificationsIDType = "us_ssn"
 )
 
+func (r CounterpartyNewParamsLegalEntityIdentificationsIDType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuil, CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuit, CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCnpj, CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCpf, CounterpartyNewParamsLegalEntityIdentificationsIDTypeClNut, CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoCedulas, CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoNit, CounterpartyNewParamsLegalEntityIdentificationsIDTypeHnID, CounterpartyNewParamsLegalEntityIdentificationsIDTypeHnRtn, CounterpartyNewParamsLegalEntityIdentificationsIDTypePassport, CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsEin, CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsItin, CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsSsn:
+		return true
+	}
+	return false
+}
+
 type CounterpartyNewParamsLegalEntityLegalEntityAssociation struct {
 	RelationshipTypes param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType] `json:"relationship_types,required"`
 	// The associated legal entity.
@@ -773,6 +893,14 @@ const (
 	CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType = "beneficial_owner"
 	CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeControlPerson   CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType = "control_person"
 )
+
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner, CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeControlPerson:
+		return true
+	}
+	return false
+}
 
 // The associated legal entity.
 type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntity struct {
@@ -838,6 +966,14 @@ const (
 	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeResidential CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType = "residential"
 )
 
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeBusiness, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeMailing, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeOther, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypePoBox, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityAddressesAddressTypeResidential:
+		return true
+	}
+	return false
+}
+
 type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentification struct {
 	// The ID number of identification document.
 	IDNumber param.Field[string] `json:"id_number,required"`
@@ -871,6 +1007,14 @@ const (
 	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsSsn     CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType = "us_ssn"
 )
 
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeArCuil, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeArCuit, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeBrCnpj, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeBrCpf, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeClNut, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeCoCedulas, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeCoNit, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeHnID, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeHnRtn, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypePassport, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsEin, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsItin, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityIdentificationsIDTypeUsSsn:
+		return true
+	}
+	return false
+}
+
 // The type of legal entity.
 type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType string
 
@@ -878,6 +1022,14 @@ const (
 	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeBusiness   CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType = "business"
 	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeIndividual CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType = "individual"
 )
+
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeBusiness, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalEntityTypeIndividual:
+		return true
+	}
+	return false
+}
 
 // The business's legal structure.
 type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure string
@@ -890,6 +1042,14 @@ const (
 	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureSoleProprietorship CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "sole_proprietorship"
 	CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureTrust              CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure = "trust"
 )
+
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructure) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureCorporation, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureLlc, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureNonProfit, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructurePartnership, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureSoleProprietorship, CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityLegalStructureTrust:
+		return true
+	}
+	return false
+}
 
 // A list of phone numbers in E.164 format.
 type CounterpartyNewParamsLegalEntityLegalEntityAssociationsAssociatedLegalEntityPhoneNumber struct {
@@ -912,6 +1072,14 @@ const (
 	CounterpartyNewParamsLegalEntityLegalStructureTrust              CounterpartyNewParamsLegalEntityLegalStructure = "trust"
 )
 
+func (r CounterpartyNewParamsLegalEntityLegalStructure) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityLegalStructureCorporation, CounterpartyNewParamsLegalEntityLegalStructureLlc, CounterpartyNewParamsLegalEntityLegalStructureNonProfit, CounterpartyNewParamsLegalEntityLegalStructurePartnership, CounterpartyNewParamsLegalEntityLegalStructureSoleProprietorship, CounterpartyNewParamsLegalEntityLegalStructureTrust:
+		return true
+	}
+	return false
+}
+
 // A list of phone numbers in E.164 format.
 type CounterpartyNewParamsLegalEntityPhoneNumber struct {
 	PhoneNumber param.Field[string] `json:"phone_number"`
@@ -930,6 +1098,14 @@ const (
 	CounterpartyNewParamsVerificationStatusUnverified    CounterpartyNewParamsVerificationStatus = "unverified"
 	CounterpartyNewParamsVerificationStatusVerified      CounterpartyNewParamsVerificationStatus = "verified"
 )
+
+func (r CounterpartyNewParamsVerificationStatus) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsVerificationStatusDenied, CounterpartyNewParamsVerificationStatusNeedsApproval, CounterpartyNewParamsVerificationStatusUnverified, CounterpartyNewParamsVerificationStatusVerified:
+		return true
+	}
+	return false
+}
 
 type CounterpartyUpdateParams struct {
 	// A new email for the counterparty.
@@ -1039,3 +1215,11 @@ const (
 	CounterpartyCollectAccountParamsFieldDkInterbankClearingCode CounterpartyCollectAccountParamsField = "dk_interbank_clearing_code"
 	CounterpartyCollectAccountParamsFieldIDSknbiCode             CounterpartyCollectAccountParamsField = "id_sknbi_code"
 )
+
+func (r CounterpartyCollectAccountParamsField) IsKnown() bool {
+	switch r {
+	case CounterpartyCollectAccountParamsFieldName, CounterpartyCollectAccountParamsFieldNameOnAccount, CounterpartyCollectAccountParamsFieldTaxpayerIdentifier, CounterpartyCollectAccountParamsFieldAccountType, CounterpartyCollectAccountParamsFieldAccountNumber, CounterpartyCollectAccountParamsFieldIbanNumber, CounterpartyCollectAccountParamsFieldClabeNumber, CounterpartyCollectAccountParamsFieldWalletAddress, CounterpartyCollectAccountParamsFieldPanNumber, CounterpartyCollectAccountParamsFieldRoutingNumber, CounterpartyCollectAccountParamsFieldAbaWireRoutingNumber, CounterpartyCollectAccountParamsFieldSwiftCode, CounterpartyCollectAccountParamsFieldAuBsb, CounterpartyCollectAccountParamsFieldCaCpa, CounterpartyCollectAccountParamsFieldCnaps, CounterpartyCollectAccountParamsFieldGBSortCode, CounterpartyCollectAccountParamsFieldInIfsc, CounterpartyCollectAccountParamsFieldMyBranchCode, CounterpartyCollectAccountParamsFieldBrCodigo, CounterpartyCollectAccountParamsFieldRoutingNumberType, CounterpartyCollectAccountParamsFieldAddress, CounterpartyCollectAccountParamsFieldJpZenginCode, CounterpartyCollectAccountParamsFieldSeBankgiroClearingCode, CounterpartyCollectAccountParamsFieldNzNationalClearingCode, CounterpartyCollectAccountParamsFieldHkInterbankClearingCode, CounterpartyCollectAccountParamsFieldHuInterbankClearingCode, CounterpartyCollectAccountParamsFieldDkInterbankClearingCode, CounterpartyCollectAccountParamsFieldIDSknbiCode:
+		return true
+	}
+	return false
+}

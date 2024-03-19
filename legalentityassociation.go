@@ -224,6 +224,14 @@ const (
 	LegalEntityAssociationAssociatedLegalEntityAddressesAddressTypeResidential LegalEntityAssociationAssociatedLegalEntityAddressesAddressType = "residential"
 )
 
+func (r LegalEntityAssociationAssociatedLegalEntityAddressesAddressType) IsKnown() bool {
+	switch r {
+	case LegalEntityAssociationAssociatedLegalEntityAddressesAddressTypeBusiness, LegalEntityAssociationAssociatedLegalEntityAddressesAddressTypeMailing, LegalEntityAssociationAssociatedLegalEntityAddressesAddressTypeOther, LegalEntityAssociationAssociatedLegalEntityAddressesAddressTypePoBox, LegalEntityAssociationAssociatedLegalEntityAddressesAddressTypeResidential:
+		return true
+	}
+	return false
+}
+
 type LegalEntityAssociationAssociatedLegalEntityIdentification struct {
 	ID          string    `json:"id,required" format:"uuid"`
 	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
@@ -284,6 +292,14 @@ const (
 	LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypeUsSsn     LegalEntityAssociationAssociatedLegalEntityIdentificationsIDType = "us_ssn"
 )
 
+func (r LegalEntityAssociationAssociatedLegalEntityIdentificationsIDType) IsKnown() bool {
+	switch r {
+	case LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypeArCuil, LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypeArCuit, LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypeBrCnpj, LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypeBrCpf, LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypeClNut, LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypeCoCedulas, LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypeCoNit, LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypeHnID, LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypeHnRtn, LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypePassport, LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypeUsEin, LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypeUsItin, LegalEntityAssociationAssociatedLegalEntityIdentificationsIDTypeUsSsn:
+		return true
+	}
+	return false
+}
+
 // The type of legal entity.
 type LegalEntityAssociationAssociatedLegalEntityLegalEntityType string
 
@@ -292,6 +308,14 @@ const (
 	LegalEntityAssociationAssociatedLegalEntityLegalEntityTypeIndividual LegalEntityAssociationAssociatedLegalEntityLegalEntityType = "individual"
 	LegalEntityAssociationAssociatedLegalEntityLegalEntityTypeJoint      LegalEntityAssociationAssociatedLegalEntityLegalEntityType = "joint"
 )
+
+func (r LegalEntityAssociationAssociatedLegalEntityLegalEntityType) IsKnown() bool {
+	switch r {
+	case LegalEntityAssociationAssociatedLegalEntityLegalEntityTypeBusiness, LegalEntityAssociationAssociatedLegalEntityLegalEntityTypeIndividual, LegalEntityAssociationAssociatedLegalEntityLegalEntityTypeJoint:
+		return true
+	}
+	return false
+}
 
 // The business's legal structure.
 type LegalEntityAssociationAssociatedLegalEntityLegalStructure string
@@ -304,6 +328,14 @@ const (
 	LegalEntityAssociationAssociatedLegalEntityLegalStructureSoleProprietorship LegalEntityAssociationAssociatedLegalEntityLegalStructure = "sole_proprietorship"
 	LegalEntityAssociationAssociatedLegalEntityLegalStructureTrust              LegalEntityAssociationAssociatedLegalEntityLegalStructure = "trust"
 )
+
+func (r LegalEntityAssociationAssociatedLegalEntityLegalStructure) IsKnown() bool {
+	switch r {
+	case LegalEntityAssociationAssociatedLegalEntityLegalStructureCorporation, LegalEntityAssociationAssociatedLegalEntityLegalStructureLlc, LegalEntityAssociationAssociatedLegalEntityLegalStructureNonProfit, LegalEntityAssociationAssociatedLegalEntityLegalStructurePartnership, LegalEntityAssociationAssociatedLegalEntityLegalStructureSoleProprietorship, LegalEntityAssociationAssociatedLegalEntityLegalStructureTrust:
+		return true
+	}
+	return false
+}
 
 // A list of phone numbers in E.164 format.
 type LegalEntityAssociationAssociatedLegalEntityPhoneNumber struct {
@@ -336,6 +368,14 @@ const (
 	LegalEntityAssociationRelationshipTypeControlPerson   LegalEntityAssociationRelationshipType = "control_person"
 )
 
+func (r LegalEntityAssociationRelationshipType) IsKnown() bool {
+	switch r {
+	case LegalEntityAssociationRelationshipTypeBeneficialOwner, LegalEntityAssociationRelationshipTypeControlPerson:
+		return true
+	}
+	return false
+}
+
 type LegalEntityAssociationNewParams struct {
 	RelationshipTypes param.Field[[]LegalEntityAssociationNewParamsRelationshipType] `json:"relationship_types,required"`
 	// The associated legal entity.
@@ -363,6 +403,14 @@ const (
 	LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner LegalEntityAssociationNewParamsRelationshipType = "beneficial_owner"
 	LegalEntityAssociationNewParamsRelationshipTypeControlPerson   LegalEntityAssociationNewParamsRelationshipType = "control_person"
 )
+
+func (r LegalEntityAssociationNewParamsRelationshipType) IsKnown() bool {
+	switch r {
+	case LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner, LegalEntityAssociationNewParamsRelationshipTypeControlPerson:
+		return true
+	}
+	return false
+}
 
 // The associated legal entity.
 type LegalEntityAssociationNewParamsAssociatedLegalEntity struct {
@@ -428,6 +476,14 @@ const (
 	LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeResidential LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType = "residential"
 )
 
+func (r LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressType) IsKnown() bool {
+	switch r {
+	case LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeBusiness, LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeMailing, LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeOther, LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypePoBox, LegalEntityAssociationNewParamsAssociatedLegalEntityAddressesAddressTypeResidential:
+		return true
+	}
+	return false
+}
+
 type LegalEntityAssociationNewParamsAssociatedLegalEntityIdentification struct {
 	// The ID number of identification document.
 	IDNumber param.Field[string] `json:"id_number,required"`
@@ -461,6 +517,14 @@ const (
 	LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeUsSsn     LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDType = "us_ssn"
 )
 
+func (r LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDType) IsKnown() bool {
+	switch r {
+	case LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeArCuil, LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeArCuit, LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeBrCnpj, LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeBrCpf, LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeClNut, LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeCoCedulas, LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeCoNit, LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeHnID, LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeHnRtn, LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypePassport, LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeUsEin, LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeUsItin, LegalEntityAssociationNewParamsAssociatedLegalEntityIdentificationsIDTypeUsSsn:
+		return true
+	}
+	return false
+}
+
 // The type of legal entity.
 type LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityType string
 
@@ -468,6 +532,14 @@ const (
 	LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityTypeBusiness   LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityType = "business"
 	LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityTypeIndividual LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityType = "individual"
 )
+
+func (r LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityType) IsKnown() bool {
+	switch r {
+	case LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityTypeBusiness, LegalEntityAssociationNewParamsAssociatedLegalEntityLegalEntityTypeIndividual:
+		return true
+	}
+	return false
+}
 
 // The business's legal structure.
 type LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructure string
@@ -480,6 +552,14 @@ const (
 	LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureSoleProprietorship LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructure = "sole_proprietorship"
 	LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureTrust              LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructure = "trust"
 )
+
+func (r LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructure) IsKnown() bool {
+	switch r {
+	case LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureCorporation, LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureLlc, LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureNonProfit, LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructurePartnership, LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureSoleProprietorship, LegalEntityAssociationNewParamsAssociatedLegalEntityLegalStructureTrust:
+		return true
+	}
+	return false
+}
 
 // A list of phone numbers in E.164 format.
 type LegalEntityAssociationNewParamsAssociatedLegalEntityPhoneNumber struct {

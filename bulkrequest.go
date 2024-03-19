@@ -136,6 +136,14 @@ const (
 	BulkRequestActionTypeUpdate BulkRequestActionType = "update"
 )
 
+func (r BulkRequestActionType) IsKnown() bool {
+	switch r {
+	case BulkRequestActionTypeCreate, BulkRequestActionTypeUpdate:
+		return true
+	}
+	return false
+}
+
 // One of payment_order, expected_payment, or ledger_transaction.
 type BulkRequestResourceType string
 
@@ -145,6 +153,14 @@ const (
 	BulkRequestResourceTypeExpectedPayment   BulkRequestResourceType = "expected_payment"
 )
 
+func (r BulkRequestResourceType) IsKnown() bool {
+	switch r {
+	case BulkRequestResourceTypePaymentOrder, BulkRequestResourceTypeLedgerTransaction, BulkRequestResourceTypeExpectedPayment:
+		return true
+	}
+	return false
+}
+
 // One of pending, processing, or completed.
 type BulkRequestStatus string
 
@@ -153,6 +169,14 @@ const (
 	BulkRequestStatusProcessing BulkRequestStatus = "processing"
 	BulkRequestStatusCompleted  BulkRequestStatus = "completed"
 )
+
+func (r BulkRequestStatus) IsKnown() bool {
+	switch r {
+	case BulkRequestStatusPending, BulkRequestStatusProcessing, BulkRequestStatusCompleted:
+		return true
+	}
+	return false
+}
 
 type BulkRequestNewParams struct {
 	// One of create, or update.
@@ -179,6 +203,14 @@ const (
 	BulkRequestNewParamsActionTypeUpdate BulkRequestNewParamsActionType = "update"
 )
 
+func (r BulkRequestNewParamsActionType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsActionTypeCreate, BulkRequestNewParamsActionTypeUpdate:
+		return true
+	}
+	return false
+}
+
 // One of payment_order, expected_payment, or ledger_transaction.
 type BulkRequestNewParamsResourceType string
 
@@ -187,6 +219,14 @@ const (
 	BulkRequestNewParamsResourceTypeLedgerTransaction BulkRequestNewParamsResourceType = "ledger_transaction"
 	BulkRequestNewParamsResourceTypeExpectedPayment   BulkRequestNewParamsResourceType = "expected_payment"
 )
+
+func (r BulkRequestNewParamsResourceType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourceTypePaymentOrder, BulkRequestNewParamsResourceTypeLedgerTransaction, BulkRequestNewParamsResourceTypeExpectedPayment:
+		return true
+	}
+	return false
+}
 
 // Satisfied by [BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest],
 // [BulkRequestNewParamsResourcesExpectedPaymentCreateRequest],
@@ -341,6 +381,14 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestDirectionDebit  BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestDirection = "debit"
 )
 
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestDirection) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestDirectionCredit, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestDirectionDebit:
+		return true
+	}
+	return false
+}
+
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestAccounting struct {
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
@@ -366,6 +414,14 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestChargeBearerReceiver BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestChargeBearer = "receiver"
 )
 
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestChargeBearer) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestChargeBearerShared, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestChargeBearerSender, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestChargeBearerReceiver:
+		return true
+	}
+	return false
+}
+
 // A payment type to fallback to if the original type is not valid for the
 // receiving account. Currently, this only supports falling back from RTP to ACH
 // (type=rtp and fallback_type=ach)
@@ -374,6 +430,14 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestFallbackType str
 const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestFallbackTypeACH BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestFallbackType = "ach"
 )
+
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestFallbackType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestFallbackTypeACH:
+		return true
+	}
+	return false
+}
 
 // Indicates the type of FX transfer to initiate, can be either
 // `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
@@ -384,6 +448,14 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchangeIndicatorFixedToVariable BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchangeIndicator = "fixed_to_variable"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchangeIndicatorVariableToFixed BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchangeIndicator = "variable_to_fixed"
 )
+
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchangeIndicator) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchangeIndicatorFixedToVariable, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchangeIndicatorVariableToFixed:
+		return true
+	}
+	return false
+}
 
 // Specifies a ledger transaction object that will be created with the payment
 // order. If the ledger transaction cannot be created, then the payment order
@@ -479,6 +551,14 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeReversal              BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "reversal"
 )
 
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeCounterparty, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeLineItem, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaperItem, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaymentOrderAttempt, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeReturn, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // To post a ledger transaction at creation, use `posted`.
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatus string
 
@@ -487,6 +567,14 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusPending  BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatus = "pending"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusPosted   BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatus = "posted"
 )
+
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatus) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusArchived, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusPending, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusPosted:
+		return true
+	}
+	return false
+}
 
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
@@ -515,6 +603,14 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriorityHigh   BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriority = "high"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriorityNormal BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriority = "normal"
 )
+
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriority) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriorityHigh, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriorityNormal:
+		return true
+	}
+	return false
+}
 
 // Either `receiving_account` or `receiving_account_id` must be present. When using
 // `receiving_account_id`, you may pass the id of an external account or an
@@ -573,6 +669,14 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeOther         BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberType = "other"
 )
 
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeHkNumber, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeClabe, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeWalletAddress, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypePan, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeOther:
+		return true
+	}
+	return false
+}
+
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetail struct {
 	ContactIdentifier     param.Field[string]                                                                                                         `json:"contact_identifier"`
 	ContactIdentifierType param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
@@ -589,6 +693,14 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypePhoneNumber BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierType = "phone_number"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeWebsite     BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierType = "website"
 )
+
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypePhoneNumber, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeWebsite:
+		return true
+	}
+	return false
+}
 
 // Specifies a ledger account object that will be created with the external
 // account. The resulting ledger account is linked to the external account for
@@ -639,6 +751,14 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType = "virtual_account"
 )
 
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeCounterparty, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeExternalAccount, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeVirtualAccount:
+		return true
+	}
+	return false
+}
+
 // Required if receiving wire payments.
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -664,6 +784,14 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyTypeBusiness   BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyType = "business"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyTypeIndividual BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyType = "individual"
 )
+
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyTypeBusiness, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyTypeIndividual:
+		return true
+	}
+	return false
+}
 
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetail struct {
 	RoutingNumber     param.Field[string]                                                                                                     `json:"routing_number,required"`
@@ -699,6 +827,14 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberType = "swift"
 )
 
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeChips, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeSwift:
+		return true
+	}
+	return false
+}
+
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentType string
 
 const (
@@ -733,6 +869,14 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeWire        BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentType = "wire"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeZengin      BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentType = "zengin"
 )
+
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeAuBecs, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeBacs, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeBook, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeCard, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeChats, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeCheck, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeCrossBorder, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeDkNets, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeEft, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeHuIcs, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeInterac, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeMasav, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeMxCcen, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeNeft, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeNics, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeNzBecs, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypePlElixir, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeProvxchange, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeRoSent, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeRtp, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeSgGiro, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeSen, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeSepa, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeSic, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeSignet, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeSknbi, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeWire, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeZengin:
+		return true
+	}
+	return false
+}
 
 type BulkRequestNewParamsResourcesExpectedPaymentCreateRequest struct {
 	// The lowest amount this expected payment may be equal to. Value in specified
@@ -891,6 +1035,14 @@ const (
 	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeReversal              BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "reversal"
 )
 
+func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeCounterparty, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeLineItem, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaperItem, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaymentOrderAttempt, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeReturn, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // To post a ledger transaction at creation, use `posted`.
 type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatus string
 
@@ -899,6 +1051,14 @@ const (
 	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatusPending  BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatus = "pending"
 	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatusPosted   BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatus = "posted"
 )
+
+func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatus) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatusArchived, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatusPending, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatusPosted:
+		return true
+	}
+	return false
+}
 
 type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
@@ -1011,6 +1171,14 @@ const (
 	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeReversal              BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "reversal"
 )
 
+func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeCounterparty, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeLineItem, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaperItem, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaymentOrderAttempt, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeReturn, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeReversal:
+		return true
+	}
+	return false
+}
+
 // To post a ledger transaction at creation, use `posted`.
 type BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatus string
 
@@ -1019,6 +1187,14 @@ const (
 	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatusPending  BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatus = "pending"
 	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatusPosted   BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatus = "posted"
 )
+
+func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatus) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatusArchived, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatusPending, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatusPosted:
+		return true
+	}
+	return false
+}
 
 type BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID struct {
 	ID         param.Field[string]                                        `json:"id" format:"uuid"`
@@ -1179,6 +1355,14 @@ const (
 	BulkRequestNewParamsResourcesObjectChargeBearerReceiver BulkRequestNewParamsResourcesObjectChargeBearer = "receiver"
 )
 
+func (r BulkRequestNewParamsResourcesObjectChargeBearer) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesObjectChargeBearerShared, BulkRequestNewParamsResourcesObjectChargeBearerSender, BulkRequestNewParamsResourcesObjectChargeBearerReceiver:
+		return true
+	}
+	return false
+}
+
 // One of `credit`, `debit`. Describes the direction money is flowing in the
 // transaction. A `credit` moves money from your account to someone else's. A
 // `debit` pulls money from someone else's account to your own. Note that wire,
@@ -1190,6 +1374,14 @@ const (
 	BulkRequestNewParamsResourcesObjectDirectionDebit  BulkRequestNewParamsResourcesObjectDirection = "debit"
 )
 
+func (r BulkRequestNewParamsResourcesObjectDirection) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesObjectDirectionCredit, BulkRequestNewParamsResourcesObjectDirectionDebit:
+		return true
+	}
+	return false
+}
+
 // A payment type to fallback to if the original type is not valid for the
 // receiving account. Currently, this only supports falling back from RTP to ACH
 // (type=rtp and fallback_type=ach)
@@ -1198,6 +1390,14 @@ type BulkRequestNewParamsResourcesObjectFallbackType string
 const (
 	BulkRequestNewParamsResourcesObjectFallbackTypeACH BulkRequestNewParamsResourcesObjectFallbackType = "ach"
 )
+
+func (r BulkRequestNewParamsResourcesObjectFallbackType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesObjectFallbackTypeACH:
+		return true
+	}
+	return false
+}
 
 // Indicates the type of FX transfer to initiate, can be either
 // `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
@@ -1208,6 +1408,14 @@ const (
 	BulkRequestNewParamsResourcesObjectForeignExchangeIndicatorFixedToVariable BulkRequestNewParamsResourcesObjectForeignExchangeIndicator = "fixed_to_variable"
 	BulkRequestNewParamsResourcesObjectForeignExchangeIndicatorVariableToFixed BulkRequestNewParamsResourcesObjectForeignExchangeIndicator = "variable_to_fixed"
 )
+
+func (r BulkRequestNewParamsResourcesObjectForeignExchangeIndicator) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesObjectForeignExchangeIndicatorFixedToVariable, BulkRequestNewParamsResourcesObjectForeignExchangeIndicatorVariableToFixed:
+		return true
+	}
+	return false
+}
 
 type BulkRequestNewParamsResourcesObjectLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
@@ -1236,6 +1444,14 @@ const (
 	BulkRequestNewParamsResourcesObjectPriorityHigh   BulkRequestNewParamsResourcesObjectPriority = "high"
 	BulkRequestNewParamsResourcesObjectPriorityNormal BulkRequestNewParamsResourcesObjectPriority = "normal"
 )
+
+func (r BulkRequestNewParamsResourcesObjectPriority) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesObjectPriorityHigh, BulkRequestNewParamsResourcesObjectPriorityNormal:
+		return true
+	}
+	return false
+}
 
 // Either `receiving_account` or `receiving_account_id` must be present. When using
 // `receiving_account_id`, you may pass the id of an external account or an
@@ -1294,6 +1510,14 @@ const (
 	BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeOther         BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberType = "other"
 )
 
+func (r BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeIban, BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeHkNumber, BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeClabe, BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeWalletAddress, BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypePan, BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeOther:
+		return true
+	}
+	return false
+}
+
 type BulkRequestNewParamsResourcesObjectReceivingAccountContactDetail struct {
 	ContactIdentifier     param.Field[string]                                                                                 `json:"contact_identifier"`
 	ContactIdentifierType param.Field[BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
@@ -1310,6 +1534,14 @@ const (
 	BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierTypePhoneNumber BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierType = "phone_number"
 	BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierTypeWebsite     BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierType = "website"
 )
+
+func (r BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierTypeEmail, BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierTypePhoneNumber, BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierTypeWebsite:
+		return true
+	}
+	return false
+}
 
 // Specifies a ledger account object that will be created with the external
 // account. The resulting ledger account is linked to the external account for
@@ -1360,6 +1592,14 @@ const (
 	BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType = "virtual_account"
 )
 
+func (r BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeCounterparty, BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeExternalAccount, BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeVirtualAccount:
+		return true
+	}
+	return false
+}
+
 // Required if receiving wire payments.
 type BulkRequestNewParamsResourcesObjectReceivingAccountPartyAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -1385,6 +1625,14 @@ const (
 	BulkRequestNewParamsResourcesObjectReceivingAccountPartyTypeBusiness   BulkRequestNewParamsResourcesObjectReceivingAccountPartyType = "business"
 	BulkRequestNewParamsResourcesObjectReceivingAccountPartyTypeIndividual BulkRequestNewParamsResourcesObjectReceivingAccountPartyType = "individual"
 )
+
+func (r BulkRequestNewParamsResourcesObjectReceivingAccountPartyType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesObjectReceivingAccountPartyTypeBusiness, BulkRequestNewParamsResourcesObjectReceivingAccountPartyTypeIndividual:
+		return true
+	}
+	return false
+}
 
 type BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetail struct {
 	RoutingNumber     param.Field[string]                                                                             `json:"routing_number,required"`
@@ -1419,6 +1667,14 @@ const (
 	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
 	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "swift"
 )
+
+func (r BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeAba, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeChips, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeSwift:
+		return true
+	}
+	return false
+}
 
 type BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType string
 
@@ -1455,6 +1711,14 @@ const (
 	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeZengin      BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "zengin"
 )
 
+func (r BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeACH, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeAuBecs, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeBacs, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeBook, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeCard, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeChats, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeCheck, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeCrossBorder, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeDkNets, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeEft, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeHuIcs, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeInterac, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeMasav, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeMxCcen, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeNeft, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeNics, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeNzBecs, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypePlElixir, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeProvxchange, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeRoSent, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeRtp, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSgGiro, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSen, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSepa, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSic, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSignet, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSknbi, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeWire, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeZengin:
+		return true
+	}
+	return false
+}
+
 // To cancel a payment order, use `cancelled`. To redraft a returned payment order,
 // use `approved`. To undo approval on a denied or approved payment order, use
 // `needs_approval`.
@@ -1473,6 +1737,14 @@ const (
 	BulkRequestNewParamsResourcesObjectStatusReversed      BulkRequestNewParamsResourcesObjectStatus = "reversed"
 	BulkRequestNewParamsResourcesObjectStatusSent          BulkRequestNewParamsResourcesObjectStatus = "sent"
 )
+
+func (r BulkRequestNewParamsResourcesObjectStatus) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesObjectStatusApproved, BulkRequestNewParamsResourcesObjectStatusCancelled, BulkRequestNewParamsResourcesObjectStatusCompleted, BulkRequestNewParamsResourcesObjectStatusDenied, BulkRequestNewParamsResourcesObjectStatusFailed, BulkRequestNewParamsResourcesObjectStatusNeedsApproval, BulkRequestNewParamsResourcesObjectStatusPending, BulkRequestNewParamsResourcesObjectStatusProcessing, BulkRequestNewParamsResourcesObjectStatusReturned, BulkRequestNewParamsResourcesObjectStatusReversed, BulkRequestNewParamsResourcesObjectStatusSent:
+		return true
+	}
+	return false
+}
 
 type BulkRequestNewParamsResourceExpectedPaymentUpdateRequestWithID struct {
 	ID param.Field[string] `json:"id" format:"uuid"`
@@ -1621,6 +1893,14 @@ const (
 	BulkRequestListParamsActionTypeUpdate BulkRequestListParamsActionType = "update"
 )
 
+func (r BulkRequestListParamsActionType) IsKnown() bool {
+	switch r {
+	case BulkRequestListParamsActionTypeCreate, BulkRequestListParamsActionTypeUpdate:
+		return true
+	}
+	return false
+}
+
 // One of payment_order, expected_payment, or ledger_transaction.
 type BulkRequestListParamsResourceType string
 
@@ -1630,6 +1910,14 @@ const (
 	BulkRequestListParamsResourceTypeExpectedPayment   BulkRequestListParamsResourceType = "expected_payment"
 )
 
+func (r BulkRequestListParamsResourceType) IsKnown() bool {
+	switch r {
+	case BulkRequestListParamsResourceTypePaymentOrder, BulkRequestListParamsResourceTypeLedgerTransaction, BulkRequestListParamsResourceTypeExpectedPayment:
+		return true
+	}
+	return false
+}
+
 // One of pending, processing, or completed.
 type BulkRequestListParamsStatus string
 
@@ -1638,3 +1926,11 @@ const (
 	BulkRequestListParamsStatusProcessing BulkRequestListParamsStatus = "processing"
 	BulkRequestListParamsStatusCompleted  BulkRequestListParamsStatus = "completed"
 )
+
+func (r BulkRequestListParamsStatus) IsKnown() bool {
+	switch r {
+	case BulkRequestListParamsStatusPending, BulkRequestListParamsStatusProcessing, BulkRequestListParamsStatusCompleted:
+		return true
+	}
+	return false
+}

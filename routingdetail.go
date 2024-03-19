@@ -216,6 +216,14 @@ const (
 	RoutingDetailPaymentTypeZengin      RoutingDetailPaymentType = "zengin"
 )
 
+func (r RoutingDetailPaymentType) IsKnown() bool {
+	switch r {
+	case RoutingDetailPaymentTypeACH, RoutingDetailPaymentTypeAuBecs, RoutingDetailPaymentTypeBacs, RoutingDetailPaymentTypeBook, RoutingDetailPaymentTypeCard, RoutingDetailPaymentTypeChats, RoutingDetailPaymentTypeCheck, RoutingDetailPaymentTypeCrossBorder, RoutingDetailPaymentTypeDkNets, RoutingDetailPaymentTypeEft, RoutingDetailPaymentTypeHuIcs, RoutingDetailPaymentTypeInterac, RoutingDetailPaymentTypeMasav, RoutingDetailPaymentTypeMxCcen, RoutingDetailPaymentTypeNeft, RoutingDetailPaymentTypeNics, RoutingDetailPaymentTypeNzBecs, RoutingDetailPaymentTypePlElixir, RoutingDetailPaymentTypeProvxchange, RoutingDetailPaymentTypeRoSent, RoutingDetailPaymentTypeRtp, RoutingDetailPaymentTypeSeBankgirot, RoutingDetailPaymentTypeSen, RoutingDetailPaymentTypeSepa, RoutingDetailPaymentTypeSgGiro, RoutingDetailPaymentTypeSic, RoutingDetailPaymentTypeSignet, RoutingDetailPaymentTypeSknbi, RoutingDetailPaymentTypeWire, RoutingDetailPaymentTypeZengin:
+		return true
+	}
+	return false
+}
+
 // The type of routing number. See
 // https://docs.moderntreasury.com/platform/reference/routing-detail-object for
 // more details.
@@ -243,6 +251,14 @@ const (
 	RoutingDetailRoutingNumberTypeSwift                   RoutingDetailRoutingNumberType = "swift"
 )
 
+func (r RoutingDetailRoutingNumberType) IsKnown() bool {
+	switch r {
+	case RoutingDetailRoutingNumberTypeAba, RoutingDetailRoutingNumberTypeAuBsb, RoutingDetailRoutingNumberTypeBrCodigo, RoutingDetailRoutingNumberTypeCaCpa, RoutingDetailRoutingNumberTypeChips, RoutingDetailRoutingNumberTypeCnaps, RoutingDetailRoutingNumberTypeDkInterbankClearingCode, RoutingDetailRoutingNumberTypeGBSortCode, RoutingDetailRoutingNumberTypeHkInterbankClearingCode, RoutingDetailRoutingNumberTypeHuInterbankClearingCode, RoutingDetailRoutingNumberTypeIDSknbiCode, RoutingDetailRoutingNumberTypeInIfsc, RoutingDetailRoutingNumberTypeJpZenginCode, RoutingDetailRoutingNumberTypeMxBankIdentifier, RoutingDetailRoutingNumberTypeMyBranchCode, RoutingDetailRoutingNumberTypeNzNationalClearingCode, RoutingDetailRoutingNumberTypePlNationalClearingCode, RoutingDetailRoutingNumberTypeSeBankgiroClearingCode, RoutingDetailRoutingNumberTypeSwift:
+		return true
+	}
+	return false
+}
+
 type RoutingDetailNewParams struct {
 	// The routing number of the bank.
 	RoutingNumber param.Field[string] `json:"routing_number,required"`
@@ -264,6 +280,14 @@ type RoutingDetailNewParamsAccountsType string
 const (
 	RoutingDetailNewParamsAccountsTypeExternalAccounts RoutingDetailNewParamsAccountsType = "external_accounts"
 )
+
+func (r RoutingDetailNewParamsAccountsType) IsKnown() bool {
+	switch r {
+	case RoutingDetailNewParamsAccountsTypeExternalAccounts:
+		return true
+	}
+	return false
+}
 
 // The type of routing number. See
 // https://docs.moderntreasury.com/platform/reference/routing-detail-object for
@@ -291,6 +315,14 @@ const (
 	RoutingDetailNewParamsRoutingNumberTypeSeBankgiroClearingCode  RoutingDetailNewParamsRoutingNumberType = "se_bankgiro_clearing_code"
 	RoutingDetailNewParamsRoutingNumberTypeSwift                   RoutingDetailNewParamsRoutingNumberType = "swift"
 )
+
+func (r RoutingDetailNewParamsRoutingNumberType) IsKnown() bool {
+	switch r {
+	case RoutingDetailNewParamsRoutingNumberTypeAba, RoutingDetailNewParamsRoutingNumberTypeAuBsb, RoutingDetailNewParamsRoutingNumberTypeBrCodigo, RoutingDetailNewParamsRoutingNumberTypeCaCpa, RoutingDetailNewParamsRoutingNumberTypeChips, RoutingDetailNewParamsRoutingNumberTypeCnaps, RoutingDetailNewParamsRoutingNumberTypeDkInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeGBSortCode, RoutingDetailNewParamsRoutingNumberTypeHkInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeHuInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeIDSknbiCode, RoutingDetailNewParamsRoutingNumberTypeInIfsc, RoutingDetailNewParamsRoutingNumberTypeJpZenginCode, RoutingDetailNewParamsRoutingNumberTypeMxBankIdentifier, RoutingDetailNewParamsRoutingNumberTypeMyBranchCode, RoutingDetailNewParamsRoutingNumberTypeNzNationalClearingCode, RoutingDetailNewParamsRoutingNumberTypePlNationalClearingCode, RoutingDetailNewParamsRoutingNumberTypeSeBankgiroClearingCode, RoutingDetailNewParamsRoutingNumberTypeSwift:
+		return true
+	}
+	return false
+}
 
 // If the routing detail is to be used for a specific payment type this field will
 // be populated, otherwise null.
@@ -329,6 +361,14 @@ const (
 	RoutingDetailNewParamsPaymentTypeZengin      RoutingDetailNewParamsPaymentType = "zengin"
 )
 
+func (r RoutingDetailNewParamsPaymentType) IsKnown() bool {
+	switch r {
+	case RoutingDetailNewParamsPaymentTypeACH, RoutingDetailNewParamsPaymentTypeAuBecs, RoutingDetailNewParamsPaymentTypeBacs, RoutingDetailNewParamsPaymentTypeBook, RoutingDetailNewParamsPaymentTypeCard, RoutingDetailNewParamsPaymentTypeChats, RoutingDetailNewParamsPaymentTypeCheck, RoutingDetailNewParamsPaymentTypeCrossBorder, RoutingDetailNewParamsPaymentTypeDkNets, RoutingDetailNewParamsPaymentTypeEft, RoutingDetailNewParamsPaymentTypeHuIcs, RoutingDetailNewParamsPaymentTypeInterac, RoutingDetailNewParamsPaymentTypeMasav, RoutingDetailNewParamsPaymentTypeMxCcen, RoutingDetailNewParamsPaymentTypeNeft, RoutingDetailNewParamsPaymentTypeNics, RoutingDetailNewParamsPaymentTypeNzBecs, RoutingDetailNewParamsPaymentTypePlElixir, RoutingDetailNewParamsPaymentTypeProvxchange, RoutingDetailNewParamsPaymentTypeRoSent, RoutingDetailNewParamsPaymentTypeRtp, RoutingDetailNewParamsPaymentTypeSeBankgirot, RoutingDetailNewParamsPaymentTypeSen, RoutingDetailNewParamsPaymentTypeSepa, RoutingDetailNewParamsPaymentTypeSgGiro, RoutingDetailNewParamsPaymentTypeSic, RoutingDetailNewParamsPaymentTypeSignet, RoutingDetailNewParamsPaymentTypeSknbi, RoutingDetailNewParamsPaymentTypeWire, RoutingDetailNewParamsPaymentTypeZengin:
+		return true
+	}
+	return false
+}
+
 type RoutingDetailListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
 	PerPage     param.Field[int64]  `query:"per_page"`
@@ -348,3 +388,11 @@ type RoutingDetailDeleteParamsAccountsType string
 const (
 	RoutingDetailDeleteParamsAccountsTypeExternalAccounts RoutingDetailDeleteParamsAccountsType = "external_accounts"
 )
+
+func (r RoutingDetailDeleteParamsAccountsType) IsKnown() bool {
+	switch r {
+	case RoutingDetailDeleteParamsAccountsTypeExternalAccounts:
+		return true
+	}
+	return false
+}
