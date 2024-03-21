@@ -150,12 +150,13 @@ type BulkRequestResourceType string
 const (
 	BulkRequestResourceTypePaymentOrder      BulkRequestResourceType = "payment_order"
 	BulkRequestResourceTypeLedgerTransaction BulkRequestResourceType = "ledger_transaction"
+	BulkRequestResourceTypeTransaction       BulkRequestResourceType = "transaction"
 	BulkRequestResourceTypeExpectedPayment   BulkRequestResourceType = "expected_payment"
 )
 
 func (r BulkRequestResourceType) IsKnown() bool {
 	switch r {
-	case BulkRequestResourceTypePaymentOrder, BulkRequestResourceTypeLedgerTransaction, BulkRequestResourceTypeExpectedPayment:
+	case BulkRequestResourceTypePaymentOrder, BulkRequestResourceTypeLedgerTransaction, BulkRequestResourceTypeTransaction, BulkRequestResourceTypeExpectedPayment:
 		return true
 	}
 	return false
@@ -217,12 +218,13 @@ type BulkRequestNewParamsResourceType string
 const (
 	BulkRequestNewParamsResourceTypePaymentOrder      BulkRequestNewParamsResourceType = "payment_order"
 	BulkRequestNewParamsResourceTypeLedgerTransaction BulkRequestNewParamsResourceType = "ledger_transaction"
+	BulkRequestNewParamsResourceTypeTransaction       BulkRequestNewParamsResourceType = "transaction"
 	BulkRequestNewParamsResourceTypeExpectedPayment   BulkRequestNewParamsResourceType = "expected_payment"
 )
 
 func (r BulkRequestNewParamsResourceType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourceTypePaymentOrder, BulkRequestNewParamsResourceTypeLedgerTransaction, BulkRequestNewParamsResourceTypeExpectedPayment:
+	case BulkRequestNewParamsResourceTypePaymentOrder, BulkRequestNewParamsResourceTypeLedgerTransaction, BulkRequestNewParamsResourceTypeTransaction, BulkRequestNewParamsResourceTypeExpectedPayment:
 		return true
 	}
 	return false
@@ -231,6 +233,7 @@ func (r BulkRequestNewParamsResourceType) IsKnown() bool {
 // Satisfied by [BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest],
 // [BulkRequestNewParamsResourcesExpectedPaymentCreateRequest],
 // [BulkRequestNewParamsResourcesLedgerTransactionCreateRequest],
+// [BulkRequestNewParamsResourcesTransactionCreateRequest],
 // [BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID],
 // [BulkRequestNewParamsResourceExpectedPaymentUpdateRequestWithID],
 // [BulkRequestNewParamsResourceLedgerTransactionUpdateRequestWithID].
@@ -1196,6 +1199,41 @@ func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatus) IsKno
 	return false
 }
 
+type BulkRequestNewParamsResourcesTransactionCreateRequest struct {
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000.
+	Amount param.Field[int64] `json:"amount,required"`
+	// The date on which the transaction occurred.
+	AsOfDate param.Field[time.Time] `json:"as_of_date,required" format:"date"`
+	// Either `credit` or `debit`.
+	Direction param.Field[string] `json:"direction,required"`
+	// The ID of the relevant Internal Account.
+	InternalAccountID param.Field[string] `json:"internal_account_id,required" format:"uuid"`
+	// When applicable, the bank-given code that determines the transaction's category.
+	// For most banks this is the BAI2/BTRS transaction code.
+	VendorCode param.Field[string] `json:"vendor_code,required"`
+	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
+	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
+	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
+	// `swift`, `us_bank`, or others.
+	VendorCodeType param.Field[string] `json:"vendor_code_type,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// This field will be `true` if the transaction has posted to the account.
+	Posted param.Field[bool] `json:"posted"`
+	// The transaction detail text that often appears in on your bank statement and in
+	// your banking portal.
+	VendorDescription param.Field[string] `json:"vendor_description"`
+}
+
+func (r BulkRequestNewParamsResourcesTransactionCreateRequest) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r BulkRequestNewParamsResourcesTransactionCreateRequest) implementsBulkRequestNewParamsResource() {
+}
+
 type BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID struct {
 	ID         param.Field[string]                                        `json:"id" format:"uuid"`
 	Accounting param.Field[BulkRequestNewParamsResourcesObjectAccounting] `json:"accounting"`
@@ -1907,12 +1945,13 @@ type BulkRequestListParamsResourceType string
 const (
 	BulkRequestListParamsResourceTypePaymentOrder      BulkRequestListParamsResourceType = "payment_order"
 	BulkRequestListParamsResourceTypeLedgerTransaction BulkRequestListParamsResourceType = "ledger_transaction"
+	BulkRequestListParamsResourceTypeTransaction       BulkRequestListParamsResourceType = "transaction"
 	BulkRequestListParamsResourceTypeExpectedPayment   BulkRequestListParamsResourceType = "expected_payment"
 )
 
 func (r BulkRequestListParamsResourceType) IsKnown() bool {
 	switch r {
-	case BulkRequestListParamsResourceTypePaymentOrder, BulkRequestListParamsResourceTypeLedgerTransaction, BulkRequestListParamsResourceTypeExpectedPayment:
+	case BulkRequestListParamsResourceTypePaymentOrder, BulkRequestListParamsResourceTypeLedgerTransaction, BulkRequestListParamsResourceTypeTransaction, BulkRequestListParamsResourceTypeExpectedPayment:
 		return true
 	}
 	return false

@@ -109,6 +109,8 @@ type Transaction struct {
 	// Either `credit` or `debit`.
 	Direction   string    `json:"direction,required"`
 	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	// Associated serialized foreign exchange rate information.
+	ForeignExchangeRate TransactionForeignExchangeRate `json:"foreign_exchange_rate,required,nullable"`
 	// The ID of the relevant Internal Account.
 	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
@@ -156,30 +158,31 @@ type Transaction struct {
 
 // transactionJSON contains the JSON metadata for the struct [Transaction]
 type transactionJSON struct {
-	ID                apijson.Field
-	Amount            apijson.Field
-	AsOfDate          apijson.Field
-	AsOfTime          apijson.Field
-	CreatedAt         apijson.Field
-	Currency          apijson.Field
-	Direction         apijson.Field
-	DiscardedAt       apijson.Field
-	InternalAccountID apijson.Field
-	LiveMode          apijson.Field
-	Metadata          apijson.Field
-	Object            apijson.Field
-	Posted            apijson.Field
-	Reconciled        apijson.Field
-	Type              apijson.Field
-	UpdatedAt         apijson.Field
-	VendorCode        apijson.Field
-	VendorCodeType    apijson.Field
-	VendorCustomerID  apijson.Field
-	VendorID          apijson.Field
-	Details           apijson.Field
-	VendorDescription apijson.Field
-	raw               string
-	ExtraFields       map[string]apijson.Field
+	ID                  apijson.Field
+	Amount              apijson.Field
+	AsOfDate            apijson.Field
+	AsOfTime            apijson.Field
+	CreatedAt           apijson.Field
+	Currency            apijson.Field
+	Direction           apijson.Field
+	DiscardedAt         apijson.Field
+	ForeignExchangeRate apijson.Field
+	InternalAccountID   apijson.Field
+	LiveMode            apijson.Field
+	Metadata            apijson.Field
+	Object              apijson.Field
+	Posted              apijson.Field
+	Reconciled          apijson.Field
+	Type                apijson.Field
+	UpdatedAt           apijson.Field
+	VendorCode          apijson.Field
+	VendorCodeType      apijson.Field
+	VendorCustomerID    apijson.Field
+	VendorID            apijson.Field
+	Details             apijson.Field
+	VendorDescription   apijson.Field
+	raw                 string
+	ExtraFields         map[string]apijson.Field
 }
 
 func (r *Transaction) UnmarshalJSON(data []byte) (err error) {
@@ -187,6 +190,53 @@ func (r *Transaction) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r transactionJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r Transaction) implementsBulkResultEntity() {}
+
+// Associated serialized foreign exchange rate information.
+type TransactionForeignExchangeRate struct {
+	// Amount in the lowest denomination of the `base_currency` to convert, often
+	// called the "sell" amount.
+	BaseAmount int64 `json:"base_amount,required"`
+	// Currency to convert, often called the "sell" currency.
+	BaseCurrency shared.Currency `json:"base_currency,required,nullable"`
+	// The exponent component of the rate. The decimal is calculated as `value` / (10 ^
+	// `exponent`).
+	Exponent int64 `json:"exponent,required"`
+	// A string representation of the rate.
+	RateString string `json:"rate_string,required"`
+	// Amount in the lowest denomination of the `target_currency`, often called the
+	// "buy" amount.
+	TargetAmount int64 `json:"target_amount,required"`
+	// Currency to convert the `base_currency` to, often called the "buy" currency.
+	TargetCurrency shared.Currency `json:"target_currency,required,nullable"`
+	// The whole number component of the rate. The decimal is calculated as `value` /
+	// (10 ^ `exponent`).
+	Value int64                              `json:"value,required"`
+	JSON  transactionForeignExchangeRateJSON `json:"-"`
+}
+
+// transactionForeignExchangeRateJSON contains the JSON metadata for the struct
+// [TransactionForeignExchangeRate]
+type transactionForeignExchangeRateJSON struct {
+	BaseAmount     apijson.Field
+	BaseCurrency   apijson.Field
+	Exponent       apijson.Field
+	RateString     apijson.Field
+	TargetAmount   apijson.Field
+	TargetCurrency apijson.Field
+	Value          apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *TransactionForeignExchangeRate) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r transactionForeignExchangeRateJSON) RawJSON() string {
 	return r.raw
 }
 

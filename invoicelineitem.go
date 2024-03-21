@@ -105,6 +105,9 @@ type InvoiceLineItem struct {
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata map[string]string `json:"metadata,required"`
 	// The name of the line item, typically a product or SKU name.
 	Name   string `json:"name,required"`
 	Object string `json:"object,required"`
@@ -130,6 +133,7 @@ type invoiceLineItemJSON struct {
 	Description       apijson.Field
 	Direction         apijson.Field
 	LiveMode          apijson.Field
+	Metadata          apijson.Field
 	Name              apijson.Field
 	Object            apijson.Field
 	Quantity          apijson.Field
@@ -160,6 +164,9 @@ type InvoiceLineItemNewParams struct {
 	// money and increases the invoice's `total_amount` due. `credit` has the opposite
 	// intention and effect.
 	Direction param.Field[string] `json:"direction"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
 	// The number of units of a product or service that this line item is for. Must be
 	// a whole number. Defaults to 1 if not provided.
 	Quantity param.Field[int64] `json:"quantity"`
@@ -180,6 +187,9 @@ type InvoiceLineItemUpdateParams struct {
 	// money and increases the invoice's `total_amount` due. `credit` has the opposite
 	// intention and effect.
 	Direction param.Field[string] `json:"direction"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
 	// The name of the line item, typically a product or SKU name.
 	Name param.Field[string] `json:"name"`
 	// The number of units of a product or service that this line item is for. Must be
