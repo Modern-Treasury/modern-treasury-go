@@ -234,8 +234,10 @@ func (r BulkRequestNewParamsResourceType) IsKnown() bool {
 // [BulkRequestNewParamsResourcesExpectedPaymentCreateRequest],
 // [BulkRequestNewParamsResourcesLedgerTransactionCreateRequest],
 // [BulkRequestNewParamsResourcesTransactionCreateRequest],
+// [BulkRequestNewParamsResourcesObject],
 // [BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID],
 // [BulkRequestNewParamsResourceExpectedPaymentUpdateRequestWithID],
+// [BulkRequestNewParamsResourceTransactionUpdateRequestWithID],
 // [BulkRequestNewParamsResourceLedgerTransactionUpdateRequestWithID].
 type BulkRequestNewParamsResource interface {
 	implementsBulkRequestNewParamsResource()
@@ -1234,6 +1236,16 @@ func (r BulkRequestNewParamsResourcesTransactionCreateRequest) MarshalJSON() (da
 func (r BulkRequestNewParamsResourcesTransactionCreateRequest) implementsBulkRequestNewParamsResource() {
 }
 
+type BulkRequestNewParamsResourcesObject struct {
+	ID param.Field[string] `json:"id" format:"uuid"`
+}
+
+func (r BulkRequestNewParamsResourcesObject) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r BulkRequestNewParamsResourcesObject) implementsBulkRequestNewParamsResource() {}
+
 type BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID struct {
 	ID         param.Field[string]                                        `json:"id" format:"uuid"`
 	Accounting param.Field[BulkRequestNewParamsResourcesObjectAccounting] `json:"accounting"`
@@ -1835,6 +1847,20 @@ func (r BulkRequestNewParamsResourceExpectedPaymentUpdateRequestWithID) MarshalJ
 }
 
 func (r BulkRequestNewParamsResourceExpectedPaymentUpdateRequestWithID) implementsBulkRequestNewParamsResource() {
+}
+
+type BulkRequestNewParamsResourceTransactionUpdateRequestWithID struct {
+	ID param.Field[string] `json:"id" format:"uuid"`
+	// Additional data in the form of key-value pairs. Pairs can be removed by passing
+	// an empty string or `null` as the value.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+}
+
+func (r BulkRequestNewParamsResourceTransactionUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r BulkRequestNewParamsResourceTransactionUpdateRequestWithID) implementsBulkRequestNewParamsResource() {
 }
 
 type BulkRequestNewParamsResourceLedgerTransactionUpdateRequestWithID struct {
