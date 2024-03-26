@@ -1,5 +1,37 @@
 # Changelog
 
+## 2.10.0 (2024-03-26)
+
+Full Changelog: [v2.9.0...v2.10.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.9.0...v2.10.0)
+
+### Features
+
+* add IsKnown method to enums ([#187](https://github.com/Modern-Treasury/modern-treasury-go/issues/187)) ([aab3062](https://github.com/Modern-Treasury/modern-treasury-go/commit/aab30629851e95d32a1e46f97320a008615cb415))
+* **api:** add citibank enums ([#192](https://github.com/Modern-Treasury/modern-treasury-go/issues/192)) ([a20e06f](https://github.com/Modern-Treasury/modern-treasury-go/commit/a20e06f3a9a559fc17141c14a3b630cea6a80a3a))
+* **api:** add date_formed property to legal entities ([#181](https://github.com/Modern-Treasury/modern-treasury-go/issues/181)) ([f91bb6d](https://github.com/Modern-Treasury/modern-treasury-go/commit/f91bb6df8624cec1747c4bd16d988fc894f08128))
+* **api:** add line item metadata ([cb9243b](https://github.com/Modern-Treasury/modern-treasury-go/commit/cb9243b590546354d1bcf2c07c1b68c153a24094))
+* **api:** extend list invoices query params ([#184](https://github.com/Modern-Treasury/modern-treasury-go/issues/184)) ([2512a6e](https://github.com/Modern-Treasury/modern-treasury-go/commit/2512a6e1e870ec58b6e89a24c3a21f2ebbcf7e56))
+* **api:** introduce bulk transaction create ([#190](https://github.com/Modern-Treasury/modern-treasury-go/issues/190)) ([cb9243b](https://github.com/Modern-Treasury/modern-treasury-go/commit/cb9243b590546354d1bcf2c07c1b68c153a24094))
+* **api:** rename `associated_legal_entity` to `child_legal_entity` ([#188](https://github.com/Modern-Treasury/modern-treasury-go/issues/188)) ([0ec3815](https://github.com/Modern-Treasury/modern-treasury-go/commit/0ec3815f5aec94e1b29745343fe32c73c27b7b54))
+* **api:** rename `id_type` enum from `cl_nut` to `cl_rut` ([0ec3815](https://github.com/Modern-Treasury/modern-treasury-go/commit/0ec3815f5aec94e1b29745343fe32c73c27b7b54))
+* **api:** updates ([#191](https://github.com/Modern-Treasury/modern-treasury-go/issues/191)) ([7a6d391](https://github.com/Modern-Treasury/modern-treasury-go/commit/7a6d391ffacb06814822aee7a8604a4c8c6ab028))
+* set user-agent header by default when making requests ([#183](https://github.com/Modern-Treasury/modern-treasury-go/issues/183)) ([f6a57ad](https://github.com/Modern-Treasury/modern-treasury-go/commit/f6a57ad21dc928995c6906e23c78c54676cf0fe0))
+
+
+### Chores
+
+* add back removed code ([6222d76](https://github.com/Modern-Treasury/modern-treasury-go/commit/6222d76024157768145265734dbca0838e56886a))
+* **internal:** temporary commit ([#194](https://github.com/Modern-Treasury/modern-treasury-go/issues/194)) ([0d3ba33](https://github.com/Modern-Treasury/modern-treasury-go/commit/0d3ba334faf79bb45928f9554e483a992a43f75f))
+* **internal:** update generated pragma comment ([#186](https://github.com/Modern-Treasury/modern-treasury-go/issues/186)) ([3745ce4](https://github.com/Modern-Treasury/modern-treasury-go/commit/3745ce4fa36138e29ba15cac9cc1b6a79dd87a6b))
+
+
+### Documentation
+
+* fix typo in CONTRIBUTING.md ([#185](https://github.com/Modern-Treasury/modern-treasury-go/issues/185)) ([8de2177](https://github.com/Modern-Treasury/modern-treasury-go/commit/8de2177a9a5928cd7b8a5c254f85707ef360de83))
+* fix typo in docstring for Null() ([#195](https://github.com/Modern-Treasury/modern-treasury-go/issues/195)) ([b3fdb63](https://github.com/Modern-Treasury/modern-treasury-go/commit/b3fdb63095c79c4da7ed5a445a6bfef02faf122a))
+* **readme:** consistent use of sentence case in headings ([#189](https://github.com/Modern-Treasury/modern-treasury-go/issues/189)) ([a7df734](https://github.com/Modern-Treasury/modern-treasury-go/commit/a7df73427293ffae6ebee889ba755419bb00fa1f))
+* **readme:** document file uploads ([#193](https://github.com/Modern-Treasury/modern-treasury-go/issues/193)) ([a6b3c71](https://github.com/Modern-Treasury/modern-treasury-go/commit/a6b3c717be407cd85d6a082a2540be59b846b1ab))
+
 ## 2.9.0 (2024-03-12)
 
 Full Changelog: [v2.8.0...v2.9.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.8.0...v2.9.0)
