@@ -238,6 +238,43 @@ client.ExternalAccounts.List(
 )
 ```
 
+### File uploads
+
+Request parameters that correspond to file uploads in multipart requests are typed as
+`param.Field[io.Reader]`. The contents of the `io.Reader` will by default be sent as a multipart form
+part with the file name of "anonymous_file" and content-type of "application/octet-stream".
+
+The file name and content-type can be customized by implementing `Name() string` or `ContentType()
+string` on the run-time type of `io.Reader`. Note that `os.File` implements `Name() string`, so a
+file returned by `os.Open` will be sent with the file name on disk.
+
+We also provide a helper `moderntreasury.FileParam(reader io.Reader, filename string, contentType string)`
+which can be used to wrap any `io.Reader` with the appropriate file name and content type.
+
+```go
+// A file from the file system
+file, err := os.Open("my/file.txt")
+moderntreasury.DocumentNewParams{
+	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
+	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
+	File:             moderntreasury.F[io.Reader](file),
+}
+
+// A file from a string
+moderntreasury.DocumentNewParams{
+	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
+	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
+	File:             moderntreasury.F[io.Reader](strings.NewReader("my file contents")),
+}
+
+// With a custom filename and contentType
+moderntreasury.DocumentNewParams{
+	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
+	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
+	File:             moderntreasury.FileParam(strings.NewReader(`{"hello": "foo"}`), "file.go", "application/json"),
+}
+```
+
 ## Retries
 
 Certain errors will be automatically retried 2 times by default, with a short exponential backoff.

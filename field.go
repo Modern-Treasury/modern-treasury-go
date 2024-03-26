@@ -2,6 +2,7 @@ package moderntreasury
 
 import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
+	"io"
 )
 
 // F is a param field helper used to initialize a [param.Field] generic struct.
@@ -33,3 +34,17 @@ func Float(value float64) param.Field[float64] { return F(value) }
 
 // Bool is a param field helper which helps specify bools.
 func Bool(value bool) param.Field[bool] { return F(value) }
+
+// FileParam is a param field helper which helps files with a mime content-type.
+func FileParam(reader io.Reader, filename string, contentType string) param.Field[io.Reader] {
+	return F[io.Reader](&file{reader, filename, contentType})
+}
+
+type file struct {
+	io.Reader
+	name        string
+	contentType string
+}
+
+func (f *file) Name() string        { return f.name }
+func (f *file) ContentType() string { return f.contentType }
