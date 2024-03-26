@@ -46,7 +46,6 @@ type Client struct {
 	Transactions                 *TransactionService
 	Validations                  *ValidationService
 	PaperItems                   *PaperItemService
-	Webhooks                     *WebhookService
 	VirtualAccounts              *VirtualAccountService
 	BulkRequests                 *BulkRequestService
 	BulkResults                  *BulkResultService
@@ -107,7 +106,6 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.Transactions = NewTransactionService(opts...)
 	r.Validations = NewValidationService(opts...)
 	r.PaperItems = NewPaperItemService(opts...)
-	r.Webhooks = NewWebhookService(opts...)
 	r.VirtualAccounts = NewVirtualAccountService(opts...)
 	r.BulkRequests = NewBulkRequestService(opts...)
 	r.BulkResults = NewBulkResultService(opts...)
