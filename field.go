@@ -12,7 +12,7 @@ import (
 // [README]: https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#readme-request-fields
 func F[T any](value T) param.Field[T] { return param.Field[T]{Value: value, Present: true} }
 
-// Null is a param field helper which explciitly sends null to the API.
+// Null is a param field helper which explicitly sends null to the API.
 func Null[T any]() param.Field[T] { return param.Field[T]{Null: true, Present: true} }
 
 // Raw is a param field helper for specifying values for fields when the
