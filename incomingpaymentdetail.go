@@ -190,6 +190,7 @@ const (
 	IncomingPaymentDetailOriginatingAccountNumberTypeClabe         IncomingPaymentDetailOriginatingAccountNumberType = "clabe"
 	IncomingPaymentDetailOriginatingAccountNumberTypeHkNumber      IncomingPaymentDetailOriginatingAccountNumberType = "hk_number"
 	IncomingPaymentDetailOriginatingAccountNumberTypeIban          IncomingPaymentDetailOriginatingAccountNumberType = "iban"
+	IncomingPaymentDetailOriginatingAccountNumberTypeNzNumber      IncomingPaymentDetailOriginatingAccountNumberType = "nz_number"
 	IncomingPaymentDetailOriginatingAccountNumberTypeOther         IncomingPaymentDetailOriginatingAccountNumberType = "other"
 	IncomingPaymentDetailOriginatingAccountNumberTypePan           IncomingPaymentDetailOriginatingAccountNumberType = "pan"
 	IncomingPaymentDetailOriginatingAccountNumberTypeWalletAddress IncomingPaymentDetailOriginatingAccountNumberType = "wallet_address"
@@ -197,7 +198,7 @@ const (
 
 func (r IncomingPaymentDetailOriginatingAccountNumberType) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailOriginatingAccountNumberTypeClabe, IncomingPaymentDetailOriginatingAccountNumberTypeHkNumber, IncomingPaymentDetailOriginatingAccountNumberTypeIban, IncomingPaymentDetailOriginatingAccountNumberTypeOther, IncomingPaymentDetailOriginatingAccountNumberTypePan, IncomingPaymentDetailOriginatingAccountNumberTypeWalletAddress:
+	case IncomingPaymentDetailOriginatingAccountNumberTypeClabe, IncomingPaymentDetailOriginatingAccountNumberTypeHkNumber, IncomingPaymentDetailOriginatingAccountNumberTypeIban, IncomingPaymentDetailOriginatingAccountNumberTypeNzNumber, IncomingPaymentDetailOriginatingAccountNumberTypeOther, IncomingPaymentDetailOriginatingAccountNumberTypePan, IncomingPaymentDetailOriginatingAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false
