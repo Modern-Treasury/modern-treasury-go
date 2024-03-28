@@ -10,6 +10,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -35,7 +36,7 @@ func NewLedgerTransactionVersionService(opts ...option.RequestOption) (r *Ledger
 }
 
 // Get a list of ledger transaction versions.
-func (r *LedgerTransactionVersionService) List(ctx context.Context, query LedgerTransactionVersionListParams, opts ...option.RequestOption) (res *shared.Page[LedgerTransactionVersion], err error) {
+func (r *LedgerTransactionVersionService) List(ctx context.Context, query LedgerTransactionVersionListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerTransactionVersion], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -53,8 +54,8 @@ func (r *LedgerTransactionVersionService) List(ctx context.Context, query Ledger
 }
 
 // Get a list of ledger transaction versions.
-func (r *LedgerTransactionVersionService) ListAutoPaging(ctx context.Context, query LedgerTransactionVersionListParams, opts ...option.RequestOption) *shared.PageAutoPager[LedgerTransactionVersion] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *LedgerTransactionVersionService) ListAutoPaging(ctx context.Context, query LedgerTransactionVersionListParams, opts ...option.RequestOption) *pagination.PageAutoPager[LedgerTransactionVersion] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type LedgerTransactionVersion struct {

@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -43,7 +44,7 @@ func (r *PaperItemService) Get(ctx context.Context, id string, opts ...option.Re
 }
 
 // Get a list of all paper items.
-func (r *PaperItemService) List(ctx context.Context, query PaperItemListParams, opts ...option.RequestOption) (res *shared.Page[PaperItem], err error) {
+func (r *PaperItemService) List(ctx context.Context, query PaperItemListParams, opts ...option.RequestOption) (res *pagination.Page[PaperItem], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -61,8 +62,8 @@ func (r *PaperItemService) List(ctx context.Context, query PaperItemListParams, 
 }
 
 // Get a list of all paper items.
-func (r *PaperItemService) ListAutoPaging(ctx context.Context, query PaperItemListParams, opts ...option.RequestOption) *shared.PageAutoPager[PaperItem] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *PaperItemService) ListAutoPaging(ctx context.Context, query PaperItemListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PaperItem] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type PaperItem struct {

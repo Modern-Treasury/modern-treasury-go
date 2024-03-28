@@ -11,9 +11,9 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
@@ -44,7 +44,7 @@ func (r *PaymentReferenceService) Get(ctx context.Context, id string, opts ...op
 }
 
 // list payment_references
-func (r *PaymentReferenceService) List(ctx context.Context, query PaymentReferenceListParams, opts ...option.RequestOption) (res *shared.Page[PaymentReference], err error) {
+func (r *PaymentReferenceService) List(ctx context.Context, query PaymentReferenceListParams, opts ...option.RequestOption) (res *pagination.Page[PaymentReference], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -62,8 +62,8 @@ func (r *PaymentReferenceService) List(ctx context.Context, query PaymentReferen
 }
 
 // list payment_references
-func (r *PaymentReferenceService) ListAutoPaging(ctx context.Context, query PaymentReferenceListParams, opts ...option.RequestOption) *shared.PageAutoPager[PaymentReference] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *PaymentReferenceService) ListAutoPaging(ctx context.Context, query PaymentReferenceListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PaymentReference] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // get payment_reference
