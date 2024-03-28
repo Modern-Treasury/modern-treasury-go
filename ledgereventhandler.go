@@ -11,9 +11,9 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
@@ -52,7 +52,7 @@ func (r *LedgerEventHandlerService) Get(ctx context.Context, id string, opts ...
 }
 
 // Get a list of ledger event handlers.
-func (r *LedgerEventHandlerService) List(ctx context.Context, query LedgerEventHandlerListParams, opts ...option.RequestOption) (res *shared.Page[LedgerEventHandler], err error) {
+func (r *LedgerEventHandlerService) List(ctx context.Context, query LedgerEventHandlerListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerEventHandler], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -70,8 +70,8 @@ func (r *LedgerEventHandlerService) List(ctx context.Context, query LedgerEventH
 }
 
 // Get a list of ledger event handlers.
-func (r *LedgerEventHandlerService) ListAutoPaging(ctx context.Context, query LedgerEventHandlerListParams, opts ...option.RequestOption) *shared.PageAutoPager[LedgerEventHandler] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *LedgerEventHandlerService) ListAutoPaging(ctx context.Context, query LedgerEventHandlerListParams, opts ...option.RequestOption) *pagination.PageAutoPager[LedgerEventHandler] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Archive a ledger event handler.

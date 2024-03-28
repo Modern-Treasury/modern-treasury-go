@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -52,7 +53,7 @@ func (r *IncomingPaymentDetailService) Update(ctx context.Context, id string, bo
 }
 
 // Get a list of Incoming Payment Details.
-func (r *IncomingPaymentDetailService) List(ctx context.Context, query IncomingPaymentDetailListParams, opts ...option.RequestOption) (res *shared.Page[IncomingPaymentDetail], err error) {
+func (r *IncomingPaymentDetailService) List(ctx context.Context, query IncomingPaymentDetailListParams, opts ...option.RequestOption) (res *pagination.Page[IncomingPaymentDetail], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -70,8 +71,8 @@ func (r *IncomingPaymentDetailService) List(ctx context.Context, query IncomingP
 }
 
 // Get a list of Incoming Payment Details.
-func (r *IncomingPaymentDetailService) ListAutoPaging(ctx context.Context, query IncomingPaymentDetailListParams, opts ...option.RequestOption) *shared.PageAutoPager[IncomingPaymentDetail] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *IncomingPaymentDetailService) ListAutoPaging(ctx context.Context, query IncomingPaymentDetailListParams, opts ...option.RequestOption) *pagination.PageAutoPager[IncomingPaymentDetail] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Simulate Incoming Payment Detail

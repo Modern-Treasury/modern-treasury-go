@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -60,7 +61,7 @@ func (r *ExpectedPaymentService) Update(ctx context.Context, id string, body Exp
 }
 
 // list expected_payments
-func (r *ExpectedPaymentService) List(ctx context.Context, query ExpectedPaymentListParams, opts ...option.RequestOption) (res *shared.Page[ExpectedPayment], err error) {
+func (r *ExpectedPaymentService) List(ctx context.Context, query ExpectedPaymentListParams, opts ...option.RequestOption) (res *pagination.Page[ExpectedPayment], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -78,8 +79,8 @@ func (r *ExpectedPaymentService) List(ctx context.Context, query ExpectedPayment
 }
 
 // list expected_payments
-func (r *ExpectedPaymentService) ListAutoPaging(ctx context.Context, query ExpectedPaymentListParams, opts ...option.RequestOption) *shared.PageAutoPager[ExpectedPayment] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *ExpectedPaymentService) ListAutoPaging(ctx context.Context, query ExpectedPaymentListParams, opts ...option.RequestOption) *pagination.PageAutoPager[ExpectedPayment] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // delete expected payment

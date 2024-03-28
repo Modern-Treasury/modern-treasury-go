@@ -11,9 +11,9 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
@@ -44,7 +44,7 @@ func (r *TransactionLineItemService) Get(ctx context.Context, id string, opts ..
 }
 
 // list transaction_line_items
-func (r *TransactionLineItemService) List(ctx context.Context, query TransactionLineItemListParams, opts ...option.RequestOption) (res *shared.Page[TransactionLineItem], err error) {
+func (r *TransactionLineItemService) List(ctx context.Context, query TransactionLineItemListParams, opts ...option.RequestOption) (res *pagination.Page[TransactionLineItem], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -62,8 +62,8 @@ func (r *TransactionLineItemService) List(ctx context.Context, query Transaction
 }
 
 // list transaction_line_items
-func (r *TransactionLineItemService) ListAutoPaging(ctx context.Context, query TransactionLineItemListParams, opts ...option.RequestOption) *shared.PageAutoPager[TransactionLineItem] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *TransactionLineItemService) ListAutoPaging(ctx context.Context, query TransactionLineItemListParams, opts ...option.RequestOption) *pagination.PageAutoPager[TransactionLineItem] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type TransactionLineItem struct {

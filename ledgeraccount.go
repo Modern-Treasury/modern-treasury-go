@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -60,7 +61,7 @@ func (r *LedgerAccountService) Update(ctx context.Context, id string, body Ledge
 }
 
 // Get a list of ledger accounts.
-func (r *LedgerAccountService) List(ctx context.Context, query LedgerAccountListParams, opts ...option.RequestOption) (res *shared.Page[LedgerAccount], err error) {
+func (r *LedgerAccountService) List(ctx context.Context, query LedgerAccountListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerAccount], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -78,8 +79,8 @@ func (r *LedgerAccountService) List(ctx context.Context, query LedgerAccountList
 }
 
 // Get a list of ledger accounts.
-func (r *LedgerAccountService) ListAutoPaging(ctx context.Context, query LedgerAccountListParams, opts ...option.RequestOption) *shared.PageAutoPager[LedgerAccount] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *LedgerAccountService) ListAutoPaging(ctx context.Context, query LedgerAccountListParams, opts ...option.RequestOption) *pagination.PageAutoPager[LedgerAccount] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Delete a ledger account.
