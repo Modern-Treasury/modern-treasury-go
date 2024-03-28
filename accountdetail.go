@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -52,7 +53,7 @@ func (r *AccountDetailService) Get(ctx context.Context, accountsType shared.Acco
 }
 
 // Get a list of account details for a single internal or external account.
-func (r *AccountDetailService) List(ctx context.Context, accountsType shared.AccountsType, accountID string, query AccountDetailListParams, opts ...option.RequestOption) (res *shared.Page[AccountDetail], err error) {
+func (r *AccountDetailService) List(ctx context.Context, accountsType shared.AccountsType, accountID string, query AccountDetailListParams, opts ...option.RequestOption) (res *pagination.Page[AccountDetail], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -70,8 +71,8 @@ func (r *AccountDetailService) List(ctx context.Context, accountsType shared.Acc
 }
 
 // Get a list of account details for a single internal or external account.
-func (r *AccountDetailService) ListAutoPaging(ctx context.Context, accountsType shared.AccountsType, accountID string, query AccountDetailListParams, opts ...option.RequestOption) *shared.PageAutoPager[AccountDetail] {
-	return shared.NewPageAutoPager(r.List(ctx, accountsType, accountID, query, opts...))
+func (r *AccountDetailService) ListAutoPaging(ctx context.Context, accountsType shared.AccountsType, accountID string, query AccountDetailListParams, opts ...option.RequestOption) *pagination.PageAutoPager[AccountDetail] {
+	return pagination.NewPageAutoPager(r.List(ctx, accountsType, accountID, query, opts...))
 }
 
 // Delete a single account detail for an external account.

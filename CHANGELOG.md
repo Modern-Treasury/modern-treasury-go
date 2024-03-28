@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.11.0 (2024-03-28)
+
+Full Changelog: [v2.10.0...v2.11.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.10.0...v2.11.0)
+
+### Features
+
+* **client:** implement raw requests methods on client ([#196](https://github.com/Modern-Treasury/modern-treasury-go/issues/196)) ([bd07bec](https://github.com/Modern-Treasury/modern-treasury-go/commit/bd07bec830587bd6daa7944a45040cb3c861d489))
+
+
+### Chores
+
+* **internal:** move pagination types to pagination package ([#198](https://github.com/Modern-Treasury/modern-treasury-go/issues/198)) ([9cdf8a5](https://github.com/Modern-Treasury/modern-treasury-go/commit/9cdf8a5d213ff42690943e5cae4ba2ad4a200e9d))
+
 ## 2.10.0 (2024-03-26)
 
 Full Changelog: [v2.9.0...v2.10.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.9.0...v2.10.0)

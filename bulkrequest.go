@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -52,7 +53,7 @@ func (r *BulkRequestService) Get(ctx context.Context, id string, opts ...option.
 }
 
 // list bulk_requests
-func (r *BulkRequestService) List(ctx context.Context, query BulkRequestListParams, opts ...option.RequestOption) (res *shared.Page[BulkRequest], err error) {
+func (r *BulkRequestService) List(ctx context.Context, query BulkRequestListParams, opts ...option.RequestOption) (res *pagination.Page[BulkRequest], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -70,8 +71,8 @@ func (r *BulkRequestService) List(ctx context.Context, query BulkRequestListPara
 }
 
 // list bulk_requests
-func (r *BulkRequestService) ListAutoPaging(ctx context.Context, query BulkRequestListParams, opts ...option.RequestOption) *shared.PageAutoPager[BulkRequest] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *BulkRequestService) ListAutoPaging(ctx context.Context, query BulkRequestListParams, opts ...option.RequestOption) *pagination.PageAutoPager[BulkRequest] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type BulkRequest struct {

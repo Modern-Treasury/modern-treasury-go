@@ -16,6 +16,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiform"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -68,7 +69,7 @@ func (r *PaymentOrderService) Update(ctx context.Context, id string, body Paymen
 }
 
 // Get a list of all payment orders
-func (r *PaymentOrderService) List(ctx context.Context, query PaymentOrderListParams, opts ...option.RequestOption) (res *shared.Page[PaymentOrder], err error) {
+func (r *PaymentOrderService) List(ctx context.Context, query PaymentOrderListParams, opts ...option.RequestOption) (res *pagination.Page[PaymentOrder], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -86,8 +87,8 @@ func (r *PaymentOrderService) List(ctx context.Context, query PaymentOrderListPa
 }
 
 // Get a list of all payment orders
-func (r *PaymentOrderService) ListAutoPaging(ctx context.Context, query PaymentOrderListParams, opts ...option.RequestOption) *shared.PageAutoPager[PaymentOrder] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *PaymentOrderService) ListAutoPaging(ctx context.Context, query PaymentOrderListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PaymentOrder] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Create a new payment order asynchronously

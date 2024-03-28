@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -52,7 +53,7 @@ func (r *PaymentOrderReversalService) Get(ctx context.Context, paymentOrderID st
 }
 
 // Get a list of all reversals of a payment order.
-func (r *PaymentOrderReversalService) List(ctx context.Context, paymentOrderID string, query PaymentOrderReversalListParams, opts ...option.RequestOption) (res *shared.Page[Reversal], err error) {
+func (r *PaymentOrderReversalService) List(ctx context.Context, paymentOrderID string, query PaymentOrderReversalListParams, opts ...option.RequestOption) (res *pagination.Page[Reversal], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -70,8 +71,8 @@ func (r *PaymentOrderReversalService) List(ctx context.Context, paymentOrderID s
 }
 
 // Get a list of all reversals of a payment order.
-func (r *PaymentOrderReversalService) ListAutoPaging(ctx context.Context, paymentOrderID string, query PaymentOrderReversalListParams, opts ...option.RequestOption) *shared.PageAutoPager[Reversal] {
-	return shared.NewPageAutoPager(r.List(ctx, paymentOrderID, query, opts...))
+func (r *PaymentOrderReversalService) ListAutoPaging(ctx context.Context, paymentOrderID string, query PaymentOrderReversalListParams, opts ...option.RequestOption) *pagination.PageAutoPager[Reversal] {
+	return pagination.NewPageAutoPager(r.List(ctx, paymentOrderID, query, opts...))
 }
 
 type Reversal struct {

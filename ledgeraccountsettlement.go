@@ -11,9 +11,9 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
@@ -60,7 +60,7 @@ func (r *LedgerAccountSettlementService) Update(ctx context.Context, id string, 
 }
 
 // Get a list of ledger account settlements.
-func (r *LedgerAccountSettlementService) List(ctx context.Context, query LedgerAccountSettlementListParams, opts ...option.RequestOption) (res *shared.Page[LedgerAccountSettlement], err error) {
+func (r *LedgerAccountSettlementService) List(ctx context.Context, query LedgerAccountSettlementListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerAccountSettlement], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -78,8 +78,8 @@ func (r *LedgerAccountSettlementService) List(ctx context.Context, query LedgerA
 }
 
 // Get a list of ledger account settlements.
-func (r *LedgerAccountSettlementService) ListAutoPaging(ctx context.Context, query LedgerAccountSettlementListParams, opts ...option.RequestOption) *shared.PageAutoPager[LedgerAccountSettlement] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *LedgerAccountSettlementService) ListAutoPaging(ctx context.Context, query LedgerAccountSettlementListParams, opts ...option.RequestOption) *pagination.PageAutoPager[LedgerAccountSettlement] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type LedgerAccountSettlement struct {

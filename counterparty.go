@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -60,7 +61,7 @@ func (r *CounterpartyService) Update(ctx context.Context, id string, body Counte
 }
 
 // Get a paginated list of all counterparties.
-func (r *CounterpartyService) List(ctx context.Context, query CounterpartyListParams, opts ...option.RequestOption) (res *shared.Page[Counterparty], err error) {
+func (r *CounterpartyService) List(ctx context.Context, query CounterpartyListParams, opts ...option.RequestOption) (res *pagination.Page[Counterparty], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -78,8 +79,8 @@ func (r *CounterpartyService) List(ctx context.Context, query CounterpartyListPa
 }
 
 // Get a paginated list of all counterparties.
-func (r *CounterpartyService) ListAutoPaging(ctx context.Context, query CounterpartyListParams, opts ...option.RequestOption) *shared.PageAutoPager[Counterparty] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *CounterpartyService) ListAutoPaging(ctx context.Context, query CounterpartyListParams, opts ...option.RequestOption) *pagination.PageAutoPager[Counterparty] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Deletes a given counterparty.

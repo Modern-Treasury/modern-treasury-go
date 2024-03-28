@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -62,7 +63,7 @@ func (r *InternalAccountService) Update(ctx context.Context, id string, body Int
 }
 
 // list internal accounts
-func (r *InternalAccountService) List(ctx context.Context, query InternalAccountListParams, opts ...option.RequestOption) (res *shared.Page[InternalAccount], err error) {
+func (r *InternalAccountService) List(ctx context.Context, query InternalAccountListParams, opts ...option.RequestOption) (res *pagination.Page[InternalAccount], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -80,8 +81,8 @@ func (r *InternalAccountService) List(ctx context.Context, query InternalAccount
 }
 
 // list internal accounts
-func (r *InternalAccountService) ListAutoPaging(ctx context.Context, query InternalAccountListParams, opts ...option.RequestOption) *shared.PageAutoPager[InternalAccount] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *InternalAccountService) ListAutoPaging(ctx context.Context, query InternalAccountListParams, opts ...option.RequestOption) *pagination.PageAutoPager[InternalAccount] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type InternalAccount struct {

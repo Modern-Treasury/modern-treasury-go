@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -51,7 +52,7 @@ func (r *ReturnService) Get(ctx context.Context, id string, opts ...option.Reque
 }
 
 // Get a list of returns.
-func (r *ReturnService) List(ctx context.Context, query ReturnListParams, opts ...option.RequestOption) (res *shared.Page[ReturnObject], err error) {
+func (r *ReturnService) List(ctx context.Context, query ReturnListParams, opts ...option.RequestOption) (res *pagination.Page[ReturnObject], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -69,8 +70,8 @@ func (r *ReturnService) List(ctx context.Context, query ReturnListParams, opts .
 }
 
 // Get a list of returns.
-func (r *ReturnService) ListAutoPaging(ctx context.Context, query ReturnListParams, opts ...option.RequestOption) *shared.PageAutoPager[ReturnObject] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *ReturnService) ListAutoPaging(ctx context.Context, query ReturnListParams, opts ...option.RequestOption) *pagination.PageAutoPager[ReturnObject] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type ReturnObject struct {

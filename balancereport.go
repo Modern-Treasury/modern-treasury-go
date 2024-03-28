@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -52,7 +53,7 @@ func (r *InternalAccountBalanceReportService) Get(ctx context.Context, internalA
 }
 
 // Get all balance reports for a given internal account.
-func (r *InternalAccountBalanceReportService) List(ctx context.Context, internalAccountID string, query BalanceReportListParams, opts ...option.RequestOption) (res *shared.Page[BalanceReport], err error) {
+func (r *InternalAccountBalanceReportService) List(ctx context.Context, internalAccountID string, query BalanceReportListParams, opts ...option.RequestOption) (res *pagination.Page[BalanceReport], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -70,8 +71,8 @@ func (r *InternalAccountBalanceReportService) List(ctx context.Context, internal
 }
 
 // Get all balance reports for a given internal account.
-func (r *InternalAccountBalanceReportService) ListAutoPaging(ctx context.Context, internalAccountID string, query BalanceReportListParams, opts ...option.RequestOption) *shared.PageAutoPager[BalanceReport] {
-	return shared.NewPageAutoPager(r.List(ctx, internalAccountID, query, opts...))
+func (r *InternalAccountBalanceReportService) ListAutoPaging(ctx context.Context, internalAccountID string, query BalanceReportListParams, opts ...option.RequestOption) *pagination.PageAutoPager[BalanceReport] {
+	return pagination.NewPageAutoPager(r.List(ctx, internalAccountID, query, opts...))
 }
 
 // Deletes a given balance report.

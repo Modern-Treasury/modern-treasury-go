@@ -11,9 +11,9 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
@@ -60,7 +60,7 @@ func (r *InvoiceLineItemService) Update(ctx context.Context, invoiceID string, i
 }
 
 // list invoice_line_items
-func (r *InvoiceLineItemService) List(ctx context.Context, invoiceID string, query InvoiceLineItemListParams, opts ...option.RequestOption) (res *shared.Page[InvoiceLineItem], err error) {
+func (r *InvoiceLineItemService) List(ctx context.Context, invoiceID string, query InvoiceLineItemListParams, opts ...option.RequestOption) (res *pagination.Page[InvoiceLineItem], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -78,8 +78,8 @@ func (r *InvoiceLineItemService) List(ctx context.Context, invoiceID string, que
 }
 
 // list invoice_line_items
-func (r *InvoiceLineItemService) ListAutoPaging(ctx context.Context, invoiceID string, query InvoiceLineItemListParams, opts ...option.RequestOption) *shared.PageAutoPager[InvoiceLineItem] {
-	return shared.NewPageAutoPager(r.List(ctx, invoiceID, query, opts...))
+func (r *InvoiceLineItemService) ListAutoPaging(ctx context.Context, invoiceID string, query InvoiceLineItemListParams, opts ...option.RequestOption) *pagination.PageAutoPager[InvoiceLineItem] {
+	return pagination.NewPageAutoPager(r.List(ctx, invoiceID, query, opts...))
 }
 
 // delete invoice_line_item

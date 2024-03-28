@@ -11,9 +11,9 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
@@ -60,7 +60,7 @@ func (r *ConnectionLegalEntityService) Update(ctx context.Context, id string, bo
 }
 
 // Get a list of all connection legal entities.
-func (r *ConnectionLegalEntityService) List(ctx context.Context, query ConnectionLegalEntityListParams, opts ...option.RequestOption) (res *shared.Page[ConnectionLegalEntity], err error) {
+func (r *ConnectionLegalEntityService) List(ctx context.Context, query ConnectionLegalEntityListParams, opts ...option.RequestOption) (res *pagination.Page[ConnectionLegalEntity], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -78,8 +78,8 @@ func (r *ConnectionLegalEntityService) List(ctx context.Context, query Connectio
 }
 
 // Get a list of all connection legal entities.
-func (r *ConnectionLegalEntityService) ListAutoPaging(ctx context.Context, query ConnectionLegalEntityListParams, opts ...option.RequestOption) *shared.PageAutoPager[ConnectionLegalEntity] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *ConnectionLegalEntityService) ListAutoPaging(ctx context.Context, query ConnectionLegalEntityListParams, opts ...option.RequestOption) *pagination.PageAutoPager[ConnectionLegalEntity] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type ConnectionLegalEntity struct {

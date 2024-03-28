@@ -11,9 +11,9 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
@@ -60,7 +60,7 @@ func (r *AccountCollectionFlowService) Update(ctx context.Context, id string, bo
 }
 
 // list account_collection_flows
-func (r *AccountCollectionFlowService) List(ctx context.Context, query AccountCollectionFlowListParams, opts ...option.RequestOption) (res *shared.Page[AccountCollectionFlow], err error) {
+func (r *AccountCollectionFlowService) List(ctx context.Context, query AccountCollectionFlowListParams, opts ...option.RequestOption) (res *pagination.Page[AccountCollectionFlow], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -78,8 +78,8 @@ func (r *AccountCollectionFlowService) List(ctx context.Context, query AccountCo
 }
 
 // list account_collection_flows
-func (r *AccountCollectionFlowService) ListAutoPaging(ctx context.Context, query AccountCollectionFlowListParams, opts ...option.RequestOption) *shared.PageAutoPager[AccountCollectionFlow] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *AccountCollectionFlowService) ListAutoPaging(ctx context.Context, query AccountCollectionFlowListParams, opts ...option.RequestOption) *pagination.PageAutoPager[AccountCollectionFlow] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type AccountCollectionFlow struct {

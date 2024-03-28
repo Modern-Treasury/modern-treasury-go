@@ -10,9 +10,9 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
@@ -34,7 +34,7 @@ func NewConnectionService(opts ...option.RequestOption) (r *ConnectionService) {
 }
 
 // Get a list of all connections.
-func (r *ConnectionService) List(ctx context.Context, query ConnectionListParams, opts ...option.RequestOption) (res *shared.Page[Connection], err error) {
+func (r *ConnectionService) List(ctx context.Context, query ConnectionListParams, opts ...option.RequestOption) (res *pagination.Page[Connection], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -52,8 +52,8 @@ func (r *ConnectionService) List(ctx context.Context, query ConnectionListParams
 }
 
 // Get a list of all connections.
-func (r *ConnectionService) ListAutoPaging(ctx context.Context, query ConnectionListParams, opts ...option.RequestOption) *shared.PageAutoPager[Connection] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *ConnectionService) ListAutoPaging(ctx context.Context, query ConnectionListParams, opts ...option.RequestOption) *pagination.PageAutoPager[Connection] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type Connection struct {

@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -60,7 +61,7 @@ func (r *VirtualAccountService) Update(ctx context.Context, id string, body Virt
 }
 
 // Get a list of virtual accounts.
-func (r *VirtualAccountService) List(ctx context.Context, query VirtualAccountListParams, opts ...option.RequestOption) (res *shared.Page[VirtualAccount], err error) {
+func (r *VirtualAccountService) List(ctx context.Context, query VirtualAccountListParams, opts ...option.RequestOption) (res *pagination.Page[VirtualAccount], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -78,8 +79,8 @@ func (r *VirtualAccountService) List(ctx context.Context, query VirtualAccountLi
 }
 
 // Get a list of virtual accounts.
-func (r *VirtualAccountService) ListAutoPaging(ctx context.Context, query VirtualAccountListParams, opts ...option.RequestOption) *shared.PageAutoPager[VirtualAccount] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *VirtualAccountService) ListAutoPaging(ctx context.Context, query VirtualAccountListParams, opts ...option.RequestOption) *pagination.PageAutoPager[VirtualAccount] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // delete virtual_account

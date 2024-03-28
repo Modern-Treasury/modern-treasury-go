@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -52,7 +53,7 @@ func (r *ForeignExchangeQuoteService) Get(ctx context.Context, id string, opts .
 }
 
 // list foreign_exchange_quotes
-func (r *ForeignExchangeQuoteService) List(ctx context.Context, query ForeignExchangeQuoteListParams, opts ...option.RequestOption) (res *shared.Page[ForeignExchangeQuote], err error) {
+func (r *ForeignExchangeQuoteService) List(ctx context.Context, query ForeignExchangeQuoteListParams, opts ...option.RequestOption) (res *pagination.Page[ForeignExchangeQuote], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -70,8 +71,8 @@ func (r *ForeignExchangeQuoteService) List(ctx context.Context, query ForeignExc
 }
 
 // list foreign_exchange_quotes
-func (r *ForeignExchangeQuoteService) ListAutoPaging(ctx context.Context, query ForeignExchangeQuoteListParams, opts ...option.RequestOption) *shared.PageAutoPager[ForeignExchangeQuote] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *ForeignExchangeQuoteService) ListAutoPaging(ctx context.Context, query ForeignExchangeQuoteListParams, opts ...option.RequestOption) *pagination.PageAutoPager[ForeignExchangeQuote] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 type ForeignExchangeQuote struct {
