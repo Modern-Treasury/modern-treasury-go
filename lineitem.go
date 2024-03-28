@@ -11,9 +11,9 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
@@ -51,7 +51,7 @@ func (r *LineItemService) Update(ctx context.Context, itemizableType LineItemUpd
 }
 
 // Get a list of line items
-func (r *LineItemService) List(ctx context.Context, itemizableType LineItemListParamsItemizableType, itemizableID string, query LineItemListParams, opts ...option.RequestOption) (res *shared.Page[LineItem], err error) {
+func (r *LineItemService) List(ctx context.Context, itemizableType LineItemListParamsItemizableType, itemizableID string, query LineItemListParams, opts ...option.RequestOption) (res *pagination.Page[LineItem], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -69,8 +69,8 @@ func (r *LineItemService) List(ctx context.Context, itemizableType LineItemListP
 }
 
 // Get a list of line items
-func (r *LineItemService) ListAutoPaging(ctx context.Context, itemizableType LineItemListParamsItemizableType, itemizableID string, query LineItemListParams, opts ...option.RequestOption) *shared.PageAutoPager[LineItem] {
-	return shared.NewPageAutoPager(r.List(ctx, itemizableType, itemizableID, query, opts...))
+func (r *LineItemService) ListAutoPaging(ctx context.Context, itemizableType LineItemListParamsItemizableType, itemizableID string, query LineItemListParams, opts ...option.RequestOption) *pagination.PageAutoPager[LineItem] {
+	return pagination.NewPageAutoPager(r.List(ctx, itemizableType, itemizableID, query, opts...))
 }
 
 type LineItem struct {

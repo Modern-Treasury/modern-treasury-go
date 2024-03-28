@@ -11,9 +11,9 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
@@ -60,7 +60,7 @@ func (r *LedgerAccountBalanceMonitorService) Update(ctx context.Context, id stri
 }
 
 // Get a list of ledger account balance monitors.
-func (r *LedgerAccountBalanceMonitorService) List(ctx context.Context, query LedgerAccountBalanceMonitorListParams, opts ...option.RequestOption) (res *shared.Page[LedgerAccountBalanceMonitor], err error) {
+func (r *LedgerAccountBalanceMonitorService) List(ctx context.Context, query LedgerAccountBalanceMonitorListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerAccountBalanceMonitor], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -78,8 +78,8 @@ func (r *LedgerAccountBalanceMonitorService) List(ctx context.Context, query Led
 }
 
 // Get a list of ledger account balance monitors.
-func (r *LedgerAccountBalanceMonitorService) ListAutoPaging(ctx context.Context, query LedgerAccountBalanceMonitorListParams, opts ...option.RequestOption) *shared.PageAutoPager[LedgerAccountBalanceMonitor] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *LedgerAccountBalanceMonitorService) ListAutoPaging(ctx context.Context, query LedgerAccountBalanceMonitorListParams, opts ...option.RequestOption) *pagination.PageAutoPager[LedgerAccountBalanceMonitor] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Delete a ledger account balance monitor.
