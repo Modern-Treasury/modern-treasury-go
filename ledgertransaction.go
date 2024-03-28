@@ -11,6 +11,7 @@ import (
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
@@ -62,7 +63,7 @@ func (r *LedgerTransactionService) Update(ctx context.Context, id string, body L
 }
 
 // Get a list of ledger transactions.
-func (r *LedgerTransactionService) List(ctx context.Context, query LedgerTransactionListParams, opts ...option.RequestOption) (res *shared.Page[LedgerTransaction], err error) {
+func (r *LedgerTransactionService) List(ctx context.Context, query LedgerTransactionListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerTransaction], err error) {
 	var raw *http.Response
 	opts = append(r.Options, opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -80,8 +81,8 @@ func (r *LedgerTransactionService) List(ctx context.Context, query LedgerTransac
 }
 
 // Get a list of ledger transactions.
-func (r *LedgerTransactionService) ListAutoPaging(ctx context.Context, query LedgerTransactionListParams, opts ...option.RequestOption) *shared.PageAutoPager[LedgerTransaction] {
-	return shared.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *LedgerTransactionService) ListAutoPaging(ctx context.Context, query LedgerTransactionListParams, opts ...option.RequestOption) *pagination.PageAutoPager[LedgerTransaction] {
+	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Create a ledger transaction reversal.
