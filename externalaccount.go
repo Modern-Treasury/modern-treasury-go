@@ -379,6 +379,7 @@ const (
 	ExternalAccountNewParamsAccountDetailsAccountNumberTypeIban          ExternalAccountNewParamsAccountDetailsAccountNumberType = "iban"
 	ExternalAccountNewParamsAccountDetailsAccountNumberTypeHkNumber      ExternalAccountNewParamsAccountDetailsAccountNumberType = "hk_number"
 	ExternalAccountNewParamsAccountDetailsAccountNumberTypeClabe         ExternalAccountNewParamsAccountDetailsAccountNumberType = "clabe"
+	ExternalAccountNewParamsAccountDetailsAccountNumberTypeNzNumber      ExternalAccountNewParamsAccountDetailsAccountNumberType = "nz_number"
 	ExternalAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress ExternalAccountNewParamsAccountDetailsAccountNumberType = "wallet_address"
 	ExternalAccountNewParamsAccountDetailsAccountNumberTypePan           ExternalAccountNewParamsAccountDetailsAccountNumberType = "pan"
 	ExternalAccountNewParamsAccountDetailsAccountNumberTypeOther         ExternalAccountNewParamsAccountDetailsAccountNumberType = "other"
@@ -386,7 +387,7 @@ const (
 
 func (r ExternalAccountNewParamsAccountDetailsAccountNumberType) IsKnown() bool {
 	switch r {
-	case ExternalAccountNewParamsAccountDetailsAccountNumberTypeIban, ExternalAccountNewParamsAccountDetailsAccountNumberTypeHkNumber, ExternalAccountNewParamsAccountDetailsAccountNumberTypeClabe, ExternalAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress, ExternalAccountNewParamsAccountDetailsAccountNumberTypePan, ExternalAccountNewParamsAccountDetailsAccountNumberTypeOther:
+	case ExternalAccountNewParamsAccountDetailsAccountNumberTypeIban, ExternalAccountNewParamsAccountDetailsAccountNumberTypeHkNumber, ExternalAccountNewParamsAccountDetailsAccountNumberTypeClabe, ExternalAccountNewParamsAccountDetailsAccountNumberTypeNzNumber, ExternalAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress, ExternalAccountNewParamsAccountDetailsAccountNumberTypePan, ExternalAccountNewParamsAccountDetailsAccountNumberTypeOther:
 		return true
 	}
 	return false
