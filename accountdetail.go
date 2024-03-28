@@ -134,6 +134,7 @@ const (
 	AccountDetailAccountNumberTypeClabe         AccountDetailAccountNumberType = "clabe"
 	AccountDetailAccountNumberTypeHkNumber      AccountDetailAccountNumberType = "hk_number"
 	AccountDetailAccountNumberTypeIban          AccountDetailAccountNumberType = "iban"
+	AccountDetailAccountNumberTypeNzNumber      AccountDetailAccountNumberType = "nz_number"
 	AccountDetailAccountNumberTypeOther         AccountDetailAccountNumberType = "other"
 	AccountDetailAccountNumberTypePan           AccountDetailAccountNumberType = "pan"
 	AccountDetailAccountNumberTypeWalletAddress AccountDetailAccountNumberType = "wallet_address"
@@ -141,7 +142,7 @@ const (
 
 func (r AccountDetailAccountNumberType) IsKnown() bool {
 	switch r {
-	case AccountDetailAccountNumberTypeClabe, AccountDetailAccountNumberTypeHkNumber, AccountDetailAccountNumberTypeIban, AccountDetailAccountNumberTypeOther, AccountDetailAccountNumberTypePan, AccountDetailAccountNumberTypeWalletAddress:
+	case AccountDetailAccountNumberTypeClabe, AccountDetailAccountNumberTypeHkNumber, AccountDetailAccountNumberTypeIban, AccountDetailAccountNumberTypeNzNumber, AccountDetailAccountNumberTypeOther, AccountDetailAccountNumberTypePan, AccountDetailAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false
@@ -181,6 +182,7 @@ const (
 	AccountDetailNewParamsAccountNumberTypeClabe         AccountDetailNewParamsAccountNumberType = "clabe"
 	AccountDetailNewParamsAccountNumberTypeHkNumber      AccountDetailNewParamsAccountNumberType = "hk_number"
 	AccountDetailNewParamsAccountNumberTypeIban          AccountDetailNewParamsAccountNumberType = "iban"
+	AccountDetailNewParamsAccountNumberTypeNzNumber      AccountDetailNewParamsAccountNumberType = "nz_number"
 	AccountDetailNewParamsAccountNumberTypeOther         AccountDetailNewParamsAccountNumberType = "other"
 	AccountDetailNewParamsAccountNumberTypePan           AccountDetailNewParamsAccountNumberType = "pan"
 	AccountDetailNewParamsAccountNumberTypeWalletAddress AccountDetailNewParamsAccountNumberType = "wallet_address"
@@ -188,7 +190,7 @@ const (
 
 func (r AccountDetailNewParamsAccountNumberType) IsKnown() bool {
 	switch r {
-	case AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypeWalletAddress:
+	case AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeNzNumber, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false

@@ -216,6 +216,7 @@ const (
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypeClabe         VirtualAccountNewParamsAccountDetailsAccountNumberType = "clabe"
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypeHkNumber      VirtualAccountNewParamsAccountDetailsAccountNumberType = "hk_number"
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypeIban          VirtualAccountNewParamsAccountDetailsAccountNumberType = "iban"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeNzNumber      VirtualAccountNewParamsAccountDetailsAccountNumberType = "nz_number"
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypeOther         VirtualAccountNewParamsAccountDetailsAccountNumberType = "other"
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypePan           VirtualAccountNewParamsAccountDetailsAccountNumberType = "pan"
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress VirtualAccountNewParamsAccountDetailsAccountNumberType = "wallet_address"
@@ -223,7 +224,7 @@ const (
 
 func (r VirtualAccountNewParamsAccountDetailsAccountNumberType) IsKnown() bool {
 	switch r {
-	case VirtualAccountNewParamsAccountDetailsAccountNumberTypeClabe, VirtualAccountNewParamsAccountDetailsAccountNumberTypeHkNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeIban, VirtualAccountNewParamsAccountDetailsAccountNumberTypeOther, VirtualAccountNewParamsAccountDetailsAccountNumberTypePan, VirtualAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress:
+	case VirtualAccountNewParamsAccountDetailsAccountNumberTypeClabe, VirtualAccountNewParamsAccountDetailsAccountNumberTypeHkNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeIban, VirtualAccountNewParamsAccountDetailsAccountNumberTypeNzNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeOther, VirtualAccountNewParamsAccountDetailsAccountNumberTypePan, VirtualAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false
