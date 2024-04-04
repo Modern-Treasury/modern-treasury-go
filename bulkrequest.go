@@ -187,7 +187,7 @@ type BulkRequestNewParams struct {
 	ResourceType param.Field[BulkRequestNewParamsResourceType] `json:"resource_type,required"`
 	// An array of objects where each object contains the input params for a single
 	// `action_type` request on a `resource_type` resource
-	Resources param.Field[[]BulkRequestNewParamsResource] `json:"resources,required"`
+	Resources param.Field[[]BulkRequestNewParamsResourceUnion] `json:"resources,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -231,17 +231,188 @@ func (r BulkRequestNewParamsResourceType) IsKnown() bool {
 	return false
 }
 
+type BulkRequestNewParamsResource struct {
+	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
+	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
+	// `sic`, `signet`, `provexchange`, `zengin`.
+	Type param.Field[PaymentOrderType] `json:"type"`
+	// An additional layer of classification for the type of payment order you are
+	// doing. This field is only used for `ach` payment orders currently. For `ach`
+	// payment orders, the `subtype` represents the SEC code. We currently support
+	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
+	Subtype param.Field[PaymentOrderSubtype] `json:"subtype"`
+	// Value in specified currency's smallest unit. e.g. $10 would be represented as
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
+	Amount param.Field[int64] `json:"amount"`
+	// One of `credit`, `debit`. Describes the direction money is flowing in the
+	// transaction. A `credit` moves money from your account to someone else's. A
+	// `debit` pulls money from someone else's account to your own. Note that wire,
+	// rtp, and check payments will always be `credit`.
+	Direction param.Field[string] `json:"direction"`
+	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+	// an overnight check rather than standard mail.
+	Priority param.Field[BulkRequestNewParamsResourcesPriority] `json:"priority"`
+	// The ID of one of your organization's internal accounts.
+	OriginatingAccountID param.Field[string] `json:"originating_account_id" format:"uuid"`
+	// Either `receiving_account` or `receiving_account_id` must be present. When using
+	// `receiving_account_id`, you may pass the id of an external account or an
+	// internal account.
+	ReceivingAccountID param.Field[string]      `json:"receiving_account_id" format:"uuid"`
+	Accounting         param.Field[interface{}] `json:"accounting,required"`
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
+	// The ID of one of your accounting ledger classes. Note that these will only be
+	// accessible if your accounting system has been connected.
+	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
+	// Defaults to the currency of the originating account.
+	Currency param.Field[shared.Currency] `json:"currency"`
+	// Date transactions are to be posted to the participants' account. Defaults to the
+	// current business day or the next business day if the current day is a bank
+	// holiday or weekend. Format: yyyy-mm-dd.
+	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
+	// An optional descriptor which will appear in the receiver's statement. For
+	// `check` payments this field will be used as the memo line. For `ach` the maximum
+	// length is 10 characters. Note that for ACH payments, the name on your bank
+	// account will be included automatically by the bank, so you can use the
+	// characters for other useful information. For `eft` the maximum length is 15
+	// characters.
+	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
+	// For `ach`, this field will be passed through on an addenda record. For `wire`
+	// payments the field will be passed through as the "Originator to Beneficiary
+	// Information", also known as OBI or Fedwire tag 6000.
+	RemittanceInformation param.Field[string] `json:"remittance_information"`
+	// If present, Modern Treasury will not process the payment until after this time.
+	// If `process_after` is past the cutoff for `effective_date`, `process_after` will
+	// take precedence and `effective_date` will automatically update to reflect the
+	// earliest possible sending date after `process_after`. Format is ISO8601
+	// timestamp.
+	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
+	// For `wire`, this is usually the purpose which is transmitted via the
+	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
+	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
+	// CPA Code that will be attached to the payment.
+	Purpose  param.Field[string]      `json:"purpose"`
+	Metadata param.Field[interface{}] `json:"metadata,required"`
+	// The party that will pay the fees for the payment order. Only applies to wire
+	// payment orders. Can be one of shared, sender, or receiver, which correspond
+	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+	ChargeBearer param.Field[BulkRequestNewParamsResourcesChargeBearer] `json:"charge_bearer"`
+	// Indicates the type of FX transfer to initiate, can be either
+	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+	// currency matches the originating account currency.
+	ForeignExchangeIndicator param.Field[BulkRequestNewParamsResourcesForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
+	// If present, indicates a specific foreign exchange contract number that has been
+	// generated by your financial institution.
+	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract"`
+	// A boolean to determine if NSF Protection is enabled for this payment order. Note
+	// that this setting must also be turned on in your organization settings page.
+	NsfProtected param.Field[bool] `json:"nsf_protected"`
+	// If present, this will replace your default company name on receiver's bank
+	// statement. This field can only be used for ACH payments currently. For ACH, only
+	// the first 16 characters of this string will be used. Any additional characters
+	// will be truncated.
+	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
+	// Name of the ultimate originator of the payment order.
+	UltimateOriginatingPartyName param.Field[string] `json:"ultimate_originating_party_name"`
+	// Identifier of the ultimate originator of the payment order.
+	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
+	// Name of the ultimate funds recipient.
+	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
+	// Identifier of the ultimate funds recipient.
+	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
+	// Send an email to the counterparty when the payment order is sent to the bank. If
+	// `null`, `send_remittance_advice` on the Counterparty is used.
+	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
+	// RFP payments require an expires_at. This value must be past the effective_date.
+	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
+	// A payment type to fallback to if the original type is not valid for the
+	// receiving account. Currently, this only supports falling back from RTP to ACH
+	// (type=rtp and fallback_type=ach)
+	FallbackType      param.Field[BulkRequestNewParamsResourcesFallbackType] `json:"fallback_type"`
+	ReceivingAccount  param.Field[interface{}]                               `json:"receiving_account,required"`
+	LedgerTransaction param.Field[interface{}]                               `json:"ledger_transaction,required"`
+	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
+	// pending ledger transaction can be attached upon payment order creation. Once the
+	// payment order is created, the status of the ledger transaction tracks the
+	// payment order automatically.
+	LedgerTransactionID param.Field[string]      `json:"ledger_transaction_id" format:"uuid"`
+	LineItems           param.Field[interface{}] `json:"line_items,required"`
+	// A flag that determines whether a payment order should go through transaction
+	// monitoring.
+	TransactionMonitoringEnabled param.Field[bool] `json:"transaction_monitoring_enabled"`
+	// The highest amount this expected payment may be equal to. Value in specified
+	// currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
+	// The lowest amount this expected payment may be equal to. Value in specified
+	// currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
+	// The ID of the Internal Account for the expected payment.
+	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
+	// The latest date the payment may come in. Format: yyyy-mm-dd
+	DateUpperBound param.Field[time.Time] `json:"date_upper_bound" format:"date"`
+	// The earliest date the payment may come in. Format: yyyy-mm-dd
+	DateLowerBound param.Field[time.Time] `json:"date_lower_bound" format:"date"`
+	// The ID of the counterparty you expect for this payment.
+	CounterpartyID              param.Field[string]      `json:"counterparty_id" format:"uuid"`
+	ReconciliationGroups        param.Field[interface{}] `json:"reconciliation_groups,required"`
+	ReconciliationFilters       param.Field[interface{}] `json:"reconciliation_filters,required"`
+	ReconciliationRuleVariables param.Field[interface{}] `json:"reconciliation_rule_variables,required"`
+	// To post a ledger transaction at creation, use `posted`.
+	Status param.Field[BulkRequestNewParamsResourcesStatus] `json:"status"`
+	// The timestamp (ISO8601 format) at which the ledger transaction happened for
+	// reporting purposes.
+	EffectiveAt   param.Field[time.Time]   `json:"effective_at" format:"date-time"`
+	LedgerEntries param.Field[interface{}] `json:"ledger_entries,required"`
+	// A unique string to represent the ledger transaction. Only one pending or posted
+	// ledger transaction may have this ID in the ledger.
+	ExternalID param.Field[string] `json:"external_id"`
+	// If the ledger transaction can be reconciled to another object in Modern
+	// Treasury, the type will be populated here, otherwise null. This can be one of
+	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+	LedgerableType param.Field[BulkRequestNewParamsResourcesLedgerableType] `json:"ledgerable_type"`
+	// If the ledger transaction can be reconciled to another object in Modern
+	// Treasury, the id will be populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// The transaction detail text that often appears in on your bank statement and in
+	// your banking portal.
+	VendorDescription param.Field[string] `json:"vendor_description"`
+	// When applicable, the bank-given code that determines the transaction's category.
+	// For most banks this is the BAI2/BTRS transaction code.
+	VendorCode param.Field[string] `json:"vendor_code"`
+	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
+	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
+	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
+	// `swift`, `us_bank`, or others.
+	VendorCodeType param.Field[string] `json:"vendor_code_type"`
+	// The date on which the transaction occurred.
+	AsOfDate param.Field[time.Time] `json:"as_of_date" format:"date"`
+	// This field will be `true` if the transaction has posted to the account.
+	Posted param.Field[bool]   `json:"posted"`
+	ID     param.Field[string] `json:"id" format:"uuid"`
+}
+
+func (r BulkRequestNewParamsResource) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r BulkRequestNewParamsResource) implementsBulkRequestNewParamsResourceUnion() {}
+
 // Satisfied by [BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest],
 // [BulkRequestNewParamsResourcesExpectedPaymentCreateRequest],
 // [BulkRequestNewParamsResourcesLedgerTransactionCreateRequest],
 // [BulkRequestNewParamsResourcesTransactionCreateRequest],
 // [BulkRequestNewParamsResourcesObject],
-// [BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID],
-// [BulkRequestNewParamsResourceExpectedPaymentUpdateRequestWithID],
-// [BulkRequestNewParamsResourceTransactionUpdateRequestWithID],
-// [BulkRequestNewParamsResourceLedgerTransactionUpdateRequestWithID].
-type BulkRequestNewParamsResource interface {
-	implementsBulkRequestNewParamsResource()
+// [BulkRequestNewParamsResourceUnionPaymentOrderUpdateRequestWithID],
+// [BulkRequestNewParamsResourceUnionExpectedPaymentUpdateRequestWithID],
+// [BulkRequestNewParamsResourceUnionTransactionUpdateRequestWithID],
+// [BulkRequestNewParamsResourceUnionLedgerTransactionUpdateRequestWithID],
+// [BulkRequestNewParamsResource].
+type BulkRequestNewParamsResourceUnion interface {
+	implementsBulkRequestNewParamsResourceUnion()
 }
 
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
@@ -373,7 +544,7 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest) MarshalJSON
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest) implementsBulkRequestNewParamsResource() {
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest) implementsBulkRequestNewParamsResourceUnion() {
 }
 
 // One of `credit`, `debit`. Describes the direction money is flowing in the
@@ -945,7 +1116,7 @@ func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequest) MarshalJSON()
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequest) implementsBulkRequestNewParamsResource() {
+func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequest) implementsBulkRequestNewParamsResourceUnion() {
 }
 
 // Specifies a ledger transaction object that will be created with the expected
@@ -1117,7 +1288,7 @@ func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequest) MarshalJSON
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequest) implementsBulkRequestNewParamsResource() {
+func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequest) implementsBulkRequestNewParamsResourceUnion() {
 }
 
 type BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerEntry struct {
@@ -1235,7 +1406,7 @@ func (r BulkRequestNewParamsResourcesTransactionCreateRequest) MarshalJSON() (da
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesTransactionCreateRequest) implementsBulkRequestNewParamsResource() {
+func (r BulkRequestNewParamsResourcesTransactionCreateRequest) implementsBulkRequestNewParamsResourceUnion() {
 }
 
 type BulkRequestNewParamsResourcesObject struct {
@@ -1246,11 +1417,11 @@ func (r BulkRequestNewParamsResourcesObject) MarshalJSON() (data []byte, err err
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesObject) implementsBulkRequestNewParamsResource() {}
+func (r BulkRequestNewParamsResourcesObject) implementsBulkRequestNewParamsResourceUnion() {}
 
-type BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID struct {
-	ID         param.Field[string]                                        `json:"id" format:"uuid"`
-	Accounting param.Field[BulkRequestNewParamsResourcesObjectAccounting] `json:"accounting"`
+type BulkRequestNewParamsResourceUnionPaymentOrderUpdateRequestWithID struct {
+	ID         param.Field[string]                                                                 `json:"id" format:"uuid"`
+	Accounting param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
@@ -1263,7 +1434,7 @@ type BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID struct {
 	// The party that will pay the fees for the payment order. Only applies to wire
 	// payment orders. Can be one of shared, sender, or receiver, which correspond
 	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
-	ChargeBearer param.Field[BulkRequestNewParamsResourcesObjectChargeBearer] `json:"charge_bearer"`
+	ChargeBearer param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDChargeBearer] `json:"charge_bearer"`
 	// Required when receiving_account_id is passed the ID of an external account.
 	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
 	// Defaults to the currency of the originating account.
@@ -1274,7 +1445,7 @@ type BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID struct {
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
-	Direction param.Field[BulkRequestNewParamsResourcesObjectDirection] `json:"direction"`
+	Direction param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDDirection] `json:"direction"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.
@@ -1284,16 +1455,16 @@ type BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID struct {
 	// A payment type to fallback to if the original type is not valid for the
 	// receiving account. Currently, this only supports falling back from RTP to ACH
 	// (type=rtp and fallback_type=ach)
-	FallbackType param.Field[BulkRequestNewParamsResourcesObjectFallbackType] `json:"fallback_type"`
+	FallbackType param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDFallbackType] `json:"fallback_type"`
 	// If present, indicates a specific foreign exchange contract number that has been
 	// generated by your financial institution.
 	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract"`
 	// Indicates the type of FX transfer to initiate, can be either
 	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
 	// currency matches the originating account currency.
-	ForeignExchangeIndicator param.Field[BulkRequestNewParamsResourcesObjectForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
+	ForeignExchangeIndicator param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
 	// An array of line items that must sum up to the amount of the payment order.
-	LineItems param.Field[[]BulkRequestNewParamsResourcesObjectLineItem] `json:"line_items"`
+	LineItems param.Field[[]BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDLineItem] `json:"line_items"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -1310,7 +1481,7 @@ type BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID struct {
 	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
-	Priority param.Field[BulkRequestNewParamsResourcesObjectPriority] `json:"priority"`
+	Priority param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDPriority] `json:"priority"`
 	// If present, Modern Treasury will not process the payment until after this time.
 	// If `process_after` is past the cutoff for `effective_date`, `process_after` will
 	// take precedence and `effective_date` will automatically update to reflect the
@@ -1325,7 +1496,7 @@ type BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID struct {
 	// Either `receiving_account` or `receiving_account_id` must be present. When using
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
-	ReceivingAccount param.Field[BulkRequestNewParamsResourcesObjectReceivingAccount] `json:"receiving_account"`
+	ReceivingAccount param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccount] `json:"receiving_account"`
 	// Either `receiving_account` or `receiving_account_id` must be present. When using
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
@@ -1347,7 +1518,7 @@ type BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID struct {
 	// To cancel a payment order, use `cancelled`. To redraft a returned payment order,
 	// use `approved`. To undo approval on a denied or approved payment order, use
 	// `needs_approval`.
-	Status param.Field[BulkRequestNewParamsResourcesObjectStatus] `json:"status"`
+	Status param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus] `json:"status"`
 	// An additional layer of classification for the type of payment order you are
 	// doing. This field is only used for `ach` payment orders currently. For `ach`
 	// payment orders, the `subtype` represents the SEC code. We currently support
@@ -1375,14 +1546,14 @@ type BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID struct {
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
 }
 
-func (r BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourceUnionPaymentOrderUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcePaymentOrderUpdateRequestWithID) implementsBulkRequestNewParamsResource() {
+func (r BulkRequestNewParamsResourceUnionPaymentOrderUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
 }
 
-type BulkRequestNewParamsResourcesObjectAccounting struct {
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDAccounting struct {
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountID param.Field[string] `json:"account_id" format:"uuid"`
@@ -1392,24 +1563,24 @@ type BulkRequestNewParamsResourcesObjectAccounting struct {
 	ClassID param.Field[string] `json:"class_id" format:"uuid"`
 }
 
-func (r BulkRequestNewParamsResourcesObjectAccounting) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDAccounting) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 // The party that will pay the fees for the payment order. Only applies to wire
 // payment orders. Can be one of shared, sender, or receiver, which correspond
 // respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
-type BulkRequestNewParamsResourcesObjectChargeBearer string
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDChargeBearer string
 
 const (
-	BulkRequestNewParamsResourcesObjectChargeBearerShared   BulkRequestNewParamsResourcesObjectChargeBearer = "shared"
-	BulkRequestNewParamsResourcesObjectChargeBearerSender   BulkRequestNewParamsResourcesObjectChargeBearer = "sender"
-	BulkRequestNewParamsResourcesObjectChargeBearerReceiver BulkRequestNewParamsResourcesObjectChargeBearer = "receiver"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDChargeBearerShared   BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDChargeBearer = "shared"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDChargeBearerSender   BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDChargeBearer = "sender"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDChargeBearerReceiver BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDChargeBearer = "receiver"
 )
 
-func (r BulkRequestNewParamsResourcesObjectChargeBearer) IsKnown() bool {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDChargeBearer) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesObjectChargeBearerShared, BulkRequestNewParamsResourcesObjectChargeBearerSender, BulkRequestNewParamsResourcesObjectChargeBearerReceiver:
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDChargeBearerShared, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDChargeBearerSender, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDChargeBearerReceiver:
 		return true
 	}
 	return false
@@ -1419,16 +1590,16 @@ func (r BulkRequestNewParamsResourcesObjectChargeBearer) IsKnown() bool {
 // transaction. A `credit` moves money from your account to someone else's. A
 // `debit` pulls money from someone else's account to your own. Note that wire,
 // rtp, and check payments will always be `credit`.
-type BulkRequestNewParamsResourcesObjectDirection string
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDDirection string
 
 const (
-	BulkRequestNewParamsResourcesObjectDirectionCredit BulkRequestNewParamsResourcesObjectDirection = "credit"
-	BulkRequestNewParamsResourcesObjectDirectionDebit  BulkRequestNewParamsResourcesObjectDirection = "debit"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDDirectionCredit BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDDirection = "credit"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDDirectionDebit  BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDDirection = "debit"
 )
 
-func (r BulkRequestNewParamsResourcesObjectDirection) IsKnown() bool {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDDirection) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesObjectDirectionCredit, BulkRequestNewParamsResourcesObjectDirectionDebit:
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDDirectionCredit, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDDirectionDebit:
 		return true
 	}
 	return false
@@ -1437,15 +1608,15 @@ func (r BulkRequestNewParamsResourcesObjectDirection) IsKnown() bool {
 // A payment type to fallback to if the original type is not valid for the
 // receiving account. Currently, this only supports falling back from RTP to ACH
 // (type=rtp and fallback_type=ach)
-type BulkRequestNewParamsResourcesObjectFallbackType string
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDFallbackType string
 
 const (
-	BulkRequestNewParamsResourcesObjectFallbackTypeACH BulkRequestNewParamsResourcesObjectFallbackType = "ach"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDFallbackTypeACH BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDFallbackType = "ach"
 )
 
-func (r BulkRequestNewParamsResourcesObjectFallbackType) IsKnown() bool {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDFallbackType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesObjectFallbackTypeACH:
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDFallbackTypeACH:
 		return true
 	}
 	return false
@@ -1454,22 +1625,22 @@ func (r BulkRequestNewParamsResourcesObjectFallbackType) IsKnown() bool {
 // Indicates the type of FX transfer to initiate, can be either
 // `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
 // currency matches the originating account currency.
-type BulkRequestNewParamsResourcesObjectForeignExchangeIndicator string
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDForeignExchangeIndicator string
 
 const (
-	BulkRequestNewParamsResourcesObjectForeignExchangeIndicatorFixedToVariable BulkRequestNewParamsResourcesObjectForeignExchangeIndicator = "fixed_to_variable"
-	BulkRequestNewParamsResourcesObjectForeignExchangeIndicatorVariableToFixed BulkRequestNewParamsResourcesObjectForeignExchangeIndicator = "variable_to_fixed"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDForeignExchangeIndicatorFixedToVariable BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDForeignExchangeIndicator = "fixed_to_variable"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDForeignExchangeIndicatorVariableToFixed BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDForeignExchangeIndicator = "variable_to_fixed"
 )
 
-func (r BulkRequestNewParamsResourcesObjectForeignExchangeIndicator) IsKnown() bool {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDForeignExchangeIndicator) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesObjectForeignExchangeIndicatorFixedToVariable, BulkRequestNewParamsResourcesObjectForeignExchangeIndicatorVariableToFixed:
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDForeignExchangeIndicatorFixedToVariable, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDForeignExchangeIndicatorVariableToFixed:
 		return true
 	}
 	return false
 }
 
-type BulkRequestNewParamsResourcesObjectLineItem struct {
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
 	Amount param.Field[int64] `json:"amount,required"`
@@ -1483,23 +1654,23 @@ type BulkRequestNewParamsResourcesObjectLineItem struct {
 	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
-func (r BulkRequestNewParamsResourcesObjectLineItem) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDLineItem) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 // Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 // same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 // an overnight check rather than standard mail.
-type BulkRequestNewParamsResourcesObjectPriority string
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDPriority string
 
 const (
-	BulkRequestNewParamsResourcesObjectPriorityHigh   BulkRequestNewParamsResourcesObjectPriority = "high"
-	BulkRequestNewParamsResourcesObjectPriorityNormal BulkRequestNewParamsResourcesObjectPriority = "normal"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDPriorityHigh   BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDPriority = "high"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDPriorityNormal BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDPriority = "normal"
 )
 
-func (r BulkRequestNewParamsResourcesObjectPriority) IsKnown() bool {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDPriority) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesObjectPriorityHigh, BulkRequestNewParamsResourcesObjectPriorityNormal:
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDPriorityHigh, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDPriorityNormal:
 		return true
 	}
 	return false
@@ -1508,17 +1679,17 @@ func (r BulkRequestNewParamsResourcesObjectPriority) IsKnown() bool {
 // Either `receiving_account` or `receiving_account_id` must be present. When using
 // `receiving_account_id`, you may pass the id of an external account or an
 // internal account.
-type BulkRequestNewParamsResourcesObjectReceivingAccount struct {
-	AccountDetails param.Field[[]BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetail] `json:"account_details"`
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccount struct {
+	AccountDetails param.Field[[]BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetail] `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
-	AccountType    param.Field[ExternalAccountType]                                                `json:"account_type"`
-	ContactDetails param.Field[[]BulkRequestNewParamsResourcesObjectReceivingAccountContactDetail] `json:"contact_details"`
+	AccountType    param.Field[ExternalAccountType]                                                                         `json:"account_type"`
+	ContactDetails param.Field[[]BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetail] `json:"contact_details"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
 	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 	// for more details.
-	LedgerAccount param.Field[BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccount] `json:"ledger_account"`
+	LedgerAccount param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccount] `json:"ledger_account"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -1526,71 +1697,71 @@ type BulkRequestNewParamsResourcesObjectReceivingAccount struct {
 	// affect any payments
 	Name param.Field[string] `json:"name"`
 	// Required if receiving wire payments.
-	PartyAddress    param.Field[BulkRequestNewParamsResourcesObjectReceivingAccountPartyAddress] `json:"party_address"`
-	PartyIdentifier param.Field[string]                                                          `json:"party_identifier"`
+	PartyAddress    param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyAddress] `json:"party_address"`
+	PartyIdentifier param.Field[string]                                                                                   `json:"party_identifier"`
 	// If this value isn't provided, it will be inherited from the counterparty's name.
 	PartyName param.Field[string] `json:"party_name"`
 	// Either `individual` or `business`.
-	PartyType param.Field[BulkRequestNewParamsResourcesObjectReceivingAccountPartyType] `json:"party_type"`
+	PartyType param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyType] `json:"party_type"`
 	// If you've enabled the Modern Treasury + Plaid integration in your Plaid account,
 	// you can pass the processor token in this field.
-	PlaidProcessorToken param.Field[string]                                                             `json:"plaid_processor_token"`
-	RoutingDetails      param.Field[[]BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetail] `json:"routing_details"`
+	PlaidProcessorToken param.Field[string]                                                                                      `json:"plaid_processor_token"`
+	RoutingDetails      param.Field[[]BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetail] `json:"routing_details"`
 }
 
-func (r BulkRequestNewParamsResourcesObjectReceivingAccount) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccount) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-type BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetail struct {
-	AccountNumber     param.Field[string]                                                                             `json:"account_number,required"`
-	AccountNumberType param.Field[BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberType] `json:"account_number_type"`
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetail struct {
+	AccountNumber     param.Field[string]                                                                                                      `json:"account_number,required"`
+	AccountNumberType param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberType] `json:"account_number_type"`
 }
 
-func (r BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetail) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetail) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-type BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberType string
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberType string
 
 const (
-	BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeIban          BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberType = "iban"
-	BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeHkNumber      BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberType = "hk_number"
-	BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeClabe         BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberType = "clabe"
-	BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeNzNumber      BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberType = "nz_number"
-	BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeWalletAddress BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
-	BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypePan           BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberType = "pan"
-	BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeOther         BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberType = "other"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypeIban          BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberType = "iban"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypeHkNumber      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberType = "hk_number"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypeClabe         BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberType = "clabe"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypeNzNumber      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberType = "nz_number"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypeWalletAddress BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypePan           BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberType = "pan"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypeOther         BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberType = "other"
 )
 
-func (r BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeIban, BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeHkNumber, BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeClabe, BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeNzNumber, BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeWalletAddress, BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypePan, BulkRequestNewParamsResourcesObjectReceivingAccountAccountDetailsAccountNumberTypeOther:
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypeIban, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypeHkNumber, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypeClabe, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypeNzNumber, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypeWalletAddress, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypePan, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberTypeOther:
 		return true
 	}
 	return false
 }
 
-type BulkRequestNewParamsResourcesObjectReceivingAccountContactDetail struct {
-	ContactIdentifier     param.Field[string]                                                                                 `json:"contact_identifier"`
-	ContactIdentifierType param.Field[BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetail struct {
+	ContactIdentifier     param.Field[string]                                                                                                          `json:"contact_identifier"`
+	ContactIdentifierType param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
 }
 
-func (r BulkRequestNewParamsResourcesObjectReceivingAccountContactDetail) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetail) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-type BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierType string
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierType string
 
 const (
-	BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierTypeEmail       BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierType = "email"
-	BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierTypePhoneNumber BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierType = "phone_number"
-	BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierTypeWebsite     BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierType = "website"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierTypeEmail       BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierType = "email"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierTypePhoneNumber BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierType = "phone_number"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierTypeWebsite     BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierType = "website"
 )
 
-func (r BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierType) IsKnown() bool {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierTypeEmail, BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierTypePhoneNumber, BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContactIdentifierTypeWebsite:
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierTypeEmail, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierTypePhoneNumber, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierTypeWebsite:
 		return true
 	}
 	return false
@@ -1601,7 +1772,7 @@ func (r BulkRequestNewParamsResourcesObjectReceivingAccountContactDetailsContact
 // auto-ledgering Payment objects. See
 // https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 // for more details.
-type BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccount struct {
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccount struct {
 	// The currency of the ledger account.
 	Currency param.Field[string] `json:"currency,required"`
 	// The id of the ledger that this account belongs to.
@@ -1623,38 +1794,38 @@ type BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccount struct {
 	// If the ledger account links to another object in Modern Treasury, the type will
 	// be populated here, otherwise null. The value is one of internal_account or
 	// external_account.
-	LedgerableType param.Field[BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType] `json:"ledgerable_type"`
+	LedgerableType param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
-func (r BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccount) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccount) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 // If the ledger account links to another object in Modern Treasury, the type will
 // be populated here, otherwise null. The value is one of internal_account or
 // external_account.
-type BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType string
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType string
 
 const (
-	BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeCounterparty    BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType = "counterparty"
-	BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeExternalAccount BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType = "external_account"
-	BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeInternalAccount BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType = "internal_account"
-	BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType = "virtual_account"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeCounterparty    BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType = "counterparty"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeExternalAccount BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType = "external_account"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeInternalAccount BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType = "internal_account"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType = "virtual_account"
 )
 
-func (r BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableType) IsKnown() bool {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeCounterparty, BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeExternalAccount, BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesObjectReceivingAccountLedgerAccountLedgerableTypeVirtualAccount:
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeCounterparty, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeExternalAccount, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeVirtualAccount:
 		return true
 	}
 	return false
 }
 
 // Required if receiving wire payments.
-type BulkRequestNewParamsResourcesObjectReceivingAccountPartyAddress struct {
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country"`
 	Line1   param.Field[string] `json:"line1"`
@@ -1667,106 +1838,106 @@ type BulkRequestNewParamsResourcesObjectReceivingAccountPartyAddress struct {
 	Region param.Field[string] `json:"region"`
 }
 
-func (r BulkRequestNewParamsResourcesObjectReceivingAccountPartyAddress) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 // Either `individual` or `business`.
-type BulkRequestNewParamsResourcesObjectReceivingAccountPartyType string
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyType string
 
 const (
-	BulkRequestNewParamsResourcesObjectReceivingAccountPartyTypeBusiness   BulkRequestNewParamsResourcesObjectReceivingAccountPartyType = "business"
-	BulkRequestNewParamsResourcesObjectReceivingAccountPartyTypeIndividual BulkRequestNewParamsResourcesObjectReceivingAccountPartyType = "individual"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyTypeBusiness   BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyType = "business"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyTypeIndividual BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyType = "individual"
 )
 
-func (r BulkRequestNewParamsResourcesObjectReceivingAccountPartyType) IsKnown() bool {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesObjectReceivingAccountPartyTypeBusiness, BulkRequestNewParamsResourcesObjectReceivingAccountPartyTypeIndividual:
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyTypeBusiness, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyTypeIndividual:
 		return true
 	}
 	return false
 }
 
-type BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetail struct {
-	RoutingNumber     param.Field[string]                                                                             `json:"routing_number,required"`
-	RoutingNumberType param.Field[BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
-	PaymentType       param.Field[BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType]       `json:"payment_type"`
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetail struct {
+	RoutingNumber     param.Field[string]                                                                                                      `json:"routing_number,required"`
+	RoutingNumberType param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
+	PaymentType       param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType]       `json:"payment_type"`
 }
 
-func (r BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetail) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetail) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-type BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType string
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType string
 
 const (
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeAba                     BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "aba"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb                   BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "au_bsb"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo                BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "br_codigo"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa                   BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "ca_cpa"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeChips                   BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "chips"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeCnaps                   BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "cnaps"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "dk_interbank_clearing_code"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode              BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier        BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "mx_bank_identifier"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType = "swift"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeAba                     BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "aba"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb                   BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "au_bsb"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo                BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "br_codigo"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa                   BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "ca_cpa"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeChips                   BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "chips"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeCnaps                   BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "cnaps"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "dk_interbank_clearing_code"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode              BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier        BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "mx_bank_identifier"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType = "swift"
 )
 
-func (r BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeAba, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeChips, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsRoutingNumberTypeSwift:
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeAba, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeChips, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberTypeSwift:
 		return true
 	}
 	return false
 }
 
-type BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType string
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType string
 
 const (
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeACH         BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "ach"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeAuBecs      BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "au_becs"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeBacs        BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "bacs"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeBook        BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "book"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeCard        BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "card"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeChats       BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "chats"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeCheck       BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "check"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeCrossBorder BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "cross_border"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeDkNets      BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "dk_nets"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeEft         BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "eft"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeHuIcs       BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "hu_ics"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeInterac     BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "interac"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeMasav       BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "masav"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeMxCcen      BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "mx_ccen"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeNeft        BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "neft"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeNics        BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "nics"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeNzBecs      BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "nz_becs"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypePlElixir    BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "pl_elixir"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeProvxchange BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "provxchange"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeRoSent      BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "ro_sent"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeRtp         BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "rtp"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSgGiro      BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "sg_giro"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSeBankgirot BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSen         BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "sen"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSepa        BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "sepa"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSic         BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "sic"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSignet      BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "signet"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSknbi       BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "sknbi"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeWire        BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "wire"
-	BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeZengin      BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType = "zengin"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeACH         BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "ach"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeAuBecs      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "au_becs"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeBacs        BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "bacs"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeBook        BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "book"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeCard        BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "card"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeChats       BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "chats"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeCheck       BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "check"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeCrossBorder BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "cross_border"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeDkNets      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "dk_nets"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeEft         BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "eft"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeHuIcs       BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "hu_ics"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeInterac     BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "interac"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeMasav       BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "masav"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeMxCcen      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "mx_ccen"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeNeft        BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "neft"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeNics        BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "nics"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeNzBecs      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "nz_becs"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypePlElixir    BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "pl_elixir"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeProvxchange BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "provxchange"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeRoSent      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "ro_sent"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeRtp         BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "rtp"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSgGiro      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "sg_giro"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSeBankgirot BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSen         BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "sen"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSepa        BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "sepa"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSic         BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "sic"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSignet      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "signet"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSknbi       BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "sknbi"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeWire        BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "wire"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeZengin      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType = "zengin"
 )
 
-func (r BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeACH, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeAuBecs, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeBacs, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeBook, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeCard, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeChats, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeCheck, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeCrossBorder, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeDkNets, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeEft, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeHuIcs, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeInterac, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeMasav, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeMxCcen, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeNeft, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeNics, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeNzBecs, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypePlElixir, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeProvxchange, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeRoSent, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeRtp, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSgGiro, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSen, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSepa, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSic, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSignet, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeSknbi, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeWire, BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPaymentTypeZengin:
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeACH, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeAuBecs, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeBacs, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeBook, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeCard, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeChats, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeCheck, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeCrossBorder, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeDkNets, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeEft, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeHuIcs, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeInterac, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeMasav, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeMxCcen, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeNeft, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeNics, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeNzBecs, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypePlElixir, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeProvxchange, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeRoSent, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeRtp, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSgGiro, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSen, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSepa, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSic, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSignet, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeSknbi, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeWire, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentTypeZengin:
 		return true
 	}
 	return false
@@ -1775,31 +1946,31 @@ func (r BulkRequestNewParamsResourcesObjectReceivingAccountRoutingDetailsPayment
 // To cancel a payment order, use `cancelled`. To redraft a returned payment order,
 // use `approved`. To undo approval on a denied or approved payment order, use
 // `needs_approval`.
-type BulkRequestNewParamsResourcesObjectStatus string
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus string
 
 const (
-	BulkRequestNewParamsResourcesObjectStatusApproved      BulkRequestNewParamsResourcesObjectStatus = "approved"
-	BulkRequestNewParamsResourcesObjectStatusCancelled     BulkRequestNewParamsResourcesObjectStatus = "cancelled"
-	BulkRequestNewParamsResourcesObjectStatusCompleted     BulkRequestNewParamsResourcesObjectStatus = "completed"
-	BulkRequestNewParamsResourcesObjectStatusDenied        BulkRequestNewParamsResourcesObjectStatus = "denied"
-	BulkRequestNewParamsResourcesObjectStatusFailed        BulkRequestNewParamsResourcesObjectStatus = "failed"
-	BulkRequestNewParamsResourcesObjectStatusNeedsApproval BulkRequestNewParamsResourcesObjectStatus = "needs_approval"
-	BulkRequestNewParamsResourcesObjectStatusPending       BulkRequestNewParamsResourcesObjectStatus = "pending"
-	BulkRequestNewParamsResourcesObjectStatusProcessing    BulkRequestNewParamsResourcesObjectStatus = "processing"
-	BulkRequestNewParamsResourcesObjectStatusReturned      BulkRequestNewParamsResourcesObjectStatus = "returned"
-	BulkRequestNewParamsResourcesObjectStatusReversed      BulkRequestNewParamsResourcesObjectStatus = "reversed"
-	BulkRequestNewParamsResourcesObjectStatusSent          BulkRequestNewParamsResourcesObjectStatus = "sent"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusApproved      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "approved"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusCancelled     BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "cancelled"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusCompleted     BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "completed"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusDenied        BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "denied"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusFailed        BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "failed"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusNeedsApproval BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "needs_approval"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusPending       BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "pending"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusProcessing    BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "processing"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusReturned      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "returned"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusReversed      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "reversed"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusSent          BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "sent"
 )
 
-func (r BulkRequestNewParamsResourcesObjectStatus) IsKnown() bool {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesObjectStatusApproved, BulkRequestNewParamsResourcesObjectStatusCancelled, BulkRequestNewParamsResourcesObjectStatusCompleted, BulkRequestNewParamsResourcesObjectStatusDenied, BulkRequestNewParamsResourcesObjectStatusFailed, BulkRequestNewParamsResourcesObjectStatusNeedsApproval, BulkRequestNewParamsResourcesObjectStatusPending, BulkRequestNewParamsResourcesObjectStatusProcessing, BulkRequestNewParamsResourcesObjectStatusReturned, BulkRequestNewParamsResourcesObjectStatusReversed, BulkRequestNewParamsResourcesObjectStatusSent:
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusApproved, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusCancelled, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusCompleted, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusDenied, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusFailed, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusNeedsApproval, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusPending, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusProcessing, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusReturned, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusReversed, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusSent:
 		return true
 	}
 	return false
 }
 
-type BulkRequestNewParamsResourceExpectedPaymentUpdateRequestWithID struct {
+type BulkRequestNewParamsResourceUnionExpectedPaymentUpdateRequestWithID struct {
 	ID param.Field[string] `json:"id" format:"uuid"`
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
@@ -1845,28 +2016,28 @@ type BulkRequestNewParamsResourceExpectedPaymentUpdateRequestWithID struct {
 	Type param.Field[ExpectedPaymentType] `json:"type"`
 }
 
-func (r BulkRequestNewParamsResourceExpectedPaymentUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourceUnionExpectedPaymentUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourceExpectedPaymentUpdateRequestWithID) implementsBulkRequestNewParamsResource() {
+func (r BulkRequestNewParamsResourceUnionExpectedPaymentUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
 }
 
-type BulkRequestNewParamsResourceTransactionUpdateRequestWithID struct {
+type BulkRequestNewParamsResourceUnionTransactionUpdateRequestWithID struct {
 	ID param.Field[string] `json:"id" format:"uuid"`
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
 	// an empty string or `null` as the value.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
-func (r BulkRequestNewParamsResourceTransactionUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourceUnionTransactionUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourceTransactionUpdateRequestWithID) implementsBulkRequestNewParamsResource() {
+func (r BulkRequestNewParamsResourceUnionTransactionUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
 }
 
-type BulkRequestNewParamsResourceLedgerTransactionUpdateRequestWithID struct {
+type BulkRequestNewParamsResourceUnionLedgerTransactionUpdateRequestWithID struct {
 	ID param.Field[string] `json:"id" format:"uuid"`
 	// An optional description for internal use.
 	Description param.Field[string] `json:"description"`
@@ -1874,22 +2045,22 @@ type BulkRequestNewParamsResourceLedgerTransactionUpdateRequestWithID struct {
 	// reporting purposes.
 	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
 	// An array of ledger entry objects.
-	LedgerEntries param.Field[[]BulkRequestNewParamsResourcesObjectLedgerEntry] `json:"ledger_entries"`
+	LedgerEntries param.Field[[]BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerEntry] `json:"ledger_entries"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[BulkRequestNewParamsResourcesObjectStatus] `json:"status"`
+	Status param.Field[BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatus] `json:"status"`
 }
 
-func (r BulkRequestNewParamsResourceLedgerTransactionUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourceUnionLedgerTransactionUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourceLedgerTransactionUpdateRequestWithID) implementsBulkRequestNewParamsResource() {
+func (r BulkRequestNewParamsResourceUnionLedgerTransactionUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
 }
 
-type BulkRequestNewParamsResourcesObjectLedgerEntry struct {
+type BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerEntry struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000. Can be any integer up to 36 digits.
 	Amount param.Field[int64] `json:"amount,required"`
@@ -1925,8 +2096,150 @@ type BulkRequestNewParamsResourcesObjectLedgerEntry struct {
 	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
 }
 
-func (r BulkRequestNewParamsResourcesObjectLedgerEntry) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerEntry) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// To post a ledger transaction at creation, use `posted`.
+type BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatus string
+
+const (
+	BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatusArchived BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatus = "archived"
+	BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatusPending  BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatus = "pending"
+	BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatusPosted   BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatus = "posted"
+)
+
+func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatus) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatusArchived, BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatusPending, BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatusPosted:
+		return true
+	}
+	return false
+}
+
+// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+// an overnight check rather than standard mail.
+type BulkRequestNewParamsResourcesPriority string
+
+const (
+	BulkRequestNewParamsResourcesPriorityHigh   BulkRequestNewParamsResourcesPriority = "high"
+	BulkRequestNewParamsResourcesPriorityNormal BulkRequestNewParamsResourcesPriority = "normal"
+)
+
+func (r BulkRequestNewParamsResourcesPriority) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPriorityHigh, BulkRequestNewParamsResourcesPriorityNormal:
+		return true
+	}
+	return false
+}
+
+// The party that will pay the fees for the payment order. Only applies to wire
+// payment orders. Can be one of shared, sender, or receiver, which correspond
+// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+type BulkRequestNewParamsResourcesChargeBearer string
+
+const (
+	BulkRequestNewParamsResourcesChargeBearerShared   BulkRequestNewParamsResourcesChargeBearer = "shared"
+	BulkRequestNewParamsResourcesChargeBearerSender   BulkRequestNewParamsResourcesChargeBearer = "sender"
+	BulkRequestNewParamsResourcesChargeBearerReceiver BulkRequestNewParamsResourcesChargeBearer = "receiver"
+)
+
+func (r BulkRequestNewParamsResourcesChargeBearer) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesChargeBearerShared, BulkRequestNewParamsResourcesChargeBearerSender, BulkRequestNewParamsResourcesChargeBearerReceiver:
+		return true
+	}
+	return false
+}
+
+// Indicates the type of FX transfer to initiate, can be either
+// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+// currency matches the originating account currency.
+type BulkRequestNewParamsResourcesForeignExchangeIndicator string
+
+const (
+	BulkRequestNewParamsResourcesForeignExchangeIndicatorFixedToVariable BulkRequestNewParamsResourcesForeignExchangeIndicator = "fixed_to_variable"
+	BulkRequestNewParamsResourcesForeignExchangeIndicatorVariableToFixed BulkRequestNewParamsResourcesForeignExchangeIndicator = "variable_to_fixed"
+)
+
+func (r BulkRequestNewParamsResourcesForeignExchangeIndicator) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesForeignExchangeIndicatorFixedToVariable, BulkRequestNewParamsResourcesForeignExchangeIndicatorVariableToFixed:
+		return true
+	}
+	return false
+}
+
+// A payment type to fallback to if the original type is not valid for the
+// receiving account. Currently, this only supports falling back from RTP to ACH
+// (type=rtp and fallback_type=ach)
+type BulkRequestNewParamsResourcesFallbackType string
+
+const (
+	BulkRequestNewParamsResourcesFallbackTypeACH BulkRequestNewParamsResourcesFallbackType = "ach"
+)
+
+func (r BulkRequestNewParamsResourcesFallbackType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesFallbackTypeACH:
+		return true
+	}
+	return false
+}
+
+// To post a ledger transaction at creation, use `posted`.
+type BulkRequestNewParamsResourcesStatus string
+
+const (
+	BulkRequestNewParamsResourcesStatusArchived      BulkRequestNewParamsResourcesStatus = "archived"
+	BulkRequestNewParamsResourcesStatusPending       BulkRequestNewParamsResourcesStatus = "pending"
+	BulkRequestNewParamsResourcesStatusPosted        BulkRequestNewParamsResourcesStatus = "posted"
+	BulkRequestNewParamsResourcesStatusApproved      BulkRequestNewParamsResourcesStatus = "approved"
+	BulkRequestNewParamsResourcesStatusCancelled     BulkRequestNewParamsResourcesStatus = "cancelled"
+	BulkRequestNewParamsResourcesStatusCompleted     BulkRequestNewParamsResourcesStatus = "completed"
+	BulkRequestNewParamsResourcesStatusDenied        BulkRequestNewParamsResourcesStatus = "denied"
+	BulkRequestNewParamsResourcesStatusFailed        BulkRequestNewParamsResourcesStatus = "failed"
+	BulkRequestNewParamsResourcesStatusNeedsApproval BulkRequestNewParamsResourcesStatus = "needs_approval"
+	BulkRequestNewParamsResourcesStatusProcessing    BulkRequestNewParamsResourcesStatus = "processing"
+	BulkRequestNewParamsResourcesStatusReturned      BulkRequestNewParamsResourcesStatus = "returned"
+	BulkRequestNewParamsResourcesStatusReversed      BulkRequestNewParamsResourcesStatus = "reversed"
+	BulkRequestNewParamsResourcesStatusSent          BulkRequestNewParamsResourcesStatus = "sent"
+)
+
+func (r BulkRequestNewParamsResourcesStatus) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesStatusArchived, BulkRequestNewParamsResourcesStatusPending, BulkRequestNewParamsResourcesStatusPosted, BulkRequestNewParamsResourcesStatusApproved, BulkRequestNewParamsResourcesStatusCancelled, BulkRequestNewParamsResourcesStatusCompleted, BulkRequestNewParamsResourcesStatusDenied, BulkRequestNewParamsResourcesStatusFailed, BulkRequestNewParamsResourcesStatusNeedsApproval, BulkRequestNewParamsResourcesStatusProcessing, BulkRequestNewParamsResourcesStatusReturned, BulkRequestNewParamsResourcesStatusReversed, BulkRequestNewParamsResourcesStatusSent:
+		return true
+	}
+	return false
+}
+
+// If the ledger transaction can be reconciled to another object in Modern
+// Treasury, the type will be populated here, otherwise null. This can be one of
+// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+type BulkRequestNewParamsResourcesLedgerableType string
+
+const (
+	BulkRequestNewParamsResourcesLedgerableTypeCounterparty          BulkRequestNewParamsResourcesLedgerableType = "counterparty"
+	BulkRequestNewParamsResourcesLedgerableTypeExpectedPayment       BulkRequestNewParamsResourcesLedgerableType = "expected_payment"
+	BulkRequestNewParamsResourcesLedgerableTypeIncomingPaymentDetail BulkRequestNewParamsResourcesLedgerableType = "incoming_payment_detail"
+	BulkRequestNewParamsResourcesLedgerableTypeInternalAccount       BulkRequestNewParamsResourcesLedgerableType = "internal_account"
+	BulkRequestNewParamsResourcesLedgerableTypeLineItem              BulkRequestNewParamsResourcesLedgerableType = "line_item"
+	BulkRequestNewParamsResourcesLedgerableTypePaperItem             BulkRequestNewParamsResourcesLedgerableType = "paper_item"
+	BulkRequestNewParamsResourcesLedgerableTypePaymentOrder          BulkRequestNewParamsResourcesLedgerableType = "payment_order"
+	BulkRequestNewParamsResourcesLedgerableTypePaymentOrderAttempt   BulkRequestNewParamsResourcesLedgerableType = "payment_order_attempt"
+	BulkRequestNewParamsResourcesLedgerableTypeReturn                BulkRequestNewParamsResourcesLedgerableType = "return"
+	BulkRequestNewParamsResourcesLedgerableTypeReversal              BulkRequestNewParamsResourcesLedgerableType = "reversal"
+)
+
+func (r BulkRequestNewParamsResourcesLedgerableType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesLedgerableTypeCounterparty, BulkRequestNewParamsResourcesLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesLedgerableTypeLineItem, BulkRequestNewParamsResourcesLedgerableTypePaperItem, BulkRequestNewParamsResourcesLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesLedgerableTypePaymentOrderAttempt, BulkRequestNewParamsResourcesLedgerableTypeReturn, BulkRequestNewParamsResourcesLedgerableTypeReversal:
+		return true
+	}
+	return false
 }
 
 type BulkRequestListParams struct {
