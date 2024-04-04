@@ -32,7 +32,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 	_, err := client.BulkRequests.New(context.TODO(), moderntreasury.BulkRequestNewParams{
 		ActionType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsActionTypeCreate),
 		ResourceType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourceTypePaymentOrder),
-		Resources: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResource{moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest{
+		Resources: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourceUnion{moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest{
 			Type:                 moderntreasury.F(moderntreasury.PaymentOrderTypeACH),
 			Subtype:              moderntreasury.F(moderntreasury.PaymentOrderSubtypeBacsNewInstruction),
 			Amount:               moderntreasury.F(int64(0)),
@@ -245,7 +245,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				AccountingCategoryID: moderntreasury.F("string"),
 			}}),
 			TransactionMonitoringEnabled: moderntreasury.F(true),
-		}), moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest{
+		}, moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest{
 			Type:                 moderntreasury.F(moderntreasury.PaymentOrderTypeACH),
 			Subtype:              moderntreasury.F(moderntreasury.PaymentOrderSubtypeBacsNewInstruction),
 			Amount:               moderntreasury.F(int64(0)),
@@ -458,7 +458,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				AccountingCategoryID: moderntreasury.F("string"),
 			}}),
 			TransactionMonitoringEnabled: moderntreasury.F(true),
-		}), moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest{
+		}, moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest{
 			Type:                 moderntreasury.F(moderntreasury.PaymentOrderTypeACH),
 			Subtype:              moderntreasury.F(moderntreasury.PaymentOrderSubtypeBacsNewInstruction),
 			Amount:               moderntreasury.F(int64(0)),
@@ -671,7 +671,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				AccountingCategoryID: moderntreasury.F("string"),
 			}}),
 			TransactionMonitoringEnabled: moderntreasury.F(true),
-		})}),
+		}}),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
