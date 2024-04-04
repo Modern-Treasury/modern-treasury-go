@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.11.0 (2024-04-04)
+
+Full Changelog: [v2.10.0...v2.11.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.10.0...v2.11.0)
+
+### Features
+
+* **api:** add id type in_lei ([#202](https://github.com/Modern-Treasury/modern-treasury-go/issues/202)) ([10c797a](https://github.com/Modern-Treasury/modern-treasury-go/commit/10c797aa3794979f635344d802c972a6bfc9f955))
+* **api:** update account number type enum ([#199](https://github.com/Modern-Treasury/modern-treasury-go/issues/199)) ([dac9771](https://github.com/Modern-Treasury/modern-treasury-go/commit/dac9771b237da84a99853e0c1fdced9cf42c4de6))
+* **client:** implement raw requests methods on client ([#196](https://github.com/Modern-Treasury/modern-treasury-go/issues/196)) ([bd07bec](https://github.com/Modern-Treasury/modern-treasury-go/commit/bd07bec830587bd6daa7944a45040cb3c861d489))
+
+
+### Bug Fixes
+
+* adjust how bulk request items are accessed ([#203](https://github.com/Modern-Treasury/modern-treasury-go/issues/203)) ([4d87a40](https://github.com/Modern-Treasury/modern-treasury-go/commit/4d87a4055f5e9e17acb674434d4a4256581ebc19))
+
+
+### Chores
+
+* **internal:** move pagination types to pagination package ([#198](https://github.com/Modern-Treasury/modern-treasury-go/issues/198)) ([9cdf8a5](https://github.com/Modern-Treasury/modern-treasury-go/commit/9cdf8a5d213ff42690943e5cae4ba2ad4a200e9d))
+* **internal:** use a time zone less likely to conflict with the local one ([#201](https://github.com/Modern-Treasury/modern-treasury-go/issues/201)) ([b8dc880](https://github.com/Modern-Treasury/modern-treasury-go/commit/b8dc8807642a0f5e986dc834a136b764b5a4667b))
+
 ## 2.10.0 (2024-03-26)
 
 Full Changelog: [v2.9.0...v2.10.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.9.0...v2.10.0)
