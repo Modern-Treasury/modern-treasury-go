@@ -612,15 +612,114 @@ func (r PaymentOrderStatus) IsKnown() bool {
 
 // The account to which the originating of this payment should be attributed to.
 // Can be a `virtual_account` or `internal_account`.
+type PaymentOrderUltimateOriginatingAccount struct {
+	ID     string `json:"id,required" format:"uuid"`
+	Object string `json:"object,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode    bool      `json:"live_mode,required"`
+	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
+	UpdatedAt   time.Time `json:"updated_at,required" format:"date-time"`
+	DiscardedAt time.Time `json:"discarded_at,nullable" format:"date-time"`
+	// The name of the virtual account.
+	Name string `json:"name,required"`
+	// An optional free-form description for internal use.
+	Description string `json:"description,nullable"`
+	// The ID of a counterparty that the virtual account belongs to. Optional.
+	CounterpartyID string `json:"counterparty_id,required,nullable" format:"uuid"`
+	// The ID of the internal account that the virtual account is in.
+	InternalAccountID string      `json:"internal_account_id" format:"uuid"`
+	AccountDetails    interface{} `json:"account_details"`
+	RoutingDetails    interface{} `json:"routing_details"`
+	// The ID of a debit normal ledger account. When money enters the virtual account,
+	// this ledger account will be debited. Must be accompanied by a
+	// credit_ledger_account_id if present.
+	DebitLedgerAccountID string `json:"debit_ledger_account_id,nullable" format:"uuid"`
+	// The ID of a credit normal ledger account. When money enters the virtual account,
+	// this ledger account will be credited. Must be accompanied by a
+	// debit_ledger_account_id if present.
+	CreditLedgerAccountID string `json:"credit_ledger_account_id,nullable" format:"uuid"`
+	// If the virtual account links to a ledger account in Modern Treasury, the id of
+	// the ledger account will be populated here.
+	LedgerAccountID string      `json:"ledger_account_id,required,nullable" format:"uuid"`
+	Metadata        interface{} `json:"metadata"`
+	// Can be checking, savings or other.
+	AccountType PaymentOrderUltimateOriginatingAccountAccountType `json:"account_type,nullable"`
+	// The legal name of the entity which owns the account.
+	PartyName string `json:"party_name"`
+	// Either individual or business.
+	PartyType    PaymentOrderUltimateOriginatingAccountPartyType `json:"party_type,nullable"`
+	PartyAddress interface{}                                     `json:"party_address,required"`
+	// Specifies which financial institution the accounts belong to.
+	Connection Connection `json:"connection"`
+	// The currency of the account.
+	Currency shared.Currency `json:"currency,nullable"`
+	// The parent InternalAccount of this account.
+	ParentAccountID string `json:"parent_account_id,nullable" format:"uuid"`
+	// The Legal Entity associated to this account
+	LegalEntityID string                                     `json:"legal_entity_id,nullable" format:"uuid"`
+	JSON          paymentOrderUltimateOriginatingAccountJSON `json:"-"`
+	union         PaymentOrderUltimateOriginatingAccountUnion
+}
+
+// paymentOrderUltimateOriginatingAccountJSON contains the JSON metadata for the
+// struct [PaymentOrderUltimateOriginatingAccount]
+type paymentOrderUltimateOriginatingAccountJSON struct {
+	ID                    apijson.Field
+	Object                apijson.Field
+	LiveMode              apijson.Field
+	CreatedAt             apijson.Field
+	UpdatedAt             apijson.Field
+	DiscardedAt           apijson.Field
+	Name                  apijson.Field
+	Description           apijson.Field
+	CounterpartyID        apijson.Field
+	InternalAccountID     apijson.Field
+	AccountDetails        apijson.Field
+	RoutingDetails        apijson.Field
+	DebitLedgerAccountID  apijson.Field
+	CreditLedgerAccountID apijson.Field
+	LedgerAccountID       apijson.Field
+	Metadata              apijson.Field
+	AccountType           apijson.Field
+	PartyName             apijson.Field
+	PartyType             apijson.Field
+	PartyAddress          apijson.Field
+	Connection            apijson.Field
+	Currency              apijson.Field
+	ParentAccountID       apijson.Field
+	LegalEntityID         apijson.Field
+	raw                   string
+	ExtraFields           map[string]apijson.Field
+}
+
+func (r paymentOrderUltimateOriginatingAccountJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *PaymentOrderUltimateOriginatingAccount) UnmarshalJSON(data []byte) (err error) {
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+func (r PaymentOrderUltimateOriginatingAccount) AsUnion() PaymentOrderUltimateOriginatingAccountUnion {
+	return r.union
+}
+
+// The account to which the originating of this payment should be attributed to.
+// Can be a `virtual_account` or `internal_account`.
 //
 // Union satisfied by [VirtualAccount] or [InternalAccount].
-type PaymentOrderUltimateOriginatingAccount interface {
+type PaymentOrderUltimateOriginatingAccountUnion interface {
 	implementsPaymentOrderUltimateOriginatingAccount()
 }
 
 func init() {
 	apijson.RegisterUnion(
-		reflect.TypeOf((*PaymentOrderUltimateOriginatingAccount)(nil)).Elem(),
+		reflect.TypeOf((*PaymentOrderUltimateOriginatingAccountUnion)(nil)).Elem(),
 		"",
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
@@ -631,6 +730,44 @@ func init() {
 			Type:       reflect.TypeOf(InternalAccount{}),
 		},
 	)
+}
+
+// Can be checking, savings or other.
+type PaymentOrderUltimateOriginatingAccountAccountType string
+
+const (
+	PaymentOrderUltimateOriginatingAccountAccountTypeCash          PaymentOrderUltimateOriginatingAccountAccountType = "cash"
+	PaymentOrderUltimateOriginatingAccountAccountTypeChecking      PaymentOrderUltimateOriginatingAccountAccountType = "checking"
+	PaymentOrderUltimateOriginatingAccountAccountTypeGeneralLedger PaymentOrderUltimateOriginatingAccountAccountType = "general_ledger"
+	PaymentOrderUltimateOriginatingAccountAccountTypeLoan          PaymentOrderUltimateOriginatingAccountAccountType = "loan"
+	PaymentOrderUltimateOriginatingAccountAccountTypeNonResident   PaymentOrderUltimateOriginatingAccountAccountType = "non_resident"
+	PaymentOrderUltimateOriginatingAccountAccountTypeOther         PaymentOrderUltimateOriginatingAccountAccountType = "other"
+	PaymentOrderUltimateOriginatingAccountAccountTypeOverdraft     PaymentOrderUltimateOriginatingAccountAccountType = "overdraft"
+	PaymentOrderUltimateOriginatingAccountAccountTypeSavings       PaymentOrderUltimateOriginatingAccountAccountType = "savings"
+)
+
+func (r PaymentOrderUltimateOriginatingAccountAccountType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUltimateOriginatingAccountAccountTypeCash, PaymentOrderUltimateOriginatingAccountAccountTypeChecking, PaymentOrderUltimateOriginatingAccountAccountTypeGeneralLedger, PaymentOrderUltimateOriginatingAccountAccountTypeLoan, PaymentOrderUltimateOriginatingAccountAccountTypeNonResident, PaymentOrderUltimateOriginatingAccountAccountTypeOther, PaymentOrderUltimateOriginatingAccountAccountTypeOverdraft, PaymentOrderUltimateOriginatingAccountAccountTypeSavings:
+		return true
+	}
+	return false
+}
+
+// Either individual or business.
+type PaymentOrderUltimateOriginatingAccountPartyType string
+
+const (
+	PaymentOrderUltimateOriginatingAccountPartyTypeBusiness   PaymentOrderUltimateOriginatingAccountPartyType = "business"
+	PaymentOrderUltimateOriginatingAccountPartyTypeIndividual PaymentOrderUltimateOriginatingAccountPartyType = "individual"
+)
+
+func (r PaymentOrderUltimateOriginatingAccountPartyType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUltimateOriginatingAccountPartyTypeBusiness, PaymentOrderUltimateOriginatingAccountPartyTypeIndividual:
+		return true
+	}
+	return false
 }
 
 type PaymentOrderUltimateOriginatingAccountType string
