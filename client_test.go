@@ -36,9 +36,8 @@ func TestUserAgentHeader(t *testing.T) {
 			},
 		}),
 	)
-	client.ExternalAccounts.New(context.Background(), moderntreasury.ExternalAccountNewParams{
-		CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),
-		Name:           moderntreasury.F("my bank"),
+	client.Counterparties.New(context.Background(), moderntreasury.CounterpartyNewParams{
+		Name: moderntreasury.F("my first counterparty"),
 	})
 	if userAgent != fmt.Sprintf("ModernTreasury/Go %s", internal.PackageVersion) {
 		t.Errorf("Expected User-Agent to be correct, but got: %#v", userAgent)
@@ -62,9 +61,8 @@ func TestRetryAfter(t *testing.T) {
 			},
 		}),
 	)
-	res, err := client.ExternalAccounts.New(context.Background(), moderntreasury.ExternalAccountNewParams{
-		CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),
-		Name:           moderntreasury.F("my bank"),
+	res, err := client.Counterparties.New(context.Background(), moderntreasury.CounterpartyNewParams{
+		Name: moderntreasury.F("my first counterparty"),
 	})
 	if err == nil || res != nil {
 		t.Error("Expected there to be a cancel error and for the response to be nil")
@@ -91,9 +89,8 @@ func TestRetryAfterMs(t *testing.T) {
 			},
 		}),
 	)
-	res, err := client.ExternalAccounts.New(context.Background(), moderntreasury.ExternalAccountNewParams{
-		CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),
-		Name:           moderntreasury.F("my bank"),
+	res, err := client.Counterparties.New(context.Background(), moderntreasury.CounterpartyNewParams{
+		Name: moderntreasury.F("my first counterparty"),
 	})
 	if err == nil || res != nil {
 		t.Error("Expected there to be a cancel error and for the response to be nil")
@@ -116,9 +113,8 @@ func TestContextCancel(t *testing.T) {
 	)
 	cancelCtx, cancel := context.WithCancel(context.Background())
 	cancel()
-	res, err := client.ExternalAccounts.New(cancelCtx, moderntreasury.ExternalAccountNewParams{
-		CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),
-		Name:           moderntreasury.F("my bank"),
+	res, err := client.Counterparties.New(cancelCtx, moderntreasury.CounterpartyNewParams{
+		Name: moderntreasury.F("my first counterparty"),
 	})
 	if err == nil || res != nil {
 		t.Error("Expected there to be a cancel error and for the response to be nil")
@@ -138,9 +134,8 @@ func TestContextCancelDelay(t *testing.T) {
 	)
 	cancelCtx, cancel := context.WithTimeout(context.Background(), 2*time.Millisecond)
 	defer cancel()
-	res, err := client.ExternalAccounts.New(cancelCtx, moderntreasury.ExternalAccountNewParams{
-		CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),
-		Name:           moderntreasury.F("my bank"),
+	res, err := client.Counterparties.New(cancelCtx, moderntreasury.CounterpartyNewParams{
+		Name: moderntreasury.F("my first counterparty"),
 	})
 	if err == nil || res != nil {
 		t.Error("expected there to be a cancel error and for the response to be nil")
@@ -166,9 +161,8 @@ func TestContextDeadline(t *testing.T) {
 				},
 			}),
 		)
-		res, err := client.ExternalAccounts.New(deadlineCtx, moderntreasury.ExternalAccountNewParams{
-			CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),
-			Name:           moderntreasury.F("my bank"),
+		res, err := client.Counterparties.New(deadlineCtx, moderntreasury.CounterpartyNewParams{
+			Name: moderntreasury.F("my first counterparty"),
 		})
 		if err == nil || res != nil {
 			t.Error("expected there to be a deadline error and for the response to be nil")

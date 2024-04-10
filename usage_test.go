@@ -25,12 +25,11 @@ func TestUsage(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	externalAccount, err := client.ExternalAccounts.New(context.TODO(), moderntreasury.ExternalAccountNewParams{
-		CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),
-		Name:           moderntreasury.F("my bank"),
+	counterparty, err := client.Counterparties.New(context.TODO(), moderntreasury.CounterpartyNewParams{
+		Name: moderntreasury.F("my first counterparty"),
 	})
 	if err != nil {
 		t.Error(err)
 	}
-	t.Logf("%+v\n", externalAccount.ID)
+	t.Logf("%+v\n", counterparty.ID)
 }
