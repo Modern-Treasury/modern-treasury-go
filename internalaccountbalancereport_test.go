@@ -14,7 +14,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
-func TestBalanceReportNew(t *testing.T) {
+func TestInternalAccountBalanceReportNew(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -61,7 +61,7 @@ func TestBalanceReportNew(t *testing.T) {
 	}
 }
 
-func TestBalanceReportGet(t *testing.T) {
+func TestInternalAccountBalanceReportGet(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -88,7 +88,7 @@ func TestBalanceReportGet(t *testing.T) {
 	}
 }
 
-func TestBalanceReportListWithOptionalParams(t *testing.T) {
+func TestInternalAccountBalanceReportListWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -120,7 +120,7 @@ func TestBalanceReportListWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestBalanceReportDelete(t *testing.T) {
+func TestInternalAccountBalanceReportDelete(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
