@@ -25,12 +25,12 @@ func TestManualPagination(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	page, err := client.ExternalAccounts.List(context.TODO(), moderntreasury.ExternalAccountListParams{})
+	page, err := client.Counterparties.List(context.TODO(), moderntreasury.CounterpartyListParams{})
 	if err != nil {
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
-	for _, externalAccount := range page.Items {
-		t.Logf("%+v\n", externalAccount.ID)
+	for _, counterparty := range page.Items {
+		t.Logf("%+v\n", counterparty.ID)
 	}
 	// Prism mock isn't going to give us real pagination
 	page, err = page.GetNextPage()
@@ -38,8 +38,8 @@ func TestManualPagination(t *testing.T) {
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 	if page != nil {
-		for _, externalAccount := range page.Items {
-			t.Logf("%+v\n", externalAccount.ID)
+		for _, counterparty := range page.Items {
+			t.Logf("%+v\n", counterparty.ID)
 		}
 	}
 }

@@ -25,11 +25,11 @@ func TestAutoPagination(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	iter := client.ExternalAccounts.ListAutoPaging(context.TODO(), moderntreasury.ExternalAccountListParams{})
+	iter := client.Counterparties.ListAutoPaging(context.TODO(), moderntreasury.CounterpartyListParams{})
 	// Prism mock isn't going to give us real pagination
 	for i := 0; i < 3 && iter.Next(); i++ {
-		externalAccount := iter.Current()
-		t.Logf("%+v\n", externalAccount.ID)
+		counterparty := iter.Current()
+		t.Logf("%+v\n", counterparty.ID)
 	}
 	if err := iter.Err(); err != nil {
 		t.Fatalf("err should be nil: %s", err.Error())
