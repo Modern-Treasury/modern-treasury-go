@@ -51,14 +51,13 @@ func main() {
 		option.WithAPIKey("My API Key"),                 // defaults to os.LookupEnv("MODERN_TREASURY_API_KEY")
 		option.WithOrganizationID("my-organization-ID"), // defaults to os.LookupEnv("MODERN_TREASURY_ORGANIZATION_ID")
 	)
-	externalAccount, err := client.ExternalAccounts.New(context.TODO(), moderntreasury.ExternalAccountNewParams{
-		CounterpartyID: moderntreasury.F("9eba513a-53fd-4d6d-ad52-ccce122ab92a"),
-		Name:           moderntreasury.F("my bank"),
+	counterparty, err := client.Counterparties.New(context.TODO(), moderntreasury.CounterpartyNewParams{
+		Name: moderntreasury.F("my first counterparty"),
 	})
 	if err != nil {
 		panic(err.Error())
 	}
-	fmt.Printf("%+v\n", externalAccount.ID)
+	fmt.Printf("%+v\n", counterparty.ID)
 }
 
 ```
@@ -147,7 +146,7 @@ client := moderntreasury.NewClient(
 	option.WithHeader("X-Some-Header", "custom_header_info"),
 )
 
-client.ExternalAccounts.New(context.TODO(), ...,
+client.Counterparties.New(context.TODO(), ...,
 	// Override the header
 	option.WithHeader("X-Some-Header", "some_other_custom_header_info"),
 	// Add an undocumented field to the request body, using sjson syntax
@@ -164,11 +163,11 @@ This library provides some conveniences for working with paginated list endpoint
 You can use `.ListAutoPaging()` methods to iterate through items across all pages:
 
 ```go
-iter := client.ExternalAccounts.ListAutoPaging(context.TODO(), moderntreasury.ExternalAccountListParams{})
+iter := client.Counterparties.ListAutoPaging(context.TODO(), moderntreasury.CounterpartyListParams{})
 // Automatically fetches more pages as needed.
 for iter.Next() {
-	externalAccount := iter.Current()
-	fmt.Printf("%+v\n", externalAccount)
+	counterparty := iter.Current()
+	fmt.Printf("%+v\n", counterparty)
 }
 if err := iter.Err(); err != nil {
 	panic(err.Error())
@@ -179,10 +178,10 @@ Or you can use simple `.List()` methods to fetch a single page and receive a sta
 with additional helper methods like `.GetNextPage()`, e.g.:
 
 ```go
-page, err := client.ExternalAccounts.List(context.TODO(), moderntreasury.ExternalAccountListParams{})
+page, err := client.Counterparties.List(context.TODO(), moderntreasury.CounterpartyListParams{})
 for page != nil {
-	for _, externalAccount := range page.Items {
-		fmt.Printf("%+v\n", externalAccount)
+	for _, counterparty := range page.Items {
+		fmt.Printf("%+v\n", counterparty)
 	}
 	page, err = page.GetNextPage()
 }
@@ -228,10 +227,10 @@ To set a per-retry timeout, use `option.WithRequestTimeout()`.
 // This sets the timeout for the request, including all the retries.
 ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
 defer cancel()
-client.ExternalAccounts.List(
+client.Counterparties.New(
 	ctx,
-	moderntreasury.ExternalAccountListParams{
-		PartyName: moderntreasury.F("my bank"),
+	moderntreasury.CounterpartyNewParams{
+		Name: moderntreasury.F("my first counterparty"),
 	},
 	// This sets the per-retry timeout
 	option.WithRequestTimeout(20*time.Second),
@@ -290,9 +289,11 @@ client := moderntreasury.NewClient(
 )
 
 // Override per-request:
-client.ExternalAccounts.List(
+client.Counterparties.New(
 	context.TODO(),
-	moderntreasury.ExternalAccountListParams{},
+	moderntreasury.CounterpartyNewParams{
+		Name: moderntreasury.F("my first counterparty"),
+	},
 	option.WithMaxRetries(5),
 )
 ```
