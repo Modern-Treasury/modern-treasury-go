@@ -1,5 +1,30 @@
 # Changelog
 
+## 2.12.0 (2024-04-17)
+
+Full Changelog: [v2.11.0...v2.12.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.11.0...v2.12.0)
+
+### Features
+
+* **api:** add ledger_transaction_id field to reversal ([#210](https://github.com/Modern-Treasury/modern-treasury-go/issues/210)) ([8a812e4](https://github.com/Modern-Treasury/modern-treasury-go/commit/8a812e4483c596f79ca446672b70e49e171cd235))
+* **option:** add option to provide a raw request body ([#208](https://github.com/Modern-Treasury/modern-treasury-go/issues/208)) ([d4f6079](https://github.com/Modern-Treasury/modern-treasury-go/commit/d4f6079694ec83125f78b389429c58578812ac44))
+
+
+### Chores
+
+* change test names ([#206](https://github.com/Modern-Treasury/modern-treasury-go/issues/206)) ([edfd0ca](https://github.com/Modern-Treasury/modern-treasury-go/commit/edfd0ca9d4b3d7cd08a928be9008ae2d3b0ede1d))
+* **internal:** formatting ([#207](https://github.com/Modern-Treasury/modern-treasury-go/issues/207)) ([d79bf8f](https://github.com/Modern-Treasury/modern-treasury-go/commit/d79bf8fa2300eceb922b186dc75f5aee2a4d5c31))
+
+
+### Documentation
+
+* **examples:** use counterparties in snippets ([#204](https://github.com/Modern-Treasury/modern-treasury-go/issues/204)) ([fef99d7](https://github.com/Modern-Treasury/modern-treasury-go/commit/fef99d7b1a771f15c30aaba8962a171749320b76))
+
+
+### Build System
+
+* configure UTF-8 locale in devcontainer ([#209](https://github.com/Modern-Treasury/modern-treasury-go/issues/209)) ([6bb7390](https://github.com/Modern-Treasury/modern-treasury-go/commit/6bb73903cdc9410df32e81bf19460045bfd06ed4))
+
 ## 2.11.0 (2024-04-04)
 
 Full Changelog: [v2.10.0...v2.11.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.10.0...v2.11.0)
