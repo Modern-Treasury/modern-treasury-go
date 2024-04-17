@@ -78,6 +78,8 @@ func (r *PaymentOrderReversalService) ListAutoPaging(ctx context.Context, paymen
 type Reversal struct {
 	ID        string    `json:"id,required" format:"uuid"`
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	// The ID of the ledger transaction linked to the reversal.
+	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode,required"`
@@ -97,17 +99,18 @@ type Reversal struct {
 
 // reversalJSON contains the JSON metadata for the struct [Reversal]
 type reversalJSON struct {
-	ID             apijson.Field
-	CreatedAt      apijson.Field
-	LiveMode       apijson.Field
-	Metadata       apijson.Field
-	Object         apijson.Field
-	PaymentOrderID apijson.Field
-	Reason         apijson.Field
-	Status         apijson.Field
-	UpdatedAt      apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
+	ID                  apijson.Field
+	CreatedAt           apijson.Field
+	LedgerTransactionID apijson.Field
+	LiveMode            apijson.Field
+	Metadata            apijson.Field
+	Object              apijson.Field
+	PaymentOrderID      apijson.Field
+	Reason              apijson.Field
+	Status              apijson.Field
+	UpdatedAt           apijson.Field
+	raw                 string
+	ExtraFields         map[string]apijson.Field
 }
 
 func (r *Reversal) UnmarshalJSON(data []byte) (err error) {
