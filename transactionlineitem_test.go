@@ -13,6 +13,33 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
+func TestTransactionLineItemNew(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := moderntreasury.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+		option.WithOrganizationID("my-organization-ID"),
+	)
+	_, err := client.Transactions.LineItems.New(context.TODO(), moderntreasury.TransactionLineItemNewParams{
+		Amount:            moderntreasury.F(int64(0)),
+		ExpectedPaymentID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		TransactionID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+	})
+	if err != nil {
+		var apierr *moderntreasury.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
 func TestTransactionLineItemGet(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
@@ -58,6 +85,29 @@ func TestTransactionLineItemListWithOptionalParams(t *testing.T) {
 		TransactionID: moderntreasury.F("string"),
 		Type:          moderntreasury.F(moderntreasury.TransactionLineItemListParamsTypeOriginating),
 	})
+	if err != nil {
+		var apierr *moderntreasury.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestTransactionLineItemDelete(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := moderntreasury.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+		option.WithOrganizationID("my-organization-ID"),
+	)
+	err := client.Transactions.LineItems.Delete(context.TODO(), "string")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

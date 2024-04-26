@@ -110,7 +110,7 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 				}),
 			}}),
 			ExternalID:     moderntreasury.F("string"),
-			LedgerableType: moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeCounterparty),
+			LedgerableType: moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeExpectedPayment),
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		}),
 		LedgerTransactionID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -234,6 +234,7 @@ func TestExpectedPaymentUpdateWithOptionalParams(t *testing.T) {
 			}}),
 			RemittanceInformation: moderntreasury.F("string"),
 			StatementDescriptor:   moderntreasury.F("string"),
+			Status:                moderntreasury.F(moderntreasury.ExpectedPaymentUpdateParamsStatusReconciled),
 			Type:                  moderntreasury.F(moderntreasury.ExpectedPaymentTypeACH),
 		},
 	)

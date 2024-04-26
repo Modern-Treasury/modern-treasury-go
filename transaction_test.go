@@ -40,6 +40,7 @@ func TestTransactionNewWithOptionalParams(t *testing.T) {
 			"modern": "treasury",
 		}),
 		Posted:            moderntreasury.F(true),
+		Type:              moderntreasury.F(moderntreasury.TransactionNewParamsTypeACH),
 		VendorDescription: moderntreasury.F("string"),
 	})
 	if err != nil {

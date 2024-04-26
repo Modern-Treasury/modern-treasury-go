@@ -372,7 +372,8 @@ type BulkRequestNewParamsResource struct {
 	ExternalID param.Field[string] `json:"external_id"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+	// reversal.
 	LedgerableType param.Field[BulkRequestNewParamsResourcesLedgerableType] `json:"ledgerable_type"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the id will be populated here, otherwise null.
@@ -657,7 +658,8 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactio
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+	// reversal.
 	LedgerableType param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
@@ -712,25 +714,22 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransac
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+// reversal.
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType string
 
 const (
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeCounterparty          BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "counterparty"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeExpectedPayment       BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "expected_payment"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeIncomingPaymentDetail BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "incoming_payment_detail"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeInternalAccount       BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "internal_account"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeLineItem              BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "line_item"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaperItem             BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "paper_item"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaymentOrder          BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "payment_order"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaymentOrderAttempt   BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "payment_order_attempt"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeReturn                BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "return"
 	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeReversal              BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "reversal"
 )
 
 func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeCounterparty, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeLineItem, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaperItem, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaymentOrderAttempt, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeReturn, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeReversal:
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaperItem, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeReturn, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeReversal:
 		return true
 	}
 	return false
@@ -1142,7 +1141,8 @@ type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransaction 
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+	// reversal.
 	LedgerableType param.Field[BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
@@ -1197,25 +1197,22 @@ func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransacti
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+// reversal.
 type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType string
 
 const (
-	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeCounterparty          BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "counterparty"
 	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeExpectedPayment       BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "expected_payment"
 	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeIncomingPaymentDetail BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "incoming_payment_detail"
-	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeInternalAccount       BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "internal_account"
-	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeLineItem              BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "line_item"
 	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaperItem             BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "paper_item"
 	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaymentOrder          BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "payment_order"
-	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaymentOrderAttempt   BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "payment_order_attempt"
 	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeReturn                BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "return"
 	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeReversal              BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "reversal"
 )
 
 func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeCounterparty, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeLineItem, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaperItem, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaymentOrderAttempt, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeReturn, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeReversal:
+	case BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaperItem, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeReturn, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeReversal:
 		return true
 	}
 	return false
@@ -1275,7 +1272,8 @@ type BulkRequestNewParamsResourcesLedgerTransactionCreateRequest struct {
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+	// reversal.
 	LedgerableType param.Field[BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
@@ -1333,25 +1331,22 @@ func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerEntry) 
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+// reversal.
 type BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType string
 
 const (
-	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeCounterparty          BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "counterparty"
 	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeExpectedPayment       BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "expected_payment"
 	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "incoming_payment_detail"
-	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeInternalAccount       BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "internal_account"
-	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeLineItem              BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "line_item"
 	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaperItem             BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "paper_item"
 	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaymentOrder          BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "payment_order"
-	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaymentOrderAttempt   BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "payment_order_attempt"
 	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeReturn                BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "return"
 	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeReversal              BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "reversal"
 )
 
 func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeCounterparty, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeLineItem, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaperItem, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaymentOrderAttempt, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeReturn, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeReversal:
+	case BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaperItem, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeReturn, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeReversal:
 		return true
 	}
 	return false
@@ -1397,6 +1392,9 @@ type BulkRequestNewParamsResourcesTransactionCreateRequest struct {
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// This field will be `true` if the transaction has posted to the account.
 	Posted param.Field[bool] `json:"posted"`
+	// The type of the transaction. Examples could be
+	// `card, `ach`, `wire`, `check`, `rtp`, `book`, or `sen`.
+	Type param.Field[BulkRequestNewParamsResourcesTransactionCreateRequestType] `json:"type"`
 	// The transaction detail text that often appears in on your bank statement and in
 	// your banking portal.
 	VendorDescription param.Field[string] `json:"vendor_description"`
@@ -1407,6 +1405,52 @@ func (r BulkRequestNewParamsResourcesTransactionCreateRequest) MarshalJSON() (da
 }
 
 func (r BulkRequestNewParamsResourcesTransactionCreateRequest) implementsBulkRequestNewParamsResourceUnion() {
+}
+
+// The type of the transaction. Examples could be
+// `card, `ach`, `wire`, `check`, `rtp`, `book`, or `sen`.
+type BulkRequestNewParamsResourcesTransactionCreateRequestType string
+
+const (
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeACH         BulkRequestNewParamsResourcesTransactionCreateRequestType = "ach"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeAuBecs      BulkRequestNewParamsResourcesTransactionCreateRequestType = "au_becs"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeBacs        BulkRequestNewParamsResourcesTransactionCreateRequestType = "bacs"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeBook        BulkRequestNewParamsResourcesTransactionCreateRequestType = "book"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeCard        BulkRequestNewParamsResourcesTransactionCreateRequestType = "card"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeChats       BulkRequestNewParamsResourcesTransactionCreateRequestType = "chats"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeCheck       BulkRequestNewParamsResourcesTransactionCreateRequestType = "check"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeCrossBorder BulkRequestNewParamsResourcesTransactionCreateRequestType = "cross_border"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeDkNets      BulkRequestNewParamsResourcesTransactionCreateRequestType = "dk_nets"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeEft         BulkRequestNewParamsResourcesTransactionCreateRequestType = "eft"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeHuIcs       BulkRequestNewParamsResourcesTransactionCreateRequestType = "hu_ics"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeInterac     BulkRequestNewParamsResourcesTransactionCreateRequestType = "interac"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeMasav       BulkRequestNewParamsResourcesTransactionCreateRequestType = "masav"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeMxCcen      BulkRequestNewParamsResourcesTransactionCreateRequestType = "mx_ccen"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeNeft        BulkRequestNewParamsResourcesTransactionCreateRequestType = "neft"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeNics        BulkRequestNewParamsResourcesTransactionCreateRequestType = "nics"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeNzBecs      BulkRequestNewParamsResourcesTransactionCreateRequestType = "nz_becs"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypePlElixir    BulkRequestNewParamsResourcesTransactionCreateRequestType = "pl_elixir"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeProvxchange BulkRequestNewParamsResourcesTransactionCreateRequestType = "provxchange"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeRoSent      BulkRequestNewParamsResourcesTransactionCreateRequestType = "ro_sent"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeRtp         BulkRequestNewParamsResourcesTransactionCreateRequestType = "rtp"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeSeBankgirot BulkRequestNewParamsResourcesTransactionCreateRequestType = "se_bankgirot"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeSen         BulkRequestNewParamsResourcesTransactionCreateRequestType = "sen"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeSepa        BulkRequestNewParamsResourcesTransactionCreateRequestType = "sepa"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeSgGiro      BulkRequestNewParamsResourcesTransactionCreateRequestType = "sg_giro"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeSic         BulkRequestNewParamsResourcesTransactionCreateRequestType = "sic"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeSignet      BulkRequestNewParamsResourcesTransactionCreateRequestType = "signet"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeSknbi       BulkRequestNewParamsResourcesTransactionCreateRequestType = "sknbi"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeWire        BulkRequestNewParamsResourcesTransactionCreateRequestType = "wire"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeZengin      BulkRequestNewParamsResourcesTransactionCreateRequestType = "zengin"
+	BulkRequestNewParamsResourcesTransactionCreateRequestTypeOther       BulkRequestNewParamsResourcesTransactionCreateRequestType = "other"
+)
+
+func (r BulkRequestNewParamsResourcesTransactionCreateRequestType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesTransactionCreateRequestTypeACH, BulkRequestNewParamsResourcesTransactionCreateRequestTypeAuBecs, BulkRequestNewParamsResourcesTransactionCreateRequestTypeBacs, BulkRequestNewParamsResourcesTransactionCreateRequestTypeBook, BulkRequestNewParamsResourcesTransactionCreateRequestTypeCard, BulkRequestNewParamsResourcesTransactionCreateRequestTypeChats, BulkRequestNewParamsResourcesTransactionCreateRequestTypeCheck, BulkRequestNewParamsResourcesTransactionCreateRequestTypeCrossBorder, BulkRequestNewParamsResourcesTransactionCreateRequestTypeDkNets, BulkRequestNewParamsResourcesTransactionCreateRequestTypeEft, BulkRequestNewParamsResourcesTransactionCreateRequestTypeHuIcs, BulkRequestNewParamsResourcesTransactionCreateRequestTypeInterac, BulkRequestNewParamsResourcesTransactionCreateRequestTypeMasav, BulkRequestNewParamsResourcesTransactionCreateRequestTypeMxCcen, BulkRequestNewParamsResourcesTransactionCreateRequestTypeNeft, BulkRequestNewParamsResourcesTransactionCreateRequestTypeNics, BulkRequestNewParamsResourcesTransactionCreateRequestTypeNzBecs, BulkRequestNewParamsResourcesTransactionCreateRequestTypePlElixir, BulkRequestNewParamsResourcesTransactionCreateRequestTypeProvxchange, BulkRequestNewParamsResourcesTransactionCreateRequestTypeRoSent, BulkRequestNewParamsResourcesTransactionCreateRequestTypeRtp, BulkRequestNewParamsResourcesTransactionCreateRequestTypeSeBankgirot, BulkRequestNewParamsResourcesTransactionCreateRequestTypeSen, BulkRequestNewParamsResourcesTransactionCreateRequestTypeSepa, BulkRequestNewParamsResourcesTransactionCreateRequestTypeSgGiro, BulkRequestNewParamsResourcesTransactionCreateRequestTypeSic, BulkRequestNewParamsResourcesTransactionCreateRequestTypeSignet, BulkRequestNewParamsResourcesTransactionCreateRequestTypeSknbi, BulkRequestNewParamsResourcesTransactionCreateRequestTypeWire, BulkRequestNewParamsResourcesTransactionCreateRequestTypeZengin, BulkRequestNewParamsResourcesTransactionCreateRequestTypeOther:
+		return true
+	}
+	return false
 }
 
 type BulkRequestNewParamsResourcesObject struct {
@@ -2011,6 +2055,9 @@ type BulkRequestNewParamsResourceUnionExpectedPaymentUpdateRequestWithID struct 
 	// payments, this will be the OBI field on the wire. For check payments, this will
 	// be the memo field.
 	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
+	// The Expected Payment's status can be updated from partially_reconciled to
+	// reconciled.
+	Status param.Field[BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDStatus] `json:"status"`
 	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
 	// sepa, signet, wire.
 	Type param.Field[ExpectedPaymentType] `json:"type"`
@@ -2021,6 +2068,22 @@ func (r BulkRequestNewParamsResourceUnionExpectedPaymentUpdateRequestWithID) Mar
 }
 
 func (r BulkRequestNewParamsResourceUnionExpectedPaymentUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
+}
+
+// The Expected Payment's status can be updated from partially_reconciled to
+// reconciled.
+type BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDStatus string
+
+const (
+	BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDStatusReconciled BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDStatus = "reconciled"
+)
+
+func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDStatus) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDStatusReconciled:
+		return true
+	}
+	return false
 }
 
 type BulkRequestNewParamsResourceUnionTransactionUpdateRequestWithID struct {
@@ -2046,6 +2109,14 @@ type BulkRequestNewParamsResourceUnionLedgerTransactionUpdateRequestWithID struc
 	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
 	// An array of ledger entry objects.
 	LedgerEntries param.Field[[]BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerEntry] `json:"ledger_entries"`
+	// If the ledger transaction can be reconciled to another object in Modern
+	// Treasury, the id will be populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// If the ledger transaction can be reconciled to another object in Modern
+	// Treasury, the type will be populated here, otherwise null. This can be one of
+	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+	// reversal.
+	LedgerableType param.Field[BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -2098,6 +2169,29 @@ type BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerEntr
 
 func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerEntry) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// If the ledger transaction can be reconciled to another object in Modern
+// Treasury, the type will be populated here, otherwise null. This can be one of
+// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+// reversal.
+type BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableType string
+
+const (
+	BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableTypeExpectedPayment       BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableType = "expected_payment"
+	BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableTypeIncomingPaymentDetail BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableType = "incoming_payment_detail"
+	BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableTypePaperItem             BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableType = "paper_item"
+	BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableTypePaymentOrder          BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableType = "payment_order"
+	BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableTypeReturn                BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableType = "return"
+	BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableTypeReversal              BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableType = "reversal"
+)
+
+func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableTypePaperItem, BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableTypeReturn, BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableTypeReversal:
+		return true
+	}
+	return false
 }
 
 // To post a ledger transaction at creation, use `posted`.
@@ -2206,11 +2300,12 @@ const (
 	BulkRequestNewParamsResourcesStatusReturned      BulkRequestNewParamsResourcesStatus = "returned"
 	BulkRequestNewParamsResourcesStatusReversed      BulkRequestNewParamsResourcesStatus = "reversed"
 	BulkRequestNewParamsResourcesStatusSent          BulkRequestNewParamsResourcesStatus = "sent"
+	BulkRequestNewParamsResourcesStatusReconciled    BulkRequestNewParamsResourcesStatus = "reconciled"
 )
 
 func (r BulkRequestNewParamsResourcesStatus) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesStatusArchived, BulkRequestNewParamsResourcesStatusPending, BulkRequestNewParamsResourcesStatusPosted, BulkRequestNewParamsResourcesStatusApproved, BulkRequestNewParamsResourcesStatusCancelled, BulkRequestNewParamsResourcesStatusCompleted, BulkRequestNewParamsResourcesStatusDenied, BulkRequestNewParamsResourcesStatusFailed, BulkRequestNewParamsResourcesStatusNeedsApproval, BulkRequestNewParamsResourcesStatusProcessing, BulkRequestNewParamsResourcesStatusReturned, BulkRequestNewParamsResourcesStatusReversed, BulkRequestNewParamsResourcesStatusSent:
+	case BulkRequestNewParamsResourcesStatusArchived, BulkRequestNewParamsResourcesStatusPending, BulkRequestNewParamsResourcesStatusPosted, BulkRequestNewParamsResourcesStatusApproved, BulkRequestNewParamsResourcesStatusCancelled, BulkRequestNewParamsResourcesStatusCompleted, BulkRequestNewParamsResourcesStatusDenied, BulkRequestNewParamsResourcesStatusFailed, BulkRequestNewParamsResourcesStatusNeedsApproval, BulkRequestNewParamsResourcesStatusProcessing, BulkRequestNewParamsResourcesStatusReturned, BulkRequestNewParamsResourcesStatusReversed, BulkRequestNewParamsResourcesStatusSent, BulkRequestNewParamsResourcesStatusReconciled:
 		return true
 	}
 	return false
@@ -2218,25 +2313,22 @@ func (r BulkRequestNewParamsResourcesStatus) IsKnown() bool {
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+// reversal.
 type BulkRequestNewParamsResourcesLedgerableType string
 
 const (
-	BulkRequestNewParamsResourcesLedgerableTypeCounterparty          BulkRequestNewParamsResourcesLedgerableType = "counterparty"
 	BulkRequestNewParamsResourcesLedgerableTypeExpectedPayment       BulkRequestNewParamsResourcesLedgerableType = "expected_payment"
 	BulkRequestNewParamsResourcesLedgerableTypeIncomingPaymentDetail BulkRequestNewParamsResourcesLedgerableType = "incoming_payment_detail"
-	BulkRequestNewParamsResourcesLedgerableTypeInternalAccount       BulkRequestNewParamsResourcesLedgerableType = "internal_account"
-	BulkRequestNewParamsResourcesLedgerableTypeLineItem              BulkRequestNewParamsResourcesLedgerableType = "line_item"
 	BulkRequestNewParamsResourcesLedgerableTypePaperItem             BulkRequestNewParamsResourcesLedgerableType = "paper_item"
 	BulkRequestNewParamsResourcesLedgerableTypePaymentOrder          BulkRequestNewParamsResourcesLedgerableType = "payment_order"
-	BulkRequestNewParamsResourcesLedgerableTypePaymentOrderAttempt   BulkRequestNewParamsResourcesLedgerableType = "payment_order_attempt"
 	BulkRequestNewParamsResourcesLedgerableTypeReturn                BulkRequestNewParamsResourcesLedgerableType = "return"
 	BulkRequestNewParamsResourcesLedgerableTypeReversal              BulkRequestNewParamsResourcesLedgerableType = "reversal"
 )
 
 func (r BulkRequestNewParamsResourcesLedgerableType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesLedgerableTypeCounterparty, BulkRequestNewParamsResourcesLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesLedgerableTypeLineItem, BulkRequestNewParamsResourcesLedgerableTypePaperItem, BulkRequestNewParamsResourcesLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesLedgerableTypePaymentOrderAttempt, BulkRequestNewParamsResourcesLedgerableTypeReturn, BulkRequestNewParamsResourcesLedgerableTypeReversal:
+	case BulkRequestNewParamsResourcesLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesLedgerableTypePaperItem, BulkRequestNewParamsResourcesLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesLedgerableTypeReturn, BulkRequestNewParamsResourcesLedgerableTypeReversal:
 		return true
 	}
 	return false

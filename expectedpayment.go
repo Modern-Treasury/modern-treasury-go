@@ -143,7 +143,7 @@ type ExpectedPayment struct {
 	// payments, this will be the OBI field on the wire. For check payments, this will
 	// be the memo field.
 	StatementDescriptor string `json:"statement_descriptor,required,nullable"`
-	// One of unreconciled, reconciled, or archived.
+	// One of unreconciled, partially_reconciled, reconciled, or archived.
 	Status ExpectedPaymentStatus `json:"status,required"`
 	// The ID of the Transaction this expected payment object has been matched to.
 	TransactionID string `json:"transaction_id,required,nullable" format:"uuid"`
@@ -216,7 +216,7 @@ func (r ExpectedPaymentReconciliationMethod) IsKnown() bool {
 	return false
 }
 
-// One of unreconciled, reconciled, or archived.
+// One of unreconciled, partially_reconciled, reconciled, or archived.
 type ExpectedPaymentStatus string
 
 const (
@@ -362,7 +362,8 @@ type ExpectedPaymentNewParamsLedgerTransaction struct {
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+	// reversal.
 	LedgerableType param.Field[ExpectedPaymentNewParamsLedgerTransactionLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
@@ -417,25 +418,22 @@ func (r ExpectedPaymentNewParamsLedgerTransactionLedgerEntry) MarshalJSON() (dat
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+// reversal.
 type ExpectedPaymentNewParamsLedgerTransactionLedgerableType string
 
 const (
-	ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeCounterparty          ExpectedPaymentNewParamsLedgerTransactionLedgerableType = "counterparty"
 	ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeExpectedPayment       ExpectedPaymentNewParamsLedgerTransactionLedgerableType = "expected_payment"
 	ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail ExpectedPaymentNewParamsLedgerTransactionLedgerableType = "incoming_payment_detail"
-	ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeInternalAccount       ExpectedPaymentNewParamsLedgerTransactionLedgerableType = "internal_account"
-	ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeLineItem              ExpectedPaymentNewParamsLedgerTransactionLedgerableType = "line_item"
 	ExpectedPaymentNewParamsLedgerTransactionLedgerableTypePaperItem             ExpectedPaymentNewParamsLedgerTransactionLedgerableType = "paper_item"
 	ExpectedPaymentNewParamsLedgerTransactionLedgerableTypePaymentOrder          ExpectedPaymentNewParamsLedgerTransactionLedgerableType = "payment_order"
-	ExpectedPaymentNewParamsLedgerTransactionLedgerableTypePaymentOrderAttempt   ExpectedPaymentNewParamsLedgerTransactionLedgerableType = "payment_order_attempt"
 	ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeReturn                ExpectedPaymentNewParamsLedgerTransactionLedgerableType = "return"
 	ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeReversal              ExpectedPaymentNewParamsLedgerTransactionLedgerableType = "reversal"
 )
 
 func (r ExpectedPaymentNewParamsLedgerTransactionLedgerableType) IsKnown() bool {
 	switch r {
-	case ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeCounterparty, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeExpectedPayment, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeInternalAccount, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeLineItem, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypePaperItem, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypePaymentOrder, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypePaymentOrderAttempt, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeReturn, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeReversal:
+	case ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeExpectedPayment, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypePaperItem, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypePaymentOrder, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeReturn, ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeReversal:
 		return true
 	}
 	return false
@@ -516,6 +514,9 @@ type ExpectedPaymentUpdateParams struct {
 	// payments, this will be the OBI field on the wire. For check payments, this will
 	// be the memo field.
 	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
+	// The Expected Payment's status can be updated from partially_reconciled to
+	// reconciled.
+	Status param.Field[ExpectedPaymentUpdateParamsStatus] `json:"status"`
 	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
 	// sepa, signet, wire.
 	Type param.Field[ExpectedPaymentType] `json:"type"`
@@ -523,6 +524,22 @@ type ExpectedPaymentUpdateParams struct {
 
 func (r ExpectedPaymentUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// The Expected Payment's status can be updated from partially_reconciled to
+// reconciled.
+type ExpectedPaymentUpdateParamsStatus string
+
+const (
+	ExpectedPaymentUpdateParamsStatusReconciled ExpectedPaymentUpdateParamsStatus = "reconciled"
+)
+
+func (r ExpectedPaymentUpdateParamsStatus) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentUpdateParamsStatusReconciled:
+		return true
+	}
+	return false
 }
 
 type ExpectedPaymentListParams struct {

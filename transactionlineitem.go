@@ -35,6 +35,14 @@ func NewTransactionLineItemService(opts ...option.RequestOption) (r *Transaction
 	return
 }
 
+// create transaction line items
+func (r *TransactionLineItemService) New(ctx context.Context, body TransactionLineItemNewParams, opts ...option.RequestOption) (res *TransactionLineItem, err error) {
+	opts = append(r.Options[:], opts...)
+	path := "api/transaction_line_items"
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // get transaction line item
 func (r *TransactionLineItemService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *TransactionLineItem, err error) {
 	opts = append(r.Options[:], opts...)
@@ -64,6 +72,15 @@ func (r *TransactionLineItemService) List(ctx context.Context, query Transaction
 // list transaction_line_items
 func (r *TransactionLineItemService) ListAutoPaging(ctx context.Context, query TransactionLineItemListParams, opts ...option.RequestOption) *pagination.PageAutoPager[TransactionLineItem] {
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
+}
+
+// delete transaction line item
+func (r *TransactionLineItemService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (err error) {
+	opts = append(r.Options[:], opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	path := fmt.Sprintf("api/transaction_line_items/%s", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
+	return
 }
 
 type TransactionLineItem struct {
@@ -171,6 +188,20 @@ func (r TransactionLineItemType) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+type TransactionLineItemNewParams struct {
+	// If a matching object exists in Modern Treasury, `amount` will be populated.
+	// Value in specified currency's smallest unit (taken from parent Transaction).
+	Amount param.Field[int64] `json:"amount,required"`
+	// The ID of the reconciled Expected Payment, otherwise `null`.
+	ExpectedPaymentID param.Field[string] `json:"expected_payment_id,required" format:"uuid"`
+	// The ID of the parent transaction.
+	TransactionID param.Field[string] `json:"transaction_id,required" format:"uuid"`
+}
+
+func (r TransactionLineItemNewParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type TransactionLineItemListParams struct {
