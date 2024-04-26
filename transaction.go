@@ -127,8 +127,8 @@ type Transaction struct {
 	// system. This means that it has transaction line items that sum up to the
 	// transaction's amount.
 	Reconciled bool `json:"reconciled,required"`
-	// The type of the transaction. Can be one of `ach`, `wire`, `check`, `rtp`,
-	// `book`, or `sen`.
+	// The type of the transaction. Examples could be
+	// `card, `ach`, `wire`, `check`, `rtp`, `book`, or `sen`.
 	Type      TransactionType `json:"type,required"`
 	UpdatedAt time.Time       `json:"updated_at,required" format:"date-time"`
 	// When applicable, the bank-given code that determines the transaction's category.
@@ -241,8 +241,8 @@ func (r transactionForeignExchangeRateJSON) RawJSON() string {
 	return r.raw
 }
 
-// The type of the transaction. Can be one of `ach`, `wire`, `check`, `rtp`,
-// `book`, or `sen`.
+// The type of the transaction. Examples could be
+// `card, `ach`, `wire`, `check`, `rtp`, `book`, or `sen`.
 type TransactionType string
 
 const (
@@ -314,11 +314,12 @@ const (
 	TransactionVendorCodeTypeSilvergate    TransactionVendorCodeType = "silvergate"
 	TransactionVendorCodeTypeSwift         TransactionVendorCodeType = "swift"
 	TransactionVendorCodeTypeUsBank        TransactionVendorCodeType = "us_bank"
+	TransactionVendorCodeTypeUser          TransactionVendorCodeType = "user"
 )
 
 func (r TransactionVendorCodeType) IsKnown() bool {
 	switch r {
-	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePlaid, TransactionVendorCodeTypeRspecVendor, TransactionVendorCodeTypeSignet, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeUsBank:
+	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePlaid, TransactionVendorCodeTypeRspecVendor, TransactionVendorCodeTypeSignet, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser:
 		return true
 	}
 	return false
@@ -347,6 +348,9 @@ type TransactionNewParams struct {
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// This field will be `true` if the transaction has posted to the account.
 	Posted param.Field[bool] `json:"posted"`
+	// The type of the transaction. Examples could be
+	// `card, `ach`, `wire`, `check`, `rtp`, `book`, or `sen`.
+	Type param.Field[TransactionNewParamsType] `json:"type"`
 	// The transaction detail text that often appears in on your bank statement and in
 	// your banking portal.
 	VendorDescription param.Field[string] `json:"vendor_description"`
@@ -354,6 +358,52 @@ type TransactionNewParams struct {
 
 func (r TransactionNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// The type of the transaction. Examples could be
+// `card, `ach`, `wire`, `check`, `rtp`, `book`, or `sen`.
+type TransactionNewParamsType string
+
+const (
+	TransactionNewParamsTypeACH         TransactionNewParamsType = "ach"
+	TransactionNewParamsTypeAuBecs      TransactionNewParamsType = "au_becs"
+	TransactionNewParamsTypeBacs        TransactionNewParamsType = "bacs"
+	TransactionNewParamsTypeBook        TransactionNewParamsType = "book"
+	TransactionNewParamsTypeCard        TransactionNewParamsType = "card"
+	TransactionNewParamsTypeChats       TransactionNewParamsType = "chats"
+	TransactionNewParamsTypeCheck       TransactionNewParamsType = "check"
+	TransactionNewParamsTypeCrossBorder TransactionNewParamsType = "cross_border"
+	TransactionNewParamsTypeDkNets      TransactionNewParamsType = "dk_nets"
+	TransactionNewParamsTypeEft         TransactionNewParamsType = "eft"
+	TransactionNewParamsTypeHuIcs       TransactionNewParamsType = "hu_ics"
+	TransactionNewParamsTypeInterac     TransactionNewParamsType = "interac"
+	TransactionNewParamsTypeMasav       TransactionNewParamsType = "masav"
+	TransactionNewParamsTypeMxCcen      TransactionNewParamsType = "mx_ccen"
+	TransactionNewParamsTypeNeft        TransactionNewParamsType = "neft"
+	TransactionNewParamsTypeNics        TransactionNewParamsType = "nics"
+	TransactionNewParamsTypeNzBecs      TransactionNewParamsType = "nz_becs"
+	TransactionNewParamsTypePlElixir    TransactionNewParamsType = "pl_elixir"
+	TransactionNewParamsTypeProvxchange TransactionNewParamsType = "provxchange"
+	TransactionNewParamsTypeRoSent      TransactionNewParamsType = "ro_sent"
+	TransactionNewParamsTypeRtp         TransactionNewParamsType = "rtp"
+	TransactionNewParamsTypeSeBankgirot TransactionNewParamsType = "se_bankgirot"
+	TransactionNewParamsTypeSen         TransactionNewParamsType = "sen"
+	TransactionNewParamsTypeSepa        TransactionNewParamsType = "sepa"
+	TransactionNewParamsTypeSgGiro      TransactionNewParamsType = "sg_giro"
+	TransactionNewParamsTypeSic         TransactionNewParamsType = "sic"
+	TransactionNewParamsTypeSignet      TransactionNewParamsType = "signet"
+	TransactionNewParamsTypeSknbi       TransactionNewParamsType = "sknbi"
+	TransactionNewParamsTypeWire        TransactionNewParamsType = "wire"
+	TransactionNewParamsTypeZengin      TransactionNewParamsType = "zengin"
+	TransactionNewParamsTypeOther       TransactionNewParamsType = "other"
+)
+
+func (r TransactionNewParamsType) IsKnown() bool {
+	switch r {
+	case TransactionNewParamsTypeACH, TransactionNewParamsTypeAuBecs, TransactionNewParamsTypeBacs, TransactionNewParamsTypeBook, TransactionNewParamsTypeCard, TransactionNewParamsTypeChats, TransactionNewParamsTypeCheck, TransactionNewParamsTypeCrossBorder, TransactionNewParamsTypeDkNets, TransactionNewParamsTypeEft, TransactionNewParamsTypeHuIcs, TransactionNewParamsTypeInterac, TransactionNewParamsTypeMasav, TransactionNewParamsTypeMxCcen, TransactionNewParamsTypeNeft, TransactionNewParamsTypeNics, TransactionNewParamsTypeNzBecs, TransactionNewParamsTypePlElixir, TransactionNewParamsTypeProvxchange, TransactionNewParamsTypeRoSent, TransactionNewParamsTypeRtp, TransactionNewParamsTypeSeBankgirot, TransactionNewParamsTypeSen, TransactionNewParamsTypeSepa, TransactionNewParamsTypeSgGiro, TransactionNewParamsTypeSic, TransactionNewParamsTypeSignet, TransactionNewParamsTypeSknbi, TransactionNewParamsTypeWire, TransactionNewParamsTypeZengin, TransactionNewParamsTypeOther:
+		return true
+	}
+	return false
 }
 
 type TransactionUpdateParams struct {

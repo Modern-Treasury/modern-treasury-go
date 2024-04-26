@@ -294,7 +294,8 @@ type BulkResultEntity struct {
 	LedgerID string `json:"ledger_id" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+	// reversal.
 	LedgerableType BulkResultEntityLedgerableType `json:"ledgerable_type,nullable"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the id will be populated here, otherwise null.
@@ -675,25 +676,22 @@ func (r BulkResultEntityReconciliationMethod) IsKnown() bool {
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+// reversal.
 type BulkResultEntityLedgerableType string
 
 const (
-	BulkResultEntityLedgerableTypeCounterparty          BulkResultEntityLedgerableType = "counterparty"
 	BulkResultEntityLedgerableTypeExpectedPayment       BulkResultEntityLedgerableType = "expected_payment"
 	BulkResultEntityLedgerableTypeIncomingPaymentDetail BulkResultEntityLedgerableType = "incoming_payment_detail"
-	BulkResultEntityLedgerableTypeInternalAccount       BulkResultEntityLedgerableType = "internal_account"
-	BulkResultEntityLedgerableTypeLineItem              BulkResultEntityLedgerableType = "line_item"
 	BulkResultEntityLedgerableTypePaperItem             BulkResultEntityLedgerableType = "paper_item"
 	BulkResultEntityLedgerableTypePaymentOrder          BulkResultEntityLedgerableType = "payment_order"
-	BulkResultEntityLedgerableTypePaymentOrderAttempt   BulkResultEntityLedgerableType = "payment_order_attempt"
 	BulkResultEntityLedgerableTypeReturn                BulkResultEntityLedgerableType = "return"
 	BulkResultEntityLedgerableTypeReversal              BulkResultEntityLedgerableType = "reversal"
 )
 
 func (r BulkResultEntityLedgerableType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityLedgerableTypeCounterparty, BulkResultEntityLedgerableTypeExpectedPayment, BulkResultEntityLedgerableTypeIncomingPaymentDetail, BulkResultEntityLedgerableTypeInternalAccount, BulkResultEntityLedgerableTypeLineItem, BulkResultEntityLedgerableTypePaperItem, BulkResultEntityLedgerableTypePaymentOrder, BulkResultEntityLedgerableTypePaymentOrderAttempt, BulkResultEntityLedgerableTypeReturn, BulkResultEntityLedgerableTypeReversal:
+	case BulkResultEntityLedgerableTypeExpectedPayment, BulkResultEntityLedgerableTypeIncomingPaymentDetail, BulkResultEntityLedgerableTypePaperItem, BulkResultEntityLedgerableTypePaymentOrder, BulkResultEntityLedgerableTypeReturn, BulkResultEntityLedgerableTypeReversal:
 		return true
 	}
 	return false
@@ -726,11 +724,12 @@ const (
 	BulkResultEntityVendorCodeTypeSilvergate    BulkResultEntityVendorCodeType = "silvergate"
 	BulkResultEntityVendorCodeTypeSwift         BulkResultEntityVendorCodeType = "swift"
 	BulkResultEntityVendorCodeTypeUsBank        BulkResultEntityVendorCodeType = "us_bank"
+	BulkResultEntityVendorCodeTypeUser          BulkResultEntityVendorCodeType = "user"
 )
 
 func (r BulkResultEntityVendorCodeType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePlaid, BulkResultEntityVendorCodeTypeRspecVendor, BulkResultEntityVendorCodeTypeSignet, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeUsBank:
+	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePlaid, BulkResultEntityVendorCodeTypeRspecVendor, BulkResultEntityVendorCodeTypeSignet, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser:
 		return true
 	}
 	return false

@@ -1149,7 +1149,8 @@ type PaymentOrderNewParamsLedgerTransaction struct {
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+	// reversal.
 	LedgerableType param.Field[PaymentOrderNewParamsLedgerTransactionLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
@@ -1204,25 +1205,22 @@ func (r PaymentOrderNewParamsLedgerTransactionLedgerEntry) MarshalJSON() (data [
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+// reversal.
 type PaymentOrderNewParamsLedgerTransactionLedgerableType string
 
 const (
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeCounterparty          PaymentOrderNewParamsLedgerTransactionLedgerableType = "counterparty"
 	PaymentOrderNewParamsLedgerTransactionLedgerableTypeExpectedPayment       PaymentOrderNewParamsLedgerTransactionLedgerableType = "expected_payment"
 	PaymentOrderNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail PaymentOrderNewParamsLedgerTransactionLedgerableType = "incoming_payment_detail"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeInternalAccount       PaymentOrderNewParamsLedgerTransactionLedgerableType = "internal_account"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeLineItem              PaymentOrderNewParamsLedgerTransactionLedgerableType = "line_item"
 	PaymentOrderNewParamsLedgerTransactionLedgerableTypePaperItem             PaymentOrderNewParamsLedgerTransactionLedgerableType = "paper_item"
 	PaymentOrderNewParamsLedgerTransactionLedgerableTypePaymentOrder          PaymentOrderNewParamsLedgerTransactionLedgerableType = "payment_order"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypePaymentOrderAttempt   PaymentOrderNewParamsLedgerTransactionLedgerableType = "payment_order_attempt"
 	PaymentOrderNewParamsLedgerTransactionLedgerableTypeReturn                PaymentOrderNewParamsLedgerTransactionLedgerableType = "return"
 	PaymentOrderNewParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderNewParamsLedgerTransactionLedgerableType = "reversal"
 )
 
 func (r PaymentOrderNewParamsLedgerTransactionLedgerableType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewParamsLedgerTransactionLedgerableTypeCounterparty, PaymentOrderNewParamsLedgerTransactionLedgerableTypeExpectedPayment, PaymentOrderNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, PaymentOrderNewParamsLedgerTransactionLedgerableTypeInternalAccount, PaymentOrderNewParamsLedgerTransactionLedgerableTypeLineItem, PaymentOrderNewParamsLedgerTransactionLedgerableTypePaperItem, PaymentOrderNewParamsLedgerTransactionLedgerableTypePaymentOrder, PaymentOrderNewParamsLedgerTransactionLedgerableTypePaymentOrderAttempt, PaymentOrderNewParamsLedgerTransactionLedgerableTypeReturn, PaymentOrderNewParamsLedgerTransactionLedgerableTypeReversal:
+	case PaymentOrderNewParamsLedgerTransactionLedgerableTypeExpectedPayment, PaymentOrderNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, PaymentOrderNewParamsLedgerTransactionLedgerableTypePaperItem, PaymentOrderNewParamsLedgerTransactionLedgerableTypePaymentOrder, PaymentOrderNewParamsLedgerTransactionLedgerableTypeReturn, PaymentOrderNewParamsLedgerTransactionLedgerableTypeReversal:
 		return true
 	}
 	return false
@@ -2461,7 +2459,8 @@ type PaymentOrderNewAsyncParamsLedgerTransaction struct {
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+	// reversal.
 	LedgerableType param.Field[PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
@@ -2516,25 +2515,22 @@ func (r PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntry) MarshalJSON() (d
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+// reversal.
 type PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType string
 
 const (
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeCounterparty          PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "counterparty"
 	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeExpectedPayment       PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "expected_payment"
 	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "incoming_payment_detail"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeInternalAccount       PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "internal_account"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeLineItem              PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "line_item"
 	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaperItem             PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "paper_item"
 	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaymentOrder          PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "payment_order"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaymentOrderAttempt   PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "payment_order_attempt"
 	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReturn                PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "return"
 	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "reversal"
 )
 
 func (r PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeCounterparty, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeExpectedPayment, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeInternalAccount, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeLineItem, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaperItem, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaymentOrder, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaymentOrderAttempt, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReturn, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReversal:
+	case PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeExpectedPayment, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaperItem, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaymentOrder, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReturn, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReversal:
 		return true
 	}
 	return false

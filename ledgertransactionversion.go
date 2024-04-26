@@ -380,21 +380,17 @@ func (r LedgerTransactionVersionLedgerEntriesStatus) IsKnown() bool {
 type LedgerTransactionVersionLedgerableType string
 
 const (
-	LedgerTransactionVersionLedgerableTypeCounterparty          LedgerTransactionVersionLedgerableType = "counterparty"
 	LedgerTransactionVersionLedgerableTypeExpectedPayment       LedgerTransactionVersionLedgerableType = "expected_payment"
 	LedgerTransactionVersionLedgerableTypeIncomingPaymentDetail LedgerTransactionVersionLedgerableType = "incoming_payment_detail"
-	LedgerTransactionVersionLedgerableTypeInternalAccount       LedgerTransactionVersionLedgerableType = "internal_account"
-	LedgerTransactionVersionLedgerableTypeLineItem              LedgerTransactionVersionLedgerableType = "line_item"
 	LedgerTransactionVersionLedgerableTypePaperItem             LedgerTransactionVersionLedgerableType = "paper_item"
 	LedgerTransactionVersionLedgerableTypePaymentOrder          LedgerTransactionVersionLedgerableType = "payment_order"
-	LedgerTransactionVersionLedgerableTypePaymentOrderAttempt   LedgerTransactionVersionLedgerableType = "payment_order_attempt"
 	LedgerTransactionVersionLedgerableTypeReturn                LedgerTransactionVersionLedgerableType = "return"
 	LedgerTransactionVersionLedgerableTypeReversal              LedgerTransactionVersionLedgerableType = "reversal"
 )
 
 func (r LedgerTransactionVersionLedgerableType) IsKnown() bool {
 	switch r {
-	case LedgerTransactionVersionLedgerableTypeCounterparty, LedgerTransactionVersionLedgerableTypeExpectedPayment, LedgerTransactionVersionLedgerableTypeIncomingPaymentDetail, LedgerTransactionVersionLedgerableTypeInternalAccount, LedgerTransactionVersionLedgerableTypeLineItem, LedgerTransactionVersionLedgerableTypePaperItem, LedgerTransactionVersionLedgerableTypePaymentOrder, LedgerTransactionVersionLedgerableTypePaymentOrderAttempt, LedgerTransactionVersionLedgerableTypeReturn, LedgerTransactionVersionLedgerableTypeReversal:
+	case LedgerTransactionVersionLedgerableTypeExpectedPayment, LedgerTransactionVersionLedgerableTypeIncomingPaymentDetail, LedgerTransactionVersionLedgerableTypePaperItem, LedgerTransactionVersionLedgerableTypePaymentOrder, LedgerTransactionVersionLedgerableTypeReturn, LedgerTransactionVersionLedgerableTypeReversal:
 		return true
 	}
 	return false
