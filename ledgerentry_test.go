@@ -10,9 +10,9 @@ import (
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
 
 func TestLedgerEntryGetWithOptionalParams(t *testing.T) {

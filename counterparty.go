@@ -14,8 +14,8 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/pagination"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/shared"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
 
 // CounterpartyService contains methods and other services that help with
