@@ -221,7 +221,8 @@ type PaymentOrderReversalNewParamsLedgerTransaction struct {
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+	// reversal.
 	LedgerableType param.Field[PaymentOrderReversalNewParamsLedgerTransactionLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
@@ -276,25 +277,22 @@ func (r PaymentOrderReversalNewParamsLedgerTransactionLedgerEntry) MarshalJSON()
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+// reversal.
 type PaymentOrderReversalNewParamsLedgerTransactionLedgerableType string
 
 const (
-	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeCounterparty          PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "counterparty"
 	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeExpectedPayment       PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "expected_payment"
 	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "incoming_payment_detail"
-	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeInternalAccount       PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "internal_account"
-	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeLineItem              PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "line_item"
 	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaperItem             PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "paper_item"
 	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaymentOrder          PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "payment_order"
-	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaymentOrderAttempt   PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "payment_order_attempt"
 	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReturn                PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "return"
 	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "reversal"
 )
 
 func (r PaymentOrderReversalNewParamsLedgerTransactionLedgerableType) IsKnown() bool {
 	switch r {
-	case PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeCounterparty, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeExpectedPayment, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeInternalAccount, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeLineItem, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaperItem, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaymentOrder, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaymentOrderAttempt, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReturn, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReversal:
+	case PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeExpectedPayment, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaperItem, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaymentOrder, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReturn, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReversal:
 		return true
 	}
 	return false

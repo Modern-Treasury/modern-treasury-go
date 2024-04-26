@@ -105,7 +105,7 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 					}),
 				}}),
 				ExternalID:     moderntreasury.F("string"),
-				LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeCounterparty),
+				LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeExpectedPayment),
 				LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			}),
 			Metadata: moderntreasury.F(map[string]string{

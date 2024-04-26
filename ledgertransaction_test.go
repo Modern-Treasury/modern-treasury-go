@@ -95,7 +95,7 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 		EffectiveDate:  moderntreasury.F(time.Now()),
 		ExternalID:     moderntreasury.F("string"),
 		LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionNewParamsLedgerableTypeCounterparty),
+		LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionNewParamsLedgerableTypeExpectedPayment),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
@@ -215,6 +215,8 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 					"modern": "treasury",
 				}),
 			}}),
+			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionUpdateParamsLedgerableTypeExpectedPayment),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
@@ -261,7 +263,7 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 		LedgerAccountSettlementID: moderntreasury.F("string"),
 		LedgerID:                  moderntreasury.F("string"),
 		LedgerableID:              moderntreasury.F("string"),
-		LedgerableType:            moderntreasury.F(moderntreasury.LedgerTransactionListParamsLedgerableTypeCounterparty),
+		LedgerableType:            moderntreasury.F(moderntreasury.LedgerTransactionListParamsLedgerableTypeExpectedPayment),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
@@ -309,7 +311,7 @@ func TestLedgerTransactionNewReversalWithOptionalParams(t *testing.T) {
 			EffectiveAt:    moderntreasury.F(time.Now()),
 			ExternalID:     moderntreasury.F("string"),
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionNewReversalParamsLedgerableTypeCounterparty),
+			LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionNewReversalParamsLedgerableTypeExpectedPayment),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
