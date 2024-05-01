@@ -261,6 +261,7 @@ type LedgerAccountSettlementListParams struct {
 	// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
 	ID                  param.Field[[]string] `query:"id"`
 	AfterCursor         param.Field[string]   `query:"after_cursor"`
+	LedgerID            param.Field[string]   `query:"ledger_id"`
 	LedgerTransactionID param.Field[string]   `query:"ledger_transaction_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
