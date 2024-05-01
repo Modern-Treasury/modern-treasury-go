@@ -124,6 +124,7 @@ func TestLedgerAccountSettlementListWithOptionalParams(t *testing.T) {
 	_, err := client.LedgerAccountSettlements.List(context.TODO(), moderntreasury.LedgerAccountSettlementListParams{
 		ID:                  moderntreasury.F([]string{"string", "string", "string"}),
 		AfterCursor:         moderntreasury.F("string"),
+		LedgerID:            moderntreasury.F("string"),
 		LedgerTransactionID: moderntreasury.F("string"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
