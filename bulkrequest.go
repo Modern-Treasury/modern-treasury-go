@@ -293,9 +293,8 @@ type BulkRequestNewParamsResource struct {
 	// timestamp.
 	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
-	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
-	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
-	// CPA Code that will be attached to the payment.
+	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
+	// digit CPA Code that will be attached to the payment.
 	Purpose  param.Field[string]      `json:"purpose"`
 	Metadata param.Field[interface{}] `json:"metadata,required"`
 	// The party that will pay the fees for the payment order. Only applies to wire
@@ -498,9 +497,8 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// timestamp.
 	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
-	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
-	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
-	// CPA Code that will be attached to the payment.
+	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
+	// digit CPA Code that will be attached to the payment.
 	Purpose param.Field[string] `json:"purpose"`
 	// Either `receiving_account` or `receiving_account_id` must be present. When using
 	// `receiving_account_id`, you may pass the id of an external account or an
@@ -1534,9 +1532,8 @@ type BulkRequestNewParamsResourceUnionPaymentOrderUpdateRequestWithID struct {
 	// timestamp.
 	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
-	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
-	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
-	// CPA Code that will be attached to the payment.
+	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
+	// digit CPA Code that will be attached to the payment.
 	Purpose param.Field[string] `json:"purpose"`
 	// Either `receiving_account` or `receiving_account_id` must be present. When using
 	// `receiving_account_id`, you may pass the id of an external account or an
