@@ -183,9 +183,8 @@ type PaymentOrder struct {
 	// timestamp.
 	ProcessAfter time.Time `json:"process_after,required,nullable" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
-	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
-	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
-	// CPA Code that will be attached to the payment.
+	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
+	// digit CPA Code that will be attached to the payment.
 	Purpose string `json:"purpose,required,nullable"`
 	// The receiving account ID. Can be an `external_account` or `internal_account`.
 	ReceivingAccountID   string                           `json:"receiving_account_id,required" format:"uuid"`
@@ -238,8 +237,8 @@ type PaymentOrder struct {
 	UltimateReceivingPartyIdentifier string    `json:"ultimate_receiving_party_identifier,required,nullable"`
 	UltimateReceivingPartyName       string    `json:"ultimate_receiving_party_name,required,nullable"`
 	UpdatedAt                        time.Time `json:"updated_at,required" format:"date-time"`
-	// This field will be populated if a vendor (e.g. Currencycloud) failure occurs.
-	// Logic shouldn't be built on its value as it is free-form.
+	// This field will be populated if a vendor failure occurs. Logic shouldn't be
+	// built on its value as it is free-form.
 	VendorFailureReason string           `json:"vendor_failure_reason,required,nullable"`
 	JSON                paymentOrderJSON `json:"-"`
 }
@@ -943,9 +942,8 @@ type PaymentOrderNewParams struct {
 	// timestamp.
 	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
-	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
-	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
-	// CPA Code that will be attached to the payment.
+	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
+	// digit CPA Code that will be attached to the payment.
 	Purpose param.Field[string] `json:"purpose"`
 	// Either `receiving_account` or `receiving_account_id` must be present. When using
 	// `receiving_account_id`, you may pass the id of an external account or an
@@ -1616,9 +1614,8 @@ type PaymentOrderUpdateParams struct {
 	// timestamp.
 	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
-	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
-	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
-	// CPA Code that will be attached to the payment.
+	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
+	// digit CPA Code that will be attached to the payment.
 	Purpose param.Field[string] `json:"purpose"`
 	// Either `receiving_account` or `receiving_account_id` must be present. When using
 	// `receiving_account_id`, you may pass the id of an external account or an
@@ -2302,9 +2299,8 @@ type PaymentOrderNewAsyncParams struct {
 	// timestamp.
 	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
-	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
-	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
-	// CPA Code that will be attached to the payment.
+	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
+	// digit CPA Code that will be attached to the payment.
 	Purpose param.Field[string] `json:"purpose"`
 	// Either `receiving_account` or `receiving_account_id` must be present. When using
 	// `receiving_account_id`, you may pass the id of an external account or an

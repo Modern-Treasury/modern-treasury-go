@@ -198,9 +198,8 @@ type BulkResultEntity struct {
 	// timestamp.
 	ProcessAfter time.Time `json:"process_after,nullable" format:"date-time"`
 	// For `wire`, this is usually the purpose which is transmitted via the
-	// "InstrForDbtrAgt" field in the ISO20022 file. If you are using Currencycloud,
-	// this is the `payment.purpose_code` field. For `eft`, this field is the 3 digit
-	// CPA Code that will be attached to the payment.
+	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
+	// digit CPA Code that will be attached to the payment.
 	Purpose  string      `json:"purpose,nullable"`
 	Metadata interface{} `json:"metadata,required"`
 	// The party that will pay the fees for the payment order. Only applies to wire
@@ -255,8 +254,8 @@ type BulkResultEntity struct {
 	TransactionMonitoringEnabled bool        `json:"transaction_monitoring_enabled"`
 	ComplianceRuleMetadata       interface{} `json:"compliance_rule_metadata,required"`
 	ReferenceNumbers             interface{} `json:"reference_numbers,required"`
-	// This field will be populated if a vendor (e.g. Currencycloud) failure occurs.
-	// Logic shouldn't be built on its value as it is free-form.
+	// This field will be populated if a vendor failure occurs. Logic shouldn't be
+	// built on its value as it is free-form.
 	VendorFailureReason string `json:"vendor_failure_reason,nullable"`
 	// The ID of the compliance decision for the payment order, if transaction
 	// monitoring is enabled.
