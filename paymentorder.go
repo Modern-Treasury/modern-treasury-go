@@ -237,6 +237,9 @@ type PaymentOrder struct {
 	UltimateReceivingPartyIdentifier string    `json:"ultimate_receiving_party_identifier,required,nullable"`
 	UltimateReceivingPartyName       string    `json:"ultimate_receiving_party_name,required,nullable"`
 	UpdatedAt                        time.Time `json:"updated_at,required" format:"date-time"`
+	// Additional vendor specific fields for this payment. Data must be represented as
+	// key-value pairs.
+	VendorAttributes interface{} `json:"vendor_attributes,required,nullable"`
 	// This field will be populated if a vendor failure occurs. Logic shouldn't be
 	// built on its value as it is free-form.
 	VendorFailureReason string           `json:"vendor_failure_reason,required,nullable"`
@@ -293,6 +296,7 @@ type paymentOrderJSON struct {
 	UltimateReceivingPartyIdentifier   apijson.Field
 	UltimateReceivingPartyName         apijson.Field
 	UpdatedAt                          apijson.Field
+	VendorAttributes                   apijson.Field
 	VendorFailureReason                apijson.Field
 	raw                                string
 	ExtraFields                        map[string]apijson.Field
