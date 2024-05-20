@@ -397,6 +397,7 @@ type LedgerAccountCategoryListParams struct {
 	// encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
 	// The balances as of a time are inclusive of entries with that exact time.
 	Balances param.Field[LedgerAccountCategoryListParamsBalances] `query:"balances"`
+	Currency param.Field[string]                                  `query:"currency"`
 	// Query categories which contain a ledger account directly or through child
 	// categories.
 	LedgerAccountID param.Field[string] `query:"ledger_account_id"`

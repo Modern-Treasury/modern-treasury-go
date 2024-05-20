@@ -261,6 +261,7 @@ type BulkResultEntity struct {
 	// monitoring is enabled.
 	DecisionID          string      `json:"decision_id,nullable" format:"uuid"`
 	ForeignExchangeRate interface{} `json:"foreign_exchange_rate,required"`
+	VendorAttributes    interface{} `json:"vendor_attributes,required"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUpperBound int64 `json:"amount_upper_bound"`
@@ -393,6 +394,7 @@ type bulkResultEntityJSON struct {
 	VendorFailureReason                apijson.Field
 	DecisionID                         apijson.Field
 	ForeignExchangeRate                apijson.Field
+	VendorAttributes                   apijson.Field
 	AmountUpperBound                   apijson.Field
 	AmountLowerBound                   apijson.Field
 	InternalAccountID                  apijson.Field
