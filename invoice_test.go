@@ -134,6 +134,7 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 		ReceivingAccountID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		RecipientEmail:             moderntreasury.F("string"),
 		RecipientName:              moderntreasury.F("string"),
+		RemindAfterOverdueDays:     moderntreasury.F([]int64{int64(0), int64(0), int64(0)}),
 		VirtualAccountID:           moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 	})
 	if err != nil {
@@ -290,6 +291,7 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 			ReceivingAccountID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			RecipientEmail:             moderntreasury.F("string"),
 			RecipientName:              moderntreasury.F("string"),
+			RemindAfterOverdueDays:     moderntreasury.F([]int64{int64(0), int64(0), int64(0)}),
 			Status:                     moderntreasury.F("string"),
 			VirtualAccountID:           moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		},

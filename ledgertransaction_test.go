@@ -259,7 +259,6 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 		ExternalID:                moderntreasury.F("string"),
 		LedgerAccountCategoryID:   moderntreasury.F("string"),
 		LedgerAccountID:           moderntreasury.F("string"),
-		LedgerAccountPayoutID:     moderntreasury.F("string"),
 		LedgerAccountSettlementID: moderntreasury.F("string"),
 		LedgerID:                  moderntreasury.F("string"),
 		LedgerableID:              moderntreasury.F("string"),
