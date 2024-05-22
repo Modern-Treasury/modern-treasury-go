@@ -169,6 +169,9 @@ type Invoice struct {
 	// The name of the recipient of the invoice. Leaving this value as null will
 	// fallback to using the counterparty's name.
 	RecipientName string `json:"recipient_name,required,nullable"`
+	// Number of days after due date when overdue reminder emails will be sent out to
+	// invoice recipients.
+	RemindAfterOverdueDays []int64 `json:"remind_after_overdue_days,required,nullable"`
 	// The status of the invoice.
 	Status InvoiceStatus `json:"status,required"`
 	// Total amount due in specified currency's smallest unit, e.g., $10 USD would be
@@ -215,6 +218,7 @@ type invoiceJSON struct {
 	ReceivingAccountID          apijson.Field
 	RecipientEmail              apijson.Field
 	RecipientName               apijson.Field
+	RemindAfterOverdueDays      apijson.Field
 	Status                      apijson.Field
 	TotalAmount                 apijson.Field
 	TransactionLineItemIDs      apijson.Field
@@ -509,6 +513,9 @@ type InvoiceNewParams struct {
 	// The name of the recipient of the invoice. Leaving this value as null will
 	// fallback to using the counterparty's name.
 	RecipientName param.Field[string] `json:"recipient_name"`
+	// Number of days after due date when overdue reminder emails will be sent out to
+	// invoice recipients.
+	RemindAfterOverdueDays param.Field[[]int64] `json:"remind_after_overdue_days"`
 	// The ID of the virtual account the invoice should be paid to.
 	VirtualAccountID param.Field[string] `json:"virtual_account_id" format:"uuid"`
 }
@@ -762,6 +769,9 @@ type InvoiceUpdateParams struct {
 	// The name of the recipient of the invoice. Leaving this value as null will
 	// fallback to using the counterparty's name.
 	RecipientName param.Field[string] `json:"recipient_name"`
+	// Number of days after due date when overdue reminder emails will be sent out to
+	// invoice recipients.
+	RemindAfterOverdueDays param.Field[[]int64] `json:"remind_after_overdue_days"`
 	// Invoice status must be updated in a `PATCH` request that does not modify any
 	// other invoice attributes. Valid state transitions are `draft` to `unpaid`,
 	// `draft` or `unpaid` to `voided`, and `draft` or `unpaid` to `paid`.
