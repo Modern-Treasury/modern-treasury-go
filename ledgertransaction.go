@@ -451,7 +451,6 @@ type LedgerTransactionListParams struct {
 	ExternalID                param.Field[string]                                    `query:"external_id"`
 	LedgerAccountCategoryID   param.Field[string]                                    `query:"ledger_account_category_id"`
 	LedgerAccountID           param.Field[string]                                    `query:"ledger_account_id"`
-	LedgerAccountPayoutID     param.Field[string]                                    `query:"ledger_account_payout_id"`
 	LedgerAccountSettlementID param.Field[string]                                    `query:"ledger_account_settlement_id"`
 	LedgerID                  param.Field[string]                                    `query:"ledger_id"`
 	LedgerableID              param.Field[string]                                    `query:"ledgerable_id"`
