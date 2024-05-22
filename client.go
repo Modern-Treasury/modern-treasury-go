@@ -33,7 +33,6 @@ type Client struct {
 	LedgerAccountCategories      *LedgerAccountCategoryService
 	LedgerAccounts               *LedgerAccountService
 	LedgerAccountBalanceMonitors *LedgerAccountBalanceMonitorService
-	LedgerAccountPayouts         *LedgerAccountPayoutService
 	LedgerAccountStatements      *LedgerAccountStatementService
 	LedgerEntries                *LedgerEntryService
 	LedgerEventHandlers          *LedgerEventHandlerService
@@ -93,7 +92,6 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.LedgerAccountCategories = NewLedgerAccountCategoryService(opts...)
 	r.LedgerAccounts = NewLedgerAccountService(opts...)
 	r.LedgerAccountBalanceMonitors = NewLedgerAccountBalanceMonitorService(opts...)
-	r.LedgerAccountPayouts = NewLedgerAccountPayoutService(opts...)
 	r.LedgerAccountStatements = NewLedgerAccountStatementService(opts...)
 	r.LedgerEntries = NewLedgerEntryService(opts...)
 	r.LedgerEventHandlers = NewLedgerEventHandlerService(opts...)
