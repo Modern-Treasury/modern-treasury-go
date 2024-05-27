@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -47,6 +48,10 @@ func (r *LedgerAccountSettlementService) New(ctx context.Context, body LedgerAcc
 // Get details on a single ledger account settlement.
 func (r *LedgerAccountSettlementService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountSettlement, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_account_settlements/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -55,6 +60,10 @@ func (r *LedgerAccountSettlementService) Get(ctx context.Context, id string, opt
 // Update the details of a ledger account settlement.
 func (r *LedgerAccountSettlementService) Update(ctx context.Context, id string, body LedgerAccountSettlementUpdateParams, opts ...option.RequestOption) (res *LedgerAccountSettlement, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_account_settlements/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return

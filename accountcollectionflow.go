@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -47,6 +48,10 @@ func (r *AccountCollectionFlowService) New(ctx context.Context, body AccountColl
 // get account_collection_flow
 func (r *AccountCollectionFlowService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *AccountCollectionFlow, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/account_collection_flows/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -55,6 +60,10 @@ func (r *AccountCollectionFlowService) Get(ctx context.Context, id string, opts 
 // update account_collection_flow
 func (r *AccountCollectionFlowService) Update(ctx context.Context, id string, body AccountCollectionFlowUpdateParams, opts ...option.RequestOption) (res *AccountCollectionFlow, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/account_collection_flows/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
