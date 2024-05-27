@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -47,6 +48,10 @@ func (r *LedgerAccountBalanceMonitorService) New(ctx context.Context, body Ledge
 // Get details on a single ledger account balance monitor.
 func (r *LedgerAccountBalanceMonitorService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountBalanceMonitor, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_account_balance_monitors/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -55,6 +60,10 @@ func (r *LedgerAccountBalanceMonitorService) Get(ctx context.Context, id string,
 // Update a ledger account balance monitor.
 func (r *LedgerAccountBalanceMonitorService) Update(ctx context.Context, id string, body LedgerAccountBalanceMonitorUpdateParams, opts ...option.RequestOption) (res *LedgerAccountBalanceMonitor, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_account_balance_monitors/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
@@ -86,6 +95,10 @@ func (r *LedgerAccountBalanceMonitorService) ListAutoPaging(ctx context.Context,
 // Delete a ledger account balance monitor.
 func (r *LedgerAccountBalanceMonitorService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountBalanceMonitor, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_account_balance_monitors/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return

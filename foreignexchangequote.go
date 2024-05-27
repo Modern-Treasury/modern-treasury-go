@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -48,6 +49,10 @@ func (r *ForeignExchangeQuoteService) New(ctx context.Context, body ForeignExcha
 // get foreign_exchange_quote
 func (r *ForeignExchangeQuoteService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *ForeignExchangeQuote, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/foreign_exchange_quotes/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return

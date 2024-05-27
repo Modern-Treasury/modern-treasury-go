@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -47,6 +48,10 @@ func (r *LedgerEventHandlerService) New(ctx context.Context, body LedgerEventHan
 // Get details on a single ledger event handler.
 func (r *LedgerEventHandlerService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerEventHandler, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_event_handlers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -78,6 +83,10 @@ func (r *LedgerEventHandlerService) ListAutoPaging(ctx context.Context, query Le
 // Archive a ledger event handler.
 func (r *LedgerEventHandlerService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerEventHandler, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_event_handlers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return

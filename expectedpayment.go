@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -48,6 +49,10 @@ func (r *ExpectedPaymentService) New(ctx context.Context, body ExpectedPaymentNe
 // get expected payment
 func (r *ExpectedPaymentService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *ExpectedPayment, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/expected_payments/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -56,6 +61,10 @@ func (r *ExpectedPaymentService) Get(ctx context.Context, id string, opts ...opt
 // update expected payment
 func (r *ExpectedPaymentService) Update(ctx context.Context, id string, body ExpectedPaymentUpdateParams, opts ...option.RequestOption) (res *ExpectedPayment, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/expected_payments/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
@@ -87,6 +96,10 @@ func (r *ExpectedPaymentService) ListAutoPaging(ctx context.Context, query Expec
 // delete expected payment
 func (r *ExpectedPaymentService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *ExpectedPayment, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/expected_payments/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return

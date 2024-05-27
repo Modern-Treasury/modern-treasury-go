@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -40,6 +41,10 @@ func NewInternalAccountBalanceReportService(opts ...option.RequestOption) (r *In
 // create balance reports
 func (r *InternalAccountBalanceReportService) New(ctx context.Context, internalAccountID string, body BalanceReportNewParams, opts ...option.RequestOption) (res *BalanceReport, err error) {
 	opts = append(r.Options[:], opts...)
+	if internalAccountID == "" {
+		err = errors.New("missing required internal_account_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports", internalAccountID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -48,6 +53,14 @@ func (r *InternalAccountBalanceReportService) New(ctx context.Context, internalA
 // Get a single balance report for a given internal account.
 func (r *InternalAccountBalanceReportService) Get(ctx context.Context, internalAccountID string, id string, opts ...option.RequestOption) (res *BalanceReport, err error) {
 	opts = append(r.Options[:], opts...)
+	if internalAccountID == "" {
+		err = errors.New("missing required internal_account_id parameter")
+		return
+	}
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports/%s", internalAccountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -80,6 +93,14 @@ func (r *InternalAccountBalanceReportService) ListAutoPaging(ctx context.Context
 func (r *InternalAccountBalanceReportService) Delete(ctx context.Context, internalAccountID string, id string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	if internalAccountID == "" {
+		err = errors.New("missing required internal_account_id parameter")
+		return
+	}
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports/%s", internalAccountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return

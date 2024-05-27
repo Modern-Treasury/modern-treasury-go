@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -50,6 +51,10 @@ func (r *LedgerTransactionService) New(ctx context.Context, body LedgerTransacti
 // Get details on a single ledger transaction.
 func (r *LedgerTransactionService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerTransaction, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_transactions/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -58,6 +63,10 @@ func (r *LedgerTransactionService) Get(ctx context.Context, id string, opts ...o
 // Update the details of a ledger transaction.
 func (r *LedgerTransactionService) Update(ctx context.Context, id string, body LedgerTransactionUpdateParams, opts ...option.RequestOption) (res *LedgerTransaction, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_transactions/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
@@ -89,6 +98,10 @@ func (r *LedgerTransactionService) ListAutoPaging(ctx context.Context, query Led
 // Create a ledger transaction reversal.
 func (r *LedgerTransactionService) NewReversal(ctx context.Context, id string, body LedgerTransactionNewReversalParams, opts ...option.RequestOption) (res *LedgerTransaction, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_transactions/%s/reversal", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
