@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -48,6 +49,10 @@ func (r *LedgerAccountCategoryService) New(ctx context.Context, body LedgerAccou
 // Get the details on a single ledger account category.
 func (r *LedgerAccountCategoryService) Get(ctx context.Context, id string, query LedgerAccountCategoryGetParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return
@@ -56,6 +61,10 @@ func (r *LedgerAccountCategoryService) Get(ctx context.Context, id string, query
 // Update the details of a ledger account category.
 func (r *LedgerAccountCategoryService) Update(ctx context.Context, id string, body LedgerAccountCategoryUpdateParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
@@ -87,6 +96,10 @@ func (r *LedgerAccountCategoryService) ListAutoPaging(ctx context.Context, query
 // Delete a ledger account category.
 func (r *LedgerAccountCategoryService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return
@@ -96,6 +109,14 @@ func (r *LedgerAccountCategoryService) Delete(ctx context.Context, id string, op
 func (r *LedgerAccountCategoryService) AddLedgerAccount(ctx context.Context, id string, ledgerAccountID string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	if ledgerAccountID == "" {
+		err = errors.New("missing required ledger_account_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_accounts/%s", id, ledgerAccountID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, nil, nil, opts...)
 	return
@@ -105,6 +126,14 @@ func (r *LedgerAccountCategoryService) AddLedgerAccount(ctx context.Context, id 
 func (r *LedgerAccountCategoryService) AddNestedCategory(ctx context.Context, id string, subCategoryID string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	if subCategoryID == "" {
+		err = errors.New("missing required sub_category_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_account_categories/%s", id, subCategoryID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, nil, nil, opts...)
 	return
@@ -114,6 +143,14 @@ func (r *LedgerAccountCategoryService) AddNestedCategory(ctx context.Context, id
 func (r *LedgerAccountCategoryService) RemoveLedgerAccount(ctx context.Context, id string, ledgerAccountID string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	if ledgerAccountID == "" {
+		err = errors.New("missing required ledger_account_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_accounts/%s", id, ledgerAccountID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return
@@ -123,6 +160,14 @@ func (r *LedgerAccountCategoryService) RemoveLedgerAccount(ctx context.Context, 
 func (r *LedgerAccountCategoryService) RemoveNestedCategory(ctx context.Context, id string, subCategoryID string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	if subCategoryID == "" {
+		err = errors.New("missing required sub_category_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_account_categories/%s", id, subCategoryID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return

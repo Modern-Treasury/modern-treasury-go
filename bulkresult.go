@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -42,6 +43,10 @@ func NewBulkResultService(opts ...option.RequestOption) (r *BulkResultService) {
 // get bulk_result
 func (r *BulkResultService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *BulkResult, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/bulk_results/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return

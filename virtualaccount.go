@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -48,6 +49,10 @@ func (r *VirtualAccountService) New(ctx context.Context, body VirtualAccountNewP
 // get virtual_account
 func (r *VirtualAccountService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *VirtualAccount, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/virtual_accounts/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -56,6 +61,10 @@ func (r *VirtualAccountService) Get(ctx context.Context, id string, opts ...opti
 // update virtual_account
 func (r *VirtualAccountService) Update(ctx context.Context, id string, body VirtualAccountUpdateParams, opts ...option.RequestOption) (res *VirtualAccount, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/virtual_accounts/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
@@ -87,6 +96,10 @@ func (r *VirtualAccountService) ListAutoPaging(ctx context.Context, query Virtua
 // delete virtual_account
 func (r *VirtualAccountService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *VirtualAccount, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/virtual_accounts/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return

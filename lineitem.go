@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -39,6 +40,14 @@ func NewLineItemService(opts ...option.RequestOption) (r *LineItemService) {
 // Get a single line item
 func (r *LineItemService) Get(ctx context.Context, itemizableType LineItemGetParamsItemizableType, itemizableID string, id string, opts ...option.RequestOption) (res *LineItem, err error) {
 	opts = append(r.Options[:], opts...)
+	if itemizableID == "" {
+		err = errors.New("missing required itemizable_id parameter")
+		return
+	}
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/%v/%s/line_items/%s", itemizableType, itemizableID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -47,6 +56,14 @@ func (r *LineItemService) Get(ctx context.Context, itemizableType LineItemGetPar
 // update line item
 func (r *LineItemService) Update(ctx context.Context, itemizableType LineItemUpdateParamsItemizableType, itemizableID string, id string, body LineItemUpdateParams, opts ...option.RequestOption) (res *LineItem, err error) {
 	opts = append(r.Options[:], opts...)
+	if itemizableID == "" {
+		err = errors.New("missing required itemizable_id parameter")
+		return
+	}
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/%v/%s/line_items/%s", itemizableType, itemizableID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return

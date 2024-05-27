@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -47,6 +48,10 @@ func (r *LedgerService) New(ctx context.Context, body LedgerNewParams, opts ...o
 // Get details on a single ledger.
 func (r *LedgerService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *Ledger, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledgers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -55,6 +60,10 @@ func (r *LedgerService) Get(ctx context.Context, id string, opts ...option.Reque
 // Update the details of a ledger.
 func (r *LedgerService) Update(ctx context.Context, id string, body LedgerUpdateParams, opts ...option.RequestOption) (res *Ledger, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledgers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
@@ -86,6 +95,10 @@ func (r *LedgerService) ListAutoPaging(ctx context.Context, query LedgerListPara
 // Delete a ledger.
 func (r *LedgerService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *Ledger, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledgers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return
