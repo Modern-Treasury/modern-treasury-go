@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -39,6 +40,10 @@ func NewInvoiceLineItemService(opts ...option.RequestOption) (r *InvoiceLineItem
 // create invoice_line_item
 func (r *InvoiceLineItemService) New(ctx context.Context, invoiceID string, body InvoiceLineItemNewParams, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
 	opts = append(r.Options[:], opts...)
+	if invoiceID == "" {
+		err = errors.New("missing required invoice_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/invoices/%s/invoice_line_items", invoiceID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -47,6 +52,14 @@ func (r *InvoiceLineItemService) New(ctx context.Context, invoiceID string, body
 // get invoice_line_item
 func (r *InvoiceLineItemService) Get(ctx context.Context, invoiceID string, id string, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
 	opts = append(r.Options[:], opts...)
+	if invoiceID == "" {
+		err = errors.New("missing required invoice_id parameter")
+		return
+	}
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/invoices/%s/invoice_line_items/%s", invoiceID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -55,6 +68,14 @@ func (r *InvoiceLineItemService) Get(ctx context.Context, invoiceID string, id s
 // update invoice_line_item
 func (r *InvoiceLineItemService) Update(ctx context.Context, invoiceID string, id string, body InvoiceLineItemUpdateParams, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
 	opts = append(r.Options[:], opts...)
+	if invoiceID == "" {
+		err = errors.New("missing required invoice_id parameter")
+		return
+	}
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/invoices/%s/invoice_line_items/%s", invoiceID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
 	return
@@ -86,6 +107,14 @@ func (r *InvoiceLineItemService) ListAutoPaging(ctx context.Context, invoiceID s
 // delete invoice_line_item
 func (r *InvoiceLineItemService) Delete(ctx context.Context, invoiceID string, id string, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
 	opts = append(r.Options[:], opts...)
+	if invoiceID == "" {
+		err = errors.New("missing required invoice_id parameter")
+		return
+	}
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/invoices/%s/invoice_line_items/%s", invoiceID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
 	return

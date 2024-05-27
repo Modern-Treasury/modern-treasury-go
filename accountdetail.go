@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -40,6 +41,10 @@ func NewAccountDetailService(opts ...option.RequestOption) (r *AccountDetailServ
 // Create an account detail for an external account.
 func (r *AccountDetailService) New(ctx context.Context, accountsType AccountDetailNewParamsAccountsType, accountID string, body AccountDetailNewParams, opts ...option.RequestOption) (res *AccountDetail, err error) {
 	opts = append(r.Options[:], opts...)
+	if accountID == "" {
+		err = errors.New("missing required account_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/%v/%s/account_details", accountsType, accountID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -48,6 +53,14 @@ func (r *AccountDetailService) New(ctx context.Context, accountsType AccountDeta
 // Get a single account detail for a single internal or external account.
 func (r *AccountDetailService) Get(ctx context.Context, accountsType shared.AccountsType, accountID string, id string, opts ...option.RequestOption) (res *AccountDetail, err error) {
 	opts = append(r.Options[:], opts...)
+	if accountID == "" {
+		err = errors.New("missing required account_id parameter")
+		return
+	}
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/%v/%s/account_details/%s", accountsType, accountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
@@ -80,6 +93,14 @@ func (r *AccountDetailService) ListAutoPaging(ctx context.Context, accountsType 
 func (r *AccountDetailService) Delete(ctx context.Context, accountsType AccountDetailDeleteParamsAccountsType, accountID string, id string, opts ...option.RequestOption) (err error) {
 	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	if accountID == "" {
+		err = errors.New("missing required account_id parameter")
+		return
+	}
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/%v/%s/account_details/%s", accountsType, accountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
 	return

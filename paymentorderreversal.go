@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"net/url"
@@ -40,6 +41,10 @@ func NewPaymentOrderReversalService(opts ...option.RequestOption) (r *PaymentOrd
 // Create a reversal for a payment order.
 func (r *PaymentOrderReversalService) New(ctx context.Context, paymentOrderID string, body PaymentOrderReversalNewParams, opts ...option.RequestOption) (res *Reversal, err error) {
 	opts = append(r.Options[:], opts...)
+	if paymentOrderID == "" {
+		err = errors.New("missing required payment_order_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/payment_orders/%s/reversals", paymentOrderID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -48,6 +53,14 @@ func (r *PaymentOrderReversalService) New(ctx context.Context, paymentOrderID st
 // Get details on a single reversal of a payment order.
 func (r *PaymentOrderReversalService) Get(ctx context.Context, paymentOrderID string, reversalID string, opts ...option.RequestOption) (res *Reversal, err error) {
 	opts = append(r.Options[:], opts...)
+	if paymentOrderID == "" {
+		err = errors.New("missing required payment_order_id parameter")
+		return
+	}
+	if reversalID == "" {
+		err = errors.New("missing required reversal_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/payment_orders/%s/reversals/%s", paymentOrderID, reversalID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return

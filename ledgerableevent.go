@@ -4,6 +4,7 @@ package moderntreasury
 
 import (
 	"context"
+	"errors"
 	"fmt"
 	"net/http"
 	"time"
@@ -44,6 +45,10 @@ func (r *LedgerableEventService) New(ctx context.Context, body LedgerableEventNe
 // Get details on a single ledgerable event.
 func (r *LedgerableEventService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerableEvent, err error) {
 	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/ledgerable_events/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
