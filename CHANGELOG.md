@@ -1,5 +1,41 @@
 # Changelog
 
+## 2.13.0 (2024-05-28)
+
+Full Changelog: [v2.12.0...v2.13.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.12.0...v2.13.0)
+
+### Features
+
+* **api:** add currency to ledger account categories ([#228](https://github.com/Modern-Treasury/modern-treasury-go/issues/228)) ([76766e6](https://github.com/Modern-Treasury/modern-treasury-go/commit/76766e64f19092f9e3eb59e340e434127c4a7c05))
+* **api:** invoice overdue reminders ([f9d2168](https://github.com/Modern-Treasury/modern-treasury-go/commit/f9d21682aadcaaa082d38f9556b50fa807a5e13a))
+* **api:** mark ConnectionLegalEntity response properties as required ([#231](https://github.com/Modern-Treasury/modern-treasury-go/issues/231)) ([ce49af3](https://github.com/Modern-Treasury/modern-treasury-go/commit/ce49af3838e8a154af6b31bba55e23cfdc7ab384))
+* **api:** remove deprecated ledger account payouts ([#229](https://github.com/Modern-Treasury/modern-treasury-go/issues/229)) ([f9d2168](https://github.com/Modern-Treasury/modern-treasury-go/commit/f9d21682aadcaaa082d38f9556b50fa807a5e13a))
+* **api:** updates ([#219](https://github.com/Modern-Treasury/modern-treasury-go/issues/219)) ([a3e27cd](https://github.com/Modern-Treasury/modern-treasury-go/commit/a3e27cd22b2e944540853568fe1583716c415086))
+* **api:** various API updates ([#215](https://github.com/Modern-Treasury/modern-treasury-go/issues/215)) ([5ee8bc2](https://github.com/Modern-Treasury/modern-treasury-go/commit/5ee8bc2adb9c238d89dc11a0708a2531fb3fd401))
+* better validation of path params ([#230](https://github.com/Modern-Treasury/modern-treasury-go/issues/230)) ([a4d987b](https://github.com/Modern-Treasury/modern-treasury-go/commit/a4d987b389bc8f37d6a879f876afcec1773b11c9))
+* propagate resource description field from stainless config to SDK docs ([#222](https://github.com/Modern-Treasury/modern-treasury-go/issues/222)) ([511b951](https://github.com/Modern-Treasury/modern-treasury-go/commit/511b9513882f1f236fecbb8aea75fa055dfd06d3))
+
+
+### Bug Fixes
+
+* fix reading the error body more than once ([#226](https://github.com/Modern-Treasury/modern-treasury-go/issues/226)) ([b5294a2](https://github.com/Modern-Treasury/modern-treasury-go/commit/b5294a2113e61cae5f0e512b214c2f1097e606e7))
+* make shared package public ([#214](https://github.com/Modern-Treasury/modern-treasury-go/issues/214)) ([a6cc5de](https://github.com/Modern-Treasury/modern-treasury-go/commit/a6cc5de7e8bfd73c322bdd19f72dcd39edf43574))
+* **test:** fix test github actions job ([#218](https://github.com/Modern-Treasury/modern-treasury-go/issues/218)) ([3589231](https://github.com/Modern-Treasury/modern-treasury-go/commit/358923185f574c9c4221493a611ef22e8deca706))
+
+
+### Chores
+
+* **docs:** add SECURITY.md ([#223](https://github.com/Modern-Treasury/modern-treasury-go/issues/223)) ([5813f5d](https://github.com/Modern-Treasury/modern-treasury-go/commit/5813f5dfb2febe924b0b369b2ef942340fc679c0))
+* **docs:** streamline payment purpose and vendor failure handling ([#224](https://github.com/Modern-Treasury/modern-treasury-go/issues/224)) ([4e1b6b9](https://github.com/Modern-Treasury/modern-treasury-go/commit/4e1b6b9fb84713fd2968a064cdb9a64afbba48eb))
+* **internal:** add link to openapi spec ([#216](https://github.com/Modern-Treasury/modern-treasury-go/issues/216)) ([d0fa4a7](https://github.com/Modern-Treasury/modern-treasury-go/commit/d0fa4a7f25fb068af38ecbdbbaa1893cd761ed6f))
+* **internal:** add scripts/test, scripts/mock and add ci job ([#217](https://github.com/Modern-Treasury/modern-treasury-go/issues/217)) ([1baf31a](https://github.com/Modern-Treasury/modern-treasury-go/commit/1baf31aa1ad5eb180f0caf872e3162495a74cc1d))
+* **internal:** add slightly better logging to scripts ([#225](https://github.com/Modern-Treasury/modern-treasury-go/issues/225)) ([2133049](https://github.com/Modern-Treasury/modern-treasury-go/commit/2133049a3049af7d1700216f13ef802ecaa2c32d))
+* **internal:** fix bootstrap script ([#220](https://github.com/Modern-Treasury/modern-treasury-go/issues/220)) ([2f72aa6](https://github.com/Modern-Treasury/modern-treasury-go/commit/2f72aa6cc5d485af47330775db9dd71a1ce75542))
+* **internal:** fix format script ([#232](https://github.com/Modern-Treasury/modern-treasury-go/issues/232)) ([667e918](https://github.com/Modern-Treasury/modern-treasury-go/commit/667e9184f8369b5733eef660552a6d813169ff07))
+* **internal:** fix Port function for number and boolean enums ([#213](https://github.com/Modern-Treasury/modern-treasury-go/issues/213)) ([1e8e1dd](https://github.com/Modern-Treasury/modern-treasury-go/commit/1e8e1ddb59515144445d6356c7723bfdd1caa91b))
+* **internal:** support parsing other json content types ([#227](https://github.com/Modern-Treasury/modern-treasury-go/issues/227)) ([09e137d](https://github.com/Modern-Treasury/modern-treasury-go/commit/09e137d010065c7547a0cc92978fd1e856d3dc85))
+* **internal:** use actions/checkout@v4 for codeflow ([#211](https://github.com/Modern-Treasury/modern-treasury-go/issues/211)) ([22627d1](https://github.com/Modern-Treasury/modern-treasury-go/commit/22627d15a8b4d878524efb2c99e7bc05574fb8db))
+
 ## 2.12.0 (2024-04-17)
 
 Full Changelog: [v2.11.0...v2.12.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.11.0...v2.12.0)
