@@ -28,7 +28,8 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LegalEntityAssociations.New(context.TODO(), moderntreasury.LegalEntityAssociationNewParams{
-		RelationshipTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsRelationshipType{moderntreasury.LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner, moderntreasury.LegalEntityAssociationNewParamsRelationshipTypeControlPerson}),
+		ParentLegalEntityID: moderntreasury.F("string"),
+		RelationshipTypes:   moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsRelationshipType{moderntreasury.LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner, moderntreasury.LegalEntityAssociationNewParamsRelationshipTypeControlPerson}),
 		ChildLegalEntity: moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntity{
 			LegalEntityType:      moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityLegalEntityTypeBusiness),
 			FirstName:            moderntreasury.F("string"),
@@ -93,7 +94,6 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 		}),
 		ChildLegalEntityID:  moderntreasury.F("string"),
 		OwnershipPercentage: moderntreasury.F(int64(0)),
-		ParentLegalEntityID: moderntreasury.F("string"),
 		Title:               moderntreasury.F("string"),
 	})
 	if err != nil {
