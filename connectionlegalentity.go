@@ -93,20 +93,20 @@ func (r *ConnectionLegalEntityService) ListAutoPaging(ctx context.Context, query
 }
 
 type ConnectionLegalEntity struct {
-	ID string `json:"id" format:"uuid"`
+	ID string `json:"id,required" format:"uuid"`
 	// The ID of the connection.
-	ConnectionID string    `json:"connection_id"`
-	CreatedAt    time.Time `json:"created_at" format:"date-time"`
-	DiscardedAt  time.Time `json:"discarded_at,nullable" format:"date-time"`
+	ConnectionID string    `json:"connection_id,required"`
+	CreatedAt    time.Time `json:"created_at,required" format:"date-time"`
+	DiscardedAt  time.Time `json:"discarded_at,required,nullable" format:"date-time"`
 	// The ID of the legal entity.
-	LegalEntityID string `json:"legal_entity_id"`
+	LegalEntityID string `json:"legal_entity_id,required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode"`
-	Object   string `json:"object"`
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
 	// The status of the connection legal entity.
-	Status    ConnectionLegalEntityStatus `json:"status"`
-	UpdatedAt time.Time                   `json:"updated_at" format:"date-time"`
+	Status    ConnectionLegalEntityStatus `json:"status,required"`
+	UpdatedAt time.Time                   `json:"updated_at,required" format:"date-time"`
 	JSON      connectionLegalEntityJSON   `json:"-"`
 }
 
