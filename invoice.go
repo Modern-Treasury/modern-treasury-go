@@ -521,7 +521,7 @@ type InvoiceNewParams struct {
 	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
 	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
 	// `sic`, `signet`, `provexchange`, `zengin`.
-	PaymentType param.Field[InvoiceNewParamsPaymentType] `json:"payment_type"`
+	PaymentType param.Field[PaymentOrderType] `json:"payment_type"`
 	// The receiving account ID. Can be an `external_account`.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
 	// The email of the recipient of the invoice. Leaving this value as null will
@@ -678,52 +678,6 @@ func (r InvoiceNewParamsPaymentMethod) IsKnown() bool {
 	return false
 }
 
-// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
-// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
-// `sic`, `signet`, `provexchange`, `zengin`.
-type InvoiceNewParamsPaymentType string
-
-const (
-	InvoiceNewParamsPaymentTypeACH         InvoiceNewParamsPaymentType = "ach"
-	InvoiceNewParamsPaymentTypeAuBecs      InvoiceNewParamsPaymentType = "au_becs"
-	InvoiceNewParamsPaymentTypeBacs        InvoiceNewParamsPaymentType = "bacs"
-	InvoiceNewParamsPaymentTypeBook        InvoiceNewParamsPaymentType = "book"
-	InvoiceNewParamsPaymentTypeCard        InvoiceNewParamsPaymentType = "card"
-	InvoiceNewParamsPaymentTypeChats       InvoiceNewParamsPaymentType = "chats"
-	InvoiceNewParamsPaymentTypeCheck       InvoiceNewParamsPaymentType = "check"
-	InvoiceNewParamsPaymentTypeCrossBorder InvoiceNewParamsPaymentType = "cross_border"
-	InvoiceNewParamsPaymentTypeDkNets      InvoiceNewParamsPaymentType = "dk_nets"
-	InvoiceNewParamsPaymentTypeEft         InvoiceNewParamsPaymentType = "eft"
-	InvoiceNewParamsPaymentTypeHuIcs       InvoiceNewParamsPaymentType = "hu_ics"
-	InvoiceNewParamsPaymentTypeInterac     InvoiceNewParamsPaymentType = "interac"
-	InvoiceNewParamsPaymentTypeMasav       InvoiceNewParamsPaymentType = "masav"
-	InvoiceNewParamsPaymentTypeMxCcen      InvoiceNewParamsPaymentType = "mx_ccen"
-	InvoiceNewParamsPaymentTypeNeft        InvoiceNewParamsPaymentType = "neft"
-	InvoiceNewParamsPaymentTypeNics        InvoiceNewParamsPaymentType = "nics"
-	InvoiceNewParamsPaymentTypeNzBecs      InvoiceNewParamsPaymentType = "nz_becs"
-	InvoiceNewParamsPaymentTypePlElixir    InvoiceNewParamsPaymentType = "pl_elixir"
-	InvoiceNewParamsPaymentTypeProvxchange InvoiceNewParamsPaymentType = "provxchange"
-	InvoiceNewParamsPaymentTypeRoSent      InvoiceNewParamsPaymentType = "ro_sent"
-	InvoiceNewParamsPaymentTypeRtp         InvoiceNewParamsPaymentType = "rtp"
-	InvoiceNewParamsPaymentTypeSgGiro      InvoiceNewParamsPaymentType = "sg_giro"
-	InvoiceNewParamsPaymentTypeSeBankgirot InvoiceNewParamsPaymentType = "se_bankgirot"
-	InvoiceNewParamsPaymentTypeSen         InvoiceNewParamsPaymentType = "sen"
-	InvoiceNewParamsPaymentTypeSepa        InvoiceNewParamsPaymentType = "sepa"
-	InvoiceNewParamsPaymentTypeSic         InvoiceNewParamsPaymentType = "sic"
-	InvoiceNewParamsPaymentTypeSignet      InvoiceNewParamsPaymentType = "signet"
-	InvoiceNewParamsPaymentTypeSknbi       InvoiceNewParamsPaymentType = "sknbi"
-	InvoiceNewParamsPaymentTypeWire        InvoiceNewParamsPaymentType = "wire"
-	InvoiceNewParamsPaymentTypeZengin      InvoiceNewParamsPaymentType = "zengin"
-)
-
-func (r InvoiceNewParamsPaymentType) IsKnown() bool {
-	switch r {
-	case InvoiceNewParamsPaymentTypeACH, InvoiceNewParamsPaymentTypeAuBecs, InvoiceNewParamsPaymentTypeBacs, InvoiceNewParamsPaymentTypeBook, InvoiceNewParamsPaymentTypeCard, InvoiceNewParamsPaymentTypeChats, InvoiceNewParamsPaymentTypeCheck, InvoiceNewParamsPaymentTypeCrossBorder, InvoiceNewParamsPaymentTypeDkNets, InvoiceNewParamsPaymentTypeEft, InvoiceNewParamsPaymentTypeHuIcs, InvoiceNewParamsPaymentTypeInterac, InvoiceNewParamsPaymentTypeMasav, InvoiceNewParamsPaymentTypeMxCcen, InvoiceNewParamsPaymentTypeNeft, InvoiceNewParamsPaymentTypeNics, InvoiceNewParamsPaymentTypeNzBecs, InvoiceNewParamsPaymentTypePlElixir, InvoiceNewParamsPaymentTypeProvxchange, InvoiceNewParamsPaymentTypeRoSent, InvoiceNewParamsPaymentTypeRtp, InvoiceNewParamsPaymentTypeSgGiro, InvoiceNewParamsPaymentTypeSeBankgirot, InvoiceNewParamsPaymentTypeSen, InvoiceNewParamsPaymentTypeSepa, InvoiceNewParamsPaymentTypeSic, InvoiceNewParamsPaymentTypeSignet, InvoiceNewParamsPaymentTypeSknbi, InvoiceNewParamsPaymentTypeWire, InvoiceNewParamsPaymentTypeZengin:
-		return true
-	}
-	return false
-}
-
 type InvoiceUpdateParams struct {
 	// The invoicer's contact details displayed at the top of the invoice.
 	ContactDetails param.Field[[]InvoiceUpdateParamsContactDetail] `json:"contact_details"`
@@ -777,7 +731,7 @@ type InvoiceUpdateParams struct {
 	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
 	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
 	// `sic`, `signet`, `provexchange`, `zengin`.
-	PaymentType param.Field[InvoiceUpdateParamsPaymentType] `json:"payment_type"`
+	PaymentType param.Field[PaymentOrderType] `json:"payment_type"`
 	// The receiving account ID. Can be an `external_account`.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
 	// The email of the recipient of the invoice. Leaving this value as null will
@@ -933,52 +887,6 @@ const (
 func (r InvoiceUpdateParamsPaymentMethod) IsKnown() bool {
 	switch r {
 	case InvoiceUpdateParamsPaymentMethodUi, InvoiceUpdateParamsPaymentMethodManual, InvoiceUpdateParamsPaymentMethodAutomatic:
-		return true
-	}
-	return false
-}
-
-// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
-// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
-// `sic`, `signet`, `provexchange`, `zengin`.
-type InvoiceUpdateParamsPaymentType string
-
-const (
-	InvoiceUpdateParamsPaymentTypeACH         InvoiceUpdateParamsPaymentType = "ach"
-	InvoiceUpdateParamsPaymentTypeAuBecs      InvoiceUpdateParamsPaymentType = "au_becs"
-	InvoiceUpdateParamsPaymentTypeBacs        InvoiceUpdateParamsPaymentType = "bacs"
-	InvoiceUpdateParamsPaymentTypeBook        InvoiceUpdateParamsPaymentType = "book"
-	InvoiceUpdateParamsPaymentTypeCard        InvoiceUpdateParamsPaymentType = "card"
-	InvoiceUpdateParamsPaymentTypeChats       InvoiceUpdateParamsPaymentType = "chats"
-	InvoiceUpdateParamsPaymentTypeCheck       InvoiceUpdateParamsPaymentType = "check"
-	InvoiceUpdateParamsPaymentTypeCrossBorder InvoiceUpdateParamsPaymentType = "cross_border"
-	InvoiceUpdateParamsPaymentTypeDkNets      InvoiceUpdateParamsPaymentType = "dk_nets"
-	InvoiceUpdateParamsPaymentTypeEft         InvoiceUpdateParamsPaymentType = "eft"
-	InvoiceUpdateParamsPaymentTypeHuIcs       InvoiceUpdateParamsPaymentType = "hu_ics"
-	InvoiceUpdateParamsPaymentTypeInterac     InvoiceUpdateParamsPaymentType = "interac"
-	InvoiceUpdateParamsPaymentTypeMasav       InvoiceUpdateParamsPaymentType = "masav"
-	InvoiceUpdateParamsPaymentTypeMxCcen      InvoiceUpdateParamsPaymentType = "mx_ccen"
-	InvoiceUpdateParamsPaymentTypeNeft        InvoiceUpdateParamsPaymentType = "neft"
-	InvoiceUpdateParamsPaymentTypeNics        InvoiceUpdateParamsPaymentType = "nics"
-	InvoiceUpdateParamsPaymentTypeNzBecs      InvoiceUpdateParamsPaymentType = "nz_becs"
-	InvoiceUpdateParamsPaymentTypePlElixir    InvoiceUpdateParamsPaymentType = "pl_elixir"
-	InvoiceUpdateParamsPaymentTypeProvxchange InvoiceUpdateParamsPaymentType = "provxchange"
-	InvoiceUpdateParamsPaymentTypeRoSent      InvoiceUpdateParamsPaymentType = "ro_sent"
-	InvoiceUpdateParamsPaymentTypeRtp         InvoiceUpdateParamsPaymentType = "rtp"
-	InvoiceUpdateParamsPaymentTypeSgGiro      InvoiceUpdateParamsPaymentType = "sg_giro"
-	InvoiceUpdateParamsPaymentTypeSeBankgirot InvoiceUpdateParamsPaymentType = "se_bankgirot"
-	InvoiceUpdateParamsPaymentTypeSen         InvoiceUpdateParamsPaymentType = "sen"
-	InvoiceUpdateParamsPaymentTypeSepa        InvoiceUpdateParamsPaymentType = "sepa"
-	InvoiceUpdateParamsPaymentTypeSic         InvoiceUpdateParamsPaymentType = "sic"
-	InvoiceUpdateParamsPaymentTypeSignet      InvoiceUpdateParamsPaymentType = "signet"
-	InvoiceUpdateParamsPaymentTypeSknbi       InvoiceUpdateParamsPaymentType = "sknbi"
-	InvoiceUpdateParamsPaymentTypeWire        InvoiceUpdateParamsPaymentType = "wire"
-	InvoiceUpdateParamsPaymentTypeZengin      InvoiceUpdateParamsPaymentType = "zengin"
-)
-
-func (r InvoiceUpdateParamsPaymentType) IsKnown() bool {
-	switch r {
-	case InvoiceUpdateParamsPaymentTypeACH, InvoiceUpdateParamsPaymentTypeAuBecs, InvoiceUpdateParamsPaymentTypeBacs, InvoiceUpdateParamsPaymentTypeBook, InvoiceUpdateParamsPaymentTypeCard, InvoiceUpdateParamsPaymentTypeChats, InvoiceUpdateParamsPaymentTypeCheck, InvoiceUpdateParamsPaymentTypeCrossBorder, InvoiceUpdateParamsPaymentTypeDkNets, InvoiceUpdateParamsPaymentTypeEft, InvoiceUpdateParamsPaymentTypeHuIcs, InvoiceUpdateParamsPaymentTypeInterac, InvoiceUpdateParamsPaymentTypeMasav, InvoiceUpdateParamsPaymentTypeMxCcen, InvoiceUpdateParamsPaymentTypeNeft, InvoiceUpdateParamsPaymentTypeNics, InvoiceUpdateParamsPaymentTypeNzBecs, InvoiceUpdateParamsPaymentTypePlElixir, InvoiceUpdateParamsPaymentTypeProvxchange, InvoiceUpdateParamsPaymentTypeRoSent, InvoiceUpdateParamsPaymentTypeRtp, InvoiceUpdateParamsPaymentTypeSgGiro, InvoiceUpdateParamsPaymentTypeSeBankgirot, InvoiceUpdateParamsPaymentTypeSen, InvoiceUpdateParamsPaymentTypeSepa, InvoiceUpdateParamsPaymentTypeSic, InvoiceUpdateParamsPaymentTypeSignet, InvoiceUpdateParamsPaymentTypeSknbi, InvoiceUpdateParamsPaymentTypeWire, InvoiceUpdateParamsPaymentTypeZengin:
 		return true
 	}
 	return false
