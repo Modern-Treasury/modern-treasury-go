@@ -277,6 +277,8 @@ func TestExternalAccountVerifyWithOptionalParams(t *testing.T) {
 			OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			PaymentType:          moderntreasury.F(moderntreasury.ExternalAccountVerifyParamsPaymentTypeACH),
 			Currency:             moderntreasury.F(shared.CurrencyAed),
+			FallbackType:         moderntreasury.F(moderntreasury.ExternalAccountVerifyParamsFallbackTypeACH),
+			Priority:             moderntreasury.F(moderntreasury.ExternalAccountVerifyParamsPriorityHigh),
 		},
 	)
 	if err != nil {

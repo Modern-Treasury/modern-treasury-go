@@ -93,43 +93,43 @@ func (r *LegalEntityService) ListAutoPaging(ctx context.Context, query LegalEnti
 }
 
 type LegalEntity struct {
-	ID string `json:"id" format:"uuid"`
+	ID string `json:"id,required" format:"uuid"`
 	// A list of addresses for the entity.
-	Addresses []LegalEntityAddress `json:"addresses"`
+	Addresses []LegalEntityAddress `json:"addresses,required"`
 	// The business's legal business name.
-	BusinessName string    `json:"business_name,nullable"`
-	CreatedAt    time.Time `json:"created_at" format:"date-time"`
+	BusinessName string    `json:"business_name,required,nullable"`
+	CreatedAt    time.Time `json:"created_at,required" format:"date-time"`
 	// A business's formation date (YYYY-MM-DD).
-	DateFormed time.Time `json:"date_formed,nullable" format:"date"`
+	DateFormed time.Time `json:"date_formed,required,nullable" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
-	DateOfBirth          time.Time `json:"date_of_birth,nullable" format:"date"`
-	DiscardedAt          time.Time `json:"discarded_at,nullable" format:"date-time"`
-	DoingBusinessAsNames []string  `json:"doing_business_as_names"`
+	DateOfBirth          time.Time `json:"date_of_birth,required,nullable" format:"date"`
+	DiscardedAt          time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	DoingBusinessAsNames []string  `json:"doing_business_as_names,required"`
 	// The entity's primary email.
-	Email string `json:"email,nullable"`
+	Email string `json:"email,required,nullable"`
 	// An individual's first name.
-	FirstName string `json:"first_name,nullable"`
+	FirstName string `json:"first_name,required,nullable"`
 	// A list of identifications for the legal entity.
-	Identifications []LegalEntityIdentification `json:"identifications"`
+	Identifications []LegalEntityIdentification `json:"identifications,required"`
 	// An individual's last name.
-	LastName string `json:"last_name,nullable"`
+	LastName string `json:"last_name,required,nullable"`
 	// The legal entity associations and its child legal entities.
-	LegalEntityAssociations []LegalEntityAssociation `json:"legal_entity_associations,nullable"`
+	LegalEntityAssociations []LegalEntityAssociation `json:"legal_entity_associations,required,nullable"`
 	// The type of legal entity.
-	LegalEntityType LegalEntityLegalEntityType `json:"legal_entity_type"`
+	LegalEntityType LegalEntityLegalEntityType `json:"legal_entity_type,required"`
 	// The business's legal structure.
-	LegalStructure LegalEntityLegalStructure `json:"legal_structure,nullable"`
+	LegalStructure LegalEntityLegalStructure `json:"legal_structure,required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode"`
+	LiveMode bool `json:"live_mode,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata     map[string]string        `json:"metadata"`
-	Object       string                   `json:"object"`
-	PhoneNumbers []LegalEntityPhoneNumber `json:"phone_numbers"`
-	UpdatedAt    time.Time                `json:"updated_at" format:"date-time"`
+	Metadata     map[string]string        `json:"metadata,required"`
+	Object       string                   `json:"object,required"`
+	PhoneNumbers []LegalEntityPhoneNumber `json:"phone_numbers,required"`
+	UpdatedAt    time.Time                `json:"updated_at,required" format:"date-time"`
 	// The entity's primary website URL.
-	Website string          `json:"website,nullable"`
+	Website string          `json:"website,required,nullable"`
 	JSON    legalEntityJSON `json:"-"`
 }
 

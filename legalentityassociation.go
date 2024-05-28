@@ -41,24 +41,24 @@ func (r *LegalEntityAssociationService) New(ctx context.Context, body LegalEntit
 }
 
 type LegalEntityAssociation struct {
-	ID string `json:"id" format:"uuid"`
+	ID string `json:"id,required" format:"uuid"`
 	// The child legal entity.
-	ChildLegalEntity LegalEntityAssociationChildLegalEntity `json:"child_legal_entity"`
-	CreatedAt        time.Time                              `json:"created_at" format:"date-time"`
-	DiscardedAt      time.Time                              `json:"discarded_at,nullable" format:"date-time"`
+	ChildLegalEntity LegalEntityAssociationChildLegalEntity `json:"child_legal_entity,required"`
+	CreatedAt        time.Time                              `json:"created_at,required" format:"date-time"`
+	DiscardedAt      time.Time                              `json:"discarded_at,required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode"`
-	Object   string `json:"object"`
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
 	// The child entity's ownership percentage iff they are a beneficial owner.
-	OwnershipPercentage int64 `json:"ownership_percentage,nullable"`
+	OwnershipPercentage int64 `json:"ownership_percentage,required,nullable"`
 	// The ID of the parent legal entity. This must be a business or joint legal
 	// entity.
-	ParentLegalEntityID string                                   `json:"parent_legal_entity_id"`
-	RelationshipTypes   []LegalEntityAssociationRelationshipType `json:"relationship_types"`
+	ParentLegalEntityID string                                   `json:"parent_legal_entity_id,required"`
+	RelationshipTypes   []LegalEntityAssociationRelationshipType `json:"relationship_types,required"`
 	// The job title of the child entity at the parent entity.
-	Title     string                     `json:"title,nullable"`
-	UpdatedAt time.Time                  `json:"updated_at" format:"date-time"`
+	Title     string                     `json:"title,required,nullable"`
+	UpdatedAt time.Time                  `json:"updated_at,required" format:"date-time"`
 	JSON      legalEntityAssociationJSON `json:"-"`
 }
 
@@ -90,41 +90,41 @@ func (r legalEntityAssociationJSON) RawJSON() string {
 
 // The child legal entity.
 type LegalEntityAssociationChildLegalEntity struct {
-	ID string `json:"id" format:"uuid"`
+	ID string `json:"id,required" format:"uuid"`
 	// A list of addresses for the entity.
-	Addresses []LegalEntityAssociationChildLegalEntityAddress `json:"addresses"`
+	Addresses []LegalEntityAssociationChildLegalEntityAddress `json:"addresses,required"`
 	// The business's legal business name.
-	BusinessName string    `json:"business_name,nullable"`
-	CreatedAt    time.Time `json:"created_at" format:"date-time"`
+	BusinessName string    `json:"business_name,required,nullable"`
+	CreatedAt    time.Time `json:"created_at,required" format:"date-time"`
 	// A business's formation date (YYYY-MM-DD).
-	DateFormed time.Time `json:"date_formed,nullable" format:"date"`
+	DateFormed time.Time `json:"date_formed,required,nullable" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
-	DateOfBirth          time.Time `json:"date_of_birth,nullable" format:"date"`
-	DiscardedAt          time.Time `json:"discarded_at,nullable" format:"date-time"`
-	DoingBusinessAsNames []string  `json:"doing_business_as_names"`
+	DateOfBirth          time.Time `json:"date_of_birth,required,nullable" format:"date"`
+	DiscardedAt          time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	DoingBusinessAsNames []string  `json:"doing_business_as_names,required"`
 	// The entity's primary email.
-	Email string `json:"email,nullable"`
+	Email string `json:"email,required,nullable"`
 	// An individual's first name.
-	FirstName string `json:"first_name,nullable"`
+	FirstName string `json:"first_name,required,nullable"`
 	// A list of identifications for the legal entity.
-	Identifications []LegalEntityAssociationChildLegalEntityIdentification `json:"identifications"`
+	Identifications []LegalEntityAssociationChildLegalEntityIdentification `json:"identifications,required"`
 	// An individual's last name.
-	LastName string `json:"last_name,nullable"`
+	LastName string `json:"last_name,required,nullable"`
 	// The type of legal entity.
-	LegalEntityType LegalEntityAssociationChildLegalEntityLegalEntityType `json:"legal_entity_type"`
+	LegalEntityType LegalEntityAssociationChildLegalEntityLegalEntityType `json:"legal_entity_type,required"`
 	// The business's legal structure.
-	LegalStructure LegalEntityAssociationChildLegalEntityLegalStructure `json:"legal_structure,nullable"`
+	LegalStructure LegalEntityAssociationChildLegalEntityLegalStructure `json:"legal_structure,required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode"`
+	LiveMode bool `json:"live_mode,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata     map[string]string                                   `json:"metadata"`
-	Object       string                                              `json:"object"`
-	PhoneNumbers []LegalEntityAssociationChildLegalEntityPhoneNumber `json:"phone_numbers"`
-	UpdatedAt    time.Time                                           `json:"updated_at" format:"date-time"`
+	Metadata     map[string]string                                   `json:"metadata,required"`
+	Object       string                                              `json:"object,required"`
+	PhoneNumbers []LegalEntityAssociationChildLegalEntityPhoneNumber `json:"phone_numbers,required"`
+	UpdatedAt    time.Time                                           `json:"updated_at,required" format:"date-time"`
 	// The entity's primary website URL.
-	Website string                                     `json:"website,nullable"`
+	Website string                                     `json:"website,required,nullable"`
 	JSON    legalEntityAssociationChildLegalEntityJSON `json:"-"`
 }
 
@@ -380,16 +380,16 @@ func (r LegalEntityAssociationRelationshipType) IsKnown() bool {
 }
 
 type LegalEntityAssociationNewParams struct {
-	RelationshipTypes param.Field[[]LegalEntityAssociationNewParamsRelationshipType] `json:"relationship_types,required"`
+	// The ID of the parent legal entity. This must be a business or joint legal
+	// entity.
+	ParentLegalEntityID param.Field[string]                                            `json:"parent_legal_entity_id,required"`
+	RelationshipTypes   param.Field[[]LegalEntityAssociationNewParamsRelationshipType] `json:"relationship_types,required"`
 	// The child legal entity.
 	ChildLegalEntity param.Field[LegalEntityAssociationNewParamsChildLegalEntity] `json:"child_legal_entity"`
 	// The ID of the child legal entity.
 	ChildLegalEntityID param.Field[string] `json:"child_legal_entity_id"`
 	// The child entity's ownership percentage iff they are a beneficial owner.
 	OwnershipPercentage param.Field[int64] `json:"ownership_percentage"`
-	// The ID of the parent legal entity. This must be a business or joint legal
-	// entity.
-	ParentLegalEntityID param.Field[string] `json:"parent_legal_entity_id"`
 	// The job title of the child entity at the parent entity.
 	Title param.Field[string] `json:"title"`
 }
