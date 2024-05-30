@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.13.1 (2024-05-30)
+
+Full Changelog: [v2.13.0...v2.13.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.13.0...v2.13.1)
+
+### Chores
+
+* **internal:** add code reviewer ([#233](https://github.com/Modern-Treasury/modern-treasury-go/issues/233)) ([9bc0ebc](https://github.com/Modern-Treasury/modern-treasury-go/commit/9bc0ebceaf7a1dc3b5f500f8c280a05d693e363e))
+
 ## 2.13.0 (2024-05-28)
 
 Full Changelog: [v2.12.0...v2.13.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.12.0...v2.13.0)
