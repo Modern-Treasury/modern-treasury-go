@@ -245,6 +245,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 		LedgerType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
 		LegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntity{
 			LegalEntityType:      moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness),
+			RiskRating:           moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityRiskRatingLow),
 			FirstName:            moderntreasury.F("string"),
 			LastName:             moderntreasury.F("string"),
 			DateOfBirth:          moderntreasury.F(time.Now()),
@@ -310,6 +311,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				OwnershipPercentage: moderntreasury.F(int64(0)),
 				ChildLegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity{
 					LegalEntityType:      moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness),
+					RiskRating:           moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow),
 					FirstName:            moderntreasury.F("string"),
 					LastName:             moderntreasury.F("string"),
 					DateOfBirth:          moderntreasury.F(time.Now()),
@@ -377,6 +379,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				OwnershipPercentage: moderntreasury.F(int64(0)),
 				ChildLegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity{
 					LegalEntityType:      moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness),
+					RiskRating:           moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow),
 					FirstName:            moderntreasury.F("string"),
 					LastName:             moderntreasury.F("string"),
 					DateOfBirth:          moderntreasury.F(time.Now()),
@@ -444,6 +447,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				OwnershipPercentage: moderntreasury.F(int64(0)),
 				ChildLegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity{
 					LegalEntityType:      moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness),
+					RiskRating:           moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow),
 					FirstName:            moderntreasury.F("string"),
 					LastName:             moderntreasury.F("string"),
 					DateOfBirth:          moderntreasury.F(time.Now()),
