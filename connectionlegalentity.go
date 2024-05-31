@@ -194,6 +194,8 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	// strings.
 	Metadata     param.Field[map[string]string]                                      `json:"metadata"`
 	PhoneNumbers param.Field[[]ConnectionLegalEntityNewParamsLegalEntityPhoneNumber] `json:"phone_numbers"`
+	// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+	RiskRating param.Field[ConnectionLegalEntityNewParamsLegalEntityRiskRating] `json:"risk_rating"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
@@ -346,6 +348,8 @@ type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalE
 	// strings.
 	Metadata     param.Field[map[string]string]                                                                             `json:"metadata"`
 	PhoneNumbers param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber] `json:"phone_numbers"`
+	// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+	RiskRating param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating] `json:"risk_rating"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
@@ -484,6 +488,23 @@ func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLeg
 	return apijson.MarshalRoot(r)
 }
 
+// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating string
+
+const (
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow    ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating = "low"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingMedium ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating = "medium"
+	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingHigh   ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating = "high"
+)
+
+func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingMedium, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
 // The type of legal entity.
 type ConnectionLegalEntityNewParamsLegalEntityLegalEntityType string
 
@@ -527,6 +548,23 @@ type ConnectionLegalEntityNewParamsLegalEntityPhoneNumber struct {
 
 func (r ConnectionLegalEntityNewParamsLegalEntityPhoneNumber) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+type ConnectionLegalEntityNewParamsLegalEntityRiskRating string
+
+const (
+	ConnectionLegalEntityNewParamsLegalEntityRiskRatingLow    ConnectionLegalEntityNewParamsLegalEntityRiskRating = "low"
+	ConnectionLegalEntityNewParamsLegalEntityRiskRatingMedium ConnectionLegalEntityNewParamsLegalEntityRiskRating = "medium"
+	ConnectionLegalEntityNewParamsLegalEntityRiskRatingHigh   ConnectionLegalEntityNewParamsLegalEntityRiskRating = "high"
+)
+
+func (r ConnectionLegalEntityNewParamsLegalEntityRiskRating) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityNewParamsLegalEntityRiskRatingLow, ConnectionLegalEntityNewParamsLegalEntityRiskRatingMedium, ConnectionLegalEntityNewParamsLegalEntityRiskRatingHigh:
+		return true
+	}
+	return false
 }
 
 type ConnectionLegalEntityUpdateParams struct {

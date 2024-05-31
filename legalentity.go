@@ -127,7 +127,9 @@ type LegalEntity struct {
 	Metadata     map[string]string        `json:"metadata,required"`
 	Object       string                   `json:"object,required"`
 	PhoneNumbers []LegalEntityPhoneNumber `json:"phone_numbers,required"`
-	UpdatedAt    time.Time                `json:"updated_at,required" format:"date-time"`
+	// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+	RiskRating LegalEntityRiskRating `json:"risk_rating,required,nullable"`
+	UpdatedAt  time.Time             `json:"updated_at,required" format:"date-time"`
 	// The entity's primary website URL.
 	Website string          `json:"website,required,nullable"`
 	JSON    legalEntityJSON `json:"-"`
@@ -154,6 +156,7 @@ type legalEntityJSON struct {
 	Metadata                apijson.Field
 	Object                  apijson.Field
 	PhoneNumbers            apijson.Field
+	RiskRating              apijson.Field
 	UpdatedAt               apijson.Field
 	Website                 apijson.Field
 	raw                     string
@@ -371,6 +374,23 @@ func (r legalEntityPhoneNumberJSON) RawJSON() string {
 	return r.raw
 }
 
+// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+type LegalEntityRiskRating string
+
+const (
+	LegalEntityRiskRatingLow    LegalEntityRiskRating = "low"
+	LegalEntityRiskRatingMedium LegalEntityRiskRating = "medium"
+	LegalEntityRiskRatingHigh   LegalEntityRiskRating = "high"
+)
+
+func (r LegalEntityRiskRating) IsKnown() bool {
+	switch r {
+	case LegalEntityRiskRatingLow, LegalEntityRiskRatingMedium, LegalEntityRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
 type LegalEntityNewParams struct {
 	// The type of legal entity.
 	LegalEntityType param.Field[LegalEntityNewParamsLegalEntityType] `json:"legal_entity_type,required"`
@@ -399,6 +419,8 @@ type LegalEntityNewParams struct {
 	// strings.
 	Metadata     param.Field[map[string]string]                 `json:"metadata"`
 	PhoneNumbers param.Field[[]LegalEntityNewParamsPhoneNumber] `json:"phone_numbers"`
+	// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+	RiskRating param.Field[LegalEntityNewParamsRiskRating] `json:"risk_rating"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
@@ -567,6 +589,8 @@ type LegalEntityNewParamsLegalEntityAssociationsChildLegalEntity struct {
 	// strings.
 	Metadata     param.Field[map[string]string]                                                        `json:"metadata"`
 	PhoneNumbers param.Field[[]LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityPhoneNumber] `json:"phone_numbers"`
+	// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+	RiskRating param.Field[LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRating] `json:"risk_rating"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
@@ -705,6 +729,23 @@ func (r LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityPhoneNumber) 
 	return apijson.MarshalRoot(r)
 }
 
+// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+type LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRating string
+
+const (
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRatingLow    LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRating = "low"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRatingMedium LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRating = "medium"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRatingHigh   LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRating = "high"
+)
+
+func (r LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRating) IsKnown() bool {
+	switch r {
+	case LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRatingLow, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRatingMedium, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
 // The business's legal structure.
 type LegalEntityNewParamsLegalStructure string
 
@@ -734,6 +775,23 @@ func (r LegalEntityNewParamsPhoneNumber) MarshalJSON() (data []byte, err error) 
 	return apijson.MarshalRoot(r)
 }
 
+// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+type LegalEntityNewParamsRiskRating string
+
+const (
+	LegalEntityNewParamsRiskRatingLow    LegalEntityNewParamsRiskRating = "low"
+	LegalEntityNewParamsRiskRatingMedium LegalEntityNewParamsRiskRating = "medium"
+	LegalEntityNewParamsRiskRatingHigh   LegalEntityNewParamsRiskRating = "high"
+)
+
+func (r LegalEntityNewParamsRiskRating) IsKnown() bool {
+	switch r {
+	case LegalEntityNewParamsRiskRatingLow, LegalEntityNewParamsRiskRatingMedium, LegalEntityNewParamsRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
 type LegalEntityUpdateParams struct {
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
@@ -754,6 +812,8 @@ type LegalEntityUpdateParams struct {
 	// strings.
 	Metadata     param.Field[map[string]string]                    `json:"metadata"`
 	PhoneNumbers param.Field[[]LegalEntityUpdateParamsPhoneNumber] `json:"phone_numbers"`
+	// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+	RiskRating param.Field[LegalEntityUpdateParamsRiskRating] `json:"risk_rating"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
@@ -789,6 +849,23 @@ type LegalEntityUpdateParamsPhoneNumber struct {
 
 func (r LegalEntityUpdateParamsPhoneNumber) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+type LegalEntityUpdateParamsRiskRating string
+
+const (
+	LegalEntityUpdateParamsRiskRatingLow    LegalEntityUpdateParamsRiskRating = "low"
+	LegalEntityUpdateParamsRiskRatingMedium LegalEntityUpdateParamsRiskRating = "medium"
+	LegalEntityUpdateParamsRiskRatingHigh   LegalEntityUpdateParamsRiskRating = "high"
+)
+
+func (r LegalEntityUpdateParamsRiskRating) IsKnown() bool {
+	switch r {
+	case LegalEntityUpdateParamsRiskRatingLow, LegalEntityUpdateParamsRiskRatingMedium, LegalEntityUpdateParamsRiskRatingHigh:
+		return true
+	}
+	return false
 }
 
 type LegalEntityListParams struct {
