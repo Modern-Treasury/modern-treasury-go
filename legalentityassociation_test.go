@@ -32,6 +32,7 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 		RelationshipTypes:   moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsRelationshipType{moderntreasury.LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner, moderntreasury.LegalEntityAssociationNewParamsRelationshipTypeControlPerson}),
 		ChildLegalEntity: moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntity{
 			LegalEntityType:      moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityLegalEntityTypeBusiness),
+			RiskRating:           moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityRiskRatingLow),
 			FirstName:            moderntreasury.F("string"),
 			LastName:             moderntreasury.F("string"),
 			DateOfBirth:          moderntreasury.F(time.Now()),

@@ -80,6 +80,7 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 			OwnershipPercentage: moderntreasury.F(int64(0)),
 			ChildLegalEntity: moderntreasury.F(moderntreasury.LegalEntityNewParamsLegalEntityAssociationsChildLegalEntity{
 				LegalEntityType:      moderntreasury.F(moderntreasury.LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness),
+				RiskRating:           moderntreasury.F(moderntreasury.LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRatingLow),
 				FirstName:            moderntreasury.F("string"),
 				LastName:             moderntreasury.F("string"),
 				DateOfBirth:          moderntreasury.F(time.Now()),
@@ -147,6 +148,7 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 			OwnershipPercentage: moderntreasury.F(int64(0)),
 			ChildLegalEntity: moderntreasury.F(moderntreasury.LegalEntityNewParamsLegalEntityAssociationsChildLegalEntity{
 				LegalEntityType:      moderntreasury.F(moderntreasury.LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness),
+				RiskRating:           moderntreasury.F(moderntreasury.LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRatingLow),
 				FirstName:            moderntreasury.F("string"),
 				LastName:             moderntreasury.F("string"),
 				DateOfBirth:          moderntreasury.F(time.Now()),
@@ -214,6 +216,7 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 			OwnershipPercentage: moderntreasury.F(int64(0)),
 			ChildLegalEntity: moderntreasury.F(moderntreasury.LegalEntityNewParamsLegalEntityAssociationsChildLegalEntity{
 				LegalEntityType:      moderntreasury.F(moderntreasury.LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness),
+				RiskRating:           moderntreasury.F(moderntreasury.LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRatingLow),
 				FirstName:            moderntreasury.F("string"),
 				LastName:             moderntreasury.F("string"),
 				DateOfBirth:          moderntreasury.F(time.Now()),
@@ -289,7 +292,8 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 		}, {
 			PhoneNumber: moderntreasury.F("string"),
 		}}),
-		Website: moderntreasury.F("string"),
+		RiskRating: moderntreasury.F(moderntreasury.LegalEntityNewParamsRiskRatingLow),
+		Website:    moderntreasury.F("string"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -360,7 +364,8 @@ func TestLegalEntityUpdateWithOptionalParams(t *testing.T) {
 			}, {
 				PhoneNumber: moderntreasury.F("string"),
 			}}),
-			Website: moderntreasury.F("string"),
+			RiskRating: moderntreasury.F(moderntreasury.LegalEntityUpdateParamsRiskRatingLow),
+			Website:    moderntreasury.F("string"),
 		},
 	)
 	if err != nil {

@@ -31,6 +31,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 		ConnectionID: moderntreasury.F("string"),
 		LegalEntity: moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntity{
 			LegalEntityType:      moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityTypeBusiness),
+			RiskRating:           moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityRiskRatingLow),
 			FirstName:            moderntreasury.F("string"),
 			LastName:             moderntreasury.F("string"),
 			DateOfBirth:          moderntreasury.F(time.Now()),
@@ -96,6 +97,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 				OwnershipPercentage: moderntreasury.F(int64(0)),
 				ChildLegalEntity: moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity{
 					LegalEntityType:      moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness),
+					RiskRating:           moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow),
 					FirstName:            moderntreasury.F("string"),
 					LastName:             moderntreasury.F("string"),
 					DateOfBirth:          moderntreasury.F(time.Now()),
@@ -163,6 +165,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 				OwnershipPercentage: moderntreasury.F(int64(0)),
 				ChildLegalEntity: moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity{
 					LegalEntityType:      moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness),
+					RiskRating:           moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow),
 					FirstName:            moderntreasury.F("string"),
 					LastName:             moderntreasury.F("string"),
 					DateOfBirth:          moderntreasury.F(time.Now()),
@@ -230,6 +233,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 				OwnershipPercentage: moderntreasury.F(int64(0)),
 				ChildLegalEntity: moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity{
 					LegalEntityType:      moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness),
+					RiskRating:           moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow),
 					FirstName:            moderntreasury.F("string"),
 					LastName:             moderntreasury.F("string"),
 					DateOfBirth:          moderntreasury.F(time.Now()),
