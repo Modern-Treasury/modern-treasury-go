@@ -788,6 +788,8 @@ type CounterpartyNewParamsLegalEntity struct {
 	// strings.
 	Metadata     param.Field[map[string]string]                             `json:"metadata"`
 	PhoneNumbers param.Field[[]CounterpartyNewParamsLegalEntityPhoneNumber] `json:"phone_numbers"`
+	// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+	RiskRating param.Field[CounterpartyNewParamsLegalEntityRiskRating] `json:"risk_rating"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
@@ -956,6 +958,8 @@ type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity str
 	// strings.
 	Metadata     param.Field[map[string]string]                                                                    `json:"metadata"`
 	PhoneNumbers param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber] `json:"phone_numbers"`
+	// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+	RiskRating param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating] `json:"risk_rating"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
@@ -1094,6 +1098,23 @@ func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityP
 	return apijson.MarshalRoot(r)
 }
 
+// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating string
+
+const (
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow    CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating = "low"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingMedium CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating = "medium"
+	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingHigh   CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating = "high"
+)
+
+func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingMedium, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
 // The business's legal structure.
 type CounterpartyNewParamsLegalEntityLegalStructure string
 
@@ -1121,6 +1142,23 @@ type CounterpartyNewParamsLegalEntityPhoneNumber struct {
 
 func (r CounterpartyNewParamsLegalEntityPhoneNumber) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+type CounterpartyNewParamsLegalEntityRiskRating string
+
+const (
+	CounterpartyNewParamsLegalEntityRiskRatingLow    CounterpartyNewParamsLegalEntityRiskRating = "low"
+	CounterpartyNewParamsLegalEntityRiskRatingMedium CounterpartyNewParamsLegalEntityRiskRating = "medium"
+	CounterpartyNewParamsLegalEntityRiskRatingHigh   CounterpartyNewParamsLegalEntityRiskRating = "high"
+)
+
+func (r CounterpartyNewParamsLegalEntityRiskRating) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityRiskRatingLow, CounterpartyNewParamsLegalEntityRiskRatingMedium, CounterpartyNewParamsLegalEntityRiskRatingHigh:
+		return true
+	}
+	return false
 }
 
 // The verification status of the counterparty.
