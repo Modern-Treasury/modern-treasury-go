@@ -130,7 +130,7 @@ type Invoice struct {
 	CounterpartyShippingAddress InvoiceCounterpartyShippingAddress `json:"counterparty_shipping_address,required,nullable"`
 	CreatedAt                   time.Time                          `json:"created_at,required" format:"date-time"`
 	// Currency that the invoice is denominated in. Defaults to `USD` if not provided.
-	Currency shared.Currency `json:"currency,required,nullable"`
+	Currency shared.Currency `json:"currency,required"`
 	// A free-form description of the invoice.
 	Description string `json:"description,required"`
 	// A future date by when the invoice needs to be paid.

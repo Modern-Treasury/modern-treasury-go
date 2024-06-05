@@ -90,7 +90,7 @@ type ReturnObject struct {
 	Code      ReturnObjectCode `json:"code,required,nullable"`
 	CreatedAt time.Time        `json:"created_at,required" format:"date-time"`
 	// Currency that this transaction is denominated in.
-	Currency shared.Currency `json:"currency,required,nullable"`
+	Currency shared.Currency `json:"currency,required"`
 	// If the return's status is `returned`, this will include the return object's data
 	// that is returning this return.
 	CurrentReturn *ReturnObject `json:"current_return,required,nullable"`
