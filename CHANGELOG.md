@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.14.0 (2024-06-05)
+
+Full Changelog: [v2.13.1...v2.14.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.13.1...v2.14.0)
+
+### Features
+
+* **api:** add kr_brn kr_crn kr_rrn enum values ([#235](https://github.com/Modern-Treasury/modern-treasury-go/issues/235)) ([5125730](https://github.com/Modern-Treasury/modern-treasury-go/commit/512573085593da6b7e5072bfc8c5be832940ea03))
+* **api:** add risk rating field ([#237](https://github.com/Modern-Treasury/modern-treasury-go/issues/237)) ([3c4e08b](https://github.com/Modern-Treasury/modern-treasury-go/commit/3c4e08b626fb178182109d41d6ebfeabd7969a22))
+
+
+### Bug Fixes
+
+* fix enum type to be non nullable ([#240](https://github.com/Modern-Treasury/modern-treasury-go/issues/240)) ([b7c4130](https://github.com/Modern-Treasury/modern-treasury-go/commit/b7c413090095a47b330a3e798c61bf281109ba47))
+* **internal:** fix the way that unions are deserialized in nested arrays ([#238](https://github.com/Modern-Treasury/modern-treasury-go/issues/238)) ([abf98c0](https://github.com/Modern-Treasury/modern-treasury-go/commit/abf98c0192f82d0c68cc300838b45f5638b4bf19))
+
+
+### Chores
+
+* **internal:** sync urls ([#239](https://github.com/Modern-Treasury/modern-treasury-go/issues/239)) ([535fd43](https://github.com/Modern-Treasury/modern-treasury-go/commit/535fd432cc645f1dab1266647c02ce7cdac3f31c))
+
 ## 2.13.1 (2024-05-30)
 
 Full Changelog: [v2.13.0...v2.13.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.13.0...v2.13.1)
