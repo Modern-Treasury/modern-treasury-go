@@ -120,7 +120,7 @@ type Transaction struct {
 	AsOfTime  string    `json:"as_of_time,required,nullable" format:"time"`
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	// Currency that this transaction is denominated in.
-	Currency shared.Currency `json:"currency,required,nullable"`
+	Currency shared.Currency `json:"currency,required"`
 	// Either `credit` or `debit`.
 	Direction   string    `json:"direction,required"`
 	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
@@ -216,7 +216,7 @@ type TransactionForeignExchangeRate struct {
 	// called the "sell" amount.
 	BaseAmount int64 `json:"base_amount,required"`
 	// Currency to convert, often called the "sell" currency.
-	BaseCurrency shared.Currency `json:"base_currency,required,nullable"`
+	BaseCurrency shared.Currency `json:"base_currency,required"`
 	// The exponent component of the rate. The decimal is calculated as `value` / (10 ^
 	// `exponent`).
 	Exponent int64 `json:"exponent,required"`
@@ -226,7 +226,7 @@ type TransactionForeignExchangeRate struct {
 	// "buy" amount.
 	TargetAmount int64 `json:"target_amount,required"`
 	// Currency to convert the `base_currency` to, often called the "buy" currency.
-	TargetCurrency shared.Currency `json:"target_currency,required,nullable"`
+	TargetCurrency shared.Currency `json:"target_currency,required"`
 	// The whole number component of the rate. The decimal is calculated as `value` /
 	// (10 ^ `exponent`).
 	Value int64                              `json:"value,required"`

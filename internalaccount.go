@@ -107,7 +107,7 @@ type InternalAccount struct {
 	CounterpartyID string    `json:"counterparty_id,required,nullable" format:"uuid"`
 	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
 	// The currency of the account.
-	Currency shared.Currency `json:"currency,required,nullable"`
+	Currency shared.Currency `json:"currency,required"`
 	// If the internal account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
 	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`

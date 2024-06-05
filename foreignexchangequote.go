@@ -142,7 +142,7 @@ type ForeignExchangeQuoteForeignExchangeRate struct {
 	// called the "sell" amount.
 	BaseAmount int64 `json:"base_amount,required"`
 	// Currency to convert, often called the "sell" currency.
-	BaseCurrency shared.Currency `json:"base_currency,required,nullable"`
+	BaseCurrency shared.Currency `json:"base_currency,required"`
 	// The exponent component of the rate. The decimal is calculated as `value` / (10 ^
 	// `exponent`).
 	Exponent int64 `json:"exponent,required"`
@@ -152,7 +152,7 @@ type ForeignExchangeQuoteForeignExchangeRate struct {
 	// "buy" amount.
 	TargetAmount int64 `json:"target_amount,required"`
 	// Currency to convert the `base_currency` to, often called the "buy" currency.
-	TargetCurrency shared.Currency `json:"target_currency,required,nullable"`
+	TargetCurrency shared.Currency `json:"target_currency,required"`
 	// The whole number component of the rate. The decimal is calculated as `value` /
 	// (10 ^ `exponent`).
 	Value int64                                       `json:"value,required"`

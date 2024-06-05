@@ -178,7 +178,7 @@ type BulkResultEntity struct {
 	// accessible if your accounting system has been connected.
 	AccountingLedgerClassID string `json:"accounting_ledger_class_id,nullable" format:"uuid"`
 	// Defaults to the currency of the originating account.
-	Currency shared.Currency `json:"currency,nullable"`
+	Currency shared.Currency `json:"currency"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.

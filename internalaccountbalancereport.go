@@ -182,7 +182,7 @@ type BalanceReportBalance struct {
 	BalanceType BalanceReportBalancesBalanceType `json:"balance_type,required"`
 	CreatedAt   time.Time                        `json:"created_at,required" format:"date-time"`
 	// The currency of the balance.
-	Currency shared.Currency `json:"currency,required,nullable"`
+	Currency shared.Currency `json:"currency,required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode  bool      `json:"live_mode,required"`
