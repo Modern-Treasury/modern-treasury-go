@@ -133,7 +133,7 @@ type PaymentOrder struct {
 	CounterpartyID string    `json:"counterparty_id,required,nullable" format:"uuid"`
 	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
 	// Defaults to the currency of the originating account.
-	Currency shared.Currency `json:"currency,required,nullable"`
+	Currency shared.Currency `json:"currency,required"`
 	// If the payment order's status is `returned`, this will include the return
 	// object's data.
 	CurrentReturn ReturnObject `json:"current_return,required,nullable"`
@@ -411,7 +411,7 @@ type PaymentOrderForeignExchangeRate struct {
 	// called the "sell" amount.
 	BaseAmount int64 `json:"base_amount,required"`
 	// Currency to convert, often called the "sell" currency.
-	BaseCurrency shared.Currency `json:"base_currency,required,nullable"`
+	BaseCurrency shared.Currency `json:"base_currency,required"`
 	// The exponent component of the rate. The decimal is calculated as `value` / (10 ^
 	// `exponent`).
 	Exponent int64 `json:"exponent,required"`
@@ -421,7 +421,7 @@ type PaymentOrderForeignExchangeRate struct {
 	// "buy" amount.
 	TargetAmount int64 `json:"target_amount,required"`
 	// Currency to convert the `base_currency` to, often called the "buy" currency.
-	TargetCurrency shared.Currency `json:"target_currency,required,nullable"`
+	TargetCurrency shared.Currency `json:"target_currency,required"`
 	// The whole number component of the rate. The decimal is calculated as `value` /
 	// (10 ^ `exponent`).
 	Value int64                               `json:"value,required"`
@@ -666,7 +666,7 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	// Specifies which financial institution the accounts belong to.
 	Connection Connection `json:"connection"`
 	// The currency of the account.
-	Currency shared.Currency `json:"currency,nullable"`
+	Currency shared.Currency `json:"currency"`
 	// The parent InternalAccount of this account.
 	ParentAccountID string `json:"parent_account_id,nullable" format:"uuid"`
 	// The Legal Entity associated to this account

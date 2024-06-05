@@ -117,7 +117,7 @@ type ExpectedPayment struct {
 	CounterpartyID string    `json:"counterparty_id,required,nullable" format:"uuid"`
 	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
 	// Must conform to ISO 4217. Defaults to the currency of the internal account.
-	Currency shared.Currency `json:"currency,required,nullable"`
+	Currency shared.Currency `json:"currency,required"`
 	// The earliest date the payment may come in. Format: yyyy-mm-dd
 	DateLowerBound time.Time `json:"date_lower_bound,required,nullable" format:"date"`
 	// The latest date the payment may come in. Format: yyyy-mm-dd

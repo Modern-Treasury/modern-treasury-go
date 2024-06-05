@@ -102,7 +102,7 @@ type IncomingPaymentDetail struct {
 	AsOfDate  time.Time `json:"as_of_date,required" format:"date"`
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	// The currency of the incoming payment detail.
-	Currency shared.Currency `json:"currency,required,nullable"`
+	Currency shared.Currency `json:"currency,required"`
 	// The raw data from the payment pre-notification file that we get from the bank.
 	Data map[string]interface{} `json:"data,required"`
 	// One of `credit` or `debit`.
