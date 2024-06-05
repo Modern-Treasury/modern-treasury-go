@@ -85,7 +85,7 @@ type PaperItem struct {
 	CheckNumber string    `json:"check_number,required,nullable"`
 	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
 	// The currency of the paper item.
-	Currency shared.Currency `json:"currency,required,nullable"`
+	Currency shared.Currency `json:"currency,required"`
 	// The date the paper item was deposited into your organization's bank account.
 	DepositDate time.Time `json:"deposit_date,required" format:"date"`
 	// This field will be true if this object exists in the live environment or false
