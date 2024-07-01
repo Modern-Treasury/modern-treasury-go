@@ -197,18 +197,21 @@ func (r incomingPaymentDetailJSON) RawJSON() string {
 type IncomingPaymentDetailOriginatingAccountNumberType string
 
 const (
+	IncomingPaymentDetailOriginatingAccountNumberTypeAuNumber      IncomingPaymentDetailOriginatingAccountNumberType = "au_number"
 	IncomingPaymentDetailOriginatingAccountNumberTypeClabe         IncomingPaymentDetailOriginatingAccountNumberType = "clabe"
 	IncomingPaymentDetailOriginatingAccountNumberTypeHkNumber      IncomingPaymentDetailOriginatingAccountNumberType = "hk_number"
 	IncomingPaymentDetailOriginatingAccountNumberTypeIban          IncomingPaymentDetailOriginatingAccountNumberType = "iban"
+	IncomingPaymentDetailOriginatingAccountNumberTypeIDNumber      IncomingPaymentDetailOriginatingAccountNumberType = "id_number"
 	IncomingPaymentDetailOriginatingAccountNumberTypeNzNumber      IncomingPaymentDetailOriginatingAccountNumberType = "nz_number"
 	IncomingPaymentDetailOriginatingAccountNumberTypeOther         IncomingPaymentDetailOriginatingAccountNumberType = "other"
 	IncomingPaymentDetailOriginatingAccountNumberTypePan           IncomingPaymentDetailOriginatingAccountNumberType = "pan"
+	IncomingPaymentDetailOriginatingAccountNumberTypeSgNumber      IncomingPaymentDetailOriginatingAccountNumberType = "sg_number"
 	IncomingPaymentDetailOriginatingAccountNumberTypeWalletAddress IncomingPaymentDetailOriginatingAccountNumberType = "wallet_address"
 )
 
 func (r IncomingPaymentDetailOriginatingAccountNumberType) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailOriginatingAccountNumberTypeClabe, IncomingPaymentDetailOriginatingAccountNumberTypeHkNumber, IncomingPaymentDetailOriginatingAccountNumberTypeIban, IncomingPaymentDetailOriginatingAccountNumberTypeNzNumber, IncomingPaymentDetailOriginatingAccountNumberTypeOther, IncomingPaymentDetailOriginatingAccountNumberTypePan, IncomingPaymentDetailOriginatingAccountNumberTypeWalletAddress:
+	case IncomingPaymentDetailOriginatingAccountNumberTypeAuNumber, IncomingPaymentDetailOriginatingAccountNumberTypeClabe, IncomingPaymentDetailOriginatingAccountNumberTypeHkNumber, IncomingPaymentDetailOriginatingAccountNumberTypeIban, IncomingPaymentDetailOriginatingAccountNumberTypeIDNumber, IncomingPaymentDetailOriginatingAccountNumberTypeNzNumber, IncomingPaymentDetailOriginatingAccountNumberTypeOther, IncomingPaymentDetailOriginatingAccountNumberTypePan, IncomingPaymentDetailOriginatingAccountNumberTypeSgNumber, IncomingPaymentDetailOriginatingAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false
