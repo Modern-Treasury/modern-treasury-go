@@ -33,7 +33,7 @@ func TestAccountDetailNewWithOptionalParams(t *testing.T) {
 		"string",
 		moderntreasury.AccountDetailNewParams{
 			AccountNumber:     moderntreasury.F("string"),
-			AccountNumberType: moderntreasury.F(moderntreasury.AccountDetailNewParamsAccountNumberTypeClabe),
+			AccountNumberType: moderntreasury.F(moderntreasury.AccountDetailNewParamsAccountNumberTypeAuNumber),
 		},
 	)
 	if err != nil {

@@ -323,6 +323,7 @@ const (
 	TransactionVendorCodeTypeJpmc          TransactionVendorCodeType = "jpmc"
 	TransactionVendorCodeTypeMx            TransactionVendorCodeType = "mx"
 	TransactionVendorCodeTypePlaid         TransactionVendorCodeType = "plaid"
+	TransactionVendorCodeTypePnc           TransactionVendorCodeType = "pnc"
 	TransactionVendorCodeTypeRspecVendor   TransactionVendorCodeType = "rspec_vendor"
 	TransactionVendorCodeTypeSignet        TransactionVendorCodeType = "signet"
 	TransactionVendorCodeTypeSilvergate    TransactionVendorCodeType = "silvergate"
@@ -333,7 +334,7 @@ const (
 
 func (r TransactionVendorCodeType) IsKnown() bool {
 	switch r {
-	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePlaid, TransactionVendorCodeTypeRspecVendor, TransactionVendorCodeTypeSignet, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser:
+	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePlaid, TransactionVendorCodeTypePnc, TransactionVendorCodeTypeRspecVendor, TransactionVendorCodeTypeSignet, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser:
 		return true
 	}
 	return false

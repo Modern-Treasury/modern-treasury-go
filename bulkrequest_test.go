@@ -84,13 +84,13 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				Name: moderntreasury.F("string"),
 				AccountDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetail{{
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}}),
 				RoutingDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetail{{
 					RoutingNumber:     moderntreasury.F("string"),
@@ -297,13 +297,13 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				Name: moderntreasury.F("string"),
 				AccountDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetail{{
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}}),
 				RoutingDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetail{{
 					RoutingNumber:     moderntreasury.F("string"),
@@ -510,13 +510,13 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				Name: moderntreasury.F("string"),
 				AccountDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetail{{
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}}),
 				RoutingDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetail{{
 					RoutingNumber:     moderntreasury.F("string"),

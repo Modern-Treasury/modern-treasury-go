@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"reflect"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -17,6 +18,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
+	"github.com/tidwall/gjson"
 )
 
 // ExternalAccountService contains methods and other services that help with
@@ -119,7 +121,7 @@ func (r *ExternalAccountService) CompleteVerification(ctx context.Context, id st
 }
 
 // verify external account
-func (r *ExternalAccountService) Verify(ctx context.Context, id string, body ExternalAccountVerifyParams, opts ...option.RequestOption) (res *ExternalAccount, err error) {
+func (r *ExternalAccountService) Verify(ctx context.Context, id string, body ExternalAccountVerifyParams, opts ...option.RequestOption) (res *ExternalAccountVerifyResponse, err error) {
 	opts = append(r.Options[:], opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
@@ -160,6 +162,7 @@ type ExternalAccount struct {
 	PartyType          ExternalAccountPartyType          `json:"party_type,required,nullable"`
 	RoutingDetails     []RoutingDetail                   `json:"routing_details,required"`
 	UpdatedAt          time.Time                         `json:"updated_at,required" format:"date-time"`
+	VerificationSource ExternalAccountVerificationSource `json:"verification_source,required,nullable"`
 	VerificationStatus ExternalAccountVerificationStatus `json:"verification_status,required"`
 	JSON               externalAccountJSON               `json:"-"`
 }
@@ -183,6 +186,7 @@ type externalAccountJSON struct {
 	PartyType          apijson.Field
 	RoutingDetails     apijson.Field
 	UpdatedAt          apijson.Field
+	VerificationSource apijson.Field
 	VerificationStatus apijson.Field
 	raw                string
 	ExtraFields        map[string]apijson.Field
@@ -195,6 +199,8 @@ func (r *ExternalAccount) UnmarshalJSON(data []byte) (err error) {
 func (r externalAccountJSON) RawJSON() string {
 	return r.raw
 }
+
+func (r ExternalAccount) implementsExternalAccountVerifyResponse() {}
 
 type ExternalAccountContactDetail struct {
 	ID                    string                                             `json:"id,required" format:"uuid"`
@@ -313,6 +319,22 @@ func (r ExternalAccountPartyType) IsKnown() bool {
 	return false
 }
 
+type ExternalAccountVerificationSource string
+
+const (
+	ExternalAccountVerificationSourceACHPrenote    ExternalAccountVerificationSource = "ach_prenote"
+	ExternalAccountVerificationSourceMicrodeposits ExternalAccountVerificationSource = "microdeposits"
+	ExternalAccountVerificationSourcePlaid         ExternalAccountVerificationSource = "plaid"
+)
+
+func (r ExternalAccountVerificationSource) IsKnown() bool {
+	switch r {
+	case ExternalAccountVerificationSourceACHPrenote, ExternalAccountVerificationSourceMicrodeposits, ExternalAccountVerificationSourcePlaid:
+		return true
+	}
+	return false
+}
+
 type ExternalAccountVerificationStatus string
 
 const (
@@ -346,6 +368,379 @@ const (
 func (r ExternalAccountType) IsKnown() bool {
 	switch r {
 	case ExternalAccountTypeCash, ExternalAccountTypeChecking, ExternalAccountTypeGeneralLedger, ExternalAccountTypeLoan, ExternalAccountTypeNonResident, ExternalAccountTypeOther, ExternalAccountTypeOverdraft, ExternalAccountTypeSavings:
+		return true
+	}
+	return false
+}
+
+type ExternalAccountVerifyResponse struct {
+	ID     string `json:"id,required" format:"uuid"`
+	Object string `json:"object,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode    bool      `json:"live_mode,required"`
+	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
+	UpdatedAt   time.Time `json:"updated_at,required" format:"date-time"`
+	DiscardedAt time.Time `json:"discarded_at,nullable" format:"date-time"`
+	// Can be `checking`, `savings` or `other`.
+	AccountType ExternalAccountType `json:"account_type"`
+	// Either `individual` or `business`.
+	PartyType    ExternalAccountVerifyResponsePartyType `json:"party_type,nullable"`
+	PartyAddress interface{}                            `json:"party_address,required"`
+	// A nickname for the external account. This is only for internal usage and won't
+	// affect any payments
+	Name           string      `json:"name,nullable"`
+	CounterpartyID string      `json:"counterparty_id,nullable" format:"uuid"`
+	AccountDetails interface{} `json:"account_details,required"`
+	RoutingDetails interface{} `json:"routing_details,required"`
+	Metadata       interface{} `json:"metadata,required"`
+	// The legal name of the entity which owns the account.
+	PartyName      string      `json:"party_name"`
+	ContactDetails interface{} `json:"contact_details,required"`
+	// If the external account links to a ledger account in Modern Treasury, the id of
+	// the ledger account will be populated here.
+	LedgerAccountID    string                                          `json:"ledger_account_id,nullable" format:"uuid"`
+	VerificationStatus ExternalAccountVerifyResponseVerificationStatus `json:"verification_status"`
+	VerificationSource ExternalAccountVerifyResponseVerificationSource `json:"verification_source,nullable"`
+	// The ID of the external account.
+	ExternalAccountID string `json:"external_account_id" format:"uuid"`
+	// The ID of the internal account where the micro-deposits originate from.
+	OriginatingAccountID string `json:"originating_account_id" format:"uuid"`
+	// The type of payment that can be made to this account. Can be `ach`, `eft`, or
+	// `rtp`.
+	PaymentType ExternalAccountVerifyResponsePaymentType `json:"payment_type"`
+	// The priority of the payment. Can be `normal` or `high`.
+	Priority ExternalAccountVerifyResponsePriority `json:"priority,nullable"`
+	// The status of the verification attempt. Can be `pending_verification`,
+	// `verified`, `failed`, or `cancelled`.
+	Status ExternalAccountVerifyResponseStatus `json:"status"`
+	JSON   externalAccountVerifyResponseJSON   `json:"-"`
+	union  ExternalAccountVerifyResponseUnion
+}
+
+// externalAccountVerifyResponseJSON contains the JSON metadata for the struct
+// [ExternalAccountVerifyResponse]
+type externalAccountVerifyResponseJSON struct {
+	ID                   apijson.Field
+	Object               apijson.Field
+	LiveMode             apijson.Field
+	CreatedAt            apijson.Field
+	UpdatedAt            apijson.Field
+	DiscardedAt          apijson.Field
+	AccountType          apijson.Field
+	PartyType            apijson.Field
+	PartyAddress         apijson.Field
+	Name                 apijson.Field
+	CounterpartyID       apijson.Field
+	AccountDetails       apijson.Field
+	RoutingDetails       apijson.Field
+	Metadata             apijson.Field
+	PartyName            apijson.Field
+	ContactDetails       apijson.Field
+	LedgerAccountID      apijson.Field
+	VerificationStatus   apijson.Field
+	VerificationSource   apijson.Field
+	ExternalAccountID    apijson.Field
+	OriginatingAccountID apijson.Field
+	PaymentType          apijson.Field
+	Priority             apijson.Field
+	Status               apijson.Field
+	raw                  string
+	ExtraFields          map[string]apijson.Field
+}
+
+func (r externalAccountVerifyResponseJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r *ExternalAccountVerifyResponse) UnmarshalJSON(data []byte) (err error) {
+	err = apijson.UnmarshalRoot(data, &r.union)
+	if err != nil {
+		return err
+	}
+	return apijson.Port(r.union, &r)
+}
+
+func (r ExternalAccountVerifyResponse) AsUnion() ExternalAccountVerifyResponseUnion {
+	return r.union
+}
+
+// Union satisfied by [ExternalAccount] or
+// [ExternalAccountVerifyResponseExternalAccountVerificationAttempt].
+type ExternalAccountVerifyResponseUnion interface {
+	implementsExternalAccountVerifyResponse()
+}
+
+func init() {
+	apijson.RegisterUnion(
+		reflect.TypeOf((*ExternalAccountVerifyResponseUnion)(nil)).Elem(),
+		"",
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(ExternalAccount{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(ExternalAccountVerifyResponseExternalAccountVerificationAttempt{}),
+		},
+	)
+}
+
+type ExternalAccountVerifyResponseExternalAccountVerificationAttempt struct {
+	ID        string    `json:"id,required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	// The ID of the external account.
+	ExternalAccountID string `json:"external_account_id,required" format:"uuid"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
+	// The ID of the internal account where the micro-deposits originate from.
+	OriginatingAccountID string `json:"originating_account_id,required" format:"uuid"`
+	// The type of payment that can be made to this account. Can be `ach`, `eft`, or
+	// `rtp`.
+	PaymentType ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType `json:"payment_type,required"`
+	// The priority of the payment. Can be `normal` or `high`.
+	Priority ExternalAccountVerifyResponseExternalAccountVerificationAttemptPriority `json:"priority,required,nullable"`
+	// The status of the verification attempt. Can be `pending_verification`,
+	// `verified`, `failed`, or `cancelled`.
+	Status    ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatus `json:"status,required"`
+	UpdatedAt time.Time                                                             `json:"updated_at,required" format:"date-time"`
+	JSON      externalAccountVerifyResponseExternalAccountVerificationAttemptJSON   `json:"-"`
+}
+
+// externalAccountVerifyResponseExternalAccountVerificationAttemptJSON contains the
+// JSON metadata for the struct
+// [ExternalAccountVerifyResponseExternalAccountVerificationAttempt]
+type externalAccountVerifyResponseExternalAccountVerificationAttemptJSON struct {
+	ID                   apijson.Field
+	CreatedAt            apijson.Field
+	ExternalAccountID    apijson.Field
+	LiveMode             apijson.Field
+	Object               apijson.Field
+	OriginatingAccountID apijson.Field
+	PaymentType          apijson.Field
+	Priority             apijson.Field
+	Status               apijson.Field
+	UpdatedAt            apijson.Field
+	raw                  string
+	ExtraFields          map[string]apijson.Field
+}
+
+func (r *ExternalAccountVerifyResponseExternalAccountVerificationAttempt) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r externalAccountVerifyResponseExternalAccountVerificationAttemptJSON) RawJSON() string {
+	return r.raw
+}
+
+func (r ExternalAccountVerifyResponseExternalAccountVerificationAttempt) implementsExternalAccountVerifyResponse() {
+}
+
+// The type of payment that can be made to this account. Can be `ach`, `eft`, or
+// `rtp`.
+type ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType string
+
+const (
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeACH         ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "ach"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeAuBecs      ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "au_becs"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeBacs        ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "bacs"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeBook        ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "book"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeCard        ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "card"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeChats       ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "chats"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeCheck       ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "check"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeCrossBorder ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "cross_border"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeDkNets      ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "dk_nets"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeEft         ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "eft"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeHuIcs       ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "hu_ics"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeInterac     ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "interac"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeMasav       ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "masav"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeMxCcen      ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "mx_ccen"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeNeft        ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "neft"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeNics        ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "nics"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeNzBecs      ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "nz_becs"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypePlElixir    ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "pl_elixir"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeProvxchange ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "provxchange"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeRoSent      ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "ro_sent"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeRtp         ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "rtp"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSeBankgirot ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "se_bankgirot"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSen         ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "sen"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSepa        ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "sepa"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSgGiro      ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "sg_giro"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSic         ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "sic"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSignet      ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "signet"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSknbi       ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "sknbi"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeWire        ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "wire"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeZengin      ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType = "zengin"
+)
+
+func (r ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType) IsKnown() bool {
+	switch r {
+	case ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeACH, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeAuBecs, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeBacs, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeBook, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeCard, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeChats, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeCheck, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeCrossBorder, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeDkNets, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeEft, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeHuIcs, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeInterac, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeMasav, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeMxCcen, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeNeft, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeNics, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeNzBecs, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypePlElixir, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeProvxchange, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeRoSent, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeRtp, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSeBankgirot, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSen, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSepa, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSgGiro, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSic, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSignet, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeSknbi, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeWire, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentTypeZengin:
+		return true
+	}
+	return false
+}
+
+// The priority of the payment. Can be `normal` or `high`.
+type ExternalAccountVerifyResponseExternalAccountVerificationAttemptPriority string
+
+const (
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPriorityHigh   ExternalAccountVerifyResponseExternalAccountVerificationAttemptPriority = "high"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptPriorityNormal ExternalAccountVerifyResponseExternalAccountVerificationAttemptPriority = "normal"
+)
+
+func (r ExternalAccountVerifyResponseExternalAccountVerificationAttemptPriority) IsKnown() bool {
+	switch r {
+	case ExternalAccountVerifyResponseExternalAccountVerificationAttemptPriorityHigh, ExternalAccountVerifyResponseExternalAccountVerificationAttemptPriorityNormal:
+		return true
+	}
+	return false
+}
+
+// The status of the verification attempt. Can be `pending_verification`,
+// `verified`, `failed`, or `cancelled`.
+type ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatus string
+
+const (
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatusCancelled           ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatus = "cancelled"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatusFailed              ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatus = "failed"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatusPendingVerification ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatus = "pending_verification"
+	ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatusVerified            ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatus = "verified"
+)
+
+func (r ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatus) IsKnown() bool {
+	switch r {
+	case ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatusCancelled, ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatusFailed, ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatusPendingVerification, ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatusVerified:
+		return true
+	}
+	return false
+}
+
+// Either `individual` or `business`.
+type ExternalAccountVerifyResponsePartyType string
+
+const (
+	ExternalAccountVerifyResponsePartyTypeBusiness   ExternalAccountVerifyResponsePartyType = "business"
+	ExternalAccountVerifyResponsePartyTypeIndividual ExternalAccountVerifyResponsePartyType = "individual"
+)
+
+func (r ExternalAccountVerifyResponsePartyType) IsKnown() bool {
+	switch r {
+	case ExternalAccountVerifyResponsePartyTypeBusiness, ExternalAccountVerifyResponsePartyTypeIndividual:
+		return true
+	}
+	return false
+}
+
+type ExternalAccountVerifyResponseVerificationStatus string
+
+const (
+	ExternalAccountVerifyResponseVerificationStatusPendingVerification ExternalAccountVerifyResponseVerificationStatus = "pending_verification"
+	ExternalAccountVerifyResponseVerificationStatusUnverified          ExternalAccountVerifyResponseVerificationStatus = "unverified"
+	ExternalAccountVerifyResponseVerificationStatusVerified            ExternalAccountVerifyResponseVerificationStatus = "verified"
+)
+
+func (r ExternalAccountVerifyResponseVerificationStatus) IsKnown() bool {
+	switch r {
+	case ExternalAccountVerifyResponseVerificationStatusPendingVerification, ExternalAccountVerifyResponseVerificationStatusUnverified, ExternalAccountVerifyResponseVerificationStatusVerified:
+		return true
+	}
+	return false
+}
+
+type ExternalAccountVerifyResponseVerificationSource string
+
+const (
+	ExternalAccountVerifyResponseVerificationSourceACHPrenote    ExternalAccountVerifyResponseVerificationSource = "ach_prenote"
+	ExternalAccountVerifyResponseVerificationSourceMicrodeposits ExternalAccountVerifyResponseVerificationSource = "microdeposits"
+	ExternalAccountVerifyResponseVerificationSourcePlaid         ExternalAccountVerifyResponseVerificationSource = "plaid"
+)
+
+func (r ExternalAccountVerifyResponseVerificationSource) IsKnown() bool {
+	switch r {
+	case ExternalAccountVerifyResponseVerificationSourceACHPrenote, ExternalAccountVerifyResponseVerificationSourceMicrodeposits, ExternalAccountVerifyResponseVerificationSourcePlaid:
+		return true
+	}
+	return false
+}
+
+// The type of payment that can be made to this account. Can be `ach`, `eft`, or
+// `rtp`.
+type ExternalAccountVerifyResponsePaymentType string
+
+const (
+	ExternalAccountVerifyResponsePaymentTypeACH         ExternalAccountVerifyResponsePaymentType = "ach"
+	ExternalAccountVerifyResponsePaymentTypeAuBecs      ExternalAccountVerifyResponsePaymentType = "au_becs"
+	ExternalAccountVerifyResponsePaymentTypeBacs        ExternalAccountVerifyResponsePaymentType = "bacs"
+	ExternalAccountVerifyResponsePaymentTypeBook        ExternalAccountVerifyResponsePaymentType = "book"
+	ExternalAccountVerifyResponsePaymentTypeCard        ExternalAccountVerifyResponsePaymentType = "card"
+	ExternalAccountVerifyResponsePaymentTypeChats       ExternalAccountVerifyResponsePaymentType = "chats"
+	ExternalAccountVerifyResponsePaymentTypeCheck       ExternalAccountVerifyResponsePaymentType = "check"
+	ExternalAccountVerifyResponsePaymentTypeCrossBorder ExternalAccountVerifyResponsePaymentType = "cross_border"
+	ExternalAccountVerifyResponsePaymentTypeDkNets      ExternalAccountVerifyResponsePaymentType = "dk_nets"
+	ExternalAccountVerifyResponsePaymentTypeEft         ExternalAccountVerifyResponsePaymentType = "eft"
+	ExternalAccountVerifyResponsePaymentTypeHuIcs       ExternalAccountVerifyResponsePaymentType = "hu_ics"
+	ExternalAccountVerifyResponsePaymentTypeInterac     ExternalAccountVerifyResponsePaymentType = "interac"
+	ExternalAccountVerifyResponsePaymentTypeMasav       ExternalAccountVerifyResponsePaymentType = "masav"
+	ExternalAccountVerifyResponsePaymentTypeMxCcen      ExternalAccountVerifyResponsePaymentType = "mx_ccen"
+	ExternalAccountVerifyResponsePaymentTypeNeft        ExternalAccountVerifyResponsePaymentType = "neft"
+	ExternalAccountVerifyResponsePaymentTypeNics        ExternalAccountVerifyResponsePaymentType = "nics"
+	ExternalAccountVerifyResponsePaymentTypeNzBecs      ExternalAccountVerifyResponsePaymentType = "nz_becs"
+	ExternalAccountVerifyResponsePaymentTypePlElixir    ExternalAccountVerifyResponsePaymentType = "pl_elixir"
+	ExternalAccountVerifyResponsePaymentTypeProvxchange ExternalAccountVerifyResponsePaymentType = "provxchange"
+	ExternalAccountVerifyResponsePaymentTypeRoSent      ExternalAccountVerifyResponsePaymentType = "ro_sent"
+	ExternalAccountVerifyResponsePaymentTypeRtp         ExternalAccountVerifyResponsePaymentType = "rtp"
+	ExternalAccountVerifyResponsePaymentTypeSeBankgirot ExternalAccountVerifyResponsePaymentType = "se_bankgirot"
+	ExternalAccountVerifyResponsePaymentTypeSen         ExternalAccountVerifyResponsePaymentType = "sen"
+	ExternalAccountVerifyResponsePaymentTypeSepa        ExternalAccountVerifyResponsePaymentType = "sepa"
+	ExternalAccountVerifyResponsePaymentTypeSgGiro      ExternalAccountVerifyResponsePaymentType = "sg_giro"
+	ExternalAccountVerifyResponsePaymentTypeSic         ExternalAccountVerifyResponsePaymentType = "sic"
+	ExternalAccountVerifyResponsePaymentTypeSignet      ExternalAccountVerifyResponsePaymentType = "signet"
+	ExternalAccountVerifyResponsePaymentTypeSknbi       ExternalAccountVerifyResponsePaymentType = "sknbi"
+	ExternalAccountVerifyResponsePaymentTypeWire        ExternalAccountVerifyResponsePaymentType = "wire"
+	ExternalAccountVerifyResponsePaymentTypeZengin      ExternalAccountVerifyResponsePaymentType = "zengin"
+)
+
+func (r ExternalAccountVerifyResponsePaymentType) IsKnown() bool {
+	switch r {
+	case ExternalAccountVerifyResponsePaymentTypeACH, ExternalAccountVerifyResponsePaymentTypeAuBecs, ExternalAccountVerifyResponsePaymentTypeBacs, ExternalAccountVerifyResponsePaymentTypeBook, ExternalAccountVerifyResponsePaymentTypeCard, ExternalAccountVerifyResponsePaymentTypeChats, ExternalAccountVerifyResponsePaymentTypeCheck, ExternalAccountVerifyResponsePaymentTypeCrossBorder, ExternalAccountVerifyResponsePaymentTypeDkNets, ExternalAccountVerifyResponsePaymentTypeEft, ExternalAccountVerifyResponsePaymentTypeHuIcs, ExternalAccountVerifyResponsePaymentTypeInterac, ExternalAccountVerifyResponsePaymentTypeMasav, ExternalAccountVerifyResponsePaymentTypeMxCcen, ExternalAccountVerifyResponsePaymentTypeNeft, ExternalAccountVerifyResponsePaymentTypeNics, ExternalAccountVerifyResponsePaymentTypeNzBecs, ExternalAccountVerifyResponsePaymentTypePlElixir, ExternalAccountVerifyResponsePaymentTypeProvxchange, ExternalAccountVerifyResponsePaymentTypeRoSent, ExternalAccountVerifyResponsePaymentTypeRtp, ExternalAccountVerifyResponsePaymentTypeSeBankgirot, ExternalAccountVerifyResponsePaymentTypeSen, ExternalAccountVerifyResponsePaymentTypeSepa, ExternalAccountVerifyResponsePaymentTypeSgGiro, ExternalAccountVerifyResponsePaymentTypeSic, ExternalAccountVerifyResponsePaymentTypeSignet, ExternalAccountVerifyResponsePaymentTypeSknbi, ExternalAccountVerifyResponsePaymentTypeWire, ExternalAccountVerifyResponsePaymentTypeZengin:
+		return true
+	}
+	return false
+}
+
+// The priority of the payment. Can be `normal` or `high`.
+type ExternalAccountVerifyResponsePriority string
+
+const (
+	ExternalAccountVerifyResponsePriorityHigh   ExternalAccountVerifyResponsePriority = "high"
+	ExternalAccountVerifyResponsePriorityNormal ExternalAccountVerifyResponsePriority = "normal"
+)
+
+func (r ExternalAccountVerifyResponsePriority) IsKnown() bool {
+	switch r {
+	case ExternalAccountVerifyResponsePriorityHigh, ExternalAccountVerifyResponsePriorityNormal:
+		return true
+	}
+	return false
+}
+
+// The status of the verification attempt. Can be `pending_verification`,
+// `verified`, `failed`, or `cancelled`.
+type ExternalAccountVerifyResponseStatus string
+
+const (
+	ExternalAccountVerifyResponseStatusCancelled           ExternalAccountVerifyResponseStatus = "cancelled"
+	ExternalAccountVerifyResponseStatusFailed              ExternalAccountVerifyResponseStatus = "failed"
+	ExternalAccountVerifyResponseStatusPendingVerification ExternalAccountVerifyResponseStatus = "pending_verification"
+	ExternalAccountVerifyResponseStatusVerified            ExternalAccountVerifyResponseStatus = "verified"
+)
+
+func (r ExternalAccountVerifyResponseStatus) IsKnown() bool {
+	switch r {
+	case ExternalAccountVerifyResponseStatusCancelled, ExternalAccountVerifyResponseStatusFailed, ExternalAccountVerifyResponseStatusPendingVerification, ExternalAccountVerifyResponseStatusVerified:
 		return true
 	}
 	return false
@@ -398,18 +793,21 @@ func (r ExternalAccountNewParamsAccountDetail) MarshalJSON() (data []byte, err e
 type ExternalAccountNewParamsAccountDetailsAccountNumberType string
 
 const (
-	ExternalAccountNewParamsAccountDetailsAccountNumberTypeIban          ExternalAccountNewParamsAccountDetailsAccountNumberType = "iban"
-	ExternalAccountNewParamsAccountDetailsAccountNumberTypeHkNumber      ExternalAccountNewParamsAccountDetailsAccountNumberType = "hk_number"
+	ExternalAccountNewParamsAccountDetailsAccountNumberTypeAuNumber      ExternalAccountNewParamsAccountDetailsAccountNumberType = "au_number"
 	ExternalAccountNewParamsAccountDetailsAccountNumberTypeClabe         ExternalAccountNewParamsAccountDetailsAccountNumberType = "clabe"
+	ExternalAccountNewParamsAccountDetailsAccountNumberTypeHkNumber      ExternalAccountNewParamsAccountDetailsAccountNumberType = "hk_number"
+	ExternalAccountNewParamsAccountDetailsAccountNumberTypeIban          ExternalAccountNewParamsAccountDetailsAccountNumberType = "iban"
+	ExternalAccountNewParamsAccountDetailsAccountNumberTypeIDNumber      ExternalAccountNewParamsAccountDetailsAccountNumberType = "id_number"
 	ExternalAccountNewParamsAccountDetailsAccountNumberTypeNzNumber      ExternalAccountNewParamsAccountDetailsAccountNumberType = "nz_number"
-	ExternalAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress ExternalAccountNewParamsAccountDetailsAccountNumberType = "wallet_address"
-	ExternalAccountNewParamsAccountDetailsAccountNumberTypePan           ExternalAccountNewParamsAccountDetailsAccountNumberType = "pan"
 	ExternalAccountNewParamsAccountDetailsAccountNumberTypeOther         ExternalAccountNewParamsAccountDetailsAccountNumberType = "other"
+	ExternalAccountNewParamsAccountDetailsAccountNumberTypePan           ExternalAccountNewParamsAccountDetailsAccountNumberType = "pan"
+	ExternalAccountNewParamsAccountDetailsAccountNumberTypeSgNumber      ExternalAccountNewParamsAccountDetailsAccountNumberType = "sg_number"
+	ExternalAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress ExternalAccountNewParamsAccountDetailsAccountNumberType = "wallet_address"
 )
 
 func (r ExternalAccountNewParamsAccountDetailsAccountNumberType) IsKnown() bool {
 	switch r {
-	case ExternalAccountNewParamsAccountDetailsAccountNumberTypeIban, ExternalAccountNewParamsAccountDetailsAccountNumberTypeHkNumber, ExternalAccountNewParamsAccountDetailsAccountNumberTypeClabe, ExternalAccountNewParamsAccountDetailsAccountNumberTypeNzNumber, ExternalAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress, ExternalAccountNewParamsAccountDetailsAccountNumberTypePan, ExternalAccountNewParamsAccountDetailsAccountNumberTypeOther:
+	case ExternalAccountNewParamsAccountDetailsAccountNumberTypeAuNumber, ExternalAccountNewParamsAccountDetailsAccountNumberTypeClabe, ExternalAccountNewParamsAccountDetailsAccountNumberTypeHkNumber, ExternalAccountNewParamsAccountDetailsAccountNumberTypeIban, ExternalAccountNewParamsAccountDetailsAccountNumberTypeIDNumber, ExternalAccountNewParamsAccountDetailsAccountNumberTypeNzNumber, ExternalAccountNewParamsAccountDetailsAccountNumberTypeOther, ExternalAccountNewParamsAccountDetailsAccountNumberTypePan, ExternalAccountNewParamsAccountDetailsAccountNumberTypeSgNumber, ExternalAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false

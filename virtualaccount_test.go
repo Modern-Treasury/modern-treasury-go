@@ -32,13 +32,13 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 		Name:              moderntreasury.F("string"),
 		AccountDetails: moderntreasury.F([]moderntreasury.VirtualAccountNewParamsAccountDetail{{
 			AccountNumber:     moderntreasury.F("string"),
-			AccountNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsAccountDetailsAccountNumberTypeClabe),
+			AccountNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}, {
 			AccountNumber:     moderntreasury.F("string"),
-			AccountNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsAccountDetailsAccountNumberTypeClabe),
+			AccountNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}, {
 			AccountNumber:     moderntreasury.F("string"),
-			AccountNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsAccountDetailsAccountNumberTypeClabe),
+			AccountNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}}),
 		CounterpartyID:        moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		CreditLedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),

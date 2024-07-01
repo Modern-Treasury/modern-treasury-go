@@ -727,6 +727,7 @@ const (
 	BulkResultEntityVendorCodeTypeJpmc          BulkResultEntityVendorCodeType = "jpmc"
 	BulkResultEntityVendorCodeTypeMx            BulkResultEntityVendorCodeType = "mx"
 	BulkResultEntityVendorCodeTypePlaid         BulkResultEntityVendorCodeType = "plaid"
+	BulkResultEntityVendorCodeTypePnc           BulkResultEntityVendorCodeType = "pnc"
 	BulkResultEntityVendorCodeTypeRspecVendor   BulkResultEntityVendorCodeType = "rspec_vendor"
 	BulkResultEntityVendorCodeTypeSignet        BulkResultEntityVendorCodeType = "signet"
 	BulkResultEntityVendorCodeTypeSilvergate    BulkResultEntityVendorCodeType = "silvergate"
@@ -737,7 +738,7 @@ const (
 
 func (r BulkResultEntityVendorCodeType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePlaid, BulkResultEntityVendorCodeTypeRspecVendor, BulkResultEntityVendorCodeTypeSignet, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser:
+	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePlaid, BulkResultEntityVendorCodeTypePnc, BulkResultEntityVendorCodeTypeRspecVendor, BulkResultEntityVendorCodeTypeSignet, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser:
 		return true
 	}
 	return false
