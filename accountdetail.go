@@ -153,18 +153,21 @@ func (r accountDetailJSON) RawJSON() string {
 type AccountDetailAccountNumberType string
 
 const (
+	AccountDetailAccountNumberTypeAuNumber      AccountDetailAccountNumberType = "au_number"
 	AccountDetailAccountNumberTypeClabe         AccountDetailAccountNumberType = "clabe"
 	AccountDetailAccountNumberTypeHkNumber      AccountDetailAccountNumberType = "hk_number"
 	AccountDetailAccountNumberTypeIban          AccountDetailAccountNumberType = "iban"
+	AccountDetailAccountNumberTypeIDNumber      AccountDetailAccountNumberType = "id_number"
 	AccountDetailAccountNumberTypeNzNumber      AccountDetailAccountNumberType = "nz_number"
 	AccountDetailAccountNumberTypeOther         AccountDetailAccountNumberType = "other"
 	AccountDetailAccountNumberTypePan           AccountDetailAccountNumberType = "pan"
+	AccountDetailAccountNumberTypeSgNumber      AccountDetailAccountNumberType = "sg_number"
 	AccountDetailAccountNumberTypeWalletAddress AccountDetailAccountNumberType = "wallet_address"
 )
 
 func (r AccountDetailAccountNumberType) IsKnown() bool {
 	switch r {
-	case AccountDetailAccountNumberTypeClabe, AccountDetailAccountNumberTypeHkNumber, AccountDetailAccountNumberTypeIban, AccountDetailAccountNumberTypeNzNumber, AccountDetailAccountNumberTypeOther, AccountDetailAccountNumberTypePan, AccountDetailAccountNumberTypeWalletAddress:
+	case AccountDetailAccountNumberTypeAuNumber, AccountDetailAccountNumberTypeClabe, AccountDetailAccountNumberTypeHkNumber, AccountDetailAccountNumberTypeIban, AccountDetailAccountNumberTypeIDNumber, AccountDetailAccountNumberTypeNzNumber, AccountDetailAccountNumberTypeOther, AccountDetailAccountNumberTypePan, AccountDetailAccountNumberTypeSgNumber, AccountDetailAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false
@@ -201,18 +204,21 @@ func (r AccountDetailNewParamsAccountsType) IsKnown() bool {
 type AccountDetailNewParamsAccountNumberType string
 
 const (
+	AccountDetailNewParamsAccountNumberTypeAuNumber      AccountDetailNewParamsAccountNumberType = "au_number"
 	AccountDetailNewParamsAccountNumberTypeClabe         AccountDetailNewParamsAccountNumberType = "clabe"
 	AccountDetailNewParamsAccountNumberTypeHkNumber      AccountDetailNewParamsAccountNumberType = "hk_number"
 	AccountDetailNewParamsAccountNumberTypeIban          AccountDetailNewParamsAccountNumberType = "iban"
+	AccountDetailNewParamsAccountNumberTypeIDNumber      AccountDetailNewParamsAccountNumberType = "id_number"
 	AccountDetailNewParamsAccountNumberTypeNzNumber      AccountDetailNewParamsAccountNumberType = "nz_number"
 	AccountDetailNewParamsAccountNumberTypeOther         AccountDetailNewParamsAccountNumberType = "other"
 	AccountDetailNewParamsAccountNumberTypePan           AccountDetailNewParamsAccountNumberType = "pan"
+	AccountDetailNewParamsAccountNumberTypeSgNumber      AccountDetailNewParamsAccountNumberType = "sg_number"
 	AccountDetailNewParamsAccountNumberTypeWalletAddress AccountDetailNewParamsAccountNumberType = "wallet_address"
 )
 
 func (r AccountDetailNewParamsAccountNumberType) IsKnown() bool {
 	switch r {
-	case AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeNzNumber, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypeWalletAddress:
+	case AccountDetailNewParamsAccountNumberTypeAuNumber, AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeIDNumber, AccountDetailNewParamsAccountNumberTypeNzNumber, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypeSgNumber, AccountDetailNewParamsAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false

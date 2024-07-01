@@ -467,7 +467,9 @@ type LedgerAccountListParams struct {
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
 	Metadata param.Field[map[string]string] `query:"metadata"`
-	Name     param.Field[string]            `query:"name"`
+	// If you have specific names to retrieve in bulk, you can pass them as query
+	// parameters delimited with `name[]=`, for example `?name[]=123&name[]=abc`.
+	Name param.Field[[]string] `query:"name"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), `eq` (=), or `not_eq` (!=) to
 	// filter by balance amount.
 	PendingBalanceAmount param.Field[LedgerAccountListParamsPendingBalanceAmount] `query:"pending_balance_amount"`

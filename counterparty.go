@@ -202,6 +202,7 @@ type CounterpartyAccount struct {
 	PartyType          CounterpartyAccountsPartyType          `json:"party_type,nullable"`
 	RoutingDetails     []RoutingDetail                        `json:"routing_details"`
 	UpdatedAt          time.Time                              `json:"updated_at" format:"date-time"`
+	VerificationSource CounterpartyAccountsVerificationSource `json:"verification_source,nullable"`
 	VerificationStatus CounterpartyAccountsVerificationStatus `json:"verification_status"`
 	JSON               counterpartyAccountJSON                `json:"-"`
 }
@@ -225,6 +226,7 @@ type counterpartyAccountJSON struct {
 	PartyType          apijson.Field
 	RoutingDetails     apijson.Field
 	UpdatedAt          apijson.Field
+	VerificationSource apijson.Field
 	VerificationStatus apijson.Field
 	raw                string
 	ExtraFields        map[string]apijson.Field
@@ -350,6 +352,22 @@ const (
 func (r CounterpartyAccountsPartyType) IsKnown() bool {
 	switch r {
 	case CounterpartyAccountsPartyTypeBusiness, CounterpartyAccountsPartyTypeIndividual:
+		return true
+	}
+	return false
+}
+
+type CounterpartyAccountsVerificationSource string
+
+const (
+	CounterpartyAccountsVerificationSourceACHPrenote    CounterpartyAccountsVerificationSource = "ach_prenote"
+	CounterpartyAccountsVerificationSourceMicrodeposits CounterpartyAccountsVerificationSource = "microdeposits"
+	CounterpartyAccountsVerificationSourcePlaid         CounterpartyAccountsVerificationSource = "plaid"
+)
+
+func (r CounterpartyAccountsVerificationSource) IsKnown() bool {
+	switch r {
+	case CounterpartyAccountsVerificationSourceACHPrenote, CounterpartyAccountsVerificationSourceMicrodeposits, CounterpartyAccountsVerificationSourcePlaid:
 		return true
 	}
 	return false
@@ -524,18 +542,21 @@ func (r CounterpartyNewParamsAccountsAccountDetail) MarshalJSON() (data []byte, 
 type CounterpartyNewParamsAccountsAccountDetailsAccountNumberType string
 
 const (
-	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban          CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "iban"
-	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeHkNumber      CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "hk_number"
+	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber      CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "au_number"
 	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeClabe         CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "clabe"
+	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeHkNumber      CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "hk_number"
+	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban          CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "iban"
+	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIDNumber      CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "id_number"
 	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeNzNumber      CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "nz_number"
-	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeWalletAddress CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "wallet_address"
-	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypePan           CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "pan"
 	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeOther         CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "other"
+	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypePan           CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "pan"
+	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeSgNumber      CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "sg_number"
+	CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeWalletAddress CounterpartyNewParamsAccountsAccountDetailsAccountNumberType = "wallet_address"
 )
 
 func (r CounterpartyNewParamsAccountsAccountDetailsAccountNumberType) IsKnown() bool {
 	switch r {
-	case CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeHkNumber, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeClabe, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeNzNumber, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeWalletAddress, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypePan, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeOther:
+	case CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeClabe, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeHkNumber, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIban, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeIDNumber, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeNzNumber, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeOther, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypePan, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeSgNumber, CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false
@@ -1279,13 +1300,13 @@ const (
 	CounterpartyCollectAccountParamsFieldBrCodigo                CounterpartyCollectAccountParamsField = "brCodigo"
 	CounterpartyCollectAccountParamsFieldRoutingNumberType       CounterpartyCollectAccountParamsField = "routingNumberType"
 	CounterpartyCollectAccountParamsFieldAddress                 CounterpartyCollectAccountParamsField = "address"
-	CounterpartyCollectAccountParamsFieldJpZenginCode            CounterpartyCollectAccountParamsField = "jp_zengin_code"
-	CounterpartyCollectAccountParamsFieldSeBankgiroClearingCode  CounterpartyCollectAccountParamsField = "se_bankgiro_clearing_code"
-	CounterpartyCollectAccountParamsFieldNzNationalClearingCode  CounterpartyCollectAccountParamsField = "nz_national_clearing_code"
-	CounterpartyCollectAccountParamsFieldHkInterbankClearingCode CounterpartyCollectAccountParamsField = "hk_interbank_clearing_code"
-	CounterpartyCollectAccountParamsFieldHuInterbankClearingCode CounterpartyCollectAccountParamsField = "hu_interbank_clearing_code"
-	CounterpartyCollectAccountParamsFieldDkInterbankClearingCode CounterpartyCollectAccountParamsField = "dk_interbank_clearing_code"
-	CounterpartyCollectAccountParamsFieldIDSknbiCode             CounterpartyCollectAccountParamsField = "id_sknbi_code"
+	CounterpartyCollectAccountParamsFieldJpZenginCode            CounterpartyCollectAccountParamsField = "jpZenginCode"
+	CounterpartyCollectAccountParamsFieldSeBankgiroClearingCode  CounterpartyCollectAccountParamsField = "seBankgiroClearingCode"
+	CounterpartyCollectAccountParamsFieldNzNationalClearingCode  CounterpartyCollectAccountParamsField = "nzNationalClearingCode"
+	CounterpartyCollectAccountParamsFieldHkInterbankClearingCode CounterpartyCollectAccountParamsField = "hkInterbankClearingCode"
+	CounterpartyCollectAccountParamsFieldHuInterbankClearingCode CounterpartyCollectAccountParamsField = "huInterbankClearingCode"
+	CounterpartyCollectAccountParamsFieldDkInterbankClearingCode CounterpartyCollectAccountParamsField = "dkInterbankClearingCode"
+	CounterpartyCollectAccountParamsFieldIDSknbiCode             CounterpartyCollectAccountParamsField = "idSknbiCode"
 )
 
 func (r CounterpartyCollectAccountParamsField) IsKnown() bool {

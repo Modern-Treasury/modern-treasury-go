@@ -815,11 +815,31 @@ const (
 	PaymentOrderSubtypePpd                         PaymentOrderSubtype = "PPD"
 	PaymentOrderSubtypeTel                         PaymentOrderSubtype = "TEL"
 	PaymentOrderSubtypeWeb                         PaymentOrderSubtype = "WEB"
+	PaymentOrderSubtypeAuBecs                      PaymentOrderSubtype = "au_becs"
+	PaymentOrderSubtypeBacs                        PaymentOrderSubtype = "bacs"
+	PaymentOrderSubtypeChats                       PaymentOrderSubtype = "chats"
+	PaymentOrderSubtypeDkNets                      PaymentOrderSubtype = "dk_nets"
+	PaymentOrderSubtypeEft                         PaymentOrderSubtype = "eft"
+	PaymentOrderSubtypeHuIcs                       PaymentOrderSubtype = "hu_ics"
+	PaymentOrderSubtypeInterac                     PaymentOrderSubtype = "interac"
+	PaymentOrderSubtypeMasav                       PaymentOrderSubtype = "masav"
+	PaymentOrderSubtypeMxCcen                      PaymentOrderSubtype = "mx_ccen"
+	PaymentOrderSubtypeNeft                        PaymentOrderSubtype = "neft"
+	PaymentOrderSubtypeNics                        PaymentOrderSubtype = "nics"
+	PaymentOrderSubtypeNzBecs                      PaymentOrderSubtype = "nz_becs"
+	PaymentOrderSubtypePlElixir                    PaymentOrderSubtype = "pl_elixir"
+	PaymentOrderSubtypeRoSent                      PaymentOrderSubtype = "ro_sent"
+	PaymentOrderSubtypeSeBankgirot                 PaymentOrderSubtype = "se_bankgirot"
+	PaymentOrderSubtypeSepa                        PaymentOrderSubtype = "sepa"
+	PaymentOrderSubtypeSgGiro                      PaymentOrderSubtype = "sg_giro"
+	PaymentOrderSubtypeSic                         PaymentOrderSubtype = "sic"
+	PaymentOrderSubtypeSknbi                       PaymentOrderSubtype = "sknbi"
+	PaymentOrderSubtypeZengin                      PaymentOrderSubtype = "zengin"
 )
 
 func (r PaymentOrderSubtype) IsKnown() bool {
 	switch r {
-	case PaymentOrderSubtypeBacsNewInstruction, PaymentOrderSubtypeBacsCancellationInstruction, PaymentOrderSubtypeBacsConversionInstruction, PaymentOrderSubtypeCcd, PaymentOrderSubtypeCie, PaymentOrderSubtypeCtx, PaymentOrderSubtypeIat, PaymentOrderSubtypePpd, PaymentOrderSubtypeTel, PaymentOrderSubtypeWeb:
+	case PaymentOrderSubtypeBacsNewInstruction, PaymentOrderSubtypeBacsCancellationInstruction, PaymentOrderSubtypeBacsConversionInstruction, PaymentOrderSubtypeCcd, PaymentOrderSubtypeCie, PaymentOrderSubtypeCtx, PaymentOrderSubtypeIat, PaymentOrderSubtypePpd, PaymentOrderSubtypeTel, PaymentOrderSubtypeWeb, PaymentOrderSubtypeAuBecs, PaymentOrderSubtypeBacs, PaymentOrderSubtypeChats, PaymentOrderSubtypeDkNets, PaymentOrderSubtypeEft, PaymentOrderSubtypeHuIcs, PaymentOrderSubtypeInterac, PaymentOrderSubtypeMasav, PaymentOrderSubtypeMxCcen, PaymentOrderSubtypeNeft, PaymentOrderSubtypeNics, PaymentOrderSubtypeNzBecs, PaymentOrderSubtypePlElixir, PaymentOrderSubtypeRoSent, PaymentOrderSubtypeSeBankgirot, PaymentOrderSubtypeSepa, PaymentOrderSubtypeSgGiro, PaymentOrderSubtypeSic, PaymentOrderSubtypeSknbi, PaymentOrderSubtypeZengin:
 		return true
 	}
 	return false
@@ -1340,18 +1360,21 @@ func (r PaymentOrderNewParamsReceivingAccountAccountDetail) MarshalJSON() (data 
 type PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType string
 
 const (
-	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeIban          PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "iban"
-	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber      PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "hk_number"
+	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber      PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "au_number"
 	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeClabe         PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "clabe"
+	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber      PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "hk_number"
+	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeIban          PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "iban"
+	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeIDNumber      PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "id_number"
 	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeNzNumber      PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "nz_number"
-	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
-	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypePan           PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "pan"
 	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeOther         PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "other"
+	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypePan           PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "pan"
+	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeSgNumber      PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "sg_number"
+	PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
 )
 
 func (r PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeIban, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeClabe, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeNzNumber, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypePan, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeOther:
+	case PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeClabe, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeIban, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeIDNumber, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeNzNumber, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeOther, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypePan, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeSgNumber, PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false
@@ -1860,18 +1883,21 @@ func (r PaymentOrderUpdateParamsReceivingAccountAccountDetail) MarshalJSON() (da
 type PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType string
 
 const (
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIban          PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "iban"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber      PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "hk_number"
+	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber      PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "au_number"
 	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeClabe         PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "clabe"
+	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber      PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "hk_number"
+	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIban          PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "iban"
+	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIDNumber      PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "id_number"
 	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeNzNumber      PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "nz_number"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypePan           PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "pan"
 	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeOther         PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "other"
+	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypePan           PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "pan"
+	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeSgNumber      PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "sg_number"
+	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
 )
 
 func (r PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
 	switch r {
-	case PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIban, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeClabe, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeNzNumber, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypePan, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeOther:
+	case PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeClabe, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIban, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIDNumber, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeNzNumber, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeOther, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypePan, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeSgNumber, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false
@@ -2650,18 +2676,21 @@ func (r PaymentOrderNewAsyncParamsReceivingAccountAccountDetail) MarshalJSON() (
 type PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType string
 
 const (
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIban          PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "iban"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber      PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "hk_number"
+	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber      PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "au_number"
 	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeClabe         PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "clabe"
+	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber      PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "hk_number"
+	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIban          PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "iban"
+	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIDNumber      PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "id_number"
 	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeNzNumber      PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "nz_number"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypePan           PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "pan"
 	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeOther         PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "other"
+	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypePan           PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "pan"
+	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeSgNumber      PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "sg_number"
+	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
 )
 
 func (r PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIban, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeClabe, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeNzNumber, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypePan, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeOther:
+	case PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeClabe, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIban, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIDNumber, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeNzNumber, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeOther, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypePan, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeSgNumber, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false
