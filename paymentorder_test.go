@@ -193,13 +193,13 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 			Name: moderntreasury.F("string"),
 			AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetail{{
 				AccountNumber:     moderntreasury.F("string"),
-				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
+				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 			}, {
 				AccountNumber:     moderntreasury.F("string"),
-				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
+				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 			}, {
 				AccountNumber:     moderntreasury.F("string"),
-				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
+				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 			}}),
 			RoutingDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsReceivingAccountRoutingDetail{{
 				RoutingNumber:     moderntreasury.F("string"),
@@ -379,13 +379,13 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 				Name: moderntreasury.F("string"),
 				AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetail{{
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}, {
 					AccountNumber:     moderntreasury.F("string"),
-					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
+					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}}),
 				RoutingDetails: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsReceivingAccountRoutingDetail{{
 					RoutingNumber:     moderntreasury.F("string"),
@@ -660,13 +660,13 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 			Name: moderntreasury.F("string"),
 			AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetail{{
 				AccountNumber:     moderntreasury.F("string"),
-				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
+				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 			}, {
 				AccountNumber:     moderntreasury.F("string"),
-				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
+				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 			}, {
 				AccountNumber:     moderntreasury.F("string"),
-				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIban),
+				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 			}}),
 			RoutingDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountRoutingDetail{{
 				RoutingNumber:     moderntreasury.F("string"),

@@ -107,7 +107,9 @@ type ConnectionLegalEntity struct {
 	// The status of the connection legal entity.
 	Status    ConnectionLegalEntityStatus `json:"status,required"`
 	UpdatedAt time.Time                   `json:"updated_at,required" format:"date-time"`
-	JSON      connectionLegalEntityJSON   `json:"-"`
+	// The ID of the legal entity at the vendor.
+	VendorID string                    `json:"vendor_id,required"`
+	JSON     connectionLegalEntityJSON `json:"-"`
 }
 
 // connectionLegalEntityJSON contains the JSON metadata for the struct
@@ -122,6 +124,7 @@ type connectionLegalEntityJSON struct {
 	Object        apijson.Field
 	Status        apijson.Field
 	UpdatedAt     apijson.Field
+	VendorID      apijson.Field
 	raw           string
 	ExtraFields   map[string]apijson.Field
 }
