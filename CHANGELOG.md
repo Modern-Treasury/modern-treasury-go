@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.15.1 (2024-07-01)
+
+Full Changelog: [v2.15.0...v2.15.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.15.0...v2.15.1)
+
+### Documentation
+
+* add better documentation for flattened enum types ([#246](https://github.com/Modern-Treasury/modern-treasury-go/issues/246)) ([e8612db](https://github.com/Modern-Treasury/modern-treasury-go/commit/e8612db6d59df6255b620de9a26bc19c7e087752))
+
 ## 2.15.0 (2024-07-01)
 
 Full Changelog: [v2.14.0...v2.15.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.14.0...v2.15.0)

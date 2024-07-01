@@ -641,9 +641,11 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	// The ID of a counterparty that the virtual account belongs to. Optional.
 	CounterpartyID string `json:"counterparty_id,required,nullable" format:"uuid"`
 	// The ID of the internal account that the virtual account is in.
-	InternalAccountID string      `json:"internal_account_id" format:"uuid"`
-	AccountDetails    interface{} `json:"account_details"`
-	RoutingDetails    interface{} `json:"routing_details"`
+	InternalAccountID string `json:"internal_account_id" format:"uuid"`
+	// This field can have the runtime type of [[]AccountDetail].
+	AccountDetails interface{} `json:"account_details"`
+	// This field can have the runtime type of [[]RoutingDetail].
+	RoutingDetails interface{} `json:"routing_details"`
 	// The ID of a debit normal ledger account. When money enters the virtual account,
 	// this ledger account will be debited. Must be accompanied by a
 	// credit_ledger_account_id if present.
@@ -654,15 +656,17 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	CreditLedgerAccountID string `json:"credit_ledger_account_id,nullable" format:"uuid"`
 	// If the virtual account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
-	LedgerAccountID string      `json:"ledger_account_id,required,nullable" format:"uuid"`
-	Metadata        interface{} `json:"metadata"`
+	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
+	// This field can have the runtime type of [map[string]string].
+	Metadata interface{} `json:"metadata"`
 	// Can be checking, savings or other.
 	AccountType PaymentOrderUltimateOriginatingAccountAccountType `json:"account_type,nullable"`
 	// The legal name of the entity which owns the account.
 	PartyName string `json:"party_name"`
 	// Either individual or business.
-	PartyType    PaymentOrderUltimateOriginatingAccountPartyType `json:"party_type,nullable"`
-	PartyAddress interface{}                                     `json:"party_address,required"`
+	PartyType PaymentOrderUltimateOriginatingAccountPartyType `json:"party_type,nullable"`
+	// This field can have the runtime type of [InternalAccountPartyAddress].
+	PartyAddress interface{} `json:"party_address,required"`
 	// Specifies which financial institution the accounts belong to.
 	Connection Connection `json:"connection"`
 	// The currency of the account.
@@ -718,6 +722,10 @@ func (r *PaymentOrderUltimateOriginatingAccount) UnmarshalJSON(data []byte) (err
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [PaymentOrderUltimateOriginatingAccountUnion] interface which
+// you can cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [VirtualAccount], [InternalAccount].
 func (r PaymentOrderUltimateOriginatingAccount) AsUnion() PaymentOrderUltimateOriginatingAccountUnion {
 	return r.union
 }
