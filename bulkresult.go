@@ -169,8 +169,9 @@ type BulkResultEntity struct {
 	// The ID of one of your organization's internal accounts.
 	OriginatingAccountID string `json:"originating_account_id" format:"uuid"`
 	// The receiving account ID. Can be an `external_account` or `internal_account`.
-	ReceivingAccountID string      `json:"receiving_account_id" format:"uuid"`
-	Accounting         interface{} `json:"accounting,required"`
+	ReceivingAccountID string `json:"receiving_account_id" format:"uuid"`
+	// This field can have the runtime type of [PaymentOrderAccounting].
+	Accounting interface{} `json:"accounting,required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID string `json:"accounting_category_id,nullable" format:"uuid"`
@@ -205,7 +206,8 @@ type BulkResultEntity struct {
 	// For `wire`, this is usually the purpose which is transmitted via the
 	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
 	// digit CPA Code that will be attached to the payment.
-	Purpose  string      `json:"purpose,nullable"`
+	Purpose string `json:"purpose,nullable"`
+	// This field can have the runtime type of [map[string]string].
 	Metadata interface{} `json:"metadata,required"`
 	// The party that will pay the fees for the payment order. Only applies to wire
 	// payment orders. Can be one of shared, sender, or receiver, which correspond
@@ -238,16 +240,19 @@ type BulkResultEntity struct {
 	// RFP payments require an expires_at. This value must be past the effective_date.
 	ExpiresAt time.Time `json:"expires_at,nullable" format:"date-time"`
 	// The current status of the payment order.
-	Status                     BulkResultEntityStatus               `json:"status"`
-	ReceivingAccountType       BulkResultEntityReceivingAccountType `json:"receiving_account_type"`
-	UltimateOriginatingAccount interface{}                          `json:"ultimate_originating_account,required"`
+	Status               BulkResultEntityStatus               `json:"status"`
+	ReceivingAccountType BulkResultEntityReceivingAccountType `json:"receiving_account_type"`
+	// This field can have the runtime type of
+	// [PaymentOrderUltimateOriginatingAccount].
+	UltimateOriginatingAccount interface{} `json:"ultimate_originating_account,required"`
 	// The ultimate originating account ID. Can be a `virtual_account` or
 	// `internal_account`.
 	UltimateOriginatingAccountID   string                                         `json:"ultimate_originating_account_id,nullable" format:"uuid"`
 	UltimateOriginatingAccountType BulkResultEntityUltimateOriginatingAccountType `json:"ultimate_originating_account_type,nullable"`
 	// If the payment order is tied to a specific Counterparty, their id will appear,
 	// otherwise `null`.
-	CounterpartyID string      `json:"counterparty_id,nullable" format:"uuid"`
+	CounterpartyID string `json:"counterparty_id,nullable" format:"uuid"`
+	// This field can have the runtime type of [[]string].
 	TransactionIDs interface{} `json:"transaction_ids,required"`
 	// The ID of the ledger transaction linked to the payment order.
 	LedgerTransactionID string `json:"ledger_transaction_id,nullable" format:"uuid"`
@@ -256,17 +261,22 @@ type BulkResultEntity struct {
 	CurrentReturn ReturnObject `json:"current_return,nullable"`
 	// A flag that determines whether a payment order should go through transaction
 	// monitoring.
-	TransactionMonitoringEnabled bool        `json:"transaction_monitoring_enabled"`
-	ComplianceRuleMetadata       interface{} `json:"compliance_rule_metadata,required"`
-	ReferenceNumbers             interface{} `json:"reference_numbers,required"`
+	TransactionMonitoringEnabled bool `json:"transaction_monitoring_enabled"`
+	// This field can have the runtime type of [map[string]interface{}].
+	ComplianceRuleMetadata interface{} `json:"compliance_rule_metadata,required"`
+	// This field can have the runtime type of [[]PaymentOrderReferenceNumber].
+	ReferenceNumbers interface{} `json:"reference_numbers,required"`
 	// This field will be populated if a vendor failure occurs. Logic shouldn't be
 	// built on its value as it is free-form.
 	VendorFailureReason string `json:"vendor_failure_reason,nullable"`
 	// The ID of the compliance decision for the payment order, if transaction
 	// monitoring is enabled.
-	DecisionID          string      `json:"decision_id,nullable" format:"uuid"`
+	DecisionID string `json:"decision_id,nullable" format:"uuid"`
+	// This field can have the runtime type of [PaymentOrderForeignExchangeRate],
+	// [TransactionForeignExchangeRate].
 	ForeignExchangeRate interface{} `json:"foreign_exchange_rate,required"`
-	VendorAttributes    interface{} `json:"vendor_attributes,required"`
+	// This field can have the runtime type of [interface{}].
+	VendorAttributes interface{} `json:"vendor_attributes,required"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUpperBound int64 `json:"amount_upper_bound"`
@@ -278,9 +288,12 @@ type BulkResultEntity struct {
 	// The latest date the payment may come in. Format: yyyy-mm-dd
 	DateUpperBound time.Time `json:"date_upper_bound,nullable" format:"date"`
 	// The earliest date the payment may come in. Format: yyyy-mm-dd
-	DateLowerBound              time.Time   `json:"date_lower_bound,nullable" format:"date"`
-	ReconciliationGroups        interface{} `json:"reconciliation_groups,required"`
-	ReconciliationFilters       interface{} `json:"reconciliation_filters,required"`
+	DateLowerBound time.Time `json:"date_lower_bound,nullable" format:"date"`
+	// This field can have the runtime type of [interface{}].
+	ReconciliationGroups interface{} `json:"reconciliation_groups,required"`
+	// This field can have the runtime type of [interface{}].
+	ReconciliationFilters interface{} `json:"reconciliation_filters,required"`
+	// This field can have the runtime type of [[]map[string]string].
 	ReconciliationRuleVariables interface{} `json:"reconciliation_rule_variables,required"`
 	// The ID of the Transaction this expected payment object has been matched to.
 	TransactionID string `json:"transaction_id,nullable" format:"uuid"`
@@ -292,7 +305,8 @@ type BulkResultEntity struct {
 	ReconciliationMethod BulkResultEntityReconciliationMethod `json:"reconciliation_method,nullable"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt   time.Time   `json:"effective_at" format:"date-time"`
+	EffectiveAt time.Time `json:"effective_at" format:"date-time"`
+	// This field can have the runtime type of [[]LedgerEntry].
 	LedgerEntries interface{} `json:"ledger_entries,required"`
 	// The time on which the ledger transaction posted. This is null if the ledger
 	// transaction is pending.
@@ -340,8 +354,11 @@ type BulkResultEntity struct {
 	// This field will be `true` if a transaction is reconciled by the Modern Treasury
 	// system. This means that it has transaction line items that sum up to the
 	// transaction's amount.
-	Reconciled    bool                 `json:"reconciled"`
-	Details       interface{}          `json:"details,required"`
+	Reconciled bool `json:"reconciled"`
+	// This field can have the runtime type of [map[string]string].
+	Details interface{} `json:"details,required"`
+	// This field can have the runtime type of
+	// [[]BulkResultEntityBulkErrorRequestError].
 	RequestErrors interface{}          `json:"request_errors,required"`
 	JSON          bulkResultEntityJSON `json:"-"`
 	union         BulkResultEntityUnion
@@ -448,6 +465,11 @@ func (r *BulkResultEntity) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [BulkResultEntityUnion] interface which you can cast to the
+// specific types for more type safety.
+//
+// Possible runtime types of the union are [PaymentOrder], [ExpectedPayment],
+// [LedgerTransaction], [Transaction], [BulkResultEntityBulkError].
 func (r BulkResultEntity) AsUnion() BulkResultEntityUnion {
 	return r.union
 }
