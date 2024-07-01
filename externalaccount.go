@@ -385,17 +385,22 @@ type ExternalAccountVerifyResponse struct {
 	// Can be `checking`, `savings` or `other`.
 	AccountType ExternalAccountType `json:"account_type"`
 	// Either `individual` or `business`.
-	PartyType    ExternalAccountVerifyResponsePartyType `json:"party_type,nullable"`
-	PartyAddress interface{}                            `json:"party_address,required"`
+	PartyType ExternalAccountVerifyResponsePartyType `json:"party_type,nullable"`
+	// This field can have the runtime type of [ExternalAccountPartyAddress].
+	PartyAddress interface{} `json:"party_address,required"`
 	// A nickname for the external account. This is only for internal usage and won't
 	// affect any payments
-	Name           string      `json:"name,nullable"`
-	CounterpartyID string      `json:"counterparty_id,nullable" format:"uuid"`
+	Name           string `json:"name,nullable"`
+	CounterpartyID string `json:"counterparty_id,nullable" format:"uuid"`
+	// This field can have the runtime type of [[]AccountDetail].
 	AccountDetails interface{} `json:"account_details,required"`
+	// This field can have the runtime type of [[]RoutingDetail].
 	RoutingDetails interface{} `json:"routing_details,required"`
-	Metadata       interface{} `json:"metadata,required"`
+	// This field can have the runtime type of [map[string]string].
+	Metadata interface{} `json:"metadata,required"`
 	// The legal name of the entity which owns the account.
-	PartyName      string      `json:"party_name"`
+	PartyName string `json:"party_name"`
+	// This field can have the runtime type of [[]ExternalAccountContactDetail].
 	ContactDetails interface{} `json:"contact_details,required"`
 	// If the external account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
@@ -461,6 +466,11 @@ func (r *ExternalAccountVerifyResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.Port(r.union, &r)
 }
 
+// AsUnion returns a [ExternalAccountVerifyResponseUnion] interface which you can
+// cast to the specific types for more type safety.
+//
+// Possible runtime types of the union are [ExternalAccount],
+// [ExternalAccountVerifyResponseExternalAccountVerificationAttempt].
 func (r ExternalAccountVerifyResponse) AsUnion() ExternalAccountVerifyResponseUnion {
 	return r.union
 }
