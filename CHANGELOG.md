@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.15.0 (2024-07-01)
+
+Full Changelog: [v2.14.0...v2.15.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.14.0...v2.15.0)
+
+### Features
+
+* **api:** updates ([#245](https://github.com/Modern-Treasury/modern-treasury-go/issues/245)) ([877f9c3](https://github.com/Modern-Treasury/modern-treasury-go/commit/877f9c33a4a7a6bb9675f4093a23b8d2ead40df7))
+
+
+### Bug Fixes
+
+* fix ExtraFields serialization / deserialization ([#243](https://github.com/Modern-Treasury/modern-treasury-go/issues/243)) ([8b82674](https://github.com/Modern-Treasury/modern-treasury-go/commit/8b8267465a9cc6dec123e1c4c9ef17e6d82d22bf))
+* fix port function for interface{} types ([#241](https://github.com/Modern-Treasury/modern-treasury-go/issues/241)) ([17ad20a](https://github.com/Modern-Treasury/modern-treasury-go/commit/17ad20a6216f61282a847aba55ea09acd20b33fd))
+
+
+### Chores
+
+* gitignore test server logs ([#244](https://github.com/Modern-Treasury/modern-treasury-go/issues/244)) ([268f263](https://github.com/Modern-Treasury/modern-treasury-go/commit/268f263ae34526753e8800009d0e2446dcf4b868))
+
 ## 2.14.0 (2024-06-05)
 
 Full Changelog: [v2.13.1...v2.14.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.13.1...v2.14.0)
