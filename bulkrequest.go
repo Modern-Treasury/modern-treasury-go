@@ -412,10 +412,10 @@ func (r BulkRequestNewParamsResource) implementsBulkRequestNewParamsResourceUnio
 // [BulkRequestNewParamsResourcesLedgerTransactionCreateRequest],
 // [BulkRequestNewParamsResourcesTransactionCreateRequest],
 // [BulkRequestNewParamsResourcesObject],
-// [BulkRequestNewParamsResourceUnionPaymentOrderUpdateRequestWithID],
-// [BulkRequestNewParamsResourceUnionExpectedPaymentUpdateRequestWithID],
-// [BulkRequestNewParamsResourceUnionTransactionUpdateRequestWithID],
-// [BulkRequestNewParamsResourceUnionLedgerTransactionUpdateRequestWithID],
+// [BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID],
+// [BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID],
+// [BulkRequestNewParamsResourcesTransactionUpdateRequestWithID],
+// [BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID],
 // [BulkRequestNewParamsResource].
 type BulkRequestNewParamsResourceUnion interface {
 	implementsBulkRequestNewParamsResourceUnion()
@@ -1471,7 +1471,7 @@ func (r BulkRequestNewParamsResourcesObject) MarshalJSON() (data []byte, err err
 
 func (r BulkRequestNewParamsResourcesObject) implementsBulkRequestNewParamsResourceUnion() {}
 
-type BulkRequestNewParamsResourceUnionPaymentOrderUpdateRequestWithID struct {
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
 	ID         param.Field[string]                                                                 `json:"id" format:"uuid"`
 	Accounting param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
@@ -1597,11 +1597,11 @@ type BulkRequestNewParamsResourceUnionPaymentOrderUpdateRequestWithID struct {
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
 }
 
-func (r BulkRequestNewParamsResourceUnionPaymentOrderUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourceUnionPaymentOrderUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
 }
 
 type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDAccounting struct {
@@ -2025,7 +2025,7 @@ func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus) IsKn
 	return false
 }
 
-type BulkRequestNewParamsResourceUnionExpectedPaymentUpdateRequestWithID struct {
+type BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID struct {
 	ID param.Field[string] `json:"id" format:"uuid"`
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
@@ -2074,11 +2074,11 @@ type BulkRequestNewParamsResourceUnionExpectedPaymentUpdateRequestWithID struct 
 	Type param.Field[ExpectedPaymentType] `json:"type"`
 }
 
-func (r BulkRequestNewParamsResourceUnionExpectedPaymentUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourceUnionExpectedPaymentUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
+func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
 }
 
 // The Expected Payment's status can be updated from partially_reconciled to
@@ -2097,21 +2097,21 @@ func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDStatus) I
 	return false
 }
 
-type BulkRequestNewParamsResourceUnionTransactionUpdateRequestWithID struct {
+type BulkRequestNewParamsResourcesTransactionUpdateRequestWithID struct {
 	ID param.Field[string] `json:"id" format:"uuid"`
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
 	// an empty string or `null` as the value.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
-func (r BulkRequestNewParamsResourceUnionTransactionUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesTransactionUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourceUnionTransactionUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
+func (r BulkRequestNewParamsResourcesTransactionUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
 }
 
-type BulkRequestNewParamsResourceUnionLedgerTransactionUpdateRequestWithID struct {
+type BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID struct {
 	ID param.Field[string] `json:"id" format:"uuid"`
 	// An optional description for internal use.
 	Description param.Field[string] `json:"description"`
@@ -2135,11 +2135,11 @@ type BulkRequestNewParamsResourceUnionLedgerTransactionUpdateRequestWithID struc
 	Status param.Field[BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatus] `json:"status"`
 }
 
-func (r BulkRequestNewParamsResourceUnionLedgerTransactionUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourceUnionLedgerTransactionUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
+func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
 }
 
 type BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerEntry struct {
