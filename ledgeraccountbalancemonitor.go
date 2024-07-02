@@ -72,7 +72,7 @@ func (r *LedgerAccountBalanceMonitorService) Update(ctx context.Context, id stri
 // Get a list of ledger account balance monitors.
 func (r *LedgerAccountBalanceMonitorService) List(ctx context.Context, query LedgerAccountBalanceMonitorListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerAccountBalanceMonitor], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/ledger_account_balance_monitors"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

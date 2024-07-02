@@ -69,8 +69,12 @@ func (r *InternalAccountBalanceReportService) Get(ctx context.Context, internalA
 // Get all balance reports for a given internal account.
 func (r *InternalAccountBalanceReportService) List(ctx context.Context, internalAccountID string, query BalanceReportListParams, opts ...option.RequestOption) (res *pagination.Page[BalanceReport], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
+	if internalAccountID == "" {
+		err = errors.New("missing required internal_account_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports", internalAccountID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
