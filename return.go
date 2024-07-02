@@ -61,7 +61,7 @@ func (r *ReturnService) Get(ctx context.Context, id string, opts ...option.Reque
 // Get a list of returns.
 func (r *ReturnService) List(ctx context.Context, query ReturnListParams, opts ...option.RequestOption) (res *pagination.Page[ReturnObject], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/returns"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

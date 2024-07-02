@@ -60,7 +60,7 @@ func (r *TransactionLineItemService) Get(ctx context.Context, id string, opts ..
 // list transaction_line_items
 func (r *TransactionLineItemService) List(ctx context.Context, query TransactionLineItemListParams, opts ...option.RequestOption) (res *pagination.Page[TransactionLineItem], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/transaction_line_items"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

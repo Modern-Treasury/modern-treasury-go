@@ -65,7 +65,7 @@ func (r *IncomingPaymentDetailService) Update(ctx context.Context, id string, bo
 // Get a list of Incoming Payment Details.
 func (r *IncomingPaymentDetailService) List(ctx context.Context, query IncomingPaymentDetailListParams, opts ...option.RequestOption) (res *pagination.Page[IncomingPaymentDetail], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/incoming_payment_details"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

@@ -55,7 +55,7 @@ func (r *BulkResultService) Get(ctx context.Context, id string, opts ...option.R
 // list bulk_results
 func (r *BulkResultService) List(ctx context.Context, query BulkResultListParams, opts ...option.RequestOption) (res *pagination.Page[BulkResult], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/bulk_results"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

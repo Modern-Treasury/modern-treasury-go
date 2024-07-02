@@ -73,7 +73,7 @@ func (r *ExpectedPaymentService) Update(ctx context.Context, id string, body Exp
 // list expected_payments
 func (r *ExpectedPaymentService) List(ctx context.Context, query ExpectedPaymentListParams, opts ...option.RequestOption) (res *pagination.Page[ExpectedPayment], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/expected_payments"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
