@@ -72,7 +72,7 @@ func (r *PaymentFlowService) Update(ctx context.Context, id string, body Payment
 // list payment_flows
 func (r *PaymentFlowService) List(ctx context.Context, query PaymentFlowListParams, opts ...option.RequestOption) (res *pagination.Page[PaymentFlow], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/payment_flows"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

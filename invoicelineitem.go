@@ -84,8 +84,12 @@ func (r *InvoiceLineItemService) Update(ctx context.Context, invoiceID string, i
 // list invoice_line_items
 func (r *InvoiceLineItemService) List(ctx context.Context, invoiceID string, query InvoiceLineItemListParams, opts ...option.RequestOption) (res *pagination.Page[InvoiceLineItem], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
+	if invoiceID == "" {
+		err = errors.New("missing required invoice_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/invoices/%s/invoice_line_items", invoiceID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {

@@ -72,8 +72,12 @@ func (r *LineItemService) Update(ctx context.Context, itemizableType LineItemUpd
 // Get a list of line items
 func (r *LineItemService) List(ctx context.Context, itemizableType LineItemListParamsItemizableType, itemizableID string, query LineItemListParams, opts ...option.RequestOption) (res *pagination.Page[LineItem], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
+	if itemizableID == "" {
+		err = errors.New("missing required itemizable_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/%v/%s/line_items", itemizableType, itemizableID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {

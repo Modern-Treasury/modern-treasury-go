@@ -69,8 +69,12 @@ func (r *AccountDetailService) Get(ctx context.Context, accountsType shared.Acco
 // Get a list of account details for a single internal or external account.
 func (r *AccountDetailService) List(ctx context.Context, accountsType shared.AccountsType, accountID string, query AccountDetailListParams, opts ...option.RequestOption) (res *pagination.Page[AccountDetail], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
+	if accountID == "" {
+		err = errors.New("missing required account_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/%v/%s/account_details", accountsType, accountID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {
