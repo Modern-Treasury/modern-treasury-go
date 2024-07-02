@@ -73,7 +73,7 @@ func (r *LedgerAccountCategoryService) Update(ctx context.Context, id string, bo
 // Get a list of ledger account categories.
 func (r *LedgerAccountCategoryService) List(ctx context.Context, query LedgerAccountCategoryListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerAccountCategory], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/ledger_account_categories"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

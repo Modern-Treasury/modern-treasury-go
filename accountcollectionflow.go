@@ -72,7 +72,7 @@ func (r *AccountCollectionFlowService) Update(ctx context.Context, id string, bo
 // list account_collection_flows
 func (r *AccountCollectionFlowService) List(ctx context.Context, query AccountCollectionFlowListParams, opts ...option.RequestOption) (res *pagination.Page[AccountCollectionFlow], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/account_collection_flows"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

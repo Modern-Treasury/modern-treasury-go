@@ -72,7 +72,7 @@ func (r *ConnectionLegalEntityService) Update(ctx context.Context, id string, bo
 // Get a list of all connection legal entities.
 func (r *ConnectionLegalEntityService) List(ctx context.Context, query ConnectionLegalEntityListParams, opts ...option.RequestOption) (res *pagination.Page[ConnectionLegalEntity], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/connection_legal_entities"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

@@ -73,7 +73,7 @@ func (r *VirtualAccountService) Update(ctx context.Context, id string, body Virt
 // Get a list of virtual accounts.
 func (r *VirtualAccountService) List(ctx context.Context, query VirtualAccountListParams, opts ...option.RequestOption) (res *pagination.Page[VirtualAccount], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/virtual_accounts"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

@@ -52,7 +52,7 @@ func (r *PaymentReferenceService) Get(ctx context.Context, id string, opts ...op
 // list payment_references
 func (r *PaymentReferenceService) List(ctx context.Context, query PaymentReferenceListParams, opts ...option.RequestOption) (res *pagination.Page[PaymentReference], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/payment_references"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

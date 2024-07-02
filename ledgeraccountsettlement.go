@@ -72,7 +72,7 @@ func (r *LedgerAccountSettlementService) Update(ctx context.Context, id string, 
 // Get a list of ledger account settlements.
 func (r *LedgerAccountSettlementService) List(ctx context.Context, query LedgerAccountSettlementListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerAccountSettlement], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/ledger_account_settlements"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

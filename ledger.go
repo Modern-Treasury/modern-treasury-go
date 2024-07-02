@@ -72,7 +72,7 @@ func (r *LedgerService) Update(ctx context.Context, id string, body LedgerUpdate
 // Get a list of ledgers.
 func (r *LedgerService) List(ctx context.Context, query LedgerListParams, opts ...option.RequestOption) (res *pagination.Page[Ledger], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/ledgers"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

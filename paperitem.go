@@ -53,7 +53,7 @@ func (r *PaperItemService) Get(ctx context.Context, id string, opts ...option.Re
 // Get a list of all paper items.
 func (r *PaperItemService) List(ctx context.Context, query PaperItemListParams, opts ...option.RequestOption) (res *pagination.Page[PaperItem], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/paper_items"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

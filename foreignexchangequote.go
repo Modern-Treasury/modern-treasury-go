@@ -61,7 +61,7 @@ func (r *ForeignExchangeQuoteService) Get(ctx context.Context, id string, opts .
 // list foreign_exchange_quotes
 func (r *ForeignExchangeQuoteService) List(ctx context.Context, query ForeignExchangeQuoteListParams, opts ...option.RequestOption) (res *pagination.Page[ForeignExchangeQuote], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/foreign_exchange_quotes"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

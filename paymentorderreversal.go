@@ -69,8 +69,12 @@ func (r *PaymentOrderReversalService) Get(ctx context.Context, paymentOrderID st
 // Get a list of all reversals of a payment order.
 func (r *PaymentOrderReversalService) List(ctx context.Context, paymentOrderID string, query PaymentOrderReversalListParams, opts ...option.RequestOption) (res *pagination.Page[Reversal], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
+	if paymentOrderID == "" {
+		err = errors.New("missing required payment_order_id parameter")
+		return
+	}
 	path := fmt.Sprintf("api/payment_orders/%s/reversals", paymentOrderID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
 	if err != nil {

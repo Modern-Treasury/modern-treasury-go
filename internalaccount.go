@@ -75,7 +75,7 @@ func (r *InternalAccountService) Update(ctx context.Context, id string, body Int
 // list internal accounts
 func (r *InternalAccountService) List(ctx context.Context, query InternalAccountListParams, opts ...option.RequestOption) (res *pagination.Page[InternalAccount], err error) {
 	var raw *http.Response
-	opts = append(r.Options, opts...)
+	opts = append(r.Options[:], opts...)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/internal_accounts"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
