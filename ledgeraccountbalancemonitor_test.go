@@ -28,12 +28,12 @@ func TestLedgerAccountBalanceMonitorNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerAccountBalanceMonitors.New(context.TODO(), moderntreasury.LedgerAccountBalanceMonitorNewParams{
 		AlertCondition: moderntreasury.F(moderntreasury.LedgerAccountBalanceMonitorNewParamsAlertCondition{
-			Field:    moderntreasury.F("string"),
-			Operator: moderntreasury.F("string"),
+			Field:    moderntreasury.F("field"),
+			Operator: moderntreasury.F("operator"),
 			Value:    moderntreasury.F(int64(0)),
 		}),
-		LedgerAccountID: moderntreasury.F("string"),
-		Description:     moderntreasury.F("string"),
+		LedgerAccountID: moderntreasury.F("ledger_account_id"),
+		Description:     moderntreasury.F("description"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
@@ -62,7 +62,7 @@ func TestLedgerAccountBalanceMonitorGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerAccountBalanceMonitors.Get(context.TODO(), "string")
+	_, err := client.LedgerAccountBalanceMonitors.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -87,9 +87,9 @@ func TestLedgerAccountBalanceMonitorUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerAccountBalanceMonitors.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.LedgerAccountBalanceMonitorUpdateParams{
-			Description: moderntreasury.F("string"),
+			Description: moderntreasury.F("description"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
@@ -121,8 +121,8 @@ func TestLedgerAccountBalanceMonitorListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerAccountBalanceMonitors.List(context.TODO(), moderntreasury.LedgerAccountBalanceMonitorListParams{
 		ID:              moderntreasury.F([]string{"string", "string", "string"}),
-		AfterCursor:     moderntreasury.F("string"),
-		LedgerAccountID: moderntreasury.F("string"),
+		AfterCursor:     moderntreasury.F("after_cursor"),
+		LedgerAccountID: moderntreasury.F("ledger_account_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
@@ -150,7 +150,7 @@ func TestLedgerAccountBalanceMonitorDelete(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerAccountBalanceMonitors.Delete(context.TODO(), "string")
+	_, err := client.LedgerAccountBalanceMonitors.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

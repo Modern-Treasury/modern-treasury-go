@@ -28,19 +28,19 @@ func TestInvoiceLineItemNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Invoices.LineItems.New(
 		context.TODO(),
-		"string",
+		"invoice_id",
 		moderntreasury.InvoiceLineItemNewParams{
-			Name:        moderntreasury.F("string"),
+			Name:        moderntreasury.F("name"),
 			UnitAmount:  moderntreasury.F(int64(0)),
-			Description: moderntreasury.F("string"),
-			Direction:   moderntreasury.F("string"),
+			Description: moderntreasury.F("description"),
+			Direction:   moderntreasury.F("direction"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
 			Quantity:          moderntreasury.F(int64(0)),
-			UnitAmountDecimal: moderntreasury.F("string"),
+			UnitAmountDecimal: moderntreasury.F("unit_amount_decimal"),
 		},
 	)
 	if err != nil {
@@ -67,8 +67,8 @@ func TestInvoiceLineItemGet(t *testing.T) {
 	)
 	_, err := client.Invoices.LineItems.Get(
 		context.TODO(),
-		"string",
-		"string",
+		"invoice_id",
+		"id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -94,20 +94,20 @@ func TestInvoiceLineItemUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Invoices.LineItems.Update(
 		context.TODO(),
-		"string",
-		"string",
+		"invoice_id",
+		"id",
 		moderntreasury.InvoiceLineItemUpdateParams{
-			Description: moderntreasury.F("string"),
-			Direction:   moderntreasury.F("string"),
+			Description: moderntreasury.F("description"),
+			Direction:   moderntreasury.F("direction"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Name:              moderntreasury.F("string"),
+			Name:              moderntreasury.F("name"),
 			Quantity:          moderntreasury.F(int64(0)),
 			UnitAmount:        moderntreasury.F(int64(0)),
-			UnitAmountDecimal: moderntreasury.F("string"),
+			UnitAmountDecimal: moderntreasury.F("unit_amount_decimal"),
 		},
 	)
 	if err != nil {
@@ -134,9 +134,9 @@ func TestInvoiceLineItemListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Invoices.LineItems.List(
 		context.TODO(),
-		"string",
+		"invoice_id",
 		moderntreasury.InvoiceLineItemListParams{
-			AfterCursor: moderntreasury.F("string"),
+			AfterCursor: moderntreasury.F("after_cursor"),
 			PerPage:     moderntreasury.F(int64(0)),
 		},
 	)
@@ -164,8 +164,8 @@ func TestInvoiceLineItemDelete(t *testing.T) {
 	)
 	_, err := client.Invoices.LineItems.Delete(
 		context.TODO(),
-		"string",
-		"string",
+		"invoice_id",
+		"id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

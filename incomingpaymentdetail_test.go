@@ -28,7 +28,7 @@ func TestIncomingPaymentDetailGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.IncomingPaymentDetails.Get(context.TODO(), "string")
+	_, err := client.IncomingPaymentDetails.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -53,7 +53,7 @@ func TestIncomingPaymentDetailUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.IncomingPaymentDetails.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.IncomingPaymentDetailUpdateParams{
 			Metadata: moderntreasury.F(map[string]string{
 				"foo": "string",
@@ -83,7 +83,7 @@ func TestIncomingPaymentDetailListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.IncomingPaymentDetails.List(context.TODO(), moderntreasury.IncomingPaymentDetailListParams{
-		AfterCursor:   moderntreasury.F("string"),
+		AfterCursor:   moderntreasury.F("after_cursor"),
 		AsOfDateEnd:   moderntreasury.F(time.Now()),
 		AsOfDateStart: moderntreasury.F(time.Now()),
 		Direction:     moderntreasury.F(shared.TransactionDirectionCredit),
@@ -93,7 +93,7 @@ func TestIncomingPaymentDetailListWithOptionalParams(t *testing.T) {
 		PerPage:          moderntreasury.F(int64(0)),
 		Status:           moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsStatusCompleted),
 		Type:             moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsTypeACH),
-		VirtualAccountID: moderntreasury.F("string"),
+		VirtualAccountID: moderntreasury.F("virtual_account_id"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -121,7 +121,7 @@ func TestIncomingPaymentDetailNewAsyncWithOptionalParams(t *testing.T) {
 		Amount:            moderntreasury.F(int64(0)),
 		AsOfDate:          moderntreasury.F(time.Now()),
 		Currency:          moderntreasury.F(shared.CurrencyAed),
-		Description:       moderntreasury.F("string"),
+		Description:       moderntreasury.F("description"),
 		Direction:         moderntreasury.F(moderntreasury.IncomingPaymentDetailNewAsyncParamsDirectionCredit),
 		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Type:              moderntreasury.F(moderntreasury.IncomingPaymentDetailNewAsyncParamsTypeACH),
