@@ -27,7 +27,7 @@ func TestPaperItemGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.PaperItems.Get(context.TODO(), "string")
+	_, err := client.PaperItems.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -51,10 +51,10 @@ func TestPaperItemListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.PaperItems.List(context.TODO(), moderntreasury.PaperItemListParams{
-		AfterCursor:      moderntreasury.F("string"),
+		AfterCursor:      moderntreasury.F("after_cursor"),
 		DepositDateEnd:   moderntreasury.F(time.Now()),
 		DepositDateStart: moderntreasury.F(time.Now()),
-		LockboxNumber:    moderntreasury.F("string"),
+		LockboxNumber:    moderntreasury.F("lockbox_number"),
 		PerPage:          moderntreasury.F(int64(0)),
 	})
 	if err != nil {

@@ -32,7 +32,7 @@ func TestLedgerAccountStatementNewWithOptionalParams(t *testing.T) {
 		EffectiveAtLowerBound: moderntreasury.F(time.Now()),
 		EffectiveAtUpperBound: moderntreasury.F(time.Now()),
 		LedgerAccountID:       moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		Description:           moderntreasury.F("string"),
+		Description:           moderntreasury.F("description"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
@@ -61,7 +61,7 @@ func TestLedgerAccountStatementGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerAccountStatements.Get(context.TODO(), "string")
+	_, err := client.LedgerAccountStatements.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

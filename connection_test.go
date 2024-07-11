@@ -27,10 +27,10 @@ func TestConnectionListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Connections.List(context.TODO(), moderntreasury.ConnectionListParams{
-		AfterCursor:      moderntreasury.F("string"),
-		Entity:           moderntreasury.F("string"),
+		AfterCursor:      moderntreasury.F("after_cursor"),
+		Entity:           moderntreasury.F("entity"),
 		PerPage:          moderntreasury.F(int64(0)),
-		VendorCustomerID: moderntreasury.F("string"),
+		VendorCustomerID: moderntreasury.F("vendor_customer_id"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

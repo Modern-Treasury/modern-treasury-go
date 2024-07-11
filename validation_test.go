@@ -27,7 +27,7 @@ func TestValidationValidateRoutingNumber(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Validations.ValidateRoutingNumber(context.TODO(), moderntreasury.ValidationValidateRoutingNumberParams{
-		RoutingNumber:     moderntreasury.F("string"),
+		RoutingNumber:     moderntreasury.F("routing_number"),
 		RoutingNumberType: moderntreasury.F(moderntreasury.ValidationValidateRoutingNumberParamsRoutingNumberTypeAba),
 	})
 	if err != nil {

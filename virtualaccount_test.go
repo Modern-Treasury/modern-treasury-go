@@ -29,27 +29,27 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.VirtualAccounts.New(context.TODO(), moderntreasury.VirtualAccountNewParams{
 		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		Name:              moderntreasury.F("string"),
+		Name:              moderntreasury.F("name"),
 		AccountDetails: moderntreasury.F([]moderntreasury.VirtualAccountNewParamsAccountDetail{{
-			AccountNumber:     moderntreasury.F("string"),
+			AccountNumber:     moderntreasury.F("account_number"),
 			AccountNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}, {
-			AccountNumber:     moderntreasury.F("string"),
+			AccountNumber:     moderntreasury.F("account_number"),
 			AccountNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}, {
-			AccountNumber:     moderntreasury.F("string"),
+			AccountNumber:     moderntreasury.F("account_number"),
 			AccountNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}}),
 		CounterpartyID:        moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		CreditLedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		DebitLedgerAccountID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		Description:           moderntreasury.F("string"),
+		Description:           moderntreasury.F("description"),
 		LedgerAccount: moderntreasury.F(moderntreasury.VirtualAccountNewParamsLedgerAccount{
-			Name:                     moderntreasury.F("string"),
-			Description:              moderntreasury.F("string"),
+			Name:                     moderntreasury.F("name"),
+			Description:              moderntreasury.F("description"),
 			NormalBalance:            moderntreasury.F(shared.TransactionDirectionCredit),
 			LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			Currency:                 moderntreasury.F("string"),
+			Currency:                 moderntreasury.F("currency"),
 			CurrencyExponent:         moderntreasury.F(int64(0)),
 			LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 			LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -64,15 +64,15 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 			"foo": "string",
 		}),
 		RoutingDetails: moderntreasury.F([]moderntreasury.VirtualAccountNewParamsRoutingDetail{{
-			RoutingNumber:     moderntreasury.F("string"),
+			RoutingNumber:     moderntreasury.F("routing_number"),
 			RoutingNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
 			PaymentType:       moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsPaymentTypeACH),
 		}, {
-			RoutingNumber:     moderntreasury.F("string"),
+			RoutingNumber:     moderntreasury.F("routing_number"),
 			RoutingNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
 			PaymentType:       moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsPaymentTypeACH),
 		}, {
-			RoutingNumber:     moderntreasury.F("string"),
+			RoutingNumber:     moderntreasury.F("routing_number"),
 			RoutingNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
 			PaymentType:       moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsPaymentTypeACH),
 		}}),
@@ -99,7 +99,7 @@ func TestVirtualAccountGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.VirtualAccounts.Get(context.TODO(), "string")
+	_, err := client.VirtualAccounts.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -124,14 +124,14 @@ func TestVirtualAccountUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.VirtualAccounts.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.VirtualAccountUpdateParams{
 			CounterpartyID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Metadata: moderntreasury.F(map[string]string{
 				"foo": "string",
 			}),
-			Name: moderntreasury.F("string"),
+			Name: moderntreasury.F("name"),
 		},
 	)
 	if err != nil {
@@ -157,9 +157,9 @@ func TestVirtualAccountListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.VirtualAccounts.List(context.TODO(), moderntreasury.VirtualAccountListParams{
-		AfterCursor:       moderntreasury.F("string"),
-		CounterpartyID:    moderntreasury.F("string"),
-		InternalAccountID: moderntreasury.F("string"),
+		AfterCursor:       moderntreasury.F("after_cursor"),
+		CounterpartyID:    moderntreasury.F("counterparty_id"),
+		InternalAccountID: moderntreasury.F("internal_account_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
@@ -187,7 +187,7 @@ func TestVirtualAccountDelete(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.VirtualAccounts.Delete(context.TODO(), "string")
+	_, err := client.VirtualAccounts.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

@@ -26,7 +26,7 @@ func TestPaymentReferenceGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.PaymentReferences.Get(context.TODO(), "string")
+	_, err := client.PaymentReferences.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -50,10 +50,10 @@ func TestPaymentReferenceListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.PaymentReferences.List(context.TODO(), moderntreasury.PaymentReferenceListParams{
-		AfterCursor:       moderntreasury.F("string"),
+		AfterCursor:       moderntreasury.F("after_cursor"),
 		PerPage:           moderntreasury.F(int64(0)),
-		ReferenceNumber:   moderntreasury.F("string"),
-		ReferenceableID:   moderntreasury.F("string"),
+		ReferenceNumber:   moderntreasury.F("reference_number"),
+		ReferenceableID:   moderntreasury.F("referenceable_id"),
 		ReferenceableType: moderntreasury.F(moderntreasury.PaymentReferenceListParamsReferenceableTypePaymentOrder),
 	})
 	if err != nil {
@@ -78,7 +78,7 @@ func TestPaymentReferenceRetireve(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.PaymentReferences.Retireve(context.TODO(), "string")
+	_, err := client.PaymentReferences.Retireve(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

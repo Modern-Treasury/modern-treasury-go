@@ -53,7 +53,7 @@ func TestTransactionLineItemGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.Transactions.LineItems.Get(context.TODO(), "string")
+	_, err := client.Transactions.LineItems.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -80,9 +80,9 @@ func TestTransactionLineItemListWithOptionalParams(t *testing.T) {
 		ID: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		AfterCursor:   moderntreasury.F("string"),
+		AfterCursor:   moderntreasury.F("after_cursor"),
 		PerPage:       moderntreasury.F(int64(0)),
-		TransactionID: moderntreasury.F("string"),
+		TransactionID: moderntreasury.F("transaction_id"),
 		Type:          moderntreasury.F(moderntreasury.TransactionLineItemListParamsTypeOriginating),
 	})
 	if err != nil {
@@ -107,7 +107,7 @@ func TestTransactionLineItemDelete(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	err := client.Transactions.LineItems.Delete(context.TODO(), "string")
+	err := client.Transactions.LineItems.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

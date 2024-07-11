@@ -28,8 +28,8 @@ func TestLedgerNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Ledgers.New(context.TODO(), moderntreasury.LedgerNewParams{
-		Name:        moderntreasury.F("string"),
-		Description: moderntreasury.F("string"),
+		Name:        moderntreasury.F("name"),
+		Description: moderntreasury.F("description"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
@@ -58,7 +58,7 @@ func TestLedgerGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.Ledgers.Get(context.TODO(), "string")
+	_, err := client.Ledgers.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -83,15 +83,15 @@ func TestLedgerUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Ledgers.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.LedgerUpdateParams{
-			Description: moderntreasury.F("string"),
+			Description: moderntreasury.F("description"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Name: moderntreasury.F("string"),
+			Name: moderntreasury.F("name"),
 		},
 	)
 	if err != nil {
@@ -118,7 +118,7 @@ func TestLedgerListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Ledgers.List(context.TODO(), moderntreasury.LedgerListParams{
 		ID:          moderntreasury.F([]string{"string", "string", "string"}),
-		AfterCursor: moderntreasury.F("string"),
+		AfterCursor: moderntreasury.F("after_cursor"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
@@ -149,7 +149,7 @@ func TestLedgerDelete(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.Ledgers.Delete(context.TODO(), "string")
+	_, err := client.Ledgers.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

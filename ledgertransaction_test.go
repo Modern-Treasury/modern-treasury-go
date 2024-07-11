@@ -90,10 +90,10 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 				"modern": "treasury",
 			}),
 		}}),
-		Description:    moderntreasury.F("string"),
+		Description:    moderntreasury.F("description"),
 		EffectiveAt:    moderntreasury.F(time.Now()),
 		EffectiveDate:  moderntreasury.F(time.Now()),
-		ExternalID:     moderntreasury.F("string"),
+		ExternalID:     moderntreasury.F("external_id"),
 		LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionNewParamsLedgerableTypeExpectedPayment),
 		Metadata: moderntreasury.F(map[string]string{
@@ -125,7 +125,7 @@ func TestLedgerTransactionGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerTransactions.Get(context.TODO(), "string")
+	_, err := client.LedgerTransactions.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -150,9 +150,9 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerTransactions.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.LedgerTransactionUpdateParams{
-			Description: moderntreasury.F("string"),
+			Description: moderntreasury.F("description"),
 			EffectiveAt: moderntreasury.F(time.Now()),
 			LedgerEntries: moderntreasury.F([]moderntreasury.LedgerTransactionUpdateParamsLedgerEntry{{
 				Amount:          moderntreasury.F(int64(0)),
@@ -249,19 +249,19 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerTransactions.List(context.TODO(), moderntreasury.LedgerTransactionListParams{
 		ID:          moderntreasury.F([]string{"string", "string", "string"}),
-		AfterCursor: moderntreasury.F("string"),
+		AfterCursor: moderntreasury.F("after_cursor"),
 		EffectiveAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
 		EffectiveDate: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
-		ExternalID:                moderntreasury.F("string"),
-		LedgerAccountCategoryID:   moderntreasury.F("string"),
-		LedgerAccountID:           moderntreasury.F("string"),
-		LedgerAccountSettlementID: moderntreasury.F("string"),
-		LedgerID:                  moderntreasury.F("string"),
-		LedgerableID:              moderntreasury.F("string"),
+		ExternalID:                moderntreasury.F("external_id"),
+		LedgerAccountCategoryID:   moderntreasury.F("ledger_account_category_id"),
+		LedgerAccountID:           moderntreasury.F("ledger_account_id"),
+		LedgerAccountSettlementID: moderntreasury.F("ledger_account_settlement_id"),
+		LedgerID:                  moderntreasury.F("ledger_id"),
+		LedgerableID:              moderntreasury.F("ledgerable_id"),
 		LedgerableType:            moderntreasury.F(moderntreasury.LedgerTransactionListParamsLedgerableTypeExpectedPayment),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
@@ -274,7 +274,7 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 		PostedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
-		ReversesLedgerTransactionID: moderntreasury.F("string"),
+		ReversesLedgerTransactionID: moderntreasury.F("reverses_ledger_transaction_id"),
 		Status:                      moderntreasury.F(moderntreasury.LedgerTransactionListParamsStatusPending),
 		UpdatedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
@@ -304,11 +304,11 @@ func TestLedgerTransactionNewReversalWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerTransactions.NewReversal(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.LedgerTransactionNewReversalParams{
-			Description:    moderntreasury.F("string"),
+			Description:    moderntreasury.F("description"),
 			EffectiveAt:    moderntreasury.F(time.Now()),
-			ExternalID:     moderntreasury.F("string"),
+			ExternalID:     moderntreasury.F("external_id"),
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionNewReversalParamsLedgerableTypeExpectedPayment),
 			Metadata: moderntreasury.F(map[string]string{

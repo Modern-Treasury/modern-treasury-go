@@ -58,7 +58,7 @@ func TestForeignExchangeQuoteGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.ForeignExchangeQuotes.Get(context.TODO(), "string")
+	_, err := client.ForeignExchangeQuotes.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -82,17 +82,17 @@ func TestForeignExchangeQuoteListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.ForeignExchangeQuotes.List(context.TODO(), moderntreasury.ForeignExchangeQuoteListParams{
-		AfterCursor:       moderntreasury.F("string"),
-		BaseCurrency:      moderntreasury.F("string"),
+		AfterCursor:       moderntreasury.F("after_cursor"),
+		BaseCurrency:      moderntreasury.F("base_currency"),
 		EffectiveAtEnd:    moderntreasury.F(time.Now()),
 		EffectiveAtStart:  moderntreasury.F(time.Now()),
 		ExpiresAt:         moderntreasury.F(time.Now()),
-		InternalAccountID: moderntreasury.F("string"),
+		InternalAccountID: moderntreasury.F("internal_account_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
 		PerPage:        moderntreasury.F(int64(0)),
-		TargetCurrency: moderntreasury.F("string"),
+		TargetCurrency: moderntreasury.F("target_currency"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
