@@ -26,7 +26,7 @@ func TestBulkResultGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.BulkResults.Get(context.TODO(), "string")
+	_, err := client.BulkResults.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -50,11 +50,11 @@ func TestBulkResultListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.BulkResults.List(context.TODO(), moderntreasury.BulkResultListParams{
-		AfterCursor: moderntreasury.F("string"),
-		EntityID:    moderntreasury.F("string"),
+		AfterCursor: moderntreasury.F("after_cursor"),
+		EntityID:    moderntreasury.F("entity_id"),
 		EntityType:  moderntreasury.F(moderntreasury.BulkResultListParamsEntityTypePaymentOrder),
 		PerPage:     moderntreasury.F(int64(0)),
-		RequestID:   moderntreasury.F("string"),
+		RequestID:   moderntreasury.F("request_id"),
 		RequestType: moderntreasury.F(moderntreasury.BulkResultListParamsRequestTypeBulkRequest),
 		Status:      moderntreasury.F(moderntreasury.BulkResultListParamsStatusPending),
 	})

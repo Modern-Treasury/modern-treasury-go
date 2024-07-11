@@ -33,26 +33,26 @@ func TestLedgerEventHandlerNewWithOptionalParams(t *testing.T) {
 			EffectiveAt: moderntreasury.F("{{ledgerable_event.custom_data.effective_at}}"),
 			Status:      moderntreasury.F("posted"),
 			LedgerEntries: moderntreasury.F([]moderntreasury.LedgerEventHandlerNewParamsLedgerTransactionTemplateLedgerEntry{{
-				Amount:          moderntreasury.F("string"),
-				Direction:       moderntreasury.F("string"),
-				LedgerAccountID: moderntreasury.F("string"),
+				Amount:          moderntreasury.F("amount"),
+				Direction:       moderntreasury.F("direction"),
+				LedgerAccountID: moderntreasury.F("ledger_account_id"),
 			}, {
-				Amount:          moderntreasury.F("string"),
-				Direction:       moderntreasury.F("string"),
-				LedgerAccountID: moderntreasury.F("string"),
+				Amount:          moderntreasury.F("amount"),
+				Direction:       moderntreasury.F("direction"),
+				LedgerAccountID: moderntreasury.F("ledger_account_id"),
 			}, {
-				Amount:          moderntreasury.F("string"),
-				Direction:       moderntreasury.F("string"),
-				LedgerAccountID: moderntreasury.F("string"),
+				Amount:          moderntreasury.F("amount"),
+				Direction:       moderntreasury.F("direction"),
+				LedgerAccountID: moderntreasury.F("ledger_account_id"),
 			}}),
 		}),
-		Name: moderntreasury.F("string"),
+		Name: moderntreasury.F("name"),
 		Conditions: moderntreasury.F(moderntreasury.LedgerEventHandlerNewParamsConditions{
 			Field:    moderntreasury.F("ledgerable_event.name"),
 			Operator: moderntreasury.F("equals"),
 			Value:    moderntreasury.F("credit_card_swipe"),
 		}),
-		Description: moderntreasury.F("string"),
+		Description: moderntreasury.F("description"),
 		LedgerID:    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
@@ -92,7 +92,7 @@ func TestLedgerEventHandlerGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerEventHandlers.Get(context.TODO(), "string")
+	_, err := client.LedgerEventHandlers.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -116,14 +116,14 @@ func TestLedgerEventHandlerListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerEventHandlers.List(context.TODO(), moderntreasury.LedgerEventHandlerListParams{
-		AfterCursor: moderntreasury.F("string"),
+		AfterCursor: moderntreasury.F("after_cursor"),
 		CreatedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		Name:    moderntreasury.F("string"),
+		Name:    moderntreasury.F("name"),
 		PerPage: moderntreasury.F(int64(0)),
 	})
 	if err != nil {
@@ -148,7 +148,7 @@ func TestLedgerEventHandlerDelete(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerEventHandlers.Delete(context.TODO(), "string")
+	_, err := client.LedgerEventHandlers.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

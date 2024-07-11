@@ -30,7 +30,7 @@ func TestLedgerEntryGetWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerEntries.Get(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.LedgerEntryGetParams{
 			ShowBalances: moderntreasury.F(true),
 		},
@@ -59,7 +59,7 @@ func TestLedgerEntryUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerEntries.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.LedgerEntryUpdateParams{
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
@@ -92,7 +92,7 @@ func TestLedgerEntryListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerEntries.List(context.TODO(), moderntreasury.LedgerEntryListParams{
 		ID:              moderntreasury.F([]string{"string", "string", "string"}),
-		AfterCursor:     moderntreasury.F("string"),
+		AfterCursor:     moderntreasury.F("after_cursor"),
 		AsOfLockVersion: moderntreasury.F(int64(0)),
 		Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 		EffectiveAt: moderntreasury.F(map[string]time.Time{
@@ -101,15 +101,15 @@ func TestLedgerEntryListWithOptionalParams(t *testing.T) {
 		EffectiveDate: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
-		LedgerAccountCategoryID: moderntreasury.F("string"),
-		LedgerAccountID:         moderntreasury.F("string"),
+		LedgerAccountCategoryID: moderntreasury.F("ledger_account_category_id"),
+		LedgerAccountID:         moderntreasury.F("ledger_account_id"),
 		LedgerAccountLockVersion: moderntreasury.F(map[string]int64{
 			"foo": int64(0),
 		}),
-		LedgerAccountPayoutID:     moderntreasury.F("string"),
-		LedgerAccountSettlementID: moderntreasury.F("string"),
-		LedgerAccountStatementID:  moderntreasury.F("string"),
-		LedgerTransactionID:       moderntreasury.F("string"),
+		LedgerAccountPayoutID:     moderntreasury.F("ledger_account_payout_id"),
+		LedgerAccountSettlementID: moderntreasury.F("ledger_account_settlement_id"),
+		LedgerAccountStatementID:  moderntreasury.F("ledger_account_statement_id"),
+		LedgerTransactionID:       moderntreasury.F("ledger_transaction_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),

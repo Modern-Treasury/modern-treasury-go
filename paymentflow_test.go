@@ -30,7 +30,7 @@ func TestPaymentFlowNewWithOptionalParams(t *testing.T) {
 	_, err := client.PaymentFlows.New(context.TODO(), moderntreasury.PaymentFlowNewParams{
 		Amount:               moderntreasury.F(int64(0)),
 		CounterpartyID:       moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		Currency:             moderntreasury.F("string"),
+		Currency:             moderntreasury.F("currency"),
 		Direction:            moderntreasury.F(moderntreasury.PaymentFlowNewParamsDirectionCredit),
 		OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		DueDate:              moderntreasury.F(time.Now()),
@@ -57,7 +57,7 @@ func TestPaymentFlowGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.PaymentFlows.Get(context.TODO(), "string")
+	_, err := client.PaymentFlows.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -82,7 +82,7 @@ func TestPaymentFlowUpdate(t *testing.T) {
 	)
 	_, err := client.PaymentFlows.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.PaymentFlowUpdateParams{
 			Status: moderntreasury.F(moderntreasury.PaymentFlowUpdateParamsStatusCancelled),
 		},
@@ -110,14 +110,14 @@ func TestPaymentFlowListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.PaymentFlows.List(context.TODO(), moderntreasury.PaymentFlowListParams{
-		AfterCursor:          moderntreasury.F("string"),
-		ClientToken:          moderntreasury.F("string"),
-		CounterpartyID:       moderntreasury.F("string"),
-		OriginatingAccountID: moderntreasury.F("string"),
-		PaymentOrderID:       moderntreasury.F("string"),
+		AfterCursor:          moderntreasury.F("after_cursor"),
+		ClientToken:          moderntreasury.F("client_token"),
+		CounterpartyID:       moderntreasury.F("counterparty_id"),
+		OriginatingAccountID: moderntreasury.F("originating_account_id"),
+		PaymentOrderID:       moderntreasury.F("payment_order_id"),
 		PerPage:              moderntreasury.F(int64(0)),
-		ReceivingAccountID:   moderntreasury.F("string"),
-		Status:               moderntreasury.F("string"),
+		ReceivingAccountID:   moderntreasury.F("receiving_account_id"),
+		Status:               moderntreasury.F("status"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

@@ -30,10 +30,10 @@ func TestTransactionNewWithOptionalParams(t *testing.T) {
 	_, err := client.Transactions.New(context.TODO(), moderntreasury.TransactionNewParams{
 		Amount:            moderntreasury.F(int64(0)),
 		AsOfDate:          moderntreasury.F(time.Now()),
-		Direction:         moderntreasury.F("string"),
+		Direction:         moderntreasury.F("direction"),
 		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		VendorCode:        moderntreasury.F("string"),
-		VendorCodeType:    moderntreasury.F("string"),
+		VendorCode:        moderntreasury.F("vendor_code"),
+		VendorCodeType:    moderntreasury.F("vendor_code_type"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
@@ -41,7 +41,7 @@ func TestTransactionNewWithOptionalParams(t *testing.T) {
 		}),
 		Posted:            moderntreasury.F(true),
 		Type:              moderntreasury.F(moderntreasury.TransactionNewParamsTypeACH),
-		VendorDescription: moderntreasury.F("string"),
+		VendorDescription: moderntreasury.F("vendor_description"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -65,7 +65,7 @@ func TestTransactionGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.Transactions.Get(context.TODO(), "string")
+	_, err := client.Transactions.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -90,7 +90,7 @@ func TestTransactionUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Transactions.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.TransactionUpdateParams{
 			Metadata: moderntreasury.F(map[string]string{
 				"foo": "string",
@@ -120,22 +120,22 @@ func TestTransactionListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Transactions.List(context.TODO(), moderntreasury.TransactionListParams{
-		AfterCursor:       moderntreasury.F("string"),
+		AfterCursor:       moderntreasury.F("after_cursor"),
 		AsOfDateEnd:       moderntreasury.F(time.Now()),
 		AsOfDateStart:     moderntreasury.F(time.Now()),
-		CounterpartyID:    moderntreasury.F("string"),
-		Description:       moderntreasury.F("string"),
-		Direction:         moderntreasury.F("string"),
-		InternalAccountID: moderntreasury.F("string"),
+		CounterpartyID:    moderntreasury.F("counterparty_id"),
+		Description:       moderntreasury.F("description"),
+		Direction:         moderntreasury.F("direction"),
+		InternalAccountID: moderntreasury.F("internal_account_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		PaymentType:      moderntreasury.F("string"),
+		PaymentType:      moderntreasury.F("payment_type"),
 		PerPage:          moderntreasury.F(int64(0)),
 		Posted:           moderntreasury.F(true),
-		TransactableType: moderntreasury.F("string"),
-		VendorID:         moderntreasury.F("string"),
-		VirtualAccountID: moderntreasury.F("string"),
+		TransactableType: moderntreasury.F("transactable_type"),
+		VendorID:         moderntreasury.F("vendor_id"),
+		VirtualAccountID: moderntreasury.F("virtual_account_id"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -159,7 +159,7 @@ func TestTransactionDelete(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	err := client.Transactions.Delete(context.TODO(), "string")
+	err := client.Transactions.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

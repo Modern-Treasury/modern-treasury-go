@@ -53,7 +53,7 @@ func TestAccountCollectionFlowGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.AccountCollectionFlows.Get(context.TODO(), "string")
+	_, err := client.AccountCollectionFlows.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -78,7 +78,7 @@ func TestAccountCollectionFlowUpdate(t *testing.T) {
 	)
 	_, err := client.AccountCollectionFlows.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.AccountCollectionFlowUpdateParams{
 			Status: moderntreasury.F(moderntreasury.AccountCollectionFlowUpdateParamsStatusCancelled),
 		},
@@ -106,12 +106,12 @@ func TestAccountCollectionFlowListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.AccountCollectionFlows.List(context.TODO(), moderntreasury.AccountCollectionFlowListParams{
-		AfterCursor:       moderntreasury.F("string"),
-		ClientToken:       moderntreasury.F("string"),
-		CounterpartyID:    moderntreasury.F("string"),
-		ExternalAccountID: moderntreasury.F("string"),
+		AfterCursor:       moderntreasury.F("after_cursor"),
+		ClientToken:       moderntreasury.F("client_token"),
+		CounterpartyID:    moderntreasury.F("counterparty_id"),
+		ExternalAccountID: moderntreasury.F("external_account_id"),
 		PerPage:           moderntreasury.F(int64(0)),
-		Status:            moderntreasury.F("string"),
+		Status:            moderntreasury.F("status"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

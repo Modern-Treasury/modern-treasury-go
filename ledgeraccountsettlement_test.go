@@ -31,7 +31,7 @@ func TestLedgerAccountSettlementNewWithOptionalParams(t *testing.T) {
 		ContraLedgerAccountID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		SettledLedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		AllowEitherDirection:   moderntreasury.F(true),
-		Description:            moderntreasury.F("string"),
+		Description:            moderntreasury.F("description"),
 		EffectiveAtUpperBound:  moderntreasury.F(time.Now()),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
@@ -63,7 +63,7 @@ func TestLedgerAccountSettlementGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerAccountSettlements.Get(context.TODO(), "string")
+	_, err := client.LedgerAccountSettlements.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -88,9 +88,9 @@ func TestLedgerAccountSettlementUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerAccountSettlements.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.LedgerAccountSettlementUpdateParams{
-			Description: moderntreasury.F("string"),
+			Description: moderntreasury.F("description"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
@@ -123,15 +123,15 @@ func TestLedgerAccountSettlementListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerAccountSettlements.List(context.TODO(), moderntreasury.LedgerAccountSettlementListParams{
 		ID:                  moderntreasury.F([]string{"string", "string", "string"}),
-		AfterCursor:         moderntreasury.F("string"),
-		LedgerID:            moderntreasury.F("string"),
-		LedgerTransactionID: moderntreasury.F("string"),
+		AfterCursor:         moderntreasury.F("after_cursor"),
+		LedgerID:            moderntreasury.F("ledger_id"),
+		LedgerTransactionID: moderntreasury.F("ledger_transaction_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
 		PerPage:                  moderntreasury.F(int64(0)),
-		SettledLedgerAccountID:   moderntreasury.F("string"),
-		SettlementEntryDirection: moderntreasury.F("string"),
+		SettledLedgerAccountID:   moderntreasury.F("settled_ledger_account_id"),
+		SettlementEntryDirection: moderntreasury.F("settlement_entry_direction"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
