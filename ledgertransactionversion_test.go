@@ -28,12 +28,12 @@ func TestLedgerTransactionVersionListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerTransactions.Versions.List(context.TODO(), moderntreasury.LedgerTransactionVersionListParams{
-		AfterCursor: moderntreasury.F("string"),
+		AfterCursor: moderntreasury.F("after_cursor"),
 		CreatedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
-		LedgerAccountStatementID: moderntreasury.F("string"),
-		LedgerTransactionID:      moderntreasury.F("string"),
+		LedgerAccountStatementID: moderntreasury.F("ledger_account_statement_id"),
+		LedgerTransactionID:      moderntreasury.F("ledger_transaction_id"),
 		PerPage:                  moderntreasury.F(int64(0)),
 		Version: moderntreasury.F(map[string]int64{
 			"foo": int64(0),

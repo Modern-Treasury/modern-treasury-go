@@ -37,9 +37,9 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 		Currency:          moderntreasury.F(shared.CurrencyAed),
 		DateLowerBound:    moderntreasury.F(time.Now()),
 		DateUpperBound:    moderntreasury.F(time.Now()),
-		Description:       moderntreasury.F("string"),
+		Description:       moderntreasury.F("description"),
 		LedgerTransaction: moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsLedgerTransaction{
-			Description: moderntreasury.F("string"),
+			Description: moderntreasury.F("description"),
 			Status:      moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsLedgerTransactionStatusArchived),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
@@ -109,7 +109,7 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 					"modern": "treasury",
 				}),
 			}}),
-			ExternalID:     moderntreasury.F("string"),
+			ExternalID:     moderntreasury.F("external_id"),
 			LedgerableType: moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeExpectedPayment),
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		}),
@@ -121,8 +121,8 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Description:          moderntreasury.F("string"),
-			AccountingCategoryID: moderntreasury.F("string"),
+			Description:          moderntreasury.F("description"),
+			AccountingCategoryID: moderntreasury.F("accounting_category_id"),
 		}, {
 			Amount: moderntreasury.F(int64(0)),
 			Metadata: moderntreasury.F(map[string]string{
@@ -130,8 +130,8 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Description:          moderntreasury.F("string"),
-			AccountingCategoryID: moderntreasury.F("string"),
+			Description:          moderntreasury.F("description"),
+			AccountingCategoryID: moderntreasury.F("accounting_category_id"),
 		}, {
 			Amount: moderntreasury.F(int64(0)),
 			Metadata: moderntreasury.F(map[string]string{
@@ -139,8 +139,8 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Description:          moderntreasury.F("string"),
-			AccountingCategoryID: moderntreasury.F("string"),
+			Description:          moderntreasury.F("description"),
+			AccountingCategoryID: moderntreasury.F("accounting_category_id"),
 		}}),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
@@ -156,8 +156,8 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 		}, {
 			"foo": "string",
 		}}),
-		RemittanceInformation: moderntreasury.F("string"),
-		StatementDescriptor:   moderntreasury.F("string"),
+		RemittanceInformation: moderntreasury.F("remittance_information"),
+		StatementDescriptor:   moderntreasury.F("statement_descriptor"),
 		Type:                  moderntreasury.F(moderntreasury.ExpectedPaymentTypeACH),
 	})
 	if err != nil {
@@ -182,7 +182,7 @@ func TestExpectedPaymentGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.ExpectedPayments.Get(context.TODO(), "string")
+	_, err := client.ExpectedPayments.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -207,7 +207,7 @@ func TestExpectedPaymentUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.ExpectedPayments.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.ExpectedPaymentUpdateParams{
 			AmountLowerBound:  moderntreasury.F(int64(0)),
 			AmountUpperBound:  moderntreasury.F(int64(0)),
@@ -215,7 +215,7 @@ func TestExpectedPaymentUpdateWithOptionalParams(t *testing.T) {
 			Currency:          moderntreasury.F(shared.CurrencyAed),
 			DateLowerBound:    moderntreasury.F(time.Now()),
 			DateUpperBound:    moderntreasury.F(time.Now()),
-			Description:       moderntreasury.F("string"),
+			Description:       moderntreasury.F("description"),
 			Direction:         moderntreasury.F(shared.TransactionDirectionCredit),
 			InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Metadata: moderntreasury.F(map[string]string{
@@ -232,8 +232,8 @@ func TestExpectedPaymentUpdateWithOptionalParams(t *testing.T) {
 			}, {
 				"foo": "string",
 			}}),
-			RemittanceInformation: moderntreasury.F("string"),
-			StatementDescriptor:   moderntreasury.F("string"),
+			RemittanceInformation: moderntreasury.F("remittance_information"),
+			StatementDescriptor:   moderntreasury.F("statement_descriptor"),
 			Status:                moderntreasury.F(moderntreasury.ExpectedPaymentUpdateParamsStatusReconciled),
 			Type:                  moderntreasury.F(moderntreasury.ExpectedPaymentTypeACH),
 		},
@@ -261,12 +261,12 @@ func TestExpectedPaymentListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.ExpectedPayments.List(context.TODO(), moderntreasury.ExpectedPaymentListParams{
-		AfterCursor:         moderntreasury.F("string"),
-		CounterpartyID:      moderntreasury.F("string"),
+		AfterCursor:         moderntreasury.F("after_cursor"),
+		CounterpartyID:      moderntreasury.F("counterparty_id"),
 		CreatedAtLowerBound: moderntreasury.F(time.Now()),
 		CreatedAtUpperBound: moderntreasury.F(time.Now()),
 		Direction:           moderntreasury.F(shared.TransactionDirectionCredit),
-		InternalAccountID:   moderntreasury.F("string"),
+		InternalAccountID:   moderntreasury.F("internal_account_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
@@ -296,7 +296,7 @@ func TestExpectedPaymentDelete(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.ExpectedPayments.Delete(context.TODO(), "string")
+	_, err := client.ExpectedPayments.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

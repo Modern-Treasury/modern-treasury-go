@@ -28,20 +28,20 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.InternalAccounts.New(context.TODO(), moderntreasury.InternalAccountNewParams{
-		ConnectionID:    moderntreasury.F("string"),
+		ConnectionID:    moderntreasury.F("connection_id"),
 		Currency:        moderntreasury.F(moderntreasury.InternalAccountNewParamsCurrencyUsd),
-		Name:            moderntreasury.F("string"),
-		PartyName:       moderntreasury.F("string"),
-		CounterpartyID:  moderntreasury.F("string"),
-		LegalEntityID:   moderntreasury.F("string"),
-		ParentAccountID: moderntreasury.F("string"),
+		Name:            moderntreasury.F("name"),
+		PartyName:       moderntreasury.F("party_name"),
+		CounterpartyID:  moderntreasury.F("counterparty_id"),
+		LegalEntityID:   moderntreasury.F("legal_entity_id"),
+		ParentAccountID: moderntreasury.F("parent_account_id"),
 		PartyAddress: moderntreasury.F(moderntreasury.InternalAccountNewParamsPartyAddress{
-			Line1:      moderntreasury.F("string"),
-			Line2:      moderntreasury.F("string"),
-			Locality:   moderntreasury.F("string"),
-			Region:     moderntreasury.F("string"),
-			PostalCode: moderntreasury.F("string"),
-			Country:    moderntreasury.F("string"),
+			Line1:      moderntreasury.F("line1"),
+			Line2:      moderntreasury.F("line2"),
+			Locality:   moderntreasury.F("locality"),
+			Region:     moderntreasury.F("region"),
+			PostalCode: moderntreasury.F("postal_code"),
+			Country:    moderntreasury.F("country"),
 		}),
 		VendorAttributes: moderntreasury.F(map[string]string{
 			"key":    "value",
@@ -71,7 +71,7 @@ func TestInternalAccountGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.InternalAccounts.Get(context.TODO(), "string")
+	_, err := client.InternalAccounts.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -96,15 +96,15 @@ func TestInternalAccountUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.InternalAccounts.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.InternalAccountUpdateParams{
-			CounterpartyID:  moderntreasury.F("string"),
-			LedgerAccountID: moderntreasury.F("string"),
+			CounterpartyID:  moderntreasury.F("counterparty_id"),
+			LedgerAccountID: moderntreasury.F("ledger_account_id"),
 			Metadata: moderntreasury.F(map[string]string{
 				"foo": "string",
 			}),
-			Name:            moderntreasury.F("string"),
-			ParentAccountID: moderntreasury.F("string"),
+			Name:            moderntreasury.F("name"),
+			ParentAccountID: moderntreasury.F("parent_account_id"),
 		},
 	)
 	if err != nil {
@@ -130,10 +130,10 @@ func TestInternalAccountListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.InternalAccounts.List(context.TODO(), moderntreasury.InternalAccountListParams{
-		AfterCursor:    moderntreasury.F("string"),
-		CounterpartyID: moderntreasury.F("string"),
+		AfterCursor:    moderntreasury.F("after_cursor"),
+		CounterpartyID: moderntreasury.F("counterparty_id"),
 		Currency:       moderntreasury.F(shared.CurrencyAed),
-		LegalEntityID:  moderntreasury.F("string"),
+		LegalEntityID:  moderntreasury.F("legal_entity_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),

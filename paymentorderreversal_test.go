@@ -30,11 +30,11 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.PaymentOrders.Reversals.New(
 		context.TODO(),
-		"string",
+		"payment_order_id",
 		moderntreasury.PaymentOrderReversalNewParams{
 			Reason: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsReasonDuplicate),
 			LedgerTransaction: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransaction{
-				Description: moderntreasury.F("string"),
+				Description: moderntreasury.F("description"),
 				Status:      moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionStatusArchived),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
@@ -104,7 +104,7 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 						"modern": "treasury",
 					}),
 				}}),
-				ExternalID:     moderntreasury.F("string"),
+				ExternalID:     moderntreasury.F("external_id"),
 				LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeExpectedPayment),
 				LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			}),
@@ -139,8 +139,8 @@ func TestPaymentOrderReversalGet(t *testing.T) {
 	)
 	_, err := client.PaymentOrders.Reversals.Get(
 		context.TODO(),
-		"string",
-		"string",
+		"payment_order_id",
+		"reversal_id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -166,9 +166,9 @@ func TestPaymentOrderReversalListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.PaymentOrders.Reversals.List(
 		context.TODO(),
-		"string",
+		"payment_order_id",
 		moderntreasury.PaymentOrderReversalListParams{
-			AfterCursor: moderntreasury.F("string"),
+			AfterCursor: moderntreasury.F("after_cursor"),
 			PerPage:     moderntreasury.F(int64(0)),
 		},
 	)

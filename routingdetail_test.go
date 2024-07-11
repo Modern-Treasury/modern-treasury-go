@@ -30,9 +30,9 @@ func TestRoutingDetailNewWithOptionalParams(t *testing.T) {
 	_, err := client.RoutingDetails.New(
 		context.TODO(),
 		moderntreasury.RoutingDetailNewParamsAccountsTypeExternalAccounts,
-		"string",
+		"account_id",
 		moderntreasury.RoutingDetailNewParams{
-			RoutingNumber:     moderntreasury.F("string"),
+			RoutingNumber:     moderntreasury.F("routing_number"),
 			RoutingNumberType: moderntreasury.F(moderntreasury.RoutingDetailNewParamsRoutingNumberTypeAba),
 			PaymentType:       moderntreasury.F(moderntreasury.RoutingDetailNewParamsPaymentTypeACH),
 		},
@@ -62,8 +62,8 @@ func TestRoutingDetailGet(t *testing.T) {
 	_, err := client.RoutingDetails.Get(
 		context.TODO(),
 		shared.AccountsTypeExternalAccounts,
-		"string",
-		"string",
+		"account_id",
+		"id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -90,9 +90,9 @@ func TestRoutingDetailListWithOptionalParams(t *testing.T) {
 	_, err := client.RoutingDetails.List(
 		context.TODO(),
 		shared.AccountsTypeExternalAccounts,
-		"string",
+		"account_id",
 		moderntreasury.RoutingDetailListParams{
-			AfterCursor: moderntreasury.F("string"),
+			AfterCursor: moderntreasury.F("after_cursor"),
 			PerPage:     moderntreasury.F(int64(0)),
 		},
 	)
@@ -121,8 +121,8 @@ func TestRoutingDetailDelete(t *testing.T) {
 	err := client.RoutingDetails.Delete(
 		context.TODO(),
 		moderntreasury.RoutingDetailDeleteParamsAccountsTypeExternalAccounts,
-		"string",
-		"string",
+		"account_id",
+		"id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

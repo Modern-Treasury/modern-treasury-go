@@ -29,8 +29,8 @@ func TestLineItemGet(t *testing.T) {
 	_, err := client.LineItems.Get(
 		context.TODO(),
 		moderntreasury.LineItemGetParamsItemizableTypeExpectedPayments,
-		"string",
-		"string",
+		"itemizable_id",
+		"id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -57,8 +57,8 @@ func TestLineItemUpdateWithOptionalParams(t *testing.T) {
 	_, err := client.LineItems.Update(
 		context.TODO(),
 		moderntreasury.LineItemUpdateParamsItemizableTypeExpectedPayments,
-		"string",
-		"string",
+		"itemizable_id",
+		"id",
 		moderntreasury.LineItemUpdateParams{
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
@@ -93,9 +93,9 @@ func TestLineItemListWithOptionalParams(t *testing.T) {
 	_, err := client.LineItems.List(
 		context.TODO(),
 		moderntreasury.LineItemListParamsItemizableTypeExpectedPayments,
-		"string",
+		"itemizable_id",
 		moderntreasury.LineItemListParams{
-			AfterCursor: moderntreasury.F("string"),
+			AfterCursor: moderntreasury.F("after_cursor"),
 			PerPage:     moderntreasury.F(int64(0)),
 		},
 	)

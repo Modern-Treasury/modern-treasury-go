@@ -30,9 +30,9 @@ func TestAccountDetailNewWithOptionalParams(t *testing.T) {
 	_, err := client.AccountDetails.New(
 		context.TODO(),
 		moderntreasury.AccountDetailNewParamsAccountsTypeExternalAccounts,
-		"string",
+		"account_id",
 		moderntreasury.AccountDetailNewParams{
-			AccountNumber:     moderntreasury.F("string"),
+			AccountNumber:     moderntreasury.F("account_number"),
 			AccountNumberType: moderntreasury.F(moderntreasury.AccountDetailNewParamsAccountNumberTypeAuNumber),
 		},
 	)
@@ -61,8 +61,8 @@ func TestAccountDetailGet(t *testing.T) {
 	_, err := client.AccountDetails.Get(
 		context.TODO(),
 		shared.AccountsTypeExternalAccounts,
-		"string",
-		"string",
+		"account_id",
+		"id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -89,9 +89,9 @@ func TestAccountDetailListWithOptionalParams(t *testing.T) {
 	_, err := client.AccountDetails.List(
 		context.TODO(),
 		shared.AccountsTypeExternalAccounts,
-		"string",
+		"account_id",
 		moderntreasury.AccountDetailListParams{
-			AfterCursor: moderntreasury.F("string"),
+			AfterCursor: moderntreasury.F("after_cursor"),
 			PerPage:     moderntreasury.F(int64(0)),
 		},
 	)
@@ -120,8 +120,8 @@ func TestAccountDetailDelete(t *testing.T) {
 	err := client.AccountDetails.Delete(
 		context.TODO(),
 		moderntreasury.AccountDetailDeleteParamsAccountsTypeExternalAccounts,
-		"string",
-		"string",
+		"account_id",
+		"id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

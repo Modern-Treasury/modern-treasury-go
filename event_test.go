@@ -27,7 +27,7 @@ func TestEventGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.Events.Get(context.TODO(), "string")
+	_, err := client.Events.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -51,13 +51,13 @@ func TestEventListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Events.List(context.TODO(), moderntreasury.EventListParams{
-		AfterCursor:    moderntreasury.F("string"),
-		EntityID:       moderntreasury.F("string"),
-		EventName:      moderntreasury.F("string"),
+		AfterCursor:    moderntreasury.F("after_cursor"),
+		EntityID:       moderntreasury.F("entity_id"),
+		EventName:      moderntreasury.F("event_name"),
 		EventTimeEnd:   moderntreasury.F(time.Now()),
 		EventTimeStart: moderntreasury.F(time.Now()),
 		PerPage:        moderntreasury.F(int64(0)),
-		Resource:       moderntreasury.F("string"),
+		Resource:       moderntreasury.F("resource"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

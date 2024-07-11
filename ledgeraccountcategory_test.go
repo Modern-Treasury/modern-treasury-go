@@ -29,12 +29,12 @@ func TestLedgerAccountCategoryNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountCategories.New(context.TODO(), moderntreasury.LedgerAccountCategoryNewParams{
-		Currency:         moderntreasury.F("string"),
+		Currency:         moderntreasury.F("currency"),
 		LedgerID:         moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		Name:             moderntreasury.F("string"),
+		Name:             moderntreasury.F("name"),
 		NormalBalance:    moderntreasury.F(shared.TransactionDirectionCredit),
 		CurrencyExponent: moderntreasury.F(int64(0)),
-		Description:      moderntreasury.F("string"),
+		Description:      moderntreasury.F("description"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
@@ -65,7 +65,7 @@ func TestLedgerAccountCategoryGetWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerAccountCategories.Get(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.LedgerAccountCategoryGetParams{
 			Balances: moderntreasury.F(moderntreasury.LedgerAccountCategoryGetParamsBalances{
 				AsOfDate:    moderntreasury.F(time.Now()),
@@ -97,15 +97,15 @@ func TestLedgerAccountCategoryUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerAccountCategories.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.LedgerAccountCategoryUpdateParams{
-			Description: moderntreasury.F("string"),
+			Description: moderntreasury.F("description"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Name: moderntreasury.F("string"),
+			Name: moderntreasury.F("name"),
 		},
 	)
 	if err != nil {
@@ -132,18 +132,18 @@ func TestLedgerAccountCategoryListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerAccountCategories.List(context.TODO(), moderntreasury.LedgerAccountCategoryListParams{
 		ID:          moderntreasury.F([]string{"string", "string", "string"}),
-		AfterCursor: moderntreasury.F("string"),
+		AfterCursor: moderntreasury.F("after_cursor"),
 		Balances: moderntreasury.F(moderntreasury.LedgerAccountCategoryListParamsBalances{
 			EffectiveAt: moderntreasury.F(time.Now()),
 		}),
-		Currency:        moderntreasury.F("string"),
-		LedgerAccountID: moderntreasury.F("string"),
-		LedgerID:        moderntreasury.F("string"),
+		Currency:        moderntreasury.F("currency"),
+		LedgerAccountID: moderntreasury.F("ledger_account_id"),
+		LedgerID:        moderntreasury.F("ledger_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		Name:                          moderntreasury.F("string"),
-		ParentLedgerAccountCategoryID: moderntreasury.F("string"),
+		Name:                          moderntreasury.F("name"),
+		ParentLedgerAccountCategoryID: moderntreasury.F("parent_ledger_account_category_id"),
 		PerPage:                       moderntreasury.F(int64(0)),
 	})
 	if err != nil {
@@ -168,7 +168,7 @@ func TestLedgerAccountCategoryDelete(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerAccountCategories.Delete(context.TODO(), "string")
+	_, err := client.LedgerAccountCategories.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -193,8 +193,8 @@ func TestLedgerAccountCategoryAddLedgerAccount(t *testing.T) {
 	)
 	err := client.LedgerAccountCategories.AddLedgerAccount(
 		context.TODO(),
-		"string",
-		"string",
+		"id",
+		"ledger_account_id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -220,8 +220,8 @@ func TestLedgerAccountCategoryAddNestedCategory(t *testing.T) {
 	)
 	err := client.LedgerAccountCategories.AddNestedCategory(
 		context.TODO(),
-		"string",
-		"string",
+		"id",
+		"sub_category_id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -247,8 +247,8 @@ func TestLedgerAccountCategoryRemoveLedgerAccount(t *testing.T) {
 	)
 	err := client.LedgerAccountCategories.RemoveLedgerAccount(
 		context.TODO(),
-		"string",
-		"string",
+		"id",
+		"ledger_account_id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -274,8 +274,8 @@ func TestLedgerAccountCategoryRemoveNestedCategory(t *testing.T) {
 	)
 	err := client.LedgerAccountCategories.RemoveNestedCategory(
 		context.TODO(),
-		"string",
-		"string",
+		"id",
+		"sub_category_id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

@@ -27,9 +27,9 @@ func TestLedgerableEventNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerableEvents.New(context.TODO(), moderntreasury.LedgerableEventNewParams{
-		Name:        moderntreasury.F("string"),
+		Name:        moderntreasury.F("name"),
 		CustomData:  moderntreasury.F[any](map[string]interface{}{}),
-		Description: moderntreasury.F("string"),
+		Description: moderntreasury.F("description"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
@@ -58,7 +58,7 @@ func TestLedgerableEventGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerableEvents.Get(context.TODO(), "string")
+	_, err := client.LedgerableEvents.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

@@ -29,12 +29,12 @@ func TestLedgerAccountNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccounts.New(context.TODO(), moderntreasury.LedgerAccountNewParams{
-		Currency:                 moderntreasury.F("string"),
+		Currency:                 moderntreasury.F("currency"),
 		LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		Name:                     moderntreasury.F("string"),
+		Name:                     moderntreasury.F("name"),
 		NormalBalance:            moderntreasury.F(shared.TransactionDirectionCredit),
 		CurrencyExponent:         moderntreasury.F(int64(0)),
-		Description:              moderntreasury.F("string"),
+		Description:              moderntreasury.F("description"),
 		LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 		LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		LedgerableType:           moderntreasury.F(moderntreasury.LedgerAccountNewParamsLedgerableTypeCounterparty),
@@ -68,7 +68,7 @@ func TestLedgerAccountGetWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerAccounts.Get(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.LedgerAccountGetParams{
 			Balances: moderntreasury.F(moderntreasury.LedgerAccountGetParamsBalances{
 				AsOfDate:              moderntreasury.F(time.Now()),
@@ -103,15 +103,15 @@ func TestLedgerAccountUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerAccounts.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.LedgerAccountUpdateParams{
-			Description: moderntreasury.F("string"),
+			Description: moderntreasury.F("description"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Name: moderntreasury.F("string"),
+			Name: moderntreasury.F("name"),
 		},
 	)
 	if err != nil {
@@ -138,7 +138,7 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LedgerAccounts.List(context.TODO(), moderntreasury.LedgerAccountListParams{
 		ID:          moderntreasury.F([]string{"string", "string", "string"}),
-		AfterCursor: moderntreasury.F("string"),
+		AfterCursor: moderntreasury.F("after_cursor"),
 		AvailableBalanceAmount: moderntreasury.F(moderntreasury.LedgerAccountListParamsAvailableBalanceAmount{
 			Gt:    moderntreasury.F(int64(0)),
 			Lt:    moderntreasury.F(int64(0)),
@@ -156,9 +156,9 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 		CreatedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
-		Currency:                moderntreasury.F("string"),
-		LedgerAccountCategoryID: moderntreasury.F("string"),
-		LedgerID:                moderntreasury.F("string"),
+		Currency:                moderntreasury.F("currency"),
+		LedgerAccountCategoryID: moderntreasury.F("ledger_account_category_id"),
+		LedgerID:                moderntreasury.F("ledger_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
@@ -206,7 +206,7 @@ func TestLedgerAccountDelete(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerAccounts.Delete(context.TODO(), "string")
+	_, err := client.LedgerAccounts.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

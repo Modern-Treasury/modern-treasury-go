@@ -29,26 +29,26 @@ func TestInternalAccountBalanceReportNew(t *testing.T) {
 	)
 	_, err := client.InternalAccounts.BalanceReports.New(
 		context.TODO(),
-		"string",
+		"internal_account_id",
 		moderntreasury.BalanceReportNewParams{
 			AsOfDate:          moderntreasury.F(time.Now()),
-			AsOfTime:          moderntreasury.F("string"),
+			AsOfTime:          moderntreasury.F("as_of_time"),
 			BalanceReportType: moderntreasury.F(moderntreasury.BalanceReportNewParamsBalanceReportTypeIntraday),
 			Balances: moderntreasury.F([]moderntreasury.BalanceReportNewParamsBalance{{
 				Amount:         moderntreasury.F(int64(0)),
 				BalanceType:    moderntreasury.F(moderntreasury.BalanceReportNewParamsBalancesBalanceTypeClosingAvailable),
-				VendorCode:     moderntreasury.F("string"),
-				VendorCodeType: moderntreasury.F("string"),
+				VendorCode:     moderntreasury.F("vendor_code"),
+				VendorCodeType: moderntreasury.F("vendor_code_type"),
 			}, {
 				Amount:         moderntreasury.F(int64(0)),
 				BalanceType:    moderntreasury.F(moderntreasury.BalanceReportNewParamsBalancesBalanceTypeClosingAvailable),
-				VendorCode:     moderntreasury.F("string"),
-				VendorCodeType: moderntreasury.F("string"),
+				VendorCode:     moderntreasury.F("vendor_code"),
+				VendorCodeType: moderntreasury.F("vendor_code_type"),
 			}, {
 				Amount:         moderntreasury.F(int64(0)),
 				BalanceType:    moderntreasury.F(moderntreasury.BalanceReportNewParamsBalancesBalanceTypeClosingAvailable),
-				VendorCode:     moderntreasury.F("string"),
-				VendorCodeType: moderntreasury.F("string"),
+				VendorCode:     moderntreasury.F("vendor_code"),
+				VendorCodeType: moderntreasury.F("vendor_code_type"),
 			}}),
 		},
 	)
@@ -76,8 +76,8 @@ func TestInternalAccountBalanceReportGet(t *testing.T) {
 	)
 	_, err := client.InternalAccounts.BalanceReports.Get(
 		context.TODO(),
-		"string",
-		"string",
+		"internal_account_id",
+		"id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -103,9 +103,9 @@ func TestInternalAccountBalanceReportListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.InternalAccounts.BalanceReports.List(
 		context.TODO(),
-		"string",
+		"internal_account_id",
 		moderntreasury.BalanceReportListParams{
-			AfterCursor:       moderntreasury.F("string"),
+			AfterCursor:       moderntreasury.F("after_cursor"),
 			AsOfDate:          moderntreasury.F(time.Now()),
 			BalanceReportType: moderntreasury.F(moderntreasury.BalanceReportListParamsBalanceReportTypeIntraday),
 			PerPage:           moderntreasury.F(int64(0)),
@@ -135,8 +135,8 @@ func TestInternalAccountBalanceReportDelete(t *testing.T) {
 	)
 	err := client.InternalAccounts.BalanceReports.Delete(
 		context.TODO(),
-		"string",
-		"string",
+		"internal_account_id",
+		"id",
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

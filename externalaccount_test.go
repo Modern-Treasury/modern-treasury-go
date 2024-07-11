@@ -30,32 +30,32 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 	_, err := client.ExternalAccounts.New(context.TODO(), moderntreasury.ExternalAccountNewParams{
 		CounterpartyID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		AccountDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsAccountDetail{{
-			AccountNumber:     moderntreasury.F("string"),
+			AccountNumber:     moderntreasury.F("account_number"),
 			AccountNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}, {
-			AccountNumber:     moderntreasury.F("string"),
+			AccountNumber:     moderntreasury.F("account_number"),
 			AccountNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}, {
-			AccountNumber:     moderntreasury.F("string"),
+			AccountNumber:     moderntreasury.F("account_number"),
 			AccountNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}}),
 		AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
 		ContactDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsContactDetail{{
-			ContactIdentifier:     moderntreasury.F("string"),
+			ContactIdentifier:     moderntreasury.F("contact_identifier"),
 			ContactIdentifierType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsContactDetailsContactIdentifierTypeEmail),
 		}, {
-			ContactIdentifier:     moderntreasury.F("string"),
+			ContactIdentifier:     moderntreasury.F("contact_identifier"),
 			ContactIdentifierType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsContactDetailsContactIdentifierTypeEmail),
 		}, {
-			ContactIdentifier:     moderntreasury.F("string"),
+			ContactIdentifier:     moderntreasury.F("contact_identifier"),
 			ContactIdentifierType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsContactDetailsContactIdentifierTypeEmail),
 		}}),
 		LedgerAccount: moderntreasury.F(moderntreasury.ExternalAccountNewParamsLedgerAccount{
-			Name:                     moderntreasury.F("string"),
-			Description:              moderntreasury.F("string"),
+			Name:                     moderntreasury.F("name"),
+			Description:              moderntreasury.F("description"),
 			NormalBalance:            moderntreasury.F(shared.TransactionDirectionCredit),
 			LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			Currency:                 moderntreasury.F("string"),
+			Currency:                 moderntreasury.F("currency"),
 			CurrencyExponent:         moderntreasury.F(int64(0)),
 			LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 			LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -71,29 +71,29 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 			"foo":    "bar",
 			"modern": "treasury",
 		}),
-		Name: moderntreasury.F("string"),
+		Name: moderntreasury.F("name"),
 		PartyAddress: moderntreasury.F(moderntreasury.ExternalAccountNewParamsPartyAddress{
-			Line1:      moderntreasury.F("string"),
-			Line2:      moderntreasury.F("string"),
-			Locality:   moderntreasury.F("string"),
-			Region:     moderntreasury.F("string"),
-			PostalCode: moderntreasury.F("string"),
-			Country:    moderntreasury.F("string"),
+			Line1:      moderntreasury.F("line1"),
+			Line2:      moderntreasury.F("line2"),
+			Locality:   moderntreasury.F("locality"),
+			Region:     moderntreasury.F("region"),
+			PostalCode: moderntreasury.F("postal_code"),
+			Country:    moderntreasury.F("country"),
 		}),
-		PartyIdentifier:     moderntreasury.F("string"),
-		PartyName:           moderntreasury.F("string"),
+		PartyIdentifier:     moderntreasury.F("party_identifier"),
+		PartyName:           moderntreasury.F("party_name"),
 		PartyType:           moderntreasury.F(moderntreasury.ExternalAccountNewParamsPartyTypeBusiness),
-		PlaidProcessorToken: moderntreasury.F("string"),
+		PlaidProcessorToken: moderntreasury.F("plaid_processor_token"),
 		RoutingDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsRoutingDetail{{
-			RoutingNumber:     moderntreasury.F("string"),
+			RoutingNumber:     moderntreasury.F("routing_number"),
 			RoutingNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
 			PaymentType:       moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsPaymentTypeACH),
 		}, {
-			RoutingNumber:     moderntreasury.F("string"),
+			RoutingNumber:     moderntreasury.F("routing_number"),
 			RoutingNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
 			PaymentType:       moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsPaymentTypeACH),
 		}, {
-			RoutingNumber:     moderntreasury.F("string"),
+			RoutingNumber:     moderntreasury.F("routing_number"),
 			RoutingNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
 			PaymentType:       moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsPaymentTypeACH),
 		}}),
@@ -120,7 +120,7 @@ func TestExternalAccountGet(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.ExternalAccounts.Get(context.TODO(), "string")
+	_, err := client.ExternalAccounts.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -145,23 +145,23 @@ func TestExternalAccountUpdateWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.ExternalAccounts.Update(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.ExternalAccountUpdateParams{
 			AccountType:    moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
 			CounterpartyID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Metadata: moderntreasury.F(map[string]string{
 				"foo": "string",
 			}),
-			Name: moderntreasury.F("string"),
+			Name: moderntreasury.F("name"),
 			PartyAddress: moderntreasury.F(moderntreasury.ExternalAccountUpdateParamsPartyAddress{
-				Line1:      moderntreasury.F("string"),
-				Line2:      moderntreasury.F("string"),
-				Locality:   moderntreasury.F("string"),
-				Region:     moderntreasury.F("string"),
-				PostalCode: moderntreasury.F("string"),
-				Country:    moderntreasury.F("string"),
+				Line1:      moderntreasury.F("line1"),
+				Line2:      moderntreasury.F("line2"),
+				Locality:   moderntreasury.F("locality"),
+				Region:     moderntreasury.F("region"),
+				PostalCode: moderntreasury.F("postal_code"),
+				Country:    moderntreasury.F("country"),
 			}),
-			PartyName: moderntreasury.F("string"),
+			PartyName: moderntreasury.F("party_name"),
 			PartyType: moderntreasury.F(moderntreasury.ExternalAccountUpdateParamsPartyTypeBusiness),
 		},
 	)
@@ -188,12 +188,12 @@ func TestExternalAccountListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.ExternalAccounts.List(context.TODO(), moderntreasury.ExternalAccountListParams{
-		AfterCursor:    moderntreasury.F("string"),
-		CounterpartyID: moderntreasury.F("string"),
+		AfterCursor:    moderntreasury.F("after_cursor"),
+		CounterpartyID: moderntreasury.F("counterparty_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		PartyName: moderntreasury.F("string"),
+		PartyName: moderntreasury.F("party_name"),
 		PerPage:   moderntreasury.F(int64(0)),
 	})
 	if err != nil {
@@ -218,7 +218,7 @@ func TestExternalAccountDelete(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	err := client.ExternalAccounts.Delete(context.TODO(), "string")
+	err := client.ExternalAccounts.Delete(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -243,7 +243,7 @@ func TestExternalAccountCompleteVerificationWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.ExternalAccounts.CompleteVerification(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.ExternalAccountCompleteVerificationParams{
 			Amounts: moderntreasury.F([]int64{int64(2), int64(4)}),
 		},
@@ -272,7 +272,7 @@ func TestExternalAccountVerifyWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.ExternalAccounts.Verify(
 		context.TODO(),
-		"string",
+		"id",
 		moderntreasury.ExternalAccountVerifyParams{
 			OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			PaymentType:          moderntreasury.F(moderntreasury.ExternalAccountVerifyParamsPaymentTypeACH),
