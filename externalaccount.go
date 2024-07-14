@@ -459,6 +459,7 @@ func (r externalAccountVerifyResponseJSON) RawJSON() string {
 }
 
 func (r *ExternalAccountVerifyResponse) UnmarshalJSON(data []byte) (err error) {
+	*r = ExternalAccountVerifyResponse{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err

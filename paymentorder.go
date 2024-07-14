@@ -715,6 +715,7 @@ func (r paymentOrderUltimateOriginatingAccountJSON) RawJSON() string {
 }
 
 func (r *PaymentOrderUltimateOriginatingAccount) UnmarshalJSON(data []byte) (err error) {
+	*r = PaymentOrderUltimateOriginatingAccount{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err

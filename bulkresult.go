@@ -458,6 +458,7 @@ func (r bulkResultEntityJSON) RawJSON() string {
 }
 
 func (r *BulkResultEntity) UnmarshalJSON(data []byte) (err error) {
+	*r = BulkResultEntity{}
 	err = apijson.UnmarshalRoot(data, &r.union)
 	if err != nil {
 		return err
