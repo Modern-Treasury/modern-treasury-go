@@ -1,5 +1,37 @@
 # Changelog
 
+## 2.16.0 (2024-07-15)
+
+Full Changelog: [v2.15.0...v2.16.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.15.0...v2.16.0)
+
+### Features
+
+* **api:** updates ([#255](https://github.com/Modern-Treasury/modern-treasury-go/issues/255)) ([7005f46](https://github.com/Modern-Treasury/modern-treasury-go/commit/7005f46e84906674c7c592a3018a209ca05ad53e))
+
+
+### Bug Fixes
+
+* **internal:** fix MarshalJSON logic for interface elemnets ([#251](https://github.com/Modern-Treasury/modern-treasury-go/issues/251)) ([4f27d96](https://github.com/Modern-Treasury/modern-treasury-go/commit/4f27d96a66c0f9876f87af6ead001a9bb163954c))
+* use slice instead of appending to r.Options ([#249](https://github.com/Modern-Treasury/modern-treasury-go/issues/249)) ([8047c3a](https://github.com/Modern-Treasury/modern-treasury-go/commit/8047c3a7ff95cb464b8631f6fbcc6928c56a7835))
+
+
+### Chores
+
+* **ci:** also run workflows for PRs targeting `next` ([#252](https://github.com/Modern-Treasury/modern-treasury-go/issues/252)) ([e213167](https://github.com/Modern-Treasury/modern-treasury-go/commit/e213167de728431b427f9f7794b30dac257fd71d))
+* **internal:** improve deserialization of embedded structs ([#250](https://github.com/Modern-Treasury/modern-treasury-go/issues/250)) ([907dd05](https://github.com/Modern-Treasury/modern-treasury-go/commit/907dd0578d6cb18bb74a522894b5c112bde39ae8))
+* **internal:** minor changes to tests ([#254](https://github.com/Modern-Treasury/modern-treasury-go/issues/254)) ([4f8c716](https://github.com/Modern-Treasury/modern-treasury-go/commit/4f8c716521b4209e03c8cc0a4057fe5a1568da51))
+
+
+### Documentation
+
+* add better documentation for flattened enum types ([#246](https://github.com/Modern-Treasury/modern-treasury-go/issues/246)) ([e8612db](https://github.com/Modern-Treasury/modern-treasury-go/commit/e8612db6d59df6255b620de9a26bc19c7e087752))
+* **examples:** update example values ([#253](https://github.com/Modern-Treasury/modern-treasury-go/issues/253)) ([3af4284](https://github.com/Modern-Treasury/modern-treasury-go/commit/3af4284341c4b147b86b55cb6c4c14273a7d8d7b))
+
+
+### Refactors
+
+* rename of inconsistent union variants ([#248](https://github.com/Modern-Treasury/modern-treasury-go/issues/248)) ([7851b60](https://github.com/Modern-Treasury/modern-treasury-go/commit/7851b60cf9b8a27e0e3737ffc6d60af8088218e2))
+
 ## 2.15.0 (2024-07-01)
 
 Full Changelog: [v2.14.0...v2.15.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.14.0...v2.15.0)
