@@ -54,6 +54,9 @@ func (r *Page[T]) GetNextPage() (res *Page[T], err error) {
 }
 
 func (r *Page[T]) SetPageConfig(cfg *requestconfig.RequestConfig, res *http.Response) {
+	if r == nil {
+		r = &Page[T]{}
+	}
 	r.cfg = cfg
 	r.res = res
 }
