@@ -357,6 +357,8 @@ type BulkResultEntity struct {
 	Reconciled bool `json:"reconciled"`
 	// This field can have the runtime type of [map[string]string].
 	Details interface{} `json:"details,required"`
+	// This field can have the runtime type of [map[string]string].
+	CustomIdentifiers interface{} `json:"custom_identifiers,required"`
 	// This field can have the runtime type of
 	// [[]BulkResultEntityBulkErrorRequestError].
 	RequestErrors interface{}          `json:"request_errors,required"`
@@ -448,6 +450,7 @@ type bulkResultEntityJSON struct {
 	VendorCustomerID                   apijson.Field
 	Reconciled                         apijson.Field
 	Details                            apijson.Field
+	CustomIdentifiers                  apijson.Field
 	RequestErrors                      apijson.Field
 	raw                                string
 	ExtraFields                        map[string]apijson.Field
