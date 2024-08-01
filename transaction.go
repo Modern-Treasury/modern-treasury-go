@@ -121,6 +121,9 @@ type Transaction struct {
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	// Currency that this transaction is denominated in.
 	Currency shared.Currency `json:"currency,required"`
+	// An object containing key-value pairs, each with a custom identifier as the key
+	// and a string value.
+	CustomIdentifiers map[string]string `json:"custom_identifiers,required"`
 	// Either `credit` or `debit`.
 	Direction   string    `json:"direction,required"`
 	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
@@ -179,6 +182,7 @@ type transactionJSON struct {
 	AsOfTime            apijson.Field
 	CreatedAt           apijson.Field
 	Currency            apijson.Field
+	CustomIdentifiers   apijson.Field
 	Direction           apijson.Field
 	DiscardedAt         apijson.Field
 	ForeignExchangeRate apijson.Field
