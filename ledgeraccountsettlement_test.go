@@ -122,8 +122,11 @@ func TestLedgerAccountSettlementListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountSettlements.List(context.TODO(), moderntreasury.LedgerAccountSettlementListParams{
-		ID:                  moderntreasury.F([]string{"string", "string", "string"}),
-		AfterCursor:         moderntreasury.F("after_cursor"),
+		ID:          moderntreasury.F([]string{"string", "string", "string"}),
+		AfterCursor: moderntreasury.F("after_cursor"),
+		CreatedAt: moderntreasury.F(map[string]time.Time{
+			"foo": time.Now(),
+		}),
 		LedgerID:            moderntreasury.F("ledger_id"),
 		LedgerTransactionID: moderntreasury.F("ledger_transaction_id"),
 		Metadata: moderntreasury.F(map[string]string{
@@ -132,6 +135,9 @@ func TestLedgerAccountSettlementListWithOptionalParams(t *testing.T) {
 		PerPage:                  moderntreasury.F(int64(0)),
 		SettledLedgerAccountID:   moderntreasury.F("settled_ledger_account_id"),
 		SettlementEntryDirection: moderntreasury.F("settlement_entry_direction"),
+		UpdatedAt: moderntreasury.F(map[string]time.Time{
+			"foo": time.Now(),
+		}),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
