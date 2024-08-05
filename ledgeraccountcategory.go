@@ -377,6 +377,9 @@ type LedgerAccountCategoryNewParams struct {
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account category.
 	Description param.Field[string] `json:"description"`
+	// The array of ledger account category ids that this ledger account category
+	// should be a child of.
+	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`

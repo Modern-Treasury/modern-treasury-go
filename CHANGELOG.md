@@ -1,5 +1,26 @@
 # Changelog
 
+## 2.17.0 (2024-08-05)
+
+Full Changelog: [v2.16.0...v2.17.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.16.0...v2.17.0)
+
+### Features
+
+* **api:** add pagination params 'created at' and 'updated at' ([#261](https://github.com/Modern-Treasury/modern-treasury-go/issues/261)) ([31177a6](https://github.com/Modern-Treasury/modern-treasury-go/commit/31177a6c449aa77d13d75936846db1a97038ee44))
+
+
+### Bug Fixes
+
+* handle nil pagination responses when HTTP status is 200 ([#260](https://github.com/Modern-Treasury/modern-treasury-go/issues/260)) ([383d064](https://github.com/Modern-Treasury/modern-treasury-go/commit/383d0643c6c2699f0163abe9e39332ca6eafed8c))
+* improve name for single-keyed union member ([#262](https://github.com/Modern-Treasury/modern-treasury-go/issues/262)) ([7df1ce3](https://github.com/Modern-Treasury/modern-treasury-go/commit/7df1ce39d034187754f053cf23b8e327c5270ae3))
+
+
+### Chores
+
+* **ci:** limit release doctor target branches ([#256](https://github.com/Modern-Treasury/modern-treasury-go/issues/256)) ([7e0563b](https://github.com/Modern-Treasury/modern-treasury-go/commit/7e0563b3118ebd2d96dd1fa8a7a80371b17e511b))
+* **ci:** remove unused release doctor ([#258](https://github.com/Modern-Treasury/modern-treasury-go/issues/258)) ([33acece](https://github.com/Modern-Treasury/modern-treasury-go/commit/33aceceb2510f8d7ea56c152f210e4471fdd60ba))
+* **tests:** update prism version ([#259](https://github.com/Modern-Treasury/modern-treasury-go/issues/259)) ([7a03f6f](https://github.com/Modern-Treasury/modern-treasury-go/commit/7a03f6f54daa7a4c6106965122f82b2d32b5e012))
+
 ## 2.16.0 (2024-07-15)
 
 Full Changelog: [v2.15.0...v2.16.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.15.0...v2.16.0)
