@@ -411,7 +411,7 @@ func (r BulkRequestNewParamsResource) implementsBulkRequestNewParamsResourceUnio
 // [BulkRequestNewParamsResourcesExpectedPaymentCreateRequest],
 // [BulkRequestNewParamsResourcesLedgerTransactionCreateRequest],
 // [BulkRequestNewParamsResourcesTransactionCreateRequest],
-// [BulkRequestNewParamsResourcesObject],
+// [BulkRequestNewParamsResourcesID],
 // [BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID],
 // [BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID],
 // [BulkRequestNewParamsResourcesTransactionUpdateRequestWithID],
@@ -1461,15 +1461,15 @@ func (r BulkRequestNewParamsResourcesTransactionCreateRequestType) IsKnown() boo
 	return false
 }
 
-type BulkRequestNewParamsResourcesObject struct {
+type BulkRequestNewParamsResourcesID struct {
 	ID param.Field[string] `json:"id" format:"uuid"`
 }
 
-func (r BulkRequestNewParamsResourcesObject) MarshalJSON() (data []byte, err error) {
+func (r BulkRequestNewParamsResourcesID) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesObject) implementsBulkRequestNewParamsResourceUnion() {}
+func (r BulkRequestNewParamsResourcesID) implementsBulkRequestNewParamsResourceUnion() {}
 
 type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
 	ID         param.Field[string]                                                                 `json:"id" format:"uuid"`
