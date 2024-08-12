@@ -72,10 +72,10 @@ func TestLedgerAccountGetWithOptionalParams(t *testing.T) {
 		moderntreasury.LedgerAccountGetParams{
 			Balances: moderntreasury.F(moderntreasury.LedgerAccountGetParamsBalances{
 				AsOfDate:              moderntreasury.F(time.Now()),
+				AsOfLockVersion:       moderntreasury.F(int64(0)),
 				EffectiveAt:           moderntreasury.F(time.Now()),
 				EffectiveAtLowerBound: moderntreasury.F(time.Now()),
 				EffectiveAtUpperBound: moderntreasury.F(time.Now()),
-				AsOfLockVersion:       moderntreasury.F(int64(0)),
 			}),
 		},
 	)
@@ -140,11 +140,11 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 		ID:          moderntreasury.F([]string{"string", "string", "string"}),
 		AfterCursor: moderntreasury.F("after_cursor"),
 		AvailableBalanceAmount: moderntreasury.F(moderntreasury.LedgerAccountListParamsAvailableBalanceAmount{
-			Gt:    moderntreasury.F(int64(0)),
-			Lt:    moderntreasury.F(int64(0)),
-			Gte:   moderntreasury.F(int64(0)),
-			Lte:   moderntreasury.F(int64(0)),
 			Eq:    moderntreasury.F(int64(0)),
+			Gt:    moderntreasury.F(int64(0)),
+			Gte:   moderntreasury.F(int64(0)),
+			Lt:    moderntreasury.F(int64(0)),
+			Lte:   moderntreasury.F(int64(0)),
 			NotEq: moderntreasury.F(int64(0)),
 		}),
 		Balances: moderntreasury.F(moderntreasury.LedgerAccountListParamsBalances{
@@ -164,20 +164,20 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 		}),
 		Name: moderntreasury.F([]string{"string", "string", "string"}),
 		PendingBalanceAmount: moderntreasury.F(moderntreasury.LedgerAccountListParamsPendingBalanceAmount{
-			Gt:    moderntreasury.F(int64(0)),
-			Lt:    moderntreasury.F(int64(0)),
-			Gte:   moderntreasury.F(int64(0)),
-			Lte:   moderntreasury.F(int64(0)),
 			Eq:    moderntreasury.F(int64(0)),
+			Gt:    moderntreasury.F(int64(0)),
+			Gte:   moderntreasury.F(int64(0)),
+			Lt:    moderntreasury.F(int64(0)),
+			Lte:   moderntreasury.F(int64(0)),
 			NotEq: moderntreasury.F(int64(0)),
 		}),
 		PerPage: moderntreasury.F(int64(0)),
 		PostedBalanceAmount: moderntreasury.F(moderntreasury.LedgerAccountListParamsPostedBalanceAmount{
-			Gt:    moderntreasury.F(int64(0)),
-			Lt:    moderntreasury.F(int64(0)),
-			Gte:   moderntreasury.F(int64(0)),
-			Lte:   moderntreasury.F(int64(0)),
 			Eq:    moderntreasury.F(int64(0)),
+			Gt:    moderntreasury.F(int64(0)),
+			Gte:   moderntreasury.F(int64(0)),
+			Lt:    moderntreasury.F(int64(0)),
+			Lte:   moderntreasury.F(int64(0)),
 			NotEq: moderntreasury.F(int64(0)),
 		}),
 		UpdatedAt: moderntreasury.F(map[string]time.Time{

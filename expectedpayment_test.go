@@ -39,108 +39,108 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 		DateUpperBound:    moderntreasury.F(time.Now()),
 		Description:       moderntreasury.F("description"),
 		LedgerTransaction: moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsLedgerTransaction{
-			Description: moderntreasury.F("description"),
-			Status:      moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsLedgerTransactionStatusArchived),
-			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
-				"foo":    "bar",
-				"modern": "treasury",
-			}),
-			EffectiveAt:   moderntreasury.F(time.Now()),
-			EffectiveDate: moderntreasury.F(time.Now()),
 			LedgerEntries: moderntreasury.F([]moderntreasury.ExpectedPaymentNewParamsLedgerTransactionLedgerEntry{{
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				LockVersion:     moderntreasury.F(int64(0)),
+				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
+					"foo": int64(0),
+				}),
+				LockVersion: moderntreasury.F(int64(0)),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
 					"foo": int64(0),
 				}),
 				PostedBalanceAmount: moderntreasury.F(map[string]int64{
 					"foo": int64(0),
 				}),
-				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
-				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
-					"foo":    "bar",
-					"modern": "treasury",
-				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				LockVersion:     moderntreasury.F(int64(0)),
+				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
+					"foo": int64(0),
+				}),
+				LockVersion: moderntreasury.F(int64(0)),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
 					"foo": int64(0),
 				}),
 				PostedBalanceAmount: moderntreasury.F(map[string]int64{
 					"foo": int64(0),
 				}),
-				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
-				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
-					"foo":    "bar",
-					"modern": "treasury",
-				}),
 			}, {
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				LockVersion:     moderntreasury.F(int64(0)),
+				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
+					"foo": int64(0),
+				}),
+				LockVersion: moderntreasury.F(int64(0)),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
 					"foo": int64(0),
 				}),
 				PostedBalanceAmount: moderntreasury.F(map[string]int64{
 					"foo": int64(0),
 				}),
-				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
-				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
-					"foo":    "bar",
-					"modern": "treasury",
-				}),
 			}}),
+			Description:    moderntreasury.F("description"),
+			EffectiveAt:    moderntreasury.F(time.Now()),
+			EffectiveDate:  moderntreasury.F(time.Now()),
 			ExternalID:     moderntreasury.F("external_id"),
-			LedgerableType: moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeExpectedPayment),
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			LedgerableType: moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeExpectedPayment),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
+			Status: moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsLedgerTransactionStatusArchived),
 		}),
 		LedgerTransactionID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		LineItems: moderntreasury.F([]moderntreasury.ExpectedPaymentNewParamsLineItem{{
-			Amount: moderntreasury.F(int64(0)),
+			Amount:               moderntreasury.F(int64(0)),
+			AccountingCategoryID: moderntreasury.F("accounting_category_id"),
+			Description:          moderntreasury.F("description"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Description:          moderntreasury.F("description"),
-			AccountingCategoryID: moderntreasury.F("accounting_category_id"),
 		}, {
-			Amount: moderntreasury.F(int64(0)),
+			Amount:               moderntreasury.F(int64(0)),
+			AccountingCategoryID: moderntreasury.F("accounting_category_id"),
+			Description:          moderntreasury.F("description"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Description:          moderntreasury.F("description"),
-			AccountingCategoryID: moderntreasury.F("accounting_category_id"),
 		}, {
-			Amount: moderntreasury.F(int64(0)),
+			Amount:               moderntreasury.F(int64(0)),
+			AccountingCategoryID: moderntreasury.F("accounting_category_id"),
+			Description:          moderntreasury.F("description"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Description:          moderntreasury.F("description"),
-			AccountingCategoryID: moderntreasury.F("accounting_category_id"),
 		}}),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
