@@ -31,7 +31,6 @@ func TestLedgerEventHandlerNewWithOptionalParams(t *testing.T) {
 		LedgerTransactionTemplate: moderntreasury.F(moderntreasury.LedgerEventHandlerNewParamsLedgerTransactionTemplate{
 			Description: moderntreasury.F("My Ledger Transaction Template Description"),
 			EffectiveAt: moderntreasury.F("{{ledgerable_event.custom_data.effective_at}}"),
-			Status:      moderntreasury.F("posted"),
 			LedgerEntries: moderntreasury.F([]moderntreasury.LedgerEventHandlerNewParamsLedgerTransactionTemplateLedgerEntry{{
 				Amount:          moderntreasury.F("amount"),
 				Direction:       moderntreasury.F("direction"),
@@ -45,6 +44,7 @@ func TestLedgerEventHandlerNewWithOptionalParams(t *testing.T) {
 				Direction:       moderntreasury.F("direction"),
 				LedgerAccountID: moderntreasury.F("ledger_account_id"),
 			}}),
+			Status: moderntreasury.F("posted"),
 		}),
 		Name: moderntreasury.F("name"),
 		Conditions: moderntreasury.F(moderntreasury.LedgerEventHandlerNewParamsConditions{
@@ -61,12 +61,12 @@ func TestLedgerEventHandlerNewWithOptionalParams(t *testing.T) {
 		}),
 		Variables: moderntreasury.F(map[string]moderntreasury.LedgerEventHandlerVariableParam{
 			"credit_account": {
-				Type: moderntreasury.F("ledger_account"),
 				Query: moderntreasury.F(moderntreasury.LedgerEventHandlerVariableQueryParam{
 					Field:    moderntreasury.F("name"),
 					Operator: moderntreasury.F("equals"),
 					Value:    moderntreasury.F("my_credit_account"),
 				}),
+				Type: moderntreasury.F("ledger_account"),
 			},
 		}),
 	})
