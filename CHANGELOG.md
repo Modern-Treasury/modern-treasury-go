@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.18.0 (2024-08-20)
+
+Full Changelog: [v2.17.0...v2.18.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.17.0...v2.18.0)
+
+### Features
+
+* **api:** add wells fargo reference number types ([#268](https://github.com/Modern-Treasury/modern-treasury-go/issues/268)) ([56de966](https://github.com/Modern-Treasury/modern-treasury-go/commit/56de9661525389f49f15975d545077c69308be4a))
+
 ## 2.17.0 (2024-08-13)
 
 Full Changelog: [v2.16.0...v2.17.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.16.0...v2.17.0)
