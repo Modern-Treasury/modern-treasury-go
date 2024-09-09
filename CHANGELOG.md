@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.19.0 (2024-09-09)
+
+Full Changelog: [v2.18.0...v2.19.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.18.0...v2.19.0)
+
+### Features
+
+* **api:** add us_bank RTP ID's as reference_number_type ([#270](https://github.com/Modern-Treasury/modern-treasury-go/issues/270)) ([5508677](https://github.com/Modern-Treasury/modern-treasury-go/commit/5508677e3b84a3f424b0ff1df7347e5365611f60))
+
+
+### Chores
+
+* **docs:** update description of `bankgirot` to `se_bankgirot` ([#272](https://github.com/Modern-Treasury/modern-treasury-go/issues/272)) ([f11f19c](https://github.com/Modern-Treasury/modern-treasury-go/commit/f11f19c5a3d8d094dbd934e45161e906dabfd07e))
+
 ## 2.18.0 (2024-08-20)
 
 Full Changelog: [v2.17.0...v2.18.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.17.0...v2.18.0)
