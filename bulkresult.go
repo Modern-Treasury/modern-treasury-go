@@ -145,9 +145,9 @@ type BulkResultEntity struct {
 	LiveMode  bool      `json:"live_mode,required"`
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
-	// `sic`, `signet`, `provexchange`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	Type PaymentOrderType `json:"type,nullable"`
 	// An additional layer of classification for the type of payment order you are
 	// doing. This field is only used for `ach` payment orders currently. For `ach`
