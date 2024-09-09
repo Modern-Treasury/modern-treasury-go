@@ -518,9 +518,9 @@ type InvoiceNewParams struct {
 	// invoice amount is negative, the automatically initiated payment order's
 	// direction will be credit. One of `manual`, `ui`, or `automatic`.
 	PaymentMethod param.Field[InvoiceNewParamsPaymentMethod] `json:"payment_method"`
-	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
-	// `sic`, `signet`, `provexchange`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	PaymentType param.Field[PaymentOrderType] `json:"payment_type"`
 	// The receiving account ID. Can be an `external_account`.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
@@ -728,9 +728,9 @@ type InvoiceUpdateParams struct {
 	// invoice amount is negative, the automatically initiated payment order's
 	// direction will be credit. One of `manual`, `ui`, or `automatic`.
 	PaymentMethod param.Field[InvoiceUpdateParamsPaymentMethod] `json:"payment_method"`
-	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
-	// `sic`, `signet`, `provexchange`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	PaymentType param.Field[PaymentOrderType] `json:"payment_type"`
 	// The receiving account ID. Can be an `external_account`.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`

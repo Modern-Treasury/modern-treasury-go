@@ -228,9 +228,9 @@ type PaymentOrder struct {
 	// A flag that determines whether a payment order should go through transaction
 	// monitoring.
 	TransactionMonitoringEnabled bool `json:"transaction_monitoring_enabled,required"`
-	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
-	// `sic`, `signet`, `provexchange`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	Type PaymentOrderType `json:"type,required"`
 	// The account to which the originating of this payment should be attributed to.
 	// Can be a `virtual_account` or `internal_account`.
@@ -858,9 +858,9 @@ func (r PaymentOrderSubtype) IsKnown() bool {
 	return false
 }
 
-// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
-// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
-// `sic`, `signet`, `provexchange`, `zengin`.
+// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 type PaymentOrderType string
 
 const (
@@ -915,9 +915,9 @@ type PaymentOrderNewParams struct {
 	Direction param.Field[PaymentOrderNewParamsDirection] `json:"direction,required"`
 	// The ID of one of your organization's internal accounts.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
-	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
-	// `sic`, `signet`, `provexchange`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	Type       param.Field[PaymentOrderType]                `json:"type,required"`
 	Accounting param.Field[PaymentOrderNewParamsAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
@@ -1698,9 +1698,9 @@ type PaymentOrderUpdateParams struct {
 	// payment orders, the `subtype` represents the SEC code. We currently support
 	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
 	Subtype param.Field[PaymentOrderSubtype] `json:"subtype"`
-	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
-	// `sic`, `signet`, `provexchange`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	Type param.Field[PaymentOrderType] `json:"type"`
 	// This represents the identifier by which the person is known to the receiver when
 	// using the CIE subtype for ACH payments. Only the first 22 characters of this
@@ -2283,9 +2283,9 @@ type PaymentOrderNewAsyncParams struct {
 	Direction param.Field[PaymentOrderNewAsyncParamsDirection] `json:"direction,required"`
 	// The ID of one of your organization's internal accounts.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
-	// One of `ach`, `bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `interac`, `neft`, `nics`, `nz_national_clearing_code`,
-	// `sic`, `signet`, `provexchange`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	Type       param.Field[PaymentOrderType]                     `json:"type,required"`
 	Accounting param.Field[PaymentOrderNewAsyncParamsAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
