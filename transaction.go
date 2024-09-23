@@ -117,8 +117,11 @@ type Transaction struct {
 	AsOfDate time.Time `json:"as_of_date,required,nullable" format:"date"`
 	// The time on which the transaction occurred. Depending on the granularity of the
 	// timestamp information received from the bank, it may be `null`.
-	AsOfTime  string    `json:"as_of_time,required,nullable" format:"time"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	AsOfTime string `json:"as_of_time,required,nullable" format:"time"`
+	// The timezone in which the `as_of_time` is represented. Can be `null` if the bank
+	// does not provide timezone info.
+	AsOfTimezone string    `json:"as_of_timezone,required,nullable"`
+	CreatedAt    time.Time `json:"created_at,required" format:"date-time"`
 	// Currency that this transaction is denominated in.
 	Currency shared.Currency `json:"currency,required"`
 	// An object containing key-value pairs, each with a custom identifier as the key
@@ -180,6 +183,7 @@ type transactionJSON struct {
 	Amount              apijson.Field
 	AsOfDate            apijson.Field
 	AsOfTime            apijson.Field
+	AsOfTimezone        apijson.Field
 	CreatedAt           apijson.Field
 	Currency            apijson.Field
 	CustomIdentifiers   apijson.Field

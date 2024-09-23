@@ -141,11 +141,12 @@ type BulkRequestActionType string
 const (
 	BulkRequestActionTypeCreate BulkRequestActionType = "create"
 	BulkRequestActionTypeUpdate BulkRequestActionType = "update"
+	BulkRequestActionTypeDelete BulkRequestActionType = "delete"
 )
 
 func (r BulkRequestActionType) IsKnown() bool {
 	switch r {
-	case BulkRequestActionTypeCreate, BulkRequestActionTypeUpdate:
+	case BulkRequestActionTypeCreate, BulkRequestActionTypeUpdate, BulkRequestActionTypeDelete:
 		return true
 	}
 	return false
@@ -209,11 +210,12 @@ type BulkRequestNewParamsActionType string
 const (
 	BulkRequestNewParamsActionTypeCreate BulkRequestNewParamsActionType = "create"
 	BulkRequestNewParamsActionTypeUpdate BulkRequestNewParamsActionType = "update"
+	BulkRequestNewParamsActionTypeDelete BulkRequestNewParamsActionType = "delete"
 )
 
 func (r BulkRequestNewParamsActionType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsActionTypeCreate, BulkRequestNewParamsActionTypeUpdate:
+	case BulkRequestNewParamsActionTypeCreate, BulkRequestNewParamsActionTypeUpdate, BulkRequestNewParamsActionTypeDelete:
 		return true
 	}
 	return false
@@ -2374,11 +2376,12 @@ type BulkRequestListParamsActionType string
 const (
 	BulkRequestListParamsActionTypeCreate BulkRequestListParamsActionType = "create"
 	BulkRequestListParamsActionTypeUpdate BulkRequestListParamsActionType = "update"
+	BulkRequestListParamsActionTypeDelete BulkRequestListParamsActionType = "delete"
 )
 
 func (r BulkRequestListParamsActionType) IsKnown() bool {
 	switch r {
-	case BulkRequestListParamsActionTypeCreate, BulkRequestListParamsActionTypeUpdate:
+	case BulkRequestListParamsActionTypeCreate, BulkRequestListParamsActionTypeUpdate, BulkRequestListParamsActionTypeDelete:
 		return true
 	}
 	return false
