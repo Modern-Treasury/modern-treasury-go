@@ -347,6 +347,9 @@ type BulkResultEntity struct {
 	// The time on which the transaction occurred. Depending on the granularity of the
 	// timestamp information received from the bank, it may be `null`.
 	AsOfTime string `json:"as_of_time,nullable" format:"time"`
+	// The timezone in which the `as_of_time` is represented. Can be `null` if the bank
+	// does not provide timezone info.
+	AsOfTimezone string `json:"as_of_timezone,nullable"`
 	// This field will be `true` if the transaction has posted to the account.
 	Posted bool `json:"posted"`
 	// An identifier given to this transaction by the bank, often `null`.
@@ -446,6 +449,7 @@ type bulkResultEntityJSON struct {
 	VendorID                           apijson.Field
 	AsOfDate                           apijson.Field
 	AsOfTime                           apijson.Field
+	AsOfTimezone                       apijson.Field
 	Posted                             apijson.Field
 	VendorCustomerID                   apijson.Field
 	Reconciled                         apijson.Field

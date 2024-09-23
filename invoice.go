@@ -151,7 +151,7 @@ type Invoice struct {
 	LiveMode bool `json:"live_mode,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
+	Metadata map[string]string `json:"metadata,required,nullable"`
 	// Emails in addition to the counterparty email to send invoice status
 	// notifications to. At least one email is required if notifications are enabled
 	// and the counterparty doesn't have an email.
@@ -475,6 +475,10 @@ type InvoiceNewParams struct {
 	DueDate param.Field[time.Time] `json:"due_date,required" format:"date-time"`
 	// The ID of the internal account the invoice should be paid to.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id,required"`
+	// When true, the invoice will progress to unpaid automatically and cannot be
+	// edited after entering that state. If the invoice fails to progress to unpaid,
+	// the errors will be returned and the invoice will not be created.
+	AutoAdvance param.Field[bool] `json:"auto_advance"`
 	// The invoicer's contact details displayed at the top of the invoice.
 	ContactDetails param.Field[[]InvoiceNewParamsContactDetail] `json:"contact_details"`
 	// The counterparty's billing address.
@@ -500,6 +504,9 @@ type InvoiceNewParams struct {
 	InvoicerAddress param.Field[InvoiceNewParamsInvoicerAddress] `json:"invoicer_address"`
 	// The ID of the virtual account the invoice should be paid to.
 	LedgerAccountSettlementID param.Field[string] `json:"ledger_account_settlement_id" format:"uuid"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
 	// Emails in addition to the counterparty email to send invoice status
 	// notifications to. At least one email is required if notifications are enabled
 	// and the counterparty doesn't have an email.
@@ -708,6 +715,9 @@ type InvoiceUpdateParams struct {
 	InvoicerAddress param.Field[InvoiceUpdateParamsInvoicerAddress] `json:"invoicer_address"`
 	// The ID of the virtual account the invoice should be paid to.
 	LedgerAccountSettlementID param.Field[string] `json:"ledger_account_settlement_id" format:"uuid"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
 	// Emails in addition to the counterparty email to send invoice status
 	// notifications to. At least one email is required if notifications are enabled
 	// and the counterparty doesn't have an email.
