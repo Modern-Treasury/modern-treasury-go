@@ -122,7 +122,7 @@ type LegalEntityAssociationChildLegalEntity struct {
 	Metadata     map[string]string                                   `json:"metadata,required"`
 	Object       string                                              `json:"object,required"`
 	PhoneNumbers []LegalEntityAssociationChildLegalEntityPhoneNumber `json:"phone_numbers,required"`
-	// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating LegalEntityAssociationChildLegalEntityRiskRating `json:"risk_rating,required,nullable"`
 	UpdatedAt  time.Time                                        `json:"updated_at,required" format:"date-time"`
 	// The entity's primary website URL.
@@ -284,6 +284,7 @@ const (
 	LegalEntityAssociationChildLegalEntityIdentificationsIDTypeArCuit    LegalEntityAssociationChildLegalEntityIdentificationsIDType = "ar_cuit"
 	LegalEntityAssociationChildLegalEntityIdentificationsIDTypeBrCnpj    LegalEntityAssociationChildLegalEntityIdentificationsIDType = "br_cnpj"
 	LegalEntityAssociationChildLegalEntityIdentificationsIDTypeBrCpf     LegalEntityAssociationChildLegalEntityIdentificationsIDType = "br_cpf"
+	LegalEntityAssociationChildLegalEntityIdentificationsIDTypeClRun     LegalEntityAssociationChildLegalEntityIdentificationsIDType = "cl_run"
 	LegalEntityAssociationChildLegalEntityIdentificationsIDTypeClRut     LegalEntityAssociationChildLegalEntityIdentificationsIDType = "cl_rut"
 	LegalEntityAssociationChildLegalEntityIdentificationsIDTypeCoCedulas LegalEntityAssociationChildLegalEntityIdentificationsIDType = "co_cedulas"
 	LegalEntityAssociationChildLegalEntityIdentificationsIDTypeCoNit     LegalEntityAssociationChildLegalEntityIdentificationsIDType = "co_nit"
@@ -304,7 +305,7 @@ const (
 
 func (r LegalEntityAssociationChildLegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case LegalEntityAssociationChildLegalEntityIdentificationsIDTypeArCuil, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeArCuit, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeBrCnpj, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeBrCpf, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeClRut, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeCoCedulas, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeCoNit, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeHnID, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeHnRtn, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeInLei, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeKrBrn, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeKrCrn, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeKrRrn, LegalEntityAssociationChildLegalEntityIdentificationsIDTypePassport, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeSaTin, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeSaVat, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeUsEin, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeUsItin, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeUsSsn, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeVnTin:
+	case LegalEntityAssociationChildLegalEntityIdentificationsIDTypeArCuil, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeArCuit, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeBrCnpj, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeBrCpf, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeClRun, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeClRut, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeCoCedulas, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeCoNit, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeHnID, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeHnRtn, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeInLei, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeKrBrn, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeKrCrn, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeKrRrn, LegalEntityAssociationChildLegalEntityIdentificationsIDTypePassport, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeSaTin, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeSaVat, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeUsEin, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeUsItin, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeUsSsn, LegalEntityAssociationChildLegalEntityIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false
@@ -369,7 +370,7 @@ func (r legalEntityAssociationChildLegalEntityPhoneNumberJSON) RawJSON() string 
 	return r.raw
 }
 
-// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+// The risk rating of the legal entity. One of low, medium, high.
 type LegalEntityAssociationChildLegalEntityRiskRating string
 
 const (
@@ -464,7 +465,7 @@ type LegalEntityAssociationNewParamsChildLegalEntity struct {
 	// strings.
 	Metadata     param.Field[map[string]string]                                            `json:"metadata"`
 	PhoneNumbers param.Field[[]LegalEntityAssociationNewParamsChildLegalEntityPhoneNumber] `json:"phone_numbers"`
-	// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[LegalEntityAssociationNewParamsChildLegalEntityRiskRating] `json:"risk_rating"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
@@ -533,6 +534,7 @@ const (
 	LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeArCuit    LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDType = "ar_cuit"
 	LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeBrCnpj    LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDType = "br_cnpj"
 	LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeBrCpf     LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDType = "br_cpf"
+	LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeClRun     LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDType = "cl_run"
 	LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeClRut     LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDType = "cl_rut"
 	LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeCoCedulas LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDType = "co_cedulas"
 	LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeCoNit     LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDType = "co_nit"
@@ -553,7 +555,7 @@ const (
 
 func (r LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeArCuil, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeArCuit, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeBrCnpj, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeBrCpf, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeClRut, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeCoCedulas, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeCoNit, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeHnID, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeHnRtn, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeInLei, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeKrBrn, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeKrCrn, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeKrRrn, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypePassport, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeSaTin, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeSaVat, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeUsEin, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeUsItin, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeUsSsn, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeVnTin:
+	case LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeArCuil, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeArCuit, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeBrCnpj, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeBrCpf, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeClRun, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeClRut, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeCoCedulas, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeCoNit, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeHnID, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeHnRtn, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeInLei, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeKrBrn, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeKrCrn, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeKrRrn, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypePassport, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeSaTin, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeSaVat, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeUsEin, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeUsItin, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeUsSsn, LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false
@@ -604,7 +606,7 @@ func (r LegalEntityAssociationNewParamsChildLegalEntityPhoneNumber) MarshalJSON(
 	return apijson.MarshalRoot(r)
 }
 
-// Translation missing: en.openapi.descriptions.legal_entity.schema.risk_rating
+// The risk rating of the legal entity. One of low, medium, high.
 type LegalEntityAssociationNewParamsChildLegalEntityRiskRating string
 
 const (
