@@ -1,5 +1,29 @@
 # Changelog
 
+## 2.20.0 (2024-09-24)
+
+Full Changelog: [v2.19.0...v2.20.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.19.0...v2.20.0)
+
+### Features
+
+* **api:** add `usbank_payment_application_reference_id` to `reference_number_type` ([#275](https://github.com/Modern-Treasury/modern-treasury-go/issues/275)) ([dfa745b](https://github.com/Modern-Treasury/modern-treasury-go/commit/dfa745b1d54e56ea90ea63e6e9d0db24949b6431))
+* **client:** send retry count header ([#278](https://github.com/Modern-Treasury/modern-treasury-go/issues/278)) ([299e838](https://github.com/Modern-Treasury/modern-treasury-go/commit/299e83800e095b62ca1f3bb017023668442acb62))
+
+
+### Bug Fixes
+
+* **requestconfig:** copy over more fields when cloning ([#273](https://github.com/Modern-Treasury/modern-treasury-go/issues/273)) ([39900c9](https://github.com/Modern-Treasury/modern-treasury-go/commit/39900c96bad9e2b9554f81dd830751a6e19728ff))
+
+
+### Chores
+
+* **api:** fields and parameters added to bulk actions, transactions and invoice creation ([#277](https://github.com/Modern-Treasury/modern-treasury-go/issues/277)) ([95ccfdf](https://github.com/Modern-Treasury/modern-treasury-go/commit/95ccfdf8fcfb0ef6f11ce44a014f0c466009677b))
+
+
+### Documentation
+
+* update CONTRIBUTING.md ([#276](https://github.com/Modern-Treasury/modern-treasury-go/issues/276)) ([e18b5e4](https://github.com/Modern-Treasury/modern-treasury-go/commit/e18b5e4417b66ec6f95d7099ce8b2566df1cbcaf))
+
 ## 2.19.0 (2024-09-09)
 
 Full Changelog: [v2.18.0...v2.19.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.18.0...v2.19.0)
