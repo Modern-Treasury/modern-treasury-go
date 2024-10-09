@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.20.1 (2024-10-09)
+
+Full Changelog: [v2.20.0...v2.20.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.0...v2.20.1)
+
+### Documentation
+
+* improve and reference contributing documentation ([#279](https://github.com/Modern-Treasury/modern-treasury-go/issues/279)) ([b80d5c7](https://github.com/Modern-Treasury/modern-treasury-go/commit/b80d5c78651e090acbd5fa50cce7b0ee2e13371f))
+
 ## 2.20.0 (2024-09-24)
 
 Full Changelog: [v2.19.0...v2.20.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.19.0...v2.20.0)
