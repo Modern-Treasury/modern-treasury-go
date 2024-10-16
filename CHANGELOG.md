@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.20.2 (2024-10-16)
+
+Full Changelog: [v2.20.1...v2.20.2](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.1...v2.20.2)
+
+### Features
+
+* **api:** updates to required fields for ExpectedPayments ([#284](https://github.com/Modern-Treasury/modern-treasury-go/issues/284)) ([75e3ebc](https://github.com/Modern-Treasury/modern-treasury-go/commit/75e3ebc98bfb5d46e7875420b85e09e3521ca44e))
+* move pagination package from internal to packages ([#283](https://github.com/Modern-Treasury/modern-treasury-go/issues/283)) ([5c19e96](https://github.com/Modern-Treasury/modern-treasury-go/commit/5c19e968872516c08c66367b97455e991365d69c))
+
+
+### Chores
+
+* fix GetNextPage docstring ([#281](https://github.com/Modern-Treasury/modern-treasury-go/issues/281)) ([acadfa3](https://github.com/Modern-Treasury/modern-treasury-go/commit/acadfa3987c5e31a7352b14b9f3b59f4016aa1ae))
+
 ## 2.20.1 (2024-10-09)
 
 Full Changelog: [v2.20.0...v2.20.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.0...v2.20.1)
