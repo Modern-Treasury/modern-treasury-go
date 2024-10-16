@@ -179,7 +179,7 @@ type BulkResultEntity struct {
 	// accessible if your accounting system has been connected.
 	AccountingLedgerClassID string `json:"accounting_ledger_class_id,nullable" format:"uuid"`
 	// Defaults to the currency of the originating account.
-	Currency shared.Currency `json:"currency"`
+	Currency shared.Currency `json:"currency,nullable"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.
@@ -279,12 +279,12 @@ type BulkResultEntity struct {
 	VendorAttributes interface{} `json:"vendor_attributes,required"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUpperBound int64 `json:"amount_upper_bound"`
+	AmountUpperBound int64 `json:"amount_upper_bound,nullable"`
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountLowerBound int64 `json:"amount_lower_bound"`
+	AmountLowerBound int64 `json:"amount_lower_bound,nullable"`
 	// The ID of the Internal Account for the expected payment.
-	InternalAccountID string `json:"internal_account_id" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id,nullable" format:"uuid"`
 	// The latest date the payment may come in. Format: yyyy-mm-dd
 	DateUpperBound time.Time `json:"date_upper_bound,nullable" format:"date"`
 	// The earliest date the payment may come in. Format: yyyy-mm-dd
@@ -293,7 +293,7 @@ type BulkResultEntity struct {
 	ReconciliationGroups interface{} `json:"reconciliation_groups,required"`
 	// This field can have the runtime type of [interface{}].
 	ReconciliationFilters interface{} `json:"reconciliation_filters,required"`
-	// This field can have the runtime type of [[]map[string]string].
+	// This field can have the runtime type of [[]ReconciliationRule].
 	ReconciliationRuleVariables interface{} `json:"reconciliation_rule_variables,required"`
 	// The ID of the Transaction this expected payment object has been matched to.
 	TransactionID string `json:"transaction_id,nullable" format:"uuid"`
