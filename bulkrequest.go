@@ -1068,15 +1068,10 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAcco
 type BulkRequestNewParamsResourcesExpectedPaymentCreateRequest struct {
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountLowerBound param.Field[int64] `json:"amount_lower_bound,required"`
+	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUpperBound param.Field[int64] `json:"amount_upper_bound,required"`
-	// One of credit or debit. When you are receiving money, use credit. When you are
-	// being charged, use debit.
-	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
-	// The ID of the Internal Account for the expected payment.
-	InternalAccountID param.Field[string] `json:"internal_account_id,required" format:"uuid"`
+	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
 	// The ID of the counterparty you expect for this payment.
 	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
 	// Must conform to ISO 4217. Defaults to the currency of the internal account.
@@ -1087,6 +1082,11 @@ type BulkRequestNewParamsResourcesExpectedPaymentCreateRequest struct {
 	DateUpperBound param.Field[time.Time] `json:"date_upper_bound" format:"date"`
 	// An optional description for internal use.
 	Description param.Field[string] `json:"description"`
+	// One of credit or debit. When you are receiving money, use credit. When you are
+	// being charged, use debit.
+	Direction param.Field[BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirection] `json:"direction"`
+	// The ID of the Internal Account for the expected payment.
+	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
 	// Specifies a ledger transaction object that will be created with the expected
 	// payment. If the ledger transaction cannot be created, then the expected payment
 	// creation will fail. The resulting ledger transaction will mirror the status of
@@ -1106,7 +1106,7 @@ type BulkRequestNewParamsResourcesExpectedPaymentCreateRequest struct {
 	// The reconciliation groups you have for this payment.
 	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
 	// An array of reconciliation rule variables for this payment.
-	ReconciliationRuleVariables param.Field[[]map[string]string] `json:"reconciliation_rule_variables"`
+	ReconciliationRuleVariables param.Field[[]ReconciliationRuleParam] `json:"reconciliation_rule_variables"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -1126,6 +1126,23 @@ func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequest) MarshalJSON()
 }
 
 func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequest) implementsBulkRequestNewParamsResourceUnion() {
+}
+
+// One of credit or debit. When you are receiving money, use credit. When you are
+// being charged, use debit.
+type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirection string
+
+const (
+	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirectionCredit BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirection = "credit"
+	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirectionDebit  BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirection = "debit"
+)
+
+func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirection) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirectionCredit, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirectionDebit:
+		return true
+	}
+	return false
 }
 
 // Specifies a ledger transaction object that will be created with the expected
@@ -2047,7 +2064,7 @@ type BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID struct {
 	Description param.Field[string] `json:"description"`
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
-	Direction param.Field[shared.TransactionDirection] `json:"direction"`
+	Direction param.Field[BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDDirection] `json:"direction"`
 	// The ID of the Internal Account for the expected payment.
 	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -2058,7 +2075,7 @@ type BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID struct {
 	// The reconciliation groups you have for this payment.
 	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
 	// An array of reconciliation rule variables for this payment.
-	ReconciliationRuleVariables param.Field[[]map[string]string] `json:"reconciliation_rule_variables"`
+	ReconciliationRuleVariables param.Field[[]ReconciliationRuleParam] `json:"reconciliation_rule_variables"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -2081,6 +2098,23 @@ func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID) Marshal
 }
 
 func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
+}
+
+// One of credit or debit. When you are receiving money, use credit. When you are
+// being charged, use debit.
+type BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDDirection string
+
+const (
+	BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDDirectionCredit BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDDirection = "credit"
+	BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDDirectionDebit  BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDDirection = "debit"
+)
+
+func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDDirection) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDDirectionCredit, BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDDirectionDebit:
+		return true
+	}
+	return false
 }
 
 // The Expected Payment's status can be updated from partially_reconciled to
