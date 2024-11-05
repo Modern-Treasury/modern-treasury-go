@@ -240,59 +240,106 @@ func (r BulkRequestNewParamsResourceType) IsKnown() bool {
 }
 
 type BulkRequestNewParamsResource struct {
-	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
-	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
-	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
-	Type param.Field[PaymentOrderType] `json:"type"`
-	// An additional layer of classification for the type of payment order you are
-	// doing. This field is only used for `ach` payment orders currently. For `ach`
-	// payment orders, the `subtype` represents the SEC code. We currently support
-	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
-	Subtype param.Field[PaymentOrderSubtype] `json:"subtype"`
-	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
-	Amount param.Field[int64] `json:"amount"`
-	// One of `credit`, `debit`. Describes the direction money is flowing in the
-	// transaction. A `credit` moves money from your account to someone else's. A
-	// `debit` pulls money from someone else's account to your own. Note that wire,
-	// rtp, and check payments will always be `credit`.
-	Direction param.Field[string] `json:"direction"`
-	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
-	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
-	// an overnight check rather than standard mail.
-	Priority param.Field[BulkRequestNewParamsResourcesPriority] `json:"priority"`
-	// The ID of one of your organization's internal accounts.
-	OriginatingAccountID param.Field[string] `json:"originating_account_id" format:"uuid"`
-	// Either `receiving_account` or `receiving_account_id` must be present. When using
-	// `receiving_account_id`, you may pass the id of an external account or an
-	// internal account.
-	ReceivingAccountID param.Field[string]      `json:"receiving_account_id" format:"uuid"`
-	Accounting         param.Field[interface{}] `json:"accounting,required"`
+	Accounting                  param.Field[interface{}] `json:"accounting,required"`
+	LedgerEntries               param.Field[interface{}] `json:"ledger_entries,required"`
+	LedgerTransaction           param.Field[interface{}] `json:"ledger_transaction,required"`
+	LineItems                   param.Field[interface{}] `json:"line_items,required"`
+	Metadata                    param.Field[interface{}] `json:"metadata,required"`
+	ReceivingAccount            param.Field[interface{}] `json:"receiving_account,required"`
+	ReconciliationFilters       param.Field[interface{}] `json:"reconciliation_filters,required"`
+	ReconciliationGroups        param.Field[interface{}] `json:"reconciliation_groups,required"`
+	ReconciliationRuleVariables param.Field[interface{}] `json:"reconciliation_rule_variables,required"`
+	ID                          param.Field[string]      `json:"id" format:"uuid"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
 	// The ID of one of your accounting ledger classes. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
+	// Value in specified currency's smallest unit. e.g. $10 would be represented as
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
+	Amount param.Field[int64] `json:"amount"`
+	// The lowest amount this expected payment may be equal to. Value in specified
+	// currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
+	// The highest amount this expected payment may be equal to. Value in specified
+	// currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
+	// The date on which the transaction occurred.
+	AsOfDate param.Field[time.Time] `json:"as_of_date" format:"date"`
+	// The party that will pay the fees for the payment order. Only applies to wire
+	// payment orders. Can be one of shared, sender, or receiver, which correspond
+	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+	ChargeBearer param.Field[BulkRequestNewParamsResourcesChargeBearer] `json:"charge_bearer"`
+	// The ID of the counterparty you expect for this payment.
+	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
 	// Defaults to the currency of the originating account.
 	Currency param.Field[shared.Currency] `json:"currency"`
+	// The earliest date the payment may come in. Format: yyyy-mm-dd
+	DateLowerBound param.Field[time.Time] `json:"date_lower_bound" format:"date"`
+	// The latest date the payment may come in. Format: yyyy-mm-dd
+	DateUpperBound param.Field[time.Time] `json:"date_upper_bound" format:"date"`
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
+	// One of `credit`, `debit`. Describes the direction money is flowing in the
+	// transaction. A `credit` moves money from your account to someone else's. A
+	// `debit` pulls money from someone else's account to your own. Note that wire,
+	// rtp, and check payments will always be `credit`.
+	Direction param.Field[string] `json:"direction"`
+	// The timestamp (ISO8601 format) at which the ledger transaction happened for
+	// reporting purposes.
+	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// An optional descriptor which will appear in the receiver's statement. For
-	// `check` payments this field will be used as the memo line. For `ach` the maximum
-	// length is 10 characters. Note that for ACH payments, the name on your bank
-	// account will be included automatically by the bank, so you can use the
-	// characters for other useful information. For `eft` the maximum length is 15
-	// characters.
-	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
-	// For `ach`, this field will be passed through on an addenda record. For `wire`
-	// payments the field will be passed through as the "Originator to Beneficiary
-	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation param.Field[string] `json:"remittance_information"`
+	// RFP payments require an expires_at. This value must be past the effective_date.
+	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
+	// A unique string to represent the ledger transaction. Only one pending or posted
+	// ledger transaction may have this ID in the ledger.
+	ExternalID param.Field[string] `json:"external_id"`
+	// A payment type to fallback to if the original type is not valid for the
+	// receiving account. Currently, this only supports falling back from RTP to ACH
+	// (type=rtp and fallback_type=ach)
+	FallbackType param.Field[BulkRequestNewParamsResourcesFallbackType] `json:"fallback_type"`
+	// If present, indicates a specific foreign exchange contract number that has been
+	// generated by your financial institution.
+	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract"`
+	// Indicates the type of FX transfer to initiate, can be either
+	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+	// currency matches the originating account currency.
+	ForeignExchangeIndicator param.Field[BulkRequestNewParamsResourcesForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
+	// The ID of the Internal Account for the expected payment.
+	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
+	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
+	// pending ledger transaction can be attached upon payment order creation. Once the
+	// payment order is created, the status of the ledger transaction tracks the
+	// payment order automatically.
+	LedgerTransactionID param.Field[string] `json:"ledger_transaction_id" format:"uuid"`
+	// If the ledger transaction can be reconciled to another object in Modern
+	// Treasury, the id will be populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// If the ledger transaction can be reconciled to another object in Modern
+	// Treasury, the type will be populated here, otherwise null. This can be one of
+	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+	// reversal.
+	LedgerableType param.Field[BulkRequestNewParamsResourcesLedgerableType] `json:"ledgerable_type"`
+	// A boolean to determine if NSF Protection is enabled for this payment order. Note
+	// that this setting must also be turned on in your organization settings page.
+	NsfProtected param.Field[bool] `json:"nsf_protected"`
+	// The ID of one of your organization's internal accounts.
+	OriginatingAccountID param.Field[string] `json:"originating_account_id" format:"uuid"`
+	// If present, this will replace your default company name on receiver's bank
+	// statement. This field can only be used for ACH payments currently. For ACH, only
+	// the first 16 characters of this string will be used. Any additional characters
+	// will be truncated.
+	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
+	// This field will be `true` if the transaction has posted to the account.
+	Posted param.Field[bool] `json:"posted"`
+	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+	// an overnight check rather than standard mail.
+	Priority param.Field[BulkRequestNewParamsResourcesPriority] `json:"priority"`
 	// If present, Modern Treasury will not process the payment until after this time.
 	// If `process_after` is past the cutoff for `effective_date`, `process_after` will
 	// take precedence and `effective_date` will automatically update to reflect the
@@ -302,92 +349,47 @@ type BulkRequestNewParamsResource struct {
 	// For `wire`, this is usually the purpose which is transmitted via the
 	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
 	// digit CPA Code that will be attached to the payment.
-	Purpose  param.Field[string]      `json:"purpose"`
-	Metadata param.Field[interface{}] `json:"metadata,required"`
-	// The party that will pay the fees for the payment order. Only applies to wire
-	// payment orders. Can be one of shared, sender, or receiver, which correspond
-	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
-	ChargeBearer param.Field[BulkRequestNewParamsResourcesChargeBearer] `json:"charge_bearer"`
-	// Indicates the type of FX transfer to initiate, can be either
-	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
-	// currency matches the originating account currency.
-	ForeignExchangeIndicator param.Field[BulkRequestNewParamsResourcesForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
-	// If present, indicates a specific foreign exchange contract number that has been
-	// generated by your financial institution.
-	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract"`
-	// A boolean to determine if NSF Protection is enabled for this payment order. Note
-	// that this setting must also be turned on in your organization settings page.
-	NsfProtected param.Field[bool] `json:"nsf_protected"`
-	// If present, this will replace your default company name on receiver's bank
-	// statement. This field can only be used for ACH payments currently. For ACH, only
-	// the first 16 characters of this string will be used. Any additional characters
-	// will be truncated.
-	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
-	// Name of the ultimate originator of the payment order.
-	UltimateOriginatingPartyName param.Field[string] `json:"ultimate_originating_party_name"`
-	// Identifier of the ultimate originator of the payment order.
-	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
-	// Name of the ultimate funds recipient.
-	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
-	// Identifier of the ultimate funds recipient.
-	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
+	Purpose param.Field[string] `json:"purpose"`
+	// Either `receiving_account` or `receiving_account_id` must be present. When using
+	// `receiving_account_id`, you may pass the id of an external account or an
+	// internal account.
+	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// For `ach`, this field will be passed through on an addenda record. For `wire`
+	// payments the field will be passed through as the "Originator to Beneficiary
+	// Information", also known as OBI or Fedwire tag 6000.
+	RemittanceInformation param.Field[string] `json:"remittance_information"`
 	// Send an email to the counterparty when the payment order is sent to the bank. If
 	// `null`, `send_remittance_advice` on the Counterparty is used.
 	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
-	// RFP payments require an expires_at. This value must be past the effective_date.
-	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
-	// A payment type to fallback to if the original type is not valid for the
-	// receiving account. Currently, this only supports falling back from RTP to ACH
-	// (type=rtp and fallback_type=ach)
-	FallbackType      param.Field[BulkRequestNewParamsResourcesFallbackType] `json:"fallback_type"`
-	ReceivingAccount  param.Field[interface{}]                               `json:"receiving_account,required"`
-	LedgerTransaction param.Field[interface{}]                               `json:"ledger_transaction,required"`
-	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
-	// pending ledger transaction can be attached upon payment order creation. Once the
-	// payment order is created, the status of the ledger transaction tracks the
-	// payment order automatically.
-	LedgerTransactionID param.Field[string]      `json:"ledger_transaction_id" format:"uuid"`
-	LineItems           param.Field[interface{}] `json:"line_items,required"`
+	// An optional descriptor which will appear in the receiver's statement. For
+	// `check` payments this field will be used as the memo line. For `ach` the maximum
+	// length is 10 characters. Note that for ACH payments, the name on your bank
+	// account will be included automatically by the bank, so you can use the
+	// characters for other useful information. For `eft` the maximum length is 15
+	// characters.
+	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
+	// To post a ledger transaction at creation, use `posted`.
+	Status param.Field[BulkRequestNewParamsResourcesStatus] `json:"status"`
+	// An additional layer of classification for the type of payment order you are
+	// doing. This field is only used for `ach` payment orders currently. For `ach`
+	// payment orders, the `subtype` represents the SEC code. We currently support
+	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
+	Subtype param.Field[PaymentOrderSubtype] `json:"subtype"`
 	// A flag that determines whether a payment order should go through transaction
 	// monitoring.
 	TransactionMonitoringEnabled param.Field[bool] `json:"transaction_monitoring_enabled"`
-	// The highest amount this expected payment may be equal to. Value in specified
-	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
-	// The lowest amount this expected payment may be equal to. Value in specified
-	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
-	// The ID of the Internal Account for the expected payment.
-	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
-	// The latest date the payment may come in. Format: yyyy-mm-dd
-	DateUpperBound param.Field[time.Time] `json:"date_upper_bound" format:"date"`
-	// The earliest date the payment may come in. Format: yyyy-mm-dd
-	DateLowerBound param.Field[time.Time] `json:"date_lower_bound" format:"date"`
-	// The ID of the counterparty you expect for this payment.
-	CounterpartyID              param.Field[string]      `json:"counterparty_id" format:"uuid"`
-	ReconciliationGroups        param.Field[interface{}] `json:"reconciliation_groups,required"`
-	ReconciliationFilters       param.Field[interface{}] `json:"reconciliation_filters,required"`
-	ReconciliationRuleVariables param.Field[interface{}] `json:"reconciliation_rule_variables,required"`
-	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[BulkRequestNewParamsResourcesStatus] `json:"status"`
-	// The timestamp (ISO8601 format) at which the ledger transaction happened for
-	// reporting purposes.
-	EffectiveAt   param.Field[time.Time]   `json:"effective_at" format:"date-time"`
-	LedgerEntries param.Field[interface{}] `json:"ledger_entries,required"`
-	// A unique string to represent the ledger transaction. Only one pending or posted
-	// ledger transaction may have this ID in the ledger.
-	ExternalID param.Field[string] `json:"external_id"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-	// reversal.
-	LedgerableType param.Field[BulkRequestNewParamsResourcesLedgerableType] `json:"ledgerable_type"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// The transaction detail text that often appears in on your bank statement and in
-	// your banking portal.
-	VendorDescription param.Field[string] `json:"vendor_description"`
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
+	Type param.Field[PaymentOrderType] `json:"type"`
+	// Identifier of the ultimate originator of the payment order.
+	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
+	// Name of the ultimate originator of the payment order.
+	UltimateOriginatingPartyName param.Field[string] `json:"ultimate_originating_party_name"`
+	// Identifier of the ultimate funds recipient.
+	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
+	// Name of the ultimate funds recipient.
+	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
 	// When applicable, the bank-given code that determines the transaction's category.
 	// For most banks this is the BAI2/BTRS transaction code.
 	VendorCode param.Field[string] `json:"vendor_code"`
@@ -396,11 +398,9 @@ type BulkRequestNewParamsResource struct {
 	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
 	// `swift`, `us_bank`, or others.
 	VendorCodeType param.Field[string] `json:"vendor_code_type"`
-	// The date on which the transaction occurred.
-	AsOfDate param.Field[time.Time] `json:"as_of_date" format:"date"`
-	// This field will be `true` if the transaction has posted to the account.
-	Posted param.Field[bool]   `json:"posted"`
-	ID     param.Field[string] `json:"id" format:"uuid"`
+	// The transaction detail text that often appears in on your bank statement and in
+	// your banking portal.
+	VendorDescription param.Field[string] `json:"vendor_description"`
 }
 
 func (r BulkRequestNewParamsResource) MarshalJSON() (data []byte, err error) {
@@ -2258,24 +2258,6 @@ func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatus)
 	return false
 }
 
-// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
-// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
-// an overnight check rather than standard mail.
-type BulkRequestNewParamsResourcesPriority string
-
-const (
-	BulkRequestNewParamsResourcesPriorityHigh   BulkRequestNewParamsResourcesPriority = "high"
-	BulkRequestNewParamsResourcesPriorityNormal BulkRequestNewParamsResourcesPriority = "normal"
-)
-
-func (r BulkRequestNewParamsResourcesPriority) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesPriorityHigh, BulkRequestNewParamsResourcesPriorityNormal:
-		return true
-	}
-	return false
-}
-
 // The party that will pay the fees for the payment order. Only applies to wire
 // payment orders. Can be one of shared, sender, or receiver, which correspond
 // respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
@@ -2290,6 +2272,23 @@ const (
 func (r BulkRequestNewParamsResourcesChargeBearer) IsKnown() bool {
 	switch r {
 	case BulkRequestNewParamsResourcesChargeBearerShared, BulkRequestNewParamsResourcesChargeBearerSender, BulkRequestNewParamsResourcesChargeBearerReceiver:
+		return true
+	}
+	return false
+}
+
+// A payment type to fallback to if the original type is not valid for the
+// receiving account. Currently, this only supports falling back from RTP to ACH
+// (type=rtp and fallback_type=ach)
+type BulkRequestNewParamsResourcesFallbackType string
+
+const (
+	BulkRequestNewParamsResourcesFallbackTypeACH BulkRequestNewParamsResourcesFallbackType = "ach"
+)
+
+func (r BulkRequestNewParamsResourcesFallbackType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesFallbackTypeACH:
 		return true
 	}
 	return false
@@ -2313,18 +2312,42 @@ func (r BulkRequestNewParamsResourcesForeignExchangeIndicator) IsKnown() bool {
 	return false
 }
 
-// A payment type to fallback to if the original type is not valid for the
-// receiving account. Currently, this only supports falling back from RTP to ACH
-// (type=rtp and fallback_type=ach)
-type BulkRequestNewParamsResourcesFallbackType string
+// If the ledger transaction can be reconciled to another object in Modern
+// Treasury, the type will be populated here, otherwise null. This can be one of
+// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+// reversal.
+type BulkRequestNewParamsResourcesLedgerableType string
 
 const (
-	BulkRequestNewParamsResourcesFallbackTypeACH BulkRequestNewParamsResourcesFallbackType = "ach"
+	BulkRequestNewParamsResourcesLedgerableTypeExpectedPayment       BulkRequestNewParamsResourcesLedgerableType = "expected_payment"
+	BulkRequestNewParamsResourcesLedgerableTypeIncomingPaymentDetail BulkRequestNewParamsResourcesLedgerableType = "incoming_payment_detail"
+	BulkRequestNewParamsResourcesLedgerableTypePaperItem             BulkRequestNewParamsResourcesLedgerableType = "paper_item"
+	BulkRequestNewParamsResourcesLedgerableTypePaymentOrder          BulkRequestNewParamsResourcesLedgerableType = "payment_order"
+	BulkRequestNewParamsResourcesLedgerableTypeReturn                BulkRequestNewParamsResourcesLedgerableType = "return"
+	BulkRequestNewParamsResourcesLedgerableTypeReversal              BulkRequestNewParamsResourcesLedgerableType = "reversal"
 )
 
-func (r BulkRequestNewParamsResourcesFallbackType) IsKnown() bool {
+func (r BulkRequestNewParamsResourcesLedgerableType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesFallbackTypeACH:
+	case BulkRequestNewParamsResourcesLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesLedgerableTypePaperItem, BulkRequestNewParamsResourcesLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesLedgerableTypeReturn, BulkRequestNewParamsResourcesLedgerableTypeReversal:
+		return true
+	}
+	return false
+}
+
+// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+// an overnight check rather than standard mail.
+type BulkRequestNewParamsResourcesPriority string
+
+const (
+	BulkRequestNewParamsResourcesPriorityHigh   BulkRequestNewParamsResourcesPriority = "high"
+	BulkRequestNewParamsResourcesPriorityNormal BulkRequestNewParamsResourcesPriority = "normal"
+)
+
+func (r BulkRequestNewParamsResourcesPriority) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPriorityHigh, BulkRequestNewParamsResourcesPriorityNormal:
 		return true
 	}
 	return false
@@ -2353,29 +2376,6 @@ const (
 func (r BulkRequestNewParamsResourcesStatus) IsKnown() bool {
 	switch r {
 	case BulkRequestNewParamsResourcesStatusArchived, BulkRequestNewParamsResourcesStatusPending, BulkRequestNewParamsResourcesStatusPosted, BulkRequestNewParamsResourcesStatusApproved, BulkRequestNewParamsResourcesStatusCancelled, BulkRequestNewParamsResourcesStatusCompleted, BulkRequestNewParamsResourcesStatusDenied, BulkRequestNewParamsResourcesStatusFailed, BulkRequestNewParamsResourcesStatusNeedsApproval, BulkRequestNewParamsResourcesStatusProcessing, BulkRequestNewParamsResourcesStatusReturned, BulkRequestNewParamsResourcesStatusReversed, BulkRequestNewParamsResourcesStatusSent, BulkRequestNewParamsResourcesStatusReconciled:
-		return true
-	}
-	return false
-}
-
-// If the ledger transaction can be reconciled to another object in Modern
-// Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-// reversal.
-type BulkRequestNewParamsResourcesLedgerableType string
-
-const (
-	BulkRequestNewParamsResourcesLedgerableTypeExpectedPayment       BulkRequestNewParamsResourcesLedgerableType = "expected_payment"
-	BulkRequestNewParamsResourcesLedgerableTypeIncomingPaymentDetail BulkRequestNewParamsResourcesLedgerableType = "incoming_payment_detail"
-	BulkRequestNewParamsResourcesLedgerableTypePaperItem             BulkRequestNewParamsResourcesLedgerableType = "paper_item"
-	BulkRequestNewParamsResourcesLedgerableTypePaymentOrder          BulkRequestNewParamsResourcesLedgerableType = "payment_order"
-	BulkRequestNewParamsResourcesLedgerableTypeReturn                BulkRequestNewParamsResourcesLedgerableType = "return"
-	BulkRequestNewParamsResourcesLedgerableTypeReversal              BulkRequestNewParamsResourcesLedgerableType = "reversal"
-)
-
-func (r BulkRequestNewParamsResourcesLedgerableType) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesLedgerableTypePaperItem, BulkRequestNewParamsResourcesLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesLedgerableTypeReturn, BulkRequestNewParamsResourcesLedgerableTypeReversal:
 		return true
 	}
 	return false

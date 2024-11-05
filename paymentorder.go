@@ -633,86 +633,86 @@ func (r PaymentOrderStatus) IsKnown() bool {
 // The account to which the originating of this payment should be attributed to.
 // Can be a `virtual_account` or `internal_account`.
 type PaymentOrderUltimateOriginatingAccount struct {
-	ID     string `json:"id,required" format:"uuid"`
-	Object string `json:"object,required"`
+	ID string `json:"id,required" format:"uuid"`
+	// The ID of a counterparty that the virtual account belongs to. Optional.
+	CounterpartyID string    `json:"counterparty_id,required,nullable" format:"uuid"`
+	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	// If the virtual account links to a ledger account in Modern Treasury, the id of
+	// the ledger account will be populated here.
+	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode    bool      `json:"live_mode,required"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	UpdatedAt   time.Time `json:"updated_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,nullable" format:"date-time"`
+	LiveMode bool `json:"live_mode,required"`
 	// The name of the virtual account.
-	Name string `json:"name,required"`
-	// An optional free-form description for internal use.
-	Description string `json:"description,nullable"`
-	// The ID of a counterparty that the virtual account belongs to. Optional.
-	CounterpartyID string `json:"counterparty_id,required,nullable" format:"uuid"`
-	// The ID of the internal account that the virtual account is in.
-	InternalAccountID string `json:"internal_account_id" format:"uuid"`
+	Name   string `json:"name,required"`
+	Object string `json:"object,required"`
+	// This field can have the runtime type of [InternalAccountPartyAddress].
+	PartyAddress interface{} `json:"party_address,required"`
+	UpdatedAt    time.Time   `json:"updated_at,required" format:"date-time"`
 	// This field can have the runtime type of [[]AccountDetail].
 	AccountDetails interface{} `json:"account_details"`
-	// This field can have the runtime type of [[]RoutingDetail].
-	RoutingDetails interface{} `json:"routing_details"`
-	// The ID of a debit normal ledger account. When money enters the virtual account,
-	// this ledger account will be debited. Must be accompanied by a
-	// credit_ledger_account_id if present.
-	DebitLedgerAccountID string `json:"debit_ledger_account_id,nullable" format:"uuid"`
+	// Can be checking, savings or other.
+	AccountType PaymentOrderUltimateOriginatingAccountAccountType `json:"account_type,nullable"`
+	// Specifies which financial institution the accounts belong to.
+	Connection Connection `json:"connection"`
 	// The ID of a credit normal ledger account. When money enters the virtual account,
 	// this ledger account will be credited. Must be accompanied by a
 	// debit_ledger_account_id if present.
 	CreditLedgerAccountID string `json:"credit_ledger_account_id,nullable" format:"uuid"`
-	// If the virtual account links to a ledger account in Modern Treasury, the id of
-	// the ledger account will be populated here.
-	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
+	// The currency of the account.
+	Currency shared.Currency `json:"currency"`
+	// The ID of a debit normal ledger account. When money enters the virtual account,
+	// this ledger account will be debited. Must be accompanied by a
+	// credit_ledger_account_id if present.
+	DebitLedgerAccountID string `json:"debit_ledger_account_id,nullable" format:"uuid"`
+	// An optional free-form description for internal use.
+	Description string    `json:"description,nullable"`
+	DiscardedAt time.Time `json:"discarded_at,nullable" format:"date-time"`
+	// The ID of the internal account that the virtual account is in.
+	InternalAccountID string `json:"internal_account_id" format:"uuid"`
+	// The Legal Entity associated to this account
+	LegalEntityID string `json:"legal_entity_id,nullable" format:"uuid"`
 	// This field can have the runtime type of [map[string]string].
 	Metadata interface{} `json:"metadata"`
-	// Can be checking, savings or other.
-	AccountType PaymentOrderUltimateOriginatingAccountAccountType `json:"account_type,nullable"`
+	// The parent InternalAccount of this account.
+	ParentAccountID string `json:"parent_account_id,nullable" format:"uuid"`
 	// The legal name of the entity which owns the account.
 	PartyName string `json:"party_name"`
 	// Either individual or business.
 	PartyType PaymentOrderUltimateOriginatingAccountPartyType `json:"party_type,nullable"`
-	// This field can have the runtime type of [InternalAccountPartyAddress].
-	PartyAddress interface{} `json:"party_address,required"`
-	// Specifies which financial institution the accounts belong to.
-	Connection Connection `json:"connection"`
-	// The currency of the account.
-	Currency shared.Currency `json:"currency"`
-	// The parent InternalAccount of this account.
-	ParentAccountID string `json:"parent_account_id,nullable" format:"uuid"`
-	// The Legal Entity associated to this account
-	LegalEntityID string                                     `json:"legal_entity_id,nullable" format:"uuid"`
-	JSON          paymentOrderUltimateOriginatingAccountJSON `json:"-"`
-	union         PaymentOrderUltimateOriginatingAccountUnion
+	// This field can have the runtime type of [[]RoutingDetail].
+	RoutingDetails interface{}                                `json:"routing_details"`
+	JSON           paymentOrderUltimateOriginatingAccountJSON `json:"-"`
+	union          PaymentOrderUltimateOriginatingAccountUnion
 }
 
 // paymentOrderUltimateOriginatingAccountJSON contains the JSON metadata for the
 // struct [PaymentOrderUltimateOriginatingAccount]
 type paymentOrderUltimateOriginatingAccountJSON struct {
 	ID                    apijson.Field
-	Object                apijson.Field
-	LiveMode              apijson.Field
-	CreatedAt             apijson.Field
-	UpdatedAt             apijson.Field
-	DiscardedAt           apijson.Field
-	Name                  apijson.Field
-	Description           apijson.Field
 	CounterpartyID        apijson.Field
-	InternalAccountID     apijson.Field
-	AccountDetails        apijson.Field
-	RoutingDetails        apijson.Field
-	DebitLedgerAccountID  apijson.Field
-	CreditLedgerAccountID apijson.Field
+	CreatedAt             apijson.Field
 	LedgerAccountID       apijson.Field
-	Metadata              apijson.Field
+	LiveMode              apijson.Field
+	Name                  apijson.Field
+	Object                apijson.Field
+	PartyAddress          apijson.Field
+	UpdatedAt             apijson.Field
+	AccountDetails        apijson.Field
 	AccountType           apijson.Field
+	Connection            apijson.Field
+	CreditLedgerAccountID apijson.Field
+	Currency              apijson.Field
+	DebitLedgerAccountID  apijson.Field
+	Description           apijson.Field
+	DiscardedAt           apijson.Field
+	InternalAccountID     apijson.Field
+	LegalEntityID         apijson.Field
+	Metadata              apijson.Field
+	ParentAccountID       apijson.Field
 	PartyName             apijson.Field
 	PartyType             apijson.Field
-	PartyAddress          apijson.Field
-	Connection            apijson.Field
-	Currency              apijson.Field
-	ParentAccountID       apijson.Field
-	LegalEntityID         apijson.Field
+	RoutingDetails        apijson.Field
 	raw                   string
 	ExtraFields           map[string]apijson.Field
 }
