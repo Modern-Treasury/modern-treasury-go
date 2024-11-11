@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.20.3 (2024-11-11)
+
+Full Changelog: [v2.20.2...v2.20.3](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.2...v2.20.3)
+
+### Bug Fixes
+
+* **api:** escape key values when encoding maps ([#287](https://github.com/Modern-Treasury/modern-treasury-go/issues/287)) ([c670a90](https://github.com/Modern-Treasury/modern-treasury-go/commit/c670a90f362d137a94eb68615e34fe3fdbe8bdb4))
+* **client:** no panic on missing BaseURL ([#289](https://github.com/Modern-Treasury/modern-treasury-go/issues/289)) ([06234a3](https://github.com/Modern-Treasury/modern-treasury-go/commit/06234a320ec13620eafaab197526bcc079edbe73))
+* correct required fields for flattened unions ([#288](https://github.com/Modern-Treasury/modern-treasury-go/issues/288)) ([7d582c5](https://github.com/Modern-Treasury/modern-treasury-go/commit/7d582c5252195e9c5b03259210c8ada9dd84ed06))
+
+
+### Refactors
+
+* sort fields for squashed union structs ([#285](https://github.com/Modern-Treasury/modern-treasury-go/issues/285)) ([79839fd](https://github.com/Modern-Treasury/modern-treasury-go/commit/79839fd7c1bbc28c0146e1c9217f682d46dbe0a2))
+
 ## 2.20.2 (2024-10-16)
 
 Full Changelog: [v2.20.1...v2.20.2](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.1...v2.20.2)
