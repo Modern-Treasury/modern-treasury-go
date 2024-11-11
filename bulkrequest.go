@@ -240,16 +240,8 @@ func (r BulkRequestNewParamsResourceType) IsKnown() bool {
 }
 
 type BulkRequestNewParamsResource struct {
-	Accounting                  param.Field[interface{}] `json:"accounting,required"`
-	LedgerEntries               param.Field[interface{}] `json:"ledger_entries,required"`
-	LedgerTransaction           param.Field[interface{}] `json:"ledger_transaction,required"`
-	LineItems                   param.Field[interface{}] `json:"line_items,required"`
-	Metadata                    param.Field[interface{}] `json:"metadata,required"`
-	ReceivingAccount            param.Field[interface{}] `json:"receiving_account,required"`
-	ReconciliationFilters       param.Field[interface{}] `json:"reconciliation_filters,required"`
-	ReconciliationGroups        param.Field[interface{}] `json:"reconciliation_groups,required"`
-	ReconciliationRuleVariables param.Field[interface{}] `json:"reconciliation_rule_variables,required"`
-	ID                          param.Field[string]      `json:"id" format:"uuid"`
+	ID         param.Field[string]      `json:"id" format:"uuid"`
+	Accounting param.Field[interface{}] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
@@ -310,7 +302,9 @@ type BulkRequestNewParamsResource struct {
 	// currency matches the originating account currency.
 	ForeignExchangeIndicator param.Field[BulkRequestNewParamsResourcesForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
 	// The ID of the Internal Account for the expected payment.
-	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
+	InternalAccountID param.Field[string]      `json:"internal_account_id" format:"uuid"`
+	LedgerEntries     param.Field[interface{}] `json:"ledger_entries"`
+	LedgerTransaction param.Field[interface{}] `json:"ledger_transaction"`
 	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
 	// pending ledger transaction can be attached upon payment order creation. Once the
 	// payment order is created, the status of the ledger transaction tracks the
@@ -324,6 +318,8 @@ type BulkRequestNewParamsResource struct {
 	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
 	// reversal.
 	LedgerableType param.Field[BulkRequestNewParamsResourcesLedgerableType] `json:"ledgerable_type"`
+	LineItems      param.Field[interface{}]                                 `json:"line_items"`
+	Metadata       param.Field[interface{}]                                 `json:"metadata"`
 	// A boolean to determine if NSF Protection is enabled for this payment order. Note
 	// that this setting must also be turned on in your organization settings page.
 	NsfProtected param.Field[bool] `json:"nsf_protected"`
@@ -349,11 +345,15 @@ type BulkRequestNewParamsResource struct {
 	// For `wire`, this is usually the purpose which is transmitted via the
 	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
 	// digit CPA Code that will be attached to the payment.
-	Purpose param.Field[string] `json:"purpose"`
+	Purpose          param.Field[string]      `json:"purpose"`
+	ReceivingAccount param.Field[interface{}] `json:"receiving_account"`
 	// Either `receiving_account` or `receiving_account_id` must be present. When using
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
-	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	ReceivingAccountID          param.Field[string]      `json:"receiving_account_id" format:"uuid"`
+	ReconciliationFilters       param.Field[interface{}] `json:"reconciliation_filters"`
+	ReconciliationGroups        param.Field[interface{}] `json:"reconciliation_groups"`
+	ReconciliationRuleVariables param.Field[interface{}] `json:"reconciliation_rule_variables"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.

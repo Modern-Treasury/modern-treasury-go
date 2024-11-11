@@ -634,6 +634,8 @@ func (r PaymentOrderStatus) IsKnown() bool {
 // Can be a `virtual_account` or `internal_account`.
 type PaymentOrderUltimateOriginatingAccount struct {
 	ID string `json:"id,required" format:"uuid"`
+	// This field can have the runtime type of [[]AccountDetail].
+	AccountDetails interface{} `json:"account_details,required"`
 	// The ID of a counterparty that the virtual account belongs to. Optional.
 	CounterpartyID string    `json:"counterparty_id,required,nullable" format:"uuid"`
 	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
@@ -643,14 +645,14 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode,required"`
+	// This field can have the runtime type of [map[string]string].
+	Metadata interface{} `json:"metadata,required"`
 	// The name of the virtual account.
 	Name   string `json:"name,required"`
 	Object string `json:"object,required"`
-	// This field can have the runtime type of [InternalAccountPartyAddress].
-	PartyAddress interface{} `json:"party_address,required"`
-	UpdatedAt    time.Time   `json:"updated_at,required" format:"date-time"`
-	// This field can have the runtime type of [[]AccountDetail].
-	AccountDetails interface{} `json:"account_details"`
+	// This field can have the runtime type of [[]RoutingDetail].
+	RoutingDetails interface{} `json:"routing_details,required"`
+	UpdatedAt      time.Time   `json:"updated_at,required" format:"date-time"`
 	// Can be checking, savings or other.
 	AccountType PaymentOrderUltimateOriginatingAccountAccountType `json:"account_type,nullable"`
 	// Specifies which financial institution the accounts belong to.
@@ -672,33 +674,32 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	InternalAccountID string `json:"internal_account_id" format:"uuid"`
 	// The Legal Entity associated to this account
 	LegalEntityID string `json:"legal_entity_id,nullable" format:"uuid"`
-	// This field can have the runtime type of [map[string]string].
-	Metadata interface{} `json:"metadata"`
 	// The parent InternalAccount of this account.
 	ParentAccountID string `json:"parent_account_id,nullable" format:"uuid"`
+	// This field can have the runtime type of [InternalAccountPartyAddress].
+	PartyAddress interface{} `json:"party_address"`
 	// The legal name of the entity which owns the account.
 	PartyName string `json:"party_name"`
 	// Either individual or business.
 	PartyType PaymentOrderUltimateOriginatingAccountPartyType `json:"party_type,nullable"`
-	// This field can have the runtime type of [[]RoutingDetail].
-	RoutingDetails interface{}                                `json:"routing_details"`
-	JSON           paymentOrderUltimateOriginatingAccountJSON `json:"-"`
-	union          PaymentOrderUltimateOriginatingAccountUnion
+	JSON      paymentOrderUltimateOriginatingAccountJSON      `json:"-"`
+	union     PaymentOrderUltimateOriginatingAccountUnion
 }
 
 // paymentOrderUltimateOriginatingAccountJSON contains the JSON metadata for the
 // struct [PaymentOrderUltimateOriginatingAccount]
 type paymentOrderUltimateOriginatingAccountJSON struct {
 	ID                    apijson.Field
+	AccountDetails        apijson.Field
 	CounterpartyID        apijson.Field
 	CreatedAt             apijson.Field
 	LedgerAccountID       apijson.Field
 	LiveMode              apijson.Field
+	Metadata              apijson.Field
 	Name                  apijson.Field
 	Object                apijson.Field
-	PartyAddress          apijson.Field
+	RoutingDetails        apijson.Field
 	UpdatedAt             apijson.Field
-	AccountDetails        apijson.Field
 	AccountType           apijson.Field
 	Connection            apijson.Field
 	CreditLedgerAccountID apijson.Field
@@ -708,11 +709,10 @@ type paymentOrderUltimateOriginatingAccountJSON struct {
 	DiscardedAt           apijson.Field
 	InternalAccountID     apijson.Field
 	LegalEntityID         apijson.Field
-	Metadata              apijson.Field
 	ParentAccountID       apijson.Field
+	PartyAddress          apijson.Field
 	PartyName             apijson.Field
 	PartyType             apijson.Field
-	RoutingDetails        apijson.Field
 	raw                   string
 	ExtraFields           map[string]apijson.Field
 }
