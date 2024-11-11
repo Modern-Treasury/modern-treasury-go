@@ -374,37 +374,35 @@ func (r ExternalAccountType) IsKnown() bool {
 }
 
 type ExternalAccountVerifyResponse struct {
-	ID string `json:"id,required" format:"uuid"`
-	// This field can have the runtime type of [[]AccountDetail].
-	AccountDetails interface{} `json:"account_details,required"`
-	// This field can have the runtime type of [[]ExternalAccountContactDetail].
-	ContactDetails interface{} `json:"contact_details,required"`
-	CreatedAt      time.Time   `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id,required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
-	// This field can have the runtime type of [map[string]string].
-	Metadata interface{} `json:"metadata,required"`
-	Object   string      `json:"object,required"`
-	// This field can have the runtime type of [ExternalAccountPartyAddress].
-	PartyAddress interface{} `json:"party_address,required"`
-	// This field can have the runtime type of [[]RoutingDetail].
-	RoutingDetails interface{} `json:"routing_details,required"`
-	UpdatedAt      time.Time   `json:"updated_at,required" format:"date-time"`
+	LiveMode  bool      `json:"live_mode,required"`
+	Object    string    `json:"object,required"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	// This field can have the runtime type of [[]AccountDetail].
+	AccountDetails interface{} `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
-	AccountType    ExternalAccountType `json:"account_type"`
-	CounterpartyID string              `json:"counterparty_id,nullable" format:"uuid"`
-	DiscardedAt    time.Time           `json:"discarded_at,nullable" format:"date-time"`
+	AccountType ExternalAccountType `json:"account_type"`
+	// This field can have the runtime type of [[]ExternalAccountContactDetail].
+	ContactDetails interface{} `json:"contact_details"`
+	CounterpartyID string      `json:"counterparty_id,nullable" format:"uuid"`
+	DiscardedAt    time.Time   `json:"discarded_at,nullable" format:"date-time"`
 	// The ID of the external account.
 	ExternalAccountID string `json:"external_account_id" format:"uuid"`
 	// If the external account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
 	LedgerAccountID string `json:"ledger_account_id,nullable" format:"uuid"`
+	// This field can have the runtime type of [map[string]string].
+	Metadata interface{} `json:"metadata"`
 	// A nickname for the external account. This is only for internal usage and won't
 	// affect any payments
 	Name string `json:"name,nullable"`
 	// The ID of the internal account where the micro-deposits originate from.
 	OriginatingAccountID string `json:"originating_account_id" format:"uuid"`
+	// This field can have the runtime type of [ExternalAccountPartyAddress].
+	PartyAddress interface{} `json:"party_address"`
 	// The legal name of the entity which owns the account.
 	PartyName string `json:"party_name"`
 	// Either `individual` or `business`.
@@ -414,6 +412,8 @@ type ExternalAccountVerifyResponse struct {
 	PaymentType ExternalAccountVerifyResponsePaymentType `json:"payment_type"`
 	// The priority of the payment. Can be `normal` or `high`.
 	Priority ExternalAccountVerifyResponsePriority `json:"priority,nullable"`
+	// This field can have the runtime type of [[]RoutingDetail].
+	RoutingDetails interface{} `json:"routing_details"`
 	// The status of the verification attempt. Can be `pending_verification`,
 	// `verified`, `failed`, or `cancelled`.
 	Status             ExternalAccountVerifyResponseStatus             `json:"status"`
@@ -427,26 +427,26 @@ type ExternalAccountVerifyResponse struct {
 // [ExternalAccountVerifyResponse]
 type externalAccountVerifyResponseJSON struct {
 	ID                   apijson.Field
-	AccountDetails       apijson.Field
-	ContactDetails       apijson.Field
 	CreatedAt            apijson.Field
 	LiveMode             apijson.Field
-	Metadata             apijson.Field
 	Object               apijson.Field
-	PartyAddress         apijson.Field
-	RoutingDetails       apijson.Field
 	UpdatedAt            apijson.Field
+	AccountDetails       apijson.Field
 	AccountType          apijson.Field
+	ContactDetails       apijson.Field
 	CounterpartyID       apijson.Field
 	DiscardedAt          apijson.Field
 	ExternalAccountID    apijson.Field
 	LedgerAccountID      apijson.Field
+	Metadata             apijson.Field
 	Name                 apijson.Field
 	OriginatingAccountID apijson.Field
+	PartyAddress         apijson.Field
 	PartyName            apijson.Field
 	PartyType            apijson.Field
 	PaymentType          apijson.Field
 	Priority             apijson.Field
+	RoutingDetails       apijson.Field
 	Status               apijson.Field
 	VerificationSource   apijson.Field
 	VerificationStatus   apijson.Field
