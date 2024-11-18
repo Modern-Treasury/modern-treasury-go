@@ -179,6 +179,10 @@ type BalanceReportBalance struct {
 	ID string `json:"id,required" format:"uuid"`
 	// The balance amount.
 	Amount int64 `json:"amount,required"`
+	// The date on which the balance became true for the account.
+	AsOfDate time.Time `json:"as_of_date,required,nullable" format:"date"`
+	// The time on which the balance became true for the account.
+	AsOfTime string `json:"as_of_time,required,nullable" format:"time"`
 	// The specific type of balance reported. One of `opening_ledger`,
 	// `closing_ledger`, `current_ledger`, `opening_available`,
 	// `opening_available_next_business_day`, `closing_available`, `current_available`,
@@ -192,6 +196,8 @@ type BalanceReportBalance struct {
 	LiveMode  bool      `json:"live_mode,required"`
 	Object    string    `json:"object,required"`
 	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	// The date on which the balance becomes available.
+	ValueDate time.Time `json:"value_date,required,nullable" format:"date"`
 	// The code used by the bank when reporting this specific balance.
 	VendorCode string `json:"vendor_code,required"`
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
@@ -207,12 +213,15 @@ type BalanceReportBalance struct {
 type balanceReportBalanceJSON struct {
 	ID             apijson.Field
 	Amount         apijson.Field
+	AsOfDate       apijson.Field
+	AsOfTime       apijson.Field
 	BalanceType    apijson.Field
 	CreatedAt      apijson.Field
 	Currency       apijson.Field
 	LiveMode       apijson.Field
 	Object         apijson.Field
 	UpdatedAt      apijson.Field
+	ValueDate      apijson.Field
 	VendorCode     apijson.Field
 	VendorCodeType apijson.Field
 	raw            string

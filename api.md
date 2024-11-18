@@ -561,9 +561,16 @@ Methods:
 
 # LegalEntities
 
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#BankSettingsParam">BankSettingsParam</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#WealthAndEmploymentDetailsParam">WealthAndEmploymentDetailsParam</a>
+
 Response Types:
 
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#BankSettings">BankSettings</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntity">LegalEntity</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#WealthAndEmploymentDetails">WealthAndEmploymentDetails</a>
 
 Methods:
 
