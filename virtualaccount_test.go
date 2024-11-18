@@ -33,12 +33,6 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 		AccountDetails: moderntreasury.F([]moderntreasury.VirtualAccountNewParamsAccountDetail{{
 			AccountNumber:     moderntreasury.F("account_number"),
 			AccountNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
-		}, {
-			AccountNumber:     moderntreasury.F("account_number"),
-			AccountNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
-		}, {
-			AccountNumber:     moderntreasury.F("account_number"),
-			AccountNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}}),
 		CounterpartyID:        moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		CreditLedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -51,7 +45,7 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 			NormalBalance:            moderntreasury.F(shared.TransactionDirectionCredit),
 			CurrencyExponent:         moderntreasury.F(int64(0)),
 			Description:              moderntreasury.F("description"),
-			LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
+			LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 			LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			LedgerableType:           moderntreasury.F(moderntreasury.VirtualAccountNewParamsLedgerAccountLedgerableTypeCounterparty),
 			Metadata: moderntreasury.F(map[string]string{
@@ -64,14 +58,6 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 			"foo": "string",
 		}),
 		RoutingDetails: moderntreasury.F([]moderntreasury.VirtualAccountNewParamsRoutingDetail{{
-			RoutingNumber:     moderntreasury.F("routing_number"),
-			RoutingNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
-			PaymentType:       moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsPaymentTypeACH),
-		}, {
-			RoutingNumber:     moderntreasury.F("routing_number"),
-			RoutingNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
-			PaymentType:       moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsPaymentTypeACH),
-		}, {
 			RoutingNumber:     moderntreasury.F("routing_number"),
 			RoutingNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
 			PaymentType:       moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsPaymentTypeACH),

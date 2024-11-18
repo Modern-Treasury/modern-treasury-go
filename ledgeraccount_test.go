@@ -35,7 +35,7 @@ func TestLedgerAccountNewWithOptionalParams(t *testing.T) {
 		NormalBalance:            moderntreasury.F(shared.TransactionDirectionCredit),
 		CurrencyExponent:         moderntreasury.F(int64(0)),
 		Description:              moderntreasury.F("description"),
-		LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
+		LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 		LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		LedgerableType:           moderntreasury.F(moderntreasury.LedgerAccountNewParamsLedgerableTypeCounterparty),
 		Metadata: moderntreasury.F(map[string]string{
@@ -137,7 +137,7 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccounts.List(context.TODO(), moderntreasury.LedgerAccountListParams{
-		ID:          moderntreasury.F([]string{"string", "string", "string"}),
+		ID:          moderntreasury.F([]string{"string"}),
 		AfterCursor: moderntreasury.F("after_cursor"),
 		AvailableBalanceAmount: moderntreasury.F(moderntreasury.LedgerAccountListParamsAvailableBalanceAmount{
 			Eq:    moderntreasury.F(int64(0)),
@@ -162,7 +162,7 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		Name: moderntreasury.F([]string{"string", "string", "string"}),
+		Name: moderntreasury.F([]string{"string"}),
 		PendingBalanceAmount: moderntreasury.F(moderntreasury.LedgerAccountListParamsPendingBalanceAmount{
 			Eq:    moderntreasury.F(int64(0)),
 			Gt:    moderntreasury.F(int64(0)),

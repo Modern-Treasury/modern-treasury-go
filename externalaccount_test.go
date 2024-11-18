@@ -32,21 +32,9 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 		AccountDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsAccountDetail{{
 			AccountNumber:     moderntreasury.F("account_number"),
 			AccountNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
-		}, {
-			AccountNumber:     moderntreasury.F("account_number"),
-			AccountNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
-		}, {
-			AccountNumber:     moderntreasury.F("account_number"),
-			AccountNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}}),
 		AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
 		ContactDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsContactDetail{{
-			ContactIdentifier:     moderntreasury.F("contact_identifier"),
-			ContactIdentifierType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsContactDetailsContactIdentifierTypeEmail),
-		}, {
-			ContactIdentifier:     moderntreasury.F("contact_identifier"),
-			ContactIdentifierType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsContactDetailsContactIdentifierTypeEmail),
-		}, {
 			ContactIdentifier:     moderntreasury.F("contact_identifier"),
 			ContactIdentifierType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsContactDetailsContactIdentifierTypeEmail),
 		}}),
@@ -57,7 +45,7 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 			NormalBalance:            moderntreasury.F(shared.TransactionDirectionCredit),
 			CurrencyExponent:         moderntreasury.F(int64(0)),
 			Description:              moderntreasury.F("description"),
-			LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
+			LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 			LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			LedgerableType:           moderntreasury.F(moderntreasury.ExternalAccountNewParamsLedgerAccountLedgerableTypeCounterparty),
 			Metadata: moderntreasury.F(map[string]string{
@@ -85,14 +73,6 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 		PartyType:           moderntreasury.F(moderntreasury.ExternalAccountNewParamsPartyTypeBusiness),
 		PlaidProcessorToken: moderntreasury.F("plaid_processor_token"),
 		RoutingDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsRoutingDetail{{
-			RoutingNumber:     moderntreasury.F("routing_number"),
-			RoutingNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
-			PaymentType:       moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsPaymentTypeACH),
-		}, {
-			RoutingNumber:     moderntreasury.F("routing_number"),
-			RoutingNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
-			PaymentType:       moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsPaymentTypeACH),
-		}, {
 			RoutingNumber:     moderntreasury.F("routing_number"),
 			RoutingNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
 			PaymentType:       moderntreasury.F(moderntreasury.ExternalAccountNewParamsRoutingDetailsPaymentTypeACH),
