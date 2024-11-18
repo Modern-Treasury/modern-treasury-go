@@ -28,8 +28,8 @@ func TestAccountCollectionFlowNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.AccountCollectionFlows.New(context.TODO(), moderntreasury.AccountCollectionFlowNewParams{
 		CounterpartyID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		PaymentTypes:       moderntreasury.F([]string{"string", "string", "string"}),
-		ReceivingCountries: moderntreasury.F([]moderntreasury.AccountCollectionFlowNewParamsReceivingCountry{moderntreasury.AccountCollectionFlowNewParamsReceivingCountryUsa, moderntreasury.AccountCollectionFlowNewParamsReceivingCountryAus, moderntreasury.AccountCollectionFlowNewParamsReceivingCountryBel}),
+		PaymentTypes:       moderntreasury.F([]string{"string"}),
+		ReceivingCountries: moderntreasury.F([]moderntreasury.AccountCollectionFlowNewParamsReceivingCountry{moderntreasury.AccountCollectionFlowNewParamsReceivingCountryUsa}),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
