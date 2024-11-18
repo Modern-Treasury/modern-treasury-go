@@ -37,21 +37,9 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetail{{
 				AccountNumber:     moderntreasury.F("account_number"),
 				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber),
-			}, {
-				AccountNumber:     moderntreasury.F("account_number"),
-				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber),
-			}, {
-				AccountNumber:     moderntreasury.F("account_number"),
-				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber),
 			}}),
 			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
 			ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetail{{
-				ContactIdentifier:     moderntreasury.F("contact_identifier"),
-				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
-			}, {
-				ContactIdentifier:     moderntreasury.F("contact_identifier"),
-				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
-			}, {
 				ContactIdentifier:     moderntreasury.F("contact_identifier"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
 			}}),
@@ -62,7 +50,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				NormalBalance:            moderntreasury.F(shared.TransactionDirectionCredit),
 				CurrencyExponent:         moderntreasury.F(int64(0)),
 				Description:              moderntreasury.F("description"),
-				LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
+				LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 				LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				LedgerableType:           moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeCounterparty),
 				Metadata: moderntreasury.F(map[string]string{
@@ -90,152 +78,6 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			PartyType:           moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyTypeBusiness),
 			PlaidProcessorToken: moderntreasury.F("plaid_processor_token"),
 			RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetail{{
-				RoutingNumber:     moderntreasury.F("routing_number"),
-				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
-				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
-			}, {
-				RoutingNumber:     moderntreasury.F("routing_number"),
-				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
-				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
-			}, {
-				RoutingNumber:     moderntreasury.F("routing_number"),
-				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
-				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
-			}}),
-		}, {
-			AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetail{{
-				AccountNumber:     moderntreasury.F("account_number"),
-				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber),
-			}, {
-				AccountNumber:     moderntreasury.F("account_number"),
-				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber),
-			}, {
-				AccountNumber:     moderntreasury.F("account_number"),
-				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber),
-			}}),
-			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
-			ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetail{{
-				ContactIdentifier:     moderntreasury.F("contact_identifier"),
-				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
-			}, {
-				ContactIdentifier:     moderntreasury.F("contact_identifier"),
-				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
-			}, {
-				ContactIdentifier:     moderntreasury.F("contact_identifier"),
-				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
-			}}),
-			LedgerAccount: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccount{
-				Currency:                 moderntreasury.F("currency"),
-				LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				Name:                     moderntreasury.F("name"),
-				NormalBalance:            moderntreasury.F(shared.TransactionDirectionCredit),
-				CurrencyExponent:         moderntreasury.F(int64(0)),
-				Description:              moderntreasury.F("description"),
-				LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
-				LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				LedgerableType:           moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeCounterparty),
-				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
-					"foo":    "bar",
-					"modern": "treasury",
-				}),
-			}),
-			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
-				"foo":    "bar",
-				"modern": "treasury",
-			}),
-			Name: moderntreasury.F("name"),
-			PartyAddress: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyAddress{
-				Country:    moderntreasury.F("country"),
-				Line1:      moderntreasury.F("line1"),
-				Line2:      moderntreasury.F("line2"),
-				Locality:   moderntreasury.F("locality"),
-				PostalCode: moderntreasury.F("postal_code"),
-				Region:     moderntreasury.F("region"),
-			}),
-			PartyIdentifier:     moderntreasury.F("party_identifier"),
-			PartyName:           moderntreasury.F("party_name"),
-			PartyType:           moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyTypeBusiness),
-			PlaidProcessorToken: moderntreasury.F("plaid_processor_token"),
-			RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetail{{
-				RoutingNumber:     moderntreasury.F("routing_number"),
-				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
-				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
-			}, {
-				RoutingNumber:     moderntreasury.F("routing_number"),
-				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
-				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
-			}, {
-				RoutingNumber:     moderntreasury.F("routing_number"),
-				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
-				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
-			}}),
-		}, {
-			AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetail{{
-				AccountNumber:     moderntreasury.F("account_number"),
-				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber),
-			}, {
-				AccountNumber:     moderntreasury.F("account_number"),
-				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber),
-			}, {
-				AccountNumber:     moderntreasury.F("account_number"),
-				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber),
-			}}),
-			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
-			ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetail{{
-				ContactIdentifier:     moderntreasury.F("contact_identifier"),
-				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
-			}, {
-				ContactIdentifier:     moderntreasury.F("contact_identifier"),
-				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
-			}, {
-				ContactIdentifier:     moderntreasury.F("contact_identifier"),
-				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
-			}}),
-			LedgerAccount: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccount{
-				Currency:                 moderntreasury.F("currency"),
-				LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				Name:                     moderntreasury.F("name"),
-				NormalBalance:            moderntreasury.F(shared.TransactionDirectionCredit),
-				CurrencyExponent:         moderntreasury.F(int64(0)),
-				Description:              moderntreasury.F("description"),
-				LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
-				LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				LedgerableType:           moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeCounterparty),
-				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
-					"foo":    "bar",
-					"modern": "treasury",
-				}),
-			}),
-			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
-				"foo":    "bar",
-				"modern": "treasury",
-			}),
-			Name: moderntreasury.F("name"),
-			PartyAddress: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyAddress{
-				Country:    moderntreasury.F("country"),
-				Line1:      moderntreasury.F("line1"),
-				Line2:      moderntreasury.F("line2"),
-				Locality:   moderntreasury.F("locality"),
-				PostalCode: moderntreasury.F("postal_code"),
-				Region:     moderntreasury.F("region"),
-			}),
-			PartyIdentifier:     moderntreasury.F("party_identifier"),
-			PartyName:           moderntreasury.F("party_name"),
-			PartyType:           moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyTypeBusiness),
-			PlaidProcessorToken: moderntreasury.F("plaid_processor_token"),
-			RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetail{{
-				RoutingNumber:     moderntreasury.F("routing_number"),
-				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
-				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
-			}, {
-				RoutingNumber:     moderntreasury.F("routing_number"),
-				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
-				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
-			}, {
 				RoutingNumber:     moderntreasury.F("routing_number"),
 				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
 				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
@@ -251,47 +93,23 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				Locality:     moderntreasury.F("locality"),
 				PostalCode:   moderntreasury.F("postal_code"),
 				Region:       moderntreasury.F("region"),
-				AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeOther}),
-				Line2:        moderntreasury.F("line2"),
-			}, {
-				Country:      moderntreasury.F("country"),
-				Line1:        moderntreasury.F("line1"),
-				Locality:     moderntreasury.F("locality"),
-				PostalCode:   moderntreasury.F("postal_code"),
-				Region:       moderntreasury.F("region"),
-				AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeOther}),
-				Line2:        moderntreasury.F("line2"),
-			}, {
-				Country:      moderntreasury.F("country"),
-				Line1:        moderntreasury.F("line1"),
-				Locality:     moderntreasury.F("locality"),
-				PostalCode:   moderntreasury.F("postal_code"),
-				Region:       moderntreasury.F("region"),
-				AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeOther}),
+				AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityAddressesAddressTypeBusiness}),
 				Line2:        moderntreasury.F("line2"),
 			}}),
 			BusinessName:         moderntreasury.F("business_name"),
 			DateFormed:           moderntreasury.F(time.Now()),
 			DateOfBirth:          moderntreasury.F(time.Now()),
-			DoingBusinessAsNames: moderntreasury.F([]string{"string", "string", "string"}),
+			DoingBusinessAsNames: moderntreasury.F([]string{"string"}),
 			Email:                moderntreasury.F("email"),
 			FirstName:            moderntreasury.F("first_name"),
 			Identifications: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityIdentification{{
 				IDNumber:       moderntreasury.F("id_number"),
 				IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuil),
 				IssuingCountry: moderntreasury.F("issuing_country"),
-			}, {
-				IDNumber:       moderntreasury.F("id_number"),
-				IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuil),
-				IssuingCountry: moderntreasury.F("issuing_country"),
-			}, {
-				IDNumber:       moderntreasury.F("id_number"),
-				IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuil),
-				IssuingCountry: moderntreasury.F("issuing_country"),
 			}}),
 			LastName: moderntreasury.F("last_name"),
 			LegalEntityAssociations: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociation{{
-				RelationshipTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeControlPerson}),
+				RelationshipTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner}),
 				ChildLegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity{
 					Addresses: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress{{
 						Country:      moderntreasury.F("country"),
@@ -299,40 +117,16 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 						Locality:     moderntreasury.F("locality"),
 						PostalCode:   moderntreasury.F("postal_code"),
 						Region:       moderntreasury.F("region"),
-						AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther}),
-						Line2:        moderntreasury.F("line2"),
-					}, {
-						Country:      moderntreasury.F("country"),
-						Line1:        moderntreasury.F("line1"),
-						Locality:     moderntreasury.F("locality"),
-						PostalCode:   moderntreasury.F("postal_code"),
-						Region:       moderntreasury.F("region"),
-						AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther}),
-						Line2:        moderntreasury.F("line2"),
-					}, {
-						Country:      moderntreasury.F("country"),
-						Line1:        moderntreasury.F("line1"),
-						Locality:     moderntreasury.F("locality"),
-						PostalCode:   moderntreasury.F("postal_code"),
-						Region:       moderntreasury.F("region"),
-						AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther}),
+						AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness}),
 						Line2:        moderntreasury.F("line2"),
 					}}),
 					BusinessName:         moderntreasury.F("business_name"),
 					DateFormed:           moderntreasury.F(time.Now()),
 					DateOfBirth:          moderntreasury.F(time.Now()),
-					DoingBusinessAsNames: moderntreasury.F([]string{"string", "string", "string"}),
+					DoingBusinessAsNames: moderntreasury.F([]string{"string"}),
 					Email:                moderntreasury.F("email"),
 					FirstName:            moderntreasury.F("first_name"),
 					Identifications: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification{{
-						IDNumber:       moderntreasury.F("id_number"),
-						IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil),
-						IssuingCountry: moderntreasury.F("issuing_country"),
-					}, {
-						IDNumber:       moderntreasury.F("id_number"),
-						IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil),
-						IssuingCountry: moderntreasury.F("issuing_country"),
-					}, {
 						IDNumber:       moderntreasury.F("id_number"),
 						IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil),
 						IssuingCountry: moderntreasury.F("issuing_country"),
@@ -346,146 +140,6 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 						"modern": "treasury",
 					}),
 					PhoneNumbers: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber{{
-						PhoneNumber: moderntreasury.F("phone_number"),
-					}, {
-						PhoneNumber: moderntreasury.F("phone_number"),
-					}, {
-						PhoneNumber: moderntreasury.F("phone_number"),
-					}}),
-					RiskRating: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow),
-					Website:    moderntreasury.F("website"),
-				}),
-				ChildLegalEntityID:  moderntreasury.F("child_legal_entity_id"),
-				OwnershipPercentage: moderntreasury.F(int64(0)),
-				Title:               moderntreasury.F("title"),
-			}, {
-				RelationshipTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeControlPerson}),
-				ChildLegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity{
-					Addresses: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress{{
-						Country:      moderntreasury.F("country"),
-						Line1:        moderntreasury.F("line1"),
-						Locality:     moderntreasury.F("locality"),
-						PostalCode:   moderntreasury.F("postal_code"),
-						Region:       moderntreasury.F("region"),
-						AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther}),
-						Line2:        moderntreasury.F("line2"),
-					}, {
-						Country:      moderntreasury.F("country"),
-						Line1:        moderntreasury.F("line1"),
-						Locality:     moderntreasury.F("locality"),
-						PostalCode:   moderntreasury.F("postal_code"),
-						Region:       moderntreasury.F("region"),
-						AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther}),
-						Line2:        moderntreasury.F("line2"),
-					}, {
-						Country:      moderntreasury.F("country"),
-						Line1:        moderntreasury.F("line1"),
-						Locality:     moderntreasury.F("locality"),
-						PostalCode:   moderntreasury.F("postal_code"),
-						Region:       moderntreasury.F("region"),
-						AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther}),
-						Line2:        moderntreasury.F("line2"),
-					}}),
-					BusinessName:         moderntreasury.F("business_name"),
-					DateFormed:           moderntreasury.F(time.Now()),
-					DateOfBirth:          moderntreasury.F(time.Now()),
-					DoingBusinessAsNames: moderntreasury.F([]string{"string", "string", "string"}),
-					Email:                moderntreasury.F("email"),
-					FirstName:            moderntreasury.F("first_name"),
-					Identifications: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification{{
-						IDNumber:       moderntreasury.F("id_number"),
-						IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil),
-						IssuingCountry: moderntreasury.F("issuing_country"),
-					}, {
-						IDNumber:       moderntreasury.F("id_number"),
-						IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil),
-						IssuingCountry: moderntreasury.F("issuing_country"),
-					}, {
-						IDNumber:       moderntreasury.F("id_number"),
-						IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil),
-						IssuingCountry: moderntreasury.F("issuing_country"),
-					}}),
-					LastName:        moderntreasury.F("last_name"),
-					LegalEntityType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness),
-					LegalStructure:  moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureCorporation),
-					Metadata: moderntreasury.F(map[string]string{
-						"key":    "value",
-						"foo":    "bar",
-						"modern": "treasury",
-					}),
-					PhoneNumbers: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber{{
-						PhoneNumber: moderntreasury.F("phone_number"),
-					}, {
-						PhoneNumber: moderntreasury.F("phone_number"),
-					}, {
-						PhoneNumber: moderntreasury.F("phone_number"),
-					}}),
-					RiskRating: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow),
-					Website:    moderntreasury.F("website"),
-				}),
-				ChildLegalEntityID:  moderntreasury.F("child_legal_entity_id"),
-				OwnershipPercentage: moderntreasury.F(int64(0)),
-				Title:               moderntreasury.F("title"),
-			}, {
-				RelationshipTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeControlPerson}),
-				ChildLegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity{
-					Addresses: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress{{
-						Country:      moderntreasury.F("country"),
-						Line1:        moderntreasury.F("line1"),
-						Locality:     moderntreasury.F("locality"),
-						PostalCode:   moderntreasury.F("postal_code"),
-						Region:       moderntreasury.F("region"),
-						AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther}),
-						Line2:        moderntreasury.F("line2"),
-					}, {
-						Country:      moderntreasury.F("country"),
-						Line1:        moderntreasury.F("line1"),
-						Locality:     moderntreasury.F("locality"),
-						PostalCode:   moderntreasury.F("postal_code"),
-						Region:       moderntreasury.F("region"),
-						AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther}),
-						Line2:        moderntreasury.F("line2"),
-					}, {
-						Country:      moderntreasury.F("country"),
-						Line1:        moderntreasury.F("line1"),
-						Locality:     moderntreasury.F("locality"),
-						PostalCode:   moderntreasury.F("postal_code"),
-						Region:       moderntreasury.F("region"),
-						AddressTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing, moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther}),
-						Line2:        moderntreasury.F("line2"),
-					}}),
-					BusinessName:         moderntreasury.F("business_name"),
-					DateFormed:           moderntreasury.F(time.Now()),
-					DateOfBirth:          moderntreasury.F(time.Now()),
-					DoingBusinessAsNames: moderntreasury.F([]string{"string", "string", "string"}),
-					Email:                moderntreasury.F("email"),
-					FirstName:            moderntreasury.F("first_name"),
-					Identifications: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification{{
-						IDNumber:       moderntreasury.F("id_number"),
-						IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil),
-						IssuingCountry: moderntreasury.F("issuing_country"),
-					}, {
-						IDNumber:       moderntreasury.F("id_number"),
-						IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil),
-						IssuingCountry: moderntreasury.F("issuing_country"),
-					}, {
-						IDNumber:       moderntreasury.F("id_number"),
-						IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil),
-						IssuingCountry: moderntreasury.F("issuing_country"),
-					}}),
-					LastName:        moderntreasury.F("last_name"),
-					LegalEntityType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness),
-					LegalStructure:  moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureCorporation),
-					Metadata: moderntreasury.F(map[string]string{
-						"key":    "value",
-						"foo":    "bar",
-						"modern": "treasury",
-					}),
-					PhoneNumbers: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber{{
-						PhoneNumber: moderntreasury.F("phone_number"),
-					}, {
-						PhoneNumber: moderntreasury.F("phone_number"),
-					}, {
 						PhoneNumber: moderntreasury.F("phone_number"),
 					}}),
 					RiskRating: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow),
@@ -502,10 +156,6 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				"modern": "treasury",
 			}),
 			PhoneNumbers: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityPhoneNumber{{
-				PhoneNumber: moderntreasury.F("phone_number"),
-			}, {
-				PhoneNumber: moderntreasury.F("phone_number"),
-			}, {
 				PhoneNumber: moderntreasury.F("phone_number"),
 			}}),
 			RiskRating: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityRiskRatingLow),
@@ -665,7 +315,7 @@ func TestCounterpartyCollectAccountWithOptionalParams(t *testing.T) {
 		moderntreasury.CounterpartyCollectAccountParams{
 			Direction:      moderntreasury.F(shared.TransactionDirectionCredit),
 			CustomRedirect: moderntreasury.F("https://example.com"),
-			Fields:         moderntreasury.F([]moderntreasury.CounterpartyCollectAccountParamsField{moderntreasury.CounterpartyCollectAccountParamsFieldName, moderntreasury.CounterpartyCollectAccountParamsFieldNameOnAccount, moderntreasury.CounterpartyCollectAccountParamsFieldTaxpayerIdentifier}),
+			Fields:         moderntreasury.F([]moderntreasury.CounterpartyCollectAccountParamsField{moderntreasury.CounterpartyCollectAccountParamsFieldName}),
 			SendEmail:      moderntreasury.F(true),
 		},
 	)
