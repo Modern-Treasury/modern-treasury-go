@@ -92,13 +92,91 @@ func (r *LegalEntityService) ListAutoPaging(ctx context.Context, query LegalEnti
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
+type BankSettings struct {
+	ID string `json:"id,required" format:"uuid"`
+	// The percentage of backup withholding to apply to the legal entity.
+	BackupWithholdingPercentage int64     `json:"backup_withholding_percentage,required,nullable"`
+	CreatedAt                   time.Time `json:"created_at,required" format:"date-time"`
+	DiscardedAt                 time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	// Whether backup withholding is enabled. See more here -
+	// https://www.irs.gov/businesses/small-businesses-self-employed/backup-withholding.
+	EnableBackupWithholding bool `json:"enable_backup_withholding,required,nullable"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
+	// Cross River Bank specific setting to opt out of privacy policy.
+	PrivacyOptOut bool `json:"privacy_opt_out,required,nullable"`
+	// It covers, among other types of insider loans, extensions of credit by a member
+	// bank to an executive officer, director, or principal shareholder of the member
+	// bank; a bank holding company of which the member bank is a subsidiary; and any
+	// other subsidiary of that bank holding company.
+	RegulationO bool             `json:"regulation_o,required,nullable"`
+	UpdatedAt   time.Time        `json:"updated_at,required" format:"date-time"`
+	JSON        bankSettingsJSON `json:"-"`
+}
+
+// bankSettingsJSON contains the JSON metadata for the struct [BankSettings]
+type bankSettingsJSON struct {
+	ID                          apijson.Field
+	BackupWithholdingPercentage apijson.Field
+	CreatedAt                   apijson.Field
+	DiscardedAt                 apijson.Field
+	EnableBackupWithholding     apijson.Field
+	LiveMode                    apijson.Field
+	Object                      apijson.Field
+	PrivacyOptOut               apijson.Field
+	RegulationO                 apijson.Field
+	UpdatedAt                   apijson.Field
+	raw                         string
+	ExtraFields                 map[string]apijson.Field
+}
+
+func (r *BankSettings) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r bankSettingsJSON) RawJSON() string {
+	return r.raw
+}
+
+type BankSettingsParam struct {
+	ID param.Field[string] `json:"id,required" format:"uuid"`
+	// The percentage of backup withholding to apply to the legal entity.
+	BackupWithholdingPercentage param.Field[int64]     `json:"backup_withholding_percentage,required"`
+	CreatedAt                   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
+	DiscardedAt                 param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
+	// Whether backup withholding is enabled. See more here -
+	// https://www.irs.gov/businesses/small-businesses-self-employed/backup-withholding.
+	EnableBackupWithholding param.Field[bool] `json:"enable_backup_withholding,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode param.Field[bool]   `json:"live_mode,required"`
+	Object   param.Field[string] `json:"object,required"`
+	// Cross River Bank specific setting to opt out of privacy policy.
+	PrivacyOptOut param.Field[bool] `json:"privacy_opt_out,required"`
+	// It covers, among other types of insider loans, extensions of credit by a member
+	// bank to an executive officer, director, or principal shareholder of the member
+	// bank; a bank holding company of which the member bank is a subsidiary; and any
+	// other subsidiary of that bank holding company.
+	RegulationO param.Field[bool]      `json:"regulation_o,required"`
+	UpdatedAt   param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
+}
+
+func (r BankSettingsParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type LegalEntity struct {
 	ID string `json:"id,required" format:"uuid"`
 	// A list of addresses for the entity.
-	Addresses []LegalEntityAddress `json:"addresses,required"`
+	Addresses    []LegalEntityAddress `json:"addresses,required"`
+	BankSettings BankSettings         `json:"bank_settings,required,nullable"`
 	// The business's legal business name.
-	BusinessName string    `json:"business_name,required,nullable"`
-	CreatedAt    time.Time `json:"created_at,required" format:"date-time"`
+	BusinessName string `json:"business_name,required,nullable"`
+	// The country of citizenship for an individual.
+	CitizenshipCountry string    `json:"citizenship_country,required,nullable"`
+	CreatedAt          time.Time `json:"created_at,required" format:"date-time"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed time.Time `json:"date_formed,required,nullable" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -124,12 +202,23 @@ type LegalEntity struct {
 	LiveMode bool `json:"live_mode,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata     map[string]string        `json:"metadata,required"`
+	Metadata map[string]string `json:"metadata,required"`
+	// An individual's middle name.
+	MiddleName   string                   `json:"middle_name,required,nullable"`
 	Object       string                   `json:"object,required"`
 	PhoneNumbers []LegalEntityPhoneNumber `json:"phone_numbers,required"`
+	// Whether the individual is a politically exposed person.
+	PoliticallyExposedPerson bool `json:"politically_exposed_person,required,nullable"`
+	// An individual's preferred name.
+	PreferredName string `json:"preferred_name,required,nullable"`
+	// An individual's prefix.
+	Prefix string `json:"prefix,required,nullable"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating LegalEntityRiskRating `json:"risk_rating,required,nullable"`
-	UpdatedAt  time.Time             `json:"updated_at,required" format:"date-time"`
+	// An individual's suffix.
+	Suffix                     string                     `json:"suffix,required,nullable"`
+	UpdatedAt                  time.Time                  `json:"updated_at,required" format:"date-time"`
+	WealthAndEmploymentDetails WealthAndEmploymentDetails `json:"wealth_and_employment_details,required,nullable"`
 	// The entity's primary website URL.
 	Website string          `json:"website,required,nullable"`
 	JSON    legalEntityJSON `json:"-"`
@@ -137,30 +226,38 @@ type LegalEntity struct {
 
 // legalEntityJSON contains the JSON metadata for the struct [LegalEntity]
 type legalEntityJSON struct {
-	ID                      apijson.Field
-	Addresses               apijson.Field
-	BusinessName            apijson.Field
-	CreatedAt               apijson.Field
-	DateFormed              apijson.Field
-	DateOfBirth             apijson.Field
-	DiscardedAt             apijson.Field
-	DoingBusinessAsNames    apijson.Field
-	Email                   apijson.Field
-	FirstName               apijson.Field
-	Identifications         apijson.Field
-	LastName                apijson.Field
-	LegalEntityAssociations apijson.Field
-	LegalEntityType         apijson.Field
-	LegalStructure          apijson.Field
-	LiveMode                apijson.Field
-	Metadata                apijson.Field
-	Object                  apijson.Field
-	PhoneNumbers            apijson.Field
-	RiskRating              apijson.Field
-	UpdatedAt               apijson.Field
-	Website                 apijson.Field
-	raw                     string
-	ExtraFields             map[string]apijson.Field
+	ID                         apijson.Field
+	Addresses                  apijson.Field
+	BankSettings               apijson.Field
+	BusinessName               apijson.Field
+	CitizenshipCountry         apijson.Field
+	CreatedAt                  apijson.Field
+	DateFormed                 apijson.Field
+	DateOfBirth                apijson.Field
+	DiscardedAt                apijson.Field
+	DoingBusinessAsNames       apijson.Field
+	Email                      apijson.Field
+	FirstName                  apijson.Field
+	Identifications            apijson.Field
+	LastName                   apijson.Field
+	LegalEntityAssociations    apijson.Field
+	LegalEntityType            apijson.Field
+	LegalStructure             apijson.Field
+	LiveMode                   apijson.Field
+	Metadata                   apijson.Field
+	MiddleName                 apijson.Field
+	Object                     apijson.Field
+	PhoneNumbers               apijson.Field
+	PoliticallyExposedPerson   apijson.Field
+	PreferredName              apijson.Field
+	Prefix                     apijson.Field
+	RiskRating                 apijson.Field
+	Suffix                     apijson.Field
+	UpdatedAt                  apijson.Field
+	WealthAndEmploymentDetails apijson.Field
+	Website                    apijson.Field
+	raw                        string
+	ExtraFields                map[string]apijson.Field
 }
 
 func (r *LegalEntity) UnmarshalJSON(data []byte) (err error) {
@@ -392,13 +489,293 @@ func (r LegalEntityRiskRating) IsKnown() bool {
 	return false
 }
 
+type WealthAndEmploymentDetails struct {
+	ID string `json:"id,required" format:"uuid"`
+	// The annual income of the individual.
+	AnnualIncome int64     `json:"annual_income,required,nullable"`
+	CreatedAt    time.Time `json:"created_at,required" format:"date-time"`
+	DiscardedAt  time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	// The country in which the employer is located.
+	EmployerCountry string `json:"employer_country,required,nullable"`
+	// The name of the employer.
+	EmployerName string `json:"employer_name,required,nullable"`
+	// The state in which the employer is located.
+	EmployerState string `json:"employer_state,required,nullable"`
+	// The employment status of the individual.
+	EmploymentStatus WealthAndEmploymentDetailsEmploymentStatus `json:"employment_status,required,nullable"`
+	// The country in which the individual's income is earned.
+	IncomeCountry string `json:"income_country,required,nullable"`
+	// The source of the individual's income.
+	IncomeSource WealthAndEmploymentDetailsIncomeSource `json:"income_source,required,nullable"`
+	// The state in which the individual's income is earned.
+	IncomeState string `json:"income_state,required,nullable"`
+	// The industry of the individual.
+	Industry WealthAndEmploymentDetailsIndustry `json:"industry,required,nullable"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
+	// The occupation of the individual.
+	Occupation WealthAndEmploymentDetailsOccupation `json:"occupation,required,nullable"`
+	// The source of the individual's funds.
+	SourceOfFunds WealthAndEmploymentDetailsSourceOfFunds `json:"source_of_funds,required,nullable"`
+	UpdatedAt     time.Time                               `json:"updated_at,required" format:"date-time"`
+	// The source of the individual's wealth.
+	WealthSource WealthAndEmploymentDetailsWealthSource `json:"wealth_source,required,nullable"`
+	JSON         wealthAndEmploymentDetailsJSON         `json:"-"`
+}
+
+// wealthAndEmploymentDetailsJSON contains the JSON metadata for the struct
+// [WealthAndEmploymentDetails]
+type wealthAndEmploymentDetailsJSON struct {
+	ID               apijson.Field
+	AnnualIncome     apijson.Field
+	CreatedAt        apijson.Field
+	DiscardedAt      apijson.Field
+	EmployerCountry  apijson.Field
+	EmployerName     apijson.Field
+	EmployerState    apijson.Field
+	EmploymentStatus apijson.Field
+	IncomeCountry    apijson.Field
+	IncomeSource     apijson.Field
+	IncomeState      apijson.Field
+	Industry         apijson.Field
+	LiveMode         apijson.Field
+	Object           apijson.Field
+	Occupation       apijson.Field
+	SourceOfFunds    apijson.Field
+	UpdatedAt        apijson.Field
+	WealthSource     apijson.Field
+	raw              string
+	ExtraFields      map[string]apijson.Field
+}
+
+func (r *WealthAndEmploymentDetails) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r wealthAndEmploymentDetailsJSON) RawJSON() string {
+	return r.raw
+}
+
+// The employment status of the individual.
+type WealthAndEmploymentDetailsEmploymentStatus string
+
+const (
+	WealthAndEmploymentDetailsEmploymentStatusEmployed     WealthAndEmploymentDetailsEmploymentStatus = "employed"
+	WealthAndEmploymentDetailsEmploymentStatusRetired      WealthAndEmploymentDetailsEmploymentStatus = "retired"
+	WealthAndEmploymentDetailsEmploymentStatusSelfEmployed WealthAndEmploymentDetailsEmploymentStatus = "self_employed"
+	WealthAndEmploymentDetailsEmploymentStatusStudent      WealthAndEmploymentDetailsEmploymentStatus = "student"
+	WealthAndEmploymentDetailsEmploymentStatusUnemployed   WealthAndEmploymentDetailsEmploymentStatus = "unemployed"
+)
+
+func (r WealthAndEmploymentDetailsEmploymentStatus) IsKnown() bool {
+	switch r {
+	case WealthAndEmploymentDetailsEmploymentStatusEmployed, WealthAndEmploymentDetailsEmploymentStatusRetired, WealthAndEmploymentDetailsEmploymentStatusSelfEmployed, WealthAndEmploymentDetailsEmploymentStatusStudent, WealthAndEmploymentDetailsEmploymentStatusUnemployed:
+		return true
+	}
+	return false
+}
+
+// The source of the individual's income.
+type WealthAndEmploymentDetailsIncomeSource string
+
+const (
+	WealthAndEmploymentDetailsIncomeSourceFamilySupport      WealthAndEmploymentDetailsIncomeSource = "family_support"
+	WealthAndEmploymentDetailsIncomeSourceGovernmentBenefits WealthAndEmploymentDetailsIncomeSource = "government_benefits"
+	WealthAndEmploymentDetailsIncomeSourceInheritance        WealthAndEmploymentDetailsIncomeSource = "inheritance"
+	WealthAndEmploymentDetailsIncomeSourceInvestments        WealthAndEmploymentDetailsIncomeSource = "investments"
+	WealthAndEmploymentDetailsIncomeSourceRentalIncome       WealthAndEmploymentDetailsIncomeSource = "rental_income"
+	WealthAndEmploymentDetailsIncomeSourceRetirement         WealthAndEmploymentDetailsIncomeSource = "retirement"
+	WealthAndEmploymentDetailsIncomeSourceSalary             WealthAndEmploymentDetailsIncomeSource = "salary"
+	WealthAndEmploymentDetailsIncomeSourceSelfEmployed       WealthAndEmploymentDetailsIncomeSource = "self_employed"
+)
+
+func (r WealthAndEmploymentDetailsIncomeSource) IsKnown() bool {
+	switch r {
+	case WealthAndEmploymentDetailsIncomeSourceFamilySupport, WealthAndEmploymentDetailsIncomeSourceGovernmentBenefits, WealthAndEmploymentDetailsIncomeSourceInheritance, WealthAndEmploymentDetailsIncomeSourceInvestments, WealthAndEmploymentDetailsIncomeSourceRentalIncome, WealthAndEmploymentDetailsIncomeSourceRetirement, WealthAndEmploymentDetailsIncomeSourceSalary, WealthAndEmploymentDetailsIncomeSourceSelfEmployed:
+		return true
+	}
+	return false
+}
+
+// The industry of the individual.
+type WealthAndEmploymentDetailsIndustry string
+
+const (
+	WealthAndEmploymentDetailsIndustryAccounting            WealthAndEmploymentDetailsIndustry = "accounting"
+	WealthAndEmploymentDetailsIndustryAgriculture           WealthAndEmploymentDetailsIndustry = "agriculture"
+	WealthAndEmploymentDetailsIndustryAutomotive            WealthAndEmploymentDetailsIndustry = "automotive"
+	WealthAndEmploymentDetailsIndustryChemicalManufacturing WealthAndEmploymentDetailsIndustry = "chemical_manufacturing"
+	WealthAndEmploymentDetailsIndustryConstruction          WealthAndEmploymentDetailsIndustry = "construction"
+	WealthAndEmploymentDetailsIndustryEducationalMedical    WealthAndEmploymentDetailsIndustry = "educational_medical"
+	WealthAndEmploymentDetailsIndustryFoodService           WealthAndEmploymentDetailsIndustry = "food_service"
+	WealthAndEmploymentDetailsIndustryFinance               WealthAndEmploymentDetailsIndustry = "finance"
+	WealthAndEmploymentDetailsIndustryGasoline              WealthAndEmploymentDetailsIndustry = "gasoline"
+	WealthAndEmploymentDetailsIndustryHealthStores          WealthAndEmploymentDetailsIndustry = "health_stores"
+	WealthAndEmploymentDetailsIndustryLaundry               WealthAndEmploymentDetailsIndustry = "laundry"
+	WealthAndEmploymentDetailsIndustryMaintenance           WealthAndEmploymentDetailsIndustry = "maintenance"
+	WealthAndEmploymentDetailsIndustryManufacturing         WealthAndEmploymentDetailsIndustry = "manufacturing"
+	WealthAndEmploymentDetailsIndustryMerchantWholesale     WealthAndEmploymentDetailsIndustry = "merchant_wholesale"
+	WealthAndEmploymentDetailsIndustryMining                WealthAndEmploymentDetailsIndustry = "mining"
+	WealthAndEmploymentDetailsIndustryPerformingArts        WealthAndEmploymentDetailsIndustry = "performing_arts"
+	WealthAndEmploymentDetailsIndustryProfessionalNonLegal  WealthAndEmploymentDetailsIndustry = "professional_non_legal"
+	WealthAndEmploymentDetailsIndustryPublicAdministration  WealthAndEmploymentDetailsIndustry = "public_administration"
+	WealthAndEmploymentDetailsIndustryPublishing            WealthAndEmploymentDetailsIndustry = "publishing"
+	WealthAndEmploymentDetailsIndustryRealEstate            WealthAndEmploymentDetailsIndustry = "real_estate"
+	WealthAndEmploymentDetailsIndustryRecreationGambling    WealthAndEmploymentDetailsIndustry = "recreation_gambling"
+	WealthAndEmploymentDetailsIndustryReligiousCharity      WealthAndEmploymentDetailsIndustry = "religious_charity"
+	WealthAndEmploymentDetailsIndustryRentalServices        WealthAndEmploymentDetailsIndustry = "rental_services"
+	WealthAndEmploymentDetailsIndustryRetailClothing        WealthAndEmploymentDetailsIndustry = "retail_clothing"
+	WealthAndEmploymentDetailsIndustryRetailElectronics     WealthAndEmploymentDetailsIndustry = "retail_electronics"
+	WealthAndEmploymentDetailsIndustryRetailFood            WealthAndEmploymentDetailsIndustry = "retail_food"
+	WealthAndEmploymentDetailsIndustryRetailFurnishing      WealthAndEmploymentDetailsIndustry = "retail_furnishing"
+	WealthAndEmploymentDetailsIndustryRetailHome            WealthAndEmploymentDetailsIndustry = "retail_home"
+	WealthAndEmploymentDetailsIndustryRetailNonStore        WealthAndEmploymentDetailsIndustry = "retail_non_store"
+	WealthAndEmploymentDetailsIndustryRetailSporting        WealthAndEmploymentDetailsIndustry = "retail_sporting"
+	WealthAndEmploymentDetailsIndustryTransportation        WealthAndEmploymentDetailsIndustry = "transportation"
+	WealthAndEmploymentDetailsIndustryTravel                WealthAndEmploymentDetailsIndustry = "travel"
+	WealthAndEmploymentDetailsIndustryUtilities             WealthAndEmploymentDetailsIndustry = "utilities"
+)
+
+func (r WealthAndEmploymentDetailsIndustry) IsKnown() bool {
+	switch r {
+	case WealthAndEmploymentDetailsIndustryAccounting, WealthAndEmploymentDetailsIndustryAgriculture, WealthAndEmploymentDetailsIndustryAutomotive, WealthAndEmploymentDetailsIndustryChemicalManufacturing, WealthAndEmploymentDetailsIndustryConstruction, WealthAndEmploymentDetailsIndustryEducationalMedical, WealthAndEmploymentDetailsIndustryFoodService, WealthAndEmploymentDetailsIndustryFinance, WealthAndEmploymentDetailsIndustryGasoline, WealthAndEmploymentDetailsIndustryHealthStores, WealthAndEmploymentDetailsIndustryLaundry, WealthAndEmploymentDetailsIndustryMaintenance, WealthAndEmploymentDetailsIndustryManufacturing, WealthAndEmploymentDetailsIndustryMerchantWholesale, WealthAndEmploymentDetailsIndustryMining, WealthAndEmploymentDetailsIndustryPerformingArts, WealthAndEmploymentDetailsIndustryProfessionalNonLegal, WealthAndEmploymentDetailsIndustryPublicAdministration, WealthAndEmploymentDetailsIndustryPublishing, WealthAndEmploymentDetailsIndustryRealEstate, WealthAndEmploymentDetailsIndustryRecreationGambling, WealthAndEmploymentDetailsIndustryReligiousCharity, WealthAndEmploymentDetailsIndustryRentalServices, WealthAndEmploymentDetailsIndustryRetailClothing, WealthAndEmploymentDetailsIndustryRetailElectronics, WealthAndEmploymentDetailsIndustryRetailFood, WealthAndEmploymentDetailsIndustryRetailFurnishing, WealthAndEmploymentDetailsIndustryRetailHome, WealthAndEmploymentDetailsIndustryRetailNonStore, WealthAndEmploymentDetailsIndustryRetailSporting, WealthAndEmploymentDetailsIndustryTransportation, WealthAndEmploymentDetailsIndustryTravel, WealthAndEmploymentDetailsIndustryUtilities:
+		return true
+	}
+	return false
+}
+
+// The occupation of the individual.
+type WealthAndEmploymentDetailsOccupation string
+
+const (
+	WealthAndEmploymentDetailsOccupationConsulting         WealthAndEmploymentDetailsOccupation = "consulting"
+	WealthAndEmploymentDetailsOccupationExecutive          WealthAndEmploymentDetailsOccupation = "executive"
+	WealthAndEmploymentDetailsOccupationFinanceAccounting  WealthAndEmploymentDetailsOccupation = "finance_accounting"
+	WealthAndEmploymentDetailsOccupationFoodServices       WealthAndEmploymentDetailsOccupation = "food_services"
+	WealthAndEmploymentDetailsOccupationGovernment         WealthAndEmploymentDetailsOccupation = "government"
+	WealthAndEmploymentDetailsOccupationHealthcare         WealthAndEmploymentDetailsOccupation = "healthcare"
+	WealthAndEmploymentDetailsOccupationLegalServices      WealthAndEmploymentDetailsOccupation = "legal_services"
+	WealthAndEmploymentDetailsOccupationManufacturing      WealthAndEmploymentDetailsOccupation = "manufacturing"
+	WealthAndEmploymentDetailsOccupationOther              WealthAndEmploymentDetailsOccupation = "other"
+	WealthAndEmploymentDetailsOccupationSales              WealthAndEmploymentDetailsOccupation = "sales"
+	WealthAndEmploymentDetailsOccupationScienceEngineering WealthAndEmploymentDetailsOccupation = "science_engineering"
+	WealthAndEmploymentDetailsOccupationTechnology         WealthAndEmploymentDetailsOccupation = "technology"
+)
+
+func (r WealthAndEmploymentDetailsOccupation) IsKnown() bool {
+	switch r {
+	case WealthAndEmploymentDetailsOccupationConsulting, WealthAndEmploymentDetailsOccupationExecutive, WealthAndEmploymentDetailsOccupationFinanceAccounting, WealthAndEmploymentDetailsOccupationFoodServices, WealthAndEmploymentDetailsOccupationGovernment, WealthAndEmploymentDetailsOccupationHealthcare, WealthAndEmploymentDetailsOccupationLegalServices, WealthAndEmploymentDetailsOccupationManufacturing, WealthAndEmploymentDetailsOccupationOther, WealthAndEmploymentDetailsOccupationSales, WealthAndEmploymentDetailsOccupationScienceEngineering, WealthAndEmploymentDetailsOccupationTechnology:
+		return true
+	}
+	return false
+}
+
+// The source of the individual's funds.
+type WealthAndEmploymentDetailsSourceOfFunds string
+
+const (
+	WealthAndEmploymentDetailsSourceOfFundsAlimony            WealthAndEmploymentDetailsSourceOfFunds = "alimony"
+	WealthAndEmploymentDetailsSourceOfFundsAnnuity            WealthAndEmploymentDetailsSourceOfFunds = "annuity"
+	WealthAndEmploymentDetailsSourceOfFundsBusinessOwner      WealthAndEmploymentDetailsSourceOfFunds = "business_owner"
+	WealthAndEmploymentDetailsSourceOfFundsGeneralEmployee    WealthAndEmploymentDetailsSourceOfFunds = "general_employee"
+	WealthAndEmploymentDetailsSourceOfFundsGovernmentBenefits WealthAndEmploymentDetailsSourceOfFunds = "government_benefits"
+	WealthAndEmploymentDetailsSourceOfFundsHomemaker          WealthAndEmploymentDetailsSourceOfFunds = "homemaker"
+	WealthAndEmploymentDetailsSourceOfFundsInheritanceGift    WealthAndEmploymentDetailsSourceOfFunds = "inheritance_gift"
+	WealthAndEmploymentDetailsSourceOfFundsInvestment         WealthAndEmploymentDetailsSourceOfFunds = "investment"
+	WealthAndEmploymentDetailsSourceOfFundsLegalSettlement    WealthAndEmploymentDetailsSourceOfFunds = "legal_settlement"
+	WealthAndEmploymentDetailsSourceOfFundsLottery            WealthAndEmploymentDetailsSourceOfFunds = "lottery"
+	WealthAndEmploymentDetailsSourceOfFundsRealEstate         WealthAndEmploymentDetailsSourceOfFunds = "real_estate"
+	WealthAndEmploymentDetailsSourceOfFundsRetired            WealthAndEmploymentDetailsSourceOfFunds = "retired"
+	WealthAndEmploymentDetailsSourceOfFundsRetirement         WealthAndEmploymentDetailsSourceOfFunds = "retirement"
+	WealthAndEmploymentDetailsSourceOfFundsSalary             WealthAndEmploymentDetailsSourceOfFunds = "salary"
+	WealthAndEmploymentDetailsSourceOfFundsSelfEmployed       WealthAndEmploymentDetailsSourceOfFunds = "self_employed"
+	WealthAndEmploymentDetailsSourceOfFundsSeniorExecutive    WealthAndEmploymentDetailsSourceOfFunds = "senior_executive"
+	WealthAndEmploymentDetailsSourceOfFundsTrustIncome        WealthAndEmploymentDetailsSourceOfFunds = "trust_income"
+)
+
+func (r WealthAndEmploymentDetailsSourceOfFunds) IsKnown() bool {
+	switch r {
+	case WealthAndEmploymentDetailsSourceOfFundsAlimony, WealthAndEmploymentDetailsSourceOfFundsAnnuity, WealthAndEmploymentDetailsSourceOfFundsBusinessOwner, WealthAndEmploymentDetailsSourceOfFundsGeneralEmployee, WealthAndEmploymentDetailsSourceOfFundsGovernmentBenefits, WealthAndEmploymentDetailsSourceOfFundsHomemaker, WealthAndEmploymentDetailsSourceOfFundsInheritanceGift, WealthAndEmploymentDetailsSourceOfFundsInvestment, WealthAndEmploymentDetailsSourceOfFundsLegalSettlement, WealthAndEmploymentDetailsSourceOfFundsLottery, WealthAndEmploymentDetailsSourceOfFundsRealEstate, WealthAndEmploymentDetailsSourceOfFundsRetired, WealthAndEmploymentDetailsSourceOfFundsRetirement, WealthAndEmploymentDetailsSourceOfFundsSalary, WealthAndEmploymentDetailsSourceOfFundsSelfEmployed, WealthAndEmploymentDetailsSourceOfFundsSeniorExecutive, WealthAndEmploymentDetailsSourceOfFundsTrustIncome:
+		return true
+	}
+	return false
+}
+
+// The source of the individual's wealth.
+type WealthAndEmploymentDetailsWealthSource string
+
+const (
+	WealthAndEmploymentDetailsWealthSourceBusinessSale       WealthAndEmploymentDetailsWealthSource = "business_sale"
+	WealthAndEmploymentDetailsWealthSourceFamilySupport      WealthAndEmploymentDetailsWealthSource = "family_support"
+	WealthAndEmploymentDetailsWealthSourceGovernmentBenefits WealthAndEmploymentDetailsWealthSource = "government_benefits"
+	WealthAndEmploymentDetailsWealthSourceInheritance        WealthAndEmploymentDetailsWealthSource = "inheritance"
+	WealthAndEmploymentDetailsWealthSourceInvestments        WealthAndEmploymentDetailsWealthSource = "investments"
+	WealthAndEmploymentDetailsWealthSourceOther              WealthAndEmploymentDetailsWealthSource = "other"
+	WealthAndEmploymentDetailsWealthSourceRentalIncome       WealthAndEmploymentDetailsWealthSource = "rental_income"
+	WealthAndEmploymentDetailsWealthSourceRetirement         WealthAndEmploymentDetailsWealthSource = "retirement"
+	WealthAndEmploymentDetailsWealthSourceSalary             WealthAndEmploymentDetailsWealthSource = "salary"
+	WealthAndEmploymentDetailsWealthSourceSelfEmployed       WealthAndEmploymentDetailsWealthSource = "self_employed"
+)
+
+func (r WealthAndEmploymentDetailsWealthSource) IsKnown() bool {
+	switch r {
+	case WealthAndEmploymentDetailsWealthSourceBusinessSale, WealthAndEmploymentDetailsWealthSourceFamilySupport, WealthAndEmploymentDetailsWealthSourceGovernmentBenefits, WealthAndEmploymentDetailsWealthSourceInheritance, WealthAndEmploymentDetailsWealthSourceInvestments, WealthAndEmploymentDetailsWealthSourceOther, WealthAndEmploymentDetailsWealthSourceRentalIncome, WealthAndEmploymentDetailsWealthSourceRetirement, WealthAndEmploymentDetailsWealthSourceSalary, WealthAndEmploymentDetailsWealthSourceSelfEmployed:
+		return true
+	}
+	return false
+}
+
+type WealthAndEmploymentDetailsParam struct {
+	ID param.Field[string] `json:"id,required" format:"uuid"`
+	// The annual income of the individual.
+	AnnualIncome param.Field[int64]     `json:"annual_income,required"`
+	CreatedAt    param.Field[time.Time] `json:"created_at,required" format:"date-time"`
+	DiscardedAt  param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
+	// The country in which the employer is located.
+	EmployerCountry param.Field[string] `json:"employer_country,required"`
+	// The name of the employer.
+	EmployerName param.Field[string] `json:"employer_name,required"`
+	// The state in which the employer is located.
+	EmployerState param.Field[string] `json:"employer_state,required"`
+	// The employment status of the individual.
+	EmploymentStatus param.Field[WealthAndEmploymentDetailsEmploymentStatus] `json:"employment_status,required"`
+	// The country in which the individual's income is earned.
+	IncomeCountry param.Field[string] `json:"income_country,required"`
+	// The source of the individual's income.
+	IncomeSource param.Field[WealthAndEmploymentDetailsIncomeSource] `json:"income_source,required"`
+	// The state in which the individual's income is earned.
+	IncomeState param.Field[string] `json:"income_state,required"`
+	// The industry of the individual.
+	Industry param.Field[WealthAndEmploymentDetailsIndustry] `json:"industry,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode param.Field[bool]   `json:"live_mode,required"`
+	Object   param.Field[string] `json:"object,required"`
+	// The occupation of the individual.
+	Occupation param.Field[WealthAndEmploymentDetailsOccupation] `json:"occupation,required"`
+	// The source of the individual's funds.
+	SourceOfFunds param.Field[WealthAndEmploymentDetailsSourceOfFunds] `json:"source_of_funds,required"`
+	UpdatedAt     param.Field[time.Time]                               `json:"updated_at,required" format:"date-time"`
+	// The source of the individual's wealth.
+	WealthSource param.Field[WealthAndEmploymentDetailsWealthSource] `json:"wealth_source,required"`
+}
+
+func (r WealthAndEmploymentDetailsParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type LegalEntityNewParams struct {
 	// The type of legal entity.
 	LegalEntityType param.Field[LegalEntityNewParamsLegalEntityType] `json:"legal_entity_type,required"`
 	// A list of addresses for the entity.
-	Addresses param.Field[[]LegalEntityNewParamsAddress] `json:"addresses"`
+	Addresses    param.Field[[]LegalEntityNewParamsAddress] `json:"addresses"`
+	BankSettings param.Field[BankSettingsParam]             `json:"bank_settings"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
+	// The country of citizenship for an individual.
+	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -418,10 +795,21 @@ type LegalEntityNewParams struct {
 	LegalStructure param.Field[LegalEntityNewParamsLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata     param.Field[map[string]string]                 `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// An individual's middle name.
+	MiddleName   param.Field[string]                            `json:"middle_name"`
 	PhoneNumbers param.Field[[]LegalEntityNewParamsPhoneNumber] `json:"phone_numbers"`
+	// Whether the individual is a politically exposed person.
+	PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
+	// An individual's preferred name.
+	PreferredName param.Field[string] `json:"preferred_name"`
+	// An individual's prefix.
+	Prefix param.Field[string] `json:"prefix"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[LegalEntityNewParamsRiskRating] `json:"risk_rating"`
+	// An individual's suffix.
+	Suffix                     param.Field[string]                          `json:"suffix"`
+	WealthAndEmploymentDetails param.Field[WealthAndEmploymentDetailsParam] `json:"wealth_and_employment_details"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
@@ -567,9 +955,12 @@ func (r LegalEntityNewParamsLegalEntityAssociationsRelationshipType) IsKnown() b
 // The child legal entity.
 type LegalEntityNewParamsLegalEntityAssociationsChildLegalEntity struct {
 	// A list of addresses for the entity.
-	Addresses param.Field[[]LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityAddress] `json:"addresses"`
+	Addresses    param.Field[[]LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityAddress] `json:"addresses"`
+	BankSettings param.Field[BankSettingsParam]                                                    `json:"bank_settings"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
+	// The country of citizenship for an individual.
+	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -589,10 +980,21 @@ type LegalEntityNewParamsLegalEntityAssociationsChildLegalEntity struct {
 	LegalStructure param.Field[LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata     param.Field[map[string]string]                                                        `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// An individual's middle name.
+	MiddleName   param.Field[string]                                                                   `json:"middle_name"`
 	PhoneNumbers param.Field[[]LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityPhoneNumber] `json:"phone_numbers"`
+	// Whether the individual is a politically exposed person.
+	PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
+	// An individual's preferred name.
+	PreferredName param.Field[string] `json:"preferred_name"`
+	// An individual's prefix.
+	Prefix param.Field[string] `json:"prefix"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityRiskRating] `json:"risk_rating"`
+	// An individual's suffix.
+	Suffix                     param.Field[string]                          `json:"suffix"`
+	WealthAndEmploymentDetails param.Field[WealthAndEmploymentDetailsParam] `json:"wealth_and_employment_details"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
@@ -796,8 +1198,13 @@ func (r LegalEntityNewParamsRiskRating) IsKnown() bool {
 }
 
 type LegalEntityUpdateParams struct {
+	// A list of addresses for the entity.
+	Addresses    param.Field[[]LegalEntityUpdateParamsAddress] `json:"addresses"`
+	BankSettings param.Field[BankSettingsParam]                `json:"bank_settings"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
+	// The country of citizenship for an individual.
+	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -807,22 +1214,121 @@ type LegalEntityUpdateParams struct {
 	Email param.Field[string] `json:"email"`
 	// An individual's first name.
 	FirstName param.Field[string] `json:"first_name"`
+	// A list of identifications for the legal entity.
+	Identifications param.Field[[]LegalEntityUpdateParamsIdentification] `json:"identifications"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
 	// The business's legal structure.
 	LegalStructure param.Field[LegalEntityUpdateParamsLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata     param.Field[map[string]string]                    `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// An individual's middle name.
+	MiddleName   param.Field[string]                               `json:"middle_name"`
 	PhoneNumbers param.Field[[]LegalEntityUpdateParamsPhoneNumber] `json:"phone_numbers"`
+	// Whether the individual is a politically exposed person.
+	PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
+	// An individual's preferred name.
+	PreferredName param.Field[string] `json:"preferred_name"`
+	// An individual's prefix.
+	Prefix param.Field[string] `json:"prefix"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[LegalEntityUpdateParamsRiskRating] `json:"risk_rating"`
+	// An individual's suffix.
+	Suffix                     param.Field[string]                          `json:"suffix"`
+	WealthAndEmploymentDetails param.Field[WealthAndEmploymentDetailsParam] `json:"wealth_and_employment_details"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
 
 func (r LegalEntityUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type LegalEntityUpdateParamsAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country param.Field[string] `json:"country,required"`
+	Line1   param.Field[string] `json:"line1,required"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality,required"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code,required"`
+	// Region or State.
+	Region param.Field[string] `json:"region,required"`
+	// The types of this address.
+	AddressTypes param.Field[[]LegalEntityUpdateParamsAddressesAddressType] `json:"address_types"`
+	Line2        param.Field[string]                                        `json:"line2"`
+}
+
+func (r LegalEntityUpdateParamsAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type LegalEntityUpdateParamsAddressesAddressType string
+
+const (
+	LegalEntityUpdateParamsAddressesAddressTypeBusiness    LegalEntityUpdateParamsAddressesAddressType = "business"
+	LegalEntityUpdateParamsAddressesAddressTypeMailing     LegalEntityUpdateParamsAddressesAddressType = "mailing"
+	LegalEntityUpdateParamsAddressesAddressTypeOther       LegalEntityUpdateParamsAddressesAddressType = "other"
+	LegalEntityUpdateParamsAddressesAddressTypePoBox       LegalEntityUpdateParamsAddressesAddressType = "po_box"
+	LegalEntityUpdateParamsAddressesAddressTypeResidential LegalEntityUpdateParamsAddressesAddressType = "residential"
+)
+
+func (r LegalEntityUpdateParamsAddressesAddressType) IsKnown() bool {
+	switch r {
+	case LegalEntityUpdateParamsAddressesAddressTypeBusiness, LegalEntityUpdateParamsAddressesAddressTypeMailing, LegalEntityUpdateParamsAddressesAddressTypeOther, LegalEntityUpdateParamsAddressesAddressTypePoBox, LegalEntityUpdateParamsAddressesAddressTypeResidential:
+		return true
+	}
+	return false
+}
+
+type LegalEntityUpdateParamsIdentification struct {
+	// The ID number of identification document.
+	IDNumber param.Field[string] `json:"id_number,required"`
+	// The type of ID number.
+	IDType param.Field[LegalEntityUpdateParamsIdentificationsIDType] `json:"id_type,required"`
+	// The ISO 3166-1 alpha-2 country code of the country that issued the
+	// identification
+	IssuingCountry param.Field[string] `json:"issuing_country"`
+}
+
+func (r LegalEntityUpdateParamsIdentification) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The type of ID number.
+type LegalEntityUpdateParamsIdentificationsIDType string
+
+const (
+	LegalEntityUpdateParamsIdentificationsIDTypeArCuil    LegalEntityUpdateParamsIdentificationsIDType = "ar_cuil"
+	LegalEntityUpdateParamsIdentificationsIDTypeArCuit    LegalEntityUpdateParamsIdentificationsIDType = "ar_cuit"
+	LegalEntityUpdateParamsIdentificationsIDTypeBrCnpj    LegalEntityUpdateParamsIdentificationsIDType = "br_cnpj"
+	LegalEntityUpdateParamsIdentificationsIDTypeBrCpf     LegalEntityUpdateParamsIdentificationsIDType = "br_cpf"
+	LegalEntityUpdateParamsIdentificationsIDTypeClRun     LegalEntityUpdateParamsIdentificationsIDType = "cl_run"
+	LegalEntityUpdateParamsIdentificationsIDTypeClRut     LegalEntityUpdateParamsIdentificationsIDType = "cl_rut"
+	LegalEntityUpdateParamsIdentificationsIDTypeCoCedulas LegalEntityUpdateParamsIdentificationsIDType = "co_cedulas"
+	LegalEntityUpdateParamsIdentificationsIDTypeCoNit     LegalEntityUpdateParamsIdentificationsIDType = "co_nit"
+	LegalEntityUpdateParamsIdentificationsIDTypeHnID      LegalEntityUpdateParamsIdentificationsIDType = "hn_id"
+	LegalEntityUpdateParamsIdentificationsIDTypeHnRtn     LegalEntityUpdateParamsIdentificationsIDType = "hn_rtn"
+	LegalEntityUpdateParamsIdentificationsIDTypeInLei     LegalEntityUpdateParamsIdentificationsIDType = "in_lei"
+	LegalEntityUpdateParamsIdentificationsIDTypeKrBrn     LegalEntityUpdateParamsIdentificationsIDType = "kr_brn"
+	LegalEntityUpdateParamsIdentificationsIDTypeKrCrn     LegalEntityUpdateParamsIdentificationsIDType = "kr_crn"
+	LegalEntityUpdateParamsIdentificationsIDTypeKrRrn     LegalEntityUpdateParamsIdentificationsIDType = "kr_rrn"
+	LegalEntityUpdateParamsIdentificationsIDTypePassport  LegalEntityUpdateParamsIdentificationsIDType = "passport"
+	LegalEntityUpdateParamsIdentificationsIDTypeSaTin     LegalEntityUpdateParamsIdentificationsIDType = "sa_tin"
+	LegalEntityUpdateParamsIdentificationsIDTypeSaVat     LegalEntityUpdateParamsIdentificationsIDType = "sa_vat"
+	LegalEntityUpdateParamsIdentificationsIDTypeUsEin     LegalEntityUpdateParamsIdentificationsIDType = "us_ein"
+	LegalEntityUpdateParamsIdentificationsIDTypeUsItin    LegalEntityUpdateParamsIdentificationsIDType = "us_itin"
+	LegalEntityUpdateParamsIdentificationsIDTypeUsSsn     LegalEntityUpdateParamsIdentificationsIDType = "us_ssn"
+	LegalEntityUpdateParamsIdentificationsIDTypeVnTin     LegalEntityUpdateParamsIdentificationsIDType = "vn_tin"
+)
+
+func (r LegalEntityUpdateParamsIdentificationsIDType) IsKnown() bool {
+	switch r {
+	case LegalEntityUpdateParamsIdentificationsIDTypeArCuil, LegalEntityUpdateParamsIdentificationsIDTypeArCuit, LegalEntityUpdateParamsIdentificationsIDTypeBrCnpj, LegalEntityUpdateParamsIdentificationsIDTypeBrCpf, LegalEntityUpdateParamsIdentificationsIDTypeClRun, LegalEntityUpdateParamsIdentificationsIDTypeClRut, LegalEntityUpdateParamsIdentificationsIDTypeCoCedulas, LegalEntityUpdateParamsIdentificationsIDTypeCoNit, LegalEntityUpdateParamsIdentificationsIDTypeHnID, LegalEntityUpdateParamsIdentificationsIDTypeHnRtn, LegalEntityUpdateParamsIdentificationsIDTypeInLei, LegalEntityUpdateParamsIdentificationsIDTypeKrBrn, LegalEntityUpdateParamsIdentificationsIDTypeKrCrn, LegalEntityUpdateParamsIdentificationsIDTypeKrRrn, LegalEntityUpdateParamsIdentificationsIDTypePassport, LegalEntityUpdateParamsIdentificationsIDTypeSaTin, LegalEntityUpdateParamsIdentificationsIDTypeSaVat, LegalEntityUpdateParamsIdentificationsIDTypeUsEin, LegalEntityUpdateParamsIdentificationsIDTypeUsItin, LegalEntityUpdateParamsIdentificationsIDTypeUsSsn, LegalEntityUpdateParamsIdentificationsIDTypeVnTin:
+		return true
+	}
+	return false
 }
 
 // The business's legal structure.
