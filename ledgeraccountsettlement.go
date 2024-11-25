@@ -172,6 +172,7 @@ type LedgerAccountSettlementStatus string
 const (
 	LedgerAccountSettlementStatusArchived   LedgerAccountSettlementStatus = "archived"
 	LedgerAccountSettlementStatusArchiving  LedgerAccountSettlementStatus = "archiving"
+	LedgerAccountSettlementStatusDrafting   LedgerAccountSettlementStatus = "drafting"
 	LedgerAccountSettlementStatusPending    LedgerAccountSettlementStatus = "pending"
 	LedgerAccountSettlementStatusPosted     LedgerAccountSettlementStatus = "posted"
 	LedgerAccountSettlementStatusProcessing LedgerAccountSettlementStatus = "processing"
@@ -179,7 +180,7 @@ const (
 
 func (r LedgerAccountSettlementStatus) IsKnown() bool {
 	switch r {
-	case LedgerAccountSettlementStatusArchived, LedgerAccountSettlementStatusArchiving, LedgerAccountSettlementStatusPending, LedgerAccountSettlementStatusPosted, LedgerAccountSettlementStatusProcessing:
+	case LedgerAccountSettlementStatusArchived, LedgerAccountSettlementStatusArchiving, LedgerAccountSettlementStatusDrafting, LedgerAccountSettlementStatusPending, LedgerAccountSettlementStatusPosted, LedgerAccountSettlementStatusProcessing:
 		return true
 	}
 	return false

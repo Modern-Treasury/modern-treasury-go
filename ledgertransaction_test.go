@@ -49,46 +49,6 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 				"foo": int64(0),
 			}),
 			ShowResultingLedgerAccountBalances: moderntreasury.F(true),
-		}, {
-			Amount:          moderntreasury.F(int64(0)),
-			Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
-			LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			AvailableBalanceAmount: moderntreasury.F(map[string]int64{
-				"foo": int64(0),
-			}),
-			LockVersion: moderntreasury.F(int64(0)),
-			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
-				"foo":    "bar",
-				"modern": "treasury",
-			}),
-			PendingBalanceAmount: moderntreasury.F(map[string]int64{
-				"foo": int64(0),
-			}),
-			PostedBalanceAmount: moderntreasury.F(map[string]int64{
-				"foo": int64(0),
-			}),
-			ShowResultingLedgerAccountBalances: moderntreasury.F(true),
-		}, {
-			Amount:          moderntreasury.F(int64(0)),
-			Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
-			LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			AvailableBalanceAmount: moderntreasury.F(map[string]int64{
-				"foo": int64(0),
-			}),
-			LockVersion: moderntreasury.F(int64(0)),
-			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
-				"foo":    "bar",
-				"modern": "treasury",
-			}),
-			PendingBalanceAmount: moderntreasury.F(map[string]int64{
-				"foo": int64(0),
-			}),
-			PostedBalanceAmount: moderntreasury.F(map[string]int64{
-				"foo": int64(0),
-			}),
-			ShowResultingLedgerAccountBalances: moderntreasury.F(true),
 		}}),
 		Description:    moderntreasury.F("description"),
 		EffectiveAt:    moderntreasury.F(time.Now()),
@@ -174,46 +134,6 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 					"foo": int64(0),
 				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
-			}, {
-				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
-				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				LockVersion: moderntreasury.F(int64(0)),
-				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
-					"foo":    "bar",
-					"modern": "treasury",
-				}),
-				PendingBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				PostedBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
-			}, {
-				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
-				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				LockVersion: moderntreasury.F(int64(0)),
-				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
-					"foo":    "bar",
-					"modern": "treasury",
-				}),
-				PendingBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				PostedBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
 			}}),
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionUpdateParamsLedgerableTypeExpectedPayment),
@@ -248,7 +168,7 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerTransactions.List(context.TODO(), moderntreasury.LedgerTransactionListParams{
-		ID:          moderntreasury.F([]string{"string", "string", "string"}),
+		ID:          moderntreasury.F([]string{"string"}),
 		AfterCursor: moderntreasury.F("after_cursor"),
 		EffectiveAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),

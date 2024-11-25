@@ -35,7 +35,7 @@ func TestLedgerAccountCategoryNewWithOptionalParams(t *testing.T) {
 		NormalBalance:            moderntreasury.F(shared.TransactionDirectionCredit),
 		CurrencyExponent:         moderntreasury.F(int64(0)),
 		Description:              moderntreasury.F("description"),
-		LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e", "182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
+		LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
@@ -132,7 +132,7 @@ func TestLedgerAccountCategoryListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountCategories.List(context.TODO(), moderntreasury.LedgerAccountCategoryListParams{
-		ID:          moderntreasury.F([]string{"string", "string", "string"}),
+		ID:          moderntreasury.F([]string{"string"}),
 		AfterCursor: moderntreasury.F("after_cursor"),
 		Balances: moderntreasury.F(moderntreasury.LedgerAccountCategoryListParamsBalances{
 			EffectiveAt: moderntreasury.F(time.Now()),

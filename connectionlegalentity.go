@@ -171,9 +171,12 @@ func (r ConnectionLegalEntityNewParams) MarshalJSON() (data []byte, err error) {
 // The legal entity.
 type ConnectionLegalEntityNewParamsLegalEntity struct {
 	// A list of addresses for the entity.
-	Addresses param.Field[[]ConnectionLegalEntityNewParamsLegalEntityAddress] `json:"addresses"`
+	Addresses    param.Field[[]ConnectionLegalEntityNewParamsLegalEntityAddress] `json:"addresses"`
+	BankSettings param.Field[BankSettingsParam]                                  `json:"bank_settings"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
+	// The country of citizenship for an individual.
+	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -195,10 +198,21 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	LegalStructure param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata     param.Field[map[string]string]                                      `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// An individual's middle name.
+	MiddleName   param.Field[string]                                                 `json:"middle_name"`
 	PhoneNumbers param.Field[[]ConnectionLegalEntityNewParamsLegalEntityPhoneNumber] `json:"phone_numbers"`
+	// Whether the individual is a politically exposed person.
+	PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
+	// An individual's preferred name.
+	PreferredName param.Field[string] `json:"preferred_name"`
+	// An individual's prefix.
+	Prefix param.Field[string] `json:"prefix"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[ConnectionLegalEntityNewParamsLegalEntityRiskRating] `json:"risk_rating"`
+	// An individual's suffix.
+	Suffix                     param.Field[string]                          `json:"suffix"`
+	WealthAndEmploymentDetails param.Field[WealthAndEmploymentDetailsParam] `json:"wealth_and_employment_details"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
@@ -328,9 +342,12 @@ func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelation
 // The child legal entity.
 type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity struct {
 	// A list of addresses for the entity.
-	Addresses param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress] `json:"addresses"`
+	Addresses    param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress] `json:"addresses"`
+	BankSettings param.Field[BankSettingsParam]                                                                         `json:"bank_settings"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
+	// The country of citizenship for an individual.
+	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -350,10 +367,21 @@ type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalE
 	LegalStructure param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata     param.Field[map[string]string]                                                                             `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// An individual's middle name.
+	MiddleName   param.Field[string]                                                                                        `json:"middle_name"`
 	PhoneNumbers param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber] `json:"phone_numbers"`
+	// Whether the individual is a politically exposed person.
+	PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
+	// An individual's preferred name.
+	PreferredName param.Field[string] `json:"preferred_name"`
+	// An individual's prefix.
+	Prefix param.Field[string] `json:"prefix"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating] `json:"risk_rating"`
+	// An individual's suffix.
+	Suffix                     param.Field[string]                          `json:"suffix"`
+	WealthAndEmploymentDetails param.Field[WealthAndEmploymentDetailsParam] `json:"wealth_and_employment_details"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }

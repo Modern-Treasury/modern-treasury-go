@@ -39,16 +39,6 @@ func TestInternalAccountBalanceReportNew(t *testing.T) {
 				BalanceType:    moderntreasury.F(moderntreasury.BalanceReportNewParamsBalancesBalanceTypeClosingAvailable),
 				VendorCode:     moderntreasury.F("vendor_code"),
 				VendorCodeType: moderntreasury.F("vendor_code_type"),
-			}, {
-				Amount:         moderntreasury.F(int64(0)),
-				BalanceType:    moderntreasury.F(moderntreasury.BalanceReportNewParamsBalancesBalanceTypeClosingAvailable),
-				VendorCode:     moderntreasury.F("vendor_code"),
-				VendorCodeType: moderntreasury.F("vendor_code_type"),
-			}, {
-				Amount:         moderntreasury.F(int64(0)),
-				BalanceType:    moderntreasury.F(moderntreasury.BalanceReportNewParamsBalancesBalanceTypeClosingAvailable),
-				VendorCode:     moderntreasury.F("vendor_code"),
-				VendorCodeType: moderntreasury.F("vendor_code_type"),
 			}}),
 		},
 	)

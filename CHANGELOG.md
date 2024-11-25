@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.20.4 (2024-11-25)
+
+Full Changelog: [v2.20.3...v2.20.4](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.3...v2.20.4)
+
+### Chores
+
+* **api:** additional fields for requests to get BalanceReports and create LegalEntities ([#292](https://github.com/Modern-Treasury/modern-treasury-go/issues/292)) ([579f935](https://github.com/Modern-Treasury/modern-treasury-go/commit/579f935cba1451233b1112e266e0ce6f47b83e8e))
+* sync openapi spec ([#293](https://github.com/Modern-Treasury/modern-treasury-go/issues/293)) ([7b6557d](https://github.com/Modern-Treasury/modern-treasury-go/commit/7b6557d35f239a3faf18f98d7ecadaef1e489615))
+* **tests:** limit array example length ([#290](https://github.com/Modern-Treasury/modern-treasury-go/issues/290)) ([eb2208c](https://github.com/Modern-Treasury/modern-treasury-go/commit/eb2208cd5de0f0463da3e84f54f6325141096a9e))
+
 ## 2.20.3 (2024-11-11)
 
 Full Changelog: [v2.20.2...v2.20.3](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.2...v2.20.3)

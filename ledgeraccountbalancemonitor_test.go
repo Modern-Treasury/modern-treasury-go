@@ -120,7 +120,7 @@ func TestLedgerAccountBalanceMonitorListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountBalanceMonitors.List(context.TODO(), moderntreasury.LedgerAccountBalanceMonitorListParams{
-		ID:              moderntreasury.F([]string{"string", "string", "string"}),
+		ID:              moderntreasury.F([]string{"string"}),
 		AfterCursor:     moderntreasury.F("after_cursor"),
 		LedgerAccountID: moderntreasury.F("ledger_account_id"),
 		Metadata: moderntreasury.F(map[string]string{

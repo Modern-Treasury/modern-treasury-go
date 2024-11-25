@@ -59,46 +59,6 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 					"foo": int64(0),
 				}),
 				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
-			}, {
-				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
-				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				LockVersion: moderntreasury.F(int64(0)),
-				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
-					"foo":    "bar",
-					"modern": "treasury",
-				}),
-				PendingBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				PostedBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
-			}, {
-				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
-				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				LockVersion: moderntreasury.F(int64(0)),
-				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
-					"foo":    "bar",
-					"modern": "treasury",
-				}),
-				PendingBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				PostedBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
 			}}),
 			Description:    moderntreasury.F("description"),
 			EffectiveAt:    moderntreasury.F(time.Now()),
@@ -123,24 +83,6 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-		}, {
-			Amount:               moderntreasury.F(int64(0)),
-			AccountingCategoryID: moderntreasury.F("accounting_category_id"),
-			Description:          moderntreasury.F("description"),
-			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
-				"foo":    "bar",
-				"modern": "treasury",
-			}),
-		}, {
-			Amount:               moderntreasury.F(int64(0)),
-			AccountingCategoryID: moderntreasury.F("accounting_category_id"),
-			Description:          moderntreasury.F("description"),
-			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
-				"foo":    "bar",
-				"modern": "treasury",
-			}),
 		}}),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
@@ -150,32 +92,6 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 		ReconciliationFilters: moderntreasury.F[any](map[string]interface{}{}),
 		ReconciliationGroups:  moderntreasury.F[any](map[string]interface{}{}),
 		ReconciliationRuleVariables: moderntreasury.F([]moderntreasury.ReconciliationRuleParam{{
-			AmountLowerBound:  moderntreasury.F(int64(0)),
-			AmountUpperBound:  moderntreasury.F(int64(0)),
-			Direction:         moderntreasury.F(moderntreasury.ReconciliationRuleDirectionCredit),
-			InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			CounterpartyID:    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			Currency:          moderntreasury.F(shared.CurrencyAed),
-			CustomIdentifiers: moderntreasury.F(map[string]string{
-				"foo": "string",
-			}),
-			DateLowerBound: moderntreasury.F(time.Now()),
-			DateUpperBound: moderntreasury.F(time.Now()),
-			Type:           moderntreasury.F(moderntreasury.ReconciliationRuleTypeACH),
-		}, {
-			AmountLowerBound:  moderntreasury.F(int64(0)),
-			AmountUpperBound:  moderntreasury.F(int64(0)),
-			Direction:         moderntreasury.F(moderntreasury.ReconciliationRuleDirectionCredit),
-			InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			CounterpartyID:    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			Currency:          moderntreasury.F(shared.CurrencyAed),
-			CustomIdentifiers: moderntreasury.F(map[string]string{
-				"foo": "string",
-			}),
-			DateLowerBound: moderntreasury.F(time.Now()),
-			DateUpperBound: moderntreasury.F(time.Now()),
-			Type:           moderntreasury.F(moderntreasury.ReconciliationRuleTypeACH),
-		}, {
 			AmountLowerBound:  moderntreasury.F(int64(0)),
 			AmountUpperBound:  moderntreasury.F(int64(0)),
 			Direction:         moderntreasury.F(moderntreasury.ReconciliationRuleDirectionCredit),
@@ -259,32 +175,6 @@ func TestExpectedPaymentUpdateWithOptionalParams(t *testing.T) {
 			ReconciliationFilters: moderntreasury.F[any](map[string]interface{}{}),
 			ReconciliationGroups:  moderntreasury.F[any](map[string]interface{}{}),
 			ReconciliationRuleVariables: moderntreasury.F([]moderntreasury.ReconciliationRuleParam{{
-				AmountLowerBound:  moderntreasury.F(int64(0)),
-				AmountUpperBound:  moderntreasury.F(int64(0)),
-				Direction:         moderntreasury.F(moderntreasury.ReconciliationRuleDirectionCredit),
-				InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				CounterpartyID:    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				Currency:          moderntreasury.F(shared.CurrencyAed),
-				CustomIdentifiers: moderntreasury.F(map[string]string{
-					"foo": "string",
-				}),
-				DateLowerBound: moderntreasury.F(time.Now()),
-				DateUpperBound: moderntreasury.F(time.Now()),
-				Type:           moderntreasury.F(moderntreasury.ReconciliationRuleTypeACH),
-			}, {
-				AmountLowerBound:  moderntreasury.F(int64(0)),
-				AmountUpperBound:  moderntreasury.F(int64(0)),
-				Direction:         moderntreasury.F(moderntreasury.ReconciliationRuleDirectionCredit),
-				InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				CounterpartyID:    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				Currency:          moderntreasury.F(shared.CurrencyAed),
-				CustomIdentifiers: moderntreasury.F(map[string]string{
-					"foo": "string",
-				}),
-				DateLowerBound: moderntreasury.F(time.Now()),
-				DateUpperBound: moderntreasury.F(time.Now()),
-				Type:           moderntreasury.F(moderntreasury.ReconciliationRuleTypeACH),
-			}, {
 				AmountLowerBound:  moderntreasury.F(int64(0)),
 				AmountUpperBound:  moderntreasury.F(int64(0)),
 				Direction:         moderntreasury.F(moderntreasury.ReconciliationRuleDirectionCredit),

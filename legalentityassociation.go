@@ -92,10 +92,13 @@ func (r legalEntityAssociationJSON) RawJSON() string {
 type LegalEntityAssociationChildLegalEntity struct {
 	ID string `json:"id,required" format:"uuid"`
 	// A list of addresses for the entity.
-	Addresses []LegalEntityAssociationChildLegalEntityAddress `json:"addresses,required"`
+	Addresses    []LegalEntityAssociationChildLegalEntityAddress `json:"addresses,required"`
+	BankSettings BankSettings                                    `json:"bank_settings,required,nullable"`
 	// The business's legal business name.
-	BusinessName string    `json:"business_name,required,nullable"`
-	CreatedAt    time.Time `json:"created_at,required" format:"date-time"`
+	BusinessName string `json:"business_name,required,nullable"`
+	// The country of citizenship for an individual.
+	CitizenshipCountry string    `json:"citizenship_country,required,nullable"`
+	CreatedAt          time.Time `json:"created_at,required" format:"date-time"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed time.Time `json:"date_formed,required,nullable" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -119,12 +122,23 @@ type LegalEntityAssociationChildLegalEntity struct {
 	LiveMode bool `json:"live_mode,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata     map[string]string                                   `json:"metadata,required"`
+	Metadata map[string]string `json:"metadata,required"`
+	// An individual's middle name.
+	MiddleName   string                                              `json:"middle_name,required,nullable"`
 	Object       string                                              `json:"object,required"`
 	PhoneNumbers []LegalEntityAssociationChildLegalEntityPhoneNumber `json:"phone_numbers,required"`
+	// Whether the individual is a politically exposed person.
+	PoliticallyExposedPerson bool `json:"politically_exposed_person,required,nullable"`
+	// An individual's preferred name.
+	PreferredName string `json:"preferred_name,required,nullable"`
+	// An individual's prefix.
+	Prefix string `json:"prefix,required,nullable"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating LegalEntityAssociationChildLegalEntityRiskRating `json:"risk_rating,required,nullable"`
-	UpdatedAt  time.Time                                        `json:"updated_at,required" format:"date-time"`
+	// An individual's suffix.
+	Suffix                     string                     `json:"suffix,required,nullable"`
+	UpdatedAt                  time.Time                  `json:"updated_at,required" format:"date-time"`
+	WealthAndEmploymentDetails WealthAndEmploymentDetails `json:"wealth_and_employment_details,required,nullable"`
 	// The entity's primary website URL.
 	Website string                                     `json:"website,required,nullable"`
 	JSON    legalEntityAssociationChildLegalEntityJSON `json:"-"`
@@ -133,29 +147,37 @@ type LegalEntityAssociationChildLegalEntity struct {
 // legalEntityAssociationChildLegalEntityJSON contains the JSON metadata for the
 // struct [LegalEntityAssociationChildLegalEntity]
 type legalEntityAssociationChildLegalEntityJSON struct {
-	ID                   apijson.Field
-	Addresses            apijson.Field
-	BusinessName         apijson.Field
-	CreatedAt            apijson.Field
-	DateFormed           apijson.Field
-	DateOfBirth          apijson.Field
-	DiscardedAt          apijson.Field
-	DoingBusinessAsNames apijson.Field
-	Email                apijson.Field
-	FirstName            apijson.Field
-	Identifications      apijson.Field
-	LastName             apijson.Field
-	LegalEntityType      apijson.Field
-	LegalStructure       apijson.Field
-	LiveMode             apijson.Field
-	Metadata             apijson.Field
-	Object               apijson.Field
-	PhoneNumbers         apijson.Field
-	RiskRating           apijson.Field
-	UpdatedAt            apijson.Field
-	Website              apijson.Field
-	raw                  string
-	ExtraFields          map[string]apijson.Field
+	ID                         apijson.Field
+	Addresses                  apijson.Field
+	BankSettings               apijson.Field
+	BusinessName               apijson.Field
+	CitizenshipCountry         apijson.Field
+	CreatedAt                  apijson.Field
+	DateFormed                 apijson.Field
+	DateOfBirth                apijson.Field
+	DiscardedAt                apijson.Field
+	DoingBusinessAsNames       apijson.Field
+	Email                      apijson.Field
+	FirstName                  apijson.Field
+	Identifications            apijson.Field
+	LastName                   apijson.Field
+	LegalEntityType            apijson.Field
+	LegalStructure             apijson.Field
+	LiveMode                   apijson.Field
+	Metadata                   apijson.Field
+	MiddleName                 apijson.Field
+	Object                     apijson.Field
+	PhoneNumbers               apijson.Field
+	PoliticallyExposedPerson   apijson.Field
+	PreferredName              apijson.Field
+	Prefix                     apijson.Field
+	RiskRating                 apijson.Field
+	Suffix                     apijson.Field
+	UpdatedAt                  apijson.Field
+	WealthAndEmploymentDetails apijson.Field
+	Website                    apijson.Field
+	raw                        string
+	ExtraFields                map[string]apijson.Field
 }
 
 func (r *LegalEntityAssociationChildLegalEntity) UnmarshalJSON(data []byte) (err error) {
@@ -441,9 +463,12 @@ func (r LegalEntityAssociationNewParamsRelationshipType) IsKnown() bool {
 // The child legal entity.
 type LegalEntityAssociationNewParamsChildLegalEntity struct {
 	// A list of addresses for the entity.
-	Addresses param.Field[[]LegalEntityAssociationNewParamsChildLegalEntityAddress] `json:"addresses"`
+	Addresses    param.Field[[]LegalEntityAssociationNewParamsChildLegalEntityAddress] `json:"addresses"`
+	BankSettings param.Field[BankSettingsParam]                                        `json:"bank_settings"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
+	// The country of citizenship for an individual.
+	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -463,10 +488,21 @@ type LegalEntityAssociationNewParamsChildLegalEntity struct {
 	LegalStructure param.Field[LegalEntityAssociationNewParamsChildLegalEntityLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata     param.Field[map[string]string]                                            `json:"metadata"`
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// An individual's middle name.
+	MiddleName   param.Field[string]                                                       `json:"middle_name"`
 	PhoneNumbers param.Field[[]LegalEntityAssociationNewParamsChildLegalEntityPhoneNumber] `json:"phone_numbers"`
+	// Whether the individual is a politically exposed person.
+	PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
+	// An individual's preferred name.
+	PreferredName param.Field[string] `json:"preferred_name"`
+	// An individual's prefix.
+	Prefix param.Field[string] `json:"prefix"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[LegalEntityAssociationNewParamsChildLegalEntityRiskRating] `json:"risk_rating"`
+	// An individual's suffix.
+	Suffix                     param.Field[string]                          `json:"suffix"`
+	WealthAndEmploymentDetails param.Field[WealthAndEmploymentDetailsParam] `json:"wealth_and_employment_details"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }

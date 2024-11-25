@@ -122,7 +122,7 @@ func TestLedgerAccountSettlementListWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.LedgerAccountSettlements.List(context.TODO(), moderntreasury.LedgerAccountSettlementListParams{
-		ID:          moderntreasury.F([]string{"string", "string", "string"}),
+		ID:          moderntreasury.F([]string{"string"}),
 		AfterCursor: moderntreasury.F("after_cursor"),
 		CreatedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),

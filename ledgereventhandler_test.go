@@ -35,14 +35,6 @@ func TestLedgerEventHandlerNewWithOptionalParams(t *testing.T) {
 				Amount:          moderntreasury.F("amount"),
 				Direction:       moderntreasury.F("direction"),
 				LedgerAccountID: moderntreasury.F("ledger_account_id"),
-			}, {
-				Amount:          moderntreasury.F("amount"),
-				Direction:       moderntreasury.F("direction"),
-				LedgerAccountID: moderntreasury.F("ledger_account_id"),
-			}, {
-				Amount:          moderntreasury.F("amount"),
-				Direction:       moderntreasury.F("direction"),
-				LedgerAccountID: moderntreasury.F("ledger_account_id"),
 			}}),
 			Status: moderntreasury.F("posted"),
 		}),
