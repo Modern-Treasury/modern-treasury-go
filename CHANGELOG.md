@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.20.5 (2024-12-19)
+
+Full Changelog: [v2.20.4...v2.20.5](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.4...v2.20.5)
+
+### Documentation
+
+* **readme:** fix typo ([#294](https://github.com/Modern-Treasury/modern-treasury-go/issues/294)) ([c7ac945](https://github.com/Modern-Treasury/modern-treasury-go/commit/c7ac94561a2177047acf5314b5e17b6bfaa24801))
+
 ## 2.20.4 (2024-11-25)
 
 Full Changelog: [v2.20.3...v2.20.4](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.3...v2.20.4)
