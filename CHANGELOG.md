@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.20.5 (2025-01-08)
+
+Full Changelog: [v2.20.4...v2.20.5](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.4...v2.20.5)
+
+### Chores
+
+* bump license year ([#296](https://github.com/Modern-Treasury/modern-treasury-go/issues/296)) ([1def9db](https://github.com/Modern-Treasury/modern-treasury-go/commit/1def9db13f6be946ebb82a5a5fe760309d145a7a))
+
+
+### Documentation
+
+* **readme:** fix misplaced period ([#297](https://github.com/Modern-Treasury/modern-treasury-go/issues/297)) ([89b8913](https://github.com/Modern-Treasury/modern-treasury-go/commit/89b8913ba82887a5e8bcffbd27be1ca31e208c95))
+* **readme:** fix typo ([#294](https://github.com/Modern-Treasury/modern-treasury-go/issues/294)) ([c7ac945](https://github.com/Modern-Treasury/modern-treasury-go/commit/c7ac94561a2177047acf5314b5e17b6bfaa24801))
+
 ## 2.20.4 (2024-11-25)
 
 Full Changelog: [v2.20.3...v2.20.4](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.3...v2.20.4)
