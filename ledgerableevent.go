@@ -54,6 +54,7 @@ func (r *LedgerableEventService) Get(ctx context.Context, id string, opts ...opt
 	return
 }
 
+// Deprecated: deprecated
 type LedgerableEvent struct {
 	ID        string    `json:"id,required" format:"uuid"`
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
