@@ -149,9 +149,13 @@ type BulkResultEntity struct {
 	Accounting interface{} `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
 	AccountingCategoryID string `json:"accounting_category_id,nullable" format:"uuid"`
 	// The ID of one of your accounting ledger classes. Note that these will only be
 	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
 	AccountingLedgerClassID string `json:"accounting_ledger_class_id,nullable" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
