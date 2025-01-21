@@ -244,9 +244,13 @@ type BulkRequestNewParamsResource struct {
 	Accounting param.Field[interface{}] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
 	// The ID of one of your accounting ledger classes. Note that these will only be
 	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
 	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
@@ -441,9 +445,13 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	Accounting param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
 	// The ID of one of your accounting ledger classes. Note that these will only be
 	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
 	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// The party that will pay the fees for the payment order. Only applies to wire
 	// payment orders. Can be one of shared, sender, or receiver, which correspond
@@ -1495,9 +1503,13 @@ type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
 	Accounting param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
 	// The ID of one of your accounting ledger classes. Note that these will only be
 	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
 	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
