@@ -92,15 +92,18 @@ func (r *LedgerEventHandlerService) Delete(ctx context.Context, id string, opts 
 	return
 }
 
+// Deprecated: deprecated
 type LedgerEventHandler struct {
-	ID         string                       `json:"id,required" format:"uuid"`
+	ID string `json:"id,required" format:"uuid"`
+	// Deprecated: deprecated
 	Conditions LedgerEventHandlerConditions `json:"conditions,required,nullable"`
 	CreatedAt  time.Time                    `json:"created_at,required" format:"date-time"`
 	// An optional description.
 	Description string    `json:"description,required,nullable"`
 	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
 	// The id of the ledger that this event handler belongs to.
-	LedgerID                  string                                      `json:"ledger_id,required,nullable"`
+	LedgerID string `json:"ledger_id,required,nullable"`
+	// Deprecated: deprecated
 	LedgerTransactionTemplate LedgerEventHandlerLedgerTransactionTemplate `json:"ledger_transaction_template,required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
@@ -109,9 +112,10 @@ type LedgerEventHandler struct {
 	// strings.
 	Metadata map[string]string `json:"metadata,required,nullable"`
 	// Name of the ledger event handler.
-	Name      string                                `json:"name,required"`
-	Object    string                                `json:"object,required"`
-	UpdatedAt time.Time                             `json:"updated_at,required" format:"date-time"`
+	Name      string    `json:"name,required"`
+	Object    string    `json:"object,required"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	// Deprecated: deprecated
 	Variables map[string]LedgerEventHandlerVariable `json:"variables,required,nullable"`
 	JSON      ledgerEventHandlerJSON                `json:"-"`
 }
@@ -144,6 +148,7 @@ func (r ledgerEventHandlerJSON) RawJSON() string {
 	return r.raw
 }
 
+// Deprecated: deprecated
 type LedgerEventHandlerConditions struct {
 	// The LHS of the conditional.
 	Field string `json:"field,required"`
@@ -172,6 +177,7 @@ func (r ledgerEventHandlerConditionsJSON) RawJSON() string {
 	return r.raw
 }
 
+// Deprecated: deprecated
 type LedgerEventHandlerLedgerTransactionTemplate struct {
 	// An optional description for internal use.
 	Description string `json:"description,required,nullable"`
@@ -204,6 +210,7 @@ func (r ledgerEventHandlerLedgerTransactionTemplateJSON) RawJSON() string {
 	return r.raw
 }
 
+// Deprecated: deprecated
 type LedgerEventHandlerLedgerTransactionTemplateLedgerEntry struct {
 	// The LHS of the conditional.
 	Amount string `json:"amount,required"`
@@ -232,7 +239,9 @@ func (r ledgerEventHandlerLedgerTransactionTemplateLedgerEntryJSON) RawJSON() st
 	return r.raw
 }
 
+// Deprecated: deprecated
 type LedgerEventHandlerVariable struct {
+	// Deprecated: deprecated
 	Query LedgerEventHandlerVariableQuery `json:"query,required"`
 	// The type of object this variable is. Currently, only "ledger_account" is
 	// supported.
@@ -257,6 +266,7 @@ func (r ledgerEventHandlerVariableJSON) RawJSON() string {
 	return r.raw
 }
 
+// Deprecated: deprecated
 type LedgerEventHandlerVariableQuery struct {
 	// The LHS of the conditional.
 	Field string `json:"field,required"`
@@ -285,7 +295,9 @@ func (r ledgerEventHandlerVariableQueryJSON) RawJSON() string {
 	return r.raw
 }
 
+// Deprecated: deprecated
 type LedgerEventHandlerVariableParam struct {
+	// Deprecated: deprecated
 	Query param.Field[LedgerEventHandlerVariableQueryParam] `json:"query,required"`
 	// The type of object this variable is. Currently, only "ledger_account" is
 	// supported.
@@ -296,6 +308,7 @@ func (r LedgerEventHandlerVariableParam) MarshalJSON() (data []byte, err error) 
 	return apijson.MarshalRoot(r)
 }
 
+// Deprecated: deprecated
 type LedgerEventHandlerVariableQueryParam struct {
 	// The LHS of the conditional.
 	Field param.Field[string] `json:"field,required"`
@@ -328,6 +341,7 @@ func (r LedgerEventHandlerNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// Deprecated: deprecated
 type LedgerEventHandlerNewParamsLedgerTransactionTemplate struct {
 	// An optional description for internal use.
 	Description param.Field[string] `json:"description,required"`
@@ -344,6 +358,7 @@ func (r LedgerEventHandlerNewParamsLedgerTransactionTemplate) MarshalJSON() (dat
 	return apijson.MarshalRoot(r)
 }
 
+// Deprecated: deprecated
 type LedgerEventHandlerNewParamsLedgerTransactionTemplateLedgerEntry struct {
 	// The LHS of the conditional.
 	Amount param.Field[string] `json:"amount,required"`
@@ -357,6 +372,7 @@ func (r LedgerEventHandlerNewParamsLedgerTransactionTemplateLedgerEntry) Marshal
 	return apijson.MarshalRoot(r)
 }
 
+// Deprecated: deprecated
 type LedgerEventHandlerNewParamsConditions struct {
 	// The LHS of the conditional.
 	Field param.Field[string] `json:"field,required"`
