@@ -110,9 +110,10 @@ type Reversal struct {
 	// The reason for the reversal.
 	Reason ReversalReason `json:"reason,required"`
 	// The current status of the reversal.
-	Status    ReversalStatus `json:"status,required"`
-	UpdatedAt time.Time      `json:"updated_at,required" format:"date-time"`
-	JSON      reversalJSON   `json:"-"`
+	Status         ReversalStatus `json:"status,required"`
+	TransactionIDs []interface{}  `json:"transaction_ids,required"`
+	UpdatedAt      time.Time      `json:"updated_at,required" format:"date-time"`
+	JSON           reversalJSON   `json:"-"`
 }
 
 // reversalJSON contains the JSON metadata for the struct [Reversal]
@@ -126,6 +127,7 @@ type reversalJSON struct {
 	PaymentOrderID      apijson.Field
 	Reason              apijson.Field
 	Status              apijson.Field
+	TransactionIDs      apijson.Field
 	UpdatedAt           apijson.Field
 	raw                 string
 	ExtraFields         map[string]apijson.Field
