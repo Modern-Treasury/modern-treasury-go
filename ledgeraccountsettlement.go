@@ -25,7 +25,8 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewLedgerAccountSettlementService] method instead.
 type LedgerAccountSettlementService struct {
-	Options []option.RequestOption
+	Options        []option.RequestOption
+	AccountEntries *LedgerAccountSettlementAccountEntryService
 }
 
 // NewLedgerAccountSettlementService generates a new service that applies the given
@@ -34,6 +35,7 @@ type LedgerAccountSettlementService struct {
 func NewLedgerAccountSettlementService(opts ...option.RequestOption) (r *LedgerAccountSettlementService) {
 	r = &LedgerAccountSettlementService{}
 	r.Options = opts
+	r.AccountEntries = NewLedgerAccountSettlementAccountEntryService(opts...)
 	return
 }
 

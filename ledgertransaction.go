@@ -95,6 +95,18 @@ func (r *LedgerTransactionService) ListAutoPaging(ctx context.Context, query Led
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
+// Create a ledger transaction that partially posts another ledger transaction.
+func (r *LedgerTransactionService) NewPartialPost(ctx context.Context, id string, body LedgerTransactionNewPartialPostParams, opts ...option.RequestOption) (res *LedgerTransaction, err error) {
+	opts = append(r.Options[:], opts...)
+	if id == "" {
+		err = errors.New("missing required id parameter")
+		return
+	}
+	path := fmt.Sprintf("api/ledger_transactions/%s/partial_post", id)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	return
+}
+
 // Create a ledger transaction reversal.
 func (r *LedgerTransactionService) NewReversal(ctx context.Context, id string, body LedgerTransactionNewReversalParams, opts ...option.RequestOption) (res *LedgerTransaction, err error) {
 	opts = append(r.Options[:], opts...)
@@ -140,6 +152,8 @@ type LedgerTransaction struct {
 	// strings.
 	Metadata map[string]string `json:"metadata,required"`
 	Object   string            `json:"object,required"`
+	// The ID of the ledger transaction that this ledger transaction partially posts.
+	PartiallyPostsLedgerTransactionID string `json:"partially_posts_ledger_transaction_id,required,nullable"`
 	// The time on which the ledger transaction posted. This is null if the ledger
 	// transaction is pending.
 	PostedAt time.Time `json:"posted_at,required,nullable" format:"date-time"`
@@ -156,26 +170,27 @@ type LedgerTransaction struct {
 // ledgerTransactionJSON contains the JSON metadata for the struct
 // [LedgerTransaction]
 type ledgerTransactionJSON struct {
-	ID                            apijson.Field
-	CreatedAt                     apijson.Field
-	Description                   apijson.Field
-	EffectiveAt                   apijson.Field
-	EffectiveDate                 apijson.Field
-	ExternalID                    apijson.Field
-	LedgerEntries                 apijson.Field
-	LedgerID                      apijson.Field
-	LedgerableID                  apijson.Field
-	LedgerableType                apijson.Field
-	LiveMode                      apijson.Field
-	Metadata                      apijson.Field
-	Object                        apijson.Field
-	PostedAt                      apijson.Field
-	ReversedByLedgerTransactionID apijson.Field
-	ReversesLedgerTransactionID   apijson.Field
-	Status                        apijson.Field
-	UpdatedAt                     apijson.Field
-	raw                           string
-	ExtraFields                   map[string]apijson.Field
+	ID                                apijson.Field
+	CreatedAt                         apijson.Field
+	Description                       apijson.Field
+	EffectiveAt                       apijson.Field
+	EffectiveDate                     apijson.Field
+	ExternalID                        apijson.Field
+	LedgerEntries                     apijson.Field
+	LedgerID                          apijson.Field
+	LedgerableID                      apijson.Field
+	LedgerableType                    apijson.Field
+	LiveMode                          apijson.Field
+	Metadata                          apijson.Field
+	Object                            apijson.Field
+	PartiallyPostsLedgerTransactionID apijson.Field
+	PostedAt                          apijson.Field
+	ReversedByLedgerTransactionID     apijson.Field
+	ReversesLedgerTransactionID       apijson.Field
+	Status                            apijson.Field
+	UpdatedAt                         apijson.Field
+	raw                               string
+	ExtraFields                       map[string]apijson.Field
 }
 
 func (r *LedgerTransaction) UnmarshalJSON(data []byte) (err error) {
@@ -475,8 +490,9 @@ type LedgerTransactionListParams struct {
 	// Order by `created_at` or `effective_at` in `asc` or `desc` order. For example,
 	// to order by `effective_at asc`, use `order_by%5Beffective_at%5D=asc`. Ordering
 	// by only one field at a time is supported.
-	OrderBy param.Field[LedgerTransactionListParamsOrderBy] `query:"order_by"`
-	PerPage param.Field[int64]                              `query:"per_page"`
+	OrderBy                           param.Field[LedgerTransactionListParamsOrderBy] `query:"order_by"`
+	PartiallyPostsLedgerTransactionID param.Field[string]                             `query:"partially_posts_ledger_transaction_id"`
+	PerPage                           param.Field[int64]                              `query:"per_page"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// posted_at%5Bgt%5D=2000-01-01T12:00:00Z.
@@ -575,6 +591,65 @@ const (
 func (r LedgerTransactionListParamsStatus) IsKnown() bool {
 	switch r {
 	case LedgerTransactionListParamsStatusPending, LedgerTransactionListParamsStatusPosted, LedgerTransactionListParamsStatusArchived:
+		return true
+	}
+	return false
+}
+
+type LedgerTransactionNewPartialPostParams struct {
+	// An array of ledger entry objects to be set on the posted ledger transaction.
+	// There must be one entry for each of the existing entries with a lesser amount
+	// than the existing entry.
+	PostedLedgerEntries param.Field[[]LedgerTransactionNewPartialPostParamsPostedLedgerEntry] `json:"posted_ledger_entries,required"`
+	// An optional free-form description for the posted ledger transaction. Maximum of
+	// 1000 characters allowed.
+	Description param.Field[string] `json:"description"`
+	// The timestamp (IS08601 format) at which the posted ledger transaction happened
+	// for reporting purposes.
+	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+}
+
+func (r LedgerTransactionNewPartialPostParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type LedgerTransactionNewPartialPostParamsPostedLedgerEntry struct {
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000. Can be any integer up to 36 digits.
+	Amount param.Field[int64] `json:"amount,required"`
+	// One of `credit`, `debit`. Describes the direction money is flowing in the
+	// transaction. A `credit` moves money from your account to someone else's. A
+	// `debit` pulls money from someone else's account to your own. Note that wire,
+	// rtp, and check payments will always be `credit`.
+	Direction param.Field[LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirection] `json:"direction,required"`
+	// The ledger account that this ledger entry is associated with.
+	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+}
+
+func (r LedgerTransactionNewPartialPostParamsPostedLedgerEntry) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
+type LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirection string
+
+const (
+	LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirectionCredit LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirection = "credit"
+	LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirectionDebit  LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirection = "debit"
+)
+
+func (r LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirection) IsKnown() bool {
+	switch r {
+	case LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirectionCredit, LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirectionDebit:
 		return true
 	}
 	return false

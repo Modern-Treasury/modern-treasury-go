@@ -186,7 +186,7 @@ type BalanceReportBalance struct {
 	// The specific type of balance reported. One of `opening_ledger`,
 	// `closing_ledger`, `current_ledger`, `opening_available`,
 	// `opening_available_next_business_day`, `closing_available`, `current_available`,
-	// or `other`.
+	// 'previously_closed_book', or `other`.
 	BalanceType BalanceReportBalancesBalanceType `json:"balance_type,required"`
 	CreatedAt   time.Time                        `json:"created_at,required" format:"date-time"`
 	// The currency of the balance.
@@ -239,7 +239,7 @@ func (r balanceReportBalanceJSON) RawJSON() string {
 // The specific type of balance reported. One of `opening_ledger`,
 // `closing_ledger`, `current_ledger`, `opening_available`,
 // `opening_available_next_business_day`, `closing_available`, `current_available`,
-// or `other`.
+// 'previously_closed_book', or `other`.
 type BalanceReportBalancesBalanceType string
 
 const (
@@ -251,11 +251,12 @@ const (
 	BalanceReportBalancesBalanceTypeOpeningAvailableNextBusinessDay BalanceReportBalancesBalanceType = "opening_available_next_business_day"
 	BalanceReportBalancesBalanceTypeOpeningLedger                   BalanceReportBalancesBalanceType = "opening_ledger"
 	BalanceReportBalancesBalanceTypeOther                           BalanceReportBalancesBalanceType = "other"
+	BalanceReportBalancesBalanceTypePreviouslyClosedBook            BalanceReportBalancesBalanceType = "previously_closed_book"
 )
 
 func (r BalanceReportBalancesBalanceType) IsKnown() bool {
 	switch r {
-	case BalanceReportBalancesBalanceTypeClosingAvailable, BalanceReportBalancesBalanceTypeClosingLedger, BalanceReportBalancesBalanceTypeCurrentAvailable, BalanceReportBalancesBalanceTypeCurrentLedger, BalanceReportBalancesBalanceTypeOpeningAvailable, BalanceReportBalancesBalanceTypeOpeningAvailableNextBusinessDay, BalanceReportBalancesBalanceTypeOpeningLedger, BalanceReportBalancesBalanceTypeOther:
+	case BalanceReportBalancesBalanceTypeClosingAvailable, BalanceReportBalancesBalanceTypeClosingLedger, BalanceReportBalancesBalanceTypeCurrentAvailable, BalanceReportBalancesBalanceTypeCurrentLedger, BalanceReportBalancesBalanceTypeOpeningAvailable, BalanceReportBalancesBalanceTypeOpeningAvailableNextBusinessDay, BalanceReportBalancesBalanceTypeOpeningLedger, BalanceReportBalancesBalanceTypeOther, BalanceReportBalancesBalanceTypePreviouslyClosedBook:
 		return true
 	}
 	return false
@@ -302,7 +303,7 @@ type BalanceReportNewParamsBalance struct {
 	// The specific type of balance reported. One of `opening_ledger`,
 	// `closing_ledger`, `current_ledger`, `opening_available`,
 	// `opening_available_next_business_day`, `closing_available`, `current_available`,
-	// or `other`.
+	// 'previously_closed_book', or `other`.
 	BalanceType param.Field[BalanceReportNewParamsBalancesBalanceType] `json:"balance_type,required"`
 	// The code used by the bank when reporting this specific balance.
 	VendorCode param.Field[string] `json:"vendor_code,required"`
@@ -320,7 +321,7 @@ func (r BalanceReportNewParamsBalance) MarshalJSON() (data []byte, err error) {
 // The specific type of balance reported. One of `opening_ledger`,
 // `closing_ledger`, `current_ledger`, `opening_available`,
 // `opening_available_next_business_day`, `closing_available`, `current_available`,
-// or `other`.
+// 'previously_closed_book', or `other`.
 type BalanceReportNewParamsBalancesBalanceType string
 
 const (
@@ -332,11 +333,12 @@ const (
 	BalanceReportNewParamsBalancesBalanceTypeOpeningAvailableNextBusinessDay BalanceReportNewParamsBalancesBalanceType = "opening_available_next_business_day"
 	BalanceReportNewParamsBalancesBalanceTypeOpeningLedger                   BalanceReportNewParamsBalancesBalanceType = "opening_ledger"
 	BalanceReportNewParamsBalancesBalanceTypeOther                           BalanceReportNewParamsBalancesBalanceType = "other"
+	BalanceReportNewParamsBalancesBalanceTypePreviouslyClosedBook            BalanceReportNewParamsBalancesBalanceType = "previously_closed_book"
 )
 
 func (r BalanceReportNewParamsBalancesBalanceType) IsKnown() bool {
 	switch r {
-	case BalanceReportNewParamsBalancesBalanceTypeClosingAvailable, BalanceReportNewParamsBalancesBalanceTypeClosingLedger, BalanceReportNewParamsBalancesBalanceTypeCurrentAvailable, BalanceReportNewParamsBalancesBalanceTypeCurrentLedger, BalanceReportNewParamsBalancesBalanceTypeOpeningAvailable, BalanceReportNewParamsBalancesBalanceTypeOpeningAvailableNextBusinessDay, BalanceReportNewParamsBalancesBalanceTypeOpeningLedger, BalanceReportNewParamsBalancesBalanceTypeOther:
+	case BalanceReportNewParamsBalancesBalanceTypeClosingAvailable, BalanceReportNewParamsBalancesBalanceTypeClosingLedger, BalanceReportNewParamsBalancesBalanceTypeCurrentAvailable, BalanceReportNewParamsBalancesBalanceTypeCurrentLedger, BalanceReportNewParamsBalancesBalanceTypeOpeningAvailable, BalanceReportNewParamsBalancesBalanceTypeOpeningAvailableNextBusinessDay, BalanceReportNewParamsBalancesBalanceTypeOpeningLedger, BalanceReportNewParamsBalancesBalanceTypeOther, BalanceReportNewParamsBalancesBalanceTypePreviouslyClosedBook:
 		return true
 	}
 	return false
