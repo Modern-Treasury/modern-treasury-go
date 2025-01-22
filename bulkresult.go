@@ -257,6 +257,8 @@ type BulkResultEntity struct {
 	// the first 16 characters of this string will be used. Any additional characters
 	// will be truncated.
 	OriginatingPartyName string `json:"originating_party_name,nullable"`
+	// The ID of the ledger transaction that this ledger transaction partially posts.
+	PartiallyPostsLedgerTransactionID string `json:"partially_posts_ledger_transaction_id,nullable"`
 	// This field will be `true` if the transaction has posted to the account.
 	Posted bool `json:"posted"`
 	// The time on which the ledger transaction posted. This is null if the ledger
@@ -420,6 +422,7 @@ type bulkResultEntityJSON struct {
 	NsfProtected                       apijson.Field
 	OriginatingAccountID               apijson.Field
 	OriginatingPartyName               apijson.Field
+	PartiallyPostsLedgerTransactionID  apijson.Field
 	Posted                             apijson.Field
 	PostedAt                           apijson.Field
 	Priority                           apijson.Field
@@ -747,6 +750,7 @@ type BulkResultEntityVendorCodeType string
 
 const (
 	BulkResultEntityVendorCodeTypeBai2          BulkResultEntityVendorCodeType = "bai2"
+	BulkResultEntityVendorCodeTypeBankingCircle BulkResultEntityVendorCodeType = "banking_circle"
 	BulkResultEntityVendorCodeTypeBankprov      BulkResultEntityVendorCodeType = "bankprov"
 	BulkResultEntityVendorCodeTypeBnkDev        BulkResultEntityVendorCodeType = "bnk_dev"
 	BulkResultEntityVendorCodeTypeCleartouch    BulkResultEntityVendorCodeType = "cleartouch"
@@ -772,7 +776,7 @@ const (
 
 func (r BulkResultEntityVendorCodeType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePlaid, BulkResultEntityVendorCodeTypePnc, BulkResultEntityVendorCodeTypeRspecVendor, BulkResultEntityVendorCodeTypeSignet, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser:
+	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankingCircle, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePlaid, BulkResultEntityVendorCodeTypePnc, BulkResultEntityVendorCodeTypeRspecVendor, BulkResultEntityVendorCodeTypeSignet, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser:
 		return true
 	}
 	return false

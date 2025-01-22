@@ -190,7 +190,8 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 			CreatedAt:   moderntreasury.F(moderntreasury.LedgerTransactionListParamsOrderByCreatedAtAsc),
 			EffectiveAt: moderntreasury.F(moderntreasury.LedgerTransactionListParamsOrderByEffectiveAtAsc),
 		}),
-		PerPage: moderntreasury.F(int64(0)),
+		PartiallyPostsLedgerTransactionID: moderntreasury.F("partially_posts_ledger_transaction_id"),
+		PerPage:                           moderntreasury.F(int64(0)),
 		PostedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
@@ -200,6 +201,51 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 			"foo": time.Now(),
 		}),
 	})
+	if err != nil {
+		var apierr *moderntreasury.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
+
+func TestLedgerTransactionNewPartialPostWithOptionalParams(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := moderntreasury.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+		option.WithOrganizationID("my-organization-ID"),
+	)
+	_, err := client.LedgerTransactions.NewPartialPost(
+		context.TODO(),
+		"id",
+		moderntreasury.LedgerTransactionNewPartialPostParams{
+			PostedLedgerEntries: moderntreasury.F([]moderntreasury.LedgerTransactionNewPartialPostParamsPostedLedgerEntry{{
+				Amount:          moderntreasury.F(int64(0)),
+				Direction:       moderntreasury.F(moderntreasury.LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirectionCredit),
+				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
+			}}),
+			Description: moderntreasury.F("description"),
+			EffectiveAt: moderntreasury.F(time.Now()),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
+		},
+	)
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
