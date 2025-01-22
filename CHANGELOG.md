@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.21.0 (2025-01-22)
+
+Full Changelog: [v2.20.5...v2.21.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.5...v2.21.0)
+
+### Features
+
+* support deprecated markers ([#301](https://github.com/Modern-Treasury/modern-treasury-go/issues/301)) ([7219c54](https://github.com/Modern-Treasury/modern-treasury-go/commit/7219c54536171a87ba9e01b5e14789529135b825))
+
+
+### Bug Fixes
+
+* fix apijson.Port for embedded structs ([#298](https://github.com/Modern-Treasury/modern-treasury-go/issues/298)) ([8e96a81](https://github.com/Modern-Treasury/modern-treasury-go/commit/8e96a81639555370d119762fface3884f81e674c))
+* fix apijson.Port for embedded structs ([#300](https://github.com/Modern-Treasury/modern-treasury-go/issues/300)) ([9ffcd94](https://github.com/Modern-Treasury/modern-treasury-go/commit/9ffcd94df1229d7847b8efa5bb96af95eb03dc2c))
+
+
+### Chores
+
+* **api:** adds new APIs for LedgerAccountSettlement LedgerEntries ([#302](https://github.com/Modern-Treasury/modern-treasury-go/issues/302)) ([850744a](https://github.com/Modern-Treasury/modern-treasury-go/commit/850744aa75ee06026766dc843309d03dbdd11c46))
+
 ## 2.20.5 (2025-01-08)
 
 Full Changelog: [v2.20.4...v2.20.5](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.4...v2.20.5)
