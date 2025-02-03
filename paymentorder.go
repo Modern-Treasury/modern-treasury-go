@@ -652,7 +652,7 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	// This field can have the runtime type of [map[string]string].
 	Metadata interface{} `json:"metadata,required"`
 	// The name of the virtual account.
-	Name   string `json:"name,required"`
+	Name   string `json:"name,required,nullable"`
 	Object string `json:"object,required"`
 	// This field can have the runtime type of [[]RoutingDetail].
 	RoutingDetails interface{} `json:"routing_details,required"`

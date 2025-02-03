@@ -205,7 +205,7 @@ type BulkResultEntity struct {
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
-	Direction   string    `json:"direction"`
+	Direction   string    `json:"direction,nullable"`
 	DiscardedAt time.Time `json:"discarded_at,nullable" format:"date-time"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
