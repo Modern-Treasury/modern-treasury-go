@@ -1,5 +1,33 @@
 # Changelog
 
+## 2.22.0 (2025-02-14)
+
+Full Changelog: [v2.21.0...v2.22.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.21.0...v2.22.0)
+
+### Features
+
+* **client:** send `X-Stainless-Timeout` header ([#309](https://github.com/Modern-Treasury/modern-treasury-go/issues/309)) ([f17d1f0](https://github.com/Modern-Treasury/modern-treasury-go/commit/f17d1f0d635580e1c028e8b93ae4de9ffd536dd5))
+
+
+### Bug Fixes
+
+* **client:** don't truncate manually specified filenames ([#313](https://github.com/Modern-Treasury/modern-treasury-go/issues/313)) ([e6b36c0](https://github.com/Modern-Treasury/modern-treasury-go/commit/e6b36c0dfdbd547ab49d8c4118131bc9d746bfac))
+* do not call path.Base on ContentType ([#312](https://github.com/Modern-Treasury/modern-treasury-go/issues/312)) ([4b12f61](https://github.com/Modern-Treasury/modern-treasury-go/commit/4b12f617665e5867992e4024261d7b0675f2b71e))
+* fix early cancel when RequestTimeout is provided for streaming requests ([#311](https://github.com/Modern-Treasury/modern-treasury-go/issues/311)) ([3b6659a](https://github.com/Modern-Treasury/modern-treasury-go/commit/3b6659a7e7e1ce3faa6d44d68c404b17a0dafe4a))
+* fix unicode encoding for json ([#306](https://github.com/Modern-Treasury/modern-treasury-go/issues/306)) ([c839501](https://github.com/Modern-Treasury/modern-treasury-go/commit/c83950183e03f6875b5d9dc44723e7518939116e))
+* mark nullable property as nullable ([#305](https://github.com/Modern-Treasury/modern-treasury-go/issues/305)) ([7ca7290](https://github.com/Modern-Treasury/modern-treasury-go/commit/7ca7290d7403d4a98585b714e6d5b6264c811404))
+
+
+### Chores
+
+* add UnionUnmarshaler for responses that are interfaces ([#310](https://github.com/Modern-Treasury/modern-treasury-go/issues/310)) ([be8c5fc](https://github.com/Modern-Treasury/modern-treasury-go/commit/be8c5fc638f37dcbd36dfe2876f1faaddcdf5d0b))
+* refactor client tests ([#303](https://github.com/Modern-Treasury/modern-treasury-go/issues/303)) ([1979afa](https://github.com/Modern-Treasury/modern-treasury-go/commit/1979afacd0aa200e7b8f0420fb7ace9e29a2a258))
+
+
+### Documentation
+
+* document raw responses ([#307](https://github.com/Modern-Treasury/modern-treasury-go/issues/307)) ([3fc66ac](https://github.com/Modern-Treasury/modern-treasury-go/commit/3fc66aca9b24f7cca87e8f850e80d249f165cb21))
+
 ## 2.21.0 (2025-01-22)
 
 Full Changelog: [v2.20.5...v2.21.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.20.5...v2.21.0)
