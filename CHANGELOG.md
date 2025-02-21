@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.22.1 (2025-02-21)
+
+Full Changelog: [v2.22.0...v2.22.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.22.0...v2.22.1)
+
+### Chores
+
+* **internal:** fix devcontainers setup ([#314](https://github.com/Modern-Treasury/modern-treasury-go/issues/314)) ([509f9b6](https://github.com/Modern-Treasury/modern-treasury-go/commit/509f9b684bf5d3ce96de16fc600756616899cd75))
+
 ## 2.22.0 (2025-02-14)
 
 Full Changelog: [v2.21.0...v2.22.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.21.0...v2.22.0)
