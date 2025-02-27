@@ -83,7 +83,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
 			}}),
 		}}),
-		Email:      moderntreasury.F("dev@stainlessapi.com"),
+		Email:      moderntreasury.F("dev@stainless.com"),
 		LedgerType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
 		LegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntity{
 			LegalEntityType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness),
@@ -296,7 +296,7 @@ func TestCounterpartyUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		moderntreasury.CounterpartyUpdateParams{
-			Email:         moderntreasury.F("dev@stainlessapi.com"),
+			Email:         moderntreasury.F("dev@stainless.com"),
 			LegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Metadata: moderntreasury.F(map[string]string{
 				"foo": "string",
@@ -332,7 +332,7 @@ func TestCounterpartyListWithOptionalParams(t *testing.T) {
 		AfterCursor:         moderntreasury.F("after_cursor"),
 		CreatedAtLowerBound: moderntreasury.F(time.Now()),
 		CreatedAtUpperBound: moderntreasury.F(time.Now()),
-		Email:               moderntreasury.F("dev@stainlessapi.com"),
+		Email:               moderntreasury.F("dev@stainless.com"),
 		LegalEntityID:       moderntreasury.F("legal_entity_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
