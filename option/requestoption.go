@@ -10,6 +10,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"strings"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
@@ -30,6 +31,9 @@ func WithBaseURL(base string) RequestOption {
 		log.Fatalf("failed to parse BaseURL: %s\n", err)
 	}
 	return func(r *requestconfig.RequestConfig) error {
+		if u.Path != "" && !strings.HasSuffix(u.Path, "/") {
+			u.Path += "/"
+		}
 		r.BaseURL = u
 		return nil
 	}
