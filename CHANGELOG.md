@@ -1,5 +1,41 @@
 # Changelog
 
+## 2.23.0 (2025-03-26)
+
+Full Changelog: [v2.22.0...v2.23.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.22.0...v2.23.0)
+
+### Features
+
+* add SKIP_BREW env var to ./scripts/bootstrap ([#318](https://github.com/Modern-Treasury/modern-treasury-go/issues/318)) ([cfa3f79](https://github.com/Modern-Treasury/modern-treasury-go/commit/cfa3f79262cf9f986da28de381b6713aebf20530))
+* **client:** accept RFC6838 JSON content types ([#319](https://github.com/Modern-Treasury/modern-treasury-go/issues/319)) ([9256e8c](https://github.com/Modern-Treasury/modern-treasury-go/commit/9256e8ce0abc76b1b076c6ed4df0a88fe8e00f48))
+* **client:** allow custom baseurls without trailing slash ([#317](https://github.com/Modern-Treasury/modern-treasury-go/issues/317)) ([38096a7](https://github.com/Modern-Treasury/modern-treasury-go/commit/38096a7ea1e46a4a5c5f93599d943afe3941197a))
+* **client:** improve default client options support ([#321](https://github.com/Modern-Treasury/modern-treasury-go/issues/321)) ([b796b99](https://github.com/Modern-Treasury/modern-treasury-go/commit/b796b99ea747acbd17863f94adf313a1b541bfc8))
+* **client:** support v2 ([#324](https://github.com/Modern-Treasury/modern-treasury-go/issues/324)) ([227eab8](https://github.com/Modern-Treasury/modern-treasury-go/commit/227eab8b8b0f284e63d8219203483908f1e721f5))
+
+
+### Bug Fixes
+
+* **test:** return early after test failure ([#327](https://github.com/Modern-Treasury/modern-treasury-go/issues/327)) ([71cdfe0](https://github.com/Modern-Treasury/modern-treasury-go/commit/71cdfe06bf04ac41187b68135aa44e07526eb10c))
+
+
+### Chores
+
+* add hash of OpenAPI spec/config inputs to .stats.yml ([#329](https://github.com/Modern-Treasury/modern-treasury-go/issues/329)) ([30bcf9a](https://github.com/Modern-Treasury/modern-treasury-go/commit/30bcf9a4be8be552d0f3887fbf28205da19e0487))
+* add request options to client tests ([#326](https://github.com/Modern-Treasury/modern-treasury-go/issues/326)) ([2cd9eee](https://github.com/Modern-Treasury/modern-treasury-go/commit/2cd9eee48e10c33983dbb9adfe04a0f168aebcf3))
+* fix typos ([#328](https://github.com/Modern-Treasury/modern-treasury-go/issues/328)) ([f49ff96](https://github.com/Modern-Treasury/modern-treasury-go/commit/f49ff96c941009eea351d9c0bfb5ba5d708e1d00))
+* **internal:** fix devcontainers setup ([#314](https://github.com/Modern-Treasury/modern-treasury-go/issues/314)) ([509f9b6](https://github.com/Modern-Treasury/modern-treasury-go/commit/509f9b684bf5d3ce96de16fc600756616899cd75))
+* **internal:** remove extra empty newlines ([#322](https://github.com/Modern-Treasury/modern-treasury-go/issues/322)) ([7fc4520](https://github.com/Modern-Treasury/modern-treasury-go/commit/7fc45204ebdc4ab40caec81c5871a814fcbf7198))
+
+
+### Documentation
+
+* update URLs from stainlessapi.com to stainless.com ([#316](https://github.com/Modern-Treasury/modern-treasury-go/issues/316)) ([f60edfe](https://github.com/Modern-Treasury/modern-treasury-go/commit/f60edfe0a4c869f1dfcf0fdddf35646ce1aedfc7))
+
+
+### Refactors
+
+* tidy up dependencies ([#320](https://github.com/Modern-Treasury/modern-treasury-go/issues/320)) ([5756915](https://github.com/Modern-Treasury/modern-treasury-go/commit/57569156c8d17788614ea9deba41f25026831fb7))
+
 ## 2.22.0 (2025-02-14)
 
 Full Changelog: [v2.21.0...v2.22.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.21.0...v2.22.0)
