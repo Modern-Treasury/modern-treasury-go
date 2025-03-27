@@ -16,6 +16,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
 
 // ConnectionLegalEntityService contains methods and other services that help with
@@ -176,7 +177,8 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
-	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
+	CitizenshipCountry param.Field[string]                                  `json:"citizenship_country"`
+	ComplianceDetails  param.Field[shared.LegalEntityComplianceDetailParam] `json:"compliance_details"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -188,6 +190,8 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	FirstName param.Field[string] `json:"first_name"`
 	// A list of identifications for the legal entity.
 	Identifications param.Field[[]ConnectionLegalEntityNewParamsLegalEntityIdentification] `json:"identifications"`
+	// A list of industry classifications for the legal entity.
+	IndustryClassifications param.Field[[]shared.LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
 	// The legal entity associations and its child legal entities.
@@ -347,7 +351,8 @@ type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalE
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
-	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
+	CitizenshipCountry param.Field[string]                                  `json:"citizenship_country"`
+	ComplianceDetails  param.Field[shared.LegalEntityComplianceDetailParam] `json:"compliance_details"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -359,6 +364,8 @@ type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalE
 	FirstName param.Field[string] `json:"first_name"`
 	// A list of identifications for the legal entity.
 	Identifications param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification] `json:"identifications"`
+	// A list of industry classifications for the legal entity.
+	IndustryClassifications param.Field[[]shared.LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
 	// The type of legal entity.
