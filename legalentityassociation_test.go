@@ -12,6 +12,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
 
 func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
@@ -52,8 +53,22 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 				RegulationO:                 moderntreasury.F(true),
 				UpdatedAt:                   moderntreasury.F(time.Now()),
 			}),
-			BusinessName:         moderntreasury.F("business_name"),
-			CitizenshipCountry:   moderntreasury.F("citizenship_country"),
+			BusinessName:       moderntreasury.F("business_name"),
+			CitizenshipCountry: moderntreasury.F("citizenship_country"),
+			ComplianceDetails: moderntreasury.F(shared.LegalEntityComplianceDetailParam{
+				ID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				CreatedAt:      moderntreasury.F(time.Now()),
+				DiscardedAt:    moderntreasury.F(time.Now()),
+				Issuer:         moderntreasury.F("issuer"),
+				LiveMode:       moderntreasury.F(true),
+				Object:         moderntreasury.F("object"),
+				TokenExpiresAt: moderntreasury.F(time.Now()),
+				TokenIssuedAt:  moderntreasury.F(time.Now()),
+				TokenURL:       moderntreasury.F("token_url"),
+				UpdatedAt:      moderntreasury.F(time.Now()),
+				Validated:      moderntreasury.F(true),
+				ValidatedAt:    moderntreasury.F(time.Now()),
+			}),
 			DateFormed:           moderntreasury.F(time.Now()),
 			DateOfBirth:          moderntreasury.F(time.Now()),
 			DoingBusinessAsNames: moderntreasury.F([]string{"string"}),
@@ -63,6 +78,16 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 				IDNumber:       moderntreasury.F("id_number"),
 				IDType:         moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeArCuil),
 				IssuingCountry: moderntreasury.F("issuing_country"),
+			}}),
+			IndustryClassifications: moderntreasury.F([]shared.LegalEntityIndustryClassificationParam{{
+				ID:                  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				ClassificationCodes: moderntreasury.F([]string{"string"}),
+				ClassificationType:  moderntreasury.F(shared.LegalEntityIndustryClassificationClassificationTypeAnzsic),
+				CreatedAt:           moderntreasury.F(time.Now()),
+				DiscardedAt:         moderntreasury.F(time.Now()),
+				LiveMode:            moderntreasury.F(true),
+				Object:              moderntreasury.F("object"),
+				UpdatedAt:           moderntreasury.F(time.Now()),
 			}}),
 			LastName:        moderntreasury.F("last_name"),
 			LegalEntityType: moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityLegalEntityTypeBusiness),

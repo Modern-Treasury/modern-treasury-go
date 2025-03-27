@@ -32,6 +32,7 @@ func TestReturnNewWithOptionalParams(t *testing.T) {
 		ReturnableType:        moderntreasury.F(moderntreasury.ReturnNewParamsReturnableTypeIncomingPaymentDetail),
 		AdditionalInformation: moderntreasury.F("additional_information"),
 		Code:                  moderntreasury.F(moderntreasury.ReturnNewParamsCode901),
+		Data:                  moderntreasury.F[any](map[string]interface{}{}),
 		DateOfDeath:           moderntreasury.F(time.Now()),
 		Reason:                moderntreasury.F("reason"),
 	})
