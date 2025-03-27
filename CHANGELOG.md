@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.23.1 (2025-03-27)
+
+Full Changelog: [v2.23.0...v2.23.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.23.0...v2.23.1)
+
+### Chores
+
+* **api:** updates to bulk creation request, legal entity schemas and more ([#330](https://github.com/Modern-Treasury/modern-treasury-go/issues/330)) ([9cd0ba4](https://github.com/Modern-Treasury/modern-treasury-go/commit/9cd0ba400aed0efb74c309c40eade213f0381852))
+* **internal:** remove CI condition ([#333](https://github.com/Modern-Treasury/modern-treasury-go/issues/333)) ([88a862b](https://github.com/Modern-Treasury/modern-treasury-go/commit/88a862b04136f2e67944d197cd62c77fa518a8e0))
+
 ## 2.23.0 (2025-03-26)
 
 Full Changelog: [v2.22.0...v2.23.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.22.0...v2.23.0)
