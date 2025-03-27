@@ -157,14 +157,16 @@ type BulkRequestResourceType string
 
 const (
 	BulkRequestResourceTypePaymentOrder      BulkRequestResourceType = "payment_order"
+	BulkRequestResourceTypeLedgerAccount     BulkRequestResourceType = "ledger_account"
 	BulkRequestResourceTypeLedgerTransaction BulkRequestResourceType = "ledger_transaction"
-	BulkRequestResourceTypeTransaction       BulkRequestResourceType = "transaction"
 	BulkRequestResourceTypeExpectedPayment   BulkRequestResourceType = "expected_payment"
+	BulkRequestResourceTypeTransaction       BulkRequestResourceType = "transaction"
+	BulkRequestResourceTypeEntityLink        BulkRequestResourceType = "entity_link"
 )
 
 func (r BulkRequestResourceType) IsKnown() bool {
 	switch r {
-	case BulkRequestResourceTypePaymentOrder, BulkRequestResourceTypeLedgerTransaction, BulkRequestResourceTypeTransaction, BulkRequestResourceTypeExpectedPayment:
+	case BulkRequestResourceTypePaymentOrder, BulkRequestResourceTypeLedgerAccount, BulkRequestResourceTypeLedgerTransaction, BulkRequestResourceTypeExpectedPayment, BulkRequestResourceTypeTransaction, BulkRequestResourceTypeEntityLink:
 		return true
 	}
 	return false
@@ -226,14 +228,16 @@ type BulkRequestNewParamsResourceType string
 
 const (
 	BulkRequestNewParamsResourceTypePaymentOrder      BulkRequestNewParamsResourceType = "payment_order"
+	BulkRequestNewParamsResourceTypeLedgerAccount     BulkRequestNewParamsResourceType = "ledger_account"
 	BulkRequestNewParamsResourceTypeLedgerTransaction BulkRequestNewParamsResourceType = "ledger_transaction"
-	BulkRequestNewParamsResourceTypeTransaction       BulkRequestNewParamsResourceType = "transaction"
 	BulkRequestNewParamsResourceTypeExpectedPayment   BulkRequestNewParamsResourceType = "expected_payment"
+	BulkRequestNewParamsResourceTypeTransaction       BulkRequestNewParamsResourceType = "transaction"
+	BulkRequestNewParamsResourceTypeEntityLink        BulkRequestNewParamsResourceType = "entity_link"
 )
 
 func (r BulkRequestNewParamsResourceType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourceTypePaymentOrder, BulkRequestNewParamsResourceTypeLedgerTransaction, BulkRequestNewParamsResourceTypeTransaction, BulkRequestNewParamsResourceTypeExpectedPayment:
+	case BulkRequestNewParamsResourceTypePaymentOrder, BulkRequestNewParamsResourceTypeLedgerAccount, BulkRequestNewParamsResourceTypeLedgerTransaction, BulkRequestNewParamsResourceTypeExpectedPayment, BulkRequestNewParamsResourceTypeTransaction, BulkRequestNewParamsResourceTypeEntityLink:
 		return true
 	}
 	return false
@@ -2440,14 +2444,16 @@ type BulkRequestListParamsResourceType string
 
 const (
 	BulkRequestListParamsResourceTypePaymentOrder      BulkRequestListParamsResourceType = "payment_order"
+	BulkRequestListParamsResourceTypeLedgerAccount     BulkRequestListParamsResourceType = "ledger_account"
 	BulkRequestListParamsResourceTypeLedgerTransaction BulkRequestListParamsResourceType = "ledger_transaction"
-	BulkRequestListParamsResourceTypeTransaction       BulkRequestListParamsResourceType = "transaction"
 	BulkRequestListParamsResourceTypeExpectedPayment   BulkRequestListParamsResourceType = "expected_payment"
+	BulkRequestListParamsResourceTypeTransaction       BulkRequestListParamsResourceType = "transaction"
+	BulkRequestListParamsResourceTypeEntityLink        BulkRequestListParamsResourceType = "entity_link"
 )
 
 func (r BulkRequestListParamsResourceType) IsKnown() bool {
 	switch r {
-	case BulkRequestListParamsResourceTypePaymentOrder, BulkRequestListParamsResourceTypeLedgerTransaction, BulkRequestListParamsResourceTypeTransaction, BulkRequestListParamsResourceTypeExpectedPayment:
+	case BulkRequestListParamsResourceTypePaymentOrder, BulkRequestListParamsResourceTypeLedgerAccount, BulkRequestListParamsResourceTypeLedgerTransaction, BulkRequestListParamsResourceTypeExpectedPayment, BulkRequestListParamsResourceTypeTransaction, BulkRequestListParamsResourceTypeEntityLink:
 		return true
 	}
 	return false

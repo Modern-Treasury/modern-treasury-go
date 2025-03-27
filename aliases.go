@@ -594,6 +594,68 @@ const CurrencyZwn = shared.CurrencyZwn
 const CurrencyZwr = shared.CurrencyZwr
 
 // This is an alias to an internal type.
+type LegalEntityComplianceDetail = shared.LegalEntityComplianceDetail
+
+// This is an alias to an internal type.
+type LegalEntityComplianceDetailParam = shared.LegalEntityComplianceDetailParam
+
+// This is an alias to an internal type.
+type LegalEntityIndustryClassification = shared.LegalEntityIndustryClassification
+
+// The classification system of the classification codes.
+//
+// This is an alias to an internal type.
+type LegalEntityIndustryClassificationClassificationType = shared.LegalEntityIndustryClassificationClassificationType
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeAnzsic = shared.LegalEntityIndustryClassificationClassificationTypeAnzsic
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeBics = shared.LegalEntityIndustryClassificationClassificationTypeBics
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeGics = shared.LegalEntityIndustryClassificationClassificationTypeGics
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeHsics = shared.LegalEntityIndustryClassificationClassificationTypeHsics
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeIcb = shared.LegalEntityIndustryClassificationClassificationTypeIcb
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeIsic = shared.LegalEntityIndustryClassificationClassificationTypeIsic
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeMgecs = shared.LegalEntityIndustryClassificationClassificationTypeMgecs
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeNace = shared.LegalEntityIndustryClassificationClassificationTypeNace
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeNaics = shared.LegalEntityIndustryClassificationClassificationTypeNaics
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeRbics = shared.LegalEntityIndustryClassificationClassificationTypeRbics
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeSic = shared.LegalEntityIndustryClassificationClassificationTypeSic
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeSni = shared.LegalEntityIndustryClassificationClassificationTypeSni
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeTrbc = shared.LegalEntityIndustryClassificationClassificationTypeTrbc
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeUksic = shared.LegalEntityIndustryClassificationClassificationTypeUksic
+
+// This is an alias to an internal value.
+const LegalEntityIndustryClassificationClassificationTypeUnspsc = shared.LegalEntityIndustryClassificationClassificationTypeUnspsc
+
+// This is an alias to an internal type.
+type LegalEntityIndustryClassificationParam = shared.LegalEntityIndustryClassificationParam
+
+// This is an alias to an internal type.
 type TransactionDirection = shared.TransactionDirection
 
 // This is an alias to an internal value.

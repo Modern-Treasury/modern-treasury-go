@@ -3,7 +3,10 @@
 package shared
 
 import (
+	"time"
+
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 )
 
 type AccountsType string
@@ -244,6 +247,171 @@ func (r Currency) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+type LegalEntityComplianceDetail struct {
+	ID          string    `json:"id,required" format:"uuid"`
+	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
+	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	// The issuer of the compliance token.
+	Issuer string `json:"issuer,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
+	// The timestamp when the compliance token expires.
+	TokenExpiresAt time.Time `json:"token_expires_at,required,nullable" format:"date-time"`
+	// The timestamp when the compliance token was issued.
+	TokenIssuedAt time.Time `json:"token_issued_at,required,nullable" format:"date-time"`
+	// The URL to the compliance token. (ex. provider portal URL)
+	TokenURL  string    `json:"token_url,required,nullable"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	// Whether entity corresponding to the compliance token has been validated.
+	Validated bool `json:"validated,required"`
+	// The timestamp when the entity was validated.
+	ValidatedAt time.Time                       `json:"validated_at,required,nullable" format:"date-time"`
+	JSON        legalEntityComplianceDetailJSON `json:"-"`
+}
+
+// legalEntityComplianceDetailJSON contains the JSON metadata for the struct
+// [LegalEntityComplianceDetail]
+type legalEntityComplianceDetailJSON struct {
+	ID             apijson.Field
+	CreatedAt      apijson.Field
+	DiscardedAt    apijson.Field
+	Issuer         apijson.Field
+	LiveMode       apijson.Field
+	Object         apijson.Field
+	TokenExpiresAt apijson.Field
+	TokenIssuedAt  apijson.Field
+	TokenURL       apijson.Field
+	UpdatedAt      apijson.Field
+	Validated      apijson.Field
+	ValidatedAt    apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *LegalEntityComplianceDetail) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r legalEntityComplianceDetailJSON) RawJSON() string {
+	return r.raw
+}
+
+type LegalEntityComplianceDetailParam struct {
+	ID          param.Field[string]    `json:"id,required" format:"uuid"`
+	CreatedAt   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
+	DiscardedAt param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
+	// The issuer of the compliance token.
+	Issuer param.Field[string] `json:"issuer,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode param.Field[bool]   `json:"live_mode,required"`
+	Object   param.Field[string] `json:"object,required"`
+	// The timestamp when the compliance token expires.
+	TokenExpiresAt param.Field[time.Time] `json:"token_expires_at,required" format:"date-time"`
+	// The timestamp when the compliance token was issued.
+	TokenIssuedAt param.Field[time.Time] `json:"token_issued_at,required" format:"date-time"`
+	// The URL to the compliance token. (ex. provider portal URL)
+	TokenURL  param.Field[string]    `json:"token_url,required"`
+	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
+	// Whether entity corresponding to the compliance token has been validated.
+	Validated param.Field[bool] `json:"validated,required"`
+	// The timestamp when the entity was validated.
+	ValidatedAt param.Field[time.Time] `json:"validated_at,required" format:"date-time"`
+}
+
+func (r LegalEntityComplianceDetailParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type LegalEntityIndustryClassification struct {
+	ID string `json:"id,required" format:"uuid"`
+	// The industry classification codes for the legal entity.
+	ClassificationCodes []string `json:"classification_codes,required"`
+	// The classification system of the classification codes.
+	ClassificationType LegalEntityIndustryClassificationClassificationType `json:"classification_type,required"`
+	CreatedAt          time.Time                                           `json:"created_at,required" format:"date-time"`
+	DiscardedAt        time.Time                                           `json:"discarded_at,required,nullable" format:"date-time"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode  bool                                  `json:"live_mode,required"`
+	Object    string                                `json:"object,required"`
+	UpdatedAt time.Time                             `json:"updated_at,required" format:"date-time"`
+	JSON      legalEntityIndustryClassificationJSON `json:"-"`
+}
+
+// legalEntityIndustryClassificationJSON contains the JSON metadata for the struct
+// [LegalEntityIndustryClassification]
+type legalEntityIndustryClassificationJSON struct {
+	ID                  apijson.Field
+	ClassificationCodes apijson.Field
+	ClassificationType  apijson.Field
+	CreatedAt           apijson.Field
+	DiscardedAt         apijson.Field
+	LiveMode            apijson.Field
+	Object              apijson.Field
+	UpdatedAt           apijson.Field
+	raw                 string
+	ExtraFields         map[string]apijson.Field
+}
+
+func (r *LegalEntityIndustryClassification) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r legalEntityIndustryClassificationJSON) RawJSON() string {
+	return r.raw
+}
+
+// The classification system of the classification codes.
+type LegalEntityIndustryClassificationClassificationType string
+
+const (
+	LegalEntityIndustryClassificationClassificationTypeAnzsic LegalEntityIndustryClassificationClassificationType = "anzsic"
+	LegalEntityIndustryClassificationClassificationTypeBics   LegalEntityIndustryClassificationClassificationType = "bics"
+	LegalEntityIndustryClassificationClassificationTypeGics   LegalEntityIndustryClassificationClassificationType = "gics"
+	LegalEntityIndustryClassificationClassificationTypeHsics  LegalEntityIndustryClassificationClassificationType = "hsics"
+	LegalEntityIndustryClassificationClassificationTypeIcb    LegalEntityIndustryClassificationClassificationType = "icb"
+	LegalEntityIndustryClassificationClassificationTypeIsic   LegalEntityIndustryClassificationClassificationType = "isic"
+	LegalEntityIndustryClassificationClassificationTypeMgecs  LegalEntityIndustryClassificationClassificationType = "mgecs"
+	LegalEntityIndustryClassificationClassificationTypeNace   LegalEntityIndustryClassificationClassificationType = "nace"
+	LegalEntityIndustryClassificationClassificationTypeNaics  LegalEntityIndustryClassificationClassificationType = "naics"
+	LegalEntityIndustryClassificationClassificationTypeRbics  LegalEntityIndustryClassificationClassificationType = "rbics"
+	LegalEntityIndustryClassificationClassificationTypeSic    LegalEntityIndustryClassificationClassificationType = "sic"
+	LegalEntityIndustryClassificationClassificationTypeSni    LegalEntityIndustryClassificationClassificationType = "sni"
+	LegalEntityIndustryClassificationClassificationTypeTrbc   LegalEntityIndustryClassificationClassificationType = "trbc"
+	LegalEntityIndustryClassificationClassificationTypeUksic  LegalEntityIndustryClassificationClassificationType = "uksic"
+	LegalEntityIndustryClassificationClassificationTypeUnspsc LegalEntityIndustryClassificationClassificationType = "unspsc"
+)
+
+func (r LegalEntityIndustryClassificationClassificationType) IsKnown() bool {
+	switch r {
+	case LegalEntityIndustryClassificationClassificationTypeAnzsic, LegalEntityIndustryClassificationClassificationTypeBics, LegalEntityIndustryClassificationClassificationTypeGics, LegalEntityIndustryClassificationClassificationTypeHsics, LegalEntityIndustryClassificationClassificationTypeIcb, LegalEntityIndustryClassificationClassificationTypeIsic, LegalEntityIndustryClassificationClassificationTypeMgecs, LegalEntityIndustryClassificationClassificationTypeNace, LegalEntityIndustryClassificationClassificationTypeNaics, LegalEntityIndustryClassificationClassificationTypeRbics, LegalEntityIndustryClassificationClassificationTypeSic, LegalEntityIndustryClassificationClassificationTypeSni, LegalEntityIndustryClassificationClassificationTypeTrbc, LegalEntityIndustryClassificationClassificationTypeUksic, LegalEntityIndustryClassificationClassificationTypeUnspsc:
+		return true
+	}
+	return false
+}
+
+type LegalEntityIndustryClassificationParam struct {
+	ID param.Field[string] `json:"id,required" format:"uuid"`
+	// The industry classification codes for the legal entity.
+	ClassificationCodes param.Field[[]string] `json:"classification_codes,required"`
+	// The classification system of the classification codes.
+	ClassificationType param.Field[LegalEntityIndustryClassificationClassificationType] `json:"classification_type,required"`
+	CreatedAt          param.Field[time.Time]                                           `json:"created_at,required" format:"date-time"`
+	DiscardedAt        param.Field[time.Time]                                           `json:"discarded_at,required" format:"date-time"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode  param.Field[bool]      `json:"live_mode,required"`
+	Object    param.Field[string]    `json:"object,required"`
+	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
+}
+
+func (r LegalEntityIndustryClassificationParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type TransactionDirection string

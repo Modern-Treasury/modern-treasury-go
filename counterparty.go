@@ -791,7 +791,8 @@ type CounterpartyNewParamsLegalEntity struct {
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
-	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
+	CitizenshipCountry param.Field[string]                                  `json:"citizenship_country"`
+	ComplianceDetails  param.Field[shared.LegalEntityComplianceDetailParam] `json:"compliance_details"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -803,6 +804,8 @@ type CounterpartyNewParamsLegalEntity struct {
 	FirstName param.Field[string] `json:"first_name"`
 	// A list of identifications for the legal entity.
 	Identifications param.Field[[]CounterpartyNewParamsLegalEntityIdentification] `json:"identifications"`
+	// A list of industry classifications for the legal entity.
+	IndustryClassifications param.Field[[]shared.LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
 	// The legal entity associations and its child legal entities.
@@ -976,7 +979,8 @@ type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity str
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
-	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
+	CitizenshipCountry param.Field[string]                                  `json:"citizenship_country"`
+	ComplianceDetails  param.Field[shared.LegalEntityComplianceDetailParam] `json:"compliance_details"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -988,6 +992,8 @@ type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity str
 	FirstName param.Field[string] `json:"first_name"`
 	// A list of identifications for the legal entity.
 	Identifications param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification] `json:"identifications"`
+	// A list of industry classifications for the legal entity.
+	IndustryClassifications param.Field[[]shared.LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
 	// The type of legal entity.
@@ -1338,7 +1344,7 @@ const (
 	CounterpartyCollectAccountParamsFieldHuInterbankClearingCode CounterpartyCollectAccountParamsField = "huInterbankClearingCode"
 	CounterpartyCollectAccountParamsFieldDkInterbankClearingCode CounterpartyCollectAccountParamsField = "dkInterbankClearingCode"
 	CounterpartyCollectAccountParamsFieldIDSknbiCode             CounterpartyCollectAccountParamsField = "idSknbiCode"
-	CounterpartyCollectAccountParamsFieldZaNationalClearingCode  CounterpartyCollectAccountParamsField = "za_national_clearing_code"
+	CounterpartyCollectAccountParamsFieldZaNationalClearingCode  CounterpartyCollectAccountParamsField = "zaNationalClearingCode"
 )
 
 func (r CounterpartyCollectAccountParamsField) IsKnown() bool {

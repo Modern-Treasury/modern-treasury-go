@@ -764,6 +764,7 @@ const (
 	BulkResultEntityVendorCodeTypeIso20022      BulkResultEntityVendorCodeType = "iso20022"
 	BulkResultEntityVendorCodeTypeJpmc          BulkResultEntityVendorCodeType = "jpmc"
 	BulkResultEntityVendorCodeTypeMx            BulkResultEntityVendorCodeType = "mx"
+	BulkResultEntityVendorCodeTypePaypal        BulkResultEntityVendorCodeType = "paypal"
 	BulkResultEntityVendorCodeTypePlaid         BulkResultEntityVendorCodeType = "plaid"
 	BulkResultEntityVendorCodeTypePnc           BulkResultEntityVendorCodeType = "pnc"
 	BulkResultEntityVendorCodeTypeRspecVendor   BulkResultEntityVendorCodeType = "rspec_vendor"
@@ -776,7 +777,7 @@ const (
 
 func (r BulkResultEntityVendorCodeType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankingCircle, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePlaid, BulkResultEntityVendorCodeTypePnc, BulkResultEntityVendorCodeTypeRspecVendor, BulkResultEntityVendorCodeTypeSignet, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser:
+	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankingCircle, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePaypal, BulkResultEntityVendorCodeTypePlaid, BulkResultEntityVendorCodeTypePnc, BulkResultEntityVendorCodeTypeRspecVendor, BulkResultEntityVendorCodeTypeSignet, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser:
 		return true
 	}
 	return false
@@ -789,15 +790,17 @@ type BulkResultEntityType string
 
 const (
 	BulkResultEntityTypePaymentOrder      BulkResultEntityType = "payment_order"
+	BulkResultEntityTypeLedgerAccount     BulkResultEntityType = "ledger_account"
 	BulkResultEntityTypeLedgerTransaction BulkResultEntityType = "ledger_transaction"
-	BulkResultEntityTypeTransaction       BulkResultEntityType = "transaction"
 	BulkResultEntityTypeExpectedPayment   BulkResultEntityType = "expected_payment"
+	BulkResultEntityTypeTransaction       BulkResultEntityType = "transaction"
+	BulkResultEntityTypeEntityLink        BulkResultEntityType = "entity_link"
 	BulkResultEntityTypeBulkError         BulkResultEntityType = "bulk_error"
 )
 
 func (r BulkResultEntityType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityTypePaymentOrder, BulkResultEntityTypeLedgerTransaction, BulkResultEntityTypeTransaction, BulkResultEntityTypeExpectedPayment, BulkResultEntityTypeBulkError:
+	case BulkResultEntityTypePaymentOrder, BulkResultEntityTypeLedgerAccount, BulkResultEntityTypeLedgerTransaction, BulkResultEntityTypeExpectedPayment, BulkResultEntityTypeTransaction, BulkResultEntityTypeEntityLink, BulkResultEntityTypeBulkError:
 		return true
 	}
 	return false
@@ -868,15 +871,17 @@ type BulkResultListParamsEntityType string
 
 const (
 	BulkResultListParamsEntityTypePaymentOrder      BulkResultListParamsEntityType = "payment_order"
+	BulkResultListParamsEntityTypeLedgerAccount     BulkResultListParamsEntityType = "ledger_account"
 	BulkResultListParamsEntityTypeLedgerTransaction BulkResultListParamsEntityType = "ledger_transaction"
-	BulkResultListParamsEntityTypeTransaction       BulkResultListParamsEntityType = "transaction"
 	BulkResultListParamsEntityTypeExpectedPayment   BulkResultListParamsEntityType = "expected_payment"
+	BulkResultListParamsEntityTypeTransaction       BulkResultListParamsEntityType = "transaction"
+	BulkResultListParamsEntityTypeEntityLink        BulkResultListParamsEntityType = "entity_link"
 	BulkResultListParamsEntityTypeBulkError         BulkResultListParamsEntityType = "bulk_error"
 )
 
 func (r BulkResultListParamsEntityType) IsKnown() bool {
 	switch r {
-	case BulkResultListParamsEntityTypePaymentOrder, BulkResultListParamsEntityTypeLedgerTransaction, BulkResultListParamsEntityTypeTransaction, BulkResultListParamsEntityTypeExpectedPayment, BulkResultListParamsEntityTypeBulkError:
+	case BulkResultListParamsEntityTypePaymentOrder, BulkResultListParamsEntityTypeLedgerAccount, BulkResultListParamsEntityTypeLedgerTransaction, BulkResultListParamsEntityTypeExpectedPayment, BulkResultListParamsEntityTypeTransaction, BulkResultListParamsEntityTypeEntityLink, BulkResultListParamsEntityTypeBulkError:
 		return true
 	}
 	return false

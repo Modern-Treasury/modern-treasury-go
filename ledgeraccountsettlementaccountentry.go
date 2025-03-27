@@ -73,7 +73,7 @@ func (r LedgerAccountSettlementAccountEntryUpdateParams) MarshalJSON() (data []b
 type LedgerAccountSettlementAccountEntryDeleteParams struct {
 	// The ids of the ledger entries that are to be added or removed from the ledger
 	// account settlement.
-	LedgerEntryIDs param.Field[[]interface{}] `json:"ledger_entry_ids,required"`
+	LedgerEntryIDs param.Field[[]string] `json:"ledger_entry_ids,required" format:"uuid"`
 }
 
 func (r LedgerAccountSettlementAccountEntryDeleteParams) MarshalJSON() (data []byte, err error) {

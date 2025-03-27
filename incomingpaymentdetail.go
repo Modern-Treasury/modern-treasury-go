@@ -276,10 +276,14 @@ type IncomingPaymentDetailType string
 
 const (
 	IncomingPaymentDetailTypeACH     IncomingPaymentDetailType = "ach"
+	IncomingPaymentDetailTypeAuBecs  IncomingPaymentDetailType = "au_becs"
+	IncomingPaymentDetailTypeBacs    IncomingPaymentDetailType = "bacs"
 	IncomingPaymentDetailTypeBook    IncomingPaymentDetailType = "book"
 	IncomingPaymentDetailTypeCheck   IncomingPaymentDetailType = "check"
 	IncomingPaymentDetailTypeEft     IncomingPaymentDetailType = "eft"
 	IncomingPaymentDetailTypeInterac IncomingPaymentDetailType = "interac"
+	IncomingPaymentDetailTypeNeft    IncomingPaymentDetailType = "neft"
+	IncomingPaymentDetailTypeNzBecs  IncomingPaymentDetailType = "nz_becs"
 	IncomingPaymentDetailTypeRtp     IncomingPaymentDetailType = "rtp"
 	IncomingPaymentDetailTypeSepa    IncomingPaymentDetailType = "sepa"
 	IncomingPaymentDetailTypeSignet  IncomingPaymentDetailType = "signet"
@@ -288,7 +292,7 @@ const (
 
 func (r IncomingPaymentDetailType) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailTypeACH, IncomingPaymentDetailTypeBook, IncomingPaymentDetailTypeCheck, IncomingPaymentDetailTypeEft, IncomingPaymentDetailTypeInterac, IncomingPaymentDetailTypeRtp, IncomingPaymentDetailTypeSepa, IncomingPaymentDetailTypeSignet, IncomingPaymentDetailTypeWire:
+	case IncomingPaymentDetailTypeACH, IncomingPaymentDetailTypeAuBecs, IncomingPaymentDetailTypeBacs, IncomingPaymentDetailTypeBook, IncomingPaymentDetailTypeCheck, IncomingPaymentDetailTypeEft, IncomingPaymentDetailTypeInterac, IncomingPaymentDetailTypeNeft, IncomingPaymentDetailTypeNzBecs, IncomingPaymentDetailTypeRtp, IncomingPaymentDetailTypeSepa, IncomingPaymentDetailTypeSignet, IncomingPaymentDetailTypeWire:
 		return true
 	}
 	return false
@@ -363,10 +367,14 @@ type IncomingPaymentDetailListParamsType string
 
 const (
 	IncomingPaymentDetailListParamsTypeACH     IncomingPaymentDetailListParamsType = "ach"
+	IncomingPaymentDetailListParamsTypeAuBecs  IncomingPaymentDetailListParamsType = "au_becs"
+	IncomingPaymentDetailListParamsTypeBacs    IncomingPaymentDetailListParamsType = "bacs"
 	IncomingPaymentDetailListParamsTypeBook    IncomingPaymentDetailListParamsType = "book"
 	IncomingPaymentDetailListParamsTypeCheck   IncomingPaymentDetailListParamsType = "check"
 	IncomingPaymentDetailListParamsTypeEft     IncomingPaymentDetailListParamsType = "eft"
 	IncomingPaymentDetailListParamsTypeInterac IncomingPaymentDetailListParamsType = "interac"
+	IncomingPaymentDetailListParamsTypeNeft    IncomingPaymentDetailListParamsType = "neft"
+	IncomingPaymentDetailListParamsTypeNzBecs  IncomingPaymentDetailListParamsType = "nz_becs"
 	IncomingPaymentDetailListParamsTypeRtp     IncomingPaymentDetailListParamsType = "rtp"
 	IncomingPaymentDetailListParamsTypeSepa    IncomingPaymentDetailListParamsType = "sepa"
 	IncomingPaymentDetailListParamsTypeSignet  IncomingPaymentDetailListParamsType = "signet"
@@ -375,7 +383,7 @@ const (
 
 func (r IncomingPaymentDetailListParamsType) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailListParamsTypeACH, IncomingPaymentDetailListParamsTypeBook, IncomingPaymentDetailListParamsTypeCheck, IncomingPaymentDetailListParamsTypeEft, IncomingPaymentDetailListParamsTypeInterac, IncomingPaymentDetailListParamsTypeRtp, IncomingPaymentDetailListParamsTypeSepa, IncomingPaymentDetailListParamsTypeSignet, IncomingPaymentDetailListParamsTypeWire:
+	case IncomingPaymentDetailListParamsTypeACH, IncomingPaymentDetailListParamsTypeAuBecs, IncomingPaymentDetailListParamsTypeBacs, IncomingPaymentDetailListParamsTypeBook, IncomingPaymentDetailListParamsTypeCheck, IncomingPaymentDetailListParamsTypeEft, IncomingPaymentDetailListParamsTypeInterac, IncomingPaymentDetailListParamsTypeNeft, IncomingPaymentDetailListParamsTypeNzBecs, IncomingPaymentDetailListParamsTypeRtp, IncomingPaymentDetailListParamsTypeSepa, IncomingPaymentDetailListParamsTypeSignet, IncomingPaymentDetailListParamsTypeWire:
 		return true
 	}
 	return false
@@ -389,6 +397,9 @@ type IncomingPaymentDetailNewAsyncParams struct {
 	AsOfDate param.Field[time.Time] `json:"as_of_date" format:"date"`
 	// Defaults to the currency of the originating account.
 	Currency param.Field[shared.Currency] `json:"currency"`
+	// An object passed through to the simulated IPD that could reflect what a vendor
+	// would pass.
+	Data param.Field[interface{}] `json:"data"`
 	// Defaults to a random description.
 	Description param.Field[string] `json:"description"`
 	// One of `credit`, `debit`.
@@ -427,10 +438,14 @@ type IncomingPaymentDetailNewAsyncParamsType string
 
 const (
 	IncomingPaymentDetailNewAsyncParamsTypeACH     IncomingPaymentDetailNewAsyncParamsType = "ach"
+	IncomingPaymentDetailNewAsyncParamsTypeAuBecs  IncomingPaymentDetailNewAsyncParamsType = "au_becs"
+	IncomingPaymentDetailNewAsyncParamsTypeBacs    IncomingPaymentDetailNewAsyncParamsType = "bacs"
 	IncomingPaymentDetailNewAsyncParamsTypeBook    IncomingPaymentDetailNewAsyncParamsType = "book"
 	IncomingPaymentDetailNewAsyncParamsTypeCheck   IncomingPaymentDetailNewAsyncParamsType = "check"
 	IncomingPaymentDetailNewAsyncParamsTypeEft     IncomingPaymentDetailNewAsyncParamsType = "eft"
 	IncomingPaymentDetailNewAsyncParamsTypeInterac IncomingPaymentDetailNewAsyncParamsType = "interac"
+	IncomingPaymentDetailNewAsyncParamsTypeNeft    IncomingPaymentDetailNewAsyncParamsType = "neft"
+	IncomingPaymentDetailNewAsyncParamsTypeNzBecs  IncomingPaymentDetailNewAsyncParamsType = "nz_becs"
 	IncomingPaymentDetailNewAsyncParamsTypeRtp     IncomingPaymentDetailNewAsyncParamsType = "rtp"
 	IncomingPaymentDetailNewAsyncParamsTypeSepa    IncomingPaymentDetailNewAsyncParamsType = "sepa"
 	IncomingPaymentDetailNewAsyncParamsTypeSignet  IncomingPaymentDetailNewAsyncParamsType = "signet"
@@ -439,7 +454,7 @@ const (
 
 func (r IncomingPaymentDetailNewAsyncParamsType) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailNewAsyncParamsTypeACH, IncomingPaymentDetailNewAsyncParamsTypeBook, IncomingPaymentDetailNewAsyncParamsTypeCheck, IncomingPaymentDetailNewAsyncParamsTypeEft, IncomingPaymentDetailNewAsyncParamsTypeInterac, IncomingPaymentDetailNewAsyncParamsTypeRtp, IncomingPaymentDetailNewAsyncParamsTypeSepa, IncomingPaymentDetailNewAsyncParamsTypeSignet, IncomingPaymentDetailNewAsyncParamsTypeWire:
+	case IncomingPaymentDetailNewAsyncParamsTypeACH, IncomingPaymentDetailNewAsyncParamsTypeAuBecs, IncomingPaymentDetailNewAsyncParamsTypeBacs, IncomingPaymentDetailNewAsyncParamsTypeBook, IncomingPaymentDetailNewAsyncParamsTypeCheck, IncomingPaymentDetailNewAsyncParamsTypeEft, IncomingPaymentDetailNewAsyncParamsTypeInterac, IncomingPaymentDetailNewAsyncParamsTypeNeft, IncomingPaymentDetailNewAsyncParamsTypeNzBecs, IncomingPaymentDetailNewAsyncParamsTypeRtp, IncomingPaymentDetailNewAsyncParamsTypeSepa, IncomingPaymentDetailNewAsyncParamsTypeSignet, IncomingPaymentDetailNewAsyncParamsTypeWire:
 		return true
 	}
 	return false
