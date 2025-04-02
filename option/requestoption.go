@@ -7,7 +7,6 @@ import (
 	"encoding/base64"
 	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"net/url"
 	"strings"
@@ -29,10 +28,11 @@ type RequestOption = requestconfig.RequestOption
 // For security reasons, ensure that the base URL is trusted.
 func WithBaseURL(base string) RequestOption {
 	u, err := url.Parse(base)
-	if err != nil {
-		log.Fatalf("failed to parse BaseURL: %s\n", err)
-	}
 	return requestconfig.RequestOptionFunc(func(r *requestconfig.RequestConfig) error {
+		if err != nil {
+			return fmt.Errorf("requestoption: WithBaseURL failed to parse url %s\n", err)
+		}
+
 		if u.Path != "" && !strings.HasSuffix(u.Path, "/") {
 			u.Path += "/"
 		}
