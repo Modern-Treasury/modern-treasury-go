@@ -1,5 +1,29 @@
 # Changelog
 
+## 2.24.0 (2025-04-07)
+
+Full Changelog: [v2.23.0...v2.24.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.23.0...v2.24.0)
+
+### Features
+
+* add MCP server ([ea21eee](https://github.com/Modern-Treasury/modern-treasury-go/commit/ea21eeec26943b55dac16b5221c8d1de3f46e9f2))
+* **client:** support custom http clients ([#335](https://github.com/Modern-Treasury/modern-treasury-go/issues/335)) ([216e0cf](https://github.com/Modern-Treasury/modern-treasury-go/commit/216e0cfd0df6d2973096c78b2b2f2d6b6ac0da3f))
+
+
+### Bug Fixes
+
+* **client:** return error on bad custom url instead of panic ([#334](https://github.com/Modern-Treasury/modern-treasury-go/issues/334)) ([f4a460a](https://github.com/Modern-Treasury/modern-treasury-go/commit/f4a460a0fa62408554da84fc2e4dadf777c993ba))
+
+
+### Chores
+
+* **api:** updates to bulk creation request, legal entity schemas and more ([#330](https://github.com/Modern-Treasury/modern-treasury-go/issues/330)) ([9cd0ba4](https://github.com/Modern-Treasury/modern-treasury-go/commit/9cd0ba400aed0efb74c309c40eade213f0381852))
+* configure new SDK language ([cea5119](https://github.com/Modern-Treasury/modern-treasury-go/commit/cea51197e6634e188bb9a618d6fe8d481d0ce920))
+* configure new SDK language ([67224a0](https://github.com/Modern-Treasury/modern-treasury-go/commit/67224a0621ea8831e202151e11327c7b22534cf4))
+* internal codegen changes ([0f95ba3](https://github.com/Modern-Treasury/modern-treasury-go/commit/0f95ba39583062bb198dd9b0ad6282e53c859a05))
+* **internal:** remove CI condition ([#333](https://github.com/Modern-Treasury/modern-treasury-go/issues/333)) ([88a862b](https://github.com/Modern-Treasury/modern-treasury-go/commit/88a862b04136f2e67944d197cd62c77fa518a8e0))
+* Remove deprecated/unused remote spec feature ([5648c93](https://github.com/Modern-Treasury/modern-treasury-go/commit/5648c93cc30f78b1cfcd64d5e74a5cae571dec9c))
+
 ## 2.23.0 (2025-03-26)
 
 Full Changelog: [v2.22.0...v2.23.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.22.0...v2.23.0)
