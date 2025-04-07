@@ -196,6 +196,12 @@ func UseDefaultParam[T any](dst *param.Field[T], src *T) {
 	}
 }
 
+// This interface is primarily used to describe an [*http.Client], but also
+// supports custom HTTP implementations.
+type HTTPDoer interface {
+	Do(req *http.Request) (*http.Response, error)
+}
+
 // RequestConfig represents all the state related to one request.
 //
 // Editing the variables inside RequestConfig directly is unstable api. Prefer
@@ -206,6 +212,7 @@ type RequestConfig struct {
 	Context        context.Context
 	Request        *http.Request
 	BaseURL        *url.URL
+	CustomHTTPDoer HTTPDoer
 	HTTPClient     *http.Client
 	Middlewares    []middleware
 	APIKey         string
@@ -405,6 +412,9 @@ func (cfg *RequestConfig) Execute() (err error) {
 	}
 
 	handler := cfg.HTTPClient.Do
+	if cfg.CustomHTTPDoer != nil {
+		handler = cfg.CustomHTTPDoer.Do
+	}
 	for i := len(cfg.Middlewares) - 1; i >= 0; i -= 1 {
 		handler = applyMiddleware(cfg.Middlewares[i], handler)
 	}
