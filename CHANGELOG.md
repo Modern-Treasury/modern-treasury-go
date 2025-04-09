@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.24.1 (2025-04-09)
+
+Full Changelog: [v2.24.0...v2.24.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.24.0...v2.24.1)
+
+### Chores
+
+* **internal:** expand CI branch coverage ([#337](https://github.com/Modern-Treasury/modern-treasury-go/issues/337)) ([bc08740](https://github.com/Modern-Treasury/modern-treasury-go/commit/bc08740b455fbc0aad3705745e2995d45484450a))
+* **internal:** reduce CI branch coverage ([8b96c15](https://github.com/Modern-Treasury/modern-treasury-go/commit/8b96c1578bec92e7ab5be4371d6768c50f952bb9))
+
 ## 2.24.0 (2025-04-07)
 
 Full Changelog: [v2.23.0...v2.24.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.23.0...v2.24.0)
