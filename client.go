@@ -56,10 +56,13 @@ type Client struct {
 }
 
 // DefaultClientOptions read from the environment (MODERN_TREASURY_API_KEY,
-// MODERN_TREASURY_ORGANIZATION_ID, MODERN_TREASURY_WEBHOOK_KEY). This should be
-// used to initialize new clients.
+// MODERN_TREASURY_WEBHOOK_KEY, MODERN_TREASURY_ORGANIZATION_ID,
+// MODERN_TREASURY_BASE_URL). This should be used to initialize new clients.
 func DefaultClientOptions() []option.RequestOption {
 	defaults := []option.RequestOption{option.WithEnvironmentProduction()}
+	if o, ok := os.LookupEnv("MODERN_TREASURY_BASE_URL"); ok {
+		defaults = append(defaults, option.WithBaseURL(o))
+	}
 	if o, ok := os.LookupEnv("MODERN_TREASURY_API_KEY"); ok {
 		defaults = append(defaults, option.WithAPIKey(o))
 	}
@@ -73,10 +76,10 @@ func DefaultClientOptions() []option.RequestOption {
 }
 
 // NewClient generates a new client with the default option read from the
-// environment (MODERN_TREASURY_API_KEY, MODERN_TREASURY_ORGANIZATION_ID,
-// MODERN_TREASURY_WEBHOOK_KEY). The option passed in as arguments are applied
-// after these default arguments, and all option will be passed down to the
-// services and requests that this client makes.
+// environment (MODERN_TREASURY_API_KEY, MODERN_TREASURY_WEBHOOK_KEY,
+// MODERN_TREASURY_ORGANIZATION_ID, MODERN_TREASURY_BASE_URL). The option passed in
+// as arguments are applied after these default arguments, and all option will be
+// passed down to the services and requests that this client makes.
 func NewClient(opts ...option.RequestOption) (r *Client) {
 	opts = append(DefaultClientOptions(), opts...)
 
