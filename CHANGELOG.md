@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.25.0 (2025-04-15)
+
+Full Changelog: [v2.24.0...v2.25.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.24.0...v2.25.0)
+
+### Features
+
+* **client:** add support for reading base URL from environment variable ([2dbb328](https://github.com/Modern-Treasury/modern-treasury-go/commit/2dbb3282e923f54bf71f5fae2107b02ce13dee67))
+
+
+### Chores
+
+* **docs:** document pre-request options ([909ba93](https://github.com/Modern-Treasury/modern-treasury-go/commit/909ba93339de42a073cc3d0942b2227ad0b6836d))
+* **internal:** expand CI branch coverage ([#337](https://github.com/Modern-Treasury/modern-treasury-go/issues/337)) ([bc08740](https://github.com/Modern-Treasury/modern-treasury-go/commit/bc08740b455fbc0aad3705745e2995d45484450a))
+* **internal:** reduce CI branch coverage ([8b96c15](https://github.com/Modern-Treasury/modern-treasury-go/commit/8b96c1578bec92e7ab5be4371d6768c50f952bb9))
+
+
+### Documentation
+
+* update documentation links to be more uniform ([7f8ea3d](https://github.com/Modern-Treasury/modern-treasury-go/commit/7f8ea3d89cafcf34831f8e7d88abf87b8a922933))
+
 ## 2.24.0 (2025-04-07)
 
 Full Changelog: [v2.23.0...v2.24.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.23.0...v2.24.0)
