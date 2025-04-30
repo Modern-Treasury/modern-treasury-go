@@ -41,7 +41,10 @@ func (r *Page[T]) GetNextPage() (res *Page[T], err error) {
 		return nil, nil
 	}
 	cfg := r.cfg.Clone(r.cfg.Context)
-	cfg.Apply(option.WithQuery("after_cursor", next))
+	err = cfg.Apply(option.WithQuery("after_cursor", next))
+	if err != nil {
+		return nil, err
+	}
 	var raw *http.Response
 	cfg.ResponseInto = &raw
 	cfg.ResponseBodyInto = &res
