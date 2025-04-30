@@ -148,7 +148,7 @@ func NewRequestConfig(ctx context.Context, method string, u string, body interfa
 	if reader != nil {
 		req.Header.Set("Content-Type", contentType)
 	}
-	if method != http.MethodGet {
+	if method == http.MethodPost || method == http.MethodPut {
 		// Note this can be overridden with `WithHeader("Idempotency-Key", myIdempotencyKey)`
 		req.Header.Set("Idempotency-Key", "stainless-go-"+uuid.New().String())
 	}
@@ -583,7 +583,10 @@ func (cfg *RequestConfig) Clone(ctx context.Context) *RequestConfig {
 		OrganizationID: cfg.OrganizationID,
 		WebhookKey:     cfg.WebhookKey,
 	}
-	new.Request.Header.Set("Idempotency-Key", "stainless-go-"+uuid.New().String())
+	// Only set idempotency key for POST and PUT requests
+	if new.Request.Method == http.MethodPost || new.Request.Method == http.MethodPut {
+		new.Request.Header.Set("Idempotency-Key", "stainless-go-"+uuid.New().String())
+	}
 	return new
 }
 
