@@ -1,5 +1,29 @@
 # Changelog
 
+## 2.26.0 (2025-05-13)
+
+Full Changelog: [v2.25.0...v2.26.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.25.0...v2.26.0)
+
+### Features
+
+* **api:** only send idempotency headers on PUT / POST requests ([e0b6824](https://github.com/Modern-Treasury/modern-treasury-go/commit/e0b6824f86dea1ed5cdd6e43d371a0c27f2d40e1))
+* **client:** add support for endpoint-specific base URLs in python ([5317c1d](https://github.com/Modern-Treasury/modern-treasury-go/commit/5317c1d726a95ad0495cccc9efd87ce347a240be))
+
+
+### Bug Fixes
+
+* **client:** clean up reader resources ([bcfe2a4](https://github.com/Modern-Treasury/modern-treasury-go/commit/bcfe2a4e0e33bcb17401aa0c389aa3ab86ec4a89))
+* **client:** correctly update body in WithJSONSet ([3a00b0f](https://github.com/Modern-Treasury/modern-treasury-go/commit/3a00b0f8b5fb7b1d8faf6803440a8f3aabfa2d9c))
+* handle empty bodies in WithJSONSet ([08c40fa](https://github.com/Modern-Treasury/modern-treasury-go/commit/08c40fad60e37059ed0e5c18243e08e983550cd4))
+* **pagination:** handle errors when applying options ([50c7445](https://github.com/Modern-Treasury/modern-treasury-go/commit/50c7445f2a80f27860161a0f64f565eb7e0ea056))
+
+
+### Chores
+
+* **ci:** add timeout thresholds for CI jobs ([02c8e22](https://github.com/Modern-Treasury/modern-treasury-go/commit/02c8e22438fe57b6ea71b10d248eaa624c305f80))
+* **ci:** only use depot for staging repos ([c1e8098](https://github.com/Modern-Treasury/modern-treasury-go/commit/c1e8098e8b2f127f542e7b09c5e3d18a13977103))
+* **ci:** run on more branches and use depot runners ([fd10ee4](https://github.com/Modern-Treasury/modern-treasury-go/commit/fd10ee46ecde3d1894b950beb8c388f034c3a1fa))
+
 ## 2.25.0 (2025-04-15)
 
 Full Changelog: [v2.24.0...v2.25.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.24.0...v2.25.0)
