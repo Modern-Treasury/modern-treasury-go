@@ -177,6 +177,9 @@ const CurrencyEtb = shared.CurrencyEtb
 const CurrencyEur = shared.CurrencyEur
 
 // This is an alias to an internal value.
+const CurrencyEurc = shared.CurrencyEurc
+
+// This is an alias to an internal value.
 const CurrencyFjd = shared.CurrencyFjd
 
 // This is an alias to an internal value.
@@ -402,6 +405,9 @@ const CurrencyPln = shared.CurrencyPln
 const CurrencyPyg = shared.CurrencyPyg
 
 // This is an alias to an internal value.
+const CurrencyPyusd = shared.CurrencyPyusd
+
+// This is an alias to an internal value.
 const CurrencyQar = shared.CurrencyQar
 
 // This is an alias to an internal value.
@@ -418,6 +424,9 @@ const CurrencyRwf = shared.CurrencyRwf
 
 // This is an alias to an internal value.
 const CurrencySar = shared.CurrencySar
+
+// This is an alias to an internal value.
+const CurrencySbc = shared.CurrencySbc
 
 // This is an alias to an internal value.
 const CurrencySbd = shared.CurrencySbd
@@ -502,6 +511,18 @@ const CurrencyUgx = shared.CurrencyUgx
 
 // This is an alias to an internal value.
 const CurrencyUsd = shared.CurrencyUsd
+
+// This is an alias to an internal value.
+const CurrencyUsdb = shared.CurrencyUsdb
+
+// This is an alias to an internal value.
+const CurrencyUsdc = shared.CurrencyUsdc
+
+// This is an alias to an internal value.
+const CurrencyUsdp = shared.CurrencyUsdp
+
+// This is an alias to an internal value.
+const CurrencyUsdt = shared.CurrencyUsdt
 
 // This is an alias to an internal value.
 const CurrencyUyu = shared.CurrencyUyu

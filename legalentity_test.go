@@ -75,7 +75,9 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 		Identifications: moderntreasury.F([]moderntreasury.LegalEntityNewParamsIdentification{{
 			IDNumber:       moderntreasury.F("id_number"),
 			IDType:         moderntreasury.F(moderntreasury.LegalEntityNewParamsIdentificationsIDTypeArCuil),
+			ExpirationDate: moderntreasury.F(time.Now()),
 			IssuingCountry: moderntreasury.F("issuing_country"),
+			IssuingRegion:  moderntreasury.F("issuing_region"),
 		}}),
 		IndustryClassifications: moderntreasury.F([]shared.LegalEntityIndustryClassificationParam{{
 			ID:                  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -136,7 +138,9 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 				Identifications: moderntreasury.F([]moderntreasury.LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentification{{
 					IDNumber:       moderntreasury.F("id_number"),
 					IDType:         moderntreasury.F(moderntreasury.LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil),
+					ExpirationDate: moderntreasury.F(time.Now()),
 					IssuingCountry: moderntreasury.F("issuing_country"),
+					IssuingRegion:  moderntreasury.F("issuing_region"),
 				}}),
 				IndustryClassifications: moderntreasury.F([]shared.LegalEntityIndustryClassificationParam{{
 					ID:                  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -322,7 +326,9 @@ func TestLegalEntityUpdateWithOptionalParams(t *testing.T) {
 			Identifications: moderntreasury.F([]moderntreasury.LegalEntityUpdateParamsIdentification{{
 				IDNumber:       moderntreasury.F("id_number"),
 				IDType:         moderntreasury.F(moderntreasury.LegalEntityUpdateParamsIdentificationsIDTypeArCuil),
+				ExpirationDate: moderntreasury.F(time.Now()),
 				IssuingCountry: moderntreasury.F("issuing_country"),
+				IssuingRegion:  moderntreasury.F("issuing_region"),
 			}}),
 			IndustryClassifications: moderntreasury.F([]shared.LegalEntityIndustryClassificationParam{{
 				ID:                  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),

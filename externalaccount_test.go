@@ -33,7 +33,7 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 			AccountNumber:     moderntreasury.F("account_number"),
 			AccountNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}}),
-		AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
+		AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
 		ContactDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsContactDetail{{
 			ContactIdentifier:     moderntreasury.F("contact_identifier"),
 			ContactIdentifierType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsContactDetailsContactIdentifierTypeEmail),
@@ -127,7 +127,7 @@ func TestExternalAccountUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		moderntreasury.ExternalAccountUpdateParams{
-			AccountType:    moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
+			AccountType:    moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
 			CounterpartyID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Metadata: moderntreasury.F(map[string]string{
 				"foo": "string",

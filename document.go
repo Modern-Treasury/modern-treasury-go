@@ -177,23 +177,23 @@ func (r documentDocumentDetailJSON) RawJSON() string {
 type DocumentDocumentableType string
 
 const (
-	DocumentDocumentableTypeCase                  DocumentDocumentableType = "case"
 	DocumentDocumentableTypeCounterparty          DocumentDocumentableType = "counterparty"
 	DocumentDocumentableTypeExpectedPayment       DocumentDocumentableType = "expected_payment"
 	DocumentDocumentableTypeExternalAccount       DocumentDocumentableType = "external_account"
+	DocumentDocumentableTypeIdentification        DocumentDocumentableType = "identification"
 	DocumentDocumentableTypeIncomingPaymentDetail DocumentDocumentableType = "incoming_payment_detail"
 	DocumentDocumentableTypeInternalAccount       DocumentDocumentableType = "internal_account"
 	DocumentDocumentableTypeOrganization          DocumentDocumentableType = "organization"
 	DocumentDocumentableTypePaperItem             DocumentDocumentableType = "paper_item"
 	DocumentDocumentableTypePaymentOrder          DocumentDocumentableType = "payment_order"
 	DocumentDocumentableTypeTransaction           DocumentDocumentableType = "transaction"
-	DocumentDocumentableTypeDecision              DocumentDocumentableType = "decision"
 	DocumentDocumentableTypeConnection            DocumentDocumentableType = "connection"
+	DocumentDocumentableTypeConversation          DocumentDocumentableType = "conversation"
 )
 
 func (r DocumentDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentDocumentableTypeCase, DocumentDocumentableTypeCounterparty, DocumentDocumentableTypeExpectedPayment, DocumentDocumentableTypeExternalAccount, DocumentDocumentableTypeIncomingPaymentDetail, DocumentDocumentableTypeInternalAccount, DocumentDocumentableTypeOrganization, DocumentDocumentableTypePaperItem, DocumentDocumentableTypePaymentOrder, DocumentDocumentableTypeTransaction, DocumentDocumentableTypeDecision, DocumentDocumentableTypeConnection:
+	case DocumentDocumentableTypeCounterparty, DocumentDocumentableTypeExpectedPayment, DocumentDocumentableTypeExternalAccount, DocumentDocumentableTypeIdentification, DocumentDocumentableTypeIncomingPaymentDetail, DocumentDocumentableTypeInternalAccount, DocumentDocumentableTypeOrganization, DocumentDocumentableTypePaperItem, DocumentDocumentableTypePaymentOrder, DocumentDocumentableTypeTransaction, DocumentDocumentableTypeConnection, DocumentDocumentableTypeConversation:
 		return true
 	}
 	return false
@@ -253,23 +253,23 @@ func (r DocumentNewParams) MarshalMultipart() (data []byte, contentType string, 
 type DocumentNewParamsDocumentableType string
 
 const (
-	DocumentNewParamsDocumentableTypeCases                  DocumentNewParamsDocumentableType = "cases"
 	DocumentNewParamsDocumentableTypeCounterparties         DocumentNewParamsDocumentableType = "counterparties"
 	DocumentNewParamsDocumentableTypeExpectedPayments       DocumentNewParamsDocumentableType = "expected_payments"
 	DocumentNewParamsDocumentableTypeExternalAccounts       DocumentNewParamsDocumentableType = "external_accounts"
+	DocumentNewParamsDocumentableTypeIdentifications        DocumentNewParamsDocumentableType = "identifications"
 	DocumentNewParamsDocumentableTypeIncomingPaymentDetails DocumentNewParamsDocumentableType = "incoming_payment_details"
 	DocumentNewParamsDocumentableTypeInternalAccounts       DocumentNewParamsDocumentableType = "internal_accounts"
 	DocumentNewParamsDocumentableTypeOrganizations          DocumentNewParamsDocumentableType = "organizations"
 	DocumentNewParamsDocumentableTypePaperItems             DocumentNewParamsDocumentableType = "paper_items"
 	DocumentNewParamsDocumentableTypePaymentOrders          DocumentNewParamsDocumentableType = "payment_orders"
 	DocumentNewParamsDocumentableTypeTransactions           DocumentNewParamsDocumentableType = "transactions"
-	DocumentNewParamsDocumentableTypeDecisions              DocumentNewParamsDocumentableType = "decisions"
 	DocumentNewParamsDocumentableTypeConnections            DocumentNewParamsDocumentableType = "connections"
+	DocumentNewParamsDocumentableTypeConversations          DocumentNewParamsDocumentableType = "conversations"
 )
 
 func (r DocumentNewParamsDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentNewParamsDocumentableTypeCases, DocumentNewParamsDocumentableTypeCounterparties, DocumentNewParamsDocumentableTypeExpectedPayments, DocumentNewParamsDocumentableTypeExternalAccounts, DocumentNewParamsDocumentableTypeIncomingPaymentDetails, DocumentNewParamsDocumentableTypeInternalAccounts, DocumentNewParamsDocumentableTypeOrganizations, DocumentNewParamsDocumentableTypePaperItems, DocumentNewParamsDocumentableTypePaymentOrders, DocumentNewParamsDocumentableTypeTransactions, DocumentNewParamsDocumentableTypeDecisions, DocumentNewParamsDocumentableTypeConnections:
+	case DocumentNewParamsDocumentableTypeCounterparties, DocumentNewParamsDocumentableTypeExpectedPayments, DocumentNewParamsDocumentableTypeExternalAccounts, DocumentNewParamsDocumentableTypeIdentifications, DocumentNewParamsDocumentableTypeIncomingPaymentDetails, DocumentNewParamsDocumentableTypeInternalAccounts, DocumentNewParamsDocumentableTypeOrganizations, DocumentNewParamsDocumentableTypePaperItems, DocumentNewParamsDocumentableTypePaymentOrders, DocumentNewParamsDocumentableTypeTransactions, DocumentNewParamsDocumentableTypeConnections, DocumentNewParamsDocumentableTypeConversations:
 		return true
 	}
 	return false
@@ -300,23 +300,23 @@ func (r DocumentListParams) URLQuery() (v url.Values) {
 type DocumentListParamsDocumentableType string
 
 const (
-	DocumentListParamsDocumentableTypeCases                  DocumentListParamsDocumentableType = "cases"
 	DocumentListParamsDocumentableTypeCounterparties         DocumentListParamsDocumentableType = "counterparties"
 	DocumentListParamsDocumentableTypeExpectedPayments       DocumentListParamsDocumentableType = "expected_payments"
 	DocumentListParamsDocumentableTypeExternalAccounts       DocumentListParamsDocumentableType = "external_accounts"
+	DocumentListParamsDocumentableTypeIdentifications        DocumentListParamsDocumentableType = "identifications"
 	DocumentListParamsDocumentableTypeIncomingPaymentDetails DocumentListParamsDocumentableType = "incoming_payment_details"
 	DocumentListParamsDocumentableTypeInternalAccounts       DocumentListParamsDocumentableType = "internal_accounts"
 	DocumentListParamsDocumentableTypeOrganizations          DocumentListParamsDocumentableType = "organizations"
 	DocumentListParamsDocumentableTypePaperItems             DocumentListParamsDocumentableType = "paper_items"
 	DocumentListParamsDocumentableTypePaymentOrders          DocumentListParamsDocumentableType = "payment_orders"
 	DocumentListParamsDocumentableTypeTransactions           DocumentListParamsDocumentableType = "transactions"
-	DocumentListParamsDocumentableTypeDecisions              DocumentListParamsDocumentableType = "decisions"
 	DocumentListParamsDocumentableTypeConnections            DocumentListParamsDocumentableType = "connections"
+	DocumentListParamsDocumentableTypeConversations          DocumentListParamsDocumentableType = "conversations"
 )
 
 func (r DocumentListParamsDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentListParamsDocumentableTypeCases, DocumentListParamsDocumentableTypeCounterparties, DocumentListParamsDocumentableTypeExpectedPayments, DocumentListParamsDocumentableTypeExternalAccounts, DocumentListParamsDocumentableTypeIncomingPaymentDetails, DocumentListParamsDocumentableTypeInternalAccounts, DocumentListParamsDocumentableTypeOrganizations, DocumentListParamsDocumentableTypePaperItems, DocumentListParamsDocumentableTypePaymentOrders, DocumentListParamsDocumentableTypeTransactions, DocumentListParamsDocumentableTypeDecisions, DocumentListParamsDocumentableTypeConnections:
+	case DocumentListParamsDocumentableTypeCounterparties, DocumentListParamsDocumentableTypeExpectedPayments, DocumentListParamsDocumentableTypeExternalAccounts, DocumentListParamsDocumentableTypeIdentifications, DocumentListParamsDocumentableTypeIncomingPaymentDetails, DocumentListParamsDocumentableTypeInternalAccounts, DocumentListParamsDocumentableTypeOrganizations, DocumentListParamsDocumentableTypePaperItems, DocumentListParamsDocumentableTypePaymentOrders, DocumentListParamsDocumentableTypeTransactions, DocumentListParamsDocumentableTypeConnections, DocumentListParamsDocumentableTypeConversations:
 		return true
 	}
 	return false

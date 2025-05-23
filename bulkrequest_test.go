@@ -112,7 +112,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					AccountNumber:     moderntreasury.F("account_number"),
 					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}}),
-				AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
+				AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
 				ContactDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetail{{
 					ContactIdentifier:     moderntreasury.F("contact_identifier"),
 					ContactIdentifierType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail),

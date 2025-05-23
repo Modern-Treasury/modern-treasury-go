@@ -76,7 +76,9 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 			Identifications: moderntreasury.F([]moderntreasury.ConnectionLegalEntityNewParamsLegalEntityIdentification{{
 				IDNumber:       moderntreasury.F("id_number"),
 				IDType:         moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeArCuil),
+				ExpirationDate: moderntreasury.F(time.Now()),
 				IssuingCountry: moderntreasury.F("issuing_country"),
+				IssuingRegion:  moderntreasury.F("issuing_region"),
 			}}),
 			IndustryClassifications: moderntreasury.F([]shared.LegalEntityIndustryClassificationParam{{
 				ID:                  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -137,7 +139,9 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 					Identifications: moderntreasury.F([]moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification{{
 						IDNumber:       moderntreasury.F("id_number"),
 						IDType:         moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil),
+						ExpirationDate: moderntreasury.F(time.Now()),
 						IssuingCountry: moderntreasury.F("issuing_country"),
+						IssuingRegion:  moderntreasury.F("issuing_region"),
 					}}),
 					IndustryClassifications: moderntreasury.F([]shared.LegalEntityIndustryClassificationParam{{
 						ID:                  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),

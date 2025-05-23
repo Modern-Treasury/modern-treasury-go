@@ -46,7 +46,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 		Description:             moderntreasury.F("description"),
 		Documents: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsDocument{{
 			DocumentableID:   moderntreasury.F("documentable_id"),
-			DocumentableType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsDocumentsDocumentableTypeCases),
+			DocumentableType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsDocumentsDocumentableTypeCounterparties),
 			File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
 			DocumentType:     moderntreasury.F("document_type"),
 		}}),
@@ -116,7 +116,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				AccountNumber:     moderntreasury.F("account_number"),
 				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 			}}),
-			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
+			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
 			ContactDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsReceivingAccountContactDetail{{
 				ContactIdentifier:     moderntreasury.F("contact_identifier"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypeEmail),
@@ -264,7 +264,7 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 					AccountNumber:     moderntreasury.F("account_number"),
 					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}}),
-				AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
+				AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
 				ContactDetails: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsReceivingAccountContactDetail{{
 					ContactIdentifier:     moderntreasury.F("contact_identifier"),
 					ContactIdentifierType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypeEmail),
@@ -467,7 +467,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 				AccountNumber:     moderntreasury.F("account_number"),
 				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 			}}),
-			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
+			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
 			ContactDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountContactDetail{{
 				ContactIdentifier:     moderntreasury.F("contact_identifier"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypeEmail),
