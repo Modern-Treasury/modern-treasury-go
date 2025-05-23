@@ -136,6 +136,8 @@ type InvoiceLineItem struct {
 	// money and increases the invoice's `total_amount` due. `credit` has the opposite
 	// intention and effect.
 	Direction string `json:"direction,required"`
+	// The ID of the invoice for this line item.
+	InvoiceID string `json:"invoice_id,required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode,required"`
@@ -166,6 +168,7 @@ type invoiceLineItemJSON struct {
 	CreatedAt         apijson.Field
 	Description       apijson.Field
 	Direction         apijson.Field
+	InvoiceID         apijson.Field
 	LiveMode          apijson.Field
 	Metadata          apijson.Field
 	Name              apijson.Field

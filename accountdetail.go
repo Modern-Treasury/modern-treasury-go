@@ -157,21 +157,25 @@ func (r accountDetailJSON) RawJSON() string {
 type AccountDetailAccountNumberType string
 
 const (
-	AccountDetailAccountNumberTypeAuNumber      AccountDetailAccountNumberType = "au_number"
-	AccountDetailAccountNumberTypeClabe         AccountDetailAccountNumberType = "clabe"
-	AccountDetailAccountNumberTypeHkNumber      AccountDetailAccountNumberType = "hk_number"
-	AccountDetailAccountNumberTypeIban          AccountDetailAccountNumberType = "iban"
-	AccountDetailAccountNumberTypeIDNumber      AccountDetailAccountNumberType = "id_number"
-	AccountDetailAccountNumberTypeNzNumber      AccountDetailAccountNumberType = "nz_number"
-	AccountDetailAccountNumberTypeOther         AccountDetailAccountNumberType = "other"
-	AccountDetailAccountNumberTypePan           AccountDetailAccountNumberType = "pan"
-	AccountDetailAccountNumberTypeSgNumber      AccountDetailAccountNumberType = "sg_number"
-	AccountDetailAccountNumberTypeWalletAddress AccountDetailAccountNumberType = "wallet_address"
+	AccountDetailAccountNumberTypeAuNumber        AccountDetailAccountNumberType = "au_number"
+	AccountDetailAccountNumberTypeBaseAddress     AccountDetailAccountNumberType = "base_address"
+	AccountDetailAccountNumberTypeClabe           AccountDetailAccountNumberType = "clabe"
+	AccountDetailAccountNumberTypeEthereumAddress AccountDetailAccountNumberType = "ethereum_address"
+	AccountDetailAccountNumberTypeHkNumber        AccountDetailAccountNumberType = "hk_number"
+	AccountDetailAccountNumberTypeIban            AccountDetailAccountNumberType = "iban"
+	AccountDetailAccountNumberTypeIDNumber        AccountDetailAccountNumberType = "id_number"
+	AccountDetailAccountNumberTypeNzNumber        AccountDetailAccountNumberType = "nz_number"
+	AccountDetailAccountNumberTypeOther           AccountDetailAccountNumberType = "other"
+	AccountDetailAccountNumberTypePan             AccountDetailAccountNumberType = "pan"
+	AccountDetailAccountNumberTypePolygonAddress  AccountDetailAccountNumberType = "polygon_address"
+	AccountDetailAccountNumberTypeSgNumber        AccountDetailAccountNumberType = "sg_number"
+	AccountDetailAccountNumberTypeSolanaAddress   AccountDetailAccountNumberType = "solana_address"
+	AccountDetailAccountNumberTypeWalletAddress   AccountDetailAccountNumberType = "wallet_address"
 )
 
 func (r AccountDetailAccountNumberType) IsKnown() bool {
 	switch r {
-	case AccountDetailAccountNumberTypeAuNumber, AccountDetailAccountNumberTypeClabe, AccountDetailAccountNumberTypeHkNumber, AccountDetailAccountNumberTypeIban, AccountDetailAccountNumberTypeIDNumber, AccountDetailAccountNumberTypeNzNumber, AccountDetailAccountNumberTypeOther, AccountDetailAccountNumberTypePan, AccountDetailAccountNumberTypeSgNumber, AccountDetailAccountNumberTypeWalletAddress:
+	case AccountDetailAccountNumberTypeAuNumber, AccountDetailAccountNumberTypeBaseAddress, AccountDetailAccountNumberTypeClabe, AccountDetailAccountNumberTypeEthereumAddress, AccountDetailAccountNumberTypeHkNumber, AccountDetailAccountNumberTypeIban, AccountDetailAccountNumberTypeIDNumber, AccountDetailAccountNumberTypeNzNumber, AccountDetailAccountNumberTypeOther, AccountDetailAccountNumberTypePan, AccountDetailAccountNumberTypePolygonAddress, AccountDetailAccountNumberTypeSgNumber, AccountDetailAccountNumberTypeSolanaAddress, AccountDetailAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false
@@ -208,21 +212,25 @@ func (r AccountDetailNewParamsAccountsType) IsKnown() bool {
 type AccountDetailNewParamsAccountNumberType string
 
 const (
-	AccountDetailNewParamsAccountNumberTypeAuNumber      AccountDetailNewParamsAccountNumberType = "au_number"
-	AccountDetailNewParamsAccountNumberTypeClabe         AccountDetailNewParamsAccountNumberType = "clabe"
-	AccountDetailNewParamsAccountNumberTypeHkNumber      AccountDetailNewParamsAccountNumberType = "hk_number"
-	AccountDetailNewParamsAccountNumberTypeIban          AccountDetailNewParamsAccountNumberType = "iban"
-	AccountDetailNewParamsAccountNumberTypeIDNumber      AccountDetailNewParamsAccountNumberType = "id_number"
-	AccountDetailNewParamsAccountNumberTypeNzNumber      AccountDetailNewParamsAccountNumberType = "nz_number"
-	AccountDetailNewParamsAccountNumberTypeOther         AccountDetailNewParamsAccountNumberType = "other"
-	AccountDetailNewParamsAccountNumberTypePan           AccountDetailNewParamsAccountNumberType = "pan"
-	AccountDetailNewParamsAccountNumberTypeSgNumber      AccountDetailNewParamsAccountNumberType = "sg_number"
-	AccountDetailNewParamsAccountNumberTypeWalletAddress AccountDetailNewParamsAccountNumberType = "wallet_address"
+	AccountDetailNewParamsAccountNumberTypeAuNumber        AccountDetailNewParamsAccountNumberType = "au_number"
+	AccountDetailNewParamsAccountNumberTypeBaseAddress     AccountDetailNewParamsAccountNumberType = "base_address"
+	AccountDetailNewParamsAccountNumberTypeClabe           AccountDetailNewParamsAccountNumberType = "clabe"
+	AccountDetailNewParamsAccountNumberTypeEthereumAddress AccountDetailNewParamsAccountNumberType = "ethereum_address"
+	AccountDetailNewParamsAccountNumberTypeHkNumber        AccountDetailNewParamsAccountNumberType = "hk_number"
+	AccountDetailNewParamsAccountNumberTypeIban            AccountDetailNewParamsAccountNumberType = "iban"
+	AccountDetailNewParamsAccountNumberTypeIDNumber        AccountDetailNewParamsAccountNumberType = "id_number"
+	AccountDetailNewParamsAccountNumberTypeNzNumber        AccountDetailNewParamsAccountNumberType = "nz_number"
+	AccountDetailNewParamsAccountNumberTypeOther           AccountDetailNewParamsAccountNumberType = "other"
+	AccountDetailNewParamsAccountNumberTypePan             AccountDetailNewParamsAccountNumberType = "pan"
+	AccountDetailNewParamsAccountNumberTypePolygonAddress  AccountDetailNewParamsAccountNumberType = "polygon_address"
+	AccountDetailNewParamsAccountNumberTypeSgNumber        AccountDetailNewParamsAccountNumberType = "sg_number"
+	AccountDetailNewParamsAccountNumberTypeSolanaAddress   AccountDetailNewParamsAccountNumberType = "solana_address"
+	AccountDetailNewParamsAccountNumberTypeWalletAddress   AccountDetailNewParamsAccountNumberType = "wallet_address"
 )
 
 func (r AccountDetailNewParamsAccountNumberType) IsKnown() bool {
 	switch r {
-	case AccountDetailNewParamsAccountNumberTypeAuNumber, AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeIDNumber, AccountDetailNewParamsAccountNumberTypeNzNumber, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypeSgNumber, AccountDetailNewParamsAccountNumberTypeWalletAddress:
+	case AccountDetailNewParamsAccountNumberTypeAuNumber, AccountDetailNewParamsAccountNumberTypeBaseAddress, AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeEthereumAddress, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeIDNumber, AccountDetailNewParamsAccountNumberTypeNzNumber, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypePolygonAddress, AccountDetailNewParamsAccountNumberTypeSgNumber, AccountDetailNewParamsAccountNumberTypeSolanaAddress, AccountDetailNewParamsAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false

@@ -38,7 +38,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				AccountNumber:     moderntreasury.F("account_number"),
 				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber),
 			}}),
-			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
+			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
 			ContactDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsContactDetail{{
 				ContactIdentifier:     moderntreasury.F("contact_identifier"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail),
@@ -132,7 +132,9 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			Identifications: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityIdentification{{
 				IDNumber:       moderntreasury.F("id_number"),
 				IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuil),
+				ExpirationDate: moderntreasury.F(time.Now()),
 				IssuingCountry: moderntreasury.F("issuing_country"),
+				IssuingRegion:  moderntreasury.F("issuing_region"),
 			}}),
 			IndustryClassifications: moderntreasury.F([]shared.LegalEntityIndustryClassificationParam{{
 				ID:                  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -193,7 +195,9 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 					Identifications: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification{{
 						IDNumber:       moderntreasury.F("id_number"),
 						IDType:         moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil),
+						ExpirationDate: moderntreasury.F(time.Now()),
 						IssuingCountry: moderntreasury.F("issuing_country"),
+						IssuingRegion:  moderntreasury.F("issuing_region"),
 					}}),
 					IndustryClassifications: moderntreasury.F([]shared.LegalEntityIndustryClassificationParam{{
 						ID:                  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),

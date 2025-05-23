@@ -348,11 +348,16 @@ type LegalEntityIdentification struct {
 	ID          string    `json:"id,required" format:"uuid"`
 	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
 	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	// The date when the Identification is no longer considered valid by the issuing
+	// authority.
+	ExpirationDate time.Time `json:"expiration_date,required,nullable" format:"date"`
 	// The type of ID number.
 	IDType LegalEntityIdentificationsIDType `json:"id_type,required"`
 	// The ISO 3166-1 alpha-2 country code of the country that issued the
 	// identification
 	IssuingCountry string `json:"issuing_country,required,nullable"`
+	// The region in which the identifcation was issued.
+	IssuingRegion string `json:"issuing_region,required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode  bool                          `json:"live_mode,required"`
@@ -367,8 +372,10 @@ type legalEntityIdentificationJSON struct {
 	ID             apijson.Field
 	CreatedAt      apijson.Field
 	DiscardedAt    apijson.Field
+	ExpirationDate apijson.Field
 	IDType         apijson.Field
 	IssuingCountry apijson.Field
+	IssuingRegion  apijson.Field
 	LiveMode       apijson.Field
 	Object         apijson.Field
 	UpdatedAt      apijson.Field
@@ -388,32 +395,33 @@ func (r legalEntityIdentificationJSON) RawJSON() string {
 type LegalEntityIdentificationsIDType string
 
 const (
-	LegalEntityIdentificationsIDTypeArCuil    LegalEntityIdentificationsIDType = "ar_cuil"
-	LegalEntityIdentificationsIDTypeArCuit    LegalEntityIdentificationsIDType = "ar_cuit"
-	LegalEntityIdentificationsIDTypeBrCnpj    LegalEntityIdentificationsIDType = "br_cnpj"
-	LegalEntityIdentificationsIDTypeBrCpf     LegalEntityIdentificationsIDType = "br_cpf"
-	LegalEntityIdentificationsIDTypeClRun     LegalEntityIdentificationsIDType = "cl_run"
-	LegalEntityIdentificationsIDTypeClRut     LegalEntityIdentificationsIDType = "cl_rut"
-	LegalEntityIdentificationsIDTypeCoCedulas LegalEntityIdentificationsIDType = "co_cedulas"
-	LegalEntityIdentificationsIDTypeCoNit     LegalEntityIdentificationsIDType = "co_nit"
-	LegalEntityIdentificationsIDTypeHnID      LegalEntityIdentificationsIDType = "hn_id"
-	LegalEntityIdentificationsIDTypeHnRtn     LegalEntityIdentificationsIDType = "hn_rtn"
-	LegalEntityIdentificationsIDTypeInLei     LegalEntityIdentificationsIDType = "in_lei"
-	LegalEntityIdentificationsIDTypeKrBrn     LegalEntityIdentificationsIDType = "kr_brn"
-	LegalEntityIdentificationsIDTypeKrCrn     LegalEntityIdentificationsIDType = "kr_crn"
-	LegalEntityIdentificationsIDTypeKrRrn     LegalEntityIdentificationsIDType = "kr_rrn"
-	LegalEntityIdentificationsIDTypePassport  LegalEntityIdentificationsIDType = "passport"
-	LegalEntityIdentificationsIDTypeSaTin     LegalEntityIdentificationsIDType = "sa_tin"
-	LegalEntityIdentificationsIDTypeSaVat     LegalEntityIdentificationsIDType = "sa_vat"
-	LegalEntityIdentificationsIDTypeUsEin     LegalEntityIdentificationsIDType = "us_ein"
-	LegalEntityIdentificationsIDTypeUsItin    LegalEntityIdentificationsIDType = "us_itin"
-	LegalEntityIdentificationsIDTypeUsSsn     LegalEntityIdentificationsIDType = "us_ssn"
-	LegalEntityIdentificationsIDTypeVnTin     LegalEntityIdentificationsIDType = "vn_tin"
+	LegalEntityIdentificationsIDTypeArCuil         LegalEntityIdentificationsIDType = "ar_cuil"
+	LegalEntityIdentificationsIDTypeArCuit         LegalEntityIdentificationsIDType = "ar_cuit"
+	LegalEntityIdentificationsIDTypeBrCnpj         LegalEntityIdentificationsIDType = "br_cnpj"
+	LegalEntityIdentificationsIDTypeBrCpf          LegalEntityIdentificationsIDType = "br_cpf"
+	LegalEntityIdentificationsIDTypeClRun          LegalEntityIdentificationsIDType = "cl_run"
+	LegalEntityIdentificationsIDTypeClRut          LegalEntityIdentificationsIDType = "cl_rut"
+	LegalEntityIdentificationsIDTypeCoCedulas      LegalEntityIdentificationsIDType = "co_cedulas"
+	LegalEntityIdentificationsIDTypeCoNit          LegalEntityIdentificationsIDType = "co_nit"
+	LegalEntityIdentificationsIDTypeDriversLicense LegalEntityIdentificationsIDType = "drivers_license"
+	LegalEntityIdentificationsIDTypeHnID           LegalEntityIdentificationsIDType = "hn_id"
+	LegalEntityIdentificationsIDTypeHnRtn          LegalEntityIdentificationsIDType = "hn_rtn"
+	LegalEntityIdentificationsIDTypeInLei          LegalEntityIdentificationsIDType = "in_lei"
+	LegalEntityIdentificationsIDTypeKrBrn          LegalEntityIdentificationsIDType = "kr_brn"
+	LegalEntityIdentificationsIDTypeKrCrn          LegalEntityIdentificationsIDType = "kr_crn"
+	LegalEntityIdentificationsIDTypeKrRrn          LegalEntityIdentificationsIDType = "kr_rrn"
+	LegalEntityIdentificationsIDTypePassport       LegalEntityIdentificationsIDType = "passport"
+	LegalEntityIdentificationsIDTypeSaTin          LegalEntityIdentificationsIDType = "sa_tin"
+	LegalEntityIdentificationsIDTypeSaVat          LegalEntityIdentificationsIDType = "sa_vat"
+	LegalEntityIdentificationsIDTypeUsEin          LegalEntityIdentificationsIDType = "us_ein"
+	LegalEntityIdentificationsIDTypeUsItin         LegalEntityIdentificationsIDType = "us_itin"
+	LegalEntityIdentificationsIDTypeUsSsn          LegalEntityIdentificationsIDType = "us_ssn"
+	LegalEntityIdentificationsIDTypeVnTin          LegalEntityIdentificationsIDType = "vn_tin"
 )
 
 func (r LegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeVnTin:
+	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeDriversLicense, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false
@@ -885,9 +893,14 @@ type LegalEntityNewParamsIdentification struct {
 	IDNumber param.Field[string] `json:"id_number,required"`
 	// The type of ID number.
 	IDType param.Field[LegalEntityNewParamsIdentificationsIDType] `json:"id_type,required"`
+	// The date when the Identification is no longer considered valid by the issuing
+	// authority.
+	ExpirationDate param.Field[time.Time] `json:"expiration_date" format:"date"`
 	// The ISO 3166-1 alpha-2 country code of the country that issued the
 	// identification
 	IssuingCountry param.Field[string] `json:"issuing_country"`
+	// The region in which the identifcation was issued.
+	IssuingRegion param.Field[string] `json:"issuing_region"`
 }
 
 func (r LegalEntityNewParamsIdentification) MarshalJSON() (data []byte, err error) {
@@ -898,32 +911,33 @@ func (r LegalEntityNewParamsIdentification) MarshalJSON() (data []byte, err erro
 type LegalEntityNewParamsIdentificationsIDType string
 
 const (
-	LegalEntityNewParamsIdentificationsIDTypeArCuil    LegalEntityNewParamsIdentificationsIDType = "ar_cuil"
-	LegalEntityNewParamsIdentificationsIDTypeArCuit    LegalEntityNewParamsIdentificationsIDType = "ar_cuit"
-	LegalEntityNewParamsIdentificationsIDTypeBrCnpj    LegalEntityNewParamsIdentificationsIDType = "br_cnpj"
-	LegalEntityNewParamsIdentificationsIDTypeBrCpf     LegalEntityNewParamsIdentificationsIDType = "br_cpf"
-	LegalEntityNewParamsIdentificationsIDTypeClRun     LegalEntityNewParamsIdentificationsIDType = "cl_run"
-	LegalEntityNewParamsIdentificationsIDTypeClRut     LegalEntityNewParamsIdentificationsIDType = "cl_rut"
-	LegalEntityNewParamsIdentificationsIDTypeCoCedulas LegalEntityNewParamsIdentificationsIDType = "co_cedulas"
-	LegalEntityNewParamsIdentificationsIDTypeCoNit     LegalEntityNewParamsIdentificationsIDType = "co_nit"
-	LegalEntityNewParamsIdentificationsIDTypeHnID      LegalEntityNewParamsIdentificationsIDType = "hn_id"
-	LegalEntityNewParamsIdentificationsIDTypeHnRtn     LegalEntityNewParamsIdentificationsIDType = "hn_rtn"
-	LegalEntityNewParamsIdentificationsIDTypeInLei     LegalEntityNewParamsIdentificationsIDType = "in_lei"
-	LegalEntityNewParamsIdentificationsIDTypeKrBrn     LegalEntityNewParamsIdentificationsIDType = "kr_brn"
-	LegalEntityNewParamsIdentificationsIDTypeKrCrn     LegalEntityNewParamsIdentificationsIDType = "kr_crn"
-	LegalEntityNewParamsIdentificationsIDTypeKrRrn     LegalEntityNewParamsIdentificationsIDType = "kr_rrn"
-	LegalEntityNewParamsIdentificationsIDTypePassport  LegalEntityNewParamsIdentificationsIDType = "passport"
-	LegalEntityNewParamsIdentificationsIDTypeSaTin     LegalEntityNewParamsIdentificationsIDType = "sa_tin"
-	LegalEntityNewParamsIdentificationsIDTypeSaVat     LegalEntityNewParamsIdentificationsIDType = "sa_vat"
-	LegalEntityNewParamsIdentificationsIDTypeUsEin     LegalEntityNewParamsIdentificationsIDType = "us_ein"
-	LegalEntityNewParamsIdentificationsIDTypeUsItin    LegalEntityNewParamsIdentificationsIDType = "us_itin"
-	LegalEntityNewParamsIdentificationsIDTypeUsSsn     LegalEntityNewParamsIdentificationsIDType = "us_ssn"
-	LegalEntityNewParamsIdentificationsIDTypeVnTin     LegalEntityNewParamsIdentificationsIDType = "vn_tin"
+	LegalEntityNewParamsIdentificationsIDTypeArCuil         LegalEntityNewParamsIdentificationsIDType = "ar_cuil"
+	LegalEntityNewParamsIdentificationsIDTypeArCuit         LegalEntityNewParamsIdentificationsIDType = "ar_cuit"
+	LegalEntityNewParamsIdentificationsIDTypeBrCnpj         LegalEntityNewParamsIdentificationsIDType = "br_cnpj"
+	LegalEntityNewParamsIdentificationsIDTypeBrCpf          LegalEntityNewParamsIdentificationsIDType = "br_cpf"
+	LegalEntityNewParamsIdentificationsIDTypeClRun          LegalEntityNewParamsIdentificationsIDType = "cl_run"
+	LegalEntityNewParamsIdentificationsIDTypeClRut          LegalEntityNewParamsIdentificationsIDType = "cl_rut"
+	LegalEntityNewParamsIdentificationsIDTypeCoCedulas      LegalEntityNewParamsIdentificationsIDType = "co_cedulas"
+	LegalEntityNewParamsIdentificationsIDTypeCoNit          LegalEntityNewParamsIdentificationsIDType = "co_nit"
+	LegalEntityNewParamsIdentificationsIDTypeDriversLicense LegalEntityNewParamsIdentificationsIDType = "drivers_license"
+	LegalEntityNewParamsIdentificationsIDTypeHnID           LegalEntityNewParamsIdentificationsIDType = "hn_id"
+	LegalEntityNewParamsIdentificationsIDTypeHnRtn          LegalEntityNewParamsIdentificationsIDType = "hn_rtn"
+	LegalEntityNewParamsIdentificationsIDTypeInLei          LegalEntityNewParamsIdentificationsIDType = "in_lei"
+	LegalEntityNewParamsIdentificationsIDTypeKrBrn          LegalEntityNewParamsIdentificationsIDType = "kr_brn"
+	LegalEntityNewParamsIdentificationsIDTypeKrCrn          LegalEntityNewParamsIdentificationsIDType = "kr_crn"
+	LegalEntityNewParamsIdentificationsIDTypeKrRrn          LegalEntityNewParamsIdentificationsIDType = "kr_rrn"
+	LegalEntityNewParamsIdentificationsIDTypePassport       LegalEntityNewParamsIdentificationsIDType = "passport"
+	LegalEntityNewParamsIdentificationsIDTypeSaTin          LegalEntityNewParamsIdentificationsIDType = "sa_tin"
+	LegalEntityNewParamsIdentificationsIDTypeSaVat          LegalEntityNewParamsIdentificationsIDType = "sa_vat"
+	LegalEntityNewParamsIdentificationsIDTypeUsEin          LegalEntityNewParamsIdentificationsIDType = "us_ein"
+	LegalEntityNewParamsIdentificationsIDTypeUsItin         LegalEntityNewParamsIdentificationsIDType = "us_itin"
+	LegalEntityNewParamsIdentificationsIDTypeUsSsn          LegalEntityNewParamsIdentificationsIDType = "us_ssn"
+	LegalEntityNewParamsIdentificationsIDTypeVnTin          LegalEntityNewParamsIdentificationsIDType = "vn_tin"
 )
 
 func (r LegalEntityNewParamsIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case LegalEntityNewParamsIdentificationsIDTypeArCuil, LegalEntityNewParamsIdentificationsIDTypeArCuit, LegalEntityNewParamsIdentificationsIDTypeBrCnpj, LegalEntityNewParamsIdentificationsIDTypeBrCpf, LegalEntityNewParamsIdentificationsIDTypeClRun, LegalEntityNewParamsIdentificationsIDTypeClRut, LegalEntityNewParamsIdentificationsIDTypeCoCedulas, LegalEntityNewParamsIdentificationsIDTypeCoNit, LegalEntityNewParamsIdentificationsIDTypeHnID, LegalEntityNewParamsIdentificationsIDTypeHnRtn, LegalEntityNewParamsIdentificationsIDTypeInLei, LegalEntityNewParamsIdentificationsIDTypeKrBrn, LegalEntityNewParamsIdentificationsIDTypeKrCrn, LegalEntityNewParamsIdentificationsIDTypeKrRrn, LegalEntityNewParamsIdentificationsIDTypePassport, LegalEntityNewParamsIdentificationsIDTypeSaTin, LegalEntityNewParamsIdentificationsIDTypeSaVat, LegalEntityNewParamsIdentificationsIDTypeUsEin, LegalEntityNewParamsIdentificationsIDTypeUsItin, LegalEntityNewParamsIdentificationsIDTypeUsSsn, LegalEntityNewParamsIdentificationsIDTypeVnTin:
+	case LegalEntityNewParamsIdentificationsIDTypeArCuil, LegalEntityNewParamsIdentificationsIDTypeArCuit, LegalEntityNewParamsIdentificationsIDTypeBrCnpj, LegalEntityNewParamsIdentificationsIDTypeBrCpf, LegalEntityNewParamsIdentificationsIDTypeClRun, LegalEntityNewParamsIdentificationsIDTypeClRut, LegalEntityNewParamsIdentificationsIDTypeCoCedulas, LegalEntityNewParamsIdentificationsIDTypeCoNit, LegalEntityNewParamsIdentificationsIDTypeDriversLicense, LegalEntityNewParamsIdentificationsIDTypeHnID, LegalEntityNewParamsIdentificationsIDTypeHnRtn, LegalEntityNewParamsIdentificationsIDTypeInLei, LegalEntityNewParamsIdentificationsIDTypeKrBrn, LegalEntityNewParamsIdentificationsIDTypeKrCrn, LegalEntityNewParamsIdentificationsIDTypeKrRrn, LegalEntityNewParamsIdentificationsIDTypePassport, LegalEntityNewParamsIdentificationsIDTypeSaTin, LegalEntityNewParamsIdentificationsIDTypeSaVat, LegalEntityNewParamsIdentificationsIDTypeUsEin, LegalEntityNewParamsIdentificationsIDTypeUsItin, LegalEntityNewParamsIdentificationsIDTypeUsSsn, LegalEntityNewParamsIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false
@@ -1057,9 +1071,14 @@ type LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentification s
 	IDNumber param.Field[string] `json:"id_number,required"`
 	// The type of ID number.
 	IDType param.Field[LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType] `json:"id_type,required"`
+	// The date when the Identification is no longer considered valid by the issuing
+	// authority.
+	ExpirationDate param.Field[time.Time] `json:"expiration_date" format:"date"`
 	// The ISO 3166-1 alpha-2 country code of the country that issued the
 	// identification
 	IssuingCountry param.Field[string] `json:"issuing_country"`
+	// The region in which the identifcation was issued.
+	IssuingRegion param.Field[string] `json:"issuing_region"`
 }
 
 func (r LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentification) MarshalJSON() (data []byte, err error) {
@@ -1070,32 +1089,33 @@ func (r LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificatio
 type LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType string
 
 const (
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil    LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "ar_cuil"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuit    LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "ar_cuit"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCnpj    LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "br_cnpj"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCpf     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "br_cpf"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRun     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "cl_run"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRut     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "cl_rut"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoCedulas LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "co_cedulas"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoNit     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "co_nit"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnID      LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "hn_id"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnRtn     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "hn_rtn"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeInLei     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "in_lei"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrBrn     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "kr_brn"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrCrn     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "kr_crn"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrRrn     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "kr_rrn"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypePassport  LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "passport"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaTin     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "sa_tin"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaVat     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "sa_vat"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsEin     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_ein"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsItin    LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_itin"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsSsn     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_ssn"
-	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeVnTin     LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "vn_tin"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil         LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "ar_cuil"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuit         LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "ar_cuit"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCnpj         LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "br_cnpj"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCpf          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "br_cpf"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRun          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "cl_run"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRut          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "cl_rut"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoCedulas      LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "co_cedulas"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoNit          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "co_nit"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeDriversLicense LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "drivers_license"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnID           LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "hn_id"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnRtn          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "hn_rtn"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeInLei          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "in_lei"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrBrn          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "kr_brn"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrCrn          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "kr_crn"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrRrn          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "kr_rrn"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypePassport       LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "passport"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaTin          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "sa_tin"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaVat          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "sa_vat"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsEin          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_ein"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsItin         LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_itin"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsSsn          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_ssn"
+	LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeVnTin          LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "vn_tin"
 )
 
 func (r LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuit, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCnpj, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCpf, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRun, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRut, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoCedulas, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoNit, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnID, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnRtn, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeInLei, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrBrn, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrCrn, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrRrn, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypePassport, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaTin, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaVat, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsEin, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsItin, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsSsn, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeVnTin:
+	case LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuit, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCnpj, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCpf, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRun, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRut, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoCedulas, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoNit, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeDriversLicense, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnID, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnRtn, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeInLei, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrBrn, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrCrn, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrRrn, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypePassport, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaTin, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaVat, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsEin, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsItin, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsSsn, LegalEntityNewParamsLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false
@@ -1302,9 +1322,14 @@ type LegalEntityUpdateParamsIdentification struct {
 	IDNumber param.Field[string] `json:"id_number,required"`
 	// The type of ID number.
 	IDType param.Field[LegalEntityUpdateParamsIdentificationsIDType] `json:"id_type,required"`
+	// The date when the Identification is no longer considered valid by the issuing
+	// authority.
+	ExpirationDate param.Field[time.Time] `json:"expiration_date" format:"date"`
 	// The ISO 3166-1 alpha-2 country code of the country that issued the
 	// identification
 	IssuingCountry param.Field[string] `json:"issuing_country"`
+	// The region in which the identifcation was issued.
+	IssuingRegion param.Field[string] `json:"issuing_region"`
 }
 
 func (r LegalEntityUpdateParamsIdentification) MarshalJSON() (data []byte, err error) {
@@ -1315,32 +1340,33 @@ func (r LegalEntityUpdateParamsIdentification) MarshalJSON() (data []byte, err e
 type LegalEntityUpdateParamsIdentificationsIDType string
 
 const (
-	LegalEntityUpdateParamsIdentificationsIDTypeArCuil    LegalEntityUpdateParamsIdentificationsIDType = "ar_cuil"
-	LegalEntityUpdateParamsIdentificationsIDTypeArCuit    LegalEntityUpdateParamsIdentificationsIDType = "ar_cuit"
-	LegalEntityUpdateParamsIdentificationsIDTypeBrCnpj    LegalEntityUpdateParamsIdentificationsIDType = "br_cnpj"
-	LegalEntityUpdateParamsIdentificationsIDTypeBrCpf     LegalEntityUpdateParamsIdentificationsIDType = "br_cpf"
-	LegalEntityUpdateParamsIdentificationsIDTypeClRun     LegalEntityUpdateParamsIdentificationsIDType = "cl_run"
-	LegalEntityUpdateParamsIdentificationsIDTypeClRut     LegalEntityUpdateParamsIdentificationsIDType = "cl_rut"
-	LegalEntityUpdateParamsIdentificationsIDTypeCoCedulas LegalEntityUpdateParamsIdentificationsIDType = "co_cedulas"
-	LegalEntityUpdateParamsIdentificationsIDTypeCoNit     LegalEntityUpdateParamsIdentificationsIDType = "co_nit"
-	LegalEntityUpdateParamsIdentificationsIDTypeHnID      LegalEntityUpdateParamsIdentificationsIDType = "hn_id"
-	LegalEntityUpdateParamsIdentificationsIDTypeHnRtn     LegalEntityUpdateParamsIdentificationsIDType = "hn_rtn"
-	LegalEntityUpdateParamsIdentificationsIDTypeInLei     LegalEntityUpdateParamsIdentificationsIDType = "in_lei"
-	LegalEntityUpdateParamsIdentificationsIDTypeKrBrn     LegalEntityUpdateParamsIdentificationsIDType = "kr_brn"
-	LegalEntityUpdateParamsIdentificationsIDTypeKrCrn     LegalEntityUpdateParamsIdentificationsIDType = "kr_crn"
-	LegalEntityUpdateParamsIdentificationsIDTypeKrRrn     LegalEntityUpdateParamsIdentificationsIDType = "kr_rrn"
-	LegalEntityUpdateParamsIdentificationsIDTypePassport  LegalEntityUpdateParamsIdentificationsIDType = "passport"
-	LegalEntityUpdateParamsIdentificationsIDTypeSaTin     LegalEntityUpdateParamsIdentificationsIDType = "sa_tin"
-	LegalEntityUpdateParamsIdentificationsIDTypeSaVat     LegalEntityUpdateParamsIdentificationsIDType = "sa_vat"
-	LegalEntityUpdateParamsIdentificationsIDTypeUsEin     LegalEntityUpdateParamsIdentificationsIDType = "us_ein"
-	LegalEntityUpdateParamsIdentificationsIDTypeUsItin    LegalEntityUpdateParamsIdentificationsIDType = "us_itin"
-	LegalEntityUpdateParamsIdentificationsIDTypeUsSsn     LegalEntityUpdateParamsIdentificationsIDType = "us_ssn"
-	LegalEntityUpdateParamsIdentificationsIDTypeVnTin     LegalEntityUpdateParamsIdentificationsIDType = "vn_tin"
+	LegalEntityUpdateParamsIdentificationsIDTypeArCuil         LegalEntityUpdateParamsIdentificationsIDType = "ar_cuil"
+	LegalEntityUpdateParamsIdentificationsIDTypeArCuit         LegalEntityUpdateParamsIdentificationsIDType = "ar_cuit"
+	LegalEntityUpdateParamsIdentificationsIDTypeBrCnpj         LegalEntityUpdateParamsIdentificationsIDType = "br_cnpj"
+	LegalEntityUpdateParamsIdentificationsIDTypeBrCpf          LegalEntityUpdateParamsIdentificationsIDType = "br_cpf"
+	LegalEntityUpdateParamsIdentificationsIDTypeClRun          LegalEntityUpdateParamsIdentificationsIDType = "cl_run"
+	LegalEntityUpdateParamsIdentificationsIDTypeClRut          LegalEntityUpdateParamsIdentificationsIDType = "cl_rut"
+	LegalEntityUpdateParamsIdentificationsIDTypeCoCedulas      LegalEntityUpdateParamsIdentificationsIDType = "co_cedulas"
+	LegalEntityUpdateParamsIdentificationsIDTypeCoNit          LegalEntityUpdateParamsIdentificationsIDType = "co_nit"
+	LegalEntityUpdateParamsIdentificationsIDTypeDriversLicense LegalEntityUpdateParamsIdentificationsIDType = "drivers_license"
+	LegalEntityUpdateParamsIdentificationsIDTypeHnID           LegalEntityUpdateParamsIdentificationsIDType = "hn_id"
+	LegalEntityUpdateParamsIdentificationsIDTypeHnRtn          LegalEntityUpdateParamsIdentificationsIDType = "hn_rtn"
+	LegalEntityUpdateParamsIdentificationsIDTypeInLei          LegalEntityUpdateParamsIdentificationsIDType = "in_lei"
+	LegalEntityUpdateParamsIdentificationsIDTypeKrBrn          LegalEntityUpdateParamsIdentificationsIDType = "kr_brn"
+	LegalEntityUpdateParamsIdentificationsIDTypeKrCrn          LegalEntityUpdateParamsIdentificationsIDType = "kr_crn"
+	LegalEntityUpdateParamsIdentificationsIDTypeKrRrn          LegalEntityUpdateParamsIdentificationsIDType = "kr_rrn"
+	LegalEntityUpdateParamsIdentificationsIDTypePassport       LegalEntityUpdateParamsIdentificationsIDType = "passport"
+	LegalEntityUpdateParamsIdentificationsIDTypeSaTin          LegalEntityUpdateParamsIdentificationsIDType = "sa_tin"
+	LegalEntityUpdateParamsIdentificationsIDTypeSaVat          LegalEntityUpdateParamsIdentificationsIDType = "sa_vat"
+	LegalEntityUpdateParamsIdentificationsIDTypeUsEin          LegalEntityUpdateParamsIdentificationsIDType = "us_ein"
+	LegalEntityUpdateParamsIdentificationsIDTypeUsItin         LegalEntityUpdateParamsIdentificationsIDType = "us_itin"
+	LegalEntityUpdateParamsIdentificationsIDTypeUsSsn          LegalEntityUpdateParamsIdentificationsIDType = "us_ssn"
+	LegalEntityUpdateParamsIdentificationsIDTypeVnTin          LegalEntityUpdateParamsIdentificationsIDType = "vn_tin"
 )
 
 func (r LegalEntityUpdateParamsIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case LegalEntityUpdateParamsIdentificationsIDTypeArCuil, LegalEntityUpdateParamsIdentificationsIDTypeArCuit, LegalEntityUpdateParamsIdentificationsIDTypeBrCnpj, LegalEntityUpdateParamsIdentificationsIDTypeBrCpf, LegalEntityUpdateParamsIdentificationsIDTypeClRun, LegalEntityUpdateParamsIdentificationsIDTypeClRut, LegalEntityUpdateParamsIdentificationsIDTypeCoCedulas, LegalEntityUpdateParamsIdentificationsIDTypeCoNit, LegalEntityUpdateParamsIdentificationsIDTypeHnID, LegalEntityUpdateParamsIdentificationsIDTypeHnRtn, LegalEntityUpdateParamsIdentificationsIDTypeInLei, LegalEntityUpdateParamsIdentificationsIDTypeKrBrn, LegalEntityUpdateParamsIdentificationsIDTypeKrCrn, LegalEntityUpdateParamsIdentificationsIDTypeKrRrn, LegalEntityUpdateParamsIdentificationsIDTypePassport, LegalEntityUpdateParamsIdentificationsIDTypeSaTin, LegalEntityUpdateParamsIdentificationsIDTypeSaVat, LegalEntityUpdateParamsIdentificationsIDTypeUsEin, LegalEntityUpdateParamsIdentificationsIDTypeUsItin, LegalEntityUpdateParamsIdentificationsIDTypeUsSsn, LegalEntityUpdateParamsIdentificationsIDTypeVnTin:
+	case LegalEntityUpdateParamsIdentificationsIDTypeArCuil, LegalEntityUpdateParamsIdentificationsIDTypeArCuit, LegalEntityUpdateParamsIdentificationsIDTypeBrCnpj, LegalEntityUpdateParamsIdentificationsIDTypeBrCpf, LegalEntityUpdateParamsIdentificationsIDTypeClRun, LegalEntityUpdateParamsIdentificationsIDTypeClRut, LegalEntityUpdateParamsIdentificationsIDTypeCoCedulas, LegalEntityUpdateParamsIdentificationsIDTypeCoNit, LegalEntityUpdateParamsIdentificationsIDTypeDriversLicense, LegalEntityUpdateParamsIdentificationsIDTypeHnID, LegalEntityUpdateParamsIdentificationsIDTypeHnRtn, LegalEntityUpdateParamsIdentificationsIDTypeInLei, LegalEntityUpdateParamsIdentificationsIDTypeKrBrn, LegalEntityUpdateParamsIdentificationsIDTypeKrCrn, LegalEntityUpdateParamsIdentificationsIDTypeKrRrn, LegalEntityUpdateParamsIdentificationsIDTypePassport, LegalEntityUpdateParamsIdentificationsIDTypeSaTin, LegalEntityUpdateParamsIdentificationsIDTypeSaVat, LegalEntityUpdateParamsIdentificationsIDTypeUsEin, LegalEntityUpdateParamsIdentificationsIDTypeUsItin, LegalEntityUpdateParamsIdentificationsIDTypeUsSsn, LegalEntityUpdateParamsIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false

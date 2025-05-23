@@ -32,6 +32,7 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 		Currency:        moderntreasury.F(moderntreasury.InternalAccountNewParamsCurrencyUsd),
 		Name:            moderntreasury.F("name"),
 		PartyName:       moderntreasury.F("party_name"),
+		AccountType:     moderntreasury.F(moderntreasury.InternalAccountNewParamsAccountTypeChecking),
 		CounterpartyID:  moderntreasury.F("counterparty_id"),
 		LegalEntityID:   moderntreasury.F("legal_entity_id"),
 		ParentAccountID: moderntreasury.F("parent_account_id"),

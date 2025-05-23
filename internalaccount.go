@@ -175,19 +175,24 @@ func (r InternalAccount) implementsPaymentOrderUltimateOriginatingAccount() {}
 type InternalAccountAccountType string
 
 const (
-	InternalAccountAccountTypeCash          InternalAccountAccountType = "cash"
-	InternalAccountAccountTypeChecking      InternalAccountAccountType = "checking"
-	InternalAccountAccountTypeGeneralLedger InternalAccountAccountType = "general_ledger"
-	InternalAccountAccountTypeLoan          InternalAccountAccountType = "loan"
-	InternalAccountAccountTypeNonResident   InternalAccountAccountType = "non_resident"
-	InternalAccountAccountTypeOther         InternalAccountAccountType = "other"
-	InternalAccountAccountTypeOverdraft     InternalAccountAccountType = "overdraft"
-	InternalAccountAccountTypeSavings       InternalAccountAccountType = "savings"
+	InternalAccountAccountTypeBaseWallet     InternalAccountAccountType = "base_wallet"
+	InternalAccountAccountTypeCash           InternalAccountAccountType = "cash"
+	InternalAccountAccountTypeChecking       InternalAccountAccountType = "checking"
+	InternalAccountAccountTypeCryptoWallet   InternalAccountAccountType = "crypto_wallet"
+	InternalAccountAccountTypeEthereumWallet InternalAccountAccountType = "ethereum_wallet"
+	InternalAccountAccountTypeGeneralLedger  InternalAccountAccountType = "general_ledger"
+	InternalAccountAccountTypeLoan           InternalAccountAccountType = "loan"
+	InternalAccountAccountTypeNonResident    InternalAccountAccountType = "non_resident"
+	InternalAccountAccountTypeOther          InternalAccountAccountType = "other"
+	InternalAccountAccountTypeOverdraft      InternalAccountAccountType = "overdraft"
+	InternalAccountAccountTypePolygonWallet  InternalAccountAccountType = "polygon_wallet"
+	InternalAccountAccountTypeSavings        InternalAccountAccountType = "savings"
+	InternalAccountAccountTypeSolanaWallet   InternalAccountAccountType = "solana_wallet"
 )
 
 func (r InternalAccountAccountType) IsKnown() bool {
 	switch r {
-	case InternalAccountAccountTypeCash, InternalAccountAccountTypeChecking, InternalAccountAccountTypeGeneralLedger, InternalAccountAccountTypeLoan, InternalAccountAccountTypeNonResident, InternalAccountAccountTypeOther, InternalAccountAccountTypeOverdraft, InternalAccountAccountTypeSavings:
+	case InternalAccountAccountTypeBaseWallet, InternalAccountAccountTypeCash, InternalAccountAccountTypeChecking, InternalAccountAccountTypeCryptoWallet, InternalAccountAccountTypeEthereumWallet, InternalAccountAccountTypeGeneralLedger, InternalAccountAccountTypeLoan, InternalAccountAccountTypeNonResident, InternalAccountAccountTypeOther, InternalAccountAccountTypeOverdraft, InternalAccountAccountTypePolygonWallet, InternalAccountAccountTypeSavings, InternalAccountAccountTypeSolanaWallet:
 		return true
 	}
 	return false
@@ -267,6 +272,9 @@ type InternalAccountNewParams struct {
 	Name param.Field[string] `json:"name,required"`
 	// The legal name of the entity which owns the account.
 	PartyName param.Field[string] `json:"party_name,required"`
+	// The account type, used to provision the appropriate account at the financial
+	// institution.
+	AccountType param.Field[InternalAccountNewParamsAccountType] `json:"account_type"`
 	// The Counterparty associated to this account.
 	CounterpartyID param.Field[string] `json:"counterparty_id"`
 	// The LegalEntity associated to this account.
@@ -296,6 +304,34 @@ const (
 func (r InternalAccountNewParamsCurrency) IsKnown() bool {
 	switch r {
 	case InternalAccountNewParamsCurrencyUsd, InternalAccountNewParamsCurrencyCad:
+		return true
+	}
+	return false
+}
+
+// The account type, used to provision the appropriate account at the financial
+// institution.
+type InternalAccountNewParamsAccountType string
+
+const (
+	InternalAccountNewParamsAccountTypeBaseWallet     InternalAccountNewParamsAccountType = "base_wallet"
+	InternalAccountNewParamsAccountTypeCash           InternalAccountNewParamsAccountType = "cash"
+	InternalAccountNewParamsAccountTypeChecking       InternalAccountNewParamsAccountType = "checking"
+	InternalAccountNewParamsAccountTypeCryptoWallet   InternalAccountNewParamsAccountType = "crypto_wallet"
+	InternalAccountNewParamsAccountTypeEthereumWallet InternalAccountNewParamsAccountType = "ethereum_wallet"
+	InternalAccountNewParamsAccountTypeGeneralLedger  InternalAccountNewParamsAccountType = "general_ledger"
+	InternalAccountNewParamsAccountTypeLoan           InternalAccountNewParamsAccountType = "loan"
+	InternalAccountNewParamsAccountTypeNonResident    InternalAccountNewParamsAccountType = "non_resident"
+	InternalAccountNewParamsAccountTypeOther          InternalAccountNewParamsAccountType = "other"
+	InternalAccountNewParamsAccountTypeOverdraft      InternalAccountNewParamsAccountType = "overdraft"
+	InternalAccountNewParamsAccountTypePolygonWallet  InternalAccountNewParamsAccountType = "polygon_wallet"
+	InternalAccountNewParamsAccountTypeSavings        InternalAccountNewParamsAccountType = "savings"
+	InternalAccountNewParamsAccountTypeSolanaWallet   InternalAccountNewParamsAccountType = "solana_wallet"
+)
+
+func (r InternalAccountNewParamsAccountType) IsKnown() bool {
+	switch r {
+	case InternalAccountNewParamsAccountTypeBaseWallet, InternalAccountNewParamsAccountTypeCash, InternalAccountNewParamsAccountTypeChecking, InternalAccountNewParamsAccountTypeCryptoWallet, InternalAccountNewParamsAccountTypeEthereumWallet, InternalAccountNewParamsAccountTypeGeneralLedger, InternalAccountNewParamsAccountTypeLoan, InternalAccountNewParamsAccountTypeNonResident, InternalAccountNewParamsAccountTypeOther, InternalAccountNewParamsAccountTypeOverdraft, InternalAccountNewParamsAccountTypePolygonWallet, InternalAccountNewParamsAccountTypeSavings, InternalAccountNewParamsAccountTypeSolanaWallet:
 		return true
 	}
 	return false
@@ -372,6 +408,7 @@ const (
 	InternalAccountListParamsPaymentTypeACH         InternalAccountListParamsPaymentType = "ach"
 	InternalAccountListParamsPaymentTypeAuBecs      InternalAccountListParamsPaymentType = "au_becs"
 	InternalAccountListParamsPaymentTypeBacs        InternalAccountListParamsPaymentType = "bacs"
+	InternalAccountListParamsPaymentTypeBase        InternalAccountListParamsPaymentType = "base"
 	InternalAccountListParamsPaymentTypeBook        InternalAccountListParamsPaymentType = "book"
 	InternalAccountListParamsPaymentTypeCard        InternalAccountListParamsPaymentType = "card"
 	InternalAccountListParamsPaymentTypeChats       InternalAccountListParamsPaymentType = "chats"
@@ -379,6 +416,7 @@ const (
 	InternalAccountListParamsPaymentTypeCrossBorder InternalAccountListParamsPaymentType = "cross_border"
 	InternalAccountListParamsPaymentTypeDkNets      InternalAccountListParamsPaymentType = "dk_nets"
 	InternalAccountListParamsPaymentTypeEft         InternalAccountListParamsPaymentType = "eft"
+	InternalAccountListParamsPaymentTypeEthereum    InternalAccountListParamsPaymentType = "ethereum"
 	InternalAccountListParamsPaymentTypeHuIcs       InternalAccountListParamsPaymentType = "hu_ics"
 	InternalAccountListParamsPaymentTypeInterac     InternalAccountListParamsPaymentType = "interac"
 	InternalAccountListParamsPaymentTypeMasav       InternalAccountListParamsPaymentType = "masav"
@@ -387,6 +425,7 @@ const (
 	InternalAccountListParamsPaymentTypeNics        InternalAccountListParamsPaymentType = "nics"
 	InternalAccountListParamsPaymentTypeNzBecs      InternalAccountListParamsPaymentType = "nz_becs"
 	InternalAccountListParamsPaymentTypePlElixir    InternalAccountListParamsPaymentType = "pl_elixir"
+	InternalAccountListParamsPaymentTypePolygon     InternalAccountListParamsPaymentType = "polygon"
 	InternalAccountListParamsPaymentTypeProvxchange InternalAccountListParamsPaymentType = "provxchange"
 	InternalAccountListParamsPaymentTypeRoSent      InternalAccountListParamsPaymentType = "ro_sent"
 	InternalAccountListParamsPaymentTypeRtp         InternalAccountListParamsPaymentType = "rtp"
@@ -397,13 +436,14 @@ const (
 	InternalAccountListParamsPaymentTypeSic         InternalAccountListParamsPaymentType = "sic"
 	InternalAccountListParamsPaymentTypeSignet      InternalAccountListParamsPaymentType = "signet"
 	InternalAccountListParamsPaymentTypeSknbi       InternalAccountListParamsPaymentType = "sknbi"
+	InternalAccountListParamsPaymentTypeSolana      InternalAccountListParamsPaymentType = "solana"
 	InternalAccountListParamsPaymentTypeWire        InternalAccountListParamsPaymentType = "wire"
 	InternalAccountListParamsPaymentTypeZengin      InternalAccountListParamsPaymentType = "zengin"
 )
 
 func (r InternalAccountListParamsPaymentType) IsKnown() bool {
 	switch r {
-	case InternalAccountListParamsPaymentTypeACH, InternalAccountListParamsPaymentTypeAuBecs, InternalAccountListParamsPaymentTypeBacs, InternalAccountListParamsPaymentTypeBook, InternalAccountListParamsPaymentTypeCard, InternalAccountListParamsPaymentTypeChats, InternalAccountListParamsPaymentTypeCheck, InternalAccountListParamsPaymentTypeCrossBorder, InternalAccountListParamsPaymentTypeDkNets, InternalAccountListParamsPaymentTypeEft, InternalAccountListParamsPaymentTypeHuIcs, InternalAccountListParamsPaymentTypeInterac, InternalAccountListParamsPaymentTypeMasav, InternalAccountListParamsPaymentTypeMxCcen, InternalAccountListParamsPaymentTypeNeft, InternalAccountListParamsPaymentTypeNics, InternalAccountListParamsPaymentTypeNzBecs, InternalAccountListParamsPaymentTypePlElixir, InternalAccountListParamsPaymentTypeProvxchange, InternalAccountListParamsPaymentTypeRoSent, InternalAccountListParamsPaymentTypeRtp, InternalAccountListParamsPaymentTypeSeBankgirot, InternalAccountListParamsPaymentTypeSen, InternalAccountListParamsPaymentTypeSepa, InternalAccountListParamsPaymentTypeSgGiro, InternalAccountListParamsPaymentTypeSic, InternalAccountListParamsPaymentTypeSignet, InternalAccountListParamsPaymentTypeSknbi, InternalAccountListParamsPaymentTypeWire, InternalAccountListParamsPaymentTypeZengin:
+	case InternalAccountListParamsPaymentTypeACH, InternalAccountListParamsPaymentTypeAuBecs, InternalAccountListParamsPaymentTypeBacs, InternalAccountListParamsPaymentTypeBase, InternalAccountListParamsPaymentTypeBook, InternalAccountListParamsPaymentTypeCard, InternalAccountListParamsPaymentTypeChats, InternalAccountListParamsPaymentTypeCheck, InternalAccountListParamsPaymentTypeCrossBorder, InternalAccountListParamsPaymentTypeDkNets, InternalAccountListParamsPaymentTypeEft, InternalAccountListParamsPaymentTypeEthereum, InternalAccountListParamsPaymentTypeHuIcs, InternalAccountListParamsPaymentTypeInterac, InternalAccountListParamsPaymentTypeMasav, InternalAccountListParamsPaymentTypeMxCcen, InternalAccountListParamsPaymentTypeNeft, InternalAccountListParamsPaymentTypeNics, InternalAccountListParamsPaymentTypeNzBecs, InternalAccountListParamsPaymentTypePlElixir, InternalAccountListParamsPaymentTypePolygon, InternalAccountListParamsPaymentTypeProvxchange, InternalAccountListParamsPaymentTypeRoSent, InternalAccountListParamsPaymentTypeRtp, InternalAccountListParamsPaymentTypeSeBankgirot, InternalAccountListParamsPaymentTypeSen, InternalAccountListParamsPaymentTypeSepa, InternalAccountListParamsPaymentTypeSgGiro, InternalAccountListParamsPaymentTypeSic, InternalAccountListParamsPaymentTypeSignet, InternalAccountListParamsPaymentTypeSknbi, InternalAccountListParamsPaymentTypeSolana, InternalAccountListParamsPaymentTypeWire, InternalAccountListParamsPaymentTypeZengin:
 		return true
 	}
 	return false

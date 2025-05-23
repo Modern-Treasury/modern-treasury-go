@@ -131,7 +131,7 @@ type Invoice struct {
 	CreatedAt                   time.Time                          `json:"created_at,required" format:"date-time"`
 	// Currency that the invoice is denominated in. Defaults to `USD` if not provided.
 	Currency shared.Currency `json:"currency,required"`
-	// A free-form description of the invoice.
+	// An optional free-form description of the invoice.
 	Description string `json:"description,required"`
 	// A future date by when the invoice needs to be paid.
 	DueDate time.Time `json:"due_date,required" format:"date-time"`
