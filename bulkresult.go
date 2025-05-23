@@ -178,8 +178,6 @@ type BulkResultEntity struct {
 	// payment orders. Can be one of shared, sender, or receiver, which correspond
 	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
 	ChargeBearer BulkResultEntityChargeBearer `json:"charge_bearer,nullable"`
-	// This field can have the runtime type of [map[string]interface{}].
-	ComplianceRuleMetadata interface{} `json:"compliance_rule_metadata"`
 	// If the payment order is tied to a specific Counterparty, their id will appear,
 	// otherwise `null`.
 	CounterpartyID string `json:"counterparty_id,nullable" format:"uuid"`
@@ -194,9 +192,6 @@ type BulkResultEntity struct {
 	DateLowerBound time.Time `json:"date_lower_bound,nullable" format:"date"`
 	// The latest date the payment may come in. Format: yyyy-mm-dd
 	DateUpperBound time.Time `json:"date_upper_bound,nullable" format:"date"`
-	// The ID of the compliance decision for the payment order, if transaction
-	// monitoring is enabled.
-	DecisionID string `json:"decision_id,nullable" format:"uuid"`
 	// An optional description for internal use.
 	Description string `json:"description,nullable"`
 	// This field can have the runtime type of [map[string]string].
@@ -331,9 +326,6 @@ type BulkResultEntity struct {
 	TransactionIDs interface{} `json:"transaction_ids"`
 	// The ID of the Transaction Line Item this expected payment has been matched to.
 	TransactionLineItemID string `json:"transaction_line_item_id,nullable" format:"uuid"`
-	// A flag that determines whether a payment order should go through transaction
-	// monitoring.
-	TransactionMonitoringEnabled bool `json:"transaction_monitoring_enabled"`
 	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
 	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
 	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
@@ -393,14 +385,12 @@ type bulkResultEntityJSON struct {
 	AsOfTime                           apijson.Field
 	AsOfTimezone                       apijson.Field
 	ChargeBearer                       apijson.Field
-	ComplianceRuleMetadata             apijson.Field
 	CounterpartyID                     apijson.Field
 	Currency                           apijson.Field
 	CurrentReturn                      apijson.Field
 	CustomIdentifiers                  apijson.Field
 	DateLowerBound                     apijson.Field
 	DateUpperBound                     apijson.Field
-	DecisionID                         apijson.Field
 	Description                        apijson.Field
 	Details                            apijson.Field
 	Direction                          apijson.Field
@@ -447,7 +437,6 @@ type bulkResultEntityJSON struct {
 	TransactionID                      apijson.Field
 	TransactionIDs                     apijson.Field
 	TransactionLineItemID              apijson.Field
-	TransactionMonitoringEnabled       apijson.Field
 	Type                               apijson.Field
 	UltimateOriginatingAccount         apijson.Field
 	UltimateOriginatingAccountID       apijson.Field
@@ -753,6 +742,8 @@ const (
 	BulkResultEntityVendorCodeTypeBankingCircle BulkResultEntityVendorCodeType = "banking_circle"
 	BulkResultEntityVendorCodeTypeBankprov      BulkResultEntityVendorCodeType = "bankprov"
 	BulkResultEntityVendorCodeTypeBnkDev        BulkResultEntityVendorCodeType = "bnk_dev"
+	BulkResultEntityVendorCodeTypeBrale         BulkResultEntityVendorCodeType = "brale"
+	BulkResultEntityVendorCodeTypeBridge        BulkResultEntityVendorCodeType = "bridge"
 	BulkResultEntityVendorCodeTypeCleartouch    BulkResultEntityVendorCodeType = "cleartouch"
 	BulkResultEntityVendorCodeTypeColumn        BulkResultEntityVendorCodeType = "column"
 	BulkResultEntityVendorCodeTypeCrossRiver    BulkResultEntityVendorCodeType = "cross_river"
@@ -777,7 +768,7 @@ const (
 
 func (r BulkResultEntityVendorCodeType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankingCircle, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePaypal, BulkResultEntityVendorCodeTypePlaid, BulkResultEntityVendorCodeTypePnc, BulkResultEntityVendorCodeTypeRspecVendor, BulkResultEntityVendorCodeTypeSignet, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser:
+	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankingCircle, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeBrale, BulkResultEntityVendorCodeTypeBridge, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePaypal, BulkResultEntityVendorCodeTypePlaid, BulkResultEntityVendorCodeTypePnc, BulkResultEntityVendorCodeTypeRspecVendor, BulkResultEntityVendorCodeTypeSignet, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser:
 		return true
 	}
 	return false
@@ -789,18 +780,19 @@ func (r BulkResultEntityVendorCodeType) IsKnown() bool {
 type BulkResultEntityType string
 
 const (
-	BulkResultEntityTypePaymentOrder      BulkResultEntityType = "payment_order"
-	BulkResultEntityTypeLedgerAccount     BulkResultEntityType = "ledger_account"
-	BulkResultEntityTypeLedgerTransaction BulkResultEntityType = "ledger_transaction"
-	BulkResultEntityTypeExpectedPayment   BulkResultEntityType = "expected_payment"
-	BulkResultEntityTypeTransaction       BulkResultEntityType = "transaction"
-	BulkResultEntityTypeEntityLink        BulkResultEntityType = "entity_link"
-	BulkResultEntityTypeBulkError         BulkResultEntityType = "bulk_error"
+	BulkResultEntityTypePaymentOrder        BulkResultEntityType = "payment_order"
+	BulkResultEntityTypeLedgerAccount       BulkResultEntityType = "ledger_account"
+	BulkResultEntityTypeLedgerTransaction   BulkResultEntityType = "ledger_transaction"
+	BulkResultEntityTypeExpectedPayment     BulkResultEntityType = "expected_payment"
+	BulkResultEntityTypeTransaction         BulkResultEntityType = "transaction"
+	BulkResultEntityTypeEntityLink          BulkResultEntityType = "entity_link"
+	BulkResultEntityTypeTransactionLineItem BulkResultEntityType = "transaction_line_item"
+	BulkResultEntityTypeBulkError           BulkResultEntityType = "bulk_error"
 )
 
 func (r BulkResultEntityType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityTypePaymentOrder, BulkResultEntityTypeLedgerAccount, BulkResultEntityTypeLedgerTransaction, BulkResultEntityTypeExpectedPayment, BulkResultEntityTypeTransaction, BulkResultEntityTypeEntityLink, BulkResultEntityTypeBulkError:
+	case BulkResultEntityTypePaymentOrder, BulkResultEntityTypeLedgerAccount, BulkResultEntityTypeLedgerTransaction, BulkResultEntityTypeExpectedPayment, BulkResultEntityTypeTransaction, BulkResultEntityTypeEntityLink, BulkResultEntityTypeTransactionLineItem, BulkResultEntityTypeBulkError:
 		return true
 	}
 	return false
@@ -870,18 +862,19 @@ func (r BulkResultListParams) URLQuery() (v url.Values) {
 type BulkResultListParamsEntityType string
 
 const (
-	BulkResultListParamsEntityTypePaymentOrder      BulkResultListParamsEntityType = "payment_order"
-	BulkResultListParamsEntityTypeLedgerAccount     BulkResultListParamsEntityType = "ledger_account"
-	BulkResultListParamsEntityTypeLedgerTransaction BulkResultListParamsEntityType = "ledger_transaction"
-	BulkResultListParamsEntityTypeExpectedPayment   BulkResultListParamsEntityType = "expected_payment"
-	BulkResultListParamsEntityTypeTransaction       BulkResultListParamsEntityType = "transaction"
-	BulkResultListParamsEntityTypeEntityLink        BulkResultListParamsEntityType = "entity_link"
-	BulkResultListParamsEntityTypeBulkError         BulkResultListParamsEntityType = "bulk_error"
+	BulkResultListParamsEntityTypePaymentOrder        BulkResultListParamsEntityType = "payment_order"
+	BulkResultListParamsEntityTypeLedgerAccount       BulkResultListParamsEntityType = "ledger_account"
+	BulkResultListParamsEntityTypeLedgerTransaction   BulkResultListParamsEntityType = "ledger_transaction"
+	BulkResultListParamsEntityTypeExpectedPayment     BulkResultListParamsEntityType = "expected_payment"
+	BulkResultListParamsEntityTypeTransaction         BulkResultListParamsEntityType = "transaction"
+	BulkResultListParamsEntityTypeEntityLink          BulkResultListParamsEntityType = "entity_link"
+	BulkResultListParamsEntityTypeTransactionLineItem BulkResultListParamsEntityType = "transaction_line_item"
+	BulkResultListParamsEntityTypeBulkError           BulkResultListParamsEntityType = "bulk_error"
 )
 
 func (r BulkResultListParamsEntityType) IsKnown() bool {
 	switch r {
-	case BulkResultListParamsEntityTypePaymentOrder, BulkResultListParamsEntityTypeLedgerAccount, BulkResultListParamsEntityTypeLedgerTransaction, BulkResultListParamsEntityTypeExpectedPayment, BulkResultListParamsEntityTypeTransaction, BulkResultListParamsEntityTypeEntityLink, BulkResultListParamsEntityTypeBulkError:
+	case BulkResultListParamsEntityTypePaymentOrder, BulkResultListParamsEntityTypeLedgerAccount, BulkResultListParamsEntityTypeLedgerTransaction, BulkResultListParamsEntityTypeExpectedPayment, BulkResultListParamsEntityTypeTransaction, BulkResultListParamsEntityTypeEntityLink, BulkResultListParamsEntityTypeTransactionLineItem, BulkResultListParamsEntityTypeBulkError:
 		return true
 	}
 	return false

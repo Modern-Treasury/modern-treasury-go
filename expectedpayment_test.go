@@ -226,9 +226,11 @@ func TestExpectedPaymentListWithOptionalParams(t *testing.T) {
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		PerPage: moderntreasury.F(int64(0)),
-		Status:  moderntreasury.F(moderntreasury.ExpectedPaymentListParamsStatusArchived),
-		Type:    moderntreasury.F(moderntreasury.ExpectedPaymentListParamsTypeACH),
+		PerPage:             moderntreasury.F(int64(0)),
+		Status:              moderntreasury.F(moderntreasury.ExpectedPaymentListParamsStatusArchived),
+		Type:                moderntreasury.F(moderntreasury.ExpectedPaymentListParamsTypeACH),
+		UpdatedAtLowerBound: moderntreasury.F(time.Now()),
+		UpdatedAtUpperBound: moderntreasury.F(time.Now()),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

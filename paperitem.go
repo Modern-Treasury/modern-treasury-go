@@ -95,7 +95,10 @@ type PaperItem struct {
 	LockboxNumber string `json:"lockbox_number,required"`
 	// The memo field on the paper item.
 	MemoField string `json:"memo_field,required,nullable"`
-	Object    string `json:"object,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata interface{} `json:"metadata,required"`
+	Object   string      `json:"object,required"`
 	// The name of the remitter on the paper item.
 	RemitterName string `json:"remitter_name,required,nullable"`
 	// The routing number on the paper item.
@@ -124,6 +127,7 @@ type paperItemJSON struct {
 	LiveMode              apijson.Field
 	LockboxNumber         apijson.Field
 	MemoField             apijson.Field
+	Metadata              apijson.Field
 	Object                apijson.Field
 	RemitterName          apijson.Field
 	RoutingNumber         apijson.Field

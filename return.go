@@ -97,6 +97,7 @@ type ReturnObject struct {
 	// If the return code is `R14` or `R15` this is the date the deceased counterparty
 	// passed away.
 	DateOfDeath time.Time `json:"date_of_death,required,nullable" format:"date"`
+	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
 	// If an originating return failed to be processed by the bank, a description of
 	// the failure reason will be available.
 	FailureReason string `json:"failure_reason,required,nullable"`
@@ -146,6 +147,7 @@ type returnObjectJSON struct {
 	Currency              apijson.Field
 	CurrentReturn         apijson.Field
 	DateOfDeath           apijson.Field
+	DiscardedAt           apijson.Field
 	FailureReason         apijson.Field
 	InternalAccountID     apijson.Field
 	LedgerTransactionID   apijson.Field
@@ -213,30 +215,70 @@ const (
 	ReturnObjectCodeR10           ReturnObjectCode = "R10"
 	ReturnObjectCodeR11           ReturnObjectCode = "R11"
 	ReturnObjectCodeR12           ReturnObjectCode = "R12"
+	ReturnObjectCodeR13           ReturnObjectCode = "R13"
 	ReturnObjectCodeR14           ReturnObjectCode = "R14"
 	ReturnObjectCodeR15           ReturnObjectCode = "R15"
 	ReturnObjectCodeR16           ReturnObjectCode = "R16"
 	ReturnObjectCodeR17           ReturnObjectCode = "R17"
+	ReturnObjectCodeR18           ReturnObjectCode = "R18"
+	ReturnObjectCodeR19           ReturnObjectCode = "R19"
 	ReturnObjectCodeR20           ReturnObjectCode = "R20"
 	ReturnObjectCodeR21           ReturnObjectCode = "R21"
 	ReturnObjectCodeR22           ReturnObjectCode = "R22"
 	ReturnObjectCodeR23           ReturnObjectCode = "R23"
 	ReturnObjectCodeR24           ReturnObjectCode = "R24"
+	ReturnObjectCodeR25           ReturnObjectCode = "R25"
+	ReturnObjectCodeR26           ReturnObjectCode = "R26"
+	ReturnObjectCodeR27           ReturnObjectCode = "R27"
+	ReturnObjectCodeR28           ReturnObjectCode = "R28"
 	ReturnObjectCodeR29           ReturnObjectCode = "R29"
+	ReturnObjectCodeR30           ReturnObjectCode = "R30"
 	ReturnObjectCodeR31           ReturnObjectCode = "R31"
+	ReturnObjectCodeR32           ReturnObjectCode = "R32"
 	ReturnObjectCodeR33           ReturnObjectCode = "R33"
+	ReturnObjectCodeR34           ReturnObjectCode = "R34"
+	ReturnObjectCodeR35           ReturnObjectCode = "R35"
+	ReturnObjectCodeR36           ReturnObjectCode = "R36"
 	ReturnObjectCodeR37           ReturnObjectCode = "R37"
 	ReturnObjectCodeR38           ReturnObjectCode = "R38"
 	ReturnObjectCodeR39           ReturnObjectCode = "R39"
+	ReturnObjectCodeR40           ReturnObjectCode = "R40"
+	ReturnObjectCodeR41           ReturnObjectCode = "R41"
+	ReturnObjectCodeR42           ReturnObjectCode = "R42"
+	ReturnObjectCodeR43           ReturnObjectCode = "R43"
+	ReturnObjectCodeR44           ReturnObjectCode = "R44"
+	ReturnObjectCodeR45           ReturnObjectCode = "R45"
+	ReturnObjectCodeR46           ReturnObjectCode = "R46"
+	ReturnObjectCodeR47           ReturnObjectCode = "R47"
+	ReturnObjectCodeR50           ReturnObjectCode = "R50"
 	ReturnObjectCodeR51           ReturnObjectCode = "R51"
 	ReturnObjectCodeR52           ReturnObjectCode = "R52"
 	ReturnObjectCodeR53           ReturnObjectCode = "R53"
+	ReturnObjectCodeR61           ReturnObjectCode = "R61"
+	ReturnObjectCodeR62           ReturnObjectCode = "R62"
+	ReturnObjectCodeR67           ReturnObjectCode = "R67"
+	ReturnObjectCodeR68           ReturnObjectCode = "R68"
+	ReturnObjectCodeR69           ReturnObjectCode = "R69"
+	ReturnObjectCodeR70           ReturnObjectCode = "R70"
+	ReturnObjectCodeR71           ReturnObjectCode = "R71"
+	ReturnObjectCodeR72           ReturnObjectCode = "R72"
+	ReturnObjectCodeR73           ReturnObjectCode = "R73"
+	ReturnObjectCodeR74           ReturnObjectCode = "R74"
+	ReturnObjectCodeR75           ReturnObjectCode = "R75"
+	ReturnObjectCodeR76           ReturnObjectCode = "R76"
+	ReturnObjectCodeR77           ReturnObjectCode = "R77"
+	ReturnObjectCodeR80           ReturnObjectCode = "R80"
+	ReturnObjectCodeR81           ReturnObjectCode = "R81"
+	ReturnObjectCodeR82           ReturnObjectCode = "R82"
+	ReturnObjectCodeR83           ReturnObjectCode = "R83"
+	ReturnObjectCodeR84           ReturnObjectCode = "R84"
+	ReturnObjectCodeR85           ReturnObjectCode = "R85"
 	ReturnObjectCodeCurrencycloud ReturnObjectCode = "currencycloud"
 )
 
 func (r ReturnObjectCode) IsKnown() bool {
 	switch r {
-	case ReturnObjectCode901, ReturnObjectCode902, ReturnObjectCode903, ReturnObjectCode904, ReturnObjectCode905, ReturnObjectCode907, ReturnObjectCode908, ReturnObjectCode909, ReturnObjectCode910, ReturnObjectCode911, ReturnObjectCode912, ReturnObjectCode914, ReturnObjectCodeC01, ReturnObjectCodeC02, ReturnObjectCodeC03, ReturnObjectCodeC05, ReturnObjectCodeC06, ReturnObjectCodeC07, ReturnObjectCodeC08, ReturnObjectCodeC09, ReturnObjectCodeC13, ReturnObjectCodeC14, ReturnObjectCodeR01, ReturnObjectCodeR02, ReturnObjectCodeR03, ReturnObjectCodeR04, ReturnObjectCodeR05, ReturnObjectCodeR06, ReturnObjectCodeR07, ReturnObjectCodeR08, ReturnObjectCodeR09, ReturnObjectCodeR10, ReturnObjectCodeR11, ReturnObjectCodeR12, ReturnObjectCodeR14, ReturnObjectCodeR15, ReturnObjectCodeR16, ReturnObjectCodeR17, ReturnObjectCodeR20, ReturnObjectCodeR21, ReturnObjectCodeR22, ReturnObjectCodeR23, ReturnObjectCodeR24, ReturnObjectCodeR29, ReturnObjectCodeR31, ReturnObjectCodeR33, ReturnObjectCodeR37, ReturnObjectCodeR38, ReturnObjectCodeR39, ReturnObjectCodeR51, ReturnObjectCodeR52, ReturnObjectCodeR53, ReturnObjectCodeCurrencycloud:
+	case ReturnObjectCode901, ReturnObjectCode902, ReturnObjectCode903, ReturnObjectCode904, ReturnObjectCode905, ReturnObjectCode907, ReturnObjectCode908, ReturnObjectCode909, ReturnObjectCode910, ReturnObjectCode911, ReturnObjectCode912, ReturnObjectCode914, ReturnObjectCodeC01, ReturnObjectCodeC02, ReturnObjectCodeC03, ReturnObjectCodeC05, ReturnObjectCodeC06, ReturnObjectCodeC07, ReturnObjectCodeC08, ReturnObjectCodeC09, ReturnObjectCodeC13, ReturnObjectCodeC14, ReturnObjectCodeR01, ReturnObjectCodeR02, ReturnObjectCodeR03, ReturnObjectCodeR04, ReturnObjectCodeR05, ReturnObjectCodeR06, ReturnObjectCodeR07, ReturnObjectCodeR08, ReturnObjectCodeR09, ReturnObjectCodeR10, ReturnObjectCodeR11, ReturnObjectCodeR12, ReturnObjectCodeR13, ReturnObjectCodeR14, ReturnObjectCodeR15, ReturnObjectCodeR16, ReturnObjectCodeR17, ReturnObjectCodeR18, ReturnObjectCodeR19, ReturnObjectCodeR20, ReturnObjectCodeR21, ReturnObjectCodeR22, ReturnObjectCodeR23, ReturnObjectCodeR24, ReturnObjectCodeR25, ReturnObjectCodeR26, ReturnObjectCodeR27, ReturnObjectCodeR28, ReturnObjectCodeR29, ReturnObjectCodeR30, ReturnObjectCodeR31, ReturnObjectCodeR32, ReturnObjectCodeR33, ReturnObjectCodeR34, ReturnObjectCodeR35, ReturnObjectCodeR36, ReturnObjectCodeR37, ReturnObjectCodeR38, ReturnObjectCodeR39, ReturnObjectCodeR40, ReturnObjectCodeR41, ReturnObjectCodeR42, ReturnObjectCodeR43, ReturnObjectCodeR44, ReturnObjectCodeR45, ReturnObjectCodeR46, ReturnObjectCodeR47, ReturnObjectCodeR50, ReturnObjectCodeR51, ReturnObjectCodeR52, ReturnObjectCodeR53, ReturnObjectCodeR61, ReturnObjectCodeR62, ReturnObjectCodeR67, ReturnObjectCodeR68, ReturnObjectCodeR69, ReturnObjectCodeR70, ReturnObjectCodeR71, ReturnObjectCodeR72, ReturnObjectCodeR73, ReturnObjectCodeR74, ReturnObjectCodeR75, ReturnObjectCodeR76, ReturnObjectCodeR77, ReturnObjectCodeR80, ReturnObjectCodeR81, ReturnObjectCodeR82, ReturnObjectCodeR83, ReturnObjectCodeR84, ReturnObjectCodeR85, ReturnObjectCodeCurrencycloud:
 		return true
 	}
 	return false
@@ -291,6 +333,10 @@ const (
 	ReturnObjectReferenceNumbersReferenceNumberTypeBnkDevTransferID                               ReturnObjectReferenceNumbersReferenceNumberType = "bnk_dev_transfer_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeBofaEndToEndID                                 ReturnObjectReferenceNumbersReferenceNumberType = "bofa_end_to_end_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeBofaTransactionID                              ReturnObjectReferenceNumbersReferenceNumberType = "bofa_transaction_id"
+	ReturnObjectReferenceNumbersReferenceNumberTypeBraleTransferID                                ReturnObjectReferenceNumbersReferenceNumberType = "brale_transfer_id"
+	ReturnObjectReferenceNumbersReferenceNumberTypeBridgeDestinationTransactionHash               ReturnObjectReferenceNumbersReferenceNumberType = "bridge_destination_transaction_hash"
+	ReturnObjectReferenceNumbersReferenceNumberTypeBridgeSourceTransactionHash                    ReturnObjectReferenceNumbersReferenceNumberType = "bridge_source_transaction_hash"
+	ReturnObjectReferenceNumbersReferenceNumberTypeBridgeTransferID                               ReturnObjectReferenceNumbersReferenceNumberType = "bridge_transfer_id"
 	ReturnObjectReferenceNumbersReferenceNumberTypeCheckNumber                                    ReturnObjectReferenceNumbersReferenceNumberType = "check_number"
 	ReturnObjectReferenceNumbersReferenceNumberTypeCitibankReferenceNumber                        ReturnObjectReferenceNumbersReferenceNumberType = "citibank_reference_number"
 	ReturnObjectReferenceNumbersReferenceNumberTypeCitibankWorldlinkClearingSystemReferenceNumber ReturnObjectReferenceNumbersReferenceNumberType = "citibank_worldlink_clearing_system_reference_number"
@@ -361,7 +407,7 @@ const (
 
 func (r ReturnObjectReferenceNumbersReferenceNumberType) IsKnown() bool {
 	switch r {
-	case ReturnObjectReferenceNumbersReferenceNumberTypeACHOriginalTraceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeACHTraceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeBankprovPaymentActivityDate, ReturnObjectReferenceNumbersReferenceNumberTypeBankprovPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeBnkDevPrenotificationID, ReturnObjectReferenceNumbersReferenceNumberTypeBnkDevTransferID, ReturnObjectReferenceNumbersReferenceNumberTypeBofaEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeBofaTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeCheckNumber, ReturnObjectReferenceNumbersReferenceNumberTypeCitibankReferenceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeCitibankWorldlinkClearingSystemReferenceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeColumnFxQuoteID, ReturnObjectReferenceNumbersReferenceNumberTypeColumnReversalPairTransferID, ReturnObjectReferenceNumbersReferenceNumberTypeColumnTransferID, ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverServiceMessage, ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeCurrencycloudConversionID, ReturnObjectReferenceNumbersReferenceNumberTypeCurrencycloudPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeDcBankTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeDwollaTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeEftTraceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeEvolveTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeFedwireImad, ReturnObjectReferenceNumbersReferenceNumberTypeFedwireOmad, ReturnObjectReferenceNumbersReferenceNumberTypeFirstRepublicInternalID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsCollectionRequestID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsPaymentRequestID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsRequestID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsUniquePaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeInteracMessageID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcCcn, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcClearingSystemReference, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcCustomerReferenceID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcFirmRootID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcFxTrnID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcP3ID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentBatchID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentInformationID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentReturnedDatetime, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcTransactionReferenceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeLobCheckID, ReturnObjectReferenceNumbersReferenceNumberTypeOther, ReturnObjectReferenceNumbersReferenceNumberTypePartialSwiftMir, ReturnObjectReferenceNumbersReferenceNumberTypePncClearingReference, ReturnObjectReferenceNumbersReferenceNumberTypePncInstructionID, ReturnObjectReferenceNumbersReferenceNumberTypePncMultipaymentID, ReturnObjectReferenceNumbersReferenceNumberTypePncPaymentTraceID, ReturnObjectReferenceNumbersReferenceNumberTypePncRequestForPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypePncTransactionReferenceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeRbcWireReferenceID, ReturnObjectReferenceNumbersReferenceNumberTypeRspecVendorPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeRtpInstructionID, ReturnObjectReferenceNumbersReferenceNumberTypeSignetAPIReferenceID, ReturnObjectReferenceNumbersReferenceNumberTypeSignetConfirmationID, ReturnObjectReferenceNumbersReferenceNumberTypeSignetRequestID, ReturnObjectReferenceNumbersReferenceNumberTypeSilvergatePaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeSvbEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeSvbPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeSvbTransactionClearedForSanctionsReview, ReturnObjectReferenceNumbersReferenceNumberTypeSvbTransactionHeldForSanctionsReview, ReturnObjectReferenceNumbersReferenceNumberTypeSwiftMir, ReturnObjectReferenceNumbersReferenceNumberTypeSwiftUetr, ReturnObjectReferenceNumbersReferenceNumberTypeUmbProductPartnerAccountNumber, ReturnObjectReferenceNumbersReferenceNumberTypeUsbankPaymentApplicationReferenceID, ReturnObjectReferenceNumbersReferenceNumberTypeUsbankPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeUsbankPendingRtpPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeUsbankPostedRtpPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoTraceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoUetr:
+	case ReturnObjectReferenceNumbersReferenceNumberTypeACHOriginalTraceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeACHTraceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeBankprovPaymentActivityDate, ReturnObjectReferenceNumbersReferenceNumberTypeBankprovPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeBnkDevPrenotificationID, ReturnObjectReferenceNumbersReferenceNumberTypeBnkDevTransferID, ReturnObjectReferenceNumbersReferenceNumberTypeBofaEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeBofaTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeBraleTransferID, ReturnObjectReferenceNumbersReferenceNumberTypeBridgeDestinationTransactionHash, ReturnObjectReferenceNumbersReferenceNumberTypeBridgeSourceTransactionHash, ReturnObjectReferenceNumbersReferenceNumberTypeBridgeTransferID, ReturnObjectReferenceNumbersReferenceNumberTypeCheckNumber, ReturnObjectReferenceNumbersReferenceNumberTypeCitibankReferenceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeCitibankWorldlinkClearingSystemReferenceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeColumnFxQuoteID, ReturnObjectReferenceNumbersReferenceNumberTypeColumnReversalPairTransferID, ReturnObjectReferenceNumbersReferenceNumberTypeColumnTransferID, ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverServiceMessage, ReturnObjectReferenceNumbersReferenceNumberTypeCrossRiverTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeCurrencycloudConversionID, ReturnObjectReferenceNumbersReferenceNumberTypeCurrencycloudPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeDcBankTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeDwollaTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeEftTraceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeEvolveTransactionID, ReturnObjectReferenceNumbersReferenceNumberTypeFedwireImad, ReturnObjectReferenceNumbersReferenceNumberTypeFedwireOmad, ReturnObjectReferenceNumbersReferenceNumberTypeFirstRepublicInternalID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsCollectionRequestID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsPaymentRequestID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsRequestID, ReturnObjectReferenceNumbersReferenceNumberTypeGoldmanSachsUniquePaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeInteracMessageID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcCcn, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcClearingSystemReference, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcCustomerReferenceID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcFirmRootID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcFxTrnID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcP3ID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentBatchID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentInformationID, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcPaymentReturnedDatetime, ReturnObjectReferenceNumbersReferenceNumberTypeJpmcTransactionReferenceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeLobCheckID, ReturnObjectReferenceNumbersReferenceNumberTypeOther, ReturnObjectReferenceNumbersReferenceNumberTypePartialSwiftMir, ReturnObjectReferenceNumbersReferenceNumberTypePncClearingReference, ReturnObjectReferenceNumbersReferenceNumberTypePncInstructionID, ReturnObjectReferenceNumbersReferenceNumberTypePncMultipaymentID, ReturnObjectReferenceNumbersReferenceNumberTypePncPaymentTraceID, ReturnObjectReferenceNumbersReferenceNumberTypePncRequestForPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypePncTransactionReferenceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeRbcWireReferenceID, ReturnObjectReferenceNumbersReferenceNumberTypeRspecVendorPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeRtpInstructionID, ReturnObjectReferenceNumbersReferenceNumberTypeSignetAPIReferenceID, ReturnObjectReferenceNumbersReferenceNumberTypeSignetConfirmationID, ReturnObjectReferenceNumbersReferenceNumberTypeSignetRequestID, ReturnObjectReferenceNumbersReferenceNumberTypeSilvergatePaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeSvbEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeSvbPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeSvbTransactionClearedForSanctionsReview, ReturnObjectReferenceNumbersReferenceNumberTypeSvbTransactionHeldForSanctionsReview, ReturnObjectReferenceNumbersReferenceNumberTypeSwiftMir, ReturnObjectReferenceNumbersReferenceNumberTypeSwiftUetr, ReturnObjectReferenceNumbersReferenceNumberTypeUmbProductPartnerAccountNumber, ReturnObjectReferenceNumbersReferenceNumberTypeUsbankPaymentApplicationReferenceID, ReturnObjectReferenceNumbersReferenceNumberTypeUsbankPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeUsbankPendingRtpPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeUsbankPostedRtpPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoEndToEndID, ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoPaymentID, ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoTraceNumber, ReturnObjectReferenceNumbersReferenceNumberTypeWellsFargoUetr:
 		return true
 	}
 	return false
@@ -529,30 +575,70 @@ const (
 	ReturnNewParamsCodeR10           ReturnNewParamsCode = "R10"
 	ReturnNewParamsCodeR11           ReturnNewParamsCode = "R11"
 	ReturnNewParamsCodeR12           ReturnNewParamsCode = "R12"
+	ReturnNewParamsCodeR13           ReturnNewParamsCode = "R13"
 	ReturnNewParamsCodeR14           ReturnNewParamsCode = "R14"
 	ReturnNewParamsCodeR15           ReturnNewParamsCode = "R15"
 	ReturnNewParamsCodeR16           ReturnNewParamsCode = "R16"
 	ReturnNewParamsCodeR17           ReturnNewParamsCode = "R17"
+	ReturnNewParamsCodeR18           ReturnNewParamsCode = "R18"
+	ReturnNewParamsCodeR19           ReturnNewParamsCode = "R19"
 	ReturnNewParamsCodeR20           ReturnNewParamsCode = "R20"
 	ReturnNewParamsCodeR21           ReturnNewParamsCode = "R21"
 	ReturnNewParamsCodeR22           ReturnNewParamsCode = "R22"
 	ReturnNewParamsCodeR23           ReturnNewParamsCode = "R23"
 	ReturnNewParamsCodeR24           ReturnNewParamsCode = "R24"
+	ReturnNewParamsCodeR25           ReturnNewParamsCode = "R25"
+	ReturnNewParamsCodeR26           ReturnNewParamsCode = "R26"
+	ReturnNewParamsCodeR27           ReturnNewParamsCode = "R27"
+	ReturnNewParamsCodeR28           ReturnNewParamsCode = "R28"
 	ReturnNewParamsCodeR29           ReturnNewParamsCode = "R29"
+	ReturnNewParamsCodeR30           ReturnNewParamsCode = "R30"
 	ReturnNewParamsCodeR31           ReturnNewParamsCode = "R31"
+	ReturnNewParamsCodeR32           ReturnNewParamsCode = "R32"
 	ReturnNewParamsCodeR33           ReturnNewParamsCode = "R33"
+	ReturnNewParamsCodeR34           ReturnNewParamsCode = "R34"
+	ReturnNewParamsCodeR35           ReturnNewParamsCode = "R35"
+	ReturnNewParamsCodeR36           ReturnNewParamsCode = "R36"
 	ReturnNewParamsCodeR37           ReturnNewParamsCode = "R37"
 	ReturnNewParamsCodeR38           ReturnNewParamsCode = "R38"
 	ReturnNewParamsCodeR39           ReturnNewParamsCode = "R39"
+	ReturnNewParamsCodeR40           ReturnNewParamsCode = "R40"
+	ReturnNewParamsCodeR41           ReturnNewParamsCode = "R41"
+	ReturnNewParamsCodeR42           ReturnNewParamsCode = "R42"
+	ReturnNewParamsCodeR43           ReturnNewParamsCode = "R43"
+	ReturnNewParamsCodeR44           ReturnNewParamsCode = "R44"
+	ReturnNewParamsCodeR45           ReturnNewParamsCode = "R45"
+	ReturnNewParamsCodeR46           ReturnNewParamsCode = "R46"
+	ReturnNewParamsCodeR47           ReturnNewParamsCode = "R47"
+	ReturnNewParamsCodeR50           ReturnNewParamsCode = "R50"
 	ReturnNewParamsCodeR51           ReturnNewParamsCode = "R51"
 	ReturnNewParamsCodeR52           ReturnNewParamsCode = "R52"
 	ReturnNewParamsCodeR53           ReturnNewParamsCode = "R53"
+	ReturnNewParamsCodeR61           ReturnNewParamsCode = "R61"
+	ReturnNewParamsCodeR62           ReturnNewParamsCode = "R62"
+	ReturnNewParamsCodeR67           ReturnNewParamsCode = "R67"
+	ReturnNewParamsCodeR68           ReturnNewParamsCode = "R68"
+	ReturnNewParamsCodeR69           ReturnNewParamsCode = "R69"
+	ReturnNewParamsCodeR70           ReturnNewParamsCode = "R70"
+	ReturnNewParamsCodeR71           ReturnNewParamsCode = "R71"
+	ReturnNewParamsCodeR72           ReturnNewParamsCode = "R72"
+	ReturnNewParamsCodeR73           ReturnNewParamsCode = "R73"
+	ReturnNewParamsCodeR74           ReturnNewParamsCode = "R74"
+	ReturnNewParamsCodeR75           ReturnNewParamsCode = "R75"
+	ReturnNewParamsCodeR76           ReturnNewParamsCode = "R76"
+	ReturnNewParamsCodeR77           ReturnNewParamsCode = "R77"
+	ReturnNewParamsCodeR80           ReturnNewParamsCode = "R80"
+	ReturnNewParamsCodeR81           ReturnNewParamsCode = "R81"
+	ReturnNewParamsCodeR82           ReturnNewParamsCode = "R82"
+	ReturnNewParamsCodeR83           ReturnNewParamsCode = "R83"
+	ReturnNewParamsCodeR84           ReturnNewParamsCode = "R84"
+	ReturnNewParamsCodeR85           ReturnNewParamsCode = "R85"
 	ReturnNewParamsCodeCurrencycloud ReturnNewParamsCode = "currencycloud"
 )
 
 func (r ReturnNewParamsCode) IsKnown() bool {
 	switch r {
-	case ReturnNewParamsCode901, ReturnNewParamsCode902, ReturnNewParamsCode903, ReturnNewParamsCode904, ReturnNewParamsCode905, ReturnNewParamsCode907, ReturnNewParamsCode908, ReturnNewParamsCode909, ReturnNewParamsCode910, ReturnNewParamsCode911, ReturnNewParamsCode912, ReturnNewParamsCode914, ReturnNewParamsCodeC01, ReturnNewParamsCodeC02, ReturnNewParamsCodeC03, ReturnNewParamsCodeC05, ReturnNewParamsCodeC06, ReturnNewParamsCodeC07, ReturnNewParamsCodeC08, ReturnNewParamsCodeC09, ReturnNewParamsCodeC13, ReturnNewParamsCodeC14, ReturnNewParamsCodeR01, ReturnNewParamsCodeR02, ReturnNewParamsCodeR03, ReturnNewParamsCodeR04, ReturnNewParamsCodeR05, ReturnNewParamsCodeR06, ReturnNewParamsCodeR07, ReturnNewParamsCodeR08, ReturnNewParamsCodeR09, ReturnNewParamsCodeR10, ReturnNewParamsCodeR11, ReturnNewParamsCodeR12, ReturnNewParamsCodeR14, ReturnNewParamsCodeR15, ReturnNewParamsCodeR16, ReturnNewParamsCodeR17, ReturnNewParamsCodeR20, ReturnNewParamsCodeR21, ReturnNewParamsCodeR22, ReturnNewParamsCodeR23, ReturnNewParamsCodeR24, ReturnNewParamsCodeR29, ReturnNewParamsCodeR31, ReturnNewParamsCodeR33, ReturnNewParamsCodeR37, ReturnNewParamsCodeR38, ReturnNewParamsCodeR39, ReturnNewParamsCodeR51, ReturnNewParamsCodeR52, ReturnNewParamsCodeR53, ReturnNewParamsCodeCurrencycloud:
+	case ReturnNewParamsCode901, ReturnNewParamsCode902, ReturnNewParamsCode903, ReturnNewParamsCode904, ReturnNewParamsCode905, ReturnNewParamsCode907, ReturnNewParamsCode908, ReturnNewParamsCode909, ReturnNewParamsCode910, ReturnNewParamsCode911, ReturnNewParamsCode912, ReturnNewParamsCode914, ReturnNewParamsCodeC01, ReturnNewParamsCodeC02, ReturnNewParamsCodeC03, ReturnNewParamsCodeC05, ReturnNewParamsCodeC06, ReturnNewParamsCodeC07, ReturnNewParamsCodeC08, ReturnNewParamsCodeC09, ReturnNewParamsCodeC13, ReturnNewParamsCodeC14, ReturnNewParamsCodeR01, ReturnNewParamsCodeR02, ReturnNewParamsCodeR03, ReturnNewParamsCodeR04, ReturnNewParamsCodeR05, ReturnNewParamsCodeR06, ReturnNewParamsCodeR07, ReturnNewParamsCodeR08, ReturnNewParamsCodeR09, ReturnNewParamsCodeR10, ReturnNewParamsCodeR11, ReturnNewParamsCodeR12, ReturnNewParamsCodeR13, ReturnNewParamsCodeR14, ReturnNewParamsCodeR15, ReturnNewParamsCodeR16, ReturnNewParamsCodeR17, ReturnNewParamsCodeR18, ReturnNewParamsCodeR19, ReturnNewParamsCodeR20, ReturnNewParamsCodeR21, ReturnNewParamsCodeR22, ReturnNewParamsCodeR23, ReturnNewParamsCodeR24, ReturnNewParamsCodeR25, ReturnNewParamsCodeR26, ReturnNewParamsCodeR27, ReturnNewParamsCodeR28, ReturnNewParamsCodeR29, ReturnNewParamsCodeR30, ReturnNewParamsCodeR31, ReturnNewParamsCodeR32, ReturnNewParamsCodeR33, ReturnNewParamsCodeR34, ReturnNewParamsCodeR35, ReturnNewParamsCodeR36, ReturnNewParamsCodeR37, ReturnNewParamsCodeR38, ReturnNewParamsCodeR39, ReturnNewParamsCodeR40, ReturnNewParamsCodeR41, ReturnNewParamsCodeR42, ReturnNewParamsCodeR43, ReturnNewParamsCodeR44, ReturnNewParamsCodeR45, ReturnNewParamsCodeR46, ReturnNewParamsCodeR47, ReturnNewParamsCodeR50, ReturnNewParamsCodeR51, ReturnNewParamsCodeR52, ReturnNewParamsCodeR53, ReturnNewParamsCodeR61, ReturnNewParamsCodeR62, ReturnNewParamsCodeR67, ReturnNewParamsCodeR68, ReturnNewParamsCodeR69, ReturnNewParamsCodeR70, ReturnNewParamsCodeR71, ReturnNewParamsCodeR72, ReturnNewParamsCodeR73, ReturnNewParamsCodeR74, ReturnNewParamsCodeR75, ReturnNewParamsCodeR76, ReturnNewParamsCodeR77, ReturnNewParamsCodeR80, ReturnNewParamsCodeR81, ReturnNewParamsCodeR82, ReturnNewParamsCodeR83, ReturnNewParamsCodeR84, ReturnNewParamsCodeR85, ReturnNewParamsCodeCurrencycloud:
 		return true
 	}
 	return false
