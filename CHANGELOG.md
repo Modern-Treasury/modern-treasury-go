@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.27.1 (2025-05-30)
+
+Full Changelog: [v2.27.0...v2.27.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.27.0...v2.27.1)
+
+### Chores
+
+* make go mod tidy continue on error ([41f057f](https://github.com/Modern-Treasury/modern-treasury-go/commit/41f057f72eefc4cb73fd4d60506b0b728d9460fc))
+
 ## 2.27.0 (2025-05-23)
 
 Full Changelog: [v2.26.0...v2.27.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.26.0...v2.27.0)
