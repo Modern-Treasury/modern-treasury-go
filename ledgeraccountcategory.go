@@ -185,6 +185,8 @@ type LedgerAccountCategory struct {
 	// The description of the ledger account category.
 	Description string    `json:"description,required,nullable"`
 	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID string `json:"external_id,required,nullable"`
 	// The id of the ledger that this account category belongs to.
 	LedgerID string `json:"ledger_id,required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
@@ -210,6 +212,7 @@ type ledgerAccountCategoryJSON struct {
 	CreatedAt     apijson.Field
 	Description   apijson.Field
 	DiscardedAt   apijson.Field
+	ExternalID    apijson.Field
 	LedgerID      apijson.Field
 	LiveMode      apijson.Field
 	Metadata      apijson.Field
@@ -444,8 +447,9 @@ type LedgerAccountCategoryListParams struct {
 	// For example, if you want the balances as of a particular time (ISO8601), the
 	// encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
 	// The balances as of a time are inclusive of entries with that exact time.
-	Balances param.Field[LedgerAccountCategoryListParamsBalances] `query:"balances"`
-	Currency param.Field[string]                                  `query:"currency"`
+	Balances   param.Field[LedgerAccountCategoryListParamsBalances] `query:"balances"`
+	Currency   param.Field[string]                                  `query:"currency"`
+	ExternalID param.Field[string]                                  `query:"external_id"`
 	// Query categories which contain a ledger account directly or through child
 	// categories.
 	LedgerAccountID param.Field[string] `query:"ledger_account_id"`
