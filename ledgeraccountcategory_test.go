@@ -138,6 +138,7 @@ func TestLedgerAccountCategoryListWithOptionalParams(t *testing.T) {
 			EffectiveAt: moderntreasury.F(time.Now()),
 		}),
 		Currency:        moderntreasury.F("currency"),
+		ExternalID:      moderntreasury.F("external_id"),
 		LedgerAccountID: moderntreasury.F("ledger_account_id"),
 		LedgerID:        moderntreasury.F("ledger_id"),
 		Metadata: moderntreasury.F(map[string]string{

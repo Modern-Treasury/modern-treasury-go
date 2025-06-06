@@ -117,6 +117,8 @@ type LedgerAccount struct {
 	// The description of the ledger account.
 	Description string    `json:"description,required,nullable"`
 	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID string `json:"external_id,required,nullable"`
 	// The id of the ledger that this account belongs to.
 	LedgerID string `json:"ledger_id,required" format:"uuid"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
@@ -150,6 +152,7 @@ type ledgerAccountJSON struct {
 	CreatedAt      apijson.Field
 	Description    apijson.Field
 	DiscardedAt    apijson.Field
+	ExternalID     apijson.Field
 	LedgerID       apijson.Field
 	LedgerableID   apijson.Field
 	LedgerableType apijson.Field
@@ -171,6 +174,8 @@ func (r *LedgerAccount) UnmarshalJSON(data []byte) (err error) {
 func (r ledgerAccountJSON) RawJSON() string {
 	return r.raw
 }
+
+func (r LedgerAccount) implementsBulkResultEntity() {}
 
 // The pending, posted, and available balances for this ledger account. The posted
 // balance is the sum of all posted entries on the account. The pending balance is
@@ -461,6 +466,7 @@ type LedgerAccountListParams struct {
 	// created_at%5Bgt%5D=2000-01-01T12:00:00Z.
 	CreatedAt               param.Field[map[string]time.Time] `query:"created_at" format:"date-time"`
 	Currency                param.Field[string]               `query:"currency"`
+	ExternalID              param.Field[string]               `query:"external_id"`
 	LedgerAccountCategoryID param.Field[string]               `query:"ledger_account_category_id"`
 	LedgerID                param.Field[string]               `query:"ledger_id"`
 	// For example, if you want to query for records with metadata key `Type` and value

@@ -67,7 +67,7 @@ func TestInternalAccountBalanceReportGet(t *testing.T) {
 	_, err := client.InternalAccounts.BalanceReports.Get(
 		context.TODO(),
 		"internal_account_id",
-		"id",
+		moderntreasury.BalanceReportGetParamsIDLatest,
 	)
 	if err != nil {
 		var apierr *moderntreasury.Error

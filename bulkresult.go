@@ -174,6 +174,8 @@ type BulkResultEntity struct {
 	// The timezone in which the `as_of_time` is represented. Can be `null` if the bank
 	// does not provide timezone info.
 	AsOfTimezone string `json:"as_of_timezone,nullable"`
+	// This field can have the runtime type of [LedgerAccountBalances].
+	Balances interface{} `json:"balances"`
 	// The party that will pay the fees for the payment order. Only applies to wire
 	// payment orders. Can be one of shared, sender, or receiver, which correspond
 	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
@@ -240,8 +242,14 @@ type BulkResultEntity struct {
 	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
 	// reversal.
 	LedgerableType BulkResultEntityLedgerableType `json:"ledgerable_type,nullable"`
+	// Lock version of the ledger account.
+	LockVersion int64 `json:"lock_version"`
 	// This field can have the runtime type of [map[string]string].
 	Metadata interface{} `json:"metadata"`
+	// The name of the ledger account.
+	Name string `json:"name"`
+	// The normal balance of the ledger account.
+	NormalBalance shared.TransactionDirection `json:"normal_balance"`
 	// A boolean to determine if NSF Protection is enabled for this payment order. Note
 	// that this setting must also be turned on in your organization settings page.
 	NsfProtected bool `json:"nsf_protected"`
@@ -384,6 +392,7 @@ type bulkResultEntityJSON struct {
 	AsOfDate                           apijson.Field
 	AsOfTime                           apijson.Field
 	AsOfTimezone                       apijson.Field
+	Balances                           apijson.Field
 	ChargeBearer                       apijson.Field
 	CounterpartyID                     apijson.Field
 	Currency                           apijson.Field
@@ -408,7 +417,10 @@ type bulkResultEntityJSON struct {
 	LedgerTransactionID                apijson.Field
 	LedgerableID                       apijson.Field
 	LedgerableType                     apijson.Field
+	LockVersion                        apijson.Field
 	Metadata                           apijson.Field
+	Name                               apijson.Field
+	NormalBalance                      apijson.Field
 	NsfProtected                       apijson.Field
 	OriginatingAccountID               apijson.Field
 	OriginatingPartyName               apijson.Field
@@ -473,7 +485,8 @@ func (r *BulkResultEntity) UnmarshalJSON(data []byte) (err error) {
 // specific types for more type safety.
 //
 // Possible runtime types of the union are [PaymentOrder], [ExpectedPayment],
-// [LedgerTransaction], [Transaction], [BulkResultEntityBulkError].
+// [LedgerTransaction], [LedgerAccount], [Transaction],
+// [BulkResultEntityBulkError].
 func (r BulkResultEntity) AsUnion() BulkResultEntityUnion {
 	return r.union
 }
@@ -483,7 +496,7 @@ func (r BulkResultEntity) AsUnion() BulkResultEntityUnion {
 // `request_params`.
 //
 // Union satisfied by [PaymentOrder], [ExpectedPayment], [LedgerTransaction],
-// [Transaction] or [BulkResultEntityBulkError].
+// [LedgerAccount], [Transaction] or [BulkResultEntityBulkError].
 type BulkResultEntityUnion interface {
 	implementsBulkResultEntity()
 }
@@ -503,6 +516,10 @@ func init() {
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
 			Type:       reflect.TypeOf(LedgerTransaction{}),
+		},
+		apijson.UnionVariant{
+			TypeFilter: gjson.JSON,
+			Type:       reflect.TypeOf(LedgerAccount{}),
 		},
 		apijson.UnionVariant{
 			TypeFilter: gjson.JSON,
@@ -625,11 +642,15 @@ const (
 	BulkResultEntityLedgerableTypePaymentOrder          BulkResultEntityLedgerableType = "payment_order"
 	BulkResultEntityLedgerableTypeReturn                BulkResultEntityLedgerableType = "return"
 	BulkResultEntityLedgerableTypeReversal              BulkResultEntityLedgerableType = "reversal"
+	BulkResultEntityLedgerableTypeCounterparty          BulkResultEntityLedgerableType = "counterparty"
+	BulkResultEntityLedgerableTypeExternalAccount       BulkResultEntityLedgerableType = "external_account"
+	BulkResultEntityLedgerableTypeInternalAccount       BulkResultEntityLedgerableType = "internal_account"
+	BulkResultEntityLedgerableTypeVirtualAccount        BulkResultEntityLedgerableType = "virtual_account"
 )
 
 func (r BulkResultEntityLedgerableType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityLedgerableTypeExpectedPayment, BulkResultEntityLedgerableTypeIncomingPaymentDetail, BulkResultEntityLedgerableTypePaperItem, BulkResultEntityLedgerableTypePaymentOrder, BulkResultEntityLedgerableTypeReturn, BulkResultEntityLedgerableTypeReversal:
+	case BulkResultEntityLedgerableTypeExpectedPayment, BulkResultEntityLedgerableTypeIncomingPaymentDetail, BulkResultEntityLedgerableTypePaperItem, BulkResultEntityLedgerableTypePaymentOrder, BulkResultEntityLedgerableTypeReturn, BulkResultEntityLedgerableTypeReversal, BulkResultEntityLedgerableTypeCounterparty, BulkResultEntityLedgerableTypeExternalAccount, BulkResultEntityLedgerableTypeInternalAccount, BulkResultEntityLedgerableTypeVirtualAccount:
 		return true
 	}
 	return false
@@ -701,6 +722,7 @@ const (
 	BulkResultEntityStatusReturned            BulkResultEntityStatus = "returned"
 	BulkResultEntityStatusReversed            BulkResultEntityStatus = "reversed"
 	BulkResultEntityStatusSent                BulkResultEntityStatus = "sent"
+	BulkResultEntityStatusStopped             BulkResultEntityStatus = "stopped"
 	BulkResultEntityStatusArchived            BulkResultEntityStatus = "archived"
 	BulkResultEntityStatusPartiallyReconciled BulkResultEntityStatus = "partially_reconciled"
 	BulkResultEntityStatusReconciled          BulkResultEntityStatus = "reconciled"
@@ -710,7 +732,7 @@ const (
 
 func (r BulkResultEntityStatus) IsKnown() bool {
 	switch r {
-	case BulkResultEntityStatusApproved, BulkResultEntityStatusCancelled, BulkResultEntityStatusCompleted, BulkResultEntityStatusDenied, BulkResultEntityStatusFailed, BulkResultEntityStatusNeedsApproval, BulkResultEntityStatusPending, BulkResultEntityStatusProcessing, BulkResultEntityStatusReturned, BulkResultEntityStatusReversed, BulkResultEntityStatusSent, BulkResultEntityStatusArchived, BulkResultEntityStatusPartiallyReconciled, BulkResultEntityStatusReconciled, BulkResultEntityStatusUnreconciled, BulkResultEntityStatusPosted:
+	case BulkResultEntityStatusApproved, BulkResultEntityStatusCancelled, BulkResultEntityStatusCompleted, BulkResultEntityStatusDenied, BulkResultEntityStatusFailed, BulkResultEntityStatusNeedsApproval, BulkResultEntityStatusPending, BulkResultEntityStatusProcessing, BulkResultEntityStatusReturned, BulkResultEntityStatusReversed, BulkResultEntityStatusSent, BulkResultEntityStatusStopped, BulkResultEntityStatusArchived, BulkResultEntityStatusPartiallyReconciled, BulkResultEntityStatusReconciled, BulkResultEntityStatusUnreconciled, BulkResultEntityStatusPosted:
 		return true
 	}
 	return false
