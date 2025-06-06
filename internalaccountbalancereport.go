@@ -51,17 +51,13 @@ func (r *InternalAccountBalanceReportService) New(ctx context.Context, internalA
 }
 
 // Get a single balance report for a given internal account.
-func (r *InternalAccountBalanceReportService) Get(ctx context.Context, internalAccountID string, id string, opts ...option.RequestOption) (res *BalanceReport, err error) {
+func (r *InternalAccountBalanceReportService) Get(ctx context.Context, internalAccountID string, id BalanceReportGetParamsID, opts ...option.RequestOption) (res *BalanceReport, err error) {
 	opts = append(r.Options[:], opts...)
 	if internalAccountID == "" {
 		err = errors.New("missing required internal_account_id parameter")
 		return
 	}
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return
-	}
-	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports/%s", internalAccountID, id)
+	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports/%v", internalAccountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return
 }
@@ -339,6 +335,20 @@ const (
 func (r BalanceReportNewParamsBalancesBalanceType) IsKnown() bool {
 	switch r {
 	case BalanceReportNewParamsBalancesBalanceTypeClosingAvailable, BalanceReportNewParamsBalancesBalanceTypeClosingLedger, BalanceReportNewParamsBalancesBalanceTypeCurrentAvailable, BalanceReportNewParamsBalancesBalanceTypeCurrentLedger, BalanceReportNewParamsBalancesBalanceTypeOpeningAvailable, BalanceReportNewParamsBalancesBalanceTypeOpeningAvailableNextBusinessDay, BalanceReportNewParamsBalancesBalanceTypeOpeningLedger, BalanceReportNewParamsBalancesBalanceTypeOther, BalanceReportNewParamsBalancesBalanceTypePreviouslyClosedBook:
+		return true
+	}
+	return false
+}
+
+type BalanceReportGetParamsID string
+
+const (
+	BalanceReportGetParamsIDLatest BalanceReportGetParamsID = "latest"
+)
+
+func (r BalanceReportGetParamsID) IsKnown() bool {
+	switch r {
+	case BalanceReportGetParamsIDLatest:
 		return true
 	}
 	return false

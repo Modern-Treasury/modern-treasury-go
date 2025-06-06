@@ -277,6 +277,8 @@ type BulkRequestNewParamsResource struct {
 	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
 	// Defaults to the currency of the originating account.
 	Currency param.Field[shared.Currency] `json:"currency"`
+	// The currency exponent of the ledger account.
+	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The earliest date the payment may come in. Format: yyyy-mm-dd
 	DateLowerBound param.Field[time.Time] `json:"date_lower_bound" format:"date"`
 	// The latest date the payment may come in. Format: yyyy-mm-dd
@@ -312,8 +314,11 @@ type BulkRequestNewParamsResource struct {
 	// currency matches the originating account currency.
 	ForeignExchangeIndicator param.Field[BulkRequestNewParamsResourcesForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
 	// The ID of the Internal Account for the expected payment.
-	InternalAccountID param.Field[string]      `json:"internal_account_id" format:"uuid"`
-	LedgerEntries     param.Field[interface{}] `json:"ledger_entries"`
+	InternalAccountID        param.Field[string]      `json:"internal_account_id" format:"uuid"`
+	LedgerAccountCategoryIDs param.Field[interface{}] `json:"ledger_account_category_ids"`
+	LedgerEntries            param.Field[interface{}] `json:"ledger_entries"`
+	// The id of the ledger that this account belongs to.
+	LedgerID          param.Field[string]      `json:"ledger_id" format:"uuid"`
 	LedgerTransaction param.Field[interface{}] `json:"ledger_transaction"`
 	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
 	// pending ledger transaction can be attached upon payment order creation. Once the
@@ -330,6 +335,10 @@ type BulkRequestNewParamsResource struct {
 	LedgerableType param.Field[BulkRequestNewParamsResourcesLedgerableType] `json:"ledgerable_type"`
 	LineItems      param.Field[interface{}]                                 `json:"line_items"`
 	Metadata       param.Field[interface{}]                                 `json:"metadata"`
+	// The name of the ledger account.
+	Name param.Field[string] `json:"name"`
+	// The normal balance of the ledger account.
+	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance"`
 	// A boolean to determine if NSF Protection is enabled for this payment order. Note
 	// that this setting must also be turned on in your organization settings page.
 	NsfProtected param.Field[bool] `json:"nsf_protected"`
@@ -422,6 +431,7 @@ func (r BulkRequestNewParamsResource) implementsBulkRequestNewParamsResourceUnio
 // Satisfied by [BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest],
 // [BulkRequestNewParamsResourcesExpectedPaymentCreateRequest],
 // [BulkRequestNewParamsResourcesLedgerTransactionCreateRequest],
+// [BulkRequestNewParamsResourcesLedgerAccountCreateRequest],
 // [BulkRequestNewParamsResourcesTransactionCreateRequest],
 // [BulkRequestNewParamsResourcesID],
 // [BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID],
@@ -1419,6 +1429,61 @@ func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatus) IsKno
 	return false
 }
 
+type BulkRequestNewParamsResourcesLedgerAccountCreateRequest struct {
+	// The currency of the ledger account.
+	Currency param.Field[string] `json:"currency,required"`
+	// The id of the ledger that this account belongs to.
+	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
+	// The name of the ledger account.
+	Name param.Field[string] `json:"name,required"`
+	// The normal balance of the ledger account.
+	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
+	// The currency exponent of the ledger account.
+	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
+	// The description of the ledger account.
+	Description param.Field[string] `json:"description"`
+	// The array of ledger account category ids that this ledger account should be a
+	// child of.
+	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
+	// If the ledger account links to another object in Modern Treasury, the id will be
+	// populated here, otherwise null.
+	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+	// If the ledger account links to another object in Modern Treasury, the type will
+	// be populated here, otherwise null. The value is one of internal_account or
+	// external_account.
+	LedgerableType param.Field[BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType] `json:"ledgerable_type"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+}
+
+func (r BulkRequestNewParamsResourcesLedgerAccountCreateRequest) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r BulkRequestNewParamsResourcesLedgerAccountCreateRequest) implementsBulkRequestNewParamsResourceUnion() {
+}
+
+// If the ledger account links to another object in Modern Treasury, the type will
+// be populated here, otherwise null. The value is one of internal_account or
+// external_account.
+type BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType string
+
+const (
+	BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeCounterparty    BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType = "counterparty"
+	BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeExternalAccount BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType = "external_account"
+	BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeInternalAccount BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType = "internal_account"
+	BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeVirtualAccount  BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType = "virtual_account"
+)
+
+func (r BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeCounterparty, BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeExternalAccount, BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeVirtualAccount:
+		return true
+	}
+	return false
+}
+
 type BulkRequestNewParamsResourcesTransactionCreateRequest struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
@@ -2074,11 +2139,12 @@ const (
 	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusReturned      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "returned"
 	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusReversed      BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "reversed"
 	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusSent          BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "sent"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusStopped       BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus = "stopped"
 )
 
 func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatus) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusApproved, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusCancelled, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusCompleted, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusDenied, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusFailed, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusNeedsApproval, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusPending, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusProcessing, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusReturned, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusReversed, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusSent:
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusApproved, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusCancelled, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusCompleted, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusDenied, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusFailed, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusNeedsApproval, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusPending, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusProcessing, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusReturned, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusReversed, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusSent, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDStatusStopped:
 		return true
 	}
 	return false
@@ -2365,11 +2431,15 @@ const (
 	BulkRequestNewParamsResourcesLedgerableTypePaymentOrder          BulkRequestNewParamsResourcesLedgerableType = "payment_order"
 	BulkRequestNewParamsResourcesLedgerableTypeReturn                BulkRequestNewParamsResourcesLedgerableType = "return"
 	BulkRequestNewParamsResourcesLedgerableTypeReversal              BulkRequestNewParamsResourcesLedgerableType = "reversal"
+	BulkRequestNewParamsResourcesLedgerableTypeCounterparty          BulkRequestNewParamsResourcesLedgerableType = "counterparty"
+	BulkRequestNewParamsResourcesLedgerableTypeExternalAccount       BulkRequestNewParamsResourcesLedgerableType = "external_account"
+	BulkRequestNewParamsResourcesLedgerableTypeInternalAccount       BulkRequestNewParamsResourcesLedgerableType = "internal_account"
+	BulkRequestNewParamsResourcesLedgerableTypeVirtualAccount        BulkRequestNewParamsResourcesLedgerableType = "virtual_account"
 )
 
 func (r BulkRequestNewParamsResourcesLedgerableType) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesLedgerableTypePaperItem, BulkRequestNewParamsResourcesLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesLedgerableTypeReturn, BulkRequestNewParamsResourcesLedgerableTypeReversal:
+	case BulkRequestNewParamsResourcesLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesLedgerableTypePaperItem, BulkRequestNewParamsResourcesLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesLedgerableTypeReturn, BulkRequestNewParamsResourcesLedgerableTypeReversal, BulkRequestNewParamsResourcesLedgerableTypeCounterparty, BulkRequestNewParamsResourcesLedgerableTypeExternalAccount, BulkRequestNewParamsResourcesLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesLedgerableTypeVirtualAccount:
 		return true
 	}
 	return false
@@ -2410,12 +2480,13 @@ const (
 	BulkRequestNewParamsResourcesStatusReturned      BulkRequestNewParamsResourcesStatus = "returned"
 	BulkRequestNewParamsResourcesStatusReversed      BulkRequestNewParamsResourcesStatus = "reversed"
 	BulkRequestNewParamsResourcesStatusSent          BulkRequestNewParamsResourcesStatus = "sent"
+	BulkRequestNewParamsResourcesStatusStopped       BulkRequestNewParamsResourcesStatus = "stopped"
 	BulkRequestNewParamsResourcesStatusReconciled    BulkRequestNewParamsResourcesStatus = "reconciled"
 )
 
 func (r BulkRequestNewParamsResourcesStatus) IsKnown() bool {
 	switch r {
-	case BulkRequestNewParamsResourcesStatusArchived, BulkRequestNewParamsResourcesStatusPending, BulkRequestNewParamsResourcesStatusPosted, BulkRequestNewParamsResourcesStatusApproved, BulkRequestNewParamsResourcesStatusCancelled, BulkRequestNewParamsResourcesStatusCompleted, BulkRequestNewParamsResourcesStatusDenied, BulkRequestNewParamsResourcesStatusFailed, BulkRequestNewParamsResourcesStatusNeedsApproval, BulkRequestNewParamsResourcesStatusProcessing, BulkRequestNewParamsResourcesStatusReturned, BulkRequestNewParamsResourcesStatusReversed, BulkRequestNewParamsResourcesStatusSent, BulkRequestNewParamsResourcesStatusReconciled:
+	case BulkRequestNewParamsResourcesStatusArchived, BulkRequestNewParamsResourcesStatusPending, BulkRequestNewParamsResourcesStatusPosted, BulkRequestNewParamsResourcesStatusApproved, BulkRequestNewParamsResourcesStatusCancelled, BulkRequestNewParamsResourcesStatusCompleted, BulkRequestNewParamsResourcesStatusDenied, BulkRequestNewParamsResourcesStatusFailed, BulkRequestNewParamsResourcesStatusNeedsApproval, BulkRequestNewParamsResourcesStatusProcessing, BulkRequestNewParamsResourcesStatusReturned, BulkRequestNewParamsResourcesStatusReversed, BulkRequestNewParamsResourcesStatusSent, BulkRequestNewParamsResourcesStatusStopped, BulkRequestNewParamsResourcesStatusReconciled:
 		return true
 	}
 	return false

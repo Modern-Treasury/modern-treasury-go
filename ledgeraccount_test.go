@@ -157,6 +157,7 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 			"foo": time.Now(),
 		}),
 		Currency:                moderntreasury.F("currency"),
+		ExternalID:              moderntreasury.F("external_id"),
 		LedgerAccountCategoryID: moderntreasury.F("ledger_account_category_id"),
 		LedgerID:                moderntreasury.F("ledger_id"),
 		Metadata: moderntreasury.F(map[string]string{
