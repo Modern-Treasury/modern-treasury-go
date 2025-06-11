@@ -352,6 +352,7 @@ func TestPaymentOrderListWithOptionalParams(t *testing.T) {
 		Direction:          moderntreasury.F(shared.TransactionDirectionCredit),
 		EffectiveDateEnd:   moderntreasury.F(time.Now()),
 		EffectiveDateStart: moderntreasury.F(time.Now()),
+		ExternalID:         moderntreasury.F("external_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),

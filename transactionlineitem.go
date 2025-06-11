@@ -117,6 +117,8 @@ type TransactionLineItem struct {
 	// Describes whether this line item should be counted towards the corresponding
 	// transaction’s reconciliation.
 	Reconcilable bool `json:"reconcilable,required"`
+	// The ID of the reconciliation group this line item belongs to, otherwise `null`.
+	ReconciliationGroupID string `json:"reconciliation_group_id,required,nullable"`
 	// If a matching object exists in Modern Treasury, the ID will be populated here,
 	// otherwise `null`.
 	TransactableID string `json:"transactable_id,required,nullable"`
@@ -135,23 +137,24 @@ type TransactionLineItem struct {
 // transactionLineItemJSON contains the JSON metadata for the struct
 // [TransactionLineItem]
 type transactionLineItemJSON struct {
-	ID                apijson.Field
-	Amount            apijson.Field
-	CounterpartyID    apijson.Field
-	CreatedAt         apijson.Field
-	Description       apijson.Field
-	DiscardedAt       apijson.Field
-	ExpectedPaymentID apijson.Field
-	LiveMode          apijson.Field
-	Object            apijson.Field
-	Reconcilable      apijson.Field
-	TransactableID    apijson.Field
-	TransactableType  apijson.Field
-	TransactionID     apijson.Field
-	Type              apijson.Field
-	UpdatedAt         apijson.Field
-	raw               string
-	ExtraFields       map[string]apijson.Field
+	ID                    apijson.Field
+	Amount                apijson.Field
+	CounterpartyID        apijson.Field
+	CreatedAt             apijson.Field
+	Description           apijson.Field
+	DiscardedAt           apijson.Field
+	ExpectedPaymentID     apijson.Field
+	LiveMode              apijson.Field
+	Object                apijson.Field
+	Reconcilable          apijson.Field
+	ReconciliationGroupID apijson.Field
+	TransactableID        apijson.Field
+	TransactableType      apijson.Field
+	TransactionID         apijson.Field
+	Type                  apijson.Field
+	UpdatedAt             apijson.Field
+	raw                   string
+	ExtraFields           map[string]apijson.Field
 }
 
 func (r *TransactionLineItem) UnmarshalJSON(data []byte) (err error) {
