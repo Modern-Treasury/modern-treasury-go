@@ -32,9 +32,17 @@ func TestReturnNewWithOptionalParams(t *testing.T) {
 		ReturnableType:        moderntreasury.F(moderntreasury.ReturnNewParamsReturnableTypeIncomingPaymentDetail),
 		AdditionalInformation: moderntreasury.F("additional_information"),
 		Code:                  moderntreasury.F(moderntreasury.ReturnNewParamsCode901),
-		Data:                  moderntreasury.F[any](map[string]interface{}{}),
-		DateOfDeath:           moderntreasury.F(time.Now()),
-		Reason:                moderntreasury.F("reason"),
+		Corrections: moderntreasury.F(moderntreasury.ReturnNewParamsCorrections{
+			AccountNumber:                  moderntreasury.F("account_number"),
+			CompanyID:                      moderntreasury.F("company_id"),
+			CompanyName:                    moderntreasury.F("company_name"),
+			IndividualIdentificationNumber: moderntreasury.F("individual_identification_number"),
+			RoutingNumber:                  moderntreasury.F("routing_number"),
+			TransactionCode:                moderntreasury.F("transaction_code"),
+		}),
+		Data:        moderntreasury.F[any](map[string]interface{}{}),
+		DateOfDeath: moderntreasury.F(time.Now()),
+		Reason:      moderntreasury.F("reason"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

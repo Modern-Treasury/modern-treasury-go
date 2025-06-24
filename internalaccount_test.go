@@ -7,6 +7,7 @@ import (
 	"errors"
 	"os"
 	"testing"
+	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/testutil"
@@ -28,10 +29,21 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.InternalAccounts.New(context.TODO(), moderntreasury.InternalAccountNewParams{
-		ConnectionID:    moderntreasury.F("connection_id"),
-		Currency:        moderntreasury.F(moderntreasury.InternalAccountNewParamsCurrencyUsd),
-		Name:            moderntreasury.F("name"),
-		PartyName:       moderntreasury.F("party_name"),
+		ConnectionID: moderntreasury.F("connection_id"),
+		Currency:     moderntreasury.F(moderntreasury.InternalAccountNewParamsCurrencyUsd),
+		Name:         moderntreasury.F("name"),
+		PartyName:    moderntreasury.F("party_name"),
+		AccountCapabilities: moderntreasury.F([]moderntreasury.InternalAccountNewParamsAccountCapability{{
+			ID:          moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			CreatedAt:   moderntreasury.F(time.Now()),
+			Direction:   moderntreasury.F(shared.TransactionDirectionCredit),
+			DiscardedAt: moderntreasury.F(time.Now()),
+			Identifier:  moderntreasury.F("identifier"),
+			LiveMode:    moderntreasury.F(true),
+			Object:      moderntreasury.F("object"),
+			PaymentType: moderntreasury.F(moderntreasury.InternalAccountNewParamsAccountCapabilitiesPaymentTypeACH),
+			UpdatedAt:   moderntreasury.F(time.Now()),
+		}}),
 		AccountType:     moderntreasury.F(moderntreasury.InternalAccountNewParamsAccountTypeChecking),
 		CounterpartyID:  moderntreasury.F("counterparty_id"),
 		LegalEntityID:   moderntreasury.F("legal_entity_id"),
