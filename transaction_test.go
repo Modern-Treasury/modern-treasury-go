@@ -41,6 +41,7 @@ func TestTransactionNewWithOptionalParams(t *testing.T) {
 		}),
 		Posted:            moderntreasury.F(true),
 		Type:              moderntreasury.F(moderntreasury.TransactionNewParamsTypeACH),
+		VendorCustomerID:  moderntreasury.F("vendor_customer_id"),
 		VendorDescription: moderntreasury.F("vendor_description"),
 	})
 	if err != nil {

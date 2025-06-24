@@ -382,6 +382,8 @@ type TransactionNewParams struct {
 	// The type of the transaction. Examples could be
 	// `card, `ach`, `wire`, `check`, `rtp`, `book`, or `sen`.
 	Type param.Field[TransactionNewParamsType] `json:"type"`
+	// An identifier given to this transaction by the bank, often `null`.
+	VendorCustomerID param.Field[string] `json:"vendor_customer_id"`
 	// The transaction detail text that often appears in on your bank statement and in
 	// your banking portal.
 	VendorDescription param.Field[string] `json:"vendor_description"`

@@ -176,9 +176,9 @@ type BulkResultEntity struct {
 	AsOfTimezone string `json:"as_of_timezone,nullable"`
 	// This field can have the runtime type of [LedgerAccountBalances].
 	Balances interface{} `json:"balances"`
-	// The party that will pay the fees for the payment order. Only applies to wire
-	// payment orders. Can be one of shared, sender, or receiver, which correspond
-	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+	// The party that will pay the fees for the payment order. See
+	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+	// differences between the options.
 	ChargeBearer BulkResultEntityChargeBearer `json:"charge_bearer,nullable"`
 	// If the payment order is tied to a specific Counterparty, their id will appear,
 	// otherwise `null`.
@@ -591,9 +591,9 @@ func (r bulkResultEntityBulkErrorRequestErrorJSON) RawJSON() string {
 	return r.raw
 }
 
-// The party that will pay the fees for the payment order. Only applies to wire
-// payment orders. Can be one of shared, sender, or receiver, which correspond
-// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+// The party that will pay the fees for the payment order. See
+// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+// differences between the options.
 type BulkResultEntityChargeBearer string
 
 const (

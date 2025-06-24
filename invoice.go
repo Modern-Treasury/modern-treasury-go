@@ -144,6 +144,9 @@ type Invoice struct {
 	HostedURL string `json:"hosted_url,required"`
 	// The invoice issuer's business address.
 	InvoicerAddress InvoiceInvoicerAddress `json:"invoicer_address,required,nullable"`
+	// The name of the issuer for the invoice. Defaults to the name of the
+	// Organization.
+	InvoicerName string `json:"invoicer_name,required,nullable"`
 	// The ledger account settlement object linked to the invoice.
 	LedgerAccountSettlementID string `json:"ledger_account_settlement_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
@@ -219,6 +222,7 @@ type invoiceJSON struct {
 	FallbackPaymentMethod       apijson.Field
 	HostedURL                   apijson.Field
 	InvoicerAddress             apijson.Field
+	InvoicerName                apijson.Field
 	LedgerAccountSettlementID   apijson.Field
 	LiveMode                    apijson.Field
 	Metadata                    apijson.Field
