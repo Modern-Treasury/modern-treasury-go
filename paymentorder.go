@@ -125,9 +125,9 @@ type PaymentOrder struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount int64 `json:"amount,required"`
-	// The party that will pay the fees for the payment order. Only applies to wire
-	// payment orders. Can be one of shared, sender, or receiver, which correspond
-	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+	// The party that will pay the fees for the payment order. See
+	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+	// differences between the options.
 	ChargeBearer PaymentOrderChargeBearer `json:"charge_bearer,required,nullable"`
 	// If the payment order is tied to a specific Counterparty, their id will appear,
 	// otherwise `null`.
@@ -344,9 +344,9 @@ func (r paymentOrderAccountingJSON) RawJSON() string {
 	return r.raw
 }
 
-// The party that will pay the fees for the payment order. Only applies to wire
-// payment orders. Can be one of shared, sender, or receiver, which correspond
-// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+// The party that will pay the fees for the payment order. See
+// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+// differences between the options.
 type PaymentOrderChargeBearer string
 
 const (
@@ -657,6 +657,8 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	// This field can have the runtime type of [[]RoutingDetail].
 	RoutingDetails interface{} `json:"routing_details,required"`
 	UpdatedAt      time.Time   `json:"updated_at,required" format:"date-time"`
+	// This field can have the runtime type of [[]InternalAccountAccountCapability].
+	AccountCapabilities interface{} `json:"account_capabilities"`
 	// Can be checking, savings or other.
 	AccountType PaymentOrderUltimateOriginatingAccountAccountType `json:"account_type,nullable"`
 	// Specifies which financial institution the accounts belong to.
@@ -704,6 +706,7 @@ type paymentOrderUltimateOriginatingAccountJSON struct {
 	Object                apijson.Field
 	RoutingDetails        apijson.Field
 	UpdatedAt             apijson.Field
+	AccountCapabilities   apijson.Field
 	AccountType           apijson.Field
 	Connection            apijson.Field
 	CreditLedgerAccountID apijson.Field
@@ -941,9 +944,9 @@ type PaymentOrderNewParams struct {
 	// The ID of one of your accounting ledger classes. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
-	// The party that will pay the fees for the payment order. Only applies to wire
-	// payment orders. Can be one of shared, sender, or receiver, which correspond
-	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+	// The party that will pay the fees for the payment order. See
+	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+	// differences between the options.
 	ChargeBearer param.Field[PaymentOrderNewParamsChargeBearer] `json:"charge_bearer"`
 	// Defaults to the currency of the originating account.
 	Currency param.Field[shared.Currency] `json:"currency"`
@@ -1094,9 +1097,9 @@ func (r PaymentOrderNewParamsAccounting) MarshalJSON() (data []byte, err error) 
 	return apijson.MarshalRoot(r)
 }
 
-// The party that will pay the fees for the payment order. Only applies to wire
-// payment orders. Can be one of shared, sender, or receiver, which correspond
-// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+// The party that will pay the fees for the payment order. See
+// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+// differences between the options.
 type PaymentOrderNewParamsChargeBearer string
 
 const (
@@ -1552,6 +1555,7 @@ const (
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode              PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "il_bank_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
@@ -1566,7 +1570,7 @@ const (
 
 func (r PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
+	case PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
 		return true
 	}
 	return false
@@ -1630,9 +1634,9 @@ type PaymentOrderUpdateParams struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount"`
-	// The party that will pay the fees for the payment order. Only applies to wire
-	// payment orders. Can be one of shared, sender, or receiver, which correspond
-	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+	// The party that will pay the fees for the payment order. See
+	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+	// differences between the options.
 	ChargeBearer param.Field[PaymentOrderUpdateParamsChargeBearer] `json:"charge_bearer"`
 	// Required when receiving_account_id is passed the ID of an external account.
 	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
@@ -1762,9 +1766,9 @@ func (r PaymentOrderUpdateParamsAccounting) MarshalJSON() (data []byte, err erro
 	return apijson.MarshalRoot(r)
 }
 
-// The party that will pay the fees for the payment order. Only applies to wire
-// payment orders. Can be one of shared, sender, or receiver, which correspond
-// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+// The party that will pay the fees for the payment order. See
+// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+// differences between the options.
 type PaymentOrderUpdateParamsChargeBearer string
 
 const (
@@ -2084,6 +2088,7 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode              PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "il_bank_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
@@ -2098,7 +2103,7 @@ const (
 
 func (r PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
 	switch r {
-	case PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
+	case PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
 		return true
 	}
 	return false
@@ -2334,9 +2339,9 @@ type PaymentOrderNewAsyncParams struct {
 	// The ID of one of your accounting ledger classes. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
-	// The party that will pay the fees for the payment order. Only applies to wire
-	// payment orders. Can be one of shared, sender, or receiver, which correspond
-	// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+	// The party that will pay the fees for the payment order. See
+	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+	// differences between the options.
 	ChargeBearer param.Field[PaymentOrderNewAsyncParamsChargeBearer] `json:"charge_bearer"`
 	// Defaults to the currency of the originating account.
 	Currency param.Field[shared.Currency] `json:"currency"`
@@ -2473,9 +2478,9 @@ func (r PaymentOrderNewAsyncParamsAccounting) MarshalJSON() (data []byte, err er
 	return apijson.MarshalRoot(r)
 }
 
-// The party that will pay the fees for the payment order. Only applies to wire
-// payment orders. Can be one of shared, sender, or receiver, which correspond
-// respectively with the SWIFT 71A values `SHA`, `OUR`, `BEN`.
+// The party that will pay the fees for the payment order. See
+// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+// differences between the options.
 type PaymentOrderNewAsyncParamsChargeBearer string
 
 const (
@@ -2893,6 +2898,7 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode              PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "il_bank_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
@@ -2907,7 +2913,7 @@ const (
 
 func (r PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
+	case PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
 		return true
 	}
 	return false

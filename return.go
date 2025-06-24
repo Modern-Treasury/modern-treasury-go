@@ -87,8 +87,12 @@ type ReturnObject struct {
 	// as 1000.
 	Amount int64 `json:"amount,required"`
 	// The return code. For ACH returns, this is the required ACH return code.
-	Code      ReturnObjectCode `json:"code,required,nullable"`
-	CreatedAt time.Time        `json:"created_at,required" format:"date-time"`
+	Code ReturnObjectCode `json:"code,required,nullable"`
+	// Only relevant for ACH NOC returns. This is an object containing all of the new
+	// and corrected information provided by the bank that was previously incorrect on
+	// the original outgoing payment.
+	Corrections ReturnObjectCorrections `json:"corrections,required,nullable"`
+	CreatedAt   time.Time               `json:"created_at,required" format:"date-time"`
 	// Currency that this transaction is denominated in.
 	Currency shared.Currency `json:"currency,required"`
 	// If the return's status is `returned`, this will include the return object's data
@@ -143,6 +147,7 @@ type returnObjectJSON struct {
 	ID                    apijson.Field
 	Amount                apijson.Field
 	Code                  apijson.Field
+	Corrections           apijson.Field
 	CreatedAt             apijson.Field
 	Currency              apijson.Field
 	CurrentReturn         apijson.Field
@@ -282,6 +287,52 @@ func (r ReturnObjectCode) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+// Only relevant for ACH NOC returns. This is an object containing all of the new
+// and corrected information provided by the bank that was previously incorrect on
+// the original outgoing payment.
+type ReturnObjectCorrections struct {
+	// The updated account number that should replace the one originally used on the
+	// outgoing payment.
+	AccountNumber string `json:"account_number,nullable"`
+	// The updated company ID that should replace the one originally used on the
+	// outgoing payment.
+	CompanyID string `json:"company_id,nullable"`
+	// The updated company name that should replace the one originally used on the
+	// outgoing payment.
+	CompanyName string `json:"company_name,nullable"`
+	// The updated individual identification number that should replace the one
+	// originally used on the outgoing payment.
+	IndividualIdentificationNumber string `json:"individual_identification_number,nullable"`
+	// The updated routing number that should replace the one originally used on the
+	// outgoing payment.
+	RoutingNumber string `json:"routing_number,nullable"`
+	// The updated account type code that should replace the one originally used on the
+	// outgoing payment.
+	TransactionCode string                      `json:"transaction_code,nullable"`
+	JSON            returnObjectCorrectionsJSON `json:"-"`
+}
+
+// returnObjectCorrectionsJSON contains the JSON metadata for the struct
+// [ReturnObjectCorrections]
+type returnObjectCorrectionsJSON struct {
+	AccountNumber                  apijson.Field
+	CompanyID                      apijson.Field
+	CompanyName                    apijson.Field
+	IndividualIdentificationNumber apijson.Field
+	RoutingNumber                  apijson.Field
+	TransactionCode                apijson.Field
+	raw                            string
+	ExtraFields                    map[string]apijson.Field
+}
+
+func (r *ReturnObjectCorrections) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r returnObjectCorrectionsJSON) RawJSON() string {
+	return r.raw
 }
 
 type ReturnObjectReferenceNumber struct {
@@ -508,6 +559,10 @@ type ReturnNewParams struct {
 	AdditionalInformation param.Field[string] `json:"additional_information"`
 	// The return code. For ACH returns, this is the required ACH return code.
 	Code param.Field[ReturnNewParamsCode] `json:"code"`
+	// Only relevant for ACH NOC returns. This is an object containing all of the new
+	// and corrected information provided by the bank that was previously incorrect on
+	// the original outgoing payment.
+	Corrections param.Field[ReturnNewParamsCorrections] `json:"corrections"`
 	// The raw data from the return file that we get from the bank.
 	Data param.Field[interface{}] `json:"data"`
 	// If the return code is `R14` or `R15` this is the date the deceased counterparty
@@ -643,6 +698,34 @@ func (r ReturnNewParamsCode) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+// Only relevant for ACH NOC returns. This is an object containing all of the new
+// and corrected information provided by the bank that was previously incorrect on
+// the original outgoing payment.
+type ReturnNewParamsCorrections struct {
+	// The updated account number that should replace the one originally used on the
+	// outgoing payment.
+	AccountNumber param.Field[string] `json:"account_number"`
+	// The updated company ID that should replace the one originally used on the
+	// outgoing payment.
+	CompanyID param.Field[string] `json:"company_id"`
+	// The updated company name that should replace the one originally used on the
+	// outgoing payment.
+	CompanyName param.Field[string] `json:"company_name"`
+	// The updated individual identification number that should replace the one
+	// originally used on the outgoing payment.
+	IndividualIdentificationNumber param.Field[string] `json:"individual_identification_number"`
+	// The updated routing number that should replace the one originally used on the
+	// outgoing payment.
+	RoutingNumber param.Field[string] `json:"routing_number"`
+	// The updated account type code that should replace the one originally used on the
+	// outgoing payment.
+	TransactionCode param.Field[string] `json:"transaction_code"`
+}
+
+func (r ReturnNewParamsCorrections) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type ReturnListParams struct {
