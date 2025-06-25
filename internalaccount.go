@@ -114,7 +114,7 @@ type InternalAccount struct {
 	// If the internal account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
 	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
-	// The Legal Entity associated to this account
+	// The Legal Entity associated to this account.
 	LegalEntityID string `json:"legal_entity_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
@@ -134,9 +134,11 @@ type InternalAccount struct {
 	// Either individual or business.
 	PartyType InternalAccountPartyType `json:"party_type,required,nullable"`
 	// An array of routing detail objects.
-	RoutingDetails []RoutingDetail     `json:"routing_details,required"`
-	UpdatedAt      time.Time           `json:"updated_at,required" format:"date-time"`
-	JSON           internalAccountJSON `json:"-"`
+	RoutingDetails []RoutingDetail `json:"routing_details,required"`
+	UpdatedAt      time.Time       `json:"updated_at,required" format:"date-time"`
+	// The vendor ID associated with this account.
+	VendorID string              `json:"vendor_id,required,nullable" format:"string"`
+	JSON     internalAccountJSON `json:"-"`
 }
 
 // internalAccountJSON contains the JSON metadata for the struct [InternalAccount]
@@ -161,6 +163,7 @@ type internalAccountJSON struct {
 	PartyType           apijson.Field
 	RoutingDetails      apijson.Field
 	UpdatedAt           apijson.Field
+	VendorID            apijson.Field
 	raw                 string
 	ExtraFields         map[string]apijson.Field
 }
