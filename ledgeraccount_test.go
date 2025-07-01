@@ -163,7 +163,8 @@ func TestLedgerAccountListWithOptionalParams(t *testing.T) {
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		Name: moderntreasury.F([]string{"string"}),
+		Name:          moderntreasury.F([]string{"string"}),
+		NormalBalance: moderntreasury.F(shared.TransactionDirectionCredit),
 		PendingBalanceAmount: moderntreasury.F(moderntreasury.LedgerAccountListParamsPendingBalanceAmount{
 			Eq:    moderntreasury.F(int64(0)),
 			Gt:    moderntreasury.F(int64(0)),
