@@ -121,7 +121,7 @@ type Invoice struct {
 	// $10 USD would be represented as 1000.
 	AmountRemaining int64 `json:"amount_remaining,required"`
 	// The invoicer's contact details displayed at the top of the invoice.
-	ContactDetails []InvoiceContactDetail `json:"contact_details,required"`
+	ContactDetails []shared.ContactDetail `json:"contact_details,required"`
 	// The counterparty's billing address.
 	CounterpartyBillingAddress InvoiceCounterpartyBillingAddress `json:"counterparty_billing_address,required,nullable"`
 	// The ID of the counterparty receiving the invoice.
@@ -255,59 +255,6 @@ func (r *Invoice) UnmarshalJSON(data []byte) (err error) {
 
 func (r invoiceJSON) RawJSON() string {
 	return r.raw
-}
-
-type InvoiceContactDetail struct {
-	ID                    string                                     `json:"id,required" format:"uuid"`
-	ContactIdentifier     string                                     `json:"contact_identifier,required"`
-	ContactIdentifierType InvoiceContactDetailsContactIdentifierType `json:"contact_identifier_type,required"`
-	CreatedAt             time.Time                                  `json:"created_at,required" format:"date-time"`
-	DiscardedAt           time.Time                                  `json:"discarded_at,required,nullable" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool                     `json:"live_mode,required"`
-	Object    string                   `json:"object,required"`
-	UpdatedAt time.Time                `json:"updated_at,required" format:"date-time"`
-	JSON      invoiceContactDetailJSON `json:"-"`
-}
-
-// invoiceContactDetailJSON contains the JSON metadata for the struct
-// [InvoiceContactDetail]
-type invoiceContactDetailJSON struct {
-	ID                    apijson.Field
-	ContactIdentifier     apijson.Field
-	ContactIdentifierType apijson.Field
-	CreatedAt             apijson.Field
-	DiscardedAt           apijson.Field
-	LiveMode              apijson.Field
-	Object                apijson.Field
-	UpdatedAt             apijson.Field
-	raw                   string
-	ExtraFields           map[string]apijson.Field
-}
-
-func (r *InvoiceContactDetail) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r invoiceContactDetailJSON) RawJSON() string {
-	return r.raw
-}
-
-type InvoiceContactDetailsContactIdentifierType string
-
-const (
-	InvoiceContactDetailsContactIdentifierTypeEmail       InvoiceContactDetailsContactIdentifierType = "email"
-	InvoiceContactDetailsContactIdentifierTypePhoneNumber InvoiceContactDetailsContactIdentifierType = "phone_number"
-	InvoiceContactDetailsContactIdentifierTypeWebsite     InvoiceContactDetailsContactIdentifierType = "website"
-)
-
-func (r InvoiceContactDetailsContactIdentifierType) IsKnown() bool {
-	switch r {
-	case InvoiceContactDetailsContactIdentifierTypeEmail, InvoiceContactDetailsContactIdentifierTypePhoneNumber, InvoiceContactDetailsContactIdentifierTypeWebsite:
-		return true
-	}
-	return false
 }
 
 // The counterparty's billing address.
@@ -484,7 +431,7 @@ type InvoiceNewParams struct {
 	// the errors will be returned and the invoice will not be created.
 	AutoAdvance param.Field[bool] `json:"auto_advance"`
 	// The invoicer's contact details displayed at the top of the invoice.
-	ContactDetails param.Field[[]InvoiceNewParamsContactDetail] `json:"contact_details"`
+	ContactDetails param.Field[[]shared.ContactDetailParam] `json:"contact_details"`
 	// The counterparty's billing address.
 	CounterpartyBillingAddress param.Field[InvoiceNewParamsCounterpartyBillingAddress] `json:"counterparty_billing_address"`
 	// The counterparty's shipping address where physical goods should be delivered.
@@ -550,39 +497,6 @@ type InvoiceNewParams struct {
 
 func (r InvoiceNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-type InvoiceNewParamsContactDetail struct {
-	ID                    param.Field[string]                                              `json:"id,required" format:"uuid"`
-	ContactIdentifier     param.Field[string]                                              `json:"contact_identifier,required"`
-	ContactIdentifierType param.Field[InvoiceNewParamsContactDetailsContactIdentifierType] `json:"contact_identifier_type,required"`
-	CreatedAt             param.Field[time.Time]                                           `json:"created_at,required" format:"date-time"`
-	DiscardedAt           param.Field[time.Time]                                           `json:"discarded_at,required" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  param.Field[bool]      `json:"live_mode,required"`
-	Object    param.Field[string]    `json:"object,required"`
-	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-}
-
-func (r InvoiceNewParamsContactDetail) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type InvoiceNewParamsContactDetailsContactIdentifierType string
-
-const (
-	InvoiceNewParamsContactDetailsContactIdentifierTypeEmail       InvoiceNewParamsContactDetailsContactIdentifierType = "email"
-	InvoiceNewParamsContactDetailsContactIdentifierTypePhoneNumber InvoiceNewParamsContactDetailsContactIdentifierType = "phone_number"
-	InvoiceNewParamsContactDetailsContactIdentifierTypeWebsite     InvoiceNewParamsContactDetailsContactIdentifierType = "website"
-)
-
-func (r InvoiceNewParamsContactDetailsContactIdentifierType) IsKnown() bool {
-	switch r {
-	case InvoiceNewParamsContactDetailsContactIdentifierTypeEmail, InvoiceNewParamsContactDetailsContactIdentifierTypePhoneNumber, InvoiceNewParamsContactDetailsContactIdentifierTypeWebsite:
-		return true
-	}
-	return false
 }
 
 // The counterparty's billing address.
@@ -691,7 +605,7 @@ func (r InvoiceNewParamsPaymentMethod) IsKnown() bool {
 
 type InvoiceUpdateParams struct {
 	// The invoicer's contact details displayed at the top of the invoice.
-	ContactDetails param.Field[[]InvoiceUpdateParamsContactDetail] `json:"contact_details"`
+	ContactDetails param.Field[[]shared.ContactDetailParam] `json:"contact_details"`
 	// The counterparty's billing address.
 	CounterpartyBillingAddress param.Field[InvoiceUpdateParamsCounterpartyBillingAddress] `json:"counterparty_billing_address"`
 	// The ID of the counterparty receiving the invoice.
@@ -767,39 +681,6 @@ type InvoiceUpdateParams struct {
 
 func (r InvoiceUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-type InvoiceUpdateParamsContactDetail struct {
-	ID                    param.Field[string]                                                 `json:"id,required" format:"uuid"`
-	ContactIdentifier     param.Field[string]                                                 `json:"contact_identifier,required"`
-	ContactIdentifierType param.Field[InvoiceUpdateParamsContactDetailsContactIdentifierType] `json:"contact_identifier_type,required"`
-	CreatedAt             param.Field[time.Time]                                              `json:"created_at,required" format:"date-time"`
-	DiscardedAt           param.Field[time.Time]                                              `json:"discarded_at,required" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  param.Field[bool]      `json:"live_mode,required"`
-	Object    param.Field[string]    `json:"object,required"`
-	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-}
-
-func (r InvoiceUpdateParamsContactDetail) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type InvoiceUpdateParamsContactDetailsContactIdentifierType string
-
-const (
-	InvoiceUpdateParamsContactDetailsContactIdentifierTypeEmail       InvoiceUpdateParamsContactDetailsContactIdentifierType = "email"
-	InvoiceUpdateParamsContactDetailsContactIdentifierTypePhoneNumber InvoiceUpdateParamsContactDetailsContactIdentifierType = "phone_number"
-	InvoiceUpdateParamsContactDetailsContactIdentifierTypeWebsite     InvoiceUpdateParamsContactDetailsContactIdentifierType = "website"
-)
-
-func (r InvoiceUpdateParamsContactDetailsContactIdentifierType) IsKnown() bool {
-	switch r {
-	case InvoiceUpdateParamsContactDetailsContactIdentifierTypeEmail, InvoiceUpdateParamsContactDetailsContactIdentifierTypePhoneNumber, InvoiceUpdateParamsContactDetailsContactIdentifierTypeWebsite:
-		return true
-	}
-	return false
 }
 
 // The counterparty's billing address.

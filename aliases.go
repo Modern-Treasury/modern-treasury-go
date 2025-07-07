@@ -10,6 +10,12 @@ import (
 type Error = apierror.Error
 
 // This is an alias to an internal type.
+type Accounting = shared.Accounting
+
+// This is an alias to an internal type.
+type AccountingParam = shared.AccountingParam
+
+// This is an alias to an internal type.
 type AccountsType = shared.AccountsType
 
 // This is an alias to an internal value.
@@ -19,7 +25,90 @@ const AccountsTypeExternalAccounts = shared.AccountsTypeExternalAccounts
 const AccountsTypeInternalAccounts = shared.AccountsTypeInternalAccounts
 
 // This is an alias to an internal type.
+type Address = shared.Address
+
+// This is an alias to an internal type.
+type AddressRequest = shared.AddressRequest
+
+// This is an alias to an internal type.
+type AddressRequestParam = shared.AddressRequestParam
+
+// This is an alias to an internal type.
 type AsyncResponse = shared.AsyncResponse
+
+// This is an alias to an internal type.
+type ChildLegalEntityCreateParam = shared.ChildLegalEntityCreateParam
+
+// The type of legal entity.
+//
+// This is an alias to an internal type.
+type ChildLegalEntityCreateLegalEntityType = shared.ChildLegalEntityCreateLegalEntityType
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateLegalEntityTypeBusiness = shared.ChildLegalEntityCreateLegalEntityTypeBusiness
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateLegalEntityTypeIndividual = shared.ChildLegalEntityCreateLegalEntityTypeIndividual
+
+// The business's legal structure.
+//
+// This is an alias to an internal type.
+type ChildLegalEntityCreateLegalStructure = shared.ChildLegalEntityCreateLegalStructure
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateLegalStructureCorporation = shared.ChildLegalEntityCreateLegalStructureCorporation
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateLegalStructureLlc = shared.ChildLegalEntityCreateLegalStructureLlc
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateLegalStructureNonProfit = shared.ChildLegalEntityCreateLegalStructureNonProfit
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateLegalStructurePartnership = shared.ChildLegalEntityCreateLegalStructurePartnership
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateLegalStructureSoleProprietorship = shared.ChildLegalEntityCreateLegalStructureSoleProprietorship
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateLegalStructureTrust = shared.ChildLegalEntityCreateLegalStructureTrust
+
+// A list of phone numbers in E.164 format.
+//
+// This is an alias to an internal type.
+type ChildLegalEntityCreatePhoneNumberParam = shared.ChildLegalEntityCreatePhoneNumberParam
+
+// The risk rating of the legal entity. One of low, medium, high.
+//
+// This is an alias to an internal type.
+type ChildLegalEntityCreateRiskRating = shared.ChildLegalEntityCreateRiskRating
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateRiskRatingLow = shared.ChildLegalEntityCreateRiskRatingLow
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateRiskRatingMedium = shared.ChildLegalEntityCreateRiskRatingMedium
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateRiskRatingHigh = shared.ChildLegalEntityCreateRiskRatingHigh
+
+// This is an alias to an internal type.
+type ContactDetail = shared.ContactDetail
+
+// This is an alias to an internal type.
+type ContactDetailContactIdentifierType = shared.ContactDetailContactIdentifierType
+
+// This is an alias to an internal value.
+const ContactDetailContactIdentifierTypeEmail = shared.ContactDetailContactIdentifierTypeEmail
+
+// This is an alias to an internal value.
+const ContactDetailContactIdentifierTypePhoneNumber = shared.ContactDetailContactIdentifierTypePhoneNumber
+
+// This is an alias to an internal value.
+const ContactDetailContactIdentifierTypeWebsite = shared.ContactDetailContactIdentifierTypeWebsite
+
+// This is an alias to an internal type.
+type ContactDetailParam = shared.ContactDetailParam
 
 // Three-letter ISO currency code.
 //
@@ -613,6 +702,178 @@ const CurrencyZwn = shared.CurrencyZwn
 
 // This is an alias to an internal value.
 const CurrencyZwr = shared.CurrencyZwr
+
+// This is an alias to an internal type.
+type ForeignExchangeRate = shared.ForeignExchangeRate
+
+// This is an alias to an internal type.
+type IdentificationCreateRequestParam = shared.IdentificationCreateRequestParam
+
+// The type of ID number.
+//
+// This is an alias to an internal type.
+type IdentificationCreateRequestIDType = shared.IdentificationCreateRequestIDType
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeArCuil = shared.IdentificationCreateRequestIDTypeArCuil
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeArCuit = shared.IdentificationCreateRequestIDTypeArCuit
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBrCnpj = shared.IdentificationCreateRequestIDTypeBrCnpj
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBrCpf = shared.IdentificationCreateRequestIDTypeBrCpf
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeClRun = shared.IdentificationCreateRequestIDTypeClRun
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeClRut = shared.IdentificationCreateRequestIDTypeClRut
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeCoCedulas = shared.IdentificationCreateRequestIDTypeCoCedulas
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeCoNit = shared.IdentificationCreateRequestIDTypeCoNit
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeDriversLicense = shared.IdentificationCreateRequestIDTypeDriversLicense
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeHnID = shared.IdentificationCreateRequestIDTypeHnID
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeHnRtn = shared.IdentificationCreateRequestIDTypeHnRtn
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeInLei = shared.IdentificationCreateRequestIDTypeInLei
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeKrBrn = shared.IdentificationCreateRequestIDTypeKrBrn
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeKrCrn = shared.IdentificationCreateRequestIDTypeKrCrn
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeKrRrn = shared.IdentificationCreateRequestIDTypeKrRrn
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypePassport = shared.IdentificationCreateRequestIDTypePassport
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeSaTin = shared.IdentificationCreateRequestIDTypeSaTin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeSaVat = shared.IdentificationCreateRequestIDTypeSaVat
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeUsEin = shared.IdentificationCreateRequestIDTypeUsEin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeUsItin = shared.IdentificationCreateRequestIDTypeUsItin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeUsSsn = shared.IdentificationCreateRequestIDTypeUsSsn
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeVnTin = shared.IdentificationCreateRequestIDTypeVnTin
+
+// This is an alias to an internal type.
+type LedgerAccountCreateRequestParam = shared.LedgerAccountCreateRequestParam
+
+// If the ledger account links to another object in Modern Treasury, the type will
+// be populated here, otherwise null. The value is one of internal_account or
+// external_account.
+//
+// This is an alias to an internal type.
+type LedgerAccountCreateRequestLedgerableType = shared.LedgerAccountCreateRequestLedgerableType
+
+// This is an alias to an internal value.
+const LedgerAccountCreateRequestLedgerableTypeCounterparty = shared.LedgerAccountCreateRequestLedgerableTypeCounterparty
+
+// This is an alias to an internal value.
+const LedgerAccountCreateRequestLedgerableTypeExternalAccount = shared.LedgerAccountCreateRequestLedgerableTypeExternalAccount
+
+// This is an alias to an internal value.
+const LedgerAccountCreateRequestLedgerableTypeInternalAccount = shared.LedgerAccountCreateRequestLedgerableTypeInternalAccount
+
+// This is an alias to an internal value.
+const LedgerAccountCreateRequestLedgerableTypeVirtualAccount = shared.LedgerAccountCreateRequestLedgerableTypeVirtualAccount
+
+// This is an alias to an internal type.
+type LedgerBalance = shared.LedgerBalance
+
+// This is an alias to an internal type.
+type LedgerBalances = shared.LedgerBalances
+
+// This is an alias to an internal type.
+type LedgerEntryCreateRequestParam = shared.LedgerEntryCreateRequestParam
+
+// This is an alias to an internal type.
+type LedgerTransactionCreateRequestParam = shared.LedgerTransactionCreateRequestParam
+
+// If the ledger transaction can be reconciled to another object in Modern
+// Treasury, the type will be populated here, otherwise null. This can be one of
+// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
+// reversal.
+//
+// This is an alias to an internal type.
+type LedgerTransactionCreateRequestLedgerableType = shared.LedgerTransactionCreateRequestLedgerableType
+
+// This is an alias to an internal value.
+const LedgerTransactionCreateRequestLedgerableTypeExpectedPayment = shared.LedgerTransactionCreateRequestLedgerableTypeExpectedPayment
+
+// This is an alias to an internal value.
+const LedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail = shared.LedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail
+
+// This is an alias to an internal value.
+const LedgerTransactionCreateRequestLedgerableTypePaperItem = shared.LedgerTransactionCreateRequestLedgerableTypePaperItem
+
+// This is an alias to an internal value.
+const LedgerTransactionCreateRequestLedgerableTypePaymentOrder = shared.LedgerTransactionCreateRequestLedgerableTypePaymentOrder
+
+// This is an alias to an internal value.
+const LedgerTransactionCreateRequestLedgerableTypeReturn = shared.LedgerTransactionCreateRequestLedgerableTypeReturn
+
+// This is an alias to an internal value.
+const LedgerTransactionCreateRequestLedgerableTypeReversal = shared.LedgerTransactionCreateRequestLedgerableTypeReversal
+
+// To post a ledger transaction at creation, use `posted`.
+//
+// This is an alias to an internal type.
+type LedgerTransactionCreateRequestStatus = shared.LedgerTransactionCreateRequestStatus
+
+// This is an alias to an internal value.
+const LedgerTransactionCreateRequestStatusArchived = shared.LedgerTransactionCreateRequestStatusArchived
+
+// This is an alias to an internal value.
+const LedgerTransactionCreateRequestStatusPending = shared.LedgerTransactionCreateRequestStatusPending
+
+// This is an alias to an internal value.
+const LedgerTransactionCreateRequestStatusPosted = shared.LedgerTransactionCreateRequestStatusPosted
+
+// This is an alias to an internal type.
+type LegalEntityAddressCreateRequestParam = shared.LegalEntityAddressCreateRequestParam
+
+// This is an alias to an internal type.
+type LegalEntityAddressCreateRequestAddressType = shared.LegalEntityAddressCreateRequestAddressType
+
+// This is an alias to an internal value.
+const LegalEntityAddressCreateRequestAddressTypeBusiness = shared.LegalEntityAddressCreateRequestAddressTypeBusiness
+
+// This is an alias to an internal value.
+const LegalEntityAddressCreateRequestAddressTypeMailing = shared.LegalEntityAddressCreateRequestAddressTypeMailing
+
+// This is an alias to an internal value.
+const LegalEntityAddressCreateRequestAddressTypeOther = shared.LegalEntityAddressCreateRequestAddressTypeOther
+
+// This is an alias to an internal value.
+const LegalEntityAddressCreateRequestAddressTypePoBox = shared.LegalEntityAddressCreateRequestAddressTypePoBox
+
+// This is an alias to an internal value.
+const LegalEntityAddressCreateRequestAddressTypeResidential = shared.LegalEntityAddressCreateRequestAddressTypeResidential
 
 // This is an alias to an internal type.
 type LegalEntityComplianceDetail = shared.LegalEntityComplianceDetail

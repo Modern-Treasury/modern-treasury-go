@@ -93,7 +93,7 @@ type ForeignExchangeQuote struct {
 	// quote.
 	ForeignExchangeIndicator string `json:"foreign_exchange_indicator,required"`
 	// The serialized rate information represented by this quote.
-	ForeignExchangeRate ForeignExchangeQuoteForeignExchangeRate `json:"foreign_exchange_rate,required"`
+	ForeignExchangeRate shared.ForeignExchangeRate `json:"foreign_exchange_rate,required"`
 	// The ID for the `InternalAccount` this quote is associated with.
 	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
@@ -133,51 +133,6 @@ func (r *ForeignExchangeQuote) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r foreignExchangeQuoteJSON) RawJSON() string {
-	return r.raw
-}
-
-// The serialized rate information represented by this quote.
-type ForeignExchangeQuoteForeignExchangeRate struct {
-	// Amount in the lowest denomination of the `base_currency` to convert, often
-	// called the "sell" amount.
-	BaseAmount int64 `json:"base_amount,required"`
-	// Currency to convert, often called the "sell" currency.
-	BaseCurrency shared.Currency `json:"base_currency,required"`
-	// The exponent component of the rate. The decimal is calculated as `value` / (10 ^
-	// `exponent`).
-	Exponent int64 `json:"exponent,required"`
-	// A string representation of the rate.
-	RateString string `json:"rate_string,required"`
-	// Amount in the lowest denomination of the `target_currency`, often called the
-	// "buy" amount.
-	TargetAmount int64 `json:"target_amount,required"`
-	// Currency to convert the `base_currency` to, often called the "buy" currency.
-	TargetCurrency shared.Currency `json:"target_currency,required"`
-	// The whole number component of the rate. The decimal is calculated as `value` /
-	// (10 ^ `exponent`).
-	Value int64                                       `json:"value,required"`
-	JSON  foreignExchangeQuoteForeignExchangeRateJSON `json:"-"`
-}
-
-// foreignExchangeQuoteForeignExchangeRateJSON contains the JSON metadata for the
-// struct [ForeignExchangeQuoteForeignExchangeRate]
-type foreignExchangeQuoteForeignExchangeRateJSON struct {
-	BaseAmount     apijson.Field
-	BaseCurrency   apijson.Field
-	Exponent       apijson.Field
-	RateString     apijson.Field
-	TargetAmount   apijson.Field
-	TargetCurrency apijson.Field
-	Value          apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *ForeignExchangeQuoteForeignExchangeRate) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r foreignExchangeQuoteForeignExchangeRateJSON) RawJSON() string {
 	return r.raw
 }
 

@@ -177,10 +177,10 @@ type CounterpartyAccount struct {
 	ID             string          `json:"id" format:"uuid"`
 	AccountDetails []AccountDetail `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
-	AccountType    ExternalAccountType                 `json:"account_type"`
-	ContactDetails []CounterpartyAccountsContactDetail `json:"contact_details"`
-	CreatedAt      time.Time                           `json:"created_at" format:"date-time"`
-	DiscardedAt    time.Time                           `json:"discarded_at,nullable" format:"date-time"`
+	AccountType    ExternalAccountType    `json:"account_type"`
+	ContactDetails []shared.ContactDetail `json:"contact_details"`
+	CreatedAt      time.Time              `json:"created_at" format:"date-time"`
+	DiscardedAt    time.Time              `json:"discarded_at,nullable" format:"date-time"`
 	// If the external account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
 	LedgerAccountID string `json:"ledger_account_id,nullable" format:"uuid"`
@@ -195,7 +195,7 @@ type CounterpartyAccount struct {
 	Name   string `json:"name,nullable"`
 	Object string `json:"object"`
 	// The address associated with the owner or `null`.
-	PartyAddress CounterpartyAccountsPartyAddress `json:"party_address,nullable"`
+	PartyAddress shared.Address `json:"party_address,nullable"`
 	// The legal name of the entity which owns the account.
 	PartyName string `json:"party_name"`
 	// Either `individual` or `business`.
@@ -237,107 +237,6 @@ func (r *CounterpartyAccount) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r counterpartyAccountJSON) RawJSON() string {
-	return r.raw
-}
-
-type CounterpartyAccountsContactDetail struct {
-	ID                    string                                                  `json:"id,required" format:"uuid"`
-	ContactIdentifier     string                                                  `json:"contact_identifier,required"`
-	ContactIdentifierType CounterpartyAccountsContactDetailsContactIdentifierType `json:"contact_identifier_type,required"`
-	CreatedAt             time.Time                                               `json:"created_at,required" format:"date-time"`
-	DiscardedAt           time.Time                                               `json:"discarded_at,required,nullable" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool                                  `json:"live_mode,required"`
-	Object    string                                `json:"object,required"`
-	UpdatedAt time.Time                             `json:"updated_at,required" format:"date-time"`
-	JSON      counterpartyAccountsContactDetailJSON `json:"-"`
-}
-
-// counterpartyAccountsContactDetailJSON contains the JSON metadata for the struct
-// [CounterpartyAccountsContactDetail]
-type counterpartyAccountsContactDetailJSON struct {
-	ID                    apijson.Field
-	ContactIdentifier     apijson.Field
-	ContactIdentifierType apijson.Field
-	CreatedAt             apijson.Field
-	DiscardedAt           apijson.Field
-	LiveMode              apijson.Field
-	Object                apijson.Field
-	UpdatedAt             apijson.Field
-	raw                   string
-	ExtraFields           map[string]apijson.Field
-}
-
-func (r *CounterpartyAccountsContactDetail) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r counterpartyAccountsContactDetailJSON) RawJSON() string {
-	return r.raw
-}
-
-type CounterpartyAccountsContactDetailsContactIdentifierType string
-
-const (
-	CounterpartyAccountsContactDetailsContactIdentifierTypeEmail       CounterpartyAccountsContactDetailsContactIdentifierType = "email"
-	CounterpartyAccountsContactDetailsContactIdentifierTypePhoneNumber CounterpartyAccountsContactDetailsContactIdentifierType = "phone_number"
-	CounterpartyAccountsContactDetailsContactIdentifierTypeWebsite     CounterpartyAccountsContactDetailsContactIdentifierType = "website"
-)
-
-func (r CounterpartyAccountsContactDetailsContactIdentifierType) IsKnown() bool {
-	switch r {
-	case CounterpartyAccountsContactDetailsContactIdentifierTypeEmail, CounterpartyAccountsContactDetailsContactIdentifierTypePhoneNumber, CounterpartyAccountsContactDetailsContactIdentifierTypeWebsite:
-		return true
-	}
-	return false
-}
-
-// The address associated with the owner or `null`.
-type CounterpartyAccountsPartyAddress struct {
-	ID string `json:"id,required" format:"uuid"`
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country   string    `json:"country,required,nullable"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	Line1     string    `json:"line1,required,nullable"`
-	Line2     string    `json:"line2,required,nullable"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
-	// Locality or City.
-	Locality string `json:"locality,required,nullable"`
-	Object   string `json:"object,required"`
-	// The postal code of the address.
-	PostalCode string `json:"postal_code,required,nullable"`
-	// Region or State.
-	Region    string                               `json:"region,required,nullable"`
-	UpdatedAt time.Time                            `json:"updated_at,required" format:"date-time"`
-	JSON      counterpartyAccountsPartyAddressJSON `json:"-"`
-}
-
-// counterpartyAccountsPartyAddressJSON contains the JSON metadata for the struct
-// [CounterpartyAccountsPartyAddress]
-type counterpartyAccountsPartyAddressJSON struct {
-	ID          apijson.Field
-	Country     apijson.Field
-	CreatedAt   apijson.Field
-	Line1       apijson.Field
-	Line2       apijson.Field
-	LiveMode    apijson.Field
-	Locality    apijson.Field
-	Object      apijson.Field
-	PostalCode  apijson.Field
-	Region      apijson.Field
-	UpdatedAt   apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *CounterpartyAccountsPartyAddress) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r counterpartyAccountsPartyAddressJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -499,14 +398,14 @@ func (r CounterpartyNewParamsAccountingType) IsKnown() bool {
 type CounterpartyNewParamsAccount struct {
 	AccountDetails param.Field[[]CounterpartyNewParamsAccountsAccountDetail] `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
-	AccountType    param.Field[ExternalAccountType]                          `json:"account_type"`
-	ContactDetails param.Field[[]CounterpartyNewParamsAccountsContactDetail] `json:"contact_details"`
+	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
+	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
 	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 	// for more details.
-	LedgerAccount param.Field[CounterpartyNewParamsAccountsLedgerAccount] `json:"ledger_account"`
+	LedgerAccount param.Field[shared.LedgerAccountCreateRequestParam] `json:"ledger_account"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -514,8 +413,8 @@ type CounterpartyNewParamsAccount struct {
 	// affect any payments
 	Name param.Field[string] `json:"name"`
 	// Required if receiving wire payments.
-	PartyAddress    param.Field[CounterpartyNewParamsAccountsPartyAddress] `json:"party_address"`
-	PartyIdentifier param.Field[string]                                    `json:"party_identifier"`
+	PartyAddress    param.Field[shared.AddressRequestParam] `json:"party_address"`
+	PartyIdentifier param.Field[string]                     `json:"party_identifier"`
 	// If this value isn't provided, it will be inherited from the counterparty's name.
 	PartyName param.Field[string] `json:"party_name"`
 	// Either `individual` or `business`.
@@ -564,106 +463,6 @@ func (r CounterpartyNewParamsAccountsAccountDetailsAccountNumberType) IsKnown() 
 		return true
 	}
 	return false
-}
-
-type CounterpartyNewParamsAccountsContactDetail struct {
-	ContactIdentifier     param.Field[string]                                                           `json:"contact_identifier"`
-	ContactIdentifierType param.Field[CounterpartyNewParamsAccountsContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
-}
-
-func (r CounterpartyNewParamsAccountsContactDetail) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type CounterpartyNewParamsAccountsContactDetailsContactIdentifierType string
-
-const (
-	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail       CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "email"
-	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypePhoneNumber CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "phone_number"
-	CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeWebsite     CounterpartyNewParamsAccountsContactDetailsContactIdentifierType = "website"
-)
-
-func (r CounterpartyNewParamsAccountsContactDetailsContactIdentifierType) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeEmail, CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypePhoneNumber, CounterpartyNewParamsAccountsContactDetailsContactIdentifierTypeWebsite:
-		return true
-	}
-	return false
-}
-
-// Specifies a ledger account object that will be created with the external
-// account. The resulting ledger account is linked to the external account for
-// auto-ledgering Payment objects. See
-// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
-// for more details.
-type CounterpartyNewParamsAccountsLedgerAccount struct {
-	// The currency of the ledger account.
-	Currency param.Field[string] `json:"currency,required"`
-	// The id of the ledger that this account belongs to.
-	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name,required"`
-	// The normal balance of the ledger account.
-	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description"`
-	// The array of ledger account category ids that this ledger account should be a
-	// child of.
-	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the id will be
-	// populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the type will
-	// be populated here, otherwise null. The value is one of internal_account or
-	// external_account.
-	LedgerableType param.Field[CounterpartyNewParamsAccountsLedgerAccountLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-}
-
-func (r CounterpartyNewParamsAccountsLedgerAccount) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// If the ledger account links to another object in Modern Treasury, the type will
-// be populated here, otherwise null. The value is one of internal_account or
-// external_account.
-type CounterpartyNewParamsAccountsLedgerAccountLedgerableType string
-
-const (
-	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeCounterparty    CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "counterparty"
-	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "external_account"
-	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeInternalAccount CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "internal_account"
-	CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeVirtualAccount  CounterpartyNewParamsAccountsLedgerAccountLedgerableType = "virtual_account"
-)
-
-func (r CounterpartyNewParamsAccountsLedgerAccountLedgerableType) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeCounterparty, CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeExternalAccount, CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeInternalAccount, CounterpartyNewParamsAccountsLedgerAccountLedgerableTypeVirtualAccount:
-		return true
-	}
-	return false
-}
-
-// Required if receiving wire payments.
-type CounterpartyNewParamsAccountsPartyAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country"`
-	Line1   param.Field[string] `json:"line1"`
-	Line2   param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code"`
-	// Region or State.
-	Region param.Field[string] `json:"region"`
-}
-
-func (r CounterpartyNewParamsAccountsPartyAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
 }
 
 // Either `individual` or `business`.
@@ -795,8 +594,8 @@ type CounterpartyNewParamsLegalEntity struct {
 	// The type of legal entity.
 	LegalEntityType param.Field[CounterpartyNewParamsLegalEntityLegalEntityType] `json:"legal_entity_type,required"`
 	// A list of addresses for the entity.
-	Addresses    param.Field[[]CounterpartyNewParamsLegalEntityAddress] `json:"addresses"`
-	BankSettings param.Field[BankSettingsParam]                         `json:"bank_settings"`
+	Addresses    param.Field[[]shared.LegalEntityAddressCreateRequestParam] `json:"addresses"`
+	BankSettings param.Field[BankSettingsParam]                             `json:"bank_settings"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
@@ -812,7 +611,7 @@ type CounterpartyNewParamsLegalEntity struct {
 	// An individual's first name.
 	FirstName param.Field[string] `json:"first_name"`
 	// A list of identifications for the legal entity.
-	Identifications param.Field[[]CounterpartyNewParamsLegalEntityIdentification] `json:"identifications"`
+	Identifications param.Field[[]shared.IdentificationCreateRequestParam] `json:"identifications"`
 	// A list of industry classifications for the legal entity.
 	IndustryClassifications param.Field[[]shared.LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
 	// An individual's last name.
@@ -862,102 +661,10 @@ func (r CounterpartyNewParamsLegalEntityLegalEntityType) IsKnown() bool {
 	return false
 }
 
-type CounterpartyNewParamsLegalEntityAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
-	// Region or State.
-	Region param.Field[string] `json:"region,required"`
-	// The types of this address.
-	AddressTypes param.Field[[]CounterpartyNewParamsLegalEntityAddressesAddressType] `json:"address_types"`
-	Line2        param.Field[string]                                                 `json:"line2"`
-}
-
-func (r CounterpartyNewParamsLegalEntityAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type CounterpartyNewParamsLegalEntityAddressesAddressType string
-
-const (
-	CounterpartyNewParamsLegalEntityAddressesAddressTypeBusiness    CounterpartyNewParamsLegalEntityAddressesAddressType = "business"
-	CounterpartyNewParamsLegalEntityAddressesAddressTypeMailing     CounterpartyNewParamsLegalEntityAddressesAddressType = "mailing"
-	CounterpartyNewParamsLegalEntityAddressesAddressTypeOther       CounterpartyNewParamsLegalEntityAddressesAddressType = "other"
-	CounterpartyNewParamsLegalEntityAddressesAddressTypePoBox       CounterpartyNewParamsLegalEntityAddressesAddressType = "po_box"
-	CounterpartyNewParamsLegalEntityAddressesAddressTypeResidential CounterpartyNewParamsLegalEntityAddressesAddressType = "residential"
-)
-
-func (r CounterpartyNewParamsLegalEntityAddressesAddressType) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsLegalEntityAddressesAddressTypeBusiness, CounterpartyNewParamsLegalEntityAddressesAddressTypeMailing, CounterpartyNewParamsLegalEntityAddressesAddressTypeOther, CounterpartyNewParamsLegalEntityAddressesAddressTypePoBox, CounterpartyNewParamsLegalEntityAddressesAddressTypeResidential:
-		return true
-	}
-	return false
-}
-
-type CounterpartyNewParamsLegalEntityIdentification struct {
-	// The ID number of identification document.
-	IDNumber param.Field[string] `json:"id_number,required"`
-	// The type of ID number.
-	IDType param.Field[CounterpartyNewParamsLegalEntityIdentificationsIDType] `json:"id_type,required"`
-	// The date when the Identification is no longer considered valid by the issuing
-	// authority.
-	ExpirationDate param.Field[time.Time] `json:"expiration_date" format:"date"`
-	// The ISO 3166-1 alpha-2 country code of the country that issued the
-	// identification
-	IssuingCountry param.Field[string] `json:"issuing_country"`
-	// The region in which the identifcation was issued.
-	IssuingRegion param.Field[string] `json:"issuing_region"`
-}
-
-func (r CounterpartyNewParamsLegalEntityIdentification) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The type of ID number.
-type CounterpartyNewParamsLegalEntityIdentificationsIDType string
-
-const (
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuil         CounterpartyNewParamsLegalEntityIdentificationsIDType = "ar_cuil"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuit         CounterpartyNewParamsLegalEntityIdentificationsIDType = "ar_cuit"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCnpj         CounterpartyNewParamsLegalEntityIdentificationsIDType = "br_cnpj"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCpf          CounterpartyNewParamsLegalEntityIdentificationsIDType = "br_cpf"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeClRun          CounterpartyNewParamsLegalEntityIdentificationsIDType = "cl_run"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeClRut          CounterpartyNewParamsLegalEntityIdentificationsIDType = "cl_rut"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoCedulas      CounterpartyNewParamsLegalEntityIdentificationsIDType = "co_cedulas"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoNit          CounterpartyNewParamsLegalEntityIdentificationsIDType = "co_nit"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeDriversLicense CounterpartyNewParamsLegalEntityIdentificationsIDType = "drivers_license"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeHnID           CounterpartyNewParamsLegalEntityIdentificationsIDType = "hn_id"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeHnRtn          CounterpartyNewParamsLegalEntityIdentificationsIDType = "hn_rtn"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeInLei          CounterpartyNewParamsLegalEntityIdentificationsIDType = "in_lei"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeKrBrn          CounterpartyNewParamsLegalEntityIdentificationsIDType = "kr_brn"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeKrCrn          CounterpartyNewParamsLegalEntityIdentificationsIDType = "kr_crn"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeKrRrn          CounterpartyNewParamsLegalEntityIdentificationsIDType = "kr_rrn"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypePassport       CounterpartyNewParamsLegalEntityIdentificationsIDType = "passport"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeSaTin          CounterpartyNewParamsLegalEntityIdentificationsIDType = "sa_tin"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeSaVat          CounterpartyNewParamsLegalEntityIdentificationsIDType = "sa_vat"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsEin          CounterpartyNewParamsLegalEntityIdentificationsIDType = "us_ein"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsItin         CounterpartyNewParamsLegalEntityIdentificationsIDType = "us_itin"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsSsn          CounterpartyNewParamsLegalEntityIdentificationsIDType = "us_ssn"
-	CounterpartyNewParamsLegalEntityIdentificationsIDTypeVnTin          CounterpartyNewParamsLegalEntityIdentificationsIDType = "vn_tin"
-)
-
-func (r CounterpartyNewParamsLegalEntityIdentificationsIDType) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuil, CounterpartyNewParamsLegalEntityIdentificationsIDTypeArCuit, CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCnpj, CounterpartyNewParamsLegalEntityIdentificationsIDTypeBrCpf, CounterpartyNewParamsLegalEntityIdentificationsIDTypeClRun, CounterpartyNewParamsLegalEntityIdentificationsIDTypeClRut, CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoCedulas, CounterpartyNewParamsLegalEntityIdentificationsIDTypeCoNit, CounterpartyNewParamsLegalEntityIdentificationsIDTypeDriversLicense, CounterpartyNewParamsLegalEntityIdentificationsIDTypeHnID, CounterpartyNewParamsLegalEntityIdentificationsIDTypeHnRtn, CounterpartyNewParamsLegalEntityIdentificationsIDTypeInLei, CounterpartyNewParamsLegalEntityIdentificationsIDTypeKrBrn, CounterpartyNewParamsLegalEntityIdentificationsIDTypeKrCrn, CounterpartyNewParamsLegalEntityIdentificationsIDTypeKrRrn, CounterpartyNewParamsLegalEntityIdentificationsIDTypePassport, CounterpartyNewParamsLegalEntityIdentificationsIDTypeSaTin, CounterpartyNewParamsLegalEntityIdentificationsIDTypeSaVat, CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsEin, CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsItin, CounterpartyNewParamsLegalEntityIdentificationsIDTypeUsSsn, CounterpartyNewParamsLegalEntityIdentificationsIDTypeVnTin:
-		return true
-	}
-	return false
-}
-
 type CounterpartyNewParamsLegalEntityLegalEntityAssociation struct {
 	RelationshipTypes param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType] `json:"relationship_types,required"`
 	// The child legal entity.
-	ChildLegalEntity param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity] `json:"child_legal_entity"`
+	ChildLegalEntity param.Field[shared.ChildLegalEntityCreateParam] `json:"child_legal_entity"`
 	// The ID of the child legal entity.
 	ChildLegalEntityID param.Field[string] `json:"child_legal_entity_id"`
 	// The child entity's ownership percentage iff they are a beneficial owner.
@@ -981,214 +688,6 @@ const (
 func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType) IsKnown() bool {
 	switch r {
 	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner, CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeControlPerson:
-		return true
-	}
-	return false
-}
-
-// The child legal entity.
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity struct {
-	// A list of addresses for the entity.
-	Addresses    param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress] `json:"addresses"`
-	BankSettings param.Field[BankSettingsParam]                                                                `json:"bank_settings"`
-	// The business's legal business name.
-	BusinessName param.Field[string] `json:"business_name"`
-	// The country of citizenship for an individual.
-	CitizenshipCountry param.Field[string]                                  `json:"citizenship_country"`
-	ComplianceDetails  param.Field[shared.LegalEntityComplianceDetailParam] `json:"compliance_details"`
-	// A business's formation date (YYYY-MM-DD).
-	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
-	// An individual's date of birth (YYYY-MM-DD).
-	DateOfBirth          param.Field[time.Time] `json:"date_of_birth" format:"date"`
-	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
-	// The entity's primary email.
-	Email param.Field[string] `json:"email"`
-	// An individual's first name.
-	FirstName param.Field[string] `json:"first_name"`
-	// A list of identifications for the legal entity.
-	Identifications param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification] `json:"identifications"`
-	// A list of industry classifications for the legal entity.
-	IndustryClassifications param.Field[[]shared.LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
-	// An individual's last name.
-	LastName param.Field[string] `json:"last_name"`
-	// The type of legal entity.
-	LegalEntityType param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType] `json:"legal_entity_type"`
-	// The business's legal structure.
-	LegalStructure param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure] `json:"legal_structure"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// An individual's middle name.
-	MiddleName   param.Field[string]                                                                               `json:"middle_name"`
-	PhoneNumbers param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber] `json:"phone_numbers"`
-	// Whether the individual is a politically exposed person.
-	PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
-	// An individual's preferred name.
-	PreferredName param.Field[string] `json:"preferred_name"`
-	// An individual's prefix.
-	Prefix param.Field[string] `json:"prefix"`
-	// The risk rating of the legal entity. One of low, medium, high.
-	RiskRating param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating] `json:"risk_rating"`
-	// An individual's suffix.
-	Suffix                     param.Field[string]                          `json:"suffix"`
-	WealthAndEmploymentDetails param.Field[WealthAndEmploymentDetailsParam] `json:"wealth_and_employment_details"`
-	// The entity's primary website URL.
-	Website param.Field[string] `json:"website"`
-}
-
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
-	// Region or State.
-	Region param.Field[string] `json:"region,required"`
-	// The types of this address.
-	AddressTypes param.Field[[]CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType] `json:"address_types"`
-	Line2        param.Field[string]                                                                                        `json:"line2"`
-}
-
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType string
-
-const (
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness    CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "business"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing     CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "mailing"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther       CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "other"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypePoBox       CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "po_box"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeResidential CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "residential"
-)
-
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypePoBox, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeResidential:
-		return true
-	}
-	return false
-}
-
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification struct {
-	// The ID number of identification document.
-	IDNumber param.Field[string] `json:"id_number,required"`
-	// The type of ID number.
-	IDType param.Field[CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType] `json:"id_type,required"`
-	// The date when the Identification is no longer considered valid by the issuing
-	// authority.
-	ExpirationDate param.Field[time.Time] `json:"expiration_date" format:"date"`
-	// The ISO 3166-1 alpha-2 country code of the country that issued the
-	// identification
-	IssuingCountry param.Field[string] `json:"issuing_country"`
-	// The region in which the identifcation was issued.
-	IssuingRegion param.Field[string] `json:"issuing_region"`
-}
-
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The type of ID number.
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType string
-
-const (
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil         CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "ar_cuil"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuit         CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "ar_cuit"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCnpj         CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "br_cnpj"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCpf          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "br_cpf"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRun          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "cl_run"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRut          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "cl_rut"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoCedulas      CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "co_cedulas"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoNit          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "co_nit"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeDriversLicense CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "drivers_license"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnID           CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "hn_id"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnRtn          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "hn_rtn"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeInLei          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "in_lei"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrBrn          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "kr_brn"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrCrn          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "kr_crn"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrRrn          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "kr_rrn"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypePassport       CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "passport"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaTin          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "sa_tin"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaVat          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "sa_vat"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsEin          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_ein"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsItin         CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_itin"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsSsn          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_ssn"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeVnTin          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "vn_tin"
-)
-
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuit, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCnpj, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCpf, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRun, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRut, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoCedulas, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoNit, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeDriversLicense, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnID, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnRtn, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeInLei, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrBrn, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrCrn, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrRrn, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypePassport, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaTin, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaVat, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsEin, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsItin, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsSsn, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeVnTin:
-		return true
-	}
-	return false
-}
-
-// The type of legal entity.
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType string
-
-const (
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness   CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType = "business"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeIndividual CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType = "individual"
-)
-
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeIndividual:
-		return true
-	}
-	return false
-}
-
-// The business's legal structure.
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure string
-
-const (
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureCorporation        CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "corporation"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureLlc                CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "llc"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureNonProfit          CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "non_profit"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructurePartnership        CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "partnership"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureSoleProprietorship CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "sole_proprietorship"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureTrust              CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "trust"
-)
-
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureCorporation, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureLlc, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureNonProfit, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructurePartnership, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureSoleProprietorship, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureTrust:
-		return true
-	}
-	return false
-}
-
-// A list of phone numbers in E.164 format.
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber struct {
-	PhoneNumber param.Field[string] `json:"phone_number"`
-}
-
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The risk rating of the legal entity. One of low, medium, high.
-type CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating string
-
-const (
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow    CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating = "low"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingMedium CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating = "medium"
-	CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingHigh   CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating = "high"
-)
-
-func (r CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingMedium, CounterpartyNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingHigh:
 		return true
 	}
 	return false
