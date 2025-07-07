@@ -334,6 +334,7 @@ const (
 	TransactionVendorCodeTypeDwolla        TransactionVendorCodeType = "dwolla"
 	TransactionVendorCodeTypeEvolve        TransactionVendorCodeType = "evolve"
 	TransactionVendorCodeTypeGoldmanSachs  TransactionVendorCodeType = "goldman_sachs"
+	TransactionVendorCodeTypeHifi          TransactionVendorCodeType = "hifi"
 	TransactionVendorCodeTypeIso20022      TransactionVendorCodeType = "iso20022"
 	TransactionVendorCodeTypeJpmc          TransactionVendorCodeType = "jpmc"
 	TransactionVendorCodeTypeMx            TransactionVendorCodeType = "mx"
@@ -350,7 +351,7 @@ const (
 
 func (r TransactionVendorCodeType) IsKnown() bool {
 	switch r {
-	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankingCircle, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeBrale, TransactionVendorCodeTypeBridge, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePaypal, TransactionVendorCodeTypePlaid, TransactionVendorCodeTypePnc, TransactionVendorCodeTypeRspecVendor, TransactionVendorCodeTypeSignet, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser:
+	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankingCircle, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeBrale, TransactionVendorCodeTypeBridge, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeHifi, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePaypal, TransactionVendorCodeTypePlaid, TransactionVendorCodeTypePnc, TransactionVendorCodeTypeRspecVendor, TransactionVendorCodeTypeSignet, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser:
 		return true
 	}
 	return false
