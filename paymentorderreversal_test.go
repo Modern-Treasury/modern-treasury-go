@@ -33,8 +33,8 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 		"payment_order_id",
 		moderntreasury.PaymentOrderReversalNewParams{
 			Reason: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsReasonDuplicate),
-			LedgerTransaction: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransaction{
-				LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerEntry{{
+			LedgerTransaction: moderntreasury.F(shared.LedgerTransactionCreateRequestParam{
+				LedgerEntries: moderntreasury.F([]shared.LedgerEntryCreateRequestParam{{
 					Amount:          moderntreasury.F(int64(0)),
 					Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 					LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -60,13 +60,13 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 				EffectiveDate:  moderntreasury.F(time.Now()),
 				ExternalID:     moderntreasury.F("external_id"),
 				LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeExpectedPayment),
+				LedgerableType: moderntreasury.F(shared.LedgerTransactionCreateRequestLedgerableTypeExpectedPayment),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
 					"foo":    "bar",
 					"modern": "treasury",
 				}),
-				Status: moderntreasury.F(moderntreasury.PaymentOrderReversalNewParamsLedgerTransactionStatusArchived),
+				Status: moderntreasury.F(shared.LedgerTransactionCreateRequestStatusArchived),
 			}),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",

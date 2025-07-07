@@ -35,7 +35,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 		Direction:            moderntreasury.F(moderntreasury.PaymentOrderNewParamsDirectionCredit),
 		OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Type:                 moderntreasury.F(moderntreasury.PaymentOrderTypeACH),
-		Accounting: moderntreasury.F(moderntreasury.PaymentOrderNewParamsAccounting{
+		Accounting: moderntreasury.F(shared.AccountingParam{
 			AccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			ClassID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		}),
@@ -55,8 +55,8 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 		FallbackType:             moderntreasury.F(moderntreasury.PaymentOrderNewParamsFallbackTypeACH),
 		ForeignExchangeContract:  moderntreasury.F("foreign_exchange_contract"),
 		ForeignExchangeIndicator: moderntreasury.F(moderntreasury.PaymentOrderNewParamsForeignExchangeIndicatorFixedToVariable),
-		LedgerTransaction: moderntreasury.F(moderntreasury.PaymentOrderNewParamsLedgerTransaction{
-			LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerEntry{{
+		LedgerTransaction: moderntreasury.F(shared.LedgerTransactionCreateRequestParam{
+			LedgerEntries: moderntreasury.F([]shared.LedgerEntryCreateRequestParam{{
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -82,13 +82,13 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 			EffectiveDate:  moderntreasury.F(time.Now()),
 			ExternalID:     moderntreasury.F("external_id"),
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsLedgerTransactionLedgerableTypeExpectedPayment),
+			LedgerableType: moderntreasury.F(shared.LedgerTransactionCreateRequestLedgerableTypeExpectedPayment),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Status: moderntreasury.F(moderntreasury.PaymentOrderNewParamsLedgerTransactionStatusArchived),
+			Status: moderntreasury.F(shared.LedgerTransactionCreateRequestStatusArchived),
 		}),
 		LedgerTransactionID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		LineItems: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsLineItem{{
@@ -117,11 +117,11 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 			}}),
 			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
-			ContactDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsReceivingAccountContactDetail{{
+			ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{
 				ContactIdentifier:     moderntreasury.F("contact_identifier"),
-				ContactIdentifierType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypeEmail),
+				ContactIdentifierType: moderntreasury.F(moderntreasury.ContactDetailCreateRequestContactIdentifierTypeEmail),
 			}}),
-			LedgerAccount: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountLedgerAccount{
+			LedgerAccount: moderntreasury.F(shared.LedgerAccountCreateRequestParam{
 				Currency:                 moderntreasury.F("currency"),
 				LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				Name:                     moderntreasury.F("name"),
@@ -130,7 +130,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				Description:              moderntreasury.F("description"),
 				LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 				LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				LedgerableType:           moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty),
+				LedgerableType:           moderntreasury.F(shared.LedgerAccountCreateRequestLedgerableTypeCounterparty),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
 					"foo":    "bar",
@@ -143,7 +143,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				"modern": "treasury",
 			}),
 			Name: moderntreasury.F("name"),
-			PartyAddress: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountPartyAddress{
+			PartyAddress: moderntreasury.F(shared.AddressRequestParam{
 				Country:    moderntreasury.F("country"),
 				Line1:      moderntreasury.F("line1"),
 				Line2:      moderntreasury.F("line2"),
@@ -221,7 +221,7 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		moderntreasury.PaymentOrderUpdateParams{
-			Accounting: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsAccounting{
+			Accounting: moderntreasury.F(shared.AccountingParam{
 				AccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				ClassID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			}),
@@ -265,11 +265,11 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 				}}),
 				AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
-				ContactDetails: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsReceivingAccountContactDetail{{
+				ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{
 					ContactIdentifier:     moderntreasury.F("contact_identifier"),
-					ContactIdentifierType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypeEmail),
+					ContactIdentifierType: moderntreasury.F(moderntreasury.ContactDetailCreateRequestContactIdentifierTypeEmail),
 				}}),
-				LedgerAccount: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountLedgerAccount{
+				LedgerAccount: moderntreasury.F(shared.LedgerAccountCreateRequestParam{
 					Currency:                 moderntreasury.F("currency"),
 					LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 					Name:                     moderntreasury.F("name"),
@@ -278,7 +278,7 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 					Description:              moderntreasury.F("description"),
 					LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 					LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-					LedgerableType:           moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty),
+					LedgerableType:           moderntreasury.F(shared.LedgerAccountCreateRequestLedgerableTypeCounterparty),
 					Metadata: moderntreasury.F(map[string]string{
 						"key":    "value",
 						"foo":    "bar",
@@ -291,7 +291,7 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 					"modern": "treasury",
 				}),
 				Name: moderntreasury.F("name"),
-				PartyAddress: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountPartyAddress{
+				PartyAddress: moderntreasury.F(shared.AddressRequestParam{
 					Country:    moderntreasury.F("country"),
 					Line1:      moderntreasury.F("line1"),
 					Line2:      moderntreasury.F("line2"),
@@ -393,7 +393,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 		Direction:            moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsDirectionCredit),
 		OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Type:                 moderntreasury.F(moderntreasury.PaymentOrderTypeACH),
-		Accounting: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsAccounting{
+		Accounting: moderntreasury.F(shared.AccountingParam{
 			AccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			ClassID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		}),
@@ -407,8 +407,8 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 		FallbackType:             moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsFallbackTypeACH),
 		ForeignExchangeContract:  moderntreasury.F("foreign_exchange_contract"),
 		ForeignExchangeIndicator: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsForeignExchangeIndicatorFixedToVariable),
-		LedgerTransaction: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsLedgerTransaction{
-			LedgerEntries: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntry{{
+		LedgerTransaction: moderntreasury.F(shared.LedgerTransactionCreateRequestParam{
+			LedgerEntries: moderntreasury.F([]shared.LedgerEntryCreateRequestParam{{
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -434,13 +434,13 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 			EffectiveDate:  moderntreasury.F(time.Now()),
 			ExternalID:     moderntreasury.F("external_id"),
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			LedgerableType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeExpectedPayment),
+			LedgerableType: moderntreasury.F(shared.LedgerTransactionCreateRequestLedgerableTypeExpectedPayment),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Status: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsLedgerTransactionStatusArchived),
+			Status: moderntreasury.F(shared.LedgerTransactionCreateRequestStatusArchived),
 		}),
 		LedgerTransactionID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		LineItems: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsLineItem{{
@@ -469,11 +469,11 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
 			}}),
 			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
-			ContactDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountContactDetail{{
+			ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{
 				ContactIdentifier:     moderntreasury.F("contact_identifier"),
-				ContactIdentifierType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypeEmail),
+				ContactIdentifierType: moderntreasury.F(moderntreasury.ContactDetailCreateRequestContactIdentifierTypeEmail),
 			}}),
-			LedgerAccount: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount{
+			LedgerAccount: moderntreasury.F(shared.LedgerAccountCreateRequestParam{
 				Currency:                 moderntreasury.F("currency"),
 				LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				Name:                     moderntreasury.F("name"),
@@ -482,7 +482,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 				Description:              moderntreasury.F("description"),
 				LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 				LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				LedgerableType:           moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty),
+				LedgerableType:           moderntreasury.F(shared.LedgerAccountCreateRequestLedgerableTypeCounterparty),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
 					"foo":    "bar",
@@ -495,7 +495,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 				"modern": "treasury",
 			}),
 			Name: moderntreasury.F("name"),
-			PartyAddress: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountPartyAddress{
+			PartyAddress: moderntreasury.F(shared.AddressRequestParam{
 				Country:    moderntreasury.F("country"),
 				Line1:      moderntreasury.F("line1"),
 				Line2:      moderntreasury.F("line2"),

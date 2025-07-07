@@ -34,11 +34,11 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 			AccountNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}}),
 		AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
-		ContactDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsContactDetail{{
+		ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{
 			ContactIdentifier:     moderntreasury.F("contact_identifier"),
-			ContactIdentifierType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsContactDetailsContactIdentifierTypeEmail),
+			ContactIdentifierType: moderntreasury.F(moderntreasury.ContactDetailCreateRequestContactIdentifierTypeEmail),
 		}}),
-		LedgerAccount: moderntreasury.F(moderntreasury.ExternalAccountNewParamsLedgerAccount{
+		LedgerAccount: moderntreasury.F(shared.LedgerAccountCreateRequestParam{
 			Currency:                 moderntreasury.F("currency"),
 			LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Name:                     moderntreasury.F("name"),
@@ -47,7 +47,7 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 			Description:              moderntreasury.F("description"),
 			LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 			LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			LedgerableType:           moderntreasury.F(moderntreasury.ExternalAccountNewParamsLedgerAccountLedgerableTypeCounterparty),
+			LedgerableType:           moderntreasury.F(shared.LedgerAccountCreateRequestLedgerableTypeCounterparty),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
@@ -60,7 +60,7 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 			"modern": "treasury",
 		}),
 		Name: moderntreasury.F("name"),
-		PartyAddress: moderntreasury.F(moderntreasury.ExternalAccountNewParamsPartyAddress{
+		PartyAddress: moderntreasury.F(shared.AddressRequestParam{
 			Country:    moderntreasury.F("country"),
 			Line1:      moderntreasury.F("line1"),
 			Line2:      moderntreasury.F("line2"),
@@ -133,7 +133,7 @@ func TestExternalAccountUpdateWithOptionalParams(t *testing.T) {
 				"foo": "string",
 			}),
 			Name: moderntreasury.F("name"),
-			PartyAddress: moderntreasury.F(moderntreasury.ExternalAccountUpdateParamsPartyAddress{
+			PartyAddress: moderntreasury.F(shared.AddressRequestParam{
 				Country:    moderntreasury.F("country"),
 				Line1:      moderntreasury.F("line1"),
 				Line2:      moderntreasury.F("line2"),

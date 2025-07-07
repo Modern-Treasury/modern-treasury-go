@@ -111,8 +111,8 @@ func (r *RoutingDetailService) Delete(ctx context.Context, accountsType RoutingD
 }
 
 type RoutingDetail struct {
-	ID          string                   `json:"id,required" format:"uuid"`
-	BankAddress RoutingDetailBankAddress `json:"bank_address,required,nullable"`
+	ID          string         `json:"id,required" format:"uuid"`
+	BankAddress shared.Address `json:"bank_address,required,nullable"`
 	// The name of the bank.
 	BankName    string    `json:"bank_name,required"`
 	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
@@ -156,53 +156,6 @@ func (r *RoutingDetail) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r routingDetailJSON) RawJSON() string {
-	return r.raw
-}
-
-type RoutingDetailBankAddress struct {
-	ID string `json:"id,required" format:"uuid"`
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country   string    `json:"country,required,nullable"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	Line1     string    `json:"line1,required,nullable"`
-	Line2     string    `json:"line2,required,nullable"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
-	// Locality or City.
-	Locality string `json:"locality,required,nullable"`
-	Object   string `json:"object,required"`
-	// The postal code of the address.
-	PostalCode string `json:"postal_code,required,nullable"`
-	// Region or State.
-	Region    string                       `json:"region,required,nullable"`
-	UpdatedAt time.Time                    `json:"updated_at,required" format:"date-time"`
-	JSON      routingDetailBankAddressJSON `json:"-"`
-}
-
-// routingDetailBankAddressJSON contains the JSON metadata for the struct
-// [RoutingDetailBankAddress]
-type routingDetailBankAddressJSON struct {
-	ID          apijson.Field
-	Country     apijson.Field
-	CreatedAt   apijson.Field
-	Line1       apijson.Field
-	Line2       apijson.Field
-	LiveMode    apijson.Field
-	Locality    apijson.Field
-	Object      apijson.Field
-	PostalCode  apijson.Field
-	Region      apijson.Field
-	UpdatedAt   apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *RoutingDetailBankAddress) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r routingDetailBankAddressJSON) RawJSON() string {
 	return r.raw
 }
 
