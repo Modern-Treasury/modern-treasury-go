@@ -254,8 +254,6 @@ Methods:
 - <code title="get /api/ledgers">client.Ledgers.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerListParams">LedgerListParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination#Page">Page</a>[<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#Ledger">Ledger</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="delete /api/ledgers/{id}">client.Ledgers.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#Ledger">Ledger</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
-# LedgerableEvents
-
 # LedgerAccountCategories
 
 Response Types:
