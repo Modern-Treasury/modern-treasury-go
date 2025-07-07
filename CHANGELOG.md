@@ -1,5 +1,31 @@
 # Changelog
 
+## 2.28.0 (2025-07-07)
+
+Full Changelog: [v2.27.1...v2.28.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.27.1...v2.28.0)
+
+### Features
+
+* **api:** api update ([0427d33](https://github.com/Modern-Treasury/modern-treasury-go/commit/0427d33aa48b268f8817998afb379457bfd4337d))
+* **api:** api update ([22d59f7](https://github.com/Modern-Treasury/modern-treasury-go/commit/22d59f794db8a641f8c61bd41a7fe02057072733))
+* **api:** api update ([484405f](https://github.com/Modern-Treasury/modern-treasury-go/commit/484405f8d41902b33f93afc654d99438bfe880cf))
+* **api:** api update ([1a3a203](https://github.com/Modern-Treasury/modern-treasury-go/commit/1a3a203e9fefde06261ebcd481838e6fd86f0848))
+* **api:** api update ([396e8d5](https://github.com/Modern-Treasury/modern-treasury-go/commit/396e8d5c0943e42b2dc671310355d161e44d296b))
+* **api:** api update ([d46da1c](https://github.com/Modern-Treasury/modern-treasury-go/commit/d46da1c5261c00fa8e4525073843cfe301d78c54))
+* **client:** add debug log helper ([6b80127](https://github.com/Modern-Treasury/modern-treasury-go/commit/6b8012757c270638f33f634f809b8fa6b3180b3e))
+
+
+### Bug Fixes
+
+* don't try to deserialize as json when ResponseBodyInto is []byte ([38db950](https://github.com/Modern-Treasury/modern-treasury-go/commit/38db95044190730d2dfe22cfa0e3e44125acd5eb))
+* **pagination:** check if page data is empty in GetNextPage ([9d8ecf4](https://github.com/Modern-Treasury/modern-treasury-go/commit/9d8ecf4b082b4313c6b97f02c0c319c7c21fb363))
+
+
+### Chores
+
+* **ci:** enable for pull requests ([bcd8fe0](https://github.com/Modern-Treasury/modern-treasury-go/commit/bcd8fe013393b2d80d092a6da2774202a0900b2b))
+* **ci:** only run for pushes and fork pull requests ([fb82af5](https://github.com/Modern-Treasury/modern-treasury-go/commit/fb82af5028a34a63971d95f08cb72a545fa10835))
+
 ## 2.27.1 (2025-05-30)
 
 Full Changelog: [v2.27.0...v2.27.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.27.0...v2.27.1)
