@@ -144,7 +144,7 @@ type InternalAccount struct {
 	// The parent InternalAccount of this account.
 	ParentAccountID string `json:"parent_account_id,required,nullable" format:"uuid"`
 	// The address associated with the owner or null.
-	PartyAddress InternalAccountPartyAddress `json:"party_address,required,nullable"`
+	PartyAddress shared.Address `json:"party_address,required,nullable"`
 	// The legal name of the entity which owns the account.
 	PartyName string `json:"party_name,required"`
 	// Either individual or business.
@@ -314,54 +314,6 @@ func (r InternalAccountAccountType) IsKnown() bool {
 		return true
 	}
 	return false
-}
-
-// The address associated with the owner or null.
-type InternalAccountPartyAddress struct {
-	ID string `json:"id,required" format:"uuid"`
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country   string    `json:"country,required,nullable"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	Line1     string    `json:"line1,required,nullable"`
-	Line2     string    `json:"line2,required,nullable"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
-	// Locality or City.
-	Locality string `json:"locality,required,nullable"`
-	Object   string `json:"object,required"`
-	// The postal code of the address.
-	PostalCode string `json:"postal_code,required,nullable"`
-	// Region or State.
-	Region    string                          `json:"region,required,nullable"`
-	UpdatedAt time.Time                       `json:"updated_at,required" format:"date-time"`
-	JSON      internalAccountPartyAddressJSON `json:"-"`
-}
-
-// internalAccountPartyAddressJSON contains the JSON metadata for the struct
-// [InternalAccountPartyAddress]
-type internalAccountPartyAddressJSON struct {
-	ID          apijson.Field
-	Country     apijson.Field
-	CreatedAt   apijson.Field
-	Line1       apijson.Field
-	Line2       apijson.Field
-	LiveMode    apijson.Field
-	Locality    apijson.Field
-	Object      apijson.Field
-	PostalCode  apijson.Field
-	Region      apijson.Field
-	UpdatedAt   apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *InternalAccountPartyAddress) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r internalAccountPartyAddressJSON) RawJSON() string {
-	return r.raw
 }
 
 // Either individual or business.

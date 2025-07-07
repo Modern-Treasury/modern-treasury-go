@@ -33,10 +33,10 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 		DueDate:              moderntreasury.F(time.Now()),
 		OriginatingAccountID: moderntreasury.F("originating_account_id"),
 		AutoAdvance:          moderntreasury.F(true),
-		ContactDetails: moderntreasury.F([]moderntreasury.InvoiceNewParamsContactDetail{{
+		ContactDetails: moderntreasury.F([]shared.ContactDetailParam{{
 			ID:                    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			ContactIdentifier:     moderntreasury.F("contact_identifier"),
-			ContactIdentifierType: moderntreasury.F(moderntreasury.InvoiceNewParamsContactDetailsContactIdentifierTypeEmail),
+			ContactIdentifierType: moderntreasury.F(shared.ContactDetailContactIdentifierTypeEmail),
 			CreatedAt:             moderntreasury.F(time.Now()),
 			DiscardedAt:           moderntreasury.F(time.Now()),
 			LiveMode:              moderntreasury.F(true),
@@ -150,10 +150,10 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		moderntreasury.InvoiceUpdateParams{
-			ContactDetails: moderntreasury.F([]moderntreasury.InvoiceUpdateParamsContactDetail{{
+			ContactDetails: moderntreasury.F([]shared.ContactDetailParam{{
 				ID:                    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				ContactIdentifier:     moderntreasury.F("contact_identifier"),
-				ContactIdentifierType: moderntreasury.F(moderntreasury.InvoiceUpdateParamsContactDetailsContactIdentifierTypeEmail),
+				ContactIdentifierType: moderntreasury.F(shared.ContactDetailContactIdentifierTypeEmail),
 				CreatedAt:             moderntreasury.F(time.Now()),
 				DiscardedAt:           moderntreasury.F(time.Now()),
 				LiveMode:              moderntreasury.F(true),

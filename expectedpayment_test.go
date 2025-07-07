@@ -38,8 +38,8 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 		Description:       moderntreasury.F("description"),
 		Direction:         moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsDirectionCredit),
 		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		LedgerTransaction: moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsLedgerTransaction{
-			LedgerEntries: moderntreasury.F([]moderntreasury.ExpectedPaymentNewParamsLedgerTransactionLedgerEntry{{
+		LedgerTransaction: moderntreasury.F(shared.LedgerTransactionCreateRequestParam{
+			LedgerEntries: moderntreasury.F([]shared.LedgerEntryCreateRequestParam{{
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -65,13 +65,13 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 			EffectiveDate:  moderntreasury.F(time.Now()),
 			ExternalID:     moderntreasury.F("external_id"),
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			LedgerableType: moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsLedgerTransactionLedgerableTypeExpectedPayment),
+			LedgerableType: moderntreasury.F(shared.LedgerTransactionCreateRequestLedgerableTypeExpectedPayment),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Status: moderntreasury.F(moderntreasury.ExpectedPaymentNewParamsLedgerTransactionStatusArchived),
+			Status: moderntreasury.F(shared.LedgerTransactionCreateRequestStatusArchived),
 		}),
 		LedgerTransactionID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		LineItems: moderntreasury.F([]moderntreasury.ExpectedPaymentNewParamsLineItem{{

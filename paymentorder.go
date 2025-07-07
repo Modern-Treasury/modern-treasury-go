@@ -109,9 +109,34 @@ func (r *PaymentOrderService) NewAsync(ctx context.Context, body PaymentOrderNew
 	return
 }
 
+type ContactDetailCreateRequestParam struct {
+	ContactIdentifier     param.Field[string]                                          `json:"contact_identifier"`
+	ContactIdentifierType param.Field[ContactDetailCreateRequestContactIdentifierType] `json:"contact_identifier_type"`
+}
+
+func (r ContactDetailCreateRequestParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type ContactDetailCreateRequestContactIdentifierType string
+
+const (
+	ContactDetailCreateRequestContactIdentifierTypeEmail       ContactDetailCreateRequestContactIdentifierType = "email"
+	ContactDetailCreateRequestContactIdentifierTypePhoneNumber ContactDetailCreateRequestContactIdentifierType = "phone_number"
+	ContactDetailCreateRequestContactIdentifierTypeWebsite     ContactDetailCreateRequestContactIdentifierType = "website"
+)
+
+func (r ContactDetailCreateRequestContactIdentifierType) IsKnown() bool {
+	switch r {
+	case ContactDetailCreateRequestContactIdentifierTypeEmail, ContactDetailCreateRequestContactIdentifierTypePhoneNumber, ContactDetailCreateRequestContactIdentifierTypeWebsite:
+		return true
+	}
+	return false
+}
+
 type PaymentOrder struct {
-	ID         string                 `json:"id,required" format:"uuid"`
-	Accounting PaymentOrderAccounting `json:"accounting,required"`
+	ID         string            `json:"id,required" format:"uuid"`
+	Accounting shared.Accounting `json:"accounting,required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
@@ -161,7 +186,7 @@ type PaymentOrder struct {
 	// currency matches the originating account currency.
 	ForeignExchangeIndicator PaymentOrderForeignExchangeIndicator `json:"foreign_exchange_indicator,required,nullable"`
 	// Associated serialized foreign exchange rate information.
-	ForeignExchangeRate PaymentOrderForeignExchangeRate `json:"foreign_exchange_rate,required,nullable"`
+	ForeignExchangeRate shared.ForeignExchangeRate `json:"foreign_exchange_rate,required,nullable"`
 	// The ID of the ledger transaction linked to the payment order.
 	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
@@ -316,34 +341,6 @@ func (r paymentOrderJSON) RawJSON() string {
 
 func (r PaymentOrder) implementsBulkResultEntity() {}
 
-type PaymentOrderAccounting struct {
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountID string `json:"account_id,nullable" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	ClassID string                     `json:"class_id,nullable" format:"uuid"`
-	JSON    paymentOrderAccountingJSON `json:"-"`
-}
-
-// paymentOrderAccountingJSON contains the JSON metadata for the struct
-// [PaymentOrderAccounting]
-type paymentOrderAccountingJSON struct {
-	AccountID   apijson.Field
-	ClassID     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *PaymentOrderAccounting) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r paymentOrderAccountingJSON) RawJSON() string {
-	return r.raw
-}
-
 // The party that will pay the fees for the payment order. See
 // https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
 // differences between the options.
@@ -398,51 +395,6 @@ func (r PaymentOrderForeignExchangeIndicator) IsKnown() bool {
 		return true
 	}
 	return false
-}
-
-// Associated serialized foreign exchange rate information.
-type PaymentOrderForeignExchangeRate struct {
-	// Amount in the lowest denomination of the `base_currency` to convert, often
-	// called the "sell" amount.
-	BaseAmount int64 `json:"base_amount,required"`
-	// Currency to convert, often called the "sell" currency.
-	BaseCurrency shared.Currency `json:"base_currency,required"`
-	// The exponent component of the rate. The decimal is calculated as `value` / (10 ^
-	// `exponent`).
-	Exponent int64 `json:"exponent,required"`
-	// A string representation of the rate.
-	RateString string `json:"rate_string,required"`
-	// Amount in the lowest denomination of the `target_currency`, often called the
-	// "buy" amount.
-	TargetAmount int64 `json:"target_amount,required"`
-	// Currency to convert the `base_currency` to, often called the "buy" currency.
-	TargetCurrency shared.Currency `json:"target_currency,required"`
-	// The whole number component of the rate. The decimal is calculated as `value` /
-	// (10 ^ `exponent`).
-	Value int64                               `json:"value,required"`
-	JSON  paymentOrderForeignExchangeRateJSON `json:"-"`
-}
-
-// paymentOrderForeignExchangeRateJSON contains the JSON metadata for the struct
-// [PaymentOrderForeignExchangeRate]
-type paymentOrderForeignExchangeRateJSON struct {
-	BaseAmount     apijson.Field
-	BaseCurrency   apijson.Field
-	Exponent       apijson.Field
-	RateString     apijson.Field
-	TargetAmount   apijson.Field
-	TargetCurrency apijson.Field
-	Value          apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *PaymentOrderForeignExchangeRate) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r paymentOrderForeignExchangeRateJSON) RawJSON() string {
-	return r.raw
 }
 
 // Either `normal` or `high`. For ACH and EFT payments, `high` represents a
@@ -684,8 +636,8 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	LegalEntityID string `json:"legal_entity_id,nullable" format:"uuid"`
 	// The parent InternalAccount of this account.
 	ParentAccountID string `json:"parent_account_id,nullable" format:"uuid"`
-	// This field can have the runtime type of [InternalAccountPartyAddress].
-	PartyAddress interface{} `json:"party_address"`
+	// The address associated with the owner or null.
+	PartyAddress shared.Address `json:"party_address,nullable"`
 	// The legal name of the entity which owns the account.
 	PartyName string `json:"party_name"`
 	// Either individual or business.
@@ -941,8 +893,8 @@ type PaymentOrderNewParams struct {
 	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
 	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
 	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
-	Type       param.Field[PaymentOrderType]                `json:"type,required"`
-	Accounting param.Field[PaymentOrderNewParamsAccounting] `json:"accounting"`
+	Type       param.Field[PaymentOrderType]       `json:"type,required"`
+	Accounting param.Field[shared.AccountingParam] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
@@ -981,7 +933,7 @@ type PaymentOrderNewParams struct {
 	// order. If the ledger transaction cannot be created, then the payment order
 	// creation will fail. The resulting ledger transaction will mirror the status of
 	// the payment order.
-	LedgerTransaction param.Field[PaymentOrderNewParamsLedgerTransaction] `json:"ledger_transaction"`
+	LedgerTransaction param.Field[shared.LedgerTransactionCreateRequestParam] `json:"ledger_transaction"`
 	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
 	// pending ledger transaction can be attached upon payment order creation. Once the
 	// payment order is created, the status of the ledger transaction tracks the
@@ -1088,20 +1040,6 @@ func (r PaymentOrderNewParamsDirection) IsKnown() bool {
 	return false
 }
 
-type PaymentOrderNewParamsAccounting struct {
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountID param.Field[string] `json:"account_id" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	ClassID param.Field[string] `json:"class_id" format:"uuid"`
-}
-
-func (r PaymentOrderNewParamsAccounting) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
 // The party that will pay the fees for the payment order. See
 // https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
 // differences between the options.
@@ -1194,123 +1132,6 @@ func (r PaymentOrderNewParamsForeignExchangeIndicator) IsKnown() bool {
 	return false
 }
 
-// Specifies a ledger transaction object that will be created with the payment
-// order. If the ledger transaction cannot be created, then the payment order
-// creation will fail. The resulting ledger transaction will mirror the status of
-// the payment order.
-type PaymentOrderNewParamsLedgerTransaction struct {
-	// An array of ledger entry objects.
-	LedgerEntries param.Field[[]PaymentOrderNewParamsLedgerTransactionLedgerEntry] `json:"ledger_entries,required"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// The timestamp (ISO8601 format) at which the ledger transaction happened for
-	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
-	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
-	// purposes.
-	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
-	// A unique string to represent the ledger transaction. Only one pending or posted
-	// ledger transaction may have this ID in the ledger.
-	ExternalID param.Field[string] `json:"external_id"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-	// reversal.
-	LedgerableType param.Field[PaymentOrderNewParamsLedgerTransactionLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[PaymentOrderNewParamsLedgerTransactionStatus] `json:"status"`
-}
-
-func (r PaymentOrderNewParamsLedgerTransaction) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type PaymentOrderNewParamsLedgerTransactionLedgerEntry struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount,required"`
-	// One of `credit`, `debit`. Describes the direction money is flowing in the
-	// transaction. A `credit` moves money from your account to someone else's. A
-	// `debit` pulls money from someone else's account to your own. Note that wire,
-	// rtp, and check payments will always be `credit`.
-	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
-	// The ledger account that this ledger entry is associated with.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s available balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
-	// Lock version of the ledger account. This can be passed when creating a ledger
-	// transaction to only succeed if no ledger transactions have posted since the
-	// given version. See our post about Designing the Ledgers API with Optimistic
-	// Locking for more details.
-	LockVersion param.Field[int64] `json:"lock_version"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s pending balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s posted balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
-	// If true, response will include the balance of the associated ledger account for
-	// the entry.
-	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
-}
-
-func (r PaymentOrderNewParamsLedgerTransactionLedgerEntry) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// If the ledger transaction can be reconciled to another object in Modern
-// Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-// reversal.
-type PaymentOrderNewParamsLedgerTransactionLedgerableType string
-
-const (
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeExpectedPayment       PaymentOrderNewParamsLedgerTransactionLedgerableType = "expected_payment"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail PaymentOrderNewParamsLedgerTransactionLedgerableType = "incoming_payment_detail"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypePaperItem             PaymentOrderNewParamsLedgerTransactionLedgerableType = "paper_item"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypePaymentOrder          PaymentOrderNewParamsLedgerTransactionLedgerableType = "payment_order"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeReturn                PaymentOrderNewParamsLedgerTransactionLedgerableType = "return"
-	PaymentOrderNewParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderNewParamsLedgerTransactionLedgerableType = "reversal"
-)
-
-func (r PaymentOrderNewParamsLedgerTransactionLedgerableType) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewParamsLedgerTransactionLedgerableTypeExpectedPayment, PaymentOrderNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, PaymentOrderNewParamsLedgerTransactionLedgerableTypePaperItem, PaymentOrderNewParamsLedgerTransactionLedgerableTypePaymentOrder, PaymentOrderNewParamsLedgerTransactionLedgerableTypeReturn, PaymentOrderNewParamsLedgerTransactionLedgerableTypeReversal:
-		return true
-	}
-	return false
-}
-
-// To post a ledger transaction at creation, use `posted`.
-type PaymentOrderNewParamsLedgerTransactionStatus string
-
-const (
-	PaymentOrderNewParamsLedgerTransactionStatusArchived PaymentOrderNewParamsLedgerTransactionStatus = "archived"
-	PaymentOrderNewParamsLedgerTransactionStatusPending  PaymentOrderNewParamsLedgerTransactionStatus = "pending"
-	PaymentOrderNewParamsLedgerTransactionStatusPosted   PaymentOrderNewParamsLedgerTransactionStatus = "posted"
-)
-
-func (r PaymentOrderNewParamsLedgerTransactionStatus) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewParamsLedgerTransactionStatusArchived, PaymentOrderNewParamsLedgerTransactionStatusPending, PaymentOrderNewParamsLedgerTransactionStatusPosted:
-		return true
-	}
-	return false
-}
-
 type PaymentOrderNewParamsLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
@@ -1353,14 +1174,14 @@ func (r PaymentOrderNewParamsPriority) IsKnown() bool {
 type PaymentOrderNewParamsReceivingAccount struct {
 	AccountDetails param.Field[[]PaymentOrderNewParamsReceivingAccountAccountDetail] `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
-	AccountType    param.Field[ExternalAccountType]                                  `json:"account_type"`
-	ContactDetails param.Field[[]PaymentOrderNewParamsReceivingAccountContactDetail] `json:"contact_details"`
+	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
+	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
 	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 	// for more details.
-	LedgerAccount param.Field[PaymentOrderNewParamsReceivingAccountLedgerAccount] `json:"ledger_account"`
+	LedgerAccount param.Field[shared.LedgerAccountCreateRequestParam] `json:"ledger_account"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -1368,8 +1189,8 @@ type PaymentOrderNewParamsReceivingAccount struct {
 	// affect any payments
 	Name param.Field[string] `json:"name"`
 	// Required if receiving wire payments.
-	PartyAddress    param.Field[PaymentOrderNewParamsReceivingAccountPartyAddress] `json:"party_address"`
-	PartyIdentifier param.Field[string]                                            `json:"party_identifier"`
+	PartyAddress    param.Field[shared.AddressRequestParam] `json:"party_address"`
+	PartyIdentifier param.Field[string]                     `json:"party_identifier"`
 	// If this value isn't provided, it will be inherited from the counterparty's name.
 	PartyName param.Field[string] `json:"party_name"`
 	// Either `individual` or `business`.
@@ -1418,106 +1239,6 @@ func (r PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberType) Is
 		return true
 	}
 	return false
-}
-
-type PaymentOrderNewParamsReceivingAccountContactDetail struct {
-	ContactIdentifier     param.Field[string]                                                                   `json:"contact_identifier"`
-	ContactIdentifierType param.Field[PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
-}
-
-func (r PaymentOrderNewParamsReceivingAccountContactDetail) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType string
-
-const (
-	PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypeEmail       PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType = "email"
-	PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType = "phone_number"
-	PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite     PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType = "website"
-)
-
-func (r PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierType) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypeEmail, PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber, PaymentOrderNewParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite:
-		return true
-	}
-	return false
-}
-
-// Specifies a ledger account object that will be created with the external
-// account. The resulting ledger account is linked to the external account for
-// auto-ledgering Payment objects. See
-// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
-// for more details.
-type PaymentOrderNewParamsReceivingAccountLedgerAccount struct {
-	// The currency of the ledger account.
-	Currency param.Field[string] `json:"currency,required"`
-	// The id of the ledger that this account belongs to.
-	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name,required"`
-	// The normal balance of the ledger account.
-	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description"`
-	// The array of ledger account category ids that this ledger account should be a
-	// child of.
-	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the id will be
-	// populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the type will
-	// be populated here, otherwise null. The value is one of internal_account or
-	// external_account.
-	LedgerableType param.Field[PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-}
-
-func (r PaymentOrderNewParamsReceivingAccountLedgerAccount) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// If the ledger account links to another object in Modern Treasury, the type will
-// be populated here, otherwise null. The value is one of internal_account or
-// external_account.
-type PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType string
-
-const (
-	PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty    PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType = "counterparty"
-	PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType = "external_account"
-	PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType = "internal_account"
-	PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType = "virtual_account"
-)
-
-func (r PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableType) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty, PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount, PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount, PaymentOrderNewParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount:
-		return true
-	}
-	return false
-}
-
-// Required if receiving wire payments.
-type PaymentOrderNewParamsReceivingAccountPartyAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country"`
-	Line1   param.Field[string] `json:"line1"`
-	Line2   param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code"`
-	// Region or State.
-	Region param.Field[string] `json:"region"`
-}
-
-func (r PaymentOrderNewParamsReceivingAccountPartyAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
 }
 
 // Either `individual` or `business`.
@@ -1629,7 +1350,7 @@ func (r PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType) IsKnown(
 }
 
 type PaymentOrderUpdateParams struct {
-	Accounting param.Field[PaymentOrderUpdateParamsAccounting] `json:"accounting"`
+	Accounting param.Field[shared.AccountingParam] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
@@ -1757,20 +1478,6 @@ func (r PaymentOrderUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-type PaymentOrderUpdateParamsAccounting struct {
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountID param.Field[string] `json:"account_id" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	ClassID param.Field[string] `json:"class_id" format:"uuid"`
-}
-
-func (r PaymentOrderUpdateParamsAccounting) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
 // The party that will pay the fees for the payment order. See
 // https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
 // differences between the options.
@@ -1886,14 +1593,14 @@ func (r PaymentOrderUpdateParamsPriority) IsKnown() bool {
 type PaymentOrderUpdateParamsReceivingAccount struct {
 	AccountDetails param.Field[[]PaymentOrderUpdateParamsReceivingAccountAccountDetail] `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
-	AccountType    param.Field[ExternalAccountType]                                     `json:"account_type"`
-	ContactDetails param.Field[[]PaymentOrderUpdateParamsReceivingAccountContactDetail] `json:"contact_details"`
+	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
+	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
 	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 	// for more details.
-	LedgerAccount param.Field[PaymentOrderUpdateParamsReceivingAccountLedgerAccount] `json:"ledger_account"`
+	LedgerAccount param.Field[shared.LedgerAccountCreateRequestParam] `json:"ledger_account"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -1901,8 +1608,8 @@ type PaymentOrderUpdateParamsReceivingAccount struct {
 	// affect any payments
 	Name param.Field[string] `json:"name"`
 	// Required if receiving wire payments.
-	PartyAddress    param.Field[PaymentOrderUpdateParamsReceivingAccountPartyAddress] `json:"party_address"`
-	PartyIdentifier param.Field[string]                                               `json:"party_identifier"`
+	PartyAddress    param.Field[shared.AddressRequestParam] `json:"party_address"`
+	PartyIdentifier param.Field[string]                     `json:"party_identifier"`
 	// If this value isn't provided, it will be inherited from the counterparty's name.
 	PartyName param.Field[string] `json:"party_name"`
 	// Either `individual` or `business`.
@@ -1951,106 +1658,6 @@ func (r PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType)
 		return true
 	}
 	return false
-}
-
-type PaymentOrderUpdateParamsReceivingAccountContactDetail struct {
-	ContactIdentifier     param.Field[string]                                                                      `json:"contact_identifier"`
-	ContactIdentifierType param.Field[PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
-}
-
-func (r PaymentOrderUpdateParamsReceivingAccountContactDetail) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType string
-
-const (
-	PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypeEmail       PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType = "email"
-	PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType = "phone_number"
-	PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite     PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType = "website"
-)
-
-func (r PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierType) IsKnown() bool {
-	switch r {
-	case PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypeEmail, PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber, PaymentOrderUpdateParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite:
-		return true
-	}
-	return false
-}
-
-// Specifies a ledger account object that will be created with the external
-// account. The resulting ledger account is linked to the external account for
-// auto-ledgering Payment objects. See
-// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
-// for more details.
-type PaymentOrderUpdateParamsReceivingAccountLedgerAccount struct {
-	// The currency of the ledger account.
-	Currency param.Field[string] `json:"currency,required"`
-	// The id of the ledger that this account belongs to.
-	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name,required"`
-	// The normal balance of the ledger account.
-	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description"`
-	// The array of ledger account category ids that this ledger account should be a
-	// child of.
-	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the id will be
-	// populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the type will
-	// be populated here, otherwise null. The value is one of internal_account or
-	// external_account.
-	LedgerableType param.Field[PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-}
-
-func (r PaymentOrderUpdateParamsReceivingAccountLedgerAccount) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// If the ledger account links to another object in Modern Treasury, the type will
-// be populated here, otherwise null. The value is one of internal_account or
-// external_account.
-type PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType string
-
-const (
-	PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty    PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType = "counterparty"
-	PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType = "external_account"
-	PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType = "internal_account"
-	PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType = "virtual_account"
-)
-
-func (r PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableType) IsKnown() bool {
-	switch r {
-	case PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty, PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount, PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount, PaymentOrderUpdateParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount:
-		return true
-	}
-	return false
-}
-
-// Required if receiving wire payments.
-type PaymentOrderUpdateParamsReceivingAccountPartyAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country"`
-	Line1   param.Field[string] `json:"line1"`
-	Line2   param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code"`
-	// Region or State.
-	Region param.Field[string] `json:"region"`
-}
-
-func (r PaymentOrderUpdateParamsReceivingAccountPartyAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
 }
 
 // Either `individual` or `business`.
@@ -2336,8 +1943,8 @@ type PaymentOrderNewAsyncParams struct {
 	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
 	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
 	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
-	Type       param.Field[PaymentOrderType]                     `json:"type,required"`
-	Accounting param.Field[PaymentOrderNewAsyncParamsAccounting] `json:"accounting"`
+	Type       param.Field[PaymentOrderType]       `json:"type,required"`
+	Accounting param.Field[shared.AccountingParam] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
@@ -2373,7 +1980,7 @@ type PaymentOrderNewAsyncParams struct {
 	// order. If the ledger transaction cannot be created, then the payment order
 	// creation will fail. The resulting ledger transaction will mirror the status of
 	// the payment order.
-	LedgerTransaction param.Field[PaymentOrderNewAsyncParamsLedgerTransaction] `json:"ledger_transaction"`
+	LedgerTransaction param.Field[shared.LedgerTransactionCreateRequestParam] `json:"ledger_transaction"`
 	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
 	// pending ledger transaction can be attached upon payment order creation. Once the
 	// payment order is created, the status of the ledger transaction tracks the
@@ -2469,20 +2076,6 @@ func (r PaymentOrderNewAsyncParamsDirection) IsKnown() bool {
 	return false
 }
 
-type PaymentOrderNewAsyncParamsAccounting struct {
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountID param.Field[string] `json:"account_id" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	ClassID param.Field[string] `json:"class_id" format:"uuid"`
-}
-
-func (r PaymentOrderNewAsyncParamsAccounting) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
 // The party that will pay the fees for the payment order. See
 // https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
 // differences between the options.
@@ -2537,123 +2130,6 @@ func (r PaymentOrderNewAsyncParamsForeignExchangeIndicator) IsKnown() bool {
 	return false
 }
 
-// Specifies a ledger transaction object that will be created with the payment
-// order. If the ledger transaction cannot be created, then the payment order
-// creation will fail. The resulting ledger transaction will mirror the status of
-// the payment order.
-type PaymentOrderNewAsyncParamsLedgerTransaction struct {
-	// An array of ledger entry objects.
-	LedgerEntries param.Field[[]PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntry] `json:"ledger_entries,required"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// The timestamp (ISO8601 format) at which the ledger transaction happened for
-	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
-	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
-	// purposes.
-	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
-	// A unique string to represent the ledger transaction. Only one pending or posted
-	// ledger transaction may have this ID in the ledger.
-	ExternalID param.Field[string] `json:"external_id"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-	// reversal.
-	LedgerableType param.Field[PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[PaymentOrderNewAsyncParamsLedgerTransactionStatus] `json:"status"`
-}
-
-func (r PaymentOrderNewAsyncParamsLedgerTransaction) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntry struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount,required"`
-	// One of `credit`, `debit`. Describes the direction money is flowing in the
-	// transaction. A `credit` moves money from your account to someone else's. A
-	// `debit` pulls money from someone else's account to your own. Note that wire,
-	// rtp, and check payments will always be `credit`.
-	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
-	// The ledger account that this ledger entry is associated with.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s available balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
-	// Lock version of the ledger account. This can be passed when creating a ledger
-	// transaction to only succeed if no ledger transactions have posted since the
-	// given version. See our post about Designing the Ledgers API with Optimistic
-	// Locking for more details.
-	LockVersion param.Field[int64] `json:"lock_version"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s pending balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s posted balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
-	// If true, response will include the balance of the associated ledger account for
-	// the entry.
-	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
-}
-
-func (r PaymentOrderNewAsyncParamsLedgerTransactionLedgerEntry) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// If the ledger transaction can be reconciled to another object in Modern
-// Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-// reversal.
-type PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType string
-
-const (
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeExpectedPayment       PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "expected_payment"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "incoming_payment_detail"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaperItem             PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "paper_item"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaymentOrder          PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "payment_order"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReturn                PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "return"
-	PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType = "reversal"
-)
-
-func (r PaymentOrderNewAsyncParamsLedgerTransactionLedgerableType) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeExpectedPayment, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaperItem, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypePaymentOrder, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReturn, PaymentOrderNewAsyncParamsLedgerTransactionLedgerableTypeReversal:
-		return true
-	}
-	return false
-}
-
-// To post a ledger transaction at creation, use `posted`.
-type PaymentOrderNewAsyncParamsLedgerTransactionStatus string
-
-const (
-	PaymentOrderNewAsyncParamsLedgerTransactionStatusArchived PaymentOrderNewAsyncParamsLedgerTransactionStatus = "archived"
-	PaymentOrderNewAsyncParamsLedgerTransactionStatusPending  PaymentOrderNewAsyncParamsLedgerTransactionStatus = "pending"
-	PaymentOrderNewAsyncParamsLedgerTransactionStatusPosted   PaymentOrderNewAsyncParamsLedgerTransactionStatus = "posted"
-)
-
-func (r PaymentOrderNewAsyncParamsLedgerTransactionStatus) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsLedgerTransactionStatusArchived, PaymentOrderNewAsyncParamsLedgerTransactionStatusPending, PaymentOrderNewAsyncParamsLedgerTransactionStatusPosted:
-		return true
-	}
-	return false
-}
-
 type PaymentOrderNewAsyncParamsLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
@@ -2696,14 +2172,14 @@ func (r PaymentOrderNewAsyncParamsPriority) IsKnown() bool {
 type PaymentOrderNewAsyncParamsReceivingAccount struct {
 	AccountDetails param.Field[[]PaymentOrderNewAsyncParamsReceivingAccountAccountDetail] `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
-	AccountType    param.Field[ExternalAccountType]                                       `json:"account_type"`
-	ContactDetails param.Field[[]PaymentOrderNewAsyncParamsReceivingAccountContactDetail] `json:"contact_details"`
+	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
+	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
 	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 	// for more details.
-	LedgerAccount param.Field[PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount] `json:"ledger_account"`
+	LedgerAccount param.Field[shared.LedgerAccountCreateRequestParam] `json:"ledger_account"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -2711,8 +2187,8 @@ type PaymentOrderNewAsyncParamsReceivingAccount struct {
 	// affect any payments
 	Name param.Field[string] `json:"name"`
 	// Required if receiving wire payments.
-	PartyAddress    param.Field[PaymentOrderNewAsyncParamsReceivingAccountPartyAddress] `json:"party_address"`
-	PartyIdentifier param.Field[string]                                                 `json:"party_identifier"`
+	PartyAddress    param.Field[shared.AddressRequestParam] `json:"party_address"`
+	PartyIdentifier param.Field[string]                     `json:"party_identifier"`
 	// If this value isn't provided, it will be inherited from the counterparty's name.
 	PartyName param.Field[string] `json:"party_name"`
 	// Either `individual` or `business`.
@@ -2761,106 +2237,6 @@ func (r PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTyp
 		return true
 	}
 	return false
-}
-
-type PaymentOrderNewAsyncParamsReceivingAccountContactDetail struct {
-	ContactIdentifier     param.Field[string]                                                                        `json:"contact_identifier"`
-	ContactIdentifierType param.Field[PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
-}
-
-func (r PaymentOrderNewAsyncParamsReceivingAccountContactDetail) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType string
-
-const (
-	PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypeEmail       PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType = "email"
-	PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType = "phone_number"
-	PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite     PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType = "website"
-)
-
-func (r PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierType) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypeEmail, PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypePhoneNumber, PaymentOrderNewAsyncParamsReceivingAccountContactDetailsContactIdentifierTypeWebsite:
-		return true
-	}
-	return false
-}
-
-// Specifies a ledger account object that will be created with the external
-// account. The resulting ledger account is linked to the external account for
-// auto-ledgering Payment objects. See
-// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
-// for more details.
-type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount struct {
-	// The currency of the ledger account.
-	Currency param.Field[string] `json:"currency,required"`
-	// The id of the ledger that this account belongs to.
-	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name,required"`
-	// The normal balance of the ledger account.
-	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description"`
-	// The array of ledger account category ids that this ledger account should be a
-	// child of.
-	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the id will be
-	// populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the type will
-	// be populated here, otherwise null. The value is one of internal_account or
-	// external_account.
-	LedgerableType param.Field[PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-}
-
-func (r PaymentOrderNewAsyncParamsReceivingAccountLedgerAccount) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// If the ledger account links to another object in Modern Treasury, the type will
-// be populated here, otherwise null. The value is one of internal_account or
-// external_account.
-type PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType string
-
-const (
-	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty    PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType = "counterparty"
-	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType = "external_account"
-	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType = "internal_account"
-	PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType = "virtual_account"
-)
-
-func (r PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableType) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeCounterparty, PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeExternalAccount, PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeInternalAccount, PaymentOrderNewAsyncParamsReceivingAccountLedgerAccountLedgerableTypeVirtualAccount:
-		return true
-	}
-	return false
-}
-
-// Required if receiving wire payments.
-type PaymentOrderNewAsyncParamsReceivingAccountPartyAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country"`
-	Line1   param.Field[string] `json:"line1"`
-	Line2   param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code"`
-	// Region or State.
-	Region param.Field[string] `json:"region"`
-}
-
-func (r PaymentOrderNewAsyncParamsReceivingAccountPartyAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
 }
 
 // Either `individual` or `business`.

@@ -142,11 +142,10 @@ type BulkResultEntity struct {
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	Object    string    `json:"object,required"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	// This field can have the runtime type of [PaymentOrderAccounting].
-	Accounting interface{} `json:"accounting"`
+	LiveMode   bool              `json:"live_mode,required"`
+	Object     string            `json:"object,required"`
+	UpdatedAt  time.Time         `json:"updated_at,required" format:"date-time"`
+	Accounting shared.Accounting `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
@@ -222,9 +221,8 @@ type BulkResultEntity struct {
 	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
 	// currency matches the originating account currency.
 	ForeignExchangeIndicator BulkResultEntityForeignExchangeIndicator `json:"foreign_exchange_indicator,nullable"`
-	// This field can have the runtime type of [PaymentOrderForeignExchangeRate],
-	// [TransactionForeignExchangeRate].
-	ForeignExchangeRate interface{} `json:"foreign_exchange_rate"`
+	// Associated serialized foreign exchange rate information.
+	ForeignExchangeRate shared.ForeignExchangeRate `json:"foreign_exchange_rate,nullable"`
 	// The ID of the Internal Account for the expected payment.
 	InternalAccountID string `json:"internal_account_id,nullable" format:"uuid"`
 	// This field can have the runtime type of [[]LedgerEntry].

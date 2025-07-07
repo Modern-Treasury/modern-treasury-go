@@ -172,8 +172,8 @@ func (r ConnectionLegalEntityNewParams) MarshalJSON() (data []byte, err error) {
 // The legal entity.
 type ConnectionLegalEntityNewParamsLegalEntity struct {
 	// A list of addresses for the entity.
-	Addresses    param.Field[[]ConnectionLegalEntityNewParamsLegalEntityAddress] `json:"addresses"`
-	BankSettings param.Field[BankSettingsParam]                                  `json:"bank_settings"`
+	Addresses    param.Field[[]shared.LegalEntityAddressCreateRequestParam] `json:"addresses"`
+	BankSettings param.Field[BankSettingsParam]                             `json:"bank_settings"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
@@ -189,7 +189,7 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	// An individual's first name.
 	FirstName param.Field[string] `json:"first_name"`
 	// A list of identifications for the legal entity.
-	Identifications param.Field[[]ConnectionLegalEntityNewParamsLegalEntityIdentification] `json:"identifications"`
+	Identifications param.Field[[]shared.IdentificationCreateRequestParam] `json:"identifications"`
 	// A list of industry classifications for the legal entity.
 	IndustryClassifications param.Field[[]shared.LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
 	// An individual's last name.
@@ -225,102 +225,10 @@ func (r ConnectionLegalEntityNewParamsLegalEntity) MarshalJSON() (data []byte, e
 	return apijson.MarshalRoot(r)
 }
 
-type ConnectionLegalEntityNewParamsLegalEntityAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
-	// Region or State.
-	Region param.Field[string] `json:"region,required"`
-	// The types of this address.
-	AddressTypes param.Field[[]ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType] `json:"address_types"`
-	Line2        param.Field[string]                                                          `json:"line2"`
-}
-
-func (r ConnectionLegalEntityNewParamsLegalEntityAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType string
-
-const (
-	ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeBusiness    ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType = "business"
-	ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeMailing     ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType = "mailing"
-	ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeOther       ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType = "other"
-	ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypePoBox       ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType = "po_box"
-	ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeResidential ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType = "residential"
-)
-
-func (r ConnectionLegalEntityNewParamsLegalEntityAddressesAddressType) IsKnown() bool {
-	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeBusiness, ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeMailing, ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeOther, ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypePoBox, ConnectionLegalEntityNewParamsLegalEntityAddressesAddressTypeResidential:
-		return true
-	}
-	return false
-}
-
-type ConnectionLegalEntityNewParamsLegalEntityIdentification struct {
-	// The ID number of identification document.
-	IDNumber param.Field[string] `json:"id_number,required"`
-	// The type of ID number.
-	IDType param.Field[ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType] `json:"id_type,required"`
-	// The date when the Identification is no longer considered valid by the issuing
-	// authority.
-	ExpirationDate param.Field[time.Time] `json:"expiration_date" format:"date"`
-	// The ISO 3166-1 alpha-2 country code of the country that issued the
-	// identification
-	IssuingCountry param.Field[string] `json:"issuing_country"`
-	// The region in which the identifcation was issued.
-	IssuingRegion param.Field[string] `json:"issuing_region"`
-}
-
-func (r ConnectionLegalEntityNewParamsLegalEntityIdentification) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The type of ID number.
-type ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType string
-
-const (
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeArCuil         ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "ar_cuil"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeArCuit         ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "ar_cuit"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeBrCnpj         ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "br_cnpj"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeBrCpf          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "br_cpf"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeClRun          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "cl_run"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeClRut          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "cl_rut"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeCoCedulas      ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "co_cedulas"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeCoNit          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "co_nit"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeDriversLicense ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "drivers_license"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeHnID           ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "hn_id"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeHnRtn          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "hn_rtn"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeInLei          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "in_lei"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeKrBrn          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "kr_brn"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeKrCrn          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "kr_crn"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeKrRrn          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "kr_rrn"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypePassport       ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "passport"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeSaTin          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "sa_tin"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeSaVat          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "sa_vat"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeUsEin          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "us_ein"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeUsItin         ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "us_itin"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeUsSsn          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "us_ssn"
-	ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeVnTin          ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType = "vn_tin"
-)
-
-func (r ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDType) IsKnown() bool {
-	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeArCuil, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeArCuit, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeBrCnpj, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeBrCpf, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeClRun, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeClRut, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeCoCedulas, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeCoNit, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeDriversLicense, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeHnID, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeHnRtn, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeInLei, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeKrBrn, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeKrCrn, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeKrRrn, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypePassport, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeSaTin, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeSaVat, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeUsEin, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeUsItin, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeUsSsn, ConnectionLegalEntityNewParamsLegalEntityIdentificationsIDTypeVnTin:
-		return true
-	}
-	return false
-}
-
 type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociation struct {
 	RelationshipTypes param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType] `json:"relationship_types,required"`
 	// The child legal entity.
-	ChildLegalEntity param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity] `json:"child_legal_entity"`
+	ChildLegalEntity param.Field[shared.ChildLegalEntityCreateParam] `json:"child_legal_entity"`
 	// The ID of the child legal entity.
 	ChildLegalEntityID param.Field[string] `json:"child_legal_entity_id"`
 	// The child entity's ownership percentage iff they are a beneficial owner.
@@ -344,214 +252,6 @@ const (
 func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType) IsKnown() bool {
 	switch r {
 	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeControlPerson:
-		return true
-	}
-	return false
-}
-
-// The child legal entity.
-type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity struct {
-	// A list of addresses for the entity.
-	Addresses    param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress] `json:"addresses"`
-	BankSettings param.Field[BankSettingsParam]                                                                         `json:"bank_settings"`
-	// The business's legal business name.
-	BusinessName param.Field[string] `json:"business_name"`
-	// The country of citizenship for an individual.
-	CitizenshipCountry param.Field[string]                                  `json:"citizenship_country"`
-	ComplianceDetails  param.Field[shared.LegalEntityComplianceDetailParam] `json:"compliance_details"`
-	// A business's formation date (YYYY-MM-DD).
-	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
-	// An individual's date of birth (YYYY-MM-DD).
-	DateOfBirth          param.Field[time.Time] `json:"date_of_birth" format:"date"`
-	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
-	// The entity's primary email.
-	Email param.Field[string] `json:"email"`
-	// An individual's first name.
-	FirstName param.Field[string] `json:"first_name"`
-	// A list of identifications for the legal entity.
-	Identifications param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification] `json:"identifications"`
-	// A list of industry classifications for the legal entity.
-	IndustryClassifications param.Field[[]shared.LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
-	// An individual's last name.
-	LastName param.Field[string] `json:"last_name"`
-	// The type of legal entity.
-	LegalEntityType param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType] `json:"legal_entity_type"`
-	// The business's legal structure.
-	LegalStructure param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure] `json:"legal_structure"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// An individual's middle name.
-	MiddleName   param.Field[string]                                                                                        `json:"middle_name"`
-	PhoneNumbers param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber] `json:"phone_numbers"`
-	// Whether the individual is a politically exposed person.
-	PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
-	// An individual's preferred name.
-	PreferredName param.Field[string] `json:"preferred_name"`
-	// An individual's prefix.
-	Prefix param.Field[string] `json:"prefix"`
-	// The risk rating of the legal entity. One of low, medium, high.
-	RiskRating param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating] `json:"risk_rating"`
-	// An individual's suffix.
-	Suffix                     param.Field[string]                          `json:"suffix"`
-	WealthAndEmploymentDetails param.Field[WealthAndEmploymentDetailsParam] `json:"wealth_and_employment_details"`
-	// The entity's primary website URL.
-	Website param.Field[string] `json:"website"`
-}
-
-func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntity) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
-	// Region or State.
-	Region param.Field[string] `json:"region,required"`
-	// The types of this address.
-	AddressTypes param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType] `json:"address_types"`
-	Line2        param.Field[string]                                                                                                 `json:"line2"`
-}
-
-func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType string
-
-const (
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness    ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "business"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing     ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "mailing"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther       ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "other"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypePoBox       ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "po_box"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeResidential ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType = "residential"
-)
-
-func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressType) IsKnown() bool {
-	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeBusiness, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeMailing, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeOther, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypePoBox, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityAddressesAddressTypeResidential:
-		return true
-	}
-	return false
-}
-
-type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification struct {
-	// The ID number of identification document.
-	IDNumber param.Field[string] `json:"id_number,required"`
-	// The type of ID number.
-	IDType param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType] `json:"id_type,required"`
-	// The date when the Identification is no longer considered valid by the issuing
-	// authority.
-	ExpirationDate param.Field[time.Time] `json:"expiration_date" format:"date"`
-	// The ISO 3166-1 alpha-2 country code of the country that issued the
-	// identification
-	IssuingCountry param.Field[string] `json:"issuing_country"`
-	// The region in which the identifcation was issued.
-	IssuingRegion param.Field[string] `json:"issuing_region"`
-}
-
-func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentification) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The type of ID number.
-type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType string
-
-const (
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil         ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "ar_cuil"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuit         ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "ar_cuit"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCnpj         ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "br_cnpj"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCpf          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "br_cpf"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRun          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "cl_run"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRut          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "cl_rut"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoCedulas      ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "co_cedulas"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoNit          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "co_nit"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeDriversLicense ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "drivers_license"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnID           ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "hn_id"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnRtn          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "hn_rtn"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeInLei          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "in_lei"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrBrn          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "kr_brn"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrCrn          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "kr_crn"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrRrn          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "kr_rrn"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypePassport       ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "passport"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaTin          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "sa_tin"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaVat          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "sa_vat"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsEin          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_ein"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsItin         ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_itin"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsSsn          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "us_ssn"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeVnTin          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType = "vn_tin"
-)
-
-func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDType) IsKnown() bool {
-	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuil, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeArCuit, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCnpj, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeBrCpf, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRun, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeClRut, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoCedulas, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeCoNit, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeDriversLicense, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnID, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeHnRtn, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeInLei, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrBrn, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrCrn, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeKrRrn, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypePassport, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaTin, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeSaVat, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsEin, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsItin, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeUsSsn, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityIdentificationsIDTypeVnTin:
-		return true
-	}
-	return false
-}
-
-// The type of legal entity.
-type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType string
-
-const (
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness   ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType = "business"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeIndividual ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType = "individual"
-)
-
-func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityType) IsKnown() bool {
-	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeBusiness, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalEntityTypeIndividual:
-		return true
-	}
-	return false
-}
-
-// The business's legal structure.
-type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure string
-
-const (
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureCorporation        ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "corporation"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureLlc                ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "llc"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureNonProfit          ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "non_profit"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructurePartnership        ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "partnership"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureSoleProprietorship ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "sole_proprietorship"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureTrust              ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure = "trust"
-)
-
-func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructure) IsKnown() bool {
-	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureCorporation, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureLlc, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureNonProfit, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructurePartnership, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureSoleProprietorship, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityLegalStructureTrust:
-		return true
-	}
-	return false
-}
-
-// A list of phone numbers in E.164 format.
-type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber struct {
-	PhoneNumber param.Field[string] `json:"phone_number"`
-}
-
-func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityPhoneNumber) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The risk rating of the legal entity. One of low, medium, high.
-type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating string
-
-const (
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow    ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating = "low"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingMedium ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating = "medium"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingHigh   ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating = "high"
-)
-
-func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRating) IsKnown() bool {
-	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingLow, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingMedium, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsChildLegalEntityRiskRatingHigh:
 		return true
 	}
 	return false

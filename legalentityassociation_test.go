@@ -31,14 +31,14 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 	_, err := client.LegalEntityAssociations.New(context.TODO(), moderntreasury.LegalEntityAssociationNewParams{
 		ParentLegalEntityID: moderntreasury.F("parent_legal_entity_id"),
 		RelationshipTypes:   moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsRelationshipType{moderntreasury.LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner}),
-		ChildLegalEntity: moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntity{
-			Addresses: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddress{{
+		ChildLegalEntity: moderntreasury.F(shared.ChildLegalEntityCreateParam{
+			Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{{
 				Country:      moderntreasury.F("country"),
 				Line1:        moderntreasury.F("line1"),
 				Locality:     moderntreasury.F("locality"),
 				PostalCode:   moderntreasury.F("postal_code"),
 				Region:       moderntreasury.F("region"),
-				AddressTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressType{moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityAddressesAddressTypeBusiness}),
+				AddressTypes: moderntreasury.F([]shared.LegalEntityAddressCreateRequestAddressType{shared.LegalEntityAddressCreateRequestAddressTypeBusiness}),
 				Line2:        moderntreasury.F("line2"),
 			}}),
 			BankSettings: moderntreasury.F(moderntreasury.BankSettingsParam{
@@ -74,9 +74,9 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 			DoingBusinessAsNames: moderntreasury.F([]string{"string"}),
 			Email:                moderntreasury.F("email"),
 			FirstName:            moderntreasury.F("first_name"),
-			Identifications: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityIdentification{{
+			Identifications: moderntreasury.F([]shared.IdentificationCreateRequestParam{{
 				IDNumber:       moderntreasury.F("id_number"),
-				IDType:         moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityIdentificationsIDTypeArCuil),
+				IDType:         moderntreasury.F(shared.IdentificationCreateRequestIDTypeArCuil),
 				ExpirationDate: moderntreasury.F(time.Now()),
 				IssuingCountry: moderntreasury.F("issuing_country"),
 				IssuingRegion:  moderntreasury.F("issuing_region"),
@@ -92,21 +92,21 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 				UpdatedAt:           moderntreasury.F(time.Now()),
 			}}),
 			LastName:        moderntreasury.F("last_name"),
-			LegalEntityType: moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityLegalEntityTypeBusiness),
-			LegalStructure:  moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityLegalStructureCorporation),
+			LegalEntityType: moderntreasury.F(shared.ChildLegalEntityCreateLegalEntityTypeBusiness),
+			LegalStructure:  moderntreasury.F(shared.ChildLegalEntityCreateLegalStructureCorporation),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
 			MiddleName: moderntreasury.F("middle_name"),
-			PhoneNumbers: moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityPhoneNumber{{
+			PhoneNumbers: moderntreasury.F([]shared.ChildLegalEntityCreatePhoneNumberParam{{
 				PhoneNumber: moderntreasury.F("phone_number"),
 			}}),
 			PoliticallyExposedPerson: moderntreasury.F(true),
 			PreferredName:            moderntreasury.F("preferred_name"),
 			Prefix:                   moderntreasury.F("prefix"),
-			RiskRating:               moderntreasury.F(moderntreasury.LegalEntityAssociationNewParamsChildLegalEntityRiskRatingLow),
+			RiskRating:               moderntreasury.F(shared.ChildLegalEntityCreateRiskRatingLow),
 			Suffix:                   moderntreasury.F("suffix"),
 			WealthAndEmploymentDetails: moderntreasury.F(moderntreasury.WealthAndEmploymentDetailsParam{
 				ID:               moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),

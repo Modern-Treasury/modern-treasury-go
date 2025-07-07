@@ -38,7 +38,7 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 		CreditLedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		DebitLedgerAccountID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Description:           moderntreasury.F("description"),
-		LedgerAccount: moderntreasury.F(moderntreasury.VirtualAccountNewParamsLedgerAccount{
+		LedgerAccount: moderntreasury.F(shared.LedgerAccountCreateRequestParam{
 			Currency:                 moderntreasury.F("currency"),
 			LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Name:                     moderntreasury.F("name"),
@@ -47,7 +47,7 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 			Description:              moderntreasury.F("description"),
 			LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 			LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			LedgerableType:           moderntreasury.F(moderntreasury.VirtualAccountNewParamsLedgerAccountLedgerableTypeCounterparty),
+			LedgerableType:           moderntreasury.F(shared.LedgerAccountCreateRequestLedgerableTypeCounterparty),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
