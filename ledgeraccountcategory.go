@@ -260,7 +260,8 @@ func (r LedgerAccountCategoryNewParams) MarshalJSON() (data []byte, err error) {
 type LedgerAccountCategoryGetParams struct {
 	// For example, if you want the balances as of a particular time (ISO8601), the
 	// encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
-	// The balances as of a time are inclusive of entries with that exact time.
+	// The balances as of a time are inclusive of entries with that exact time, but
+	// with respect to the ledger accounts that are currently present in the category.
 	Balances param.Field[LedgerAccountCategoryGetParamsBalances] `query:"balances"`
 }
 
@@ -275,7 +276,8 @@ func (r LedgerAccountCategoryGetParams) URLQuery() (v url.Values) {
 
 // For example, if you want the balances as of a particular time (ISO8601), the
 // encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
-// The balances as of a time are inclusive of entries with that exact time.
+// The balances as of a time are inclusive of entries with that exact time, but
+// with respect to the ledger accounts that are currently present in the category.
 type LedgerAccountCategoryGetParamsBalances struct {
 	AsOfDate    param.Field[time.Time] `query:"as_of_date" format:"date"`
 	EffectiveAt param.Field[time.Time] `query:"effective_at" format:"date-time"`
@@ -311,7 +313,8 @@ type LedgerAccountCategoryListParams struct {
 	AfterCursor param.Field[string]   `query:"after_cursor"`
 	// For example, if you want the balances as of a particular time (ISO8601), the
 	// encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
-	// The balances as of a time are inclusive of entries with that exact time.
+	// The balances as of a time are inclusive of entries with that exact time, but
+	// with respect to the ledger accounts that are currently present in the category.
 	Balances   param.Field[LedgerAccountCategoryListParamsBalances] `query:"balances"`
 	Currency   param.Field[string]                                  `query:"currency"`
 	ExternalID param.Field[string]                                  `query:"external_id"`
@@ -340,7 +343,8 @@ func (r LedgerAccountCategoryListParams) URLQuery() (v url.Values) {
 
 // For example, if you want the balances as of a particular time (ISO8601), the
 // encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
-// The balances as of a time are inclusive of entries with that exact time.
+// The balances as of a time are inclusive of entries with that exact time, but
+// with respect to the ledger accounts that are currently present in the category.
 type LedgerAccountCategoryListParamsBalances struct {
 	EffectiveAt param.Field[time.Time] `query:"effective_at" format:"date-time"`
 }
