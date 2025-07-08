@@ -351,9 +351,9 @@ type LedgerTransactionListParams struct {
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// posted_at%5Bgt%5D=2000-01-01T12:00:00Z.
-	PostedAt                    param.Field[map[string]time.Time]              `query:"posted_at" format:"date-time"`
-	ReversesLedgerTransactionID param.Field[string]                            `query:"reverses_ledger_transaction_id"`
-	Status                      param.Field[LedgerTransactionListParamsStatus] `query:"status"`
+	PostedAt                    param.Field[map[string]time.Time]                   `query:"posted_at" format:"date-time"`
+	ReversesLedgerTransactionID param.Field[string]                                 `query:"reverses_ledger_transaction_id"`
+	Status                      param.Field[LedgerTransactionListParamsStatusUnion] `query:"status"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// updated_at%5Bgt%5D=2000-01-01T12:00:00Z.
@@ -435,17 +435,45 @@ func (r LedgerTransactionListParamsOrderByEffectiveAt) IsKnown() bool {
 	return false
 }
 
-type LedgerTransactionListParamsStatus string
+// Satisfied by [LedgerTransactionListParamsStatusString],
+// [LedgerTransactionListParamsStatusArray].
+type LedgerTransactionListParamsStatusUnion interface {
+	implementsLedgerTransactionListParamsStatusUnion()
+}
+
+type LedgerTransactionListParamsStatusString string
 
 const (
-	LedgerTransactionListParamsStatusPending  LedgerTransactionListParamsStatus = "pending"
-	LedgerTransactionListParamsStatusPosted   LedgerTransactionListParamsStatus = "posted"
-	LedgerTransactionListParamsStatusArchived LedgerTransactionListParamsStatus = "archived"
+	LedgerTransactionListParamsStatusStringPending  LedgerTransactionListParamsStatusString = "pending"
+	LedgerTransactionListParamsStatusStringPosted   LedgerTransactionListParamsStatusString = "posted"
+	LedgerTransactionListParamsStatusStringArchived LedgerTransactionListParamsStatusString = "archived"
 )
 
-func (r LedgerTransactionListParamsStatus) IsKnown() bool {
+func (r LedgerTransactionListParamsStatusString) IsKnown() bool {
 	switch r {
-	case LedgerTransactionListParamsStatusPending, LedgerTransactionListParamsStatusPosted, LedgerTransactionListParamsStatusArchived:
+	case LedgerTransactionListParamsStatusStringPending, LedgerTransactionListParamsStatusStringPosted, LedgerTransactionListParamsStatusStringArchived:
+		return true
+	}
+	return false
+}
+
+func (r LedgerTransactionListParamsStatusString) implementsLedgerTransactionListParamsStatusUnion() {}
+
+type LedgerTransactionListParamsStatusArray []LedgerTransactionListParamsStatusArrayItem
+
+func (r LedgerTransactionListParamsStatusArray) implementsLedgerTransactionListParamsStatusUnion() {}
+
+type LedgerTransactionListParamsStatusArrayItem string
+
+const (
+	LedgerTransactionListParamsStatusArrayItemPending  LedgerTransactionListParamsStatusArrayItem = "pending"
+	LedgerTransactionListParamsStatusArrayItemPosted   LedgerTransactionListParamsStatusArrayItem = "posted"
+	LedgerTransactionListParamsStatusArrayItemArchived LedgerTransactionListParamsStatusArrayItem = "archived"
+)
+
+func (r LedgerTransactionListParamsStatusArrayItem) IsKnown() bool {
+	switch r {
+	case LedgerTransactionListParamsStatusArrayItemPending, LedgerTransactionListParamsStatusArrayItemPosted, LedgerTransactionListParamsStatusArrayItemArchived:
 		return true
 	}
 	return false
