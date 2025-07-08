@@ -198,7 +198,7 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 			"foo": time.Now(),
 		}),
 		ReversesLedgerTransactionID: moderntreasury.F("reverses_ledger_transaction_id"),
-		Status:                      moderntreasury.F(moderntreasury.LedgerTransactionListParamsStatusPending),
+		Status:                      moderntreasury.F[moderntreasury.LedgerTransactionListParamsStatusUnion](moderntreasury.LedgerTransactionListParamsStatusString(moderntreasury.LedgerTransactionListParamsStatusStringPending)),
 		UpdatedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
