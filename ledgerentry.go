@@ -124,7 +124,7 @@ type LedgerEntry struct {
 	// and posted outgoing amounts. Please see
 	// https://docs.moderntreasury.com/docs/transaction-status-and-balances for more
 	// details.
-	ResultingLedgerAccountBalances LedgerEntryResultingLedgerAccountBalances `json:"resulting_ledger_account_balances,required,nullable"`
+	ResultingLedgerAccountBalances shared.LedgerBalances `json:"resulting_ledger_account_balances,required,nullable"`
 	// Equal to the state of the ledger transaction when the ledger entry was created.
 	// One of `pending`, `posted`, or `archived`.
 	Status    LedgerEntryStatus `json:"status,required"`
@@ -159,145 +159,6 @@ func (r *LedgerEntry) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r ledgerEntryJSON) RawJSON() string {
-	return r.raw
-}
-
-// The pending, posted, and available balances for this ledger entry's ledger
-// account. The posted balance is the sum of all posted entries on the account. The
-// pending balance is the sum of all pending and posted entries on the account. The
-// available balance is the posted incoming entries minus the sum of the pending
-// and posted outgoing amounts. Please see
-// https://docs.moderntreasury.com/docs/transaction-status-and-balances for more
-// details.
-type LedgerEntryResultingLedgerAccountBalances struct {
-	// The available_balance is the sum of all posted inbound entries and pending
-	// outbound entries. For credit normal, available_amount = posted_credits -
-	// pending_debits; for debit normal, available_amount = posted_debits -
-	// pending_credits.
-	AvailableBalance LedgerEntryResultingLedgerAccountBalancesAvailableBalance `json:"available_balance,required"`
-	// The pending_balance is the sum of all pending and posted entries.
-	PendingBalance LedgerEntryResultingLedgerAccountBalancesPendingBalance `json:"pending_balance,required"`
-	// The posted_balance is the sum of all posted entries.
-	PostedBalance LedgerEntryResultingLedgerAccountBalancesPostedBalance `json:"posted_balance,required"`
-	JSON          ledgerEntryResultingLedgerAccountBalancesJSON          `json:"-"`
-}
-
-// ledgerEntryResultingLedgerAccountBalancesJSON contains the JSON metadata for the
-// struct [LedgerEntryResultingLedgerAccountBalances]
-type ledgerEntryResultingLedgerAccountBalancesJSON struct {
-	AvailableBalance apijson.Field
-	PendingBalance   apijson.Field
-	PostedBalance    apijson.Field
-	raw              string
-	ExtraFields      map[string]apijson.Field
-}
-
-func (r *LedgerEntryResultingLedgerAccountBalances) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r ledgerEntryResultingLedgerAccountBalancesJSON) RawJSON() string {
-	return r.raw
-}
-
-// The available_balance is the sum of all posted inbound entries and pending
-// outbound entries. For credit normal, available_amount = posted_credits -
-// pending_debits; for debit normal, available_amount = posted_debits -
-// pending_credits.
-type LedgerEntryResultingLedgerAccountBalancesAvailableBalance struct {
-	Amount  int64 `json:"amount,required"`
-	Credits int64 `json:"credits,required"`
-	// The currency of the ledger account.
-	Currency string `json:"currency,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent int64                                                         `json:"currency_exponent,required"`
-	Debits           int64                                                         `json:"debits,required"`
-	JSON             ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON `json:"-"`
-}
-
-// ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON contains the JSON
-// metadata for the struct
-// [LedgerEntryResultingLedgerAccountBalancesAvailableBalance]
-type ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON struct {
-	Amount           apijson.Field
-	Credits          apijson.Field
-	Currency         apijson.Field
-	CurrencyExponent apijson.Field
-	Debits           apijson.Field
-	raw              string
-	ExtraFields      map[string]apijson.Field
-}
-
-func (r *LedgerEntryResultingLedgerAccountBalancesAvailableBalance) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r ledgerEntryResultingLedgerAccountBalancesAvailableBalanceJSON) RawJSON() string {
-	return r.raw
-}
-
-// The pending_balance is the sum of all pending and posted entries.
-type LedgerEntryResultingLedgerAccountBalancesPendingBalance struct {
-	Amount  int64 `json:"amount,required"`
-	Credits int64 `json:"credits,required"`
-	// The currency of the ledger account.
-	Currency string `json:"currency,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent int64                                                       `json:"currency_exponent,required"`
-	Debits           int64                                                       `json:"debits,required"`
-	JSON             ledgerEntryResultingLedgerAccountBalancesPendingBalanceJSON `json:"-"`
-}
-
-// ledgerEntryResultingLedgerAccountBalancesPendingBalanceJSON contains the JSON
-// metadata for the struct
-// [LedgerEntryResultingLedgerAccountBalancesPendingBalance]
-type ledgerEntryResultingLedgerAccountBalancesPendingBalanceJSON struct {
-	Amount           apijson.Field
-	Credits          apijson.Field
-	Currency         apijson.Field
-	CurrencyExponent apijson.Field
-	Debits           apijson.Field
-	raw              string
-	ExtraFields      map[string]apijson.Field
-}
-
-func (r *LedgerEntryResultingLedgerAccountBalancesPendingBalance) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r ledgerEntryResultingLedgerAccountBalancesPendingBalanceJSON) RawJSON() string {
-	return r.raw
-}
-
-// The posted_balance is the sum of all posted entries.
-type LedgerEntryResultingLedgerAccountBalancesPostedBalance struct {
-	Amount  int64 `json:"amount,required"`
-	Credits int64 `json:"credits,required"`
-	// The currency of the ledger account.
-	Currency string `json:"currency,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent int64                                                      `json:"currency_exponent,required"`
-	Debits           int64                                                      `json:"debits,required"`
-	JSON             ledgerEntryResultingLedgerAccountBalancesPostedBalanceJSON `json:"-"`
-}
-
-// ledgerEntryResultingLedgerAccountBalancesPostedBalanceJSON contains the JSON
-// metadata for the struct [LedgerEntryResultingLedgerAccountBalancesPostedBalance]
-type ledgerEntryResultingLedgerAccountBalancesPostedBalanceJSON struct {
-	Amount           apijson.Field
-	Credits          apijson.Field
-	Currency         apijson.Field
-	CurrencyExponent apijson.Field
-	Debits           apijson.Field
-	raw              string
-	ExtraFields      map[string]apijson.Field
-}
-
-func (r *LedgerEntryResultingLedgerAccountBalancesPostedBalance) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r ledgerEntryResultingLedgerAccountBalancesPostedBalanceJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -392,8 +253,9 @@ type LedgerEntryListParams struct {
 	// deleted.
 	ShowDeleted param.Field[bool] `query:"show_deleted"`
 	// Get all ledger entries that match the status specified. One of `pending`,
-	// `posted`, or `archived`.
-	Status param.Field[LedgerEntryListParamsStatus] `query:"status"`
+	// `posted`, or `archived`. For multiple statuses, use
+	// `status[]=pending&status[]=posted`.
+	Status param.Field[LedgerEntryListParamsStatusUnion] `query:"status"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// updated_at%5Bgt%5D=2000-01-01T12:00:00Z.
@@ -456,18 +318,48 @@ func (r LedgerEntryListParamsOrderByEffectiveAt) IsKnown() bool {
 }
 
 // Get all ledger entries that match the status specified. One of `pending`,
-// `posted`, or `archived`.
-type LedgerEntryListParamsStatus string
+// `posted`, or `archived`. For multiple statuses, use
+// `status[]=pending&status[]=posted`.
+//
+// Satisfied by [LedgerEntryListParamsStatusString],
+// [LedgerEntryListParamsStatusArray].
+type LedgerEntryListParamsStatusUnion interface {
+	implementsLedgerEntryListParamsStatusUnion()
+}
+
+type LedgerEntryListParamsStatusString string
 
 const (
-	LedgerEntryListParamsStatusPending  LedgerEntryListParamsStatus = "pending"
-	LedgerEntryListParamsStatusPosted   LedgerEntryListParamsStatus = "posted"
-	LedgerEntryListParamsStatusArchived LedgerEntryListParamsStatus = "archived"
+	LedgerEntryListParamsStatusStringPending  LedgerEntryListParamsStatusString = "pending"
+	LedgerEntryListParamsStatusStringPosted   LedgerEntryListParamsStatusString = "posted"
+	LedgerEntryListParamsStatusStringArchived LedgerEntryListParamsStatusString = "archived"
 )
 
-func (r LedgerEntryListParamsStatus) IsKnown() bool {
+func (r LedgerEntryListParamsStatusString) IsKnown() bool {
 	switch r {
-	case LedgerEntryListParamsStatusPending, LedgerEntryListParamsStatusPosted, LedgerEntryListParamsStatusArchived:
+	case LedgerEntryListParamsStatusStringPending, LedgerEntryListParamsStatusStringPosted, LedgerEntryListParamsStatusStringArchived:
+		return true
+	}
+	return false
+}
+
+func (r LedgerEntryListParamsStatusString) implementsLedgerEntryListParamsStatusUnion() {}
+
+type LedgerEntryListParamsStatusArray []LedgerEntryListParamsStatusArrayItem
+
+func (r LedgerEntryListParamsStatusArray) implementsLedgerEntryListParamsStatusUnion() {}
+
+type LedgerEntryListParamsStatusArrayItem string
+
+const (
+	LedgerEntryListParamsStatusArrayItemPending  LedgerEntryListParamsStatusArrayItem = "pending"
+	LedgerEntryListParamsStatusArrayItemPosted   LedgerEntryListParamsStatusArrayItem = "posted"
+	LedgerEntryListParamsStatusArrayItemArchived LedgerEntryListParamsStatusArrayItem = "archived"
+)
+
+func (r LedgerEntryListParamsStatusArrayItem) IsKnown() bool {
+	switch r {
+	case LedgerEntryListParamsStatusArrayItemPending, LedgerEntryListParamsStatusArrayItemPosted, LedgerEntryListParamsStatusArrayItemArchived:
 		return true
 	}
 	return false

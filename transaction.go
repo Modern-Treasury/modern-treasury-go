@@ -131,7 +131,7 @@ type Transaction struct {
 	Direction   string    `json:"direction,required"`
 	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
 	// Associated serialized foreign exchange rate information.
-	ForeignExchangeRate TransactionForeignExchangeRate `json:"foreign_exchange_rate,required,nullable"`
+	ForeignExchangeRate shared.ForeignExchangeRate `json:"foreign_exchange_rate,required,nullable"`
 	// The ID of the relevant Internal Account.
 	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
@@ -217,51 +217,6 @@ func (r transactionJSON) RawJSON() string {
 }
 
 func (r Transaction) implementsBulkResultEntity() {}
-
-// Associated serialized foreign exchange rate information.
-type TransactionForeignExchangeRate struct {
-	// Amount in the lowest denomination of the `base_currency` to convert, often
-	// called the "sell" amount.
-	BaseAmount int64 `json:"base_amount,required"`
-	// Currency to convert, often called the "sell" currency.
-	BaseCurrency shared.Currency `json:"base_currency,required"`
-	// The exponent component of the rate. The decimal is calculated as `value` / (10 ^
-	// `exponent`).
-	Exponent int64 `json:"exponent,required"`
-	// A string representation of the rate.
-	RateString string `json:"rate_string,required"`
-	// Amount in the lowest denomination of the `target_currency`, often called the
-	// "buy" amount.
-	TargetAmount int64 `json:"target_amount,required"`
-	// Currency to convert the `base_currency` to, often called the "buy" currency.
-	TargetCurrency shared.Currency `json:"target_currency,required"`
-	// The whole number component of the rate. The decimal is calculated as `value` /
-	// (10 ^ `exponent`).
-	Value int64                              `json:"value,required"`
-	JSON  transactionForeignExchangeRateJSON `json:"-"`
-}
-
-// transactionForeignExchangeRateJSON contains the JSON metadata for the struct
-// [TransactionForeignExchangeRate]
-type transactionForeignExchangeRateJSON struct {
-	BaseAmount     apijson.Field
-	BaseCurrency   apijson.Field
-	Exponent       apijson.Field
-	RateString     apijson.Field
-	TargetAmount   apijson.Field
-	TargetCurrency apijson.Field
-	Value          apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *TransactionForeignExchangeRate) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r transactionForeignExchangeRateJSON) RawJSON() string {
-	return r.raw
-}
 
 // The type of the transaction. Examples could be
 // `card, `ach`, `wire`, `check`, `rtp`, `book`, or `sen`.

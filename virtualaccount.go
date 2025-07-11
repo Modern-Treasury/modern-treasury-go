@@ -198,7 +198,7 @@ type VirtualAccountNewParams struct {
 	// Specifies a ledger account object that will be created with the virtual account.
 	// The resulting ledger account is linked to the virtual account for auto-ledgering
 	// IPDs.
-	LedgerAccount param.Field[VirtualAccountNewParamsLedgerAccount] `json:"ledger_account"`
+	LedgerAccount param.Field[shared.LedgerAccountCreateRequestParam] `json:"ledger_account"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -246,61 +246,6 @@ const (
 func (r VirtualAccountNewParamsAccountDetailsAccountNumberType) IsKnown() bool {
 	switch r {
 	case VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeBaseAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeClabe, VirtualAccountNewParamsAccountDetailsAccountNumberTypeEthereumAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeHkNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeIban, VirtualAccountNewParamsAccountDetailsAccountNumberTypeIDNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeNzNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeOther, VirtualAccountNewParamsAccountDetailsAccountNumberTypePan, VirtualAccountNewParamsAccountDetailsAccountNumberTypePolygonAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeSgNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeSolanaAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress:
-		return true
-	}
-	return false
-}
-
-// Specifies a ledger account object that will be created with the virtual account.
-// The resulting ledger account is linked to the virtual account for auto-ledgering
-// IPDs.
-type VirtualAccountNewParamsLedgerAccount struct {
-	// The currency of the ledger account.
-	Currency param.Field[string] `json:"currency,required"`
-	// The id of the ledger that this account belongs to.
-	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name,required"`
-	// The normal balance of the ledger account.
-	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description"`
-	// The array of ledger account category ids that this ledger account should be a
-	// child of.
-	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the id will be
-	// populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the type will
-	// be populated here, otherwise null. The value is one of internal_account or
-	// external_account.
-	LedgerableType param.Field[VirtualAccountNewParamsLedgerAccountLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-}
-
-func (r VirtualAccountNewParamsLedgerAccount) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// If the ledger account links to another object in Modern Treasury, the type will
-// be populated here, otherwise null. The value is one of internal_account or
-// external_account.
-type VirtualAccountNewParamsLedgerAccountLedgerableType string
-
-const (
-	VirtualAccountNewParamsLedgerAccountLedgerableTypeCounterparty    VirtualAccountNewParamsLedgerAccountLedgerableType = "counterparty"
-	VirtualAccountNewParamsLedgerAccountLedgerableTypeExternalAccount VirtualAccountNewParamsLedgerAccountLedgerableType = "external_account"
-	VirtualAccountNewParamsLedgerAccountLedgerableTypeInternalAccount VirtualAccountNewParamsLedgerAccountLedgerableType = "internal_account"
-	VirtualAccountNewParamsLedgerAccountLedgerableTypeVirtualAccount  VirtualAccountNewParamsLedgerAccountLedgerableType = "virtual_account"
-)
-
-func (r VirtualAccountNewParamsLedgerAccountLedgerableType) IsKnown() bool {
-	switch r {
-	case VirtualAccountNewParamsLedgerAccountLedgerableTypeCounterparty, VirtualAccountNewParamsLedgerAccountLedgerableTypeExternalAccount, VirtualAccountNewParamsLedgerAccountLedgerableTypeInternalAccount, VirtualAccountNewParamsLedgerAccountLedgerableTypeVirtualAccount:
 		return true
 	}
 	return false

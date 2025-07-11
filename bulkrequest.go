@@ -246,8 +246,8 @@ func (r BulkRequestNewParamsResourceType) IsKnown() bool {
 }
 
 type BulkRequestNewParamsResource struct {
-	ID         param.Field[string]      `json:"id" format:"uuid"`
-	Accounting param.Field[interface{}] `json:"accounting"`
+	ID         param.Field[string]                 `json:"id" format:"uuid"`
+	Accounting param.Field[shared.AccountingParam] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
@@ -318,8 +318,12 @@ type BulkRequestNewParamsResource struct {
 	LedgerAccountCategoryIDs param.Field[interface{}] `json:"ledger_account_category_ids"`
 	LedgerEntries            param.Field[interface{}] `json:"ledger_entries"`
 	// The id of the ledger that this account belongs to.
-	LedgerID          param.Field[string]      `json:"ledger_id" format:"uuid"`
-	LedgerTransaction param.Field[interface{}] `json:"ledger_transaction"`
+	LedgerID param.Field[string] `json:"ledger_id" format:"uuid"`
+	// Specifies a ledger transaction object that will be created with the payment
+	// order. If the ledger transaction cannot be created, then the payment order
+	// creation will fail. The resulting ledger transaction will mirror the status of
+	// the payment order.
+	LedgerTransaction param.Field[shared.LedgerTransactionCreateRequestParam] `json:"ledger_transaction"`
 	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
 	// pending ledger transaction can be attached upon payment order creation. Once the
 	// payment order is created, the status of the ledger transaction tracks the
@@ -428,12 +432,12 @@ func (r BulkRequestNewParamsResource) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResource) implementsBulkRequestNewParamsResourceUnion() {}
+func (r BulkRequestNewParamsResource) ImplementsBulkRequestNewParamsResourceUnion() {}
 
 // Satisfied by [BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest],
 // [BulkRequestNewParamsResourcesExpectedPaymentCreateRequest],
-// [BulkRequestNewParamsResourcesLedgerTransactionCreateRequest],
-// [BulkRequestNewParamsResourcesLedgerAccountCreateRequest],
+// [shared.LedgerTransactionCreateRequestParam],
+// [shared.LedgerAccountCreateRequestParam],
 // [BulkRequestNewParamsResourcesTransactionCreateRequest],
 // [BulkRequestNewParamsResourcesID],
 // [BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID],
@@ -442,7 +446,7 @@ func (r BulkRequestNewParamsResource) implementsBulkRequestNewParamsResourceUnio
 // [BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID],
 // [BulkRequestNewParamsResource].
 type BulkRequestNewParamsResourceUnion interface {
-	implementsBulkRequestNewParamsResourceUnion()
+	ImplementsBulkRequestNewParamsResourceUnion()
 }
 
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
@@ -459,8 +463,8 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
 	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
 	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
-	Type       param.Field[PaymentOrderType]                                                      `json:"type,required"`
-	Accounting param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestAccounting] `json:"accounting"`
+	Type       param.Field[PaymentOrderType]       `json:"type,required"`
+	Accounting param.Field[shared.AccountingParam] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
@@ -500,7 +504,7 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// order. If the ledger transaction cannot be created, then the payment order
 	// creation will fail. The resulting ledger transaction will mirror the status of
 	// the payment order.
-	LedgerTransaction param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransaction] `json:"ledger_transaction"`
+	LedgerTransaction param.Field[shared.LedgerTransactionCreateRequestParam] `json:"ledger_transaction"`
 	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
 	// pending ledger transaction can be attached upon payment order creation. Once the
 	// payment order is created, the status of the ledger transaction tracks the
@@ -577,7 +581,7 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest) MarshalJSON
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest) implementsBulkRequestNewParamsResourceUnion() {
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest) ImplementsBulkRequestNewParamsResourceUnion() {
 }
 
 // One of `credit`, `debit`. Describes the direction money is flowing in the
@@ -597,20 +601,6 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestDirection) Is
 		return true
 	}
 	return false
-}
-
-type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestAccounting struct {
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountID param.Field[string] `json:"account_id" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	ClassID param.Field[string] `json:"class_id" format:"uuid"`
-}
-
-func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestAccounting) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
 }
 
 // The party that will pay the fees for the payment order. See
@@ -667,123 +657,6 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchan
 	return false
 }
 
-// Specifies a ledger transaction object that will be created with the payment
-// order. If the ledger transaction cannot be created, then the payment order
-// creation will fail. The resulting ledger transaction will mirror the status of
-// the payment order.
-type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransaction struct {
-	// An array of ledger entry objects.
-	LedgerEntries param.Field[[]BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerEntry] `json:"ledger_entries,required"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// The timestamp (ISO8601 format) at which the ledger transaction happened for
-	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
-	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
-	// purposes.
-	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
-	// A unique string to represent the ledger transaction. Only one pending or posted
-	// ledger transaction may have this ID in the ledger.
-	ExternalID param.Field[string] `json:"external_id"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-	// reversal.
-	LedgerableType param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatus] `json:"status"`
-}
-
-func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransaction) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerEntry struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount,required"`
-	// One of `credit`, `debit`. Describes the direction money is flowing in the
-	// transaction. A `credit` moves money from your account to someone else's. A
-	// `debit` pulls money from someone else's account to your own. Note that wire,
-	// rtp, and check payments will always be `credit`.
-	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
-	// The ledger account that this ledger entry is associated with.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s available balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
-	// Lock version of the ledger account. This can be passed when creating a ledger
-	// transaction to only succeed if no ledger transactions have posted since the
-	// given version. See our post about Designing the Ledgers API with Optimistic
-	// Locking for more details.
-	LockVersion param.Field[int64] `json:"lock_version"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s pending balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s posted balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
-	// If true, response will include the balance of the associated ledger account for
-	// the entry.
-	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
-}
-
-func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerEntry) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// If the ledger transaction can be reconciled to another object in Modern
-// Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-// reversal.
-type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType string
-
-const (
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeExpectedPayment       BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "expected_payment"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeIncomingPaymentDetail BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "incoming_payment_detail"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaperItem             BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "paper_item"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaymentOrder          BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "payment_order"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeReturn                BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "return"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeReversal              BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType = "reversal"
-)
-
-func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableType) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaperItem, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeReturn, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionLedgerableTypeReversal:
-		return true
-	}
-	return false
-}
-
-// To post a ledger transaction at creation, use `posted`.
-type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatus string
-
-const (
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusArchived BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatus = "archived"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusPending  BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatus = "pending"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusPosted   BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatus = "posted"
-)
-
-func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatus) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusArchived, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusPending, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLedgerTransactionStatusPosted:
-		return true
-	}
-	return false
-}
-
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
@@ -826,14 +699,14 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriority) IsK
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccount struct {
 	AccountDetails param.Field[[]BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetail] `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
-	AccountType    param.Field[ExternalAccountType]                                                                        `json:"account_type"`
-	ContactDetails param.Field[[]BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetail] `json:"contact_details"`
+	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
+	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
 	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 	// for more details.
-	LedgerAccount param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccount] `json:"ledger_account"`
+	LedgerAccount param.Field[shared.LedgerAccountCreateRequestParam] `json:"ledger_account"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -841,8 +714,8 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccount
 	// affect any payments
 	Name param.Field[string] `json:"name"`
 	// Required if receiving wire payments.
-	PartyAddress    param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyAddress] `json:"party_address"`
-	PartyIdentifier param.Field[string]                                                                                  `json:"party_identifier"`
+	PartyAddress    param.Field[shared.AddressRequestParam] `json:"party_address"`
+	PartyIdentifier param.Field[string]                     `json:"party_identifier"`
 	// If this value isn't provided, it will be inherited from the counterparty's name.
 	PartyName param.Field[string] `json:"party_name"`
 	// Either `individual` or `business`.
@@ -891,106 +764,6 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAcco
 		return true
 	}
 	return false
-}
-
-type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetail struct {
-	ContactIdentifier     param.Field[string]                                                                                                         `json:"contact_identifier"`
-	ContactIdentifierType param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
-}
-
-func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetail) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierType string
-
-const (
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail       BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierType = "email"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypePhoneNumber BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierType = "phone_number"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeWebsite     BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierType = "website"
-)
-
-func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierType) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeEmail, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypePhoneNumber, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountContactDetailsContactIdentifierTypeWebsite:
-		return true
-	}
-	return false
-}
-
-// Specifies a ledger account object that will be created with the external
-// account. The resulting ledger account is linked to the external account for
-// auto-ledgering Payment objects. See
-// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
-// for more details.
-type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccount struct {
-	// The currency of the ledger account.
-	Currency param.Field[string] `json:"currency,required"`
-	// The id of the ledger that this account belongs to.
-	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name,required"`
-	// The normal balance of the ledger account.
-	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description"`
-	// The array of ledger account category ids that this ledger account should be a
-	// child of.
-	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the id will be
-	// populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the type will
-	// be populated here, otherwise null. The value is one of internal_account or
-	// external_account.
-	LedgerableType param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-}
-
-func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccount) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// If the ledger account links to another object in Modern Treasury, the type will
-// be populated here, otherwise null. The value is one of internal_account or
-// external_account.
-type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType string
-
-const (
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeCounterparty    BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType = "counterparty"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeExternalAccount BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType = "external_account"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeInternalAccount BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType = "internal_account"
-	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType = "virtual_account"
-)
-
-func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableType) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeCounterparty, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeExternalAccount, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountLedgerAccountLedgerableTypeVirtualAccount:
-		return true
-	}
-	return false
-}
-
-// Required if receiving wire payments.
-type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country"`
-	Line1   param.Field[string] `json:"line1"`
-	Line2   param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code"`
-	// Region or State.
-	Region param.Field[string] `json:"region"`
-}
-
-func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
 }
 
 // Either `individual` or `business`.
@@ -1127,7 +900,7 @@ type BulkRequestNewParamsResourcesExpectedPaymentCreateRequest struct {
 	// payment. If the ledger transaction cannot be created, then the expected payment
 	// creation will fail. The resulting ledger transaction will mirror the status of
 	// the expected payment.
-	LedgerTransaction param.Field[BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransaction] `json:"ledger_transaction"`
+	LedgerTransaction param.Field[shared.LedgerTransactionCreateRequestParam] `json:"ledger_transaction"`
 	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
 	// pending ledger transaction can be attached upon expected payment creation. Once
 	// the expected payment is created, the status of the ledger transaction tracks the
@@ -1161,7 +934,7 @@ func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequest) MarshalJSON()
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequest) implementsBulkRequestNewParamsResourceUnion() {
+func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequest) ImplementsBulkRequestNewParamsResourceUnion() {
 }
 
 // One of credit or debit. When you are receiving money, use credit. When you are
@@ -1176,123 +949,6 @@ const (
 func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirection) IsKnown() bool {
 	switch r {
 	case BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirectionCredit, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirectionDebit:
-		return true
-	}
-	return false
-}
-
-// Specifies a ledger transaction object that will be created with the expected
-// payment. If the ledger transaction cannot be created, then the expected payment
-// creation will fail. The resulting ledger transaction will mirror the status of
-// the expected payment.
-type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransaction struct {
-	// An array of ledger entry objects.
-	LedgerEntries param.Field[[]BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerEntry] `json:"ledger_entries,required"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// The timestamp (ISO8601 format) at which the ledger transaction happened for
-	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
-	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
-	// purposes.
-	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
-	// A unique string to represent the ledger transaction. Only one pending or posted
-	// ledger transaction may have this ID in the ledger.
-	ExternalID param.Field[string] `json:"external_id"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-	// reversal.
-	LedgerableType param.Field[BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatus] `json:"status"`
-}
-
-func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransaction) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerEntry struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount,required"`
-	// One of `credit`, `debit`. Describes the direction money is flowing in the
-	// transaction. A `credit` moves money from your account to someone else's. A
-	// `debit` pulls money from someone else's account to your own. Note that wire,
-	// rtp, and check payments will always be `credit`.
-	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
-	// The ledger account that this ledger entry is associated with.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s available balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
-	// Lock version of the ledger account. This can be passed when creating a ledger
-	// transaction to only succeed if no ledger transactions have posted since the
-	// given version. See our post about Designing the Ledgers API with Optimistic
-	// Locking for more details.
-	LockVersion param.Field[int64] `json:"lock_version"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s pending balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s posted balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
-	// If true, response will include the balance of the associated ledger account for
-	// the entry.
-	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
-}
-
-func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerEntry) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// If the ledger transaction can be reconciled to another object in Modern
-// Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-// reversal.
-type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType string
-
-const (
-	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeExpectedPayment       BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "expected_payment"
-	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeIncomingPaymentDetail BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "incoming_payment_detail"
-	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaperItem             BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "paper_item"
-	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaymentOrder          BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "payment_order"
-	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeReturn                BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "return"
-	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeReversal              BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType = "reversal"
-)
-
-func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableType) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaperItem, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeReturn, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionLedgerableTypeReversal:
-		return true
-	}
-	return false
-}
-
-// To post a ledger transaction at creation, use `posted`.
-type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatus string
-
-const (
-	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatusArchived BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatus = "archived"
-	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatusPending  BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatus = "pending"
-	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatusPosted   BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatus = "posted"
-)
-
-func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatus) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatusArchived, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatusPending, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLedgerTransactionStatusPosted:
 		return true
 	}
 	return false
@@ -1314,177 +970,6 @@ type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLineItem struct {
 
 func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLineItem) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-type BulkRequestNewParamsResourcesLedgerTransactionCreateRequest struct {
-	// An array of ledger entry objects.
-	LedgerEntries param.Field[[]BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerEntry] `json:"ledger_entries,required"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// The timestamp (ISO8601 format) at which the ledger transaction happened for
-	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
-	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
-	// purposes.
-	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
-	// A unique string to represent the ledger transaction. Only one pending or posted
-	// ledger transaction may have this ID in the ledger.
-	ExternalID param.Field[string] `json:"external_id"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-	// reversal.
-	LedgerableType param.Field[BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatus] `json:"status"`
-}
-
-func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequest) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequest) implementsBulkRequestNewParamsResourceUnion() {
-}
-
-type BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerEntry struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount,required"`
-	// One of `credit`, `debit`. Describes the direction money is flowing in the
-	// transaction. A `credit` moves money from your account to someone else's. A
-	// `debit` pulls money from someone else's account to your own. Note that wire,
-	// rtp, and check payments will always be `credit`.
-	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
-	// The ledger account that this ledger entry is associated with.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s available balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
-	// Lock version of the ledger account. This can be passed when creating a ledger
-	// transaction to only succeed if no ledger transactions have posted since the
-	// given version. See our post about Designing the Ledgers API with Optimistic
-	// Locking for more details.
-	LockVersion param.Field[int64] `json:"lock_version"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s pending balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s posted balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
-	// If true, response will include the balance of the associated ledger account for
-	// the entry.
-	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
-}
-
-func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerEntry) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// If the ledger transaction can be reconciled to another object in Modern
-// Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-// reversal.
-type BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType string
-
-const (
-	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeExpectedPayment       BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "expected_payment"
-	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "incoming_payment_detail"
-	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaperItem             BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "paper_item"
-	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaymentOrder          BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "payment_order"
-	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeReturn                BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "return"
-	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeReversal              BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType = "reversal"
-)
-
-func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableType) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeExpectedPayment, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaperItem, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypePaymentOrder, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeReturn, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestLedgerableTypeReversal:
-		return true
-	}
-	return false
-}
-
-// To post a ledger transaction at creation, use `posted`.
-type BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatus string
-
-const (
-	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatusArchived BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatus = "archived"
-	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatusPending  BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatus = "pending"
-	BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatusPosted   BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatus = "posted"
-)
-
-func (r BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatus) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatusArchived, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatusPending, BulkRequestNewParamsResourcesLedgerTransactionCreateRequestStatusPosted:
-		return true
-	}
-	return false
-}
-
-type BulkRequestNewParamsResourcesLedgerAccountCreateRequest struct {
-	// The currency of the ledger account.
-	Currency param.Field[string] `json:"currency,required"`
-	// The id of the ledger that this account belongs to.
-	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name,required"`
-	// The normal balance of the ledger account.
-	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description"`
-	// The array of ledger account category ids that this ledger account should be a
-	// child of.
-	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the id will be
-	// populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the type will
-	// be populated here, otherwise null. The value is one of internal_account or
-	// external_account.
-	LedgerableType param.Field[BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-}
-
-func (r BulkRequestNewParamsResourcesLedgerAccountCreateRequest) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r BulkRequestNewParamsResourcesLedgerAccountCreateRequest) implementsBulkRequestNewParamsResourceUnion() {
-}
-
-// If the ledger account links to another object in Modern Treasury, the type will
-// be populated here, otherwise null. The value is one of internal_account or
-// external_account.
-type BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType string
-
-const (
-	BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeCounterparty    BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType = "counterparty"
-	BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeExternalAccount BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType = "external_account"
-	BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeInternalAccount BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType = "internal_account"
-	BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeVirtualAccount  BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType = "virtual_account"
-)
-
-func (r BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableType) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeCounterparty, BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeExternalAccount, BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesLedgerAccountCreateRequestLedgerableTypeVirtualAccount:
-		return true
-	}
-	return false
 }
 
 type BulkRequestNewParamsResourcesTransactionCreateRequest struct {
@@ -1524,7 +1009,7 @@ func (r BulkRequestNewParamsResourcesTransactionCreateRequest) MarshalJSON() (da
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesTransactionCreateRequest) implementsBulkRequestNewParamsResourceUnion() {
+func (r BulkRequestNewParamsResourcesTransactionCreateRequest) ImplementsBulkRequestNewParamsResourceUnion() {
 }
 
 // The type of the transaction. Examples could be
@@ -1585,11 +1070,11 @@ func (r BulkRequestNewParamsResourcesID) MarshalJSON() (data []byte, err error) 
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesID) implementsBulkRequestNewParamsResourceUnion() {}
+func (r BulkRequestNewParamsResourcesID) ImplementsBulkRequestNewParamsResourceUnion() {}
 
 type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
-	ID         param.Field[string]                                                                 `json:"id" format:"uuid"`
-	Accounting param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDAccounting] `json:"accounting"`
+	ID         param.Field[string]                 `json:"id" format:"uuid"`
+	Accounting param.Field[shared.AccountingParam] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
@@ -1721,21 +1206,7 @@ func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID) MarshalJSO
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
-}
-
-type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDAccounting struct {
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountID param.Field[string] `json:"account_id" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	ClassID param.Field[string] `json:"class_id" format:"uuid"`
-}
-
-func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDAccounting) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID) ImplementsBulkRequestNewParamsResourceUnion() {
 }
 
 // The party that will pay the fees for the payment order. See
@@ -1853,14 +1324,14 @@ func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDPriority) Is
 type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccount struct {
 	AccountDetails param.Field[[]BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetail] `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
-	AccountType    param.Field[ExternalAccountType]                                                                         `json:"account_type"`
-	ContactDetails param.Field[[]BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetail] `json:"contact_details"`
+	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
+	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
 	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
 	// for more details.
-	LedgerAccount param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccount] `json:"ledger_account"`
+	LedgerAccount param.Field[shared.LedgerAccountCreateRequestParam] `json:"ledger_account"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -1868,8 +1339,8 @@ type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccoun
 	// affect any payments
 	Name param.Field[string] `json:"name"`
 	// Required if receiving wire payments.
-	PartyAddress    param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyAddress] `json:"party_address"`
-	PartyIdentifier param.Field[string]                                                                                   `json:"party_identifier"`
+	PartyAddress    param.Field[shared.AddressRequestParam] `json:"party_address"`
+	PartyIdentifier param.Field[string]                     `json:"party_identifier"`
 	// If this value isn't provided, it will be inherited from the counterparty's name.
 	PartyName param.Field[string] `json:"party_name"`
 	// Either `individual` or `business`.
@@ -1918,106 +1389,6 @@ func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAcc
 		return true
 	}
 	return false
-}
-
-type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetail struct {
-	ContactIdentifier     param.Field[string]                                                                                                          `json:"contact_identifier"`
-	ContactIdentifierType param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierType] `json:"contact_identifier_type"`
-}
-
-func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetail) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierType string
-
-const (
-	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierTypeEmail       BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierType = "email"
-	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierTypePhoneNumber BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierType = "phone_number"
-	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierTypeWebsite     BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierType = "website"
-)
-
-func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierType) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierTypeEmail, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierTypePhoneNumber, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountContactDetailsContactIdentifierTypeWebsite:
-		return true
-	}
-	return false
-}
-
-// Specifies a ledger account object that will be created with the external
-// account. The resulting ledger account is linked to the external account for
-// auto-ledgering Payment objects. See
-// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
-// for more details.
-type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccount struct {
-	// The currency of the ledger account.
-	Currency param.Field[string] `json:"currency,required"`
-	// The id of the ledger that this account belongs to.
-	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name,required"`
-	// The normal balance of the ledger account.
-	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description"`
-	// The array of ledger account category ids that this ledger account should be a
-	// child of.
-	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the id will be
-	// populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the type will
-	// be populated here, otherwise null. The value is one of internal_account or
-	// external_account.
-	LedgerableType param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-}
-
-func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccount) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// If the ledger account links to another object in Modern Treasury, the type will
-// be populated here, otherwise null. The value is one of internal_account or
-// external_account.
-type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType string
-
-const (
-	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeCounterparty    BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType = "counterparty"
-	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeExternalAccount BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType = "external_account"
-	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeInternalAccount BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType = "internal_account"
-	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeVirtualAccount  BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType = "virtual_account"
-)
-
-func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableType) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeCounterparty, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeExternalAccount, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeInternalAccount, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountLedgerAccountLedgerableTypeVirtualAccount:
-		return true
-	}
-	return false
-}
-
-// Required if receiving wire payments.
-type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country"`
-	Line1   param.Field[string] `json:"line1"`
-	Line2   param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code"`
-	// Region or State.
-	Region param.Field[string] `json:"region"`
-}
-
-func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountPartyAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
 }
 
 // Either `individual` or `business`.
@@ -2209,7 +1580,7 @@ func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID) Marshal
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
+func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID) ImplementsBulkRequestNewParamsResourceUnion() {
 }
 
 // One of credit or debit. When you are receiving money, use credit. When you are
@@ -2256,7 +1627,7 @@ func (r BulkRequestNewParamsResourcesTransactionUpdateRequestWithID) MarshalJSON
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesTransactionUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
+func (r BulkRequestNewParamsResourcesTransactionUpdateRequestWithID) ImplementsBulkRequestNewParamsResourceUnion() {
 }
 
 type BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID struct {
@@ -2267,7 +1638,7 @@ type BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID struct {
 	// reporting purposes.
 	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
 	// An array of ledger entry objects.
-	LedgerEntries param.Field[[]BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerEntry] `json:"ledger_entries"`
+	LedgerEntries param.Field[[]shared.LedgerEntryCreateRequestParam] `json:"ledger_entries"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the id will be populated here, otherwise null.
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
@@ -2287,47 +1658,7 @@ func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID) Marsh
 	return apijson.MarshalRoot(r)
 }
 
-func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID) implementsBulkRequestNewParamsResourceUnion() {
-}
-
-type BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerEntry struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount,required"`
-	// One of `credit`, `debit`. Describes the direction money is flowing in the
-	// transaction. A `credit` moves money from your account to someone else's. A
-	// `debit` pulls money from someone else's account to your own. Note that wire,
-	// rtp, and check payments will always be `credit`.
-	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
-	// The ledger account that this ledger entry is associated with.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s available balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
-	// Lock version of the ledger account. This can be passed when creating a ledger
-	// transaction to only succeed if no ledger transactions have posted since the
-	// given version. See our post about Designing the Ledgers API with Optimistic
-	// Locking for more details.
-	LockVersion param.Field[int64] `json:"lock_version"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s pending balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s posted balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
-	// If true, response will include the balance of the associated ledger account for
-	// the entry.
-	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
-}
-
-func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerEntry) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID) ImplementsBulkRequestNewParamsResourceUnion() {
 }
 
 // If the ledger transaction can be reconciled to another object in Modern

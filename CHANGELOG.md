@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.29.0 (2025-07-11)
+
+Full Changelog: [v2.28.0...v2.29.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.28.0...v2.29.0)
+
+### Features
+
+* **api:** api update ([386ee79](https://github.com/Modern-Treasury/modern-treasury-go/commit/386ee79514faad3f40d66a9bf45bcc795e3ab4d2))
+* **api:** api update ([5446f7f](https://github.com/Modern-Treasury/modern-treasury-go/commit/5446f7f93f7d8df8b57bc0ad103151ba54544398))
+* **api:** manual updates ([fc74688](https://github.com/Modern-Treasury/modern-treasury-go/commit/fc74688e6e27d4325f79ba038902f869dc02de2c))
+* **api:** manual updates ([3cd5f20](https://github.com/Modern-Treasury/modern-treasury-go/commit/3cd5f20c02deac33d4b869048c35ed94e0fce484))
+* **api:** manual updates ([7366783](https://github.com/Modern-Treasury/modern-treasury-go/commit/7366783848bf82ddae4faaa5fa28d72b0378d304))
+* **api:** manual updates ([fcab9e3](https://github.com/Modern-Treasury/modern-treasury-go/commit/fcab9e30c5f54d0e3da3bed1084c09b59598d7ec))
+
+
+### Chores
+
+* **internal:** fix lint script for tests ([c500cc0](https://github.com/Modern-Treasury/modern-treasury-go/commit/c500cc0b5d5de62475861f3813ed1d7c668d2d9b))
+* lint tests ([8528ddb](https://github.com/Modern-Treasury/modern-treasury-go/commit/8528ddb2e73e0ac10f606199c1062deddf998d70))
+* lint tests in subpackages ([c09be22](https://github.com/Modern-Treasury/modern-treasury-go/commit/c09be22f35bd3a83d3403cfda4241f983c0ea03f))
+
 ## 2.28.0 (2025-07-07)
 
 Full Changelog: [v2.27.1...v2.28.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.27.1...v2.28.0)

@@ -12,6 +12,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
 
 // ValidationService contains methods and other services that help with interacting
@@ -44,7 +45,7 @@ func (r *ValidationService) ValidateRoutingNumber(ctx context.Context, query Val
 
 type RoutingNumberLookupRequest struct {
 	// The address of the bank.
-	BankAddress RoutingNumberLookupRequestBankAddress `json:"bank_address"`
+	BankAddress shared.AddressRequest `json:"bank_address"`
 	// The name of the bank.
 	BankName string `json:"bank_name"`
 	// The routing number of the bank.
@@ -82,42 +83,6 @@ func (r *RoutingNumberLookupRequest) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r routingNumberLookupRequestJSON) RawJSON() string {
-	return r.raw
-}
-
-// The address of the bank.
-type RoutingNumberLookupRequestBankAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country string `json:"country,nullable"`
-	Line1   string `json:"line1,nullable"`
-	Line2   string `json:"line2,nullable"`
-	// Locality or City.
-	Locality string `json:"locality,nullable"`
-	// The postal code of the address.
-	PostalCode string `json:"postal_code,nullable"`
-	// Region or State.
-	Region string                                    `json:"region,nullable"`
-	JSON   routingNumberLookupRequestBankAddressJSON `json:"-"`
-}
-
-// routingNumberLookupRequestBankAddressJSON contains the JSON metadata for the
-// struct [RoutingNumberLookupRequestBankAddress]
-type routingNumberLookupRequestBankAddressJSON struct {
-	Country     apijson.Field
-	Line1       apijson.Field
-	Line2       apijson.Field
-	Locality    apijson.Field
-	PostalCode  apijson.Field
-	Region      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *RoutingNumberLookupRequestBankAddress) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r routingNumberLookupRequestBankAddressJSON) RawJSON() string {
 	return r.raw
 }
 

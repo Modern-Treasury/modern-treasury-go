@@ -188,7 +188,7 @@ type PaymentOrderReversalNewParams struct {
 	// Specifies a ledger transaction object that will be created with the reversal. If
 	// the ledger transaction cannot be created, then the reversal creation will fail.
 	// The resulting ledger transaction will mirror the status of the reversal.
-	LedgerTransaction param.Field[PaymentOrderReversalNewParamsLedgerTransaction] `json:"ledger_transaction"`
+	LedgerTransaction param.Field[shared.LedgerTransactionCreateRequestParam] `json:"ledger_transaction"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -214,122 +214,6 @@ const (
 func (r PaymentOrderReversalNewParamsReason) IsKnown() bool {
 	switch r {
 	case PaymentOrderReversalNewParamsReasonDuplicate, PaymentOrderReversalNewParamsReasonIncorrectAmount, PaymentOrderReversalNewParamsReasonIncorrectReceivingAccount, PaymentOrderReversalNewParamsReasonDateEarlierThanIntended, PaymentOrderReversalNewParamsReasonDateLaterThanIntended:
-		return true
-	}
-	return false
-}
-
-// Specifies a ledger transaction object that will be created with the reversal. If
-// the ledger transaction cannot be created, then the reversal creation will fail.
-// The resulting ledger transaction will mirror the status of the reversal.
-type PaymentOrderReversalNewParamsLedgerTransaction struct {
-	// An array of ledger entry objects.
-	LedgerEntries param.Field[[]PaymentOrderReversalNewParamsLedgerTransactionLedgerEntry] `json:"ledger_entries,required"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// The timestamp (ISO8601 format) at which the ledger transaction happened for
-	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
-	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
-	// purposes.
-	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
-	// A unique string to represent the ledger transaction. Only one pending or posted
-	// ledger transaction may have this ID in the ledger.
-	ExternalID param.Field[string] `json:"external_id"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-	// reversal.
-	LedgerableType param.Field[PaymentOrderReversalNewParamsLedgerTransactionLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[PaymentOrderReversalNewParamsLedgerTransactionStatus] `json:"status"`
-}
-
-func (r PaymentOrderReversalNewParamsLedgerTransaction) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type PaymentOrderReversalNewParamsLedgerTransactionLedgerEntry struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount,required"`
-	// One of `credit`, `debit`. Describes the direction money is flowing in the
-	// transaction. A `credit` moves money from your account to someone else's. A
-	// `debit` pulls money from someone else's account to your own. Note that wire,
-	// rtp, and check payments will always be `credit`.
-	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
-	// The ledger account that this ledger entry is associated with.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s available balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
-	// Lock version of the ledger account. This can be passed when creating a ledger
-	// transaction to only succeed if no ledger transactions have posted since the
-	// given version. See our post about Designing the Ledgers API with Optimistic
-	// Locking for more details.
-	LockVersion param.Field[int64] `json:"lock_version"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s pending balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s posted balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
-	// If true, response will include the balance of the associated ledger account for
-	// the entry.
-	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
-}
-
-func (r PaymentOrderReversalNewParamsLedgerTransactionLedgerEntry) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// If the ledger transaction can be reconciled to another object in Modern
-// Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-// reversal.
-type PaymentOrderReversalNewParamsLedgerTransactionLedgerableType string
-
-const (
-	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeExpectedPayment       PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "expected_payment"
-	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "incoming_payment_detail"
-	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaperItem             PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "paper_item"
-	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaymentOrder          PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "payment_order"
-	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReturn                PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "return"
-	PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReversal              PaymentOrderReversalNewParamsLedgerTransactionLedgerableType = "reversal"
-)
-
-func (r PaymentOrderReversalNewParamsLedgerTransactionLedgerableType) IsKnown() bool {
-	switch r {
-	case PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeExpectedPayment, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeIncomingPaymentDetail, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaperItem, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypePaymentOrder, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReturn, PaymentOrderReversalNewParamsLedgerTransactionLedgerableTypeReversal:
-		return true
-	}
-	return false
-}
-
-// To post a ledger transaction at creation, use `posted`.
-type PaymentOrderReversalNewParamsLedgerTransactionStatus string
-
-const (
-	PaymentOrderReversalNewParamsLedgerTransactionStatusArchived PaymentOrderReversalNewParamsLedgerTransactionStatus = "archived"
-	PaymentOrderReversalNewParamsLedgerTransactionStatusPending  PaymentOrderReversalNewParamsLedgerTransactionStatus = "pending"
-	PaymentOrderReversalNewParamsLedgerTransactionStatusPosted   PaymentOrderReversalNewParamsLedgerTransactionStatus = "posted"
-)
-
-func (r PaymentOrderReversalNewParamsLedgerTransactionStatus) IsKnown() bool {
-	switch r {
-	case PaymentOrderReversalNewParamsLedgerTransactionStatusArchived, PaymentOrderReversalNewParamsLedgerTransactionStatusPending, PaymentOrderReversalNewParamsLedgerTransactionStatusPosted:
 		return true
 	}
 	return false
