@@ -275,38 +275,39 @@ func (r TransactionType) IsKnown() bool {
 type TransactionVendorCodeType string
 
 const (
-	TransactionVendorCodeTypeBai2          TransactionVendorCodeType = "bai2"
-	TransactionVendorCodeTypeBankingCircle TransactionVendorCodeType = "banking_circle"
-	TransactionVendorCodeTypeBankprov      TransactionVendorCodeType = "bankprov"
-	TransactionVendorCodeTypeBnkDev        TransactionVendorCodeType = "bnk_dev"
-	TransactionVendorCodeTypeBrale         TransactionVendorCodeType = "brale"
-	TransactionVendorCodeTypeBridge        TransactionVendorCodeType = "bridge"
-	TransactionVendorCodeTypeCleartouch    TransactionVendorCodeType = "cleartouch"
-	TransactionVendorCodeTypeColumn        TransactionVendorCodeType = "column"
-	TransactionVendorCodeTypeCrossRiver    TransactionVendorCodeType = "cross_river"
-	TransactionVendorCodeTypeCurrencycloud TransactionVendorCodeType = "currencycloud"
-	TransactionVendorCodeTypeDcBank        TransactionVendorCodeType = "dc_bank"
-	TransactionVendorCodeTypeDwolla        TransactionVendorCodeType = "dwolla"
-	TransactionVendorCodeTypeEvolve        TransactionVendorCodeType = "evolve"
-	TransactionVendorCodeTypeGoldmanSachs  TransactionVendorCodeType = "goldman_sachs"
-	TransactionVendorCodeTypeHifi          TransactionVendorCodeType = "hifi"
-	TransactionVendorCodeTypeIso20022      TransactionVendorCodeType = "iso20022"
-	TransactionVendorCodeTypeJpmc          TransactionVendorCodeType = "jpmc"
-	TransactionVendorCodeTypeMx            TransactionVendorCodeType = "mx"
-	TransactionVendorCodeTypePaypal        TransactionVendorCodeType = "paypal"
-	TransactionVendorCodeTypePlaid         TransactionVendorCodeType = "plaid"
-	TransactionVendorCodeTypePnc           TransactionVendorCodeType = "pnc"
-	TransactionVendorCodeTypeRspecVendor   TransactionVendorCodeType = "rspec_vendor"
-	TransactionVendorCodeTypeSignet        TransactionVendorCodeType = "signet"
-	TransactionVendorCodeTypeSilvergate    TransactionVendorCodeType = "silvergate"
-	TransactionVendorCodeTypeSwift         TransactionVendorCodeType = "swift"
-	TransactionVendorCodeTypeUsBank        TransactionVendorCodeType = "us_bank"
-	TransactionVendorCodeTypeUser          TransactionVendorCodeType = "user"
+	TransactionVendorCodeTypeBai2            TransactionVendorCodeType = "bai2"
+	TransactionVendorCodeTypeBankingCircle   TransactionVendorCodeType = "banking_circle"
+	TransactionVendorCodeTypeBankprov        TransactionVendorCodeType = "bankprov"
+	TransactionVendorCodeTypeBnkDev          TransactionVendorCodeType = "bnk_dev"
+	TransactionVendorCodeTypeBrale           TransactionVendorCodeType = "brale"
+	TransactionVendorCodeTypeBridge          TransactionVendorCodeType = "bridge"
+	TransactionVendorCodeTypeCleartouch      TransactionVendorCodeType = "cleartouch"
+	TransactionVendorCodeTypeColumn          TransactionVendorCodeType = "column"
+	TransactionVendorCodeTypeCrossRiver      TransactionVendorCodeType = "cross_river"
+	TransactionVendorCodeTypeCurrencycloud   TransactionVendorCodeType = "currencycloud"
+	TransactionVendorCodeTypeDcBank          TransactionVendorCodeType = "dc_bank"
+	TransactionVendorCodeTypeDwolla          TransactionVendorCodeType = "dwolla"
+	TransactionVendorCodeTypeEvolve          TransactionVendorCodeType = "evolve"
+	TransactionVendorCodeTypeFakeVendor      TransactionVendorCodeType = "fake_vendor"
+	TransactionVendorCodeTypeGoldmanSachs    TransactionVendorCodeType = "goldman_sachs"
+	TransactionVendorCodeTypeHifi            TransactionVendorCodeType = "hifi"
+	TransactionVendorCodeTypeIso20022        TransactionVendorCodeType = "iso20022"
+	TransactionVendorCodeTypeJpmc            TransactionVendorCodeType = "jpmc"
+	TransactionVendorCodeTypeMx              TransactionVendorCodeType = "mx"
+	TransactionVendorCodeTypePaypal          TransactionVendorCodeType = "paypal"
+	TransactionVendorCodeTypePlaid           TransactionVendorCodeType = "plaid"
+	TransactionVendorCodeTypePnc             TransactionVendorCodeType = "pnc"
+	TransactionVendorCodeTypeSignet          TransactionVendorCodeType = "signet"
+	TransactionVendorCodeTypeSilvergate      TransactionVendorCodeType = "silvergate"
+	TransactionVendorCodeTypeSwift           TransactionVendorCodeType = "swift"
+	TransactionVendorCodeTypeUsBank          TransactionVendorCodeType = "us_bank"
+	TransactionVendorCodeTypeUser            TransactionVendorCodeType = "user"
+	TransactionVendorCodeTypeWesternAlliance TransactionVendorCodeType = "western_alliance"
 )
 
 func (r TransactionVendorCodeType) IsKnown() bool {
 	switch r {
-	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankingCircle, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeBrale, TransactionVendorCodeTypeBridge, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeHifi, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePaypal, TransactionVendorCodeTypePlaid, TransactionVendorCodeTypePnc, TransactionVendorCodeTypeRspecVendor, TransactionVendorCodeTypeSignet, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser:
+	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankingCircle, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeBrale, TransactionVendorCodeTypeBridge, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeFakeVendor, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeHifi, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePaypal, TransactionVendorCodeTypePlaid, TransactionVendorCodeTypePnc, TransactionVendorCodeTypeSignet, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser, TransactionVendorCodeTypeWesternAlliance:
 		return true
 	}
 	return false
