@@ -148,7 +148,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			}}),
 			LastName: moderntreasury.F("last_name"),
 			LegalEntityAssociations: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociation{{
-				RelationshipTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner}),
+				RelationshipTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeAuthorizedSigner}),
 				ChildLegalEntity: moderntreasury.F(shared.ChildLegalEntityCreateParam{
 					Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{{
 						Country:      moderntreasury.F("country"),

@@ -30,7 +30,7 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LegalEntityAssociations.New(context.TODO(), moderntreasury.LegalEntityAssociationNewParams{
 		ParentLegalEntityID: moderntreasury.F("parent_legal_entity_id"),
-		RelationshipTypes:   moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsRelationshipType{moderntreasury.LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner}),
+		RelationshipTypes:   moderntreasury.F([]moderntreasury.LegalEntityAssociationNewParamsRelationshipType{moderntreasury.LegalEntityAssociationNewParamsRelationshipTypeAuthorizedSigner}),
 		ChildLegalEntity: moderntreasury.F(shared.ChildLegalEntityCreateParam{
 			Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{{
 				Country:      moderntreasury.F("country"),

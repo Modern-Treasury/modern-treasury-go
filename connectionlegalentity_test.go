@@ -92,7 +92,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 			}}),
 			LastName: moderntreasury.F("last_name"),
 			LegalEntityAssociations: moderntreasury.F([]moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociation{{
-				RelationshipTypes: moderntreasury.F([]moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType{moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner}),
+				RelationshipTypes: moderntreasury.F([]moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType{moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeAuthorizedSigner}),
 				ChildLegalEntity: moderntreasury.F(shared.ChildLegalEntityCreateParam{
 					Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{{
 						Country:      moderntreasury.F("country"),
