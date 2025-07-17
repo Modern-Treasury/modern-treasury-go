@@ -427,13 +427,14 @@ func (r LegalEntityAssociationChildLegalEntityRiskRating) IsKnown() bool {
 type LegalEntityAssociationRelationshipType string
 
 const (
-	LegalEntityAssociationRelationshipTypeBeneficialOwner LegalEntityAssociationRelationshipType = "beneficial_owner"
-	LegalEntityAssociationRelationshipTypeControlPerson   LegalEntityAssociationRelationshipType = "control_person"
+	LegalEntityAssociationRelationshipTypeAuthorizedSigner LegalEntityAssociationRelationshipType = "authorized_signer"
+	LegalEntityAssociationRelationshipTypeBeneficialOwner  LegalEntityAssociationRelationshipType = "beneficial_owner"
+	LegalEntityAssociationRelationshipTypeControlPerson    LegalEntityAssociationRelationshipType = "control_person"
 )
 
 func (r LegalEntityAssociationRelationshipType) IsKnown() bool {
 	switch r {
-	case LegalEntityAssociationRelationshipTypeBeneficialOwner, LegalEntityAssociationRelationshipTypeControlPerson:
+	case LegalEntityAssociationRelationshipTypeAuthorizedSigner, LegalEntityAssociationRelationshipTypeBeneficialOwner, LegalEntityAssociationRelationshipTypeControlPerson:
 		return true
 	}
 	return false
@@ -462,13 +463,14 @@ func (r LegalEntityAssociationNewParams) MarshalJSON() (data []byte, err error) 
 type LegalEntityAssociationNewParamsRelationshipType string
 
 const (
-	LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner LegalEntityAssociationNewParamsRelationshipType = "beneficial_owner"
-	LegalEntityAssociationNewParamsRelationshipTypeControlPerson   LegalEntityAssociationNewParamsRelationshipType = "control_person"
+	LegalEntityAssociationNewParamsRelationshipTypeAuthorizedSigner LegalEntityAssociationNewParamsRelationshipType = "authorized_signer"
+	LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner  LegalEntityAssociationNewParamsRelationshipType = "beneficial_owner"
+	LegalEntityAssociationNewParamsRelationshipTypeControlPerson    LegalEntityAssociationNewParamsRelationshipType = "control_person"
 )
 
 func (r LegalEntityAssociationNewParamsRelationshipType) IsKnown() bool {
 	switch r {
-	case LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner, LegalEntityAssociationNewParamsRelationshipTypeControlPerson:
+	case LegalEntityAssociationNewParamsRelationshipTypeAuthorizedSigner, LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner, LegalEntityAssociationNewParamsRelationshipTypeControlPerson:
 		return true
 	}
 	return false
