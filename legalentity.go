@@ -97,7 +97,7 @@ type LegalEntity struct {
 	ID string `json:"id,required" format:"uuid"`
 	// A list of addresses for the entity.
 	Addresses    []LegalEntityAddress `json:"addresses,required"`
-	BankSettings shared.BankSettings  `json:"bank_settings,required,nullable"`
+	BankSettings LegalEntity          `json:"bank_settings,required,nullable"`
 	// The business's legal business name.
 	BusinessName string `json:"business_name,required,nullable"`
 	// The country of citizenship for an individual.
@@ -145,9 +145,9 @@ type LegalEntity struct {
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating LegalEntityRiskRating `json:"risk_rating,required,nullable"`
 	// An individual's suffix.
-	Suffix                     string                            `json:"suffix,required,nullable"`
-	UpdatedAt                  time.Time                         `json:"updated_at,required" format:"date-time"`
-	WealthAndEmploymentDetails shared.WealthAndEmploymentDetails `json:"wealth_and_employment_details,required,nullable"`
+	Suffix                     string      `json:"suffix,required,nullable"`
+	UpdatedAt                  time.Time   `json:"updated_at,required" format:"date-time"`
+	WealthAndEmploymentDetails LegalEntity `json:"wealth_and_employment_details,required,nullable"`
 	// The entity's primary website URL.
 	Website string          `json:"website,required,nullable"`
 	JSON    legalEntityJSON `json:"-"`
@@ -433,7 +433,7 @@ type LegalEntityNewParams struct {
 	LegalEntityType param.Field[LegalEntityNewParamsLegalEntityType] `json:"legal_entity_type,required"`
 	// A list of addresses for the entity.
 	Addresses    param.Field[[]shared.LegalEntityAddressCreateRequestParam] `json:"addresses"`
-	BankSettings param.Field[shared.BankSettingsParam]                      `json:"bank_settings"`
+	BankSettings param.Field[LegalEntityNewParamsBankSettings]              `json:"bank_settings"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
@@ -473,8 +473,8 @@ type LegalEntityNewParams struct {
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[LegalEntityNewParamsRiskRating] `json:"risk_rating"`
 	// An individual's suffix.
-	Suffix                     param.Field[string]                                 `json:"suffix"`
-	WealthAndEmploymentDetails param.Field[shared.WealthAndEmploymentDetailsParam] `json:"wealth_and_employment_details"`
+	Suffix                     param.Field[string]                                         `json:"suffix"`
+	WealthAndEmploymentDetails param.Field[LegalEntityNewParamsWealthAndEmploymentDetails] `json:"wealth_and_employment_details"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
@@ -497,6 +497,33 @@ func (r LegalEntityNewParamsLegalEntityType) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+type LegalEntityNewParamsBankSettings struct {
+	ID param.Field[string] `json:"id,required" format:"uuid"`
+	// The percentage of backup withholding to apply to the legal entity.
+	BackupWithholdingPercentage param.Field[int64]     `json:"backup_withholding_percentage,required"`
+	CreatedAt                   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
+	DiscardedAt                 param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
+	// Whether backup withholding is enabled. See more here -
+	// https://www.irs.gov/businesses/small-businesses-self-employed/backup-withholding.
+	EnableBackupWithholding param.Field[bool] `json:"enable_backup_withholding,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode param.Field[bool]   `json:"live_mode,required"`
+	Object   param.Field[string] `json:"object,required"`
+	// Cross River Bank specific setting to opt out of privacy policy.
+	PrivacyOptOut param.Field[bool] `json:"privacy_opt_out,required"`
+	// It covers, among other types of insider loans, extensions of credit by a member
+	// bank to an executive officer, director, or principal shareholder of the member
+	// bank; a bank holding company of which the member bank is a subsidiary; and any
+	// other subsidiary of that bank holding company.
+	RegulationO param.Field[bool]      `json:"regulation_o,required"`
+	UpdatedAt   param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
+}
+
+func (r LegalEntityNewParamsBankSettings) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type LegalEntityNewParamsLegalEntityAssociation struct {
@@ -578,10 +605,218 @@ func (r LegalEntityNewParamsRiskRating) IsKnown() bool {
 	return false
 }
 
+type LegalEntityNewParamsWealthAndEmploymentDetails struct {
+	ID param.Field[string] `json:"id,required" format:"uuid"`
+	// The annual income of the individual.
+	AnnualIncome param.Field[int64]     `json:"annual_income,required"`
+	CreatedAt    param.Field[time.Time] `json:"created_at,required" format:"date-time"`
+	DiscardedAt  param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
+	// The country in which the employer is located.
+	EmployerCountry param.Field[string] `json:"employer_country,required"`
+	// The name of the employer.
+	EmployerName param.Field[string] `json:"employer_name,required"`
+	// The state in which the employer is located.
+	EmployerState param.Field[string] `json:"employer_state,required"`
+	// The employment status of the individual.
+	EmploymentStatus param.Field[LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatus] `json:"employment_status,required"`
+	// The country in which the individual's income is earned.
+	IncomeCountry param.Field[string] `json:"income_country,required"`
+	// The source of the individual's income.
+	IncomeSource param.Field[LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSource] `json:"income_source,required"`
+	// The state in which the individual's income is earned.
+	IncomeState param.Field[string] `json:"income_state,required"`
+	// The industry of the individual.
+	Industry param.Field[LegalEntityNewParamsWealthAndEmploymentDetailsIndustry] `json:"industry,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode param.Field[bool]   `json:"live_mode,required"`
+	Object   param.Field[string] `json:"object,required"`
+	// The occupation of the individual.
+	Occupation param.Field[LegalEntityNewParamsWealthAndEmploymentDetailsOccupation] `json:"occupation,required"`
+	// The source of the individual's funds.
+	SourceOfFunds param.Field[LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds] `json:"source_of_funds,required"`
+	UpdatedAt     param.Field[time.Time]                                                   `json:"updated_at,required" format:"date-time"`
+	// The source of the individual's wealth.
+	WealthSource param.Field[LegalEntityNewParamsWealthAndEmploymentDetailsWealthSource] `json:"wealth_source,required"`
+}
+
+func (r LegalEntityNewParamsWealthAndEmploymentDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The employment status of the individual.
+type LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatus string
+
+const (
+	LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatusEmployed     LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatus = "employed"
+	LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatusRetired      LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatus = "retired"
+	LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatusSelfEmployed LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatus = "self_employed"
+	LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatusStudent      LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatus = "student"
+	LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatusUnemployed   LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatus = "unemployed"
+)
+
+func (r LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatus) IsKnown() bool {
+	switch r {
+	case LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatusEmployed, LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatusRetired, LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatusSelfEmployed, LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatusStudent, LegalEntityNewParamsWealthAndEmploymentDetailsEmploymentStatusUnemployed:
+		return true
+	}
+	return false
+}
+
+// The source of the individual's income.
+type LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSource string
+
+const (
+	LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceFamilySupport      LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSource = "family_support"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceGovernmentBenefits LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSource = "government_benefits"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceInheritance        LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSource = "inheritance"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceInvestments        LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSource = "investments"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceRentalIncome       LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSource = "rental_income"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceRetirement         LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSource = "retirement"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceSalary             LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSource = "salary"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceSelfEmployed       LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSource = "self_employed"
+)
+
+func (r LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSource) IsKnown() bool {
+	switch r {
+	case LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceFamilySupport, LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceGovernmentBenefits, LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceInheritance, LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceInvestments, LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceRentalIncome, LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceRetirement, LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceSalary, LegalEntityNewParamsWealthAndEmploymentDetailsIncomeSourceSelfEmployed:
+		return true
+	}
+	return false
+}
+
+// The industry of the individual.
+type LegalEntityNewParamsWealthAndEmploymentDetailsIndustry string
+
+const (
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryAccounting            LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "accounting"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryAgriculture           LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "agriculture"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryAutomotive            LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "automotive"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryChemicalManufacturing LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "chemical_manufacturing"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryConstruction          LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "construction"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryEducationalMedical    LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "educational_medical"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryFoodService           LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "food_service"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryFinance               LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "finance"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryGasoline              LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "gasoline"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryHealthStores          LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "health_stores"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryLaundry               LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "laundry"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryMaintenance           LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "maintenance"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryManufacturing         LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "manufacturing"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryMerchantWholesale     LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "merchant_wholesale"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryMining                LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "mining"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryPerformingArts        LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "performing_arts"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryProfessionalNonLegal  LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "professional_non_legal"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryPublicAdministration  LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "public_administration"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryPublishing            LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "publishing"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRealEstate            LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "real_estate"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRecreationGambling    LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "recreation_gambling"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryReligiousCharity      LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "religious_charity"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRentalServices        LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "rental_services"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailClothing        LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "retail_clothing"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailElectronics     LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "retail_electronics"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailFood            LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "retail_food"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailFurnishing      LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "retail_furnishing"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailHome            LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "retail_home"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailNonStore        LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "retail_non_store"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailSporting        LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "retail_sporting"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryTransportation        LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "transportation"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryTravel                LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "travel"
+	LegalEntityNewParamsWealthAndEmploymentDetailsIndustryUtilities             LegalEntityNewParamsWealthAndEmploymentDetailsIndustry = "utilities"
+)
+
+func (r LegalEntityNewParamsWealthAndEmploymentDetailsIndustry) IsKnown() bool {
+	switch r {
+	case LegalEntityNewParamsWealthAndEmploymentDetailsIndustryAccounting, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryAgriculture, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryAutomotive, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryChemicalManufacturing, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryConstruction, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryEducationalMedical, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryFoodService, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryFinance, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryGasoline, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryHealthStores, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryLaundry, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryMaintenance, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryManufacturing, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryMerchantWholesale, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryMining, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryPerformingArts, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryProfessionalNonLegal, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryPublicAdministration, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryPublishing, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRealEstate, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRecreationGambling, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryReligiousCharity, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRentalServices, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailClothing, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailElectronics, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailFood, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailFurnishing, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailHome, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailNonStore, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryRetailSporting, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryTransportation, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryTravel, LegalEntityNewParamsWealthAndEmploymentDetailsIndustryUtilities:
+		return true
+	}
+	return false
+}
+
+// The occupation of the individual.
+type LegalEntityNewParamsWealthAndEmploymentDetailsOccupation string
+
+const (
+	LegalEntityNewParamsWealthAndEmploymentDetailsOccupationConsulting         LegalEntityNewParamsWealthAndEmploymentDetailsOccupation = "consulting"
+	LegalEntityNewParamsWealthAndEmploymentDetailsOccupationExecutive          LegalEntityNewParamsWealthAndEmploymentDetailsOccupation = "executive"
+	LegalEntityNewParamsWealthAndEmploymentDetailsOccupationFinanceAccounting  LegalEntityNewParamsWealthAndEmploymentDetailsOccupation = "finance_accounting"
+	LegalEntityNewParamsWealthAndEmploymentDetailsOccupationFoodServices       LegalEntityNewParamsWealthAndEmploymentDetailsOccupation = "food_services"
+	LegalEntityNewParamsWealthAndEmploymentDetailsOccupationGovernment         LegalEntityNewParamsWealthAndEmploymentDetailsOccupation = "government"
+	LegalEntityNewParamsWealthAndEmploymentDetailsOccupationHealthcare         LegalEntityNewParamsWealthAndEmploymentDetailsOccupation = "healthcare"
+	LegalEntityNewParamsWealthAndEmploymentDetailsOccupationLegalServices      LegalEntityNewParamsWealthAndEmploymentDetailsOccupation = "legal_services"
+	LegalEntityNewParamsWealthAndEmploymentDetailsOccupationManufacturing      LegalEntityNewParamsWealthAndEmploymentDetailsOccupation = "manufacturing"
+	LegalEntityNewParamsWealthAndEmploymentDetailsOccupationOther              LegalEntityNewParamsWealthAndEmploymentDetailsOccupation = "other"
+	LegalEntityNewParamsWealthAndEmploymentDetailsOccupationSales              LegalEntityNewParamsWealthAndEmploymentDetailsOccupation = "sales"
+	LegalEntityNewParamsWealthAndEmploymentDetailsOccupationScienceEngineering LegalEntityNewParamsWealthAndEmploymentDetailsOccupation = "science_engineering"
+	LegalEntityNewParamsWealthAndEmploymentDetailsOccupationTechnology         LegalEntityNewParamsWealthAndEmploymentDetailsOccupation = "technology"
+)
+
+func (r LegalEntityNewParamsWealthAndEmploymentDetailsOccupation) IsKnown() bool {
+	switch r {
+	case LegalEntityNewParamsWealthAndEmploymentDetailsOccupationConsulting, LegalEntityNewParamsWealthAndEmploymentDetailsOccupationExecutive, LegalEntityNewParamsWealthAndEmploymentDetailsOccupationFinanceAccounting, LegalEntityNewParamsWealthAndEmploymentDetailsOccupationFoodServices, LegalEntityNewParamsWealthAndEmploymentDetailsOccupationGovernment, LegalEntityNewParamsWealthAndEmploymentDetailsOccupationHealthcare, LegalEntityNewParamsWealthAndEmploymentDetailsOccupationLegalServices, LegalEntityNewParamsWealthAndEmploymentDetailsOccupationManufacturing, LegalEntityNewParamsWealthAndEmploymentDetailsOccupationOther, LegalEntityNewParamsWealthAndEmploymentDetailsOccupationSales, LegalEntityNewParamsWealthAndEmploymentDetailsOccupationScienceEngineering, LegalEntityNewParamsWealthAndEmploymentDetailsOccupationTechnology:
+		return true
+	}
+	return false
+}
+
+// The source of the individual's funds.
+type LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds string
+
+const (
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsAlimony            LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "alimony"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsAnnuity            LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "annuity"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsBusinessOwner      LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "business_owner"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsGeneralEmployee    LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "general_employee"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsGovernmentBenefits LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "government_benefits"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsHomemaker          LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "homemaker"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsInheritanceGift    LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "inheritance_gift"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsInvestment         LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "investment"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsLegalSettlement    LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "legal_settlement"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsLottery            LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "lottery"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsRealEstate         LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "real_estate"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsRetired            LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "retired"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsRetirement         LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "retirement"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsSalary             LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "salary"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsSelfEmployed       LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "self_employed"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsSeniorExecutive    LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "senior_executive"
+	LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsTrustIncome        LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds = "trust_income"
+)
+
+func (r LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFunds) IsKnown() bool {
+	switch r {
+	case LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsAlimony, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsAnnuity, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsBusinessOwner, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsGeneralEmployee, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsGovernmentBenefits, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsHomemaker, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsInheritanceGift, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsInvestment, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsLegalSettlement, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsLottery, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsRealEstate, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsRetired, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsRetirement, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsSalary, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsSelfEmployed, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsSeniorExecutive, LegalEntityNewParamsWealthAndEmploymentDetailsSourceOfFundsTrustIncome:
+		return true
+	}
+	return false
+}
+
+// The source of the individual's wealth.
+type LegalEntityNewParamsWealthAndEmploymentDetailsWealthSource string
+
+const (
+	LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceBusinessSale       LegalEntityNewParamsWealthAndEmploymentDetailsWealthSource = "business_sale"
+	LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceFamilySupport      LegalEntityNewParamsWealthAndEmploymentDetailsWealthSource = "family_support"
+	LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceGovernmentBenefits LegalEntityNewParamsWealthAndEmploymentDetailsWealthSource = "government_benefits"
+	LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceInheritance        LegalEntityNewParamsWealthAndEmploymentDetailsWealthSource = "inheritance"
+	LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceInvestments        LegalEntityNewParamsWealthAndEmploymentDetailsWealthSource = "investments"
+	LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceOther              LegalEntityNewParamsWealthAndEmploymentDetailsWealthSource = "other"
+	LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceRentalIncome       LegalEntityNewParamsWealthAndEmploymentDetailsWealthSource = "rental_income"
+	LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceRetirement         LegalEntityNewParamsWealthAndEmploymentDetailsWealthSource = "retirement"
+	LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceSalary             LegalEntityNewParamsWealthAndEmploymentDetailsWealthSource = "salary"
+	LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceSelfEmployed       LegalEntityNewParamsWealthAndEmploymentDetailsWealthSource = "self_employed"
+)
+
+func (r LegalEntityNewParamsWealthAndEmploymentDetailsWealthSource) IsKnown() bool {
+	switch r {
+	case LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceBusinessSale, LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceFamilySupport, LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceGovernmentBenefits, LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceInheritance, LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceInvestments, LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceOther, LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceRentalIncome, LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceRetirement, LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceSalary, LegalEntityNewParamsWealthAndEmploymentDetailsWealthSourceSelfEmployed:
+		return true
+	}
+	return false
+}
+
 type LegalEntityUpdateParams struct {
 	// A list of addresses for the entity.
 	Addresses    param.Field[[]shared.LegalEntityAddressCreateRequestParam] `json:"addresses"`
-	BankSettings param.Field[shared.BankSettingsParam]                      `json:"bank_settings"`
+	BankSettings param.Field[LegalEntityUpdateParamsBankSettings]           `json:"bank_settings"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
@@ -619,13 +854,40 @@ type LegalEntityUpdateParams struct {
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[LegalEntityUpdateParamsRiskRating] `json:"risk_rating"`
 	// An individual's suffix.
-	Suffix                     param.Field[string]                                 `json:"suffix"`
-	WealthAndEmploymentDetails param.Field[shared.WealthAndEmploymentDetailsParam] `json:"wealth_and_employment_details"`
+	Suffix                     param.Field[string]                                            `json:"suffix"`
+	WealthAndEmploymentDetails param.Field[LegalEntityUpdateParamsWealthAndEmploymentDetails] `json:"wealth_and_employment_details"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
 
 func (r LegalEntityUpdateParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type LegalEntityUpdateParamsBankSettings struct {
+	ID param.Field[string] `json:"id,required" format:"uuid"`
+	// The percentage of backup withholding to apply to the legal entity.
+	BackupWithholdingPercentage param.Field[int64]     `json:"backup_withholding_percentage,required"`
+	CreatedAt                   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
+	DiscardedAt                 param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
+	// Whether backup withholding is enabled. See more here -
+	// https://www.irs.gov/businesses/small-businesses-self-employed/backup-withholding.
+	EnableBackupWithholding param.Field[bool] `json:"enable_backup_withholding,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode param.Field[bool]   `json:"live_mode,required"`
+	Object   param.Field[string] `json:"object,required"`
+	// Cross River Bank specific setting to opt out of privacy policy.
+	PrivacyOptOut param.Field[bool] `json:"privacy_opt_out,required"`
+	// It covers, among other types of insider loans, extensions of credit by a member
+	// bank to an executive officer, director, or principal shareholder of the member
+	// bank; a bank holding company of which the member bank is a subsidiary; and any
+	// other subsidiary of that bank holding company.
+	RegulationO param.Field[bool]      `json:"regulation_o,required"`
+	UpdatedAt   param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
+}
+
+func (r LegalEntityUpdateParamsBankSettings) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -670,6 +932,214 @@ const (
 func (r LegalEntityUpdateParamsRiskRating) IsKnown() bool {
 	switch r {
 	case LegalEntityUpdateParamsRiskRatingLow, LegalEntityUpdateParamsRiskRatingMedium, LegalEntityUpdateParamsRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
+type LegalEntityUpdateParamsWealthAndEmploymentDetails struct {
+	ID param.Field[string] `json:"id,required" format:"uuid"`
+	// The annual income of the individual.
+	AnnualIncome param.Field[int64]     `json:"annual_income,required"`
+	CreatedAt    param.Field[time.Time] `json:"created_at,required" format:"date-time"`
+	DiscardedAt  param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
+	// The country in which the employer is located.
+	EmployerCountry param.Field[string] `json:"employer_country,required"`
+	// The name of the employer.
+	EmployerName param.Field[string] `json:"employer_name,required"`
+	// The state in which the employer is located.
+	EmployerState param.Field[string] `json:"employer_state,required"`
+	// The employment status of the individual.
+	EmploymentStatus param.Field[LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatus] `json:"employment_status,required"`
+	// The country in which the individual's income is earned.
+	IncomeCountry param.Field[string] `json:"income_country,required"`
+	// The source of the individual's income.
+	IncomeSource param.Field[LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSource] `json:"income_source,required"`
+	// The state in which the individual's income is earned.
+	IncomeState param.Field[string] `json:"income_state,required"`
+	// The industry of the individual.
+	Industry param.Field[LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry] `json:"industry,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode param.Field[bool]   `json:"live_mode,required"`
+	Object   param.Field[string] `json:"object,required"`
+	// The occupation of the individual.
+	Occupation param.Field[LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation] `json:"occupation,required"`
+	// The source of the individual's funds.
+	SourceOfFunds param.Field[LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds] `json:"source_of_funds,required"`
+	UpdatedAt     param.Field[time.Time]                                                      `json:"updated_at,required" format:"date-time"`
+	// The source of the individual's wealth.
+	WealthSource param.Field[LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSource] `json:"wealth_source,required"`
+}
+
+func (r LegalEntityUpdateParamsWealthAndEmploymentDetails) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The employment status of the individual.
+type LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatus string
+
+const (
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatusEmployed     LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatus = "employed"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatusRetired      LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatus = "retired"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatusSelfEmployed LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatus = "self_employed"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatusStudent      LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatus = "student"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatusUnemployed   LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatus = "unemployed"
+)
+
+func (r LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatus) IsKnown() bool {
+	switch r {
+	case LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatusEmployed, LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatusRetired, LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatusSelfEmployed, LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatusStudent, LegalEntityUpdateParamsWealthAndEmploymentDetailsEmploymentStatusUnemployed:
+		return true
+	}
+	return false
+}
+
+// The source of the individual's income.
+type LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSource string
+
+const (
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceFamilySupport      LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSource = "family_support"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceGovernmentBenefits LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSource = "government_benefits"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceInheritance        LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSource = "inheritance"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceInvestments        LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSource = "investments"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceRentalIncome       LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSource = "rental_income"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceRetirement         LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSource = "retirement"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceSalary             LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSource = "salary"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceSelfEmployed       LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSource = "self_employed"
+)
+
+func (r LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSource) IsKnown() bool {
+	switch r {
+	case LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceFamilySupport, LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceGovernmentBenefits, LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceInheritance, LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceInvestments, LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceRentalIncome, LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceRetirement, LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceSalary, LegalEntityUpdateParamsWealthAndEmploymentDetailsIncomeSourceSelfEmployed:
+		return true
+	}
+	return false
+}
+
+// The industry of the individual.
+type LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry string
+
+const (
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryAccounting            LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "accounting"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryAgriculture           LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "agriculture"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryAutomotive            LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "automotive"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryChemicalManufacturing LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "chemical_manufacturing"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryConstruction          LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "construction"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryEducationalMedical    LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "educational_medical"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryFoodService           LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "food_service"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryFinance               LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "finance"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryGasoline              LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "gasoline"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryHealthStores          LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "health_stores"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryLaundry               LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "laundry"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryMaintenance           LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "maintenance"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryManufacturing         LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "manufacturing"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryMerchantWholesale     LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "merchant_wholesale"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryMining                LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "mining"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryPerformingArts        LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "performing_arts"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryProfessionalNonLegal  LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "professional_non_legal"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryPublicAdministration  LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "public_administration"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryPublishing            LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "publishing"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRealEstate            LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "real_estate"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRecreationGambling    LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "recreation_gambling"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryReligiousCharity      LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "religious_charity"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRentalServices        LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "rental_services"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailClothing        LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "retail_clothing"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailElectronics     LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "retail_electronics"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailFood            LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "retail_food"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailFurnishing      LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "retail_furnishing"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailHome            LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "retail_home"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailNonStore        LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "retail_non_store"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailSporting        LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "retail_sporting"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryTransportation        LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "transportation"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryTravel                LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "travel"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryUtilities             LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry = "utilities"
+)
+
+func (r LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustry) IsKnown() bool {
+	switch r {
+	case LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryAccounting, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryAgriculture, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryAutomotive, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryChemicalManufacturing, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryConstruction, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryEducationalMedical, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryFoodService, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryFinance, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryGasoline, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryHealthStores, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryLaundry, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryMaintenance, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryManufacturing, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryMerchantWholesale, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryMining, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryPerformingArts, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryProfessionalNonLegal, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryPublicAdministration, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryPublishing, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRealEstate, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRecreationGambling, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryReligiousCharity, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRentalServices, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailClothing, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailElectronics, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailFood, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailFurnishing, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailHome, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailNonStore, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryRetailSporting, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryTransportation, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryTravel, LegalEntityUpdateParamsWealthAndEmploymentDetailsIndustryUtilities:
+		return true
+	}
+	return false
+}
+
+// The occupation of the individual.
+type LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation string
+
+const (
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationConsulting         LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation = "consulting"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationExecutive          LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation = "executive"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationFinanceAccounting  LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation = "finance_accounting"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationFoodServices       LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation = "food_services"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationGovernment         LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation = "government"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationHealthcare         LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation = "healthcare"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationLegalServices      LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation = "legal_services"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationManufacturing      LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation = "manufacturing"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationOther              LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation = "other"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationSales              LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation = "sales"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationScienceEngineering LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation = "science_engineering"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationTechnology         LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation = "technology"
+)
+
+func (r LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupation) IsKnown() bool {
+	switch r {
+	case LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationConsulting, LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationExecutive, LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationFinanceAccounting, LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationFoodServices, LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationGovernment, LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationHealthcare, LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationLegalServices, LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationManufacturing, LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationOther, LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationSales, LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationScienceEngineering, LegalEntityUpdateParamsWealthAndEmploymentDetailsOccupationTechnology:
+		return true
+	}
+	return false
+}
+
+// The source of the individual's funds.
+type LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds string
+
+const (
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsAlimony            LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "alimony"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsAnnuity            LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "annuity"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsBusinessOwner      LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "business_owner"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsGeneralEmployee    LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "general_employee"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsGovernmentBenefits LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "government_benefits"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsHomemaker          LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "homemaker"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsInheritanceGift    LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "inheritance_gift"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsInvestment         LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "investment"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsLegalSettlement    LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "legal_settlement"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsLottery            LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "lottery"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsRealEstate         LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "real_estate"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsRetired            LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "retired"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsRetirement         LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "retirement"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsSalary             LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "salary"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsSelfEmployed       LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "self_employed"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsSeniorExecutive    LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "senior_executive"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsTrustIncome        LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds = "trust_income"
+)
+
+func (r LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFunds) IsKnown() bool {
+	switch r {
+	case LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsAlimony, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsAnnuity, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsBusinessOwner, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsGeneralEmployee, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsGovernmentBenefits, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsHomemaker, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsInheritanceGift, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsInvestment, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsLegalSettlement, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsLottery, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsRealEstate, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsRetired, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsRetirement, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsSalary, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsSelfEmployed, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsSeniorExecutive, LegalEntityUpdateParamsWealthAndEmploymentDetailsSourceOfFundsTrustIncome:
+		return true
+	}
+	return false
+}
+
+// The source of the individual's wealth.
+type LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSource string
+
+const (
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceBusinessSale       LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSource = "business_sale"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceFamilySupport      LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSource = "family_support"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceGovernmentBenefits LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSource = "government_benefits"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceInheritance        LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSource = "inheritance"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceInvestments        LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSource = "investments"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceOther              LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSource = "other"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceRentalIncome       LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSource = "rental_income"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceRetirement         LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSource = "retirement"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceSalary             LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSource = "salary"
+	LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceSelfEmployed       LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSource = "self_employed"
+)
+
+func (r LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSource) IsKnown() bool {
+	switch r {
+	case LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceBusinessSale, LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceFamilySupport, LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceGovernmentBenefits, LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceInheritance, LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceInvestments, LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceOther, LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceRentalIncome, LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceRetirement, LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceSalary, LegalEntityUpdateParamsWealthAndEmploymentDetailsWealthSourceSelfEmployed:
 		return true
 	}
 	return false
