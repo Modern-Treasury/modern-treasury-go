@@ -94,7 +94,7 @@ type LegalEntityAssociationChildLegalEntity struct {
 	ID string `json:"id,required" format:"uuid"`
 	// A list of addresses for the entity.
 	Addresses    []LegalEntityAssociationChildLegalEntityAddress `json:"addresses,required"`
-	BankSettings BankSettings                                    `json:"bank_settings,required,nullable"`
+	BankSettings shared.BankSettings                             `json:"bank_settings,required,nullable"`
 	// The business's legal business name.
 	BusinessName string `json:"business_name,required,nullable"`
 	// The country of citizenship for an individual.
@@ -140,9 +140,9 @@ type LegalEntityAssociationChildLegalEntity struct {
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating LegalEntityAssociationChildLegalEntityRiskRating `json:"risk_rating,required,nullable"`
 	// An individual's suffix.
-	Suffix                     string                     `json:"suffix,required,nullable"`
-	UpdatedAt                  time.Time                  `json:"updated_at,required" format:"date-time"`
-	WealthAndEmploymentDetails WealthAndEmploymentDetails `json:"wealth_and_employment_details,required,nullable"`
+	Suffix                     string                            `json:"suffix,required,nullable"`
+	UpdatedAt                  time.Time                         `json:"updated_at,required" format:"date-time"`
+	WealthAndEmploymentDetails shared.WealthAndEmploymentDetails `json:"wealth_and_employment_details,required,nullable"`
 	// The entity's primary website URL.
 	Website string                                     `json:"website,required,nullable"`
 	JSON    legalEntityAssociationChildLegalEntityJSON `json:"-"`
