@@ -127,6 +127,8 @@ type ExpectedPayment struct {
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
 	Direction ExpectedPaymentDirection `json:"direction,required,nullable"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID string `json:"external_id,required,nullable"`
 	// The ID of the Internal Account for the expected payment.
 	InternalAccountID string `json:"internal_account_id,required,nullable" format:"uuid"`
 	// The ID of the ledger transaction linked to the expected payment.
@@ -182,6 +184,7 @@ type expectedPaymentJSON struct {
 	DateUpperBound              apijson.Field
 	Description                 apijson.Field
 	Direction                   apijson.Field
+	ExternalID                  apijson.Field
 	InternalAccountID           apijson.Field
 	LedgerTransactionID         apijson.Field
 	LiveMode                    apijson.Field
@@ -484,6 +487,8 @@ type ExpectedPaymentNewParams struct {
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
 	Direction param.Field[ExpectedPaymentNewParamsDirection] `json:"direction"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// The ID of the Internal Account for the expected payment.
 	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
 	// Specifies a ledger transaction object that will be created with the expected
@@ -579,6 +584,8 @@ type ExpectedPaymentUpdateParams struct {
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
 	Direction param.Field[ExpectedPaymentUpdateParamsDirection] `json:"direction"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// The ID of the Internal Account for the expected payment.
 	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -653,7 +660,8 @@ type ExpectedPaymentListParams struct {
 	// Used to return expected payments created before some datetime
 	CreatedAtUpperBound param.Field[time.Time] `query:"created_at_upper_bound" format:"date-time"`
 	// One of credit, debit
-	Direction param.Field[shared.TransactionDirection] `query:"direction"`
+	Direction  param.Field[shared.TransactionDirection] `query:"direction"`
+	ExternalID param.Field[string]                      `query:"external_id"`
 	// Specify internal_account_id to see expected_payments for a specific account.
 	InternalAccountID param.Field[string] `query:"internal_account_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
