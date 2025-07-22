@@ -299,8 +299,7 @@ type BulkRequestNewParamsResource struct {
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
 	// RFP payments require an expires_at. This value must be past the effective_date.
 	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
-	// A unique string to represent the ledger transaction. Only one pending or posted
-	// ledger transaction may have this ID in the ledger.
+	// An optional user-defined 180 character unique identifier.
 	ExternalID param.Field[string] `json:"external_id"`
 	// A payment type to fallback to if the original type is not valid for the
 	// receiving account. Currently, this only supports falling back from RTP to ACH
@@ -894,6 +893,8 @@ type BulkRequestNewParamsResourcesExpectedPaymentCreateRequest struct {
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
 	Direction param.Field[BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirection] `json:"direction"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// The ID of the Internal Account for the expected payment.
 	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
 	// Specifies a ledger transaction object that will be created with the expected
@@ -1548,6 +1549,8 @@ type BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID struct {
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
 	Direction param.Field[BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDDirection] `json:"direction"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// The ID of the Internal Account for the expected payment.
 	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
