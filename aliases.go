@@ -876,6 +876,12 @@ const LegalEntityAddressCreateRequestAddressTypePoBox = shared.LegalEntityAddres
 const LegalEntityAddressCreateRequestAddressTypeResidential = shared.LegalEntityAddressCreateRequestAddressTypeResidential
 
 // This is an alias to an internal type.
+type LegalEntityBankSettings = shared.LegalEntityBankSettings
+
+// This is an alias to an internal type.
+type LegalEntityBankSettingsParam = shared.LegalEntityBankSettingsParam
+
+// This is an alias to an internal type.
 type LegalEntityComplianceDetail = shared.LegalEntityComplianceDetail
 
 // This is an alias to an internal type.
@@ -936,6 +942,297 @@ const LegalEntityIndustryClassificationClassificationTypeUnspsc = shared.LegalEn
 
 // This is an alias to an internal type.
 type LegalEntityIndustryClassificationParam = shared.LegalEntityIndustryClassificationParam
+
+// This is an alias to an internal type.
+type LegalEntityWealthEmploymentDetail = shared.LegalEntityWealthEmploymentDetail
+
+// The employment status of the individual.
+//
+// This is an alias to an internal type.
+type LegalEntityWealthEmploymentDetailEmploymentStatus = shared.LegalEntityWealthEmploymentDetailEmploymentStatus
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailEmploymentStatusEmployed = shared.LegalEntityWealthEmploymentDetailEmploymentStatusEmployed
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailEmploymentStatusRetired = shared.LegalEntityWealthEmploymentDetailEmploymentStatusRetired
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailEmploymentStatusSelfEmployed = shared.LegalEntityWealthEmploymentDetailEmploymentStatusSelfEmployed
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailEmploymentStatusStudent = shared.LegalEntityWealthEmploymentDetailEmploymentStatusStudent
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailEmploymentStatusUnemployed = shared.LegalEntityWealthEmploymentDetailEmploymentStatusUnemployed
+
+// The source of the individual's income.
+//
+// This is an alias to an internal type.
+type LegalEntityWealthEmploymentDetailIncomeSource = shared.LegalEntityWealthEmploymentDetailIncomeSource
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIncomeSourceFamilySupport = shared.LegalEntityWealthEmploymentDetailIncomeSourceFamilySupport
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIncomeSourceGovernmentBenefits = shared.LegalEntityWealthEmploymentDetailIncomeSourceGovernmentBenefits
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIncomeSourceInheritance = shared.LegalEntityWealthEmploymentDetailIncomeSourceInheritance
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIncomeSourceInvestments = shared.LegalEntityWealthEmploymentDetailIncomeSourceInvestments
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIncomeSourceRentalIncome = shared.LegalEntityWealthEmploymentDetailIncomeSourceRentalIncome
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIncomeSourceRetirement = shared.LegalEntityWealthEmploymentDetailIncomeSourceRetirement
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIncomeSourceSalary = shared.LegalEntityWealthEmploymentDetailIncomeSourceSalary
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIncomeSourceSelfEmployed = shared.LegalEntityWealthEmploymentDetailIncomeSourceSelfEmployed
+
+// The industry of the individual.
+//
+// This is an alias to an internal type.
+type LegalEntityWealthEmploymentDetailIndustry = shared.LegalEntityWealthEmploymentDetailIndustry
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryAccounting = shared.LegalEntityWealthEmploymentDetailIndustryAccounting
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryAgriculture = shared.LegalEntityWealthEmploymentDetailIndustryAgriculture
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryAutomotive = shared.LegalEntityWealthEmploymentDetailIndustryAutomotive
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryChemicalManufacturing = shared.LegalEntityWealthEmploymentDetailIndustryChemicalManufacturing
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryConstruction = shared.LegalEntityWealthEmploymentDetailIndustryConstruction
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryEducationalMedical = shared.LegalEntityWealthEmploymentDetailIndustryEducationalMedical
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryFoodService = shared.LegalEntityWealthEmploymentDetailIndustryFoodService
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryFinance = shared.LegalEntityWealthEmploymentDetailIndustryFinance
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryGasoline = shared.LegalEntityWealthEmploymentDetailIndustryGasoline
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryHealthStores = shared.LegalEntityWealthEmploymentDetailIndustryHealthStores
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryLaundry = shared.LegalEntityWealthEmploymentDetailIndustryLaundry
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryMaintenance = shared.LegalEntityWealthEmploymentDetailIndustryMaintenance
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryManufacturing = shared.LegalEntityWealthEmploymentDetailIndustryManufacturing
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryMerchantWholesale = shared.LegalEntityWealthEmploymentDetailIndustryMerchantWholesale
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryMining = shared.LegalEntityWealthEmploymentDetailIndustryMining
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryPerformingArts = shared.LegalEntityWealthEmploymentDetailIndustryPerformingArts
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryProfessionalNonLegal = shared.LegalEntityWealthEmploymentDetailIndustryProfessionalNonLegal
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryPublicAdministration = shared.LegalEntityWealthEmploymentDetailIndustryPublicAdministration
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryPublishing = shared.LegalEntityWealthEmploymentDetailIndustryPublishing
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryRealEstate = shared.LegalEntityWealthEmploymentDetailIndustryRealEstate
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryRecreationGambling = shared.LegalEntityWealthEmploymentDetailIndustryRecreationGambling
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryReligiousCharity = shared.LegalEntityWealthEmploymentDetailIndustryReligiousCharity
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryRentalServices = shared.LegalEntityWealthEmploymentDetailIndustryRentalServices
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryRetailClothing = shared.LegalEntityWealthEmploymentDetailIndustryRetailClothing
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryRetailElectronics = shared.LegalEntityWealthEmploymentDetailIndustryRetailElectronics
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryRetailFood = shared.LegalEntityWealthEmploymentDetailIndustryRetailFood
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryRetailFurnishing = shared.LegalEntityWealthEmploymentDetailIndustryRetailFurnishing
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryRetailHome = shared.LegalEntityWealthEmploymentDetailIndustryRetailHome
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryRetailNonStore = shared.LegalEntityWealthEmploymentDetailIndustryRetailNonStore
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryRetailSporting = shared.LegalEntityWealthEmploymentDetailIndustryRetailSporting
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryTransportation = shared.LegalEntityWealthEmploymentDetailIndustryTransportation
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryTravel = shared.LegalEntityWealthEmploymentDetailIndustryTravel
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailIndustryUtilities = shared.LegalEntityWealthEmploymentDetailIndustryUtilities
+
+// The occupation of the individual.
+//
+// This is an alias to an internal type.
+type LegalEntityWealthEmploymentDetailOccupation = shared.LegalEntityWealthEmploymentDetailOccupation
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailOccupationConsulting = shared.LegalEntityWealthEmploymentDetailOccupationConsulting
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailOccupationExecutive = shared.LegalEntityWealthEmploymentDetailOccupationExecutive
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailOccupationFinanceAccounting = shared.LegalEntityWealthEmploymentDetailOccupationFinanceAccounting
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailOccupationFoodServices = shared.LegalEntityWealthEmploymentDetailOccupationFoodServices
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailOccupationGovernment = shared.LegalEntityWealthEmploymentDetailOccupationGovernment
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailOccupationHealthcare = shared.LegalEntityWealthEmploymentDetailOccupationHealthcare
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailOccupationLegalServices = shared.LegalEntityWealthEmploymentDetailOccupationLegalServices
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailOccupationManufacturing = shared.LegalEntityWealthEmploymentDetailOccupationManufacturing
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailOccupationOther = shared.LegalEntityWealthEmploymentDetailOccupationOther
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailOccupationSales = shared.LegalEntityWealthEmploymentDetailOccupationSales
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailOccupationScienceEngineering = shared.LegalEntityWealthEmploymentDetailOccupationScienceEngineering
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailOccupationTechnology = shared.LegalEntityWealthEmploymentDetailOccupationTechnology
+
+// The source of the individual's funds.
+//
+// This is an alias to an internal type.
+type LegalEntityWealthEmploymentDetailSourceOfFunds = shared.LegalEntityWealthEmploymentDetailSourceOfFunds
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsAlimony = shared.LegalEntityWealthEmploymentDetailSourceOfFundsAlimony
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsAnnuity = shared.LegalEntityWealthEmploymentDetailSourceOfFundsAnnuity
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsBusinessOwner = shared.LegalEntityWealthEmploymentDetailSourceOfFundsBusinessOwner
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsGeneralEmployee = shared.LegalEntityWealthEmploymentDetailSourceOfFundsGeneralEmployee
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsGovernmentBenefits = shared.LegalEntityWealthEmploymentDetailSourceOfFundsGovernmentBenefits
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsHomemaker = shared.LegalEntityWealthEmploymentDetailSourceOfFundsHomemaker
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsInheritanceGift = shared.LegalEntityWealthEmploymentDetailSourceOfFundsInheritanceGift
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsInvestment = shared.LegalEntityWealthEmploymentDetailSourceOfFundsInvestment
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsLegalSettlement = shared.LegalEntityWealthEmploymentDetailSourceOfFundsLegalSettlement
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsLottery = shared.LegalEntityWealthEmploymentDetailSourceOfFundsLottery
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsRealEstate = shared.LegalEntityWealthEmploymentDetailSourceOfFundsRealEstate
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsRetired = shared.LegalEntityWealthEmploymentDetailSourceOfFundsRetired
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsRetirement = shared.LegalEntityWealthEmploymentDetailSourceOfFundsRetirement
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsSalary = shared.LegalEntityWealthEmploymentDetailSourceOfFundsSalary
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsSelfEmployed = shared.LegalEntityWealthEmploymentDetailSourceOfFundsSelfEmployed
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsSeniorExecutive = shared.LegalEntityWealthEmploymentDetailSourceOfFundsSeniorExecutive
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsTrustIncome = shared.LegalEntityWealthEmploymentDetailSourceOfFundsTrustIncome
+
+// The source of the individual's wealth.
+//
+// This is an alias to an internal type.
+type LegalEntityWealthEmploymentDetailWealthSource = shared.LegalEntityWealthEmploymentDetailWealthSource
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailWealthSourceBusinessSale = shared.LegalEntityWealthEmploymentDetailWealthSourceBusinessSale
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailWealthSourceFamilySupport = shared.LegalEntityWealthEmploymentDetailWealthSourceFamilySupport
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailWealthSourceGovernmentBenefits = shared.LegalEntityWealthEmploymentDetailWealthSourceGovernmentBenefits
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailWealthSourceInheritance = shared.LegalEntityWealthEmploymentDetailWealthSourceInheritance
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailWealthSourceInvestments = shared.LegalEntityWealthEmploymentDetailWealthSourceInvestments
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailWealthSourceOther = shared.LegalEntityWealthEmploymentDetailWealthSourceOther
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailWealthSourceRentalIncome = shared.LegalEntityWealthEmploymentDetailWealthSourceRentalIncome
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailWealthSourceRetirement = shared.LegalEntityWealthEmploymentDetailWealthSourceRetirement
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailWealthSourceSalary = shared.LegalEntityWealthEmploymentDetailWealthSourceSalary
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailWealthSourceSelfEmployed = shared.LegalEntityWealthEmploymentDetailWealthSourceSelfEmployed
+
+// This is an alias to an internal type.
+type LegalEntityWealthEmploymentDetailParam = shared.LegalEntityWealthEmploymentDetailParam
 
 // This is an alias to an internal type.
 type TransactionDirection = shared.TransactionDirection
