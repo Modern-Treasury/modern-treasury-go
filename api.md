@@ -3,7 +3,6 @@
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#AccountingParam">AccountingParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#AccountsType">AccountsType</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#AddressRequestParam">AddressRequestParam</a>
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#BankSettingsParam">BankSettingsParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#ChildLegalEntityCreateParam">ChildLegalEntityCreateParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#ContactDetailParam">ContactDetailParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#Currency">Currency</a>
@@ -15,7 +14,6 @@
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityComplianceDetailParam">LegalEntityComplianceDetailParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityIndustryClassificationParam">LegalEntityIndustryClassificationParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#TransactionDirection">TransactionDirection</a>
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#WealthAndEmploymentDetailsParam">WealthAndEmploymentDetailsParam</a>
 
 # Shared Response Types
 
@@ -23,7 +21,6 @@
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#Address">Address</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#AddressRequest">AddressRequest</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#AsyncResponse">AsyncResponse</a>
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#BankSettings">BankSettings</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#ContactDetail">ContactDetail</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#Currency">Currency</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#ForeignExchangeRate">ForeignExchangeRate</a>
@@ -32,7 +29,6 @@
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityComplianceDetail">LegalEntityComplianceDetail</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityIndustryClassification">LegalEntityIndustryClassification</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#TransactionDirection">TransactionDirection</a>
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#WealthAndEmploymentDetails">WealthAndEmploymentDetails</a>
 
 # moderntreasury
 
