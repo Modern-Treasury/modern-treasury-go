@@ -165,6 +165,10 @@ type BulkResultEntity struct {
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUpperBound int64 `json:"amount_upper_bound,nullable"`
+	// Reason for why a ledger transaction was automatically archived, typically due to
+	// a balance lock failure. This is a system-generated field and is only populated
+	// when applicable.
+	ArchivedReason string `json:"archived_reason,nullable"`
 	// The date on which the transaction occurred.
 	AsOfDate time.Time `json:"as_of_date,nullable" format:"date"`
 	// The time on which the transaction occurred. Depending on the granularity of the
@@ -386,6 +390,7 @@ type bulkResultEntityJSON struct {
 	Amount                             apijson.Field
 	AmountLowerBound                   apijson.Field
 	AmountUpperBound                   apijson.Field
+	ArchivedReason                     apijson.Field
 	AsOfDate                           apijson.Field
 	AsOfTime                           apijson.Field
 	AsOfTimezone                       apijson.Field

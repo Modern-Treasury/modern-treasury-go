@@ -29,7 +29,8 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Counterparties.New(context.TODO(), moderntreasury.CounterpartyNewParams{
-		Name: moderntreasury.F("name"),
+		Name:            moderntreasury.F("name"),
+		QueryExternalID: moderntreasury.F("external_id"),
 		Accounting: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccounting{
 			Type: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountingTypeCustomer),
 		}),
@@ -43,6 +44,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				ContactIdentifier:     moderntreasury.F("contact_identifier"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.ContactDetailCreateRequestContactIdentifierTypeEmail),
 			}}),
+			ExternalID: moderntreasury.F("external_id"),
 			LedgerAccount: moderntreasury.F(shared.LedgerAccountCreateRequestParam{
 				Currency:                 moderntreasury.F("currency"),
 				LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -83,8 +85,9 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
 			}}),
 		}}),
-		Email:      moderntreasury.F("dev@stainless.com"),
-		LedgerType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
+		Email:          moderntreasury.F("dev@stainless.com"),
+		BodyExternalID: moderntreasury.F("external_id"),
+		LedgerType:     moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
 		LegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntity{
 			LegalEntityType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness),
 			Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{{
@@ -385,6 +388,7 @@ func TestCounterpartyListWithOptionalParams(t *testing.T) {
 		CreatedAtLowerBound: moderntreasury.F(time.Now()),
 		CreatedAtUpperBound: moderntreasury.F(time.Now()),
 		Email:               moderntreasury.F("dev@stainless.com"),
+		ExternalID:          moderntreasury.F("external_id"),
 		LegalEntityID:       moderntreasury.F("legal_entity_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",

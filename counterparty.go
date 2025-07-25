@@ -39,10 +39,10 @@ func NewCounterpartyService(opts ...option.RequestOption) (r *CounterpartyServic
 }
 
 // Create a new counterparty.
-func (r *CounterpartyService) New(ctx context.Context, body CounterpartyNewParams, opts ...option.RequestOption) (res *Counterparty, err error) {
+func (r *CounterpartyService) New(ctx context.Context, params CounterpartyNewParams, opts ...option.RequestOption) (res *Counterparty, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/counterparties"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -126,6 +126,8 @@ type Counterparty struct {
 	DiscardedAt time.Time             `json:"discarded_at,required,nullable" format:"date-time"`
 	// The counterparty's email.
 	Email string `json:"email,required,nullable" format:"email"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID string `json:"external_id,required,nullable"`
 	// The id of the legal entity.
 	LegalEntityID string `json:"legal_entity_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
@@ -153,6 +155,7 @@ type counterpartyJSON struct {
 	CreatedAt            apijson.Field
 	DiscardedAt          apijson.Field
 	Email                apijson.Field
+	ExternalID           apijson.Field
 	LegalEntityID        apijson.Field
 	LiveMode             apijson.Field
 	Metadata             apijson.Field
@@ -181,6 +184,8 @@ type CounterpartyAccount struct {
 	ContactDetails []shared.ContactDetail `json:"contact_details"`
 	CreatedAt      time.Time              `json:"created_at" format:"date-time"`
 	DiscardedAt    time.Time              `json:"discarded_at,nullable" format:"date-time"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID string `json:"external_id,nullable"`
 	// If the external account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
 	LedgerAccountID string `json:"ledger_account_id,nullable" format:"uuid"`
@@ -216,6 +221,7 @@ type counterpartyAccountJSON struct {
 	ContactDetails     apijson.Field
 	CreatedAt          apijson.Field
 	DiscardedAt        apijson.Field
+	ExternalID         apijson.Field
 	LedgerAccountID    apijson.Field
 	LiveMode           apijson.Field
 	Metadata           apijson.Field
@@ -340,12 +346,16 @@ func (r counterpartyCollectAccountResponseJSON) RawJSON() string {
 
 type CounterpartyNewParams struct {
 	// A human friendly name for this counterparty.
-	Name       param.Field[string]                          `json:"name,required"`
-	Accounting param.Field[CounterpartyNewParamsAccounting] `json:"accounting"`
+	Name param.Field[string] `json:"name,required"`
+	// An optional user-defined 180 character unique identifier.
+	QueryExternalID param.Field[string]                          `query:"external_id"`
+	Accounting      param.Field[CounterpartyNewParamsAccounting] `json:"accounting"`
 	// The accounts for this counterparty.
 	Accounts param.Field[[]CounterpartyNewParamsAccount] `json:"accounts"`
 	// The counterparty's email.
 	Email param.Field[string] `json:"email" format:"email"`
+	// An optional user-defined 180 character unique identifier.
+	BodyExternalID param.Field[string] `json:"external_id"`
 	// An optional type to auto-sync the counterparty to your ledger. Either `customer`
 	// or `vendor`.
 	LedgerType  param.Field[CounterpartyNewParamsLedgerType]  `json:"ledger_type"`
@@ -366,6 +376,14 @@ type CounterpartyNewParams struct {
 
 func (r CounterpartyNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// URLQuery serializes [CounterpartyNewParams]'s query parameters as `url.Values`.
+func (r CounterpartyNewParams) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type CounterpartyNewParamsAccounting struct {
@@ -400,6 +418,8 @@ type CounterpartyNewParamsAccount struct {
 	// Can be `checking`, `savings` or `other`.
 	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
 	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
@@ -788,6 +808,8 @@ type CounterpartyListParams struct {
 	// Performs a partial string match of the email field. This is also case
 	// insensitive.
 	Email param.Field[string] `query:"email" format:"email"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `query:"external_id"`
 	// Filters for counterparties with the given legal entity ID.
 	LegalEntityID param.Field[string] `query:"legal_entity_id"`
 	// For example, if you want to query for records with metadata key `Type` and value

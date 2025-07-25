@@ -41,10 +41,10 @@ func NewExternalAccountService(opts ...option.RequestOption) (r *ExternalAccount
 }
 
 // create external account
-func (r *ExternalAccountService) New(ctx context.Context, body ExternalAccountNewParams, opts ...option.RequestOption) (res *ExternalAccount, err error) {
+func (r *ExternalAccountService) New(ctx context.Context, params ExternalAccountNewParams, opts ...option.RequestOption) (res *ExternalAccount, err error) {
 	opts = append(r.Options[:], opts...)
 	path := "api/external_accounts"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
 	return
 }
 
@@ -141,6 +141,8 @@ type ExternalAccount struct {
 	CounterpartyID string                 `json:"counterparty_id,required,nullable" format:"uuid"`
 	CreatedAt      time.Time              `json:"created_at,required" format:"date-time"`
 	DiscardedAt    time.Time              `json:"discarded_at,required,nullable" format:"date-time"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID string `json:"external_id,required,nullable"`
 	// If the external account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
 	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
@@ -176,6 +178,7 @@ type externalAccountJSON struct {
 	CounterpartyID     apijson.Field
 	CreatedAt          apijson.Field
 	DiscardedAt        apijson.Field
+	ExternalID         apijson.Field
 	LedgerAccountID    apijson.Field
 	LiveMode           apijson.Field
 	Metadata           apijson.Field
@@ -295,6 +298,8 @@ type ExternalAccountVerifyResponse struct {
 	DiscardedAt    time.Time   `json:"discarded_at,nullable" format:"date-time"`
 	// The ID of the external account.
 	ExternalAccountID string `json:"external_account_id" format:"uuid"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID string `json:"external_id,nullable"`
 	// If the external account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
 	LedgerAccountID string `json:"ledger_account_id,nullable" format:"uuid"`
@@ -341,6 +346,7 @@ type externalAccountVerifyResponseJSON struct {
 	CounterpartyID       apijson.Field
 	DiscardedAt          apijson.Field
 	ExternalAccountID    apijson.Field
+	ExternalID           apijson.Field
 	LedgerAccountID      apijson.Field
 	Metadata             apijson.Field
 	Name                 apijson.Field
@@ -670,11 +676,15 @@ func (r ExternalAccountVerifyResponseVerificationStatus) IsKnown() bool {
 }
 
 type ExternalAccountNewParams struct {
-	CounterpartyID param.Field[string]                                  `json:"counterparty_id,required" format:"uuid"`
-	AccountDetails param.Field[[]ExternalAccountNewParamsAccountDetail] `json:"account_details"`
+	CounterpartyID param.Field[string] `json:"counterparty_id,required" format:"uuid"`
+	// An optional user-defined 180 character unique identifier.
+	QueryExternalID param.Field[string]                                  `query:"external_id"`
+	AccountDetails  param.Field[[]ExternalAccountNewParamsAccountDetail] `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
 	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
 	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
+	// An optional user-defined 180 character unique identifier.
+	BodyExternalID param.Field[string] `json:"external_id"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
@@ -702,6 +712,15 @@ type ExternalAccountNewParams struct {
 
 func (r ExternalAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// URLQuery serializes [ExternalAccountNewParams]'s query parameters as
+// `url.Values`.
+func (r ExternalAccountNewParams) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
 }
 
 type ExternalAccountNewParamsAccountDetail struct {
@@ -888,6 +907,8 @@ func (r ExternalAccountUpdateParamsPartyType) IsKnown() bool {
 type ExternalAccountListParams struct {
 	AfterCursor    param.Field[string] `query:"after_cursor"`
 	CounterpartyID param.Field[string] `query:"counterparty_id"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `query:"external_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
