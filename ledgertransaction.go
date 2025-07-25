@@ -120,8 +120,12 @@ func (r *LedgerTransactionService) NewReversal(ctx context.Context, id string, b
 }
 
 type LedgerTransaction struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID string `json:"id,required" format:"uuid"`
+	// Reason for why a ledger transaction was automatically archived, typically due to
+	// a balance lock failure. This is a system-generated field and is only populated
+	// when applicable.
+	ArchivedReason string    `json:"archived_reason,required,nullable"`
+	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
 	// An optional description for internal use.
 	Description string `json:"description,required,nullable"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
@@ -171,6 +175,7 @@ type LedgerTransaction struct {
 // [LedgerTransaction]
 type ledgerTransactionJSON struct {
 	ID                                apijson.Field
+	ArchivedReason                    apijson.Field
 	CreatedAt                         apijson.Field
 	Description                       apijson.Field
 	EffectiveAt                       apijson.Field

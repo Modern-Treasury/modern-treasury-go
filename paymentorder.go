@@ -1182,6 +1182,8 @@ type PaymentOrderNewParamsReceivingAccount struct {
 	// Can be `checking`, `savings` or `other`.
 	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
 	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
@@ -1601,6 +1603,8 @@ type PaymentOrderUpdateParamsReceivingAccount struct {
 	// Can be `checking`, `savings` or `other`.
 	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
 	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
@@ -2180,6 +2184,8 @@ type PaymentOrderNewAsyncParamsReceivingAccount struct {
 	// Can be `checking`, `savings` or `other`.
 	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
 	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
