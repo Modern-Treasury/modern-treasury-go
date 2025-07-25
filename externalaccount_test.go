@@ -28,7 +28,8 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.ExternalAccounts.New(context.TODO(), moderntreasury.ExternalAccountNewParams{
-		CounterpartyID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		CounterpartyID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		QueryExternalID: moderntreasury.F("external_id"),
 		AccountDetails: moderntreasury.F([]moderntreasury.ExternalAccountNewParamsAccountDetail{{
 			AccountNumber:     moderntreasury.F("account_number"),
 			AccountNumberType: moderntreasury.F(moderntreasury.ExternalAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
@@ -38,6 +39,7 @@ func TestExternalAccountNewWithOptionalParams(t *testing.T) {
 			ContactIdentifier:     moderntreasury.F("contact_identifier"),
 			ContactIdentifierType: moderntreasury.F(moderntreasury.ContactDetailCreateRequestContactIdentifierTypeEmail),
 		}}),
+		BodyExternalID: moderntreasury.F("external_id"),
 		LedgerAccount: moderntreasury.F(shared.LedgerAccountCreateRequestParam{
 			Currency:                 moderntreasury.F("currency"),
 			LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -170,6 +172,7 @@ func TestExternalAccountListWithOptionalParams(t *testing.T) {
 	_, err := client.ExternalAccounts.List(context.TODO(), moderntreasury.ExternalAccountListParams{
 		AfterCursor:    moderntreasury.F("after_cursor"),
 		CounterpartyID: moderntreasury.F("counterparty_id"),
+		ExternalID:     moderntreasury.F("external_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
