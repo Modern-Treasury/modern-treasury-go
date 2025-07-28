@@ -60,8 +60,13 @@ func (r *LedgerTransactionVersionService) ListAutoPaging(ctx context.Context, qu
 }
 
 type LedgerTransactionVersion struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID string `json:"id,required" format:"uuid"`
+	// System-set reason why the ledger transaction was archived; currently only
+	// 'balance_lock_failure' for transactions that violated balance constraints. Only
+	// populated when archive_on_balance_lock_failure is true and a balance lock
+	// violation occurs, otherwise null.
+	ArchivedReason string    `json:"archived_reason,required,nullable"`
+	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
 	// An optional description for internal use.
 	Description string `json:"description,required,nullable"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
@@ -114,6 +119,7 @@ type LedgerTransactionVersion struct {
 // [LedgerTransactionVersion]
 type ledgerTransactionVersionJSON struct {
 	ID                                apijson.Field
+	ArchivedReason                    apijson.Field
 	CreatedAt                         apijson.Field
 	Description                       apijson.Field
 	EffectiveAt                       apijson.Field
