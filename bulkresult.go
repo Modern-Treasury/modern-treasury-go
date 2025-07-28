@@ -165,9 +165,10 @@ type BulkResultEntity struct {
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUpperBound int64 `json:"amount_upper_bound,nullable"`
-	// Reason for why a ledger transaction was automatically archived, typically due to
-	// a balance lock failure. This is a system-generated field and is only populated
-	// when applicable.
+	// System-set reason why the ledger transaction was archived; currently only
+	// 'balance_lock_failure' for transactions that violated balance constraints. Only
+	// populated when archive_on_balance_lock_failure is true and a balance lock
+	// violation occurs, otherwise null.
 	ArchivedReason string `json:"archived_reason,nullable"`
 	// The date on which the transaction occurred.
 	AsOfDate time.Time `json:"as_of_date,nullable" format:"date"`
