@@ -478,7 +478,6 @@ type ReturnObjectReturnableType string
 
 const (
 	ReturnObjectReturnableTypeIncomingPaymentDetail ReturnObjectReturnableType = "incoming_payment_detail"
-	ReturnObjectReturnableTypePaperItem             ReturnObjectReturnableType = "paper_item"
 	ReturnObjectReturnableTypePaymentOrder          ReturnObjectReturnableType = "payment_order"
 	ReturnObjectReturnableTypeReturn                ReturnObjectReturnableType = "return"
 	ReturnObjectReturnableTypeReversal              ReturnObjectReturnableType = "reversal"
@@ -486,7 +485,7 @@ const (
 
 func (r ReturnObjectReturnableType) IsKnown() bool {
 	switch r {
-	case ReturnObjectReturnableTypeIncomingPaymentDetail, ReturnObjectReturnableTypePaperItem, ReturnObjectReturnableTypePaymentOrder, ReturnObjectReturnableTypeReturn, ReturnObjectReturnableTypeReversal:
+	case ReturnObjectReturnableTypeIncomingPaymentDetail, ReturnObjectReturnableTypePaymentOrder, ReturnObjectReturnableTypeReturn, ReturnObjectReturnableTypeReversal:
 		return true
 	}
 	return false
@@ -543,14 +542,13 @@ const (
 	ReturnObjectTypeEft         ReturnObjectType = "eft"
 	ReturnObjectTypeInterac     ReturnObjectType = "interac"
 	ReturnObjectTypeManual      ReturnObjectType = "manual"
-	ReturnObjectTypePaperItem   ReturnObjectType = "paper_item"
 	ReturnObjectTypeSepa        ReturnObjectType = "sepa"
 	ReturnObjectTypeWire        ReturnObjectType = "wire"
 )
 
 func (r ReturnObjectType) IsKnown() bool {
 	switch r {
-	case ReturnObjectTypeACH, ReturnObjectTypeACHNoc, ReturnObjectTypeAuBecs, ReturnObjectTypeBacs, ReturnObjectTypeBook, ReturnObjectTypeCheck, ReturnObjectTypeCrossBorder, ReturnObjectTypeEft, ReturnObjectTypeInterac, ReturnObjectTypeManual, ReturnObjectTypePaperItem, ReturnObjectTypeSepa, ReturnObjectTypeWire:
+	case ReturnObjectTypeACH, ReturnObjectTypeACHNoc, ReturnObjectTypeAuBecs, ReturnObjectTypeBacs, ReturnObjectTypeBook, ReturnObjectTypeCheck, ReturnObjectTypeCrossBorder, ReturnObjectTypeEft, ReturnObjectTypeInterac, ReturnObjectTypeManual, ReturnObjectTypeSepa, ReturnObjectTypeWire:
 		return true
 	}
 	return false
@@ -766,7 +764,6 @@ type ReturnListParamsReturnableType string
 
 const (
 	ReturnListParamsReturnableTypeIncomingPaymentDetail ReturnListParamsReturnableType = "incoming_payment_detail"
-	ReturnListParamsReturnableTypePaperItem             ReturnListParamsReturnableType = "paper_item"
 	ReturnListParamsReturnableTypePaymentOrder          ReturnListParamsReturnableType = "payment_order"
 	ReturnListParamsReturnableTypeReturn                ReturnListParamsReturnableType = "return"
 	ReturnListParamsReturnableTypeReversal              ReturnListParamsReturnableType = "reversal"
@@ -774,7 +771,7 @@ const (
 
 func (r ReturnListParamsReturnableType) IsKnown() bool {
 	switch r {
-	case ReturnListParamsReturnableTypeIncomingPaymentDetail, ReturnListParamsReturnableTypePaperItem, ReturnListParamsReturnableTypePaymentOrder, ReturnListParamsReturnableTypeReturn, ReturnListParamsReturnableTypeReversal:
+	case ReturnListParamsReturnableTypeIncomingPaymentDetail, ReturnListParamsReturnableTypePaymentOrder, ReturnListParamsReturnableTypeReturn, ReturnListParamsReturnableTypeReversal:
 		return true
 	}
 	return false

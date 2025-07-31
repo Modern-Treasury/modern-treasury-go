@@ -171,7 +171,6 @@ type TransactionLineItemTransactableType string
 
 const (
 	TransactionLineItemTransactableTypeIncomingPaymentDetail TransactionLineItemTransactableType = "incoming_payment_detail"
-	TransactionLineItemTransactableTypePaperItem             TransactionLineItemTransactableType = "paper_item"
 	TransactionLineItemTransactableTypePaymentOrder          TransactionLineItemTransactableType = "payment_order"
 	TransactionLineItemTransactableTypePaymentOrderAttempt   TransactionLineItemTransactableType = "payment_order_attempt"
 	TransactionLineItemTransactableTypeReturn                TransactionLineItemTransactableType = "return"
@@ -180,7 +179,7 @@ const (
 
 func (r TransactionLineItemTransactableType) IsKnown() bool {
 	switch r {
-	case TransactionLineItemTransactableTypeIncomingPaymentDetail, TransactionLineItemTransactableTypePaperItem, TransactionLineItemTransactableTypePaymentOrder, TransactionLineItemTransactableTypePaymentOrderAttempt, TransactionLineItemTransactableTypeReturn, TransactionLineItemTransactableTypeReversal:
+	case TransactionLineItemTransactableTypeIncomingPaymentDetail, TransactionLineItemTransactableTypePaymentOrder, TransactionLineItemTransactableTypePaymentOrderAttempt, TransactionLineItemTransactableTypeReturn, TransactionLineItemTransactableTypeReversal:
 		return true
 	}
 	return false

@@ -641,7 +641,6 @@ type BulkResultEntityLedgerableType string
 const (
 	BulkResultEntityLedgerableTypeExpectedPayment       BulkResultEntityLedgerableType = "expected_payment"
 	BulkResultEntityLedgerableTypeIncomingPaymentDetail BulkResultEntityLedgerableType = "incoming_payment_detail"
-	BulkResultEntityLedgerableTypePaperItem             BulkResultEntityLedgerableType = "paper_item"
 	BulkResultEntityLedgerableTypePaymentOrder          BulkResultEntityLedgerableType = "payment_order"
 	BulkResultEntityLedgerableTypeReturn                BulkResultEntityLedgerableType = "return"
 	BulkResultEntityLedgerableTypeReversal              BulkResultEntityLedgerableType = "reversal"
@@ -653,7 +652,7 @@ const (
 
 func (r BulkResultEntityLedgerableType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityLedgerableTypeExpectedPayment, BulkResultEntityLedgerableTypeIncomingPaymentDetail, BulkResultEntityLedgerableTypePaperItem, BulkResultEntityLedgerableTypePaymentOrder, BulkResultEntityLedgerableTypeReturn, BulkResultEntityLedgerableTypeReversal, BulkResultEntityLedgerableTypeCounterparty, BulkResultEntityLedgerableTypeExternalAccount, BulkResultEntityLedgerableTypeInternalAccount, BulkResultEntityLedgerableTypeVirtualAccount:
+	case BulkResultEntityLedgerableTypeExpectedPayment, BulkResultEntityLedgerableTypeIncomingPaymentDetail, BulkResultEntityLedgerableTypePaymentOrder, BulkResultEntityLedgerableTypeReturn, BulkResultEntityLedgerableTypeReversal, BulkResultEntityLedgerableTypeCounterparty, BulkResultEntityLedgerableTypeExternalAccount, BulkResultEntityLedgerableTypeInternalAccount, BulkResultEntityLedgerableTypeVirtualAccount:
 		return true
 	}
 	return false
