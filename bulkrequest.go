@@ -333,8 +333,7 @@ type BulkRequestNewParamsResource struct {
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-	// reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 	LedgerableType param.Field[BulkRequestNewParamsResourcesLedgerableType] `json:"ledgerable_type"`
 	LineItems      param.Field[interface{}]                                 `json:"line_items"`
 	Metadata       param.Field[interface{}]                                 `json:"metadata"`
@@ -1651,8 +1650,7 @@ type BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID struct {
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-	// reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 	LedgerableType param.Field[BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
@@ -1670,8 +1668,7 @@ func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID) Imple
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-// reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 type BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDLedgerableType string
 
 const (
@@ -1763,8 +1760,7 @@ func (r BulkRequestNewParamsResourcesForeignExchangeIndicator) IsKnown() bool {
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-// reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 type BulkRequestNewParamsResourcesLedgerableType string
 
 const (

@@ -745,8 +745,8 @@ type ReturnListParams struct {
 	PerPage           param.Field[int64]  `query:"per_page"`
 	// The ID of a valid returnable. Must be accompanied by `returnable_type`.
 	ReturnableID param.Field[string] `query:"returnable_id"`
-	// One of `payment_order`, `paper_item`, `reversal`, or `incoming_payment_detail`.
-	// Must be accompanied by `returnable_id`.
+	// One of `payment_order`, `reversal`, or `incoming_payment_detail`. Must be
+	// accompanied by `returnable_id`.
 	ReturnableType param.Field[ReturnListParamsReturnableType] `query:"returnable_type"`
 }
 
@@ -758,8 +758,8 @@ func (r ReturnListParams) URLQuery() (v url.Values) {
 	})
 }
 
-// One of `payment_order`, `paper_item`, `reversal`, or `incoming_payment_detail`.
-// Must be accompanied by `returnable_id`.
+// One of `payment_order`, `reversal`, or `incoming_payment_detail`. Must be
+// accompanied by `returnable_id`.
 type ReturnListParamsReturnableType string
 
 const (
