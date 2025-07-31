@@ -218,7 +218,6 @@ type LedgerTransactionLedgerableType string
 const (
 	LedgerTransactionLedgerableTypeExpectedPayment       LedgerTransactionLedgerableType = "expected_payment"
 	LedgerTransactionLedgerableTypeIncomingPaymentDetail LedgerTransactionLedgerableType = "incoming_payment_detail"
-	LedgerTransactionLedgerableTypePaperItem             LedgerTransactionLedgerableType = "paper_item"
 	LedgerTransactionLedgerableTypePaymentOrder          LedgerTransactionLedgerableType = "payment_order"
 	LedgerTransactionLedgerableTypeReturn                LedgerTransactionLedgerableType = "return"
 	LedgerTransactionLedgerableTypeReversal              LedgerTransactionLedgerableType = "reversal"
@@ -226,7 +225,7 @@ const (
 
 func (r LedgerTransactionLedgerableType) IsKnown() bool {
 	switch r {
-	case LedgerTransactionLedgerableTypeExpectedPayment, LedgerTransactionLedgerableTypeIncomingPaymentDetail, LedgerTransactionLedgerableTypePaperItem, LedgerTransactionLedgerableTypePaymentOrder, LedgerTransactionLedgerableTypeReturn, LedgerTransactionLedgerableTypeReversal:
+	case LedgerTransactionLedgerableTypeExpectedPayment, LedgerTransactionLedgerableTypeIncomingPaymentDetail, LedgerTransactionLedgerableTypePaymentOrder, LedgerTransactionLedgerableTypeReturn, LedgerTransactionLedgerableTypeReversal:
 		return true
 	}
 	return false
@@ -293,7 +292,6 @@ type LedgerTransactionUpdateParamsLedgerableType string
 const (
 	LedgerTransactionUpdateParamsLedgerableTypeExpectedPayment       LedgerTransactionUpdateParamsLedgerableType = "expected_payment"
 	LedgerTransactionUpdateParamsLedgerableTypeIncomingPaymentDetail LedgerTransactionUpdateParamsLedgerableType = "incoming_payment_detail"
-	LedgerTransactionUpdateParamsLedgerableTypePaperItem             LedgerTransactionUpdateParamsLedgerableType = "paper_item"
 	LedgerTransactionUpdateParamsLedgerableTypePaymentOrder          LedgerTransactionUpdateParamsLedgerableType = "payment_order"
 	LedgerTransactionUpdateParamsLedgerableTypeReturn                LedgerTransactionUpdateParamsLedgerableType = "return"
 	LedgerTransactionUpdateParamsLedgerableTypeReversal              LedgerTransactionUpdateParamsLedgerableType = "reversal"
@@ -301,7 +299,7 @@ const (
 
 func (r LedgerTransactionUpdateParamsLedgerableType) IsKnown() bool {
 	switch r {
-	case LedgerTransactionUpdateParamsLedgerableTypeExpectedPayment, LedgerTransactionUpdateParamsLedgerableTypeIncomingPaymentDetail, LedgerTransactionUpdateParamsLedgerableTypePaperItem, LedgerTransactionUpdateParamsLedgerableTypePaymentOrder, LedgerTransactionUpdateParamsLedgerableTypeReturn, LedgerTransactionUpdateParamsLedgerableTypeReversal:
+	case LedgerTransactionUpdateParamsLedgerableTypeExpectedPayment, LedgerTransactionUpdateParamsLedgerableTypeIncomingPaymentDetail, LedgerTransactionUpdateParamsLedgerableTypePaymentOrder, LedgerTransactionUpdateParamsLedgerableTypeReturn, LedgerTransactionUpdateParamsLedgerableTypeReversal:
 		return true
 	}
 	return false
@@ -380,7 +378,6 @@ type LedgerTransactionListParamsLedgerableType string
 const (
 	LedgerTransactionListParamsLedgerableTypeExpectedPayment       LedgerTransactionListParamsLedgerableType = "expected_payment"
 	LedgerTransactionListParamsLedgerableTypeIncomingPaymentDetail LedgerTransactionListParamsLedgerableType = "incoming_payment_detail"
-	LedgerTransactionListParamsLedgerableTypePaperItem             LedgerTransactionListParamsLedgerableType = "paper_item"
 	LedgerTransactionListParamsLedgerableTypePaymentOrder          LedgerTransactionListParamsLedgerableType = "payment_order"
 	LedgerTransactionListParamsLedgerableTypeReturn                LedgerTransactionListParamsLedgerableType = "return"
 	LedgerTransactionListParamsLedgerableTypeReversal              LedgerTransactionListParamsLedgerableType = "reversal"
@@ -388,7 +385,7 @@ const (
 
 func (r LedgerTransactionListParamsLedgerableType) IsKnown() bool {
 	switch r {
-	case LedgerTransactionListParamsLedgerableTypeExpectedPayment, LedgerTransactionListParamsLedgerableTypeIncomingPaymentDetail, LedgerTransactionListParamsLedgerableTypePaperItem, LedgerTransactionListParamsLedgerableTypePaymentOrder, LedgerTransactionListParamsLedgerableTypeReturn, LedgerTransactionListParamsLedgerableTypeReversal:
+	case LedgerTransactionListParamsLedgerableTypeExpectedPayment, LedgerTransactionListParamsLedgerableTypeIncomingPaymentDetail, LedgerTransactionListParamsLedgerableTypePaymentOrder, LedgerTransactionListParamsLedgerableTypeReturn, LedgerTransactionListParamsLedgerableTypeReversal:
 		return true
 	}
 	return false
@@ -579,7 +576,6 @@ type LedgerTransactionNewReversalParamsLedgerableType string
 const (
 	LedgerTransactionNewReversalParamsLedgerableTypeExpectedPayment       LedgerTransactionNewReversalParamsLedgerableType = "expected_payment"
 	LedgerTransactionNewReversalParamsLedgerableTypeIncomingPaymentDetail LedgerTransactionNewReversalParamsLedgerableType = "incoming_payment_detail"
-	LedgerTransactionNewReversalParamsLedgerableTypePaperItem             LedgerTransactionNewReversalParamsLedgerableType = "paper_item"
 	LedgerTransactionNewReversalParamsLedgerableTypePaymentOrder          LedgerTransactionNewReversalParamsLedgerableType = "payment_order"
 	LedgerTransactionNewReversalParamsLedgerableTypeReturn                LedgerTransactionNewReversalParamsLedgerableType = "return"
 	LedgerTransactionNewReversalParamsLedgerableTypeReversal              LedgerTransactionNewReversalParamsLedgerableType = "reversal"
@@ -587,7 +583,7 @@ const (
 
 func (r LedgerTransactionNewReversalParamsLedgerableType) IsKnown() bool {
 	switch r {
-	case LedgerTransactionNewReversalParamsLedgerableTypeExpectedPayment, LedgerTransactionNewReversalParamsLedgerableTypeIncomingPaymentDetail, LedgerTransactionNewReversalParamsLedgerableTypePaperItem, LedgerTransactionNewReversalParamsLedgerableTypePaymentOrder, LedgerTransactionNewReversalParamsLedgerableTypeReturn, LedgerTransactionNewReversalParamsLedgerableTypeReversal:
+	case LedgerTransactionNewReversalParamsLedgerableTypeExpectedPayment, LedgerTransactionNewReversalParamsLedgerableTypeIncomingPaymentDetail, LedgerTransactionNewReversalParamsLedgerableTypePaymentOrder, LedgerTransactionNewReversalParamsLedgerableTypeReturn, LedgerTransactionNewReversalParamsLedgerableTypeReversal:
 		return true
 	}
 	return false

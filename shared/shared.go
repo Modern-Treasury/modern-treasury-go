@@ -875,7 +875,6 @@ type LedgerTransactionCreateRequestLedgerableType string
 const (
 	LedgerTransactionCreateRequestLedgerableTypeExpectedPayment       LedgerTransactionCreateRequestLedgerableType = "expected_payment"
 	LedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail LedgerTransactionCreateRequestLedgerableType = "incoming_payment_detail"
-	LedgerTransactionCreateRequestLedgerableTypePaperItem             LedgerTransactionCreateRequestLedgerableType = "paper_item"
 	LedgerTransactionCreateRequestLedgerableTypePaymentOrder          LedgerTransactionCreateRequestLedgerableType = "payment_order"
 	LedgerTransactionCreateRequestLedgerableTypeReturn                LedgerTransactionCreateRequestLedgerableType = "return"
 	LedgerTransactionCreateRequestLedgerableTypeReversal              LedgerTransactionCreateRequestLedgerableType = "reversal"
@@ -883,7 +882,7 @@ const (
 
 func (r LedgerTransactionCreateRequestLedgerableType) IsKnown() bool {
 	switch r {
-	case LedgerTransactionCreateRequestLedgerableTypeExpectedPayment, LedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail, LedgerTransactionCreateRequestLedgerableTypePaperItem, LedgerTransactionCreateRequestLedgerableTypePaymentOrder, LedgerTransactionCreateRequestLedgerableTypeReturn, LedgerTransactionCreateRequestLedgerableTypeReversal:
+	case LedgerTransactionCreateRequestLedgerableTypeExpectedPayment, LedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail, LedgerTransactionCreateRequestLedgerableTypePaymentOrder, LedgerTransactionCreateRequestLedgerableTypeReturn, LedgerTransactionCreateRequestLedgerableTypeReversal:
 		return true
 	}
 	return false

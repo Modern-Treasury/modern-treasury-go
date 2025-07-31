@@ -473,16 +473,6 @@ Methods:
 - <code title="get /api/validations/routing_numbers">client.Validations.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ValidationService.ValidateRoutingNumber">ValidateRoutingNumber</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ValidationValidateRoutingNumberParams">ValidationValidateRoutingNumberParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#RoutingNumberLookupRequest">RoutingNumberLookupRequest</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # PaperItems
-
-Response Types:
-
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaperItem">PaperItem</a>
-
-Methods:
-
-- <code title="get /api/paper_items/{id}">client.PaperItems.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaperItemService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaperItem">PaperItem</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="get /api/paper_items">client.PaperItems.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaperItemService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaperItemListParams">PaperItemListParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination#Page">Page</a>[<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaperItem">PaperItem</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-
 # Webhooks
 
 Methods:
