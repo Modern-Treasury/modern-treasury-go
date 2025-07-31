@@ -184,7 +184,6 @@ const (
 	DocumentDocumentableTypeIncomingPaymentDetail DocumentDocumentableType = "incoming_payment_detail"
 	DocumentDocumentableTypeInternalAccount       DocumentDocumentableType = "internal_account"
 	DocumentDocumentableTypeOrganization          DocumentDocumentableType = "organization"
-	DocumentDocumentableTypePaperItem             DocumentDocumentableType = "paper_item"
 	DocumentDocumentableTypePaymentOrder          DocumentDocumentableType = "payment_order"
 	DocumentDocumentableTypeTransaction           DocumentDocumentableType = "transaction"
 	DocumentDocumentableTypeConnection            DocumentDocumentableType = "connection"
@@ -192,7 +191,7 @@ const (
 
 func (r DocumentDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentDocumentableTypeCounterparty, DocumentDocumentableTypeExpectedPayment, DocumentDocumentableTypeExternalAccount, DocumentDocumentableTypeIdentification, DocumentDocumentableTypeIncomingPaymentDetail, DocumentDocumentableTypeInternalAccount, DocumentDocumentableTypeOrganization, DocumentDocumentableTypePaperItem, DocumentDocumentableTypePaymentOrder, DocumentDocumentableTypeTransaction, DocumentDocumentableTypeConnection:
+	case DocumentDocumentableTypeCounterparty, DocumentDocumentableTypeExpectedPayment, DocumentDocumentableTypeExternalAccount, DocumentDocumentableTypeIdentification, DocumentDocumentableTypeIncomingPaymentDetail, DocumentDocumentableTypeInternalAccount, DocumentDocumentableTypeOrganization, DocumentDocumentableTypePaymentOrder, DocumentDocumentableTypeTransaction, DocumentDocumentableTypeConnection:
 		return true
 	}
 	return false
@@ -259,7 +258,6 @@ const (
 	DocumentNewParamsDocumentableTypeIncomingPaymentDetails DocumentNewParamsDocumentableType = "incoming_payment_details"
 	DocumentNewParamsDocumentableTypeInternalAccounts       DocumentNewParamsDocumentableType = "internal_accounts"
 	DocumentNewParamsDocumentableTypeOrganizations          DocumentNewParamsDocumentableType = "organizations"
-	DocumentNewParamsDocumentableTypePaperItems             DocumentNewParamsDocumentableType = "paper_items"
 	DocumentNewParamsDocumentableTypePaymentOrders          DocumentNewParamsDocumentableType = "payment_orders"
 	DocumentNewParamsDocumentableTypeTransactions           DocumentNewParamsDocumentableType = "transactions"
 	DocumentNewParamsDocumentableTypeConnections            DocumentNewParamsDocumentableType = "connections"
@@ -267,7 +265,7 @@ const (
 
 func (r DocumentNewParamsDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentNewParamsDocumentableTypeCounterparties, DocumentNewParamsDocumentableTypeExpectedPayments, DocumentNewParamsDocumentableTypeExternalAccounts, DocumentNewParamsDocumentableTypeIdentifications, DocumentNewParamsDocumentableTypeIncomingPaymentDetails, DocumentNewParamsDocumentableTypeInternalAccounts, DocumentNewParamsDocumentableTypeOrganizations, DocumentNewParamsDocumentableTypePaperItems, DocumentNewParamsDocumentableTypePaymentOrders, DocumentNewParamsDocumentableTypeTransactions, DocumentNewParamsDocumentableTypeConnections:
+	case DocumentNewParamsDocumentableTypeCounterparties, DocumentNewParamsDocumentableTypeExpectedPayments, DocumentNewParamsDocumentableTypeExternalAccounts, DocumentNewParamsDocumentableTypeIdentifications, DocumentNewParamsDocumentableTypeIncomingPaymentDetails, DocumentNewParamsDocumentableTypeInternalAccounts, DocumentNewParamsDocumentableTypeOrganizations, DocumentNewParamsDocumentableTypePaymentOrders, DocumentNewParamsDocumentableTypeTransactions, DocumentNewParamsDocumentableTypeConnections:
 		return true
 	}
 	return false
@@ -305,7 +303,6 @@ const (
 	DocumentListParamsDocumentableTypeIncomingPaymentDetails DocumentListParamsDocumentableType = "incoming_payment_details"
 	DocumentListParamsDocumentableTypeInternalAccounts       DocumentListParamsDocumentableType = "internal_accounts"
 	DocumentListParamsDocumentableTypeOrganizations          DocumentListParamsDocumentableType = "organizations"
-	DocumentListParamsDocumentableTypePaperItems             DocumentListParamsDocumentableType = "paper_items"
 	DocumentListParamsDocumentableTypePaymentOrders          DocumentListParamsDocumentableType = "payment_orders"
 	DocumentListParamsDocumentableTypeTransactions           DocumentListParamsDocumentableType = "transactions"
 	DocumentListParamsDocumentableTypeConnections            DocumentListParamsDocumentableType = "connections"
@@ -313,7 +310,7 @@ const (
 
 func (r DocumentListParamsDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentListParamsDocumentableTypeCounterparties, DocumentListParamsDocumentableTypeExpectedPayments, DocumentListParamsDocumentableTypeExternalAccounts, DocumentListParamsDocumentableTypeIdentifications, DocumentListParamsDocumentableTypeIncomingPaymentDetails, DocumentListParamsDocumentableTypeInternalAccounts, DocumentListParamsDocumentableTypeOrganizations, DocumentListParamsDocumentableTypePaperItems, DocumentListParamsDocumentableTypePaymentOrders, DocumentListParamsDocumentableTypeTransactions, DocumentListParamsDocumentableTypeConnections:
+	case DocumentListParamsDocumentableTypeCounterparties, DocumentListParamsDocumentableTypeExpectedPayments, DocumentListParamsDocumentableTypeExternalAccounts, DocumentListParamsDocumentableTypeIdentifications, DocumentListParamsDocumentableTypeIncomingPaymentDetails, DocumentListParamsDocumentableTypeInternalAccounts, DocumentListParamsDocumentableTypeOrganizations, DocumentListParamsDocumentableTypePaymentOrders, DocumentListParamsDocumentableTypeTransactions, DocumentListParamsDocumentableTypeConnections:
 		return true
 	}
 	return false

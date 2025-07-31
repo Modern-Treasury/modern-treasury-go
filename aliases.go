@@ -829,9 +829,6 @@ const LedgerTransactionCreateRequestLedgerableTypeExpectedPayment = shared.Ledge
 const LedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail = shared.LedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail
 
 // This is an alias to an internal value.
-const LedgerTransactionCreateRequestLedgerableTypePaperItem = shared.LedgerTransactionCreateRequestLedgerableTypePaperItem
-
-// This is an alias to an internal value.
 const LedgerTransactionCreateRequestLedgerableTypePaymentOrder = shared.LedgerTransactionCreateRequestLedgerableTypePaymentOrder
 
 // This is an alias to an internal value.

@@ -251,7 +251,6 @@ type LedgerTransactionVersionLedgerableType string
 const (
 	LedgerTransactionVersionLedgerableTypeExpectedPayment       LedgerTransactionVersionLedgerableType = "expected_payment"
 	LedgerTransactionVersionLedgerableTypeIncomingPaymentDetail LedgerTransactionVersionLedgerableType = "incoming_payment_detail"
-	LedgerTransactionVersionLedgerableTypePaperItem             LedgerTransactionVersionLedgerableType = "paper_item"
 	LedgerTransactionVersionLedgerableTypePaymentOrder          LedgerTransactionVersionLedgerableType = "payment_order"
 	LedgerTransactionVersionLedgerableTypeReturn                LedgerTransactionVersionLedgerableType = "return"
 	LedgerTransactionVersionLedgerableTypeReversal              LedgerTransactionVersionLedgerableType = "reversal"
@@ -259,7 +258,7 @@ const (
 
 func (r LedgerTransactionVersionLedgerableType) IsKnown() bool {
 	switch r {
-	case LedgerTransactionVersionLedgerableTypeExpectedPayment, LedgerTransactionVersionLedgerableTypeIncomingPaymentDetail, LedgerTransactionVersionLedgerableTypePaperItem, LedgerTransactionVersionLedgerableTypePaymentOrder, LedgerTransactionVersionLedgerableTypeReturn, LedgerTransactionVersionLedgerableTypeReversal:
+	case LedgerTransactionVersionLedgerableTypeExpectedPayment, LedgerTransactionVersionLedgerableTypeIncomingPaymentDetail, LedgerTransactionVersionLedgerableTypePaymentOrder, LedgerTransactionVersionLedgerableTypeReturn, LedgerTransactionVersionLedgerableTypeReversal:
 		return true
 	}
 	return false
