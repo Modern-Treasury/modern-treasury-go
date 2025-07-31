@@ -94,8 +94,8 @@ type Document struct {
 	// The unique identifier for the associated object.
 	DocumentableID string `json:"documentable_id,required" format:"uuid"`
 	// The type of the associated object. Currently can be one of `payment_order`,
-	// `transaction`, `paper_item`, `expected_payment`, `counterparty`, `organization`,
-	// `case`, `internal_account`, `decision`, or `external_account`.
+	// `transaction`, `expected_payment`, `counterparty`, `organization`, `case`,
+	// `internal_account`, `decision`, or `external_account`.
 	DocumentableType DocumentDocumentableType `json:"documentable_type,required"`
 	File             DocumentFile             `json:"file,required"`
 	// This field will be true if this object exists in the live environment or false
@@ -172,8 +172,8 @@ func (r documentDocumentDetailJSON) RawJSON() string {
 }
 
 // The type of the associated object. Currently can be one of `payment_order`,
-// `transaction`, `paper_item`, `expected_payment`, `counterparty`, `organization`,
-// `case`, `internal_account`, `decision`, or `external_account`.
+// `transaction`, `expected_payment`, `counterparty`, `organization`, `case`,
+// `internal_account`, `decision`, or `external_account`.
 type DocumentDocumentableType string
 
 const (
@@ -276,8 +276,8 @@ type DocumentListParams struct {
 	// The unique identifier for the associated object.
 	DocumentableID param.Field[string] `query:"documentable_id"`
 	// The type of the associated object. Currently can be one of `payment_order`,
-	// `transaction`, `paper_item`, `expected_payment`, `counterparty`, `organization`,
-	// `case`, `internal_account`, `decision`, or `external_account`.
+	// `transaction`, `expected_payment`, `counterparty`, `organization`, `case`,
+	// `internal_account`, `decision`, or `external_account`.
 	DocumentableType param.Field[DocumentListParamsDocumentableType] `query:"documentable_type"`
 	PerPage          param.Field[int64]                              `query:"per_page"`
 }
@@ -291,8 +291,8 @@ func (r DocumentListParams) URLQuery() (v url.Values) {
 }
 
 // The type of the associated object. Currently can be one of `payment_order`,
-// `transaction`, `paper_item`, `expected_payment`, `counterparty`, `organization`,
-// `case`, `internal_account`, `decision`, or `external_account`.
+// `transaction`, `expected_payment`, `counterparty`, `organization`, `case`,
+// `internal_account`, `decision`, or `external_account`.
 type DocumentListParamsDocumentableType string
 
 const (

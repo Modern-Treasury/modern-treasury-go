@@ -147,8 +147,7 @@ type LedgerTransaction struct {
 	LedgerableID string `json:"ledgerable_id,required,nullable" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-	// reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 	LedgerableType LedgerTransactionLedgerableType `json:"ledgerable_type,required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
@@ -211,8 +210,7 @@ func (r LedgerTransaction) implementsBulkResultEntity() {}
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-// reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 type LedgerTransactionLedgerableType string
 
 const (
@@ -269,8 +267,7 @@ type LedgerTransactionUpdateParams struct {
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-	// reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 	LedgerableType param.Field[LedgerTransactionUpdateParamsLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
@@ -285,8 +282,7 @@ func (r LedgerTransactionUpdateParams) MarshalJSON() (data []byte, err error) {
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-// reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 type LedgerTransactionUpdateParamsLedgerableType string
 
 const (

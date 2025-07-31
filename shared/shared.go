@@ -850,8 +850,7 @@ type LedgerTransactionCreateRequestParam struct {
 	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-	// reversal.
+	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 	LedgerableType param.Field[LedgerTransactionCreateRequestLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
@@ -868,8 +867,7 @@ func (r LedgerTransactionCreateRequestParam) ImplementsBulkRequestNewParamsResou
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
-// payment_order, incoming_payment_detail, expected_payment, return, paper_item, or
-// reversal.
+// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
 type LedgerTransactionCreateRequestLedgerableType string
 
 const (
