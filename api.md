@@ -472,7 +472,6 @@ Methods:
 
 - <code title="get /api/validations/routing_numbers">client.Validations.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ValidationService.ValidateRoutingNumber">ValidateRoutingNumber</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ValidationValidateRoutingNumberParams">ValidationValidateRoutingNumberParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#RoutingNumberLookupRequest">RoutingNumberLookupRequest</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
-# PaperItems
 # Webhooks
 
 Methods:
