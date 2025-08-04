@@ -120,7 +120,7 @@ func TestLedgerEntryListWithOptionalParams(t *testing.T) {
 		PerPage:      moderntreasury.F(int64(0)),
 		ShowBalances: moderntreasury.F(true),
 		ShowDeleted:  moderntreasury.F(true),
-		Status:       moderntreasury.F[moderntreasury.LedgerEntryListParamsStatusUnion](moderntreasury.LedgerEntryListParamsStatusString(moderntreasury.LedgerEntryListParamsStatusStringPending)),
+		Status:       moderntreasury.F([]moderntreasury.LedgerEntryListParamsStatus{moderntreasury.LedgerEntryListParamsStatusPending}),
 		UpdatedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
