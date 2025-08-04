@@ -255,7 +255,7 @@ type LedgerEntryListParams struct {
 	// Get all ledger entries that match the status specified. One of `pending`,
 	// `posted`, or `archived`. For multiple statuses, use
 	// `status[]=pending&status[]=posted`.
-	Status param.Field[LedgerEntryListParamsStatusUnion] `query:"status"`
+	Status param.Field[[]LedgerEntryListParamsStatus] `query:"status"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// updated_at%5Bgt%5D=2000-01-01T12:00:00Z.
@@ -317,49 +317,17 @@ func (r LedgerEntryListParamsOrderByEffectiveAt) IsKnown() bool {
 	return false
 }
 
-// Get all ledger entries that match the status specified. One of `pending`,
-// `posted`, or `archived`. For multiple statuses, use
-// `status[]=pending&status[]=posted`.
-//
-// Satisfied by [LedgerEntryListParamsStatusString],
-// [LedgerEntryListParamsStatusArray].
-type LedgerEntryListParamsStatusUnion interface {
-	implementsLedgerEntryListParamsStatusUnion()
-}
-
-type LedgerEntryListParamsStatusString string
+type LedgerEntryListParamsStatus string
 
 const (
-	LedgerEntryListParamsStatusStringPending  LedgerEntryListParamsStatusString = "pending"
-	LedgerEntryListParamsStatusStringPosted   LedgerEntryListParamsStatusString = "posted"
-	LedgerEntryListParamsStatusStringArchived LedgerEntryListParamsStatusString = "archived"
+	LedgerEntryListParamsStatusPending  LedgerEntryListParamsStatus = "pending"
+	LedgerEntryListParamsStatusPosted   LedgerEntryListParamsStatus = "posted"
+	LedgerEntryListParamsStatusArchived LedgerEntryListParamsStatus = "archived"
 )
 
-func (r LedgerEntryListParamsStatusString) IsKnown() bool {
+func (r LedgerEntryListParamsStatus) IsKnown() bool {
 	switch r {
-	case LedgerEntryListParamsStatusStringPending, LedgerEntryListParamsStatusStringPosted, LedgerEntryListParamsStatusStringArchived:
-		return true
-	}
-	return false
-}
-
-func (r LedgerEntryListParamsStatusString) implementsLedgerEntryListParamsStatusUnion() {}
-
-type LedgerEntryListParamsStatusArray []LedgerEntryListParamsStatusArrayItem
-
-func (r LedgerEntryListParamsStatusArray) implementsLedgerEntryListParamsStatusUnion() {}
-
-type LedgerEntryListParamsStatusArrayItem string
-
-const (
-	LedgerEntryListParamsStatusArrayItemPending  LedgerEntryListParamsStatusArrayItem = "pending"
-	LedgerEntryListParamsStatusArrayItemPosted   LedgerEntryListParamsStatusArrayItem = "posted"
-	LedgerEntryListParamsStatusArrayItemArchived LedgerEntryListParamsStatusArrayItem = "archived"
-)
-
-func (r LedgerEntryListParamsStatusArrayItem) IsKnown() bool {
-	switch r {
-	case LedgerEntryListParamsStatusArrayItemPending, LedgerEntryListParamsStatusArrayItemPosted, LedgerEntryListParamsStatusArrayItemArchived:
+	case LedgerEntryListParamsStatusPending, LedgerEntryListParamsStatusPosted, LedgerEntryListParamsStatusArchived:
 		return true
 	}
 	return false
