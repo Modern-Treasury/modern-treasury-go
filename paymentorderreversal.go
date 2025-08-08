@@ -111,7 +111,7 @@ type Reversal struct {
 	Reason ReversalReason `json:"reason,required"`
 	// The current status of the reversal.
 	Status         ReversalStatus `json:"status,required"`
-	TransactionIDs []interface{}  `json:"transaction_ids,required"`
+	TransactionIDs []string       `json:"transaction_ids,required" format:"uuid"`
 	UpdatedAt      time.Time      `json:"updated_at,required" format:"date-time"`
 	JSON           reversalJSON   `json:"-"`
 }

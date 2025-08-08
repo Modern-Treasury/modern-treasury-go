@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.30.0 (2025-08-08)
+
+Full Changelog: [v2.29.0...v2.30.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.29.0...v2.30.0)
+
+### Features
+
+* **api:** api update ([a656fa5](https://github.com/Modern-Treasury/modern-treasury-go/commit/a656fa5206cd88c57a40067896d7fa7244ec9c64))
+* **api:** api update ([4e45a6f](https://github.com/Modern-Treasury/modern-treasury-go/commit/4e45a6f4a6e6df09c51c1b67d901814cad189386))
+* **api:** manual updates ([c65546e](https://github.com/Modern-Treasury/modern-treasury-go/commit/c65546e781997f188a3e0645ac9aa07d1ae36455))
+* **api:** manual updates ([96f6526](https://github.com/Modern-Treasury/modern-treasury-go/commit/96f65267b1cd7d4dc0de354019f930174f7ff381))
+* **client:** support optional json html escaping ([2f30f8a](https://github.com/Modern-Treasury/modern-treasury-go/commit/2f30f8a9b08b7a28f7d0a770b60cb3f3fadc109d))
+
+
+### Chores
+
+* **internal:** update comment in script ([cd4e893](https://github.com/Modern-Treasury/modern-treasury-go/commit/cd4e893ac2cdf19bffe1f40e214f0635c32b74bd))
+* update @stainless-api/prism-cli to v5.15.0 ([1044f41](https://github.com/Modern-Treasury/modern-treasury-go/commit/1044f41bb998b051074173d635d90783c2d2e972))
+
 ## 2.29.0 (2025-08-01)
 
 Full Changelog: [v2.28.0...v2.29.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.28.0...v2.29.0)

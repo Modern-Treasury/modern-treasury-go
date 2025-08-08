@@ -426,13 +426,14 @@ type PaymentActionListParamsType string
 
 const (
 	PaymentActionListParamsTypeEvolveNonProcessingTransaction PaymentActionListParamsType = "evolve_non_processing_transaction"
+	PaymentActionListParamsTypeControlFile                    PaymentActionListParamsType = "control_file"
 	PaymentActionListParamsTypeStop                           PaymentActionListParamsType = "stop"
 	PaymentActionListParamsTypeIssue                          PaymentActionListParamsType = "issue"
 )
 
 func (r PaymentActionListParamsType) IsKnown() bool {
 	switch r {
-	case PaymentActionListParamsTypeEvolveNonProcessingTransaction, PaymentActionListParamsTypeStop, PaymentActionListParamsTypeIssue:
+	case PaymentActionListParamsTypeEvolveNonProcessingTransaction, PaymentActionListParamsTypeControlFile, PaymentActionListParamsTypeStop, PaymentActionListParamsTypeIssue:
 		return true
 	}
 	return false
