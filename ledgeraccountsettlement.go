@@ -225,13 +225,14 @@ func (r LedgerAccountSettlementNewParams) MarshalJSON() (data []byte, err error)
 type LedgerAccountSettlementNewParamsStatus string
 
 const (
-	LedgerAccountSettlementNewParamsStatusPending LedgerAccountSettlementNewParamsStatus = "pending"
-	LedgerAccountSettlementNewParamsStatusPosted  LedgerAccountSettlementNewParamsStatus = "posted"
+	LedgerAccountSettlementNewParamsStatusPending  LedgerAccountSettlementNewParamsStatus = "pending"
+	LedgerAccountSettlementNewParamsStatusPosted   LedgerAccountSettlementNewParamsStatus = "posted"
+	LedgerAccountSettlementNewParamsStatusDrafting LedgerAccountSettlementNewParamsStatus = "drafting"
 )
 
 func (r LedgerAccountSettlementNewParamsStatus) IsKnown() bool {
 	switch r {
-	case LedgerAccountSettlementNewParamsStatusPending, LedgerAccountSettlementNewParamsStatusPosted:
+	case LedgerAccountSettlementNewParamsStatusPending, LedgerAccountSettlementNewParamsStatusPosted, LedgerAccountSettlementNewParamsStatusDrafting:
 		return true
 	}
 	return false
