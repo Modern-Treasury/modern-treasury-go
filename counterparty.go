@@ -615,7 +615,7 @@ type CounterpartyNewParamsLegalEntity struct {
 	LegalEntityType param.Field[CounterpartyNewParamsLegalEntityLegalEntityType] `json:"legal_entity_type,required"`
 	// A list of addresses for the entity.
 	Addresses    param.Field[[]shared.LegalEntityAddressCreateRequestParam] `json:"addresses"`
-	BankSettings param.Field[CounterpartyNewParamsLegalEntity]              `json:"bank_settings"`
+	BankSettings param.Field[shared.LegalEntityBankSettingsParam]           `json:"bank_settings"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
@@ -655,8 +655,8 @@ type CounterpartyNewParamsLegalEntity struct {
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[CounterpartyNewParamsLegalEntityRiskRating] `json:"risk_rating"`
 	// An individual's suffix.
-	Suffix                     param.Field[string]                           `json:"suffix"`
-	WealthAndEmploymentDetails param.Field[CounterpartyNewParamsLegalEntity] `json:"wealth_and_employment_details"`
+	Suffix                     param.Field[string]                                        `json:"suffix"`
+	WealthAndEmploymentDetails param.Field[shared.LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
 }
