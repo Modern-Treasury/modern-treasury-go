@@ -209,6 +209,8 @@ type LedgerEntryListParams struct {
 	// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
 	ID          param.Field[[]string] `query:"id"`
 	AfterCursor param.Field[string]   `query:"after_cursor"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by amount.
+	Amount param.Field[LedgerEntryListParamsAmount] `query:"amount"`
 	// Shows all ledger entries that were present on a ledger account at a particular
 	// `lock_version`. You must also specify `ledger_account_id`.
 	AsOfLockVersion param.Field[int64] `query:"as_of_lock_version"`
@@ -264,6 +266,24 @@ type LedgerEntryListParams struct {
 
 // URLQuery serializes [LedgerEntryListParams]'s query parameters as `url.Values`.
 func (r LedgerEntryListParams) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by amount.
+type LedgerEntryListParamsAmount struct {
+	Eq  param.Field[int64] `query:"eq"`
+	Gt  param.Field[int64] `query:"gt"`
+	Gte param.Field[int64] `query:"gte"`
+	Lt  param.Field[int64] `query:"lt"`
+	Lte param.Field[int64] `query:"lte"`
+}
+
+// URLQuery serializes [LedgerEntryListParamsAmount]'s query parameters as
+// `url.Values`.
+func (r LedgerEntryListParamsAmount) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
