@@ -172,6 +172,13 @@ func TestLedgerTransactionListWithOptionalParams(t *testing.T) {
 	_, err := client.LedgerTransactions.List(context.TODO(), moderntreasury.LedgerTransactionListParams{
 		ID:          moderntreasury.F([]string{"string"}),
 		AfterCursor: moderntreasury.F("after_cursor"),
+		Amount: moderntreasury.F(moderntreasury.LedgerTransactionListParamsAmount{
+			Eq:  moderntreasury.F(int64(0)),
+			Gt:  moderntreasury.F(int64(0)),
+			Gte: moderntreasury.F(int64(0)),
+			Lt:  moderntreasury.F(int64(0)),
+			Lte: moderntreasury.F(int64(0)),
+		}),
 		EffectiveAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),
