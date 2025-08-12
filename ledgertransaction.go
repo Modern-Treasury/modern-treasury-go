@@ -323,6 +323,8 @@ type LedgerTransactionListParams struct {
 	// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
 	ID          param.Field[[]string] `query:"id"`
 	AfterCursor param.Field[string]   `query:"after_cursor"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by amount.
+	Amount param.Field[LedgerTransactionListParamsAmount] `query:"amount"`
 	// Use "gt" (>), "gte" (>=), "lt" (<), "lte" (<=), or "eq" (=) to filter by
 	// effective at. For example, for all transactions after Jan 1 2000, use
 	// effective_at%5Bgt%5D=2000-01-01T00:00:00:00.000Z.
@@ -363,6 +365,24 @@ type LedgerTransactionListParams struct {
 // URLQuery serializes [LedgerTransactionListParams]'s query parameters as
 // `url.Values`.
 func (r LedgerTransactionListParams) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by amount.
+type LedgerTransactionListParamsAmount struct {
+	Eq  param.Field[int64] `query:"eq"`
+	Gt  param.Field[int64] `query:"gt"`
+	Gte param.Field[int64] `query:"gte"`
+	Lt  param.Field[int64] `query:"lt"`
+	Lte param.Field[int64] `query:"lte"`
+}
+
+// URLQuery serializes [LedgerTransactionListParamsAmount]'s query parameters as
+// `url.Values`.
+func (r LedgerTransactionListParamsAmount) URLQuery() (v url.Values) {
 	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
 		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
 		NestedFormat: apiquery.NestedQueryFormatBrackets,
