@@ -109,7 +109,7 @@ type PaymentActionNewResponse struct {
 	LiveMode bool   `json:"live_mode,required"`
 	Object   string `json:"object,required"`
 	// The current status of the payment action. One of `pending`, `processing`,
-	// `sent`, `cancelled`, or `failed`.
+	// `sent`, `acknowledged`, `cancelled`, or `failed`.
 	Status string `json:"status,required"`
 	// The type of the payment action. Determines the action to be taken.
 	Type      string                       `json:"type,required"`
@@ -160,7 +160,7 @@ type PaymentActionGetResponse struct {
 	LiveMode bool   `json:"live_mode,required"`
 	Object   string `json:"object,required"`
 	// The current status of the payment action. One of `pending`, `processing`,
-	// `sent`, `cancelled`, or `failed`.
+	// `sent`, `acknowledged`, `cancelled`, or `failed`.
 	Status string `json:"status,required"`
 	// The type of the payment action. Determines the action to be taken.
 	Type      string                       `json:"type,required"`
@@ -211,7 +211,7 @@ type PaymentActionUpdateResponse struct {
 	LiveMode bool   `json:"live_mode,required"`
 	Object   string `json:"object,required"`
 	// The current status of the payment action. One of `pending`, `processing`,
-	// `sent`, `cancelled`, or `failed`.
+	// `sent`, `acknowledged`, `cancelled`, or `failed`.
 	Status string `json:"status,required"`
 	// The type of the payment action. Determines the action to be taken.
 	Type      string                          `json:"type,required"`
@@ -262,7 +262,7 @@ type PaymentActionListResponse struct {
 	LiveMode bool   `json:"live_mode,required"`
 	Object   string `json:"object,required"`
 	// The current status of the payment action. One of `pending`, `processing`,
-	// `sent`, `cancelled`, or `failed`.
+	// `sent`, `acknowledged`, `cancelled`, or `failed`.
 	Status string `json:"status,required"`
 	// The type of the payment action. Determines the action to be taken.
 	Type      string                        `json:"type,required"`
@@ -332,17 +332,18 @@ func (r PaymentActionUpdateParams) MarshalJSON() (data []byte, err error) {
 type PaymentActionUpdateParamsStatus string
 
 const (
-	PaymentActionUpdateParamsStatusPending     PaymentActionUpdateParamsStatus = "pending"
-	PaymentActionUpdateParamsStatusProcessable PaymentActionUpdateParamsStatus = "processable"
-	PaymentActionUpdateParamsStatusProcessing  PaymentActionUpdateParamsStatus = "processing"
-	PaymentActionUpdateParamsStatusSent        PaymentActionUpdateParamsStatus = "sent"
-	PaymentActionUpdateParamsStatusFailed      PaymentActionUpdateParamsStatus = "failed"
-	PaymentActionUpdateParamsStatusCancelled   PaymentActionUpdateParamsStatus = "cancelled"
+	PaymentActionUpdateParamsStatusPending      PaymentActionUpdateParamsStatus = "pending"
+	PaymentActionUpdateParamsStatusProcessable  PaymentActionUpdateParamsStatus = "processable"
+	PaymentActionUpdateParamsStatusProcessing   PaymentActionUpdateParamsStatus = "processing"
+	PaymentActionUpdateParamsStatusSent         PaymentActionUpdateParamsStatus = "sent"
+	PaymentActionUpdateParamsStatusAcknowledged PaymentActionUpdateParamsStatus = "acknowledged"
+	PaymentActionUpdateParamsStatusFailed       PaymentActionUpdateParamsStatus = "failed"
+	PaymentActionUpdateParamsStatusCancelled    PaymentActionUpdateParamsStatus = "cancelled"
 )
 
 func (r PaymentActionUpdateParamsStatus) IsKnown() bool {
 	switch r {
-	case PaymentActionUpdateParamsStatusPending, PaymentActionUpdateParamsStatusProcessable, PaymentActionUpdateParamsStatusProcessing, PaymentActionUpdateParamsStatusSent, PaymentActionUpdateParamsStatusFailed, PaymentActionUpdateParamsStatusCancelled:
+	case PaymentActionUpdateParamsStatusPending, PaymentActionUpdateParamsStatusProcessable, PaymentActionUpdateParamsStatusProcessing, PaymentActionUpdateParamsStatusSent, PaymentActionUpdateParamsStatusAcknowledged, PaymentActionUpdateParamsStatusFailed, PaymentActionUpdateParamsStatusCancelled:
 		return true
 	}
 	return false
@@ -405,17 +406,18 @@ func (r PaymentActionListParamsCreatedAt) URLQuery() (v url.Values) {
 type PaymentActionListParamsStatus string
 
 const (
-	PaymentActionListParamsStatusPending     PaymentActionListParamsStatus = "pending"
-	PaymentActionListParamsStatusProcessable PaymentActionListParamsStatus = "processable"
-	PaymentActionListParamsStatusProcessing  PaymentActionListParamsStatus = "processing"
-	PaymentActionListParamsStatusSent        PaymentActionListParamsStatus = "sent"
-	PaymentActionListParamsStatusFailed      PaymentActionListParamsStatus = "failed"
-	PaymentActionListParamsStatusCancelled   PaymentActionListParamsStatus = "cancelled"
+	PaymentActionListParamsStatusPending      PaymentActionListParamsStatus = "pending"
+	PaymentActionListParamsStatusProcessable  PaymentActionListParamsStatus = "processable"
+	PaymentActionListParamsStatusProcessing   PaymentActionListParamsStatus = "processing"
+	PaymentActionListParamsStatusSent         PaymentActionListParamsStatus = "sent"
+	PaymentActionListParamsStatusAcknowledged PaymentActionListParamsStatus = "acknowledged"
+	PaymentActionListParamsStatusFailed       PaymentActionListParamsStatus = "failed"
+	PaymentActionListParamsStatusCancelled    PaymentActionListParamsStatus = "cancelled"
 )
 
 func (r PaymentActionListParamsStatus) IsKnown() bool {
 	switch r {
-	case PaymentActionListParamsStatusPending, PaymentActionListParamsStatusProcessable, PaymentActionListParamsStatusProcessing, PaymentActionListParamsStatusSent, PaymentActionListParamsStatusFailed, PaymentActionListParamsStatusCancelled:
+	case PaymentActionListParamsStatusPending, PaymentActionListParamsStatusProcessable, PaymentActionListParamsStatusProcessing, PaymentActionListParamsStatusSent, PaymentActionListParamsStatusAcknowledged, PaymentActionListParamsStatusFailed, PaymentActionListParamsStatusCancelled:
 		return true
 	}
 	return false
@@ -425,15 +427,13 @@ func (r PaymentActionListParamsStatus) IsKnown() bool {
 type PaymentActionListParamsType string
 
 const (
-	PaymentActionListParamsTypeEvolveNonProcessingTransaction PaymentActionListParamsType = "evolve_non_processing_transaction"
-	PaymentActionListParamsTypeControlFile                    PaymentActionListParamsType = "control_file"
-	PaymentActionListParamsTypeStop                           PaymentActionListParamsType = "stop"
-	PaymentActionListParamsTypeIssue                          PaymentActionListParamsType = "issue"
+	PaymentActionListParamsTypeStop  PaymentActionListParamsType = "stop"
+	PaymentActionListParamsTypeIssue PaymentActionListParamsType = "issue"
 )
 
 func (r PaymentActionListParamsType) IsKnown() bool {
 	switch r {
-	case PaymentActionListParamsTypeEvolveNonProcessingTransaction, PaymentActionListParamsTypeControlFile, PaymentActionListParamsTypeStop, PaymentActionListParamsTypeIssue:
+	case PaymentActionListParamsTypeStop, PaymentActionListParamsTypeIssue:
 		return true
 	}
 	return false
