@@ -111,7 +111,7 @@ type LedgerAccountSettlement struct {
 	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account settlement. The default value is the
 	// created_at timestamp of the ledger account settlement.
-	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound,required" format:"date-time"`
+	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound,required,nullable" format:"date-time"`
 	// The id of the ledger that this ledger account settlement belongs to.
 	LedgerID string `json:"ledger_id,required" format:"uuid"`
 	// The id of the ledger transaction that this settlement is associated with.
