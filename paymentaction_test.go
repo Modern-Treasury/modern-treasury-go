@@ -125,7 +125,7 @@ func TestPaymentActionListWithOptionalParams(t *testing.T) {
 		}),
 		PerPage: moderntreasury.F(int64(0)),
 		Status:  moderntreasury.F(moderntreasury.PaymentActionListParamsStatusPending),
-		Type:    moderntreasury.F(moderntreasury.PaymentActionListParamsTypeEvolveNonProcessingTransaction),
+		Type:    moderntreasury.F(moderntreasury.PaymentActionListParamsTypeStop),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
