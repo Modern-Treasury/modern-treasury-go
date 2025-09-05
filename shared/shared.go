@@ -9,47 +9,6 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 )
 
-type Accounting struct {
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountID string `json:"account_id,nullable" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	ClassID string         `json:"class_id,nullable" format:"uuid"`
-	JSON    accountingJSON `json:"-"`
-}
-
-// accountingJSON contains the JSON metadata for the struct [Accounting]
-type accountingJSON struct {
-	AccountID   apijson.Field
-	ClassID     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *Accounting) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r accountingJSON) RawJSON() string {
-	return r.raw
-}
-
-type AccountingParam struct {
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountID param.Field[string] `json:"account_id" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	ClassID param.Field[string] `json:"class_id" format:"uuid"`
-}
-
-func (r AccountingParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
 type AccountsType string
 
 const (

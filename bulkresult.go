@@ -142,20 +142,14 @@ type BulkResultEntity struct {
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode   bool              `json:"live_mode,required"`
-	Object     string            `json:"object,required"`
-	UpdatedAt  time.Time         `json:"updated_at,required" format:"date-time"`
-	Accounting shared.Accounting `json:"accounting"`
+	LiveMode  bool      `json:"live_mode,required"`
+	Object    string    `json:"object,required"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
 	AccountingCategoryID string `json:"accounting_category_id,nullable" format:"uuid"`
-	// The ID of one of your accounting ledger classes. Note that these will only be
-	// accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	AccountingLedgerClassID string `json:"accounting_ledger_class_id,nullable" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount int64 `json:"amount"`
@@ -384,9 +378,7 @@ type bulkResultEntityJSON struct {
 	LiveMode                           apijson.Field
 	Object                             apijson.Field
 	UpdatedAt                          apijson.Field
-	Accounting                         apijson.Field
 	AccountingCategoryID               apijson.Field
-	AccountingLedgerClassID            apijson.Field
 	Amount                             apijson.Field
 	AmountLowerBound                   apijson.Field
 	AmountUpperBound                   apijson.Field
