@@ -10,12 +10,6 @@ import (
 type Error = apierror.Error
 
 // This is an alias to an internal type.
-type Accounting = shared.Accounting
-
-// This is an alias to an internal type.
-type AccountingParam = shared.AccountingParam
-
-// This is an alias to an internal type.
 type AccountsType = shared.AccountsType
 
 // This is an alias to an internal value.

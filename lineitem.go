@@ -16,7 +16,6 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
 
 // LineItemService contains methods and other services that help with interacting
@@ -98,15 +97,10 @@ func (r *LineItemService) ListAutoPaging(ctx context.Context, itemizableType Lin
 }
 
 type LineItem struct {
-	ID         string            `json:"id,required" format:"uuid"`
-	Accounting shared.Accounting `json:"accounting,required"`
+	ID string `json:"id,required" format:"uuid"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID string `json:"accounting_category_id,required,nullable" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	AccountingLedgerClassID string `json:"accounting_ledger_class_id,required,nullable" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
 	Amount    int64     `json:"amount,required"`
@@ -130,21 +124,19 @@ type LineItem struct {
 
 // lineItemJSON contains the JSON metadata for the struct [LineItem]
 type lineItemJSON struct {
-	ID                      apijson.Field
-	Accounting              apijson.Field
-	AccountingCategoryID    apijson.Field
-	AccountingLedgerClassID apijson.Field
-	Amount                  apijson.Field
-	CreatedAt               apijson.Field
-	Description             apijson.Field
-	ItemizableID            apijson.Field
-	ItemizableType          apijson.Field
-	LiveMode                apijson.Field
-	Metadata                apijson.Field
-	Object                  apijson.Field
-	UpdatedAt               apijson.Field
-	raw                     string
-	ExtraFields             map[string]apijson.Field
+	ID                   apijson.Field
+	AccountingCategoryID apijson.Field
+	Amount               apijson.Field
+	CreatedAt            apijson.Field
+	Description          apijson.Field
+	ItemizableID         apijson.Field
+	ItemizableType       apijson.Field
+	LiveMode             apijson.Field
+	Metadata             apijson.Field
+	Object               apijson.Field
+	UpdatedAt            apijson.Field
+	raw                  string
+	ExtraFields          map[string]apijson.Field
 }
 
 func (r *LineItem) UnmarshalJSON(data []byte) (err error) {

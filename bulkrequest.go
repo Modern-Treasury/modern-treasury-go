@@ -246,18 +246,12 @@ func (r BulkRequestNewParamsResourceType) IsKnown() bool {
 }
 
 type BulkRequestNewParamsResource struct {
-	ID         param.Field[string]                 `json:"id" format:"uuid"`
-	Accounting param.Field[shared.AccountingParam] `json:"accounting"`
+	ID param.Field[string] `json:"id" format:"uuid"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
-	// The ID of one of your accounting ledger classes. Note that these will only be
-	// accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount"`
@@ -461,18 +455,12 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
 	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
 	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
-	Type       param.Field[PaymentOrderType]       `json:"type,required"`
-	Accounting param.Field[shared.AccountingParam] `json:"accounting"`
+	Type param.Field[PaymentOrderType] `json:"type,required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
-	// The ID of one of your accounting ledger classes. Note that these will only be
-	// accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// The party that will pay the fees for the payment order. See
 	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
 	// differences between the options.
@@ -1077,18 +1065,12 @@ func (r BulkRequestNewParamsResourcesID) MarshalJSON() (data []byte, err error) 
 func (r BulkRequestNewParamsResourcesID) ImplementsBulkRequestNewParamsResourceUnion() {}
 
 type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
-	ID         param.Field[string]                 `json:"id" format:"uuid"`
-	Accounting param.Field[shared.AccountingParam] `json:"accounting"`
+	ID param.Field[string] `json:"id" format:"uuid"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
-	// The ID of one of your accounting ledger classes. Note that these will only be
-	// accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount"`
