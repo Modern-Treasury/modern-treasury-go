@@ -1,5 +1,24 @@
 # Changelog
 
+## 2.32.0 (2025-09-05)
+
+Full Changelog: [v2.31.0...v2.32.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.31.0...v2.32.0)
+
+### Features
+
+* **api:** api update ([e328f9c](https://github.com/Modern-Treasury/modern-treasury-go/commit/e328f9cef36d8256bec78d980f04397133005a71))
+* **api:** api update ([bb8e4bc](https://github.com/Modern-Treasury/modern-treasury-go/commit/bb8e4bc3eedef2ba1c63dbb0b8c7479f0db6233d))
+* **api:** api update ([913ca9a](https://github.com/Modern-Treasury/modern-treasury-go/commit/913ca9ae8541235a880a044f3c03efb4504c0d10))
+* **api:** api update ([f471ff0](https://github.com/Modern-Treasury/modern-treasury-go/commit/f471ff0f459f7dd65a67fa58c37368fc1c5af155))
+* **api:** api update ([bb01eaf](https://github.com/Modern-Treasury/modern-treasury-go/commit/bb01eaf598316e44d565efbd0691d150e655a7fe))
+
+
+### Bug Fixes
+
+* close body before retrying ([cf9cb51](https://github.com/Modern-Treasury/modern-treasury-go/commit/cf9cb517e88aabd8ece9ffaaf0243690ceca1018))
+* remove null from release please manifest ([4650377](https://github.com/Modern-Treasury/modern-treasury-go/commit/4650377417fb9f8b8b8ceef1a0eaf255d97e3b3b))
+* use release please annotations on more places ([b725371](https://github.com/Modern-Treasury/modern-treasury-go/commit/b7253712efcdec0790ec5212a640005b8f4d7c93))
+
 ## 2.31.0 (2025-08-12)
 
 Full Changelog: [v2.30.0...v2.31.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.30.0...v2.31.0)
