@@ -136,11 +136,18 @@ func (r ContactDetailCreateRequestContactIdentifierType) IsKnown() bool {
 
 type PaymentOrder struct {
 	ID string `json:"id,required" format:"uuid"`
+	// Deprecated: deprecated
+	Accounting PaymentOrderAccounting `json:"accounting,required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
 	AccountingCategoryID string `json:"accounting_category_id,required,nullable" format:"uuid"`
+	// The ID of one of your accounting ledger classes. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountingLedgerClassID string `json:"accounting_ledger_class_id,required,nullable" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount int64 `json:"amount,required"`
@@ -274,7 +281,9 @@ type PaymentOrder struct {
 // paymentOrderJSON contains the JSON metadata for the struct [PaymentOrder]
 type paymentOrderJSON struct {
 	ID                                 apijson.Field
+	Accounting                         apijson.Field
 	AccountingCategoryID               apijson.Field
+	AccountingLedgerClassID            apijson.Field
 	Amount                             apijson.Field
 	ChargeBearer                       apijson.Field
 	CounterpartyID                     apijson.Field
@@ -332,6 +341,39 @@ func (r paymentOrderJSON) RawJSON() string {
 }
 
 func (r PaymentOrder) implementsBulkResultEntity() {}
+
+// Deprecated: deprecated
+type PaymentOrderAccounting struct {
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountID string `json:"account_id,nullable" format:"uuid"`
+	// The ID of one of the class objects in your accounting system. Class objects
+	// track segments of your business independent of client or project. Note that
+	// these will only be accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	ClassID string                     `json:"class_id,nullable" format:"uuid"`
+	JSON    paymentOrderAccountingJSON `json:"-"`
+}
+
+// paymentOrderAccountingJSON contains the JSON metadata for the struct
+// [PaymentOrderAccounting]
+type paymentOrderAccountingJSON struct {
+	AccountID   apijson.Field
+	ClassID     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *PaymentOrderAccounting) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r paymentOrderAccountingJSON) RawJSON() string {
+	return r.raw
+}
 
 // The party that will pay the fees for the payment order. See
 // https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
@@ -893,10 +935,14 @@ type PaymentOrderNewParams struct {
 	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
 	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
 	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
-	Type param.Field[PaymentOrderType] `json:"type,required"`
+	Type       param.Field[PaymentOrderType]                `json:"type,required"`
+	Accounting param.Field[PaymentOrderNewParamsAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
+	// The ID of one of your accounting ledger classes. Note that these will only be
+	// accessible if your accounting system has been connected.
+	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// The party that will pay the fees for the payment order. See
 	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
 	// differences between the options.
@@ -1034,6 +1080,25 @@ func (r PaymentOrderNewParamsDirection) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+// Deprecated: deprecated
+type PaymentOrderNewParamsAccounting struct {
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountID param.Field[string] `json:"account_id" format:"uuid"`
+	// The ID of one of the class objects in your accounting system. Class objects
+	// track segments of your business independent of client or project. Note that
+	// these will only be accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	ClassID param.Field[string] `json:"class_id" format:"uuid"`
+}
+
+func (r PaymentOrderNewParamsAccounting) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // The party that will pay the fees for the payment order. See
@@ -1347,9 +1412,13 @@ func (r PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType) IsKnown(
 }
 
 type PaymentOrderUpdateParams struct {
+	Accounting param.Field[PaymentOrderUpdateParamsAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
+	// The ID of one of your accounting ledger classes. Note that these will only be
+	// accessible if your accounting system has been connected.
+	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount"`
@@ -1468,6 +1537,25 @@ type PaymentOrderUpdateParams struct {
 }
 
 func (r PaymentOrderUpdateParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// Deprecated: deprecated
+type PaymentOrderUpdateParamsAccounting struct {
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountID param.Field[string] `json:"account_id" format:"uuid"`
+	// The ID of one of the class objects in your accounting system. Class objects
+	// track segments of your business independent of client or project. Note that
+	// these will only be accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	ClassID param.Field[string] `json:"class_id" format:"uuid"`
+}
+
+func (r PaymentOrderUpdateParamsAccounting) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -1940,10 +2028,14 @@ type PaymentOrderNewAsyncParams struct {
 	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
 	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
 	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
-	Type param.Field[PaymentOrderType] `json:"type,required"`
+	Type       param.Field[PaymentOrderType]                     `json:"type,required"`
+	Accounting param.Field[PaymentOrderNewAsyncParamsAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
+	// The ID of one of your accounting ledger classes. Note that these will only be
+	// accessible if your accounting system has been connected.
+	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// The party that will pay the fees for the payment order. See
 	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
 	// differences between the options.
@@ -2067,6 +2159,25 @@ func (r PaymentOrderNewAsyncParamsDirection) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+// Deprecated: deprecated
+type PaymentOrderNewAsyncParamsAccounting struct {
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountID param.Field[string] `json:"account_id" format:"uuid"`
+	// The ID of one of the class objects in your accounting system. Class objects
+	// track segments of your business independent of client or project. Note that
+	// these will only be accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	ClassID param.Field[string] `json:"class_id" format:"uuid"`
+}
+
+func (r PaymentOrderNewAsyncParamsAccounting) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // The party that will pay the fees for the payment order. See

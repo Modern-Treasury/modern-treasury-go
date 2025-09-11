@@ -98,9 +98,19 @@ func (r *LineItemService) ListAutoPaging(ctx context.Context, itemizableType Lin
 
 type LineItem struct {
 	ID string `json:"id,required" format:"uuid"`
+	// Deprecated: deprecated
+	Accounting LineItemAccounting `json:"accounting,required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
 	AccountingCategoryID string `json:"accounting_category_id,required,nullable" format:"uuid"`
+	// The ID of one of the class objects in your accounting system. Class objects
+	// track segments of your business independent of client or project. Note that
+	// these will only be accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountingLedgerClassID string `json:"accounting_ledger_class_id,required,nullable" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
 	Amount    int64     `json:"amount,required"`
@@ -124,19 +134,21 @@ type LineItem struct {
 
 // lineItemJSON contains the JSON metadata for the struct [LineItem]
 type lineItemJSON struct {
-	ID                   apijson.Field
-	AccountingCategoryID apijson.Field
-	Amount               apijson.Field
-	CreatedAt            apijson.Field
-	Description          apijson.Field
-	ItemizableID         apijson.Field
-	ItemizableType       apijson.Field
-	LiveMode             apijson.Field
-	Metadata             apijson.Field
-	Object               apijson.Field
-	UpdatedAt            apijson.Field
-	raw                  string
-	ExtraFields          map[string]apijson.Field
+	ID                      apijson.Field
+	Accounting              apijson.Field
+	AccountingCategoryID    apijson.Field
+	AccountingLedgerClassID apijson.Field
+	Amount                  apijson.Field
+	CreatedAt               apijson.Field
+	Description             apijson.Field
+	ItemizableID            apijson.Field
+	ItemizableType          apijson.Field
+	LiveMode                apijson.Field
+	Metadata                apijson.Field
+	Object                  apijson.Field
+	UpdatedAt               apijson.Field
+	raw                     string
+	ExtraFields             map[string]apijson.Field
 }
 
 func (r *LineItem) UnmarshalJSON(data []byte) (err error) {
@@ -144,6 +156,39 @@ func (r *LineItem) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r lineItemJSON) RawJSON() string {
+	return r.raw
+}
+
+// Deprecated: deprecated
+type LineItemAccounting struct {
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountID string `json:"account_id,nullable" format:"uuid"`
+	// The ID of one of the class objects in your accounting system. Class objects
+	// track segments of your business independent of client or project. Note that
+	// these will only be accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	ClassID string                 `json:"class_id,nullable" format:"uuid"`
+	JSON    lineItemAccountingJSON `json:"-"`
+}
+
+// lineItemAccountingJSON contains the JSON metadata for the struct
+// [LineItemAccounting]
+type lineItemAccountingJSON struct {
+	AccountID   apijson.Field
+	ClassID     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *LineItemAccounting) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r lineItemAccountingJSON) RawJSON() string {
 	return r.raw
 }
 
