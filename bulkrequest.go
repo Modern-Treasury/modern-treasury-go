@@ -246,12 +246,18 @@ func (r BulkRequestNewParamsResourceType) IsKnown() bool {
 }
 
 type BulkRequestNewParamsResource struct {
-	ID param.Field[string] `json:"id" format:"uuid"`
+	ID         param.Field[string]      `json:"id" format:"uuid"`
+	Accounting param.Field[interface{}] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
+	// The ID of one of your accounting ledger classes. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount"`
@@ -456,11 +462,18 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
 	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	Type param.Field[PaymentOrderType] `json:"type,required"`
+	// Deprecated: deprecated
+	Accounting param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
+	// The ID of one of your accounting ledger classes. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// The party that will pay the fees for the payment order. See
 	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
 	// differences between the options.
@@ -587,6 +600,25 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestDirection) Is
 		return true
 	}
 	return false
+}
+
+// Deprecated: deprecated
+type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestAccounting struct {
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountID param.Field[string] `json:"account_id" format:"uuid"`
+	// The ID of one of the class objects in your accounting system. Class objects
+	// track segments of your business independent of client or project. Note that
+	// these will only be accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	ClassID param.Field[string] `json:"class_id" format:"uuid"`
+}
+
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestAccounting) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // The party that will pay the fees for the payment order. See
@@ -1066,11 +1098,18 @@ func (r BulkRequestNewParamsResourcesID) ImplementsBulkRequestNewParamsResourceU
 
 type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
 	ID param.Field[string] `json:"id" format:"uuid"`
+	// Deprecated: deprecated
+	Accounting param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
+	// The ID of one of your accounting ledger classes. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount"`
@@ -1193,6 +1232,25 @@ func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID) MarshalJSO
 }
 
 func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID) ImplementsBulkRequestNewParamsResourceUnion() {
+}
+
+// Deprecated: deprecated
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDAccounting struct {
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountID param.Field[string] `json:"account_id" format:"uuid"`
+	// The ID of one of the class objects in your accounting system. Class objects
+	// track segments of your business independent of client or project. Note that
+	// these will only be accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	ClassID param.Field[string] `json:"class_id" format:"uuid"`
+}
+
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDAccounting) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // The party that will pay the fees for the payment order. See

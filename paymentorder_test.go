@@ -35,10 +35,15 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 		Direction:            moderntreasury.F(moderntreasury.PaymentOrderNewParamsDirectionCredit),
 		OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Type:                 moderntreasury.F(moderntreasury.PaymentOrderTypeACH),
-		AccountingCategoryID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		ChargeBearer:         moderntreasury.F(moderntreasury.PaymentOrderNewParamsChargeBearerShared),
-		Currency:             moderntreasury.F(shared.CurrencyAed),
-		Description:          moderntreasury.F("description"),
+		Accounting: moderntreasury.F(moderntreasury.PaymentOrderNewParamsAccounting{
+			AccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			ClassID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		}),
+		AccountingCategoryID:    moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		AccountingLedgerClassID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		ChargeBearer:            moderntreasury.F(moderntreasury.PaymentOrderNewParamsChargeBearerShared),
+		Currency:                moderntreasury.F(shared.CurrencyAed),
+		Description:             moderntreasury.F("description"),
 		Documents: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsDocument{{
 			DocumentableID:   moderntreasury.F("documentable_id"),
 			DocumentableType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsDocumentsDocumentableTypeCounterparties),
@@ -217,7 +222,12 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		moderntreasury.PaymentOrderUpdateParams{
+			Accounting: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsAccounting{
+				AccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				ClassID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			}),
 			AccountingCategoryID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			AccountingLedgerClassID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Amount:                   moderntreasury.F(int64(0)),
 			ChargeBearer:             moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsChargeBearerShared),
 			CounterpartyID:           moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -381,11 +391,16 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.PaymentOrders.NewAsync(context.TODO(), moderntreasury.PaymentOrderNewAsyncParams{
-		Amount:                   moderntreasury.F(int64(0)),
-		Direction:                moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsDirectionCredit),
-		OriginatingAccountID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		Type:                     moderntreasury.F(moderntreasury.PaymentOrderTypeACH),
+		Amount:               moderntreasury.F(int64(0)),
+		Direction:            moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsDirectionCredit),
+		OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		Type:                 moderntreasury.F(moderntreasury.PaymentOrderTypeACH),
+		Accounting: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsAccounting{
+			AccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			ClassID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		}),
 		AccountingCategoryID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		AccountingLedgerClassID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		ChargeBearer:             moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsChargeBearerShared),
 		Currency:                 moderntreasury.F(shared.CurrencyAed),
 		Description:              moderntreasury.F("description"),
