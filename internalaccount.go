@@ -151,7 +151,9 @@ type InternalAccount struct {
 	PartyType InternalAccountPartyType `json:"party_type,required,nullable"`
 	// An array of routing detail objects.
 	RoutingDetails []RoutingDetail `json:"routing_details,required"`
-	UpdatedAt      time.Time       `json:"updated_at,required" format:"date-time"`
+	// The internal account status.
+	Status    string    `json:"status,required,nullable" format:"string"`
+	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
 	// The vendor ID associated with this account.
 	VendorID string              `json:"vendor_id,required,nullable" format:"string"`
 	JSON     internalAccountJSON `json:"-"`
@@ -178,6 +180,7 @@ type internalAccountJSON struct {
 	PartyName           apijson.Field
 	PartyType           apijson.Field
 	RoutingDetails      apijson.Field
+	Status              apijson.Field
 	UpdatedAt           apijson.Field
 	VendorID            apijson.Field
 	raw                 string
