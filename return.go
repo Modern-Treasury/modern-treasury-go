@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -40,7 +41,7 @@ func NewReturnService(opts ...option.RequestOption) (r *ReturnService) {
 
 // Create a return.
 func (r *ReturnService) New(ctx context.Context, body ReturnNewParams, opts ...option.RequestOption) (res *ReturnObject, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/returns"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -48,7 +49,7 @@ func (r *ReturnService) New(ctx context.Context, body ReturnNewParams, opts ...o
 
 // Get a single return.
 func (r *ReturnService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *ReturnObject, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -61,7 +62,7 @@ func (r *ReturnService) Get(ctx context.Context, id string, opts ...option.Reque
 // Get a list of returns.
 func (r *ReturnService) List(ctx context.Context, query ReturnListParams, opts ...option.RequestOption) (res *pagination.Page[ReturnObject], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/returns"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

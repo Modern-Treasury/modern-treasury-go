@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -40,7 +41,7 @@ func NewPaymentOrderReversalService(opts ...option.RequestOption) (r *PaymentOrd
 
 // Create a reversal for a payment order.
 func (r *PaymentOrderReversalService) New(ctx context.Context, paymentOrderID string, body PaymentOrderReversalNewParams, opts ...option.RequestOption) (res *Reversal, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if paymentOrderID == "" {
 		err = errors.New("missing required payment_order_id parameter")
 		return
@@ -52,7 +53,7 @@ func (r *PaymentOrderReversalService) New(ctx context.Context, paymentOrderID st
 
 // Get details on a single reversal of a payment order.
 func (r *PaymentOrderReversalService) Get(ctx context.Context, paymentOrderID string, reversalID string, opts ...option.RequestOption) (res *Reversal, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if paymentOrderID == "" {
 		err = errors.New("missing required payment_order_id parameter")
 		return
@@ -69,7 +70,7 @@ func (r *PaymentOrderReversalService) Get(ctx context.Context, paymentOrderID st
 // Get a list of all reversals of a payment order.
 func (r *PaymentOrderReversalService) List(ctx context.Context, paymentOrderID string, query PaymentOrderReversalListParams, opts ...option.RequestOption) (res *pagination.Page[Reversal], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if paymentOrderID == "" {
 		err = errors.New("missing required payment_order_id parameter")

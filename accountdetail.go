@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -40,7 +41,7 @@ func NewAccountDetailService(opts ...option.RequestOption) (r *AccountDetailServ
 
 // Create an account detail for an external account.
 func (r *AccountDetailService) New(ctx context.Context, accountsType AccountDetailNewParamsAccountsType, accountID string, body AccountDetailNewParams, opts ...option.RequestOption) (res *AccountDetail, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if accountID == "" {
 		err = errors.New("missing required account_id parameter")
 		return
@@ -52,7 +53,7 @@ func (r *AccountDetailService) New(ctx context.Context, accountsType AccountDeta
 
 // Get a single account detail for a single internal or external account.
 func (r *AccountDetailService) Get(ctx context.Context, accountsType shared.AccountsType, accountID string, id string, opts ...option.RequestOption) (res *AccountDetail, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if accountID == "" {
 		err = errors.New("missing required account_id parameter")
 		return
@@ -69,7 +70,7 @@ func (r *AccountDetailService) Get(ctx context.Context, accountsType shared.Acco
 // Get a list of account details for a single internal or external account.
 func (r *AccountDetailService) List(ctx context.Context, accountsType shared.AccountsType, accountID string, query AccountDetailListParams, opts ...option.RequestOption) (res *pagination.Page[AccountDetail], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if accountID == "" {
 		err = errors.New("missing required account_id parameter")
@@ -95,7 +96,7 @@ func (r *AccountDetailService) ListAutoPaging(ctx context.Context, accountsType 
 
 // Delete a single account detail for an external account.
 func (r *AccountDetailService) Delete(ctx context.Context, accountsType AccountDetailDeleteParamsAccountsType, accountID string, id string, opts ...option.RequestOption) (err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
 	if accountID == "" {
 		err = errors.New("missing required account_id parameter")

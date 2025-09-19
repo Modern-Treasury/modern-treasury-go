@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -39,7 +40,7 @@ func NewLineItemService(opts ...option.RequestOption) (r *LineItemService) {
 
 // Get a single line item
 func (r *LineItemService) Get(ctx context.Context, itemizableType LineItemGetParamsItemizableType, itemizableID string, id string, opts ...option.RequestOption) (res *LineItem, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if itemizableID == "" {
 		err = errors.New("missing required itemizable_id parameter")
 		return
@@ -55,7 +56,7 @@ func (r *LineItemService) Get(ctx context.Context, itemizableType LineItemGetPar
 
 // update line item
 func (r *LineItemService) Update(ctx context.Context, itemizableType LineItemUpdateParamsItemizableType, itemizableID string, id string, body LineItemUpdateParams, opts ...option.RequestOption) (res *LineItem, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if itemizableID == "" {
 		err = errors.New("missing required itemizable_id parameter")
 		return
@@ -72,7 +73,7 @@ func (r *LineItemService) Update(ctx context.Context, itemizableType LineItemUpd
 // Get a list of line items
 func (r *LineItemService) List(ctx context.Context, itemizableType LineItemListParamsItemizableType, itemizableID string, query LineItemListParams, opts ...option.RequestOption) (res *pagination.Page[LineItem], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if itemizableID == "" {
 		err = errors.New("missing required itemizable_id parameter")

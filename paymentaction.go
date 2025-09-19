@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -39,7 +40,7 @@ func NewPaymentActionService(opts ...option.RequestOption) (r *PaymentActionServ
 
 // Create a payment action.
 func (r *PaymentActionService) New(ctx context.Context, body PaymentActionNewParams, opts ...option.RequestOption) (res *PaymentActionNewResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/payment_actions"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -47,7 +48,7 @@ func (r *PaymentActionService) New(ctx context.Context, body PaymentActionNewPar
 
 // Get details on a single payment action.
 func (r *PaymentActionService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *PaymentActionGetResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -59,7 +60,7 @@ func (r *PaymentActionService) Get(ctx context.Context, id string, opts ...optio
 
 // Update a single payment action.
 func (r *PaymentActionService) Update(ctx context.Context, id string, body PaymentActionUpdateParams, opts ...option.RequestOption) (res *PaymentActionUpdateResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -72,7 +73,7 @@ func (r *PaymentActionService) Update(ctx context.Context, id string, body Payme
 // Get a list of all payment actions.
 func (r *PaymentActionService) List(ctx context.Context, query PaymentActionListParams, opts ...option.RequestOption) (res *pagination.Page[PaymentActionListResponse], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/payment_actions"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -42,7 +43,7 @@ func NewTransactionService(opts ...option.RequestOption) (r *TransactionService)
 
 // create transaction
 func (r *TransactionService) New(ctx context.Context, body TransactionNewParams, opts ...option.RequestOption) (res *Transaction, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/transactions"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -50,7 +51,7 @@ func (r *TransactionService) New(ctx context.Context, body TransactionNewParams,
 
 // Get details on a single transaction.
 func (r *TransactionService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *Transaction, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -62,7 +63,7 @@ func (r *TransactionService) Get(ctx context.Context, id string, opts ...option.
 
 // Update a single transaction.
 func (r *TransactionService) Update(ctx context.Context, id string, body TransactionUpdateParams, opts ...option.RequestOption) (res *Transaction, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -75,7 +76,7 @@ func (r *TransactionService) Update(ctx context.Context, id string, body Transac
 // Get a list of all transactions.
 func (r *TransactionService) List(ctx context.Context, query TransactionListParams, opts ...option.RequestOption) (res *pagination.Page[Transaction], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/transactions"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -97,7 +98,7 @@ func (r *TransactionService) ListAutoPaging(ctx context.Context, query Transacti
 
 // delete transaction
 func (r *TransactionService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")

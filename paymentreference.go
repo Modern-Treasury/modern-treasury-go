@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -39,7 +40,7 @@ func NewPaymentReferenceService(opts ...option.RequestOption) (r *PaymentReferen
 
 // get payment_reference
 func (r *PaymentReferenceService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *PaymentReference, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -52,7 +53,7 @@ func (r *PaymentReferenceService) Get(ctx context.Context, id string, opts ...op
 // list payment_references
 func (r *PaymentReferenceService) List(ctx context.Context, query PaymentReferenceListParams, opts ...option.RequestOption) (res *pagination.Page[PaymentReference], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/payment_references"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -76,7 +77,7 @@ func (r *PaymentReferenceService) ListAutoPaging(ctx context.Context, query Paym
 //
 // Deprecated: use `Get` instead
 func (r *PaymentReferenceService) Retireve(ctx context.Context, id string, opts ...option.RequestOption) (res *PaymentReference, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return

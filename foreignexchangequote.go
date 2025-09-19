@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -40,7 +41,7 @@ func NewForeignExchangeQuoteService(opts ...option.RequestOption) (r *ForeignExc
 
 // create foreign_exchange_quote
 func (r *ForeignExchangeQuoteService) New(ctx context.Context, body ForeignExchangeQuoteNewParams, opts ...option.RequestOption) (res *ForeignExchangeQuote, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/foreign_exchange_quotes"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -48,7 +49,7 @@ func (r *ForeignExchangeQuoteService) New(ctx context.Context, body ForeignExcha
 
 // get foreign_exchange_quote
 func (r *ForeignExchangeQuoteService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *ForeignExchangeQuote, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -61,7 +62,7 @@ func (r *ForeignExchangeQuoteService) Get(ctx context.Context, id string, opts .
 // list foreign_exchange_quotes
 func (r *ForeignExchangeQuoteService) List(ctx context.Context, query ForeignExchangeQuoteListParams, opts ...option.RequestOption) (res *pagination.Page[ForeignExchangeQuote], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/foreign_exchange_quotes"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

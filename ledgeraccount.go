@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -40,7 +41,7 @@ func NewLedgerAccountService(opts ...option.RequestOption) (r *LedgerAccountServ
 
 // Create a ledger account.
 func (r *LedgerAccountService) New(ctx context.Context, body LedgerAccountNewParams, opts ...option.RequestOption) (res *LedgerAccount, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/ledger_accounts"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -48,7 +49,7 @@ func (r *LedgerAccountService) New(ctx context.Context, body LedgerAccountNewPar
 
 // Get details on a single ledger account.
 func (r *LedgerAccountService) Get(ctx context.Context, id string, query LedgerAccountGetParams, opts ...option.RequestOption) (res *LedgerAccount, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -60,7 +61,7 @@ func (r *LedgerAccountService) Get(ctx context.Context, id string, query LedgerA
 
 // Update the details of a ledger account.
 func (r *LedgerAccountService) Update(ctx context.Context, id string, body LedgerAccountUpdateParams, opts ...option.RequestOption) (res *LedgerAccount, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -73,7 +74,7 @@ func (r *LedgerAccountService) Update(ctx context.Context, id string, body Ledge
 // Get a list of ledger accounts.
 func (r *LedgerAccountService) List(ctx context.Context, query LedgerAccountListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerAccount], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/ledger_accounts"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -95,7 +96,7 @@ func (r *LedgerAccountService) ListAutoPaging(ctx context.Context, query LedgerA
 
 // Delete a ledger account.
 func (r *LedgerAccountService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccount, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return

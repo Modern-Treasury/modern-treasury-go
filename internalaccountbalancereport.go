@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -40,7 +41,7 @@ func NewInternalAccountBalanceReportService(opts ...option.RequestOption) (r *In
 
 // create balance reports
 func (r *InternalAccountBalanceReportService) New(ctx context.Context, internalAccountID string, body BalanceReportNewParams, opts ...option.RequestOption) (res *BalanceReport, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if internalAccountID == "" {
 		err = errors.New("missing required internal_account_id parameter")
 		return
@@ -52,7 +53,7 @@ func (r *InternalAccountBalanceReportService) New(ctx context.Context, internalA
 
 // Get a single balance report for a given internal account.
 func (r *InternalAccountBalanceReportService) Get(ctx context.Context, internalAccountID string, id BalanceReportGetParamsID, opts ...option.RequestOption) (res *BalanceReport, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if internalAccountID == "" {
 		err = errors.New("missing required internal_account_id parameter")
 		return
@@ -65,7 +66,7 @@ func (r *InternalAccountBalanceReportService) Get(ctx context.Context, internalA
 // Get all balance reports for a given internal account.
 func (r *InternalAccountBalanceReportService) List(ctx context.Context, internalAccountID string, query BalanceReportListParams, opts ...option.RequestOption) (res *pagination.Page[BalanceReport], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if internalAccountID == "" {
 		err = errors.New("missing required internal_account_id parameter")
@@ -91,7 +92,7 @@ func (r *InternalAccountBalanceReportService) ListAutoPaging(ctx context.Context
 
 // Deletes a given balance report.
 func (r *InternalAccountBalanceReportService) Delete(ctx context.Context, internalAccountID string, id string, opts ...option.RequestOption) (err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
 	if internalAccountID == "" {
 		err = errors.New("missing required internal_account_id parameter")

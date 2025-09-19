@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -42,7 +43,7 @@ func NewInternalAccountService(opts ...option.RequestOption) (r *InternalAccount
 
 // create internal account
 func (r *InternalAccountService) New(ctx context.Context, body InternalAccountNewParams, opts ...option.RequestOption) (res *InternalAccount, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/internal_accounts"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -50,7 +51,7 @@ func (r *InternalAccountService) New(ctx context.Context, body InternalAccountNe
 
 // get internal account
 func (r *InternalAccountService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *InternalAccount, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -62,7 +63,7 @@ func (r *InternalAccountService) Get(ctx context.Context, id string, opts ...opt
 
 // update internal account
 func (r *InternalAccountService) Update(ctx context.Context, id string, body InternalAccountUpdateParams, opts ...option.RequestOption) (res *InternalAccount, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -75,7 +76,7 @@ func (r *InternalAccountService) Update(ctx context.Context, id string, body Int
 // list internal accounts
 func (r *InternalAccountService) List(ctx context.Context, query InternalAccountListParams, opts ...option.RequestOption) (res *pagination.Page[InternalAccount], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/internal_accounts"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -97,7 +98,7 @@ func (r *InternalAccountService) ListAutoPaging(ctx context.Context, query Inter
 
 // update account_capability
 func (r *InternalAccountService) UpdateAccountCapability(ctx context.Context, internalAccountID string, id string, body InternalAccountUpdateAccountCapabilityParams, opts ...option.RequestOption) (res *InternalAccountUpdateAccountCapabilityResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if internalAccountID == "" {
 		err = errors.New("missing required internal_account_id parameter")
 		return
