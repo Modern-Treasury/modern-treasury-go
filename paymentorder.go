@@ -12,6 +12,7 @@ import (
 	"net/http"
 	"net/url"
 	"reflect"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiform"
@@ -48,7 +49,7 @@ func NewPaymentOrderService(opts ...option.RequestOption) (r *PaymentOrderServic
 
 // Create a new Payment Order
 func (r *PaymentOrderService) New(ctx context.Context, body PaymentOrderNewParams, opts ...option.RequestOption) (res *PaymentOrder, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/payment_orders"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -56,7 +57,7 @@ func (r *PaymentOrderService) New(ctx context.Context, body PaymentOrderNewParam
 
 // Get details on a single payment order
 func (r *PaymentOrderService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *PaymentOrder, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -68,7 +69,7 @@ func (r *PaymentOrderService) Get(ctx context.Context, id string, opts ...option
 
 // Update a payment order
 func (r *PaymentOrderService) Update(ctx context.Context, id string, body PaymentOrderUpdateParams, opts ...option.RequestOption) (res *PaymentOrder, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -81,7 +82,7 @@ func (r *PaymentOrderService) Update(ctx context.Context, id string, body Paymen
 // Get a list of all payment orders
 func (r *PaymentOrderService) List(ctx context.Context, query PaymentOrderListParams, opts ...option.RequestOption) (res *pagination.Page[PaymentOrder], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/payment_orders"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -103,7 +104,7 @@ func (r *PaymentOrderService) ListAutoPaging(ctx context.Context, query PaymentO
 
 // Create a new payment order asynchronously
 func (r *PaymentOrderService) NewAsync(ctx context.Context, body PaymentOrderNewAsyncParams, opts ...option.RequestOption) (res *shared.AsyncResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/payment_orders/create_async"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return

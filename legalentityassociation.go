@@ -5,6 +5,7 @@ package moderntreasury
 import (
 	"context"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -35,7 +36,7 @@ func NewLegalEntityAssociationService(opts ...option.RequestOption) (r *LegalEnt
 
 // create legal_entity_association
 func (r *LegalEntityAssociationService) New(ctx context.Context, body LegalEntityAssociationNewParams, opts ...option.RequestOption) (res *LegalEntityAssociation, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/legal_entity_associations"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return

@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"os"
+	"slices"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
@@ -154,7 +155,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 // For even greater flexibility, see [option.WithResponseInto] and
 // [option.WithResponseBodyInto].
 func (r *Client) Execute(ctx context.Context, method string, path string, params interface{}, res interface{}, opts ...option.RequestOption) error {
-	opts = append(r.Options, opts...)
+	opts = slices.Concat(r.Options, opts)
 	return requestconfig.ExecuteNewRequest(ctx, method, path, params, res, opts...)
 }
 
@@ -194,7 +195,7 @@ func (r *Client) Delete(ctx context.Context, path string, params interface{}, re
 // A test endpoint often used to confirm credentials and headers are being passed
 // in correctly.
 func (r *Client) Ping(ctx context.Context, opts ...option.RequestOption) (res *PingResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/ping"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return

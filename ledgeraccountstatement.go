@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -37,7 +38,7 @@ func NewLedgerAccountStatementService(opts ...option.RequestOption) (r *LedgerAc
 
 // Create a ledger account statement.
 func (r *LedgerAccountStatementService) New(ctx context.Context, body LedgerAccountStatementNewParams, opts ...option.RequestOption) (res *LedgerAccountStatementNewResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/ledger_account_statements"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -45,7 +46,7 @@ func (r *LedgerAccountStatementService) New(ctx context.Context, body LedgerAcco
 
 // Get details on a single ledger account statement.
 func (r *LedgerAccountStatementService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountStatementGetResponse, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -42,7 +43,7 @@ func NewInvoiceService(opts ...option.RequestOption) (r *InvoiceService) {
 
 // create invoice
 func (r *InvoiceService) New(ctx context.Context, body InvoiceNewParams, opts ...option.RequestOption) (res *Invoice, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/invoices"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -50,7 +51,7 @@ func (r *InvoiceService) New(ctx context.Context, body InvoiceNewParams, opts ..
 
 // get invoice
 func (r *InvoiceService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *Invoice, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -62,7 +63,7 @@ func (r *InvoiceService) Get(ctx context.Context, id string, opts ...option.Requ
 
 // update invoice
 func (r *InvoiceService) Update(ctx context.Context, id string, body InvoiceUpdateParams, opts ...option.RequestOption) (res *Invoice, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -75,7 +76,7 @@ func (r *InvoiceService) Update(ctx context.Context, id string, body InvoiceUpda
 // list invoices
 func (r *InvoiceService) List(ctx context.Context, query InvoiceListParams, opts ...option.RequestOption) (res *pagination.Page[Invoice], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/invoices"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -97,7 +98,7 @@ func (r *InvoiceService) ListAutoPaging(ctx context.Context, query InvoiceListPa
 
 // Add a payment order to an invoice.
 func (r *InvoiceService) AddPaymentOrder(ctx context.Context, id string, paymentOrderID string, opts ...option.RequestOption) (err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -39,7 +40,7 @@ func NewTransactionLineItemService(opts ...option.RequestOption) (r *Transaction
 
 // create transaction line items
 func (r *TransactionLineItemService) New(ctx context.Context, body TransactionLineItemNewParams, opts ...option.RequestOption) (res *TransactionLineItem, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/transaction_line_items"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -47,7 +48,7 @@ func (r *TransactionLineItemService) New(ctx context.Context, body TransactionLi
 
 // get transaction line item
 func (r *TransactionLineItemService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *TransactionLineItem, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -60,7 +61,7 @@ func (r *TransactionLineItemService) Get(ctx context.Context, id string, opts ..
 // list transaction_line_items
 func (r *TransactionLineItemService) List(ctx context.Context, query TransactionLineItemListParams, opts ...option.RequestOption) (res *pagination.Page[TransactionLineItem], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/transaction_line_items"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -82,7 +83,7 @@ func (r *TransactionLineItemService) ListAutoPaging(ctx context.Context, query T
 
 // delete transaction line item
 func (r *TransactionLineItemService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")

@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"net/url"
+	"slices"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
@@ -37,7 +38,7 @@ func NewValidationService(opts ...option.RequestOption) (r *ValidationService) {
 // Validates the routing number information supplied without creating a routing
 // detail
 func (r *ValidationService) ValidateRoutingNumber(ctx context.Context, query ValidationValidateRoutingNumberParams, opts ...option.RequestOption) (res *RoutingNumberLookupRequest, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/validations/routing_numbers"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
 	return

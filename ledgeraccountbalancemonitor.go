@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -40,7 +41,7 @@ func NewLedgerAccountBalanceMonitorService(opts ...option.RequestOption) (r *Led
 
 // Create a ledger account balance monitor.
 func (r *LedgerAccountBalanceMonitorService) New(ctx context.Context, body LedgerAccountBalanceMonitorNewParams, opts ...option.RequestOption) (res *LedgerAccountBalanceMonitor, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/ledger_account_balance_monitors"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -48,7 +49,7 @@ func (r *LedgerAccountBalanceMonitorService) New(ctx context.Context, body Ledge
 
 // Get details on a single ledger account balance monitor.
 func (r *LedgerAccountBalanceMonitorService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountBalanceMonitor, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -60,7 +61,7 @@ func (r *LedgerAccountBalanceMonitorService) Get(ctx context.Context, id string,
 
 // Update a ledger account balance monitor.
 func (r *LedgerAccountBalanceMonitorService) Update(ctx context.Context, id string, body LedgerAccountBalanceMonitorUpdateParams, opts ...option.RequestOption) (res *LedgerAccountBalanceMonitor, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -73,7 +74,7 @@ func (r *LedgerAccountBalanceMonitorService) Update(ctx context.Context, id stri
 // Get a list of ledger account balance monitors.
 func (r *LedgerAccountBalanceMonitorService) List(ctx context.Context, query LedgerAccountBalanceMonitorListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerAccountBalanceMonitor], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/ledger_account_balance_monitors"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -95,7 +96,7 @@ func (r *LedgerAccountBalanceMonitorService) ListAutoPaging(ctx context.Context,
 
 // Delete a ledger account balance monitor.
 func (r *LedgerAccountBalanceMonitorService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountBalanceMonitor, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return

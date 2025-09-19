@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -40,7 +41,7 @@ func NewLedgerEntryService(opts ...option.RequestOption) (r *LedgerEntryService)
 
 // Get details on a single ledger entry.
 func (r *LedgerEntryService) Get(ctx context.Context, id string, query LedgerEntryGetParams, opts ...option.RequestOption) (res *LedgerEntry, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -52,7 +53,7 @@ func (r *LedgerEntryService) Get(ctx context.Context, id string, query LedgerEnt
 
 // Update the details of a ledger entry.
 func (r *LedgerEntryService) Update(ctx context.Context, id string, body LedgerEntryUpdateParams, opts ...option.RequestOption) (res *LedgerEntry, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -65,7 +66,7 @@ func (r *LedgerEntryService) Update(ctx context.Context, id string, body LedgerE
 // Get a list of all ledger entries.
 func (r *LedgerEntryService) List(ctx context.Context, query LedgerEntryListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerEntry], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/ledger_entries"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

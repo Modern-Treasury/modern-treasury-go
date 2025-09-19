@@ -11,6 +11,7 @@ import (
 	"mime/multipart"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiform"
@@ -43,7 +44,7 @@ func NewDocumentService(opts ...option.RequestOption) (r *DocumentService) {
 
 // Create a document.
 func (r *DocumentService) New(ctx context.Context, body DocumentNewParams, opts ...option.RequestOption) (res *Document, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/documents"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -51,7 +52,7 @@ func (r *DocumentService) New(ctx context.Context, body DocumentNewParams, opts 
 
 // Get an existing document.
 func (r *DocumentService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *Document, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -64,7 +65,7 @@ func (r *DocumentService) Get(ctx context.Context, id string, opts ...option.Req
 // Get a list of documents.
 func (r *DocumentService) List(ctx context.Context, query DocumentListParams, opts ...option.RequestOption) (res *pagination.Page[Document], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/documents"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
