@@ -717,6 +717,7 @@ const (
 	BulkResultEntityStatusCompleted           BulkResultEntityStatus = "completed"
 	BulkResultEntityStatusDenied              BulkResultEntityStatus = "denied"
 	BulkResultEntityStatusFailed              BulkResultEntityStatus = "failed"
+	BulkResultEntityStatusHeld                BulkResultEntityStatus = "held"
 	BulkResultEntityStatusNeedsApproval       BulkResultEntityStatus = "needs_approval"
 	BulkResultEntityStatusPending             BulkResultEntityStatus = "pending"
 	BulkResultEntityStatusProcessing          BulkResultEntityStatus = "processing"
@@ -733,7 +734,7 @@ const (
 
 func (r BulkResultEntityStatus) IsKnown() bool {
 	switch r {
-	case BulkResultEntityStatusApproved, BulkResultEntityStatusCancelled, BulkResultEntityStatusCompleted, BulkResultEntityStatusDenied, BulkResultEntityStatusFailed, BulkResultEntityStatusNeedsApproval, BulkResultEntityStatusPending, BulkResultEntityStatusProcessing, BulkResultEntityStatusReturned, BulkResultEntityStatusReversed, BulkResultEntityStatusSent, BulkResultEntityStatusStopped, BulkResultEntityStatusArchived, BulkResultEntityStatusPartiallyReconciled, BulkResultEntityStatusReconciled, BulkResultEntityStatusUnreconciled, BulkResultEntityStatusPosted:
+	case BulkResultEntityStatusApproved, BulkResultEntityStatusCancelled, BulkResultEntityStatusCompleted, BulkResultEntityStatusDenied, BulkResultEntityStatusFailed, BulkResultEntityStatusHeld, BulkResultEntityStatusNeedsApproval, BulkResultEntityStatusPending, BulkResultEntityStatusProcessing, BulkResultEntityStatusReturned, BulkResultEntityStatusReversed, BulkResultEntityStatusSent, BulkResultEntityStatusStopped, BulkResultEntityStatusArchived, BulkResultEntityStatusPartiallyReconciled, BulkResultEntityStatusReconciled, BulkResultEntityStatusUnreconciled, BulkResultEntityStatusPosted:
 		return true
 	}
 	return false

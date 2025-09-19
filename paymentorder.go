@@ -613,6 +613,7 @@ const (
 	PaymentOrderStatusCompleted     PaymentOrderStatus = "completed"
 	PaymentOrderStatusDenied        PaymentOrderStatus = "denied"
 	PaymentOrderStatusFailed        PaymentOrderStatus = "failed"
+	PaymentOrderStatusHeld          PaymentOrderStatus = "held"
 	PaymentOrderStatusNeedsApproval PaymentOrderStatus = "needs_approval"
 	PaymentOrderStatusPending       PaymentOrderStatus = "pending"
 	PaymentOrderStatusProcessing    PaymentOrderStatus = "processing"
@@ -624,7 +625,7 @@ const (
 
 func (r PaymentOrderStatus) IsKnown() bool {
 	switch r {
-	case PaymentOrderStatusApproved, PaymentOrderStatusCancelled, PaymentOrderStatusCompleted, PaymentOrderStatusDenied, PaymentOrderStatusFailed, PaymentOrderStatusNeedsApproval, PaymentOrderStatusPending, PaymentOrderStatusProcessing, PaymentOrderStatusReturned, PaymentOrderStatusReversed, PaymentOrderStatusSent, PaymentOrderStatusStopped:
+	case PaymentOrderStatusApproved, PaymentOrderStatusCancelled, PaymentOrderStatusCompleted, PaymentOrderStatusDenied, PaymentOrderStatusFailed, PaymentOrderStatusHeld, PaymentOrderStatusNeedsApproval, PaymentOrderStatusPending, PaymentOrderStatusProcessing, PaymentOrderStatusReturned, PaymentOrderStatusReversed, PaymentOrderStatusSent, PaymentOrderStatusStopped:
 		return true
 	}
 	return false
@@ -1867,6 +1868,7 @@ const (
 	PaymentOrderUpdateParamsStatusCompleted     PaymentOrderUpdateParamsStatus = "completed"
 	PaymentOrderUpdateParamsStatusDenied        PaymentOrderUpdateParamsStatus = "denied"
 	PaymentOrderUpdateParamsStatusFailed        PaymentOrderUpdateParamsStatus = "failed"
+	PaymentOrderUpdateParamsStatusHeld          PaymentOrderUpdateParamsStatus = "held"
 	PaymentOrderUpdateParamsStatusNeedsApproval PaymentOrderUpdateParamsStatus = "needs_approval"
 	PaymentOrderUpdateParamsStatusPending       PaymentOrderUpdateParamsStatus = "pending"
 	PaymentOrderUpdateParamsStatusProcessing    PaymentOrderUpdateParamsStatus = "processing"
@@ -1878,7 +1880,7 @@ const (
 
 func (r PaymentOrderUpdateParamsStatus) IsKnown() bool {
 	switch r {
-	case PaymentOrderUpdateParamsStatusApproved, PaymentOrderUpdateParamsStatusCancelled, PaymentOrderUpdateParamsStatusCompleted, PaymentOrderUpdateParamsStatusDenied, PaymentOrderUpdateParamsStatusFailed, PaymentOrderUpdateParamsStatusNeedsApproval, PaymentOrderUpdateParamsStatusPending, PaymentOrderUpdateParamsStatusProcessing, PaymentOrderUpdateParamsStatusReturned, PaymentOrderUpdateParamsStatusReversed, PaymentOrderUpdateParamsStatusSent, PaymentOrderUpdateParamsStatusStopped:
+	case PaymentOrderUpdateParamsStatusApproved, PaymentOrderUpdateParamsStatusCancelled, PaymentOrderUpdateParamsStatusCompleted, PaymentOrderUpdateParamsStatusDenied, PaymentOrderUpdateParamsStatusFailed, PaymentOrderUpdateParamsStatusHeld, PaymentOrderUpdateParamsStatusNeedsApproval, PaymentOrderUpdateParamsStatusPending, PaymentOrderUpdateParamsStatusProcessing, PaymentOrderUpdateParamsStatusReturned, PaymentOrderUpdateParamsStatusReversed, PaymentOrderUpdateParamsStatusSent, PaymentOrderUpdateParamsStatusStopped:
 		return true
 	}
 	return false
@@ -1953,6 +1955,7 @@ const (
 	PaymentOrderListParamsStatusCompleted     PaymentOrderListParamsStatus = "completed"
 	PaymentOrderListParamsStatusDenied        PaymentOrderListParamsStatus = "denied"
 	PaymentOrderListParamsStatusFailed        PaymentOrderListParamsStatus = "failed"
+	PaymentOrderListParamsStatusHeld          PaymentOrderListParamsStatus = "held"
 	PaymentOrderListParamsStatusNeedsApproval PaymentOrderListParamsStatus = "needs_approval"
 	PaymentOrderListParamsStatusPending       PaymentOrderListParamsStatus = "pending"
 	PaymentOrderListParamsStatusProcessing    PaymentOrderListParamsStatus = "processing"
@@ -1964,7 +1967,7 @@ const (
 
 func (r PaymentOrderListParamsStatus) IsKnown() bool {
 	switch r {
-	case PaymentOrderListParamsStatusApproved, PaymentOrderListParamsStatusCancelled, PaymentOrderListParamsStatusCompleted, PaymentOrderListParamsStatusDenied, PaymentOrderListParamsStatusFailed, PaymentOrderListParamsStatusNeedsApproval, PaymentOrderListParamsStatusPending, PaymentOrderListParamsStatusProcessing, PaymentOrderListParamsStatusReturned, PaymentOrderListParamsStatusReversed, PaymentOrderListParamsStatusSent, PaymentOrderListParamsStatusStopped:
+	case PaymentOrderListParamsStatusApproved, PaymentOrderListParamsStatusCancelled, PaymentOrderListParamsStatusCompleted, PaymentOrderListParamsStatusDenied, PaymentOrderListParamsStatusFailed, PaymentOrderListParamsStatusHeld, PaymentOrderListParamsStatusNeedsApproval, PaymentOrderListParamsStatusPending, PaymentOrderListParamsStatusProcessing, PaymentOrderListParamsStatusReturned, PaymentOrderListParamsStatusReversed, PaymentOrderListParamsStatusSent, PaymentOrderListParamsStatusStopped:
 		return true
 	}
 	return false
