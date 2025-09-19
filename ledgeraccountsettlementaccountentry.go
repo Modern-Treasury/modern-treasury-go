@@ -7,6 +7,7 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"slices"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
@@ -36,7 +37,7 @@ func NewLedgerAccountSettlementAccountEntryService(opts ...option.RequestOption)
 
 // Add ledger entries to a draft ledger account settlement.
 func (r *LedgerAccountSettlementAccountEntryService) Update(ctx context.Context, id string, body LedgerAccountSettlementAccountEntryUpdateParams, opts ...option.RequestOption) (err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
@@ -49,7 +50,7 @@ func (r *LedgerAccountSettlementAccountEntryService) Update(ctx context.Context,
 
 // Remove ledger entries from a draft ledger account settlement.
 func (r *LedgerAccountSettlementAccountEntryService) Delete(ctx context.Context, id string, body LedgerAccountSettlementAccountEntryDeleteParams, opts ...option.RequestOption) (err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")

@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -39,7 +40,7 @@ func NewPaymentFlowService(opts ...option.RequestOption) (r *PaymentFlowService)
 
 // create payment_flow
 func (r *PaymentFlowService) New(ctx context.Context, body PaymentFlowNewParams, opts ...option.RequestOption) (res *PaymentFlow, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	path := "api/payment_flows"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
@@ -47,7 +48,7 @@ func (r *PaymentFlowService) New(ctx context.Context, body PaymentFlowNewParams,
 
 // get payment_flow
 func (r *PaymentFlowService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *PaymentFlow, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -59,7 +60,7 @@ func (r *PaymentFlowService) Get(ctx context.Context, id string, opts ...option.
 
 // update payment_flow
 func (r *PaymentFlowService) Update(ctx context.Context, id string, body PaymentFlowUpdateParams, opts ...option.RequestOption) (res *PaymentFlow, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -72,7 +73,7 @@ func (r *PaymentFlowService) Update(ctx context.Context, id string, body Payment
 // list payment_flows
 func (r *PaymentFlowService) List(ctx context.Context, query PaymentFlowListParams, opts ...option.RequestOption) (res *pagination.Page[PaymentFlow], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/payment_flows"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

@@ -6,6 +6,7 @@ import (
 	"context"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -39,7 +40,7 @@ func NewLedgerTransactionVersionService(opts ...option.RequestOption) (r *Ledger
 // Get a list of ledger transaction versions.
 func (r *LedgerTransactionVersionService) List(ctx context.Context, query LedgerTransactionVersionListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerTransactionVersion], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	path := "api/ledger_transaction_versions"
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

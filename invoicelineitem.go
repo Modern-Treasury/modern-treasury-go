@@ -8,6 +8,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/url"
+	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
@@ -39,7 +40,7 @@ func NewInvoiceLineItemService(opts ...option.RequestOption) (r *InvoiceLineItem
 
 // create invoice_line_item
 func (r *InvoiceLineItemService) New(ctx context.Context, invoiceID string, body InvoiceLineItemNewParams, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if invoiceID == "" {
 		err = errors.New("missing required invoice_id parameter")
 		return
@@ -51,7 +52,7 @@ func (r *InvoiceLineItemService) New(ctx context.Context, invoiceID string, body
 
 // get invoice_line_item
 func (r *InvoiceLineItemService) Get(ctx context.Context, invoiceID string, id string, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if invoiceID == "" {
 		err = errors.New("missing required invoice_id parameter")
 		return
@@ -67,7 +68,7 @@ func (r *InvoiceLineItemService) Get(ctx context.Context, invoiceID string, id s
 
 // update invoice_line_item
 func (r *InvoiceLineItemService) Update(ctx context.Context, invoiceID string, id string, body InvoiceLineItemUpdateParams, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if invoiceID == "" {
 		err = errors.New("missing required invoice_id parameter")
 		return
@@ -84,7 +85,7 @@ func (r *InvoiceLineItemService) Update(ctx context.Context, invoiceID string, i
 // list invoice_line_items
 func (r *InvoiceLineItemService) List(ctx context.Context, invoiceID string, query InvoiceLineItemListParams, opts ...option.RequestOption) (res *pagination.Page[InvoiceLineItem], err error) {
 	var raw *http.Response
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if invoiceID == "" {
 		err = errors.New("missing required invoice_id parameter")
@@ -110,7 +111,7 @@ func (r *InvoiceLineItemService) ListAutoPaging(ctx context.Context, invoiceID s
 
 // delete invoice_line_item
 func (r *InvoiceLineItemService) Delete(ctx context.Context, invoiceID string, id string, opts ...option.RequestOption) (res *InvoiceLineItem, err error) {
-	opts = append(r.Options[:], opts...)
+	opts = slices.Concat(r.Options, opts)
 	if invoiceID == "" {
 		err = errors.New("missing required invoice_id parameter")
 		return
