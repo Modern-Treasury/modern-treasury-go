@@ -147,7 +147,7 @@ type Counterparty struct {
 	// The verification status of the counterparty.
 	//
 	// Deprecated: deprecated
-	VerificationStatus string           `json:"verification_status,required,nullable"`
+	VerificationStatus string           `json:"verification_status,required"`
 	JSON               counterpartyJSON `json:"-"`
 }
 
