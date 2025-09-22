@@ -300,7 +300,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 		}),
 		SendRemittanceAdvice: moderntreasury.F(true),
 		TaxpayerIdentifier:   moderntreasury.F("taxpayer_identifier"),
-		VerificationStatus:   moderntreasury.F(moderntreasury.CounterpartyNewParamsVerificationStatusDenied),
+		VerificationStatus:   moderntreasury.F("verification_status"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

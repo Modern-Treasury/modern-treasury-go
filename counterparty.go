@@ -145,8 +145,10 @@ type Counterparty struct {
 	SendRemittanceAdvice bool      `json:"send_remittance_advice,required"`
 	UpdatedAt            time.Time `json:"updated_at,required" format:"date-time"`
 	// The verification status of the counterparty.
-	VerificationStatus CounterpartyVerificationStatus `json:"verification_status,required"`
-	JSON               counterpartyJSON               `json:"-"`
+	//
+	// Deprecated: deprecated
+	VerificationStatus string           `json:"verification_status,required,nullable"`
+	JSON               counterpartyJSON `json:"-"`
 }
 
 // counterpartyJSON contains the JSON metadata for the struct [Counterparty]
@@ -295,24 +297,6 @@ func (r CounterpartyAccountsVerificationStatus) IsKnown() bool {
 	return false
 }
 
-// The verification status of the counterparty.
-type CounterpartyVerificationStatus string
-
-const (
-	CounterpartyVerificationStatusDenied        CounterpartyVerificationStatus = "denied"
-	CounterpartyVerificationStatusNeedsApproval CounterpartyVerificationStatus = "needs_approval"
-	CounterpartyVerificationStatusUnverified    CounterpartyVerificationStatus = "unverified"
-	CounterpartyVerificationStatusVerified      CounterpartyVerificationStatus = "verified"
-)
-
-func (r CounterpartyVerificationStatus) IsKnown() bool {
-	switch r {
-	case CounterpartyVerificationStatusDenied, CounterpartyVerificationStatusNeedsApproval, CounterpartyVerificationStatusUnverified, CounterpartyVerificationStatusVerified:
-		return true
-	}
-	return false
-}
-
 type CounterpartyCollectAccountResponse struct {
 	// The id of the existing counterparty.
 	ID string `json:"id,required"`
@@ -372,7 +356,7 @@ type CounterpartyNewParams struct {
 	// Either a valid SSN or EIN.
 	TaxpayerIdentifier param.Field[string] `json:"taxpayer_identifier"`
 	// The verification status of the counterparty.
-	VerificationStatus param.Field[CounterpartyNewParamsVerificationStatus] `json:"verification_status"`
+	VerificationStatus param.Field[string] `json:"verification_status"`
 }
 
 func (r CounterpartyNewParams) MarshalJSON() (data []byte, err error) {
@@ -758,24 +742,6 @@ const (
 func (r CounterpartyNewParamsLegalEntityRiskRating) IsKnown() bool {
 	switch r {
 	case CounterpartyNewParamsLegalEntityRiskRatingLow, CounterpartyNewParamsLegalEntityRiskRatingMedium, CounterpartyNewParamsLegalEntityRiskRatingHigh:
-		return true
-	}
-	return false
-}
-
-// The verification status of the counterparty.
-type CounterpartyNewParamsVerificationStatus string
-
-const (
-	CounterpartyNewParamsVerificationStatusDenied        CounterpartyNewParamsVerificationStatus = "denied"
-	CounterpartyNewParamsVerificationStatusNeedsApproval CounterpartyNewParamsVerificationStatus = "needs_approval"
-	CounterpartyNewParamsVerificationStatusUnverified    CounterpartyNewParamsVerificationStatus = "unverified"
-	CounterpartyNewParamsVerificationStatusVerified      CounterpartyNewParamsVerificationStatus = "verified"
-)
-
-func (r CounterpartyNewParamsVerificationStatus) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsVerificationStatusDenied, CounterpartyNewParamsVerificationStatusNeedsApproval, CounterpartyNewParamsVerificationStatusUnverified, CounterpartyNewParamsVerificationStatusVerified:
 		return true
 	}
 	return false
