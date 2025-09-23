@@ -791,6 +791,10 @@ func (r InvoiceUpdateParamsPaymentMethod) IsKnown() bool {
 type InvoiceListParams struct {
 	AfterCursor    param.Field[string] `query:"after_cursor"`
 	CounterpartyID param.Field[string] `query:"counterparty_id"`
+	// An inclusive upper bound for searching created_at
+	CreatedAtEnd param.Field[time.Time] `query:"created_at_end" format:"date-time"`
+	// An inclusive lower bound for searching created_at
+	CreatedAtStart param.Field[time.Time] `query:"created_at_start" format:"date-time"`
 	// An inclusive upper bound for searching due_date
 	DueDateEnd param.Field[time.Time] `query:"due_date_end" format:"date"`
 	// An inclusive lower bound for searching due_date
