@@ -248,6 +248,8 @@ func TestInvoiceListWithOptionalParams(t *testing.T) {
 	_, err := client.Invoices.List(context.TODO(), moderntreasury.InvoiceListParams{
 		AfterCursor:       moderntreasury.F("after_cursor"),
 		CounterpartyID:    moderntreasury.F("counterparty_id"),
+		CreatedAtEnd:      moderntreasury.F(time.Now()),
+		CreatedAtStart:    moderntreasury.F(time.Now()),
 		DueDateEnd:        moderntreasury.F(time.Now()),
 		DueDateStart:      moderntreasury.F(time.Now()),
 		ExpectedPaymentID: moderntreasury.F("expected_payment_id"),
