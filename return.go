@@ -543,6 +543,7 @@ const (
 	ReturnObjectTypeCheck       ReturnObjectType = "check"
 	ReturnObjectTypeCrossBorder ReturnObjectType = "cross_border"
 	ReturnObjectTypeEft         ReturnObjectType = "eft"
+	ReturnObjectTypeGBFps       ReturnObjectType = "gb_fps"
 	ReturnObjectTypeInterac     ReturnObjectType = "interac"
 	ReturnObjectTypeManual      ReturnObjectType = "manual"
 	ReturnObjectTypeSepa        ReturnObjectType = "sepa"
@@ -551,7 +552,7 @@ const (
 
 func (r ReturnObjectType) IsKnown() bool {
 	switch r {
-	case ReturnObjectTypeACH, ReturnObjectTypeACHNoc, ReturnObjectTypeAuBecs, ReturnObjectTypeBacs, ReturnObjectTypeBook, ReturnObjectTypeCheck, ReturnObjectTypeCrossBorder, ReturnObjectTypeEft, ReturnObjectTypeInterac, ReturnObjectTypeManual, ReturnObjectTypeSepa, ReturnObjectTypeWire:
+	case ReturnObjectTypeACH, ReturnObjectTypeACHNoc, ReturnObjectTypeAuBecs, ReturnObjectTypeBacs, ReturnObjectTypeBook, ReturnObjectTypeCheck, ReturnObjectTypeCrossBorder, ReturnObjectTypeEft, ReturnObjectTypeGBFps, ReturnObjectTypeInterac, ReturnObjectTypeManual, ReturnObjectTypeSepa, ReturnObjectTypeWire:
 		return true
 	}
 	return false

@@ -162,6 +162,9 @@ type PaymentOrder struct {
 	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
 	// Defaults to the currency of the originating account.
 	Currency shared.Currency `json:"currency,required"`
+	// If the payment order's status is `held`, this will include the hold object's
+	// data.
+	CurrentHold PaymentOrderCurrentHold `json:"current_hold,required,nullable"`
 	// If the payment order's status is `returned`, this will include the return
 	// object's data.
 	CurrentReturn ReturnObject `json:"current_return,required,nullable"`
@@ -290,6 +293,7 @@ type paymentOrderJSON struct {
 	CounterpartyID                     apijson.Field
 	CreatedAt                          apijson.Field
 	Currency                           apijson.Field
+	CurrentHold                        apijson.Field
 	CurrentReturn                      apijson.Field
 	Description                        apijson.Field
 	Direction                          apijson.Field
@@ -390,6 +394,107 @@ const (
 func (r PaymentOrderChargeBearer) IsKnown() bool {
 	switch r {
 	case PaymentOrderChargeBearerShared, PaymentOrderChargeBearerSender, PaymentOrderChargeBearerReceiver:
+		return true
+	}
+	return false
+}
+
+// If the payment order's status is `held`, this will include the hold object's
+// data.
+type PaymentOrderCurrentHold struct {
+	ID        string    `json:"id,required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	// The type of object
+	Object PaymentOrderCurrentHoldObject `json:"object,required"`
+	// The status of the hold
+	Status PaymentOrderCurrentHoldStatus `json:"status,required"`
+	// The ID of the target being held
+	TargetID string `json:"target_id,required" format:"uuid"`
+	// The type of target being held
+	TargetType PaymentOrderCurrentHoldTargetType `json:"target_type,required"`
+	UpdatedAt  time.Time                         `json:"updated_at,required" format:"date-time"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode"`
+	// Additional metadata for the hold
+	Metadata map[string]string `json:"metadata,nullable"`
+	// The reason for the hold
+	Reason string `json:"reason,nullable"`
+	// The resolution of the hold
+	Resolution string `json:"resolution,nullable"`
+	// When the hold was resolved
+	ResolvedAt time.Time                   `json:"resolved_at,nullable" format:"date-time"`
+	JSON       paymentOrderCurrentHoldJSON `json:"-"`
+}
+
+// paymentOrderCurrentHoldJSON contains the JSON metadata for the struct
+// [PaymentOrderCurrentHold]
+type paymentOrderCurrentHoldJSON struct {
+	ID          apijson.Field
+	CreatedAt   apijson.Field
+	Object      apijson.Field
+	Status      apijson.Field
+	TargetID    apijson.Field
+	TargetType  apijson.Field
+	UpdatedAt   apijson.Field
+	LiveMode    apijson.Field
+	Metadata    apijson.Field
+	Reason      apijson.Field
+	Resolution  apijson.Field
+	ResolvedAt  apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *PaymentOrderCurrentHold) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r paymentOrderCurrentHoldJSON) RawJSON() string {
+	return r.raw
+}
+
+// The type of object
+type PaymentOrderCurrentHoldObject string
+
+const (
+	PaymentOrderCurrentHoldObjectHold PaymentOrderCurrentHoldObject = "hold"
+)
+
+func (r PaymentOrderCurrentHoldObject) IsKnown() bool {
+	switch r {
+	case PaymentOrderCurrentHoldObjectHold:
+		return true
+	}
+	return false
+}
+
+// The status of the hold
+type PaymentOrderCurrentHoldStatus string
+
+const (
+	PaymentOrderCurrentHoldStatusActive   PaymentOrderCurrentHoldStatus = "active"
+	PaymentOrderCurrentHoldStatusResolved PaymentOrderCurrentHoldStatus = "resolved"
+)
+
+func (r PaymentOrderCurrentHoldStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderCurrentHoldStatusActive, PaymentOrderCurrentHoldStatusResolved:
+		return true
+	}
+	return false
+}
+
+// The type of target being held
+type PaymentOrderCurrentHoldTargetType string
+
+const (
+	PaymentOrderCurrentHoldTargetTypePaymentOrder PaymentOrderCurrentHoldTargetType = "payment_order"
+)
+
+func (r PaymentOrderCurrentHoldTargetType) IsKnown() bool {
+	switch r {
+	case PaymentOrderCurrentHoldTargetTypePaymentOrder:
 		return true
 	}
 	return false

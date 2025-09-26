@@ -191,6 +191,8 @@ type BulkResultEntity struct {
 	CounterpartyID string `json:"counterparty_id,nullable" format:"uuid"`
 	// Defaults to the currency of the originating account.
 	Currency shared.Currency `json:"currency,nullable"`
+	// This field can have the runtime type of [PaymentOrderCurrentHold].
+	CurrentHold interface{} `json:"current_hold"`
 	// If the payment order's status is `returned`, this will include the return
 	// object's data.
 	CurrentReturn ReturnObject `json:"current_return,nullable"`
@@ -400,6 +402,7 @@ type bulkResultEntityJSON struct {
 	ChargeBearer                       apijson.Field
 	CounterpartyID                     apijson.Field
 	Currency                           apijson.Field
+	CurrentHold                        apijson.Field
 	CurrentReturn                      apijson.Field
 	CustomIdentifiers                  apijson.Field
 	DateLowerBound                     apijson.Field
