@@ -792,7 +792,7 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	// Either individual or business.
 	PartyType PaymentOrderUltimateOriginatingAccountPartyType `json:"party_type,nullable"`
 	// The internal account status.
-	Status string `json:"status,nullable" format:"string"`
+	Status PaymentOrderUltimateOriginatingAccountStatus `json:"status,nullable"`
 	// The vendor ID associated with this account.
 	VendorID string                                     `json:"vendor_id,nullable" format:"string"`
 	JSON     paymentOrderUltimateOriginatingAccountJSON `json:"-"`
@@ -915,6 +915,25 @@ const (
 func (r PaymentOrderUltimateOriginatingAccountPartyType) IsKnown() bool {
 	switch r {
 	case PaymentOrderUltimateOriginatingAccountPartyTypeBusiness, PaymentOrderUltimateOriginatingAccountPartyTypeIndividual:
+		return true
+	}
+	return false
+}
+
+// The internal account status.
+type PaymentOrderUltimateOriginatingAccountStatus string
+
+const (
+	PaymentOrderUltimateOriginatingAccountStatusActive            PaymentOrderUltimateOriginatingAccountStatus = "active"
+	PaymentOrderUltimateOriginatingAccountStatusClosed            PaymentOrderUltimateOriginatingAccountStatus = "closed"
+	PaymentOrderUltimateOriginatingAccountStatusPendingActivation PaymentOrderUltimateOriginatingAccountStatus = "pending_activation"
+	PaymentOrderUltimateOriginatingAccountStatusPendingClosure    PaymentOrderUltimateOriginatingAccountStatus = "pending_closure"
+	PaymentOrderUltimateOriginatingAccountStatusSuspended         PaymentOrderUltimateOriginatingAccountStatus = "suspended"
+)
+
+func (r PaymentOrderUltimateOriginatingAccountStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderUltimateOriginatingAccountStatusActive, PaymentOrderUltimateOriginatingAccountStatusClosed, PaymentOrderUltimateOriginatingAccountStatusPendingActivation, PaymentOrderUltimateOriginatingAccountStatusPendingClosure, PaymentOrderUltimateOriginatingAccountStatusSuspended:
 		return true
 	}
 	return false
