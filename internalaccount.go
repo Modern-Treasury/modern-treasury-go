@@ -153,8 +153,8 @@ type InternalAccount struct {
 	// An array of routing detail objects.
 	RoutingDetails []RoutingDetail `json:"routing_details,required"`
 	// The internal account status.
-	Status    string    `json:"status,required,nullable" format:"string"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	Status    InternalAccountStatus `json:"status,required,nullable"`
+	UpdatedAt time.Time             `json:"updated_at,required" format:"date-time"`
 	// The vendor ID associated with this account.
 	VendorID string              `json:"vendor_id,required,nullable" format:"string"`
 	JSON     internalAccountJSON `json:"-"`
@@ -332,6 +332,25 @@ const (
 func (r InternalAccountPartyType) IsKnown() bool {
 	switch r {
 	case InternalAccountPartyTypeBusiness, InternalAccountPartyTypeIndividual:
+		return true
+	}
+	return false
+}
+
+// The internal account status.
+type InternalAccountStatus string
+
+const (
+	InternalAccountStatusActive            InternalAccountStatus = "active"
+	InternalAccountStatusClosed            InternalAccountStatus = "closed"
+	InternalAccountStatusPendingActivation InternalAccountStatus = "pending_activation"
+	InternalAccountStatusPendingClosure    InternalAccountStatus = "pending_closure"
+	InternalAccountStatusSuspended         InternalAccountStatus = "suspended"
+)
+
+func (r InternalAccountStatus) IsKnown() bool {
+	switch r {
+	case InternalAccountStatusActive, InternalAccountStatusClosed, InternalAccountStatusPendingActivation, InternalAccountStatusPendingClosure, InternalAccountStatusSuspended:
 		return true
 	}
 	return false
@@ -639,6 +658,8 @@ type InternalAccountListParams struct {
 	// Only return internal accounts that can make this type of payment.
 	PaymentType param.Field[InternalAccountListParamsPaymentType] `query:"payment_type"`
 	PerPage     param.Field[int64]                                `query:"per_page"`
+	// Only return internal accounts with this status.
+	Status param.Field[InternalAccountListParamsStatus] `query:"status"`
 }
 
 // URLQuery serializes [InternalAccountListParams]'s query parameters as
@@ -694,6 +715,25 @@ const (
 func (r InternalAccountListParamsPaymentType) IsKnown() bool {
 	switch r {
 	case InternalAccountListParamsPaymentTypeACH, InternalAccountListParamsPaymentTypeAuBecs, InternalAccountListParamsPaymentTypeBacs, InternalAccountListParamsPaymentTypeBase, InternalAccountListParamsPaymentTypeBook, InternalAccountListParamsPaymentTypeCard, InternalAccountListParamsPaymentTypeChats, InternalAccountListParamsPaymentTypeCheck, InternalAccountListParamsPaymentTypeCrossBorder, InternalAccountListParamsPaymentTypeDkNets, InternalAccountListParamsPaymentTypeEft, InternalAccountListParamsPaymentTypeEthereum, InternalAccountListParamsPaymentTypeGBFps, InternalAccountListParamsPaymentTypeHuIcs, InternalAccountListParamsPaymentTypeInterac, InternalAccountListParamsPaymentTypeMasav, InternalAccountListParamsPaymentTypeMxCcen, InternalAccountListParamsPaymentTypeNeft, InternalAccountListParamsPaymentTypeNics, InternalAccountListParamsPaymentTypeNzBecs, InternalAccountListParamsPaymentTypePlElixir, InternalAccountListParamsPaymentTypePolygon, InternalAccountListParamsPaymentTypeProvxchange, InternalAccountListParamsPaymentTypeRoSent, InternalAccountListParamsPaymentTypeRtp, InternalAccountListParamsPaymentTypeSeBankgirot, InternalAccountListParamsPaymentTypeSen, InternalAccountListParamsPaymentTypeSepa, InternalAccountListParamsPaymentTypeSgGiro, InternalAccountListParamsPaymentTypeSic, InternalAccountListParamsPaymentTypeSignet, InternalAccountListParamsPaymentTypeSknbi, InternalAccountListParamsPaymentTypeSolana, InternalAccountListParamsPaymentTypeWire, InternalAccountListParamsPaymentTypeZengin:
+		return true
+	}
+	return false
+}
+
+// Only return internal accounts with this status.
+type InternalAccountListParamsStatus string
+
+const (
+	InternalAccountListParamsStatusActive            InternalAccountListParamsStatus = "active"
+	InternalAccountListParamsStatusPendingActivation InternalAccountListParamsStatus = "pending_activation"
+	InternalAccountListParamsStatusSuspended         InternalAccountListParamsStatus = "suspended"
+	InternalAccountListParamsStatusPendingClosure    InternalAccountListParamsStatus = "pending_closure"
+	InternalAccountListParamsStatusClosed            InternalAccountListParamsStatus = "closed"
+)
+
+func (r InternalAccountListParamsStatus) IsKnown() bool {
+	switch r {
+	case InternalAccountListParamsStatusActive, InternalAccountListParamsStatusPendingActivation, InternalAccountListParamsStatusSuspended, InternalAccountListParamsStatusPendingClosure, InternalAccountListParamsStatusClosed:
 		return true
 	}
 	return false

@@ -153,6 +153,7 @@ func TestInternalAccountListWithOptionalParams(t *testing.T) {
 		PaymentDirection: moderntreasury.F(shared.TransactionDirectionCredit),
 		PaymentType:      moderntreasury.F(moderntreasury.InternalAccountListParamsPaymentTypeACH),
 		PerPage:          moderntreasury.F(int64(0)),
+		Status:           moderntreasury.F(moderntreasury.InternalAccountListParamsStatusActive),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
