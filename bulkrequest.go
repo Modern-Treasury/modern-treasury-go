@@ -372,7 +372,9 @@ type BulkRequestNewParamsResource struct {
 	// Either `receiving_account` or `receiving_account_id` must be present. When using
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
-	ReceivingAccountID          param.Field[string]      `json:"receiving_account_id" format:"uuid"`
+	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// True if the object is reconciled, false otherwise.
+	Reconciled                  param.Field[bool]        `json:"reconciled"`
 	ReconciliationFilters       param.Field[interface{}] `json:"reconciliation_filters"`
 	ReconciliationGroups        param.Field[interface{}] `json:"reconciliation_groups"`
 	ReconciliationRuleVariables param.Field[interface{}] `json:"reconciliation_rule_variables"`
@@ -545,6 +547,8 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// True if the object is reconciled, false otherwise.
+	Reconciled param.Field[bool] `json:"reconciled"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -1183,6 +1187,8 @@ type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// True if the object is reconciled, false otherwise.
+	Reconciled param.Field[bool] `json:"reconciled"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.

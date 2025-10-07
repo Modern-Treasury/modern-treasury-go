@@ -289,9 +289,7 @@ type BulkResultEntity struct {
 	// The receiving account ID. Can be an `external_account` or `internal_account`.
 	ReceivingAccountID   string                               `json:"receiving_account_id" format:"uuid"`
 	ReceivingAccountType BulkResultEntityReceivingAccountType `json:"receiving_account_type"`
-	// This field will be `true` if a transaction is reconciled by the Modern Treasury
-	// system. This means that it has transaction line items that sum up to the
-	// transaction's amount.
+	// True if the object is reconciled, false otherwise.
 	Reconciled bool `json:"reconciled"`
 	// This field can have the runtime type of [interface{}].
 	ReconciliationFilters interface{} `json:"reconciliation_filters"`

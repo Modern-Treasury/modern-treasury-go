@@ -117,6 +117,8 @@ type ReturnObject struct {
 	// Often the bank will provide an explanation for the return, which is a short
 	// human readable string.
 	Reason string `json:"reason,required,nullable"`
+	// True if the object is reconciled, false otherwise.
+	Reconciled bool `json:"reconciled,required"`
 	// An array of Payment Reference objects.
 	ReferenceNumbers []ReturnObjectReferenceNumber `json:"reference_numbers,required"`
 	// The ID of the object being returned or `null`.
@@ -160,6 +162,7 @@ type returnObjectJSON struct {
 	LiveMode              apijson.Field
 	Object                apijson.Field
 	Reason                apijson.Field
+	Reconciled            apijson.Field
 	ReferenceNumbers      apijson.Field
 	ReturnableID          apijson.Field
 	ReturnableType        apijson.Field
@@ -581,6 +584,8 @@ type ReturnNewParams struct {
 	// An optional description of the reason for the return. This is for internal usage
 	// and will not be transmitted to the bank.”
 	Reason param.Field[string] `json:"reason"`
+	// True if the object is reconciled, false otherwise.
+	Reconciled param.Field[bool] `json:"reconciled"`
 }
 
 func (r ReturnNewParams) MarshalJSON() (data []byte, err error) {

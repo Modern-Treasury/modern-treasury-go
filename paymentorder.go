@@ -228,7 +228,9 @@ type PaymentOrder struct {
 	// The receiving account ID. Can be an `external_account` or `internal_account`.
 	ReceivingAccountID   string                           `json:"receiving_account_id,required" format:"uuid"`
 	ReceivingAccountType PaymentOrderReceivingAccountType `json:"receiving_account_type,required"`
-	ReferenceNumbers     []PaymentOrderReferenceNumber    `json:"reference_numbers,required"`
+	// True if the object is reconciled, false otherwise.
+	Reconciled       bool                          `json:"reconciled,required"`
+	ReferenceNumbers []PaymentOrderReferenceNumber `json:"reference_numbers,required"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -315,6 +317,7 @@ type paymentOrderJSON struct {
 	Purpose                            apijson.Field
 	ReceivingAccountID                 apijson.Field
 	ReceivingAccountType               apijson.Field
+	Reconciled                         apijson.Field
 	ReferenceNumbers                   apijson.Field
 	RemittanceInformation              apijson.Field
 	SendRemittanceAdvice               apijson.Field
@@ -1146,6 +1149,8 @@ type PaymentOrderNewParams struct {
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// True if the object is reconciled, false otherwise.
+	Reconciled param.Field[bool] `json:"reconciled"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -1621,6 +1626,8 @@ type PaymentOrderUpdateParams struct {
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// True if the object is reconciled, false otherwise.
+	Reconciled param.Field[bool] `json:"reconciled"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -2238,6 +2245,8 @@ type PaymentOrderNewAsyncParams struct {
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// True if the object is reconciled, false otherwise.
+	Reconciled param.Field[bool] `json:"reconciled"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
