@@ -130,6 +130,8 @@ type IncomingPaymentDetail struct {
 	OriginatingRoutingNumber string `json:"originating_routing_number,required,nullable"`
 	// The type of the originating routing number for the incoming payment detail.
 	OriginatingRoutingNumberType IncomingPaymentDetailOriginatingRoutingNumberType `json:"originating_routing_number_type,required,nullable"`
+	// True if the object is reconciled, false otherwise.
+	Reconciled bool `json:"reconciled,required"`
 	// The current status of the incoming payment order. One of `pending`, `completed`,
 	// or `returned`.
 	Status IncomingPaymentDetailStatus `json:"status,required"`
@@ -173,6 +175,7 @@ type incomingPaymentDetailJSON struct {
 	OriginatingAccountNumberType apijson.Field
 	OriginatingRoutingNumber     apijson.Field
 	OriginatingRoutingNumberType apijson.Field
+	Reconciled                   apijson.Field
 	Status                       apijson.Field
 	TransactionID                apijson.Field
 	TransactionLineItemID        apijson.Field
