@@ -110,6 +110,8 @@ type Reversal struct {
 	PaymentOrderID string `json:"payment_order_id,required,nullable" format:"uuid"`
 	// The reason for the reversal.
 	Reason ReversalReason `json:"reason,required"`
+	// True if the object is reconciled, false otherwise.
+	Reconciled bool `json:"reconciled,required"`
 	// The current status of the reversal.
 	Status         ReversalStatus `json:"status,required"`
 	TransactionIDs []string       `json:"transaction_ids,required" format:"uuid"`
@@ -127,6 +129,7 @@ type reversalJSON struct {
 	Object              apijson.Field
 	PaymentOrderID      apijson.Field
 	Reason              apijson.Field
+	Reconciled          apijson.Field
 	Status              apijson.Field
 	TransactionIDs      apijson.Field
 	UpdatedAt           apijson.Field
