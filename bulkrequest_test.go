@@ -159,7 +159,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				}}),
 			}),
 			ReceivingAccountID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			Reconciled:                         moderntreasury.F(true),
+			ReconciliationStatus:               moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatusReconciled),
 			RemittanceInformation:              moderntreasury.F("remittance_information"),
 			SendRemittanceAdvice:               moderntreasury.F(true),
 			StatementDescriptor:                moderntreasury.F("statement_descriptor"),

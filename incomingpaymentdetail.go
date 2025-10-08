@@ -130,8 +130,8 @@ type IncomingPaymentDetail struct {
 	OriginatingRoutingNumber string `json:"originating_routing_number,required,nullable"`
 	// The type of the originating routing number for the incoming payment detail.
 	OriginatingRoutingNumberType IncomingPaymentDetailOriginatingRoutingNumberType `json:"originating_routing_number_type,required,nullable"`
-	// True if the object is reconciled, false otherwise.
-	Reconciled bool `json:"reconciled,required"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus IncomingPaymentDetailReconciliationStatus `json:"reconciliation_status,required"`
 	// The current status of the incoming payment order. One of `pending`, `completed`,
 	// or `returned`.
 	Status IncomingPaymentDetailStatus `json:"status,required"`
@@ -175,7 +175,7 @@ type incomingPaymentDetailJSON struct {
 	OriginatingAccountNumberType apijson.Field
 	OriginatingRoutingNumber     apijson.Field
 	OriginatingRoutingNumberType apijson.Field
-	Reconciled                   apijson.Field
+	ReconciliationStatus         apijson.Field
 	Status                       apijson.Field
 	TransactionID                apijson.Field
 	TransactionLineItemID        apijson.Field
@@ -256,6 +256,23 @@ const (
 func (r IncomingPaymentDetailOriginatingRoutingNumberType) IsKnown() bool {
 	switch r {
 	case IncomingPaymentDetailOriginatingRoutingNumberTypeAba, IncomingPaymentDetailOriginatingRoutingNumberTypeAuBsb, IncomingPaymentDetailOriginatingRoutingNumberTypeBrCodigo, IncomingPaymentDetailOriginatingRoutingNumberTypeCaCpa, IncomingPaymentDetailOriginatingRoutingNumberTypeChips, IncomingPaymentDetailOriginatingRoutingNumberTypeCnaps, IncomingPaymentDetailOriginatingRoutingNumberTypeDkInterbankClearingCode, IncomingPaymentDetailOriginatingRoutingNumberTypeGBSortCode, IncomingPaymentDetailOriginatingRoutingNumberTypeHkInterbankClearingCode, IncomingPaymentDetailOriginatingRoutingNumberTypeHuInterbankClearingCode, IncomingPaymentDetailOriginatingRoutingNumberTypeIDSknbiCode, IncomingPaymentDetailOriginatingRoutingNumberTypeIlBankCode, IncomingPaymentDetailOriginatingRoutingNumberTypeInIfsc, IncomingPaymentDetailOriginatingRoutingNumberTypeJpZenginCode, IncomingPaymentDetailOriginatingRoutingNumberTypeMxBankIdentifier, IncomingPaymentDetailOriginatingRoutingNumberTypeMyBranchCode, IncomingPaymentDetailOriginatingRoutingNumberTypeNzNationalClearingCode, IncomingPaymentDetailOriginatingRoutingNumberTypePlNationalClearingCode, IncomingPaymentDetailOriginatingRoutingNumberTypeSeBankgiroClearingCode, IncomingPaymentDetailOriginatingRoutingNumberTypeSgInterbankClearingCode, IncomingPaymentDetailOriginatingRoutingNumberTypeSwift, IncomingPaymentDetailOriginatingRoutingNumberTypeZaNationalClearingCode:
+		return true
+	}
+	return false
+}
+
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type IncomingPaymentDetailReconciliationStatus string
+
+const (
+	IncomingPaymentDetailReconciliationStatusReconciled            IncomingPaymentDetailReconciliationStatus = "reconciled"
+	IncomingPaymentDetailReconciliationStatusUnreconciled          IncomingPaymentDetailReconciliationStatus = "unreconciled"
+	IncomingPaymentDetailReconciliationStatusTentativelyReconciled IncomingPaymentDetailReconciliationStatus = "tentatively_reconciled"
+)
+
+func (r IncomingPaymentDetailReconciliationStatus) IsKnown() bool {
+	switch r {
+	case IncomingPaymentDetailReconciliationStatusReconciled, IncomingPaymentDetailReconciliationStatusUnreconciled, IncomingPaymentDetailReconciliationStatusTentativelyReconciled:
 		return true
 	}
 	return false
