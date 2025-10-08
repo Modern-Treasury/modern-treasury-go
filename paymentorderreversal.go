@@ -110,8 +110,8 @@ type Reversal struct {
 	PaymentOrderID string `json:"payment_order_id,required,nullable" format:"uuid"`
 	// The reason for the reversal.
 	Reason ReversalReason `json:"reason,required"`
-	// True if the object is reconciled, false otherwise.
-	Reconciled bool `json:"reconciled,required"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus ReversalReconciliationStatus `json:"reconciliation_status,required"`
 	// The current status of the reversal.
 	Status         ReversalStatus `json:"status,required"`
 	TransactionIDs []string       `json:"transaction_ids,required" format:"uuid"`
@@ -121,20 +121,20 @@ type Reversal struct {
 
 // reversalJSON contains the JSON metadata for the struct [Reversal]
 type reversalJSON struct {
-	ID                  apijson.Field
-	CreatedAt           apijson.Field
-	LedgerTransactionID apijson.Field
-	LiveMode            apijson.Field
-	Metadata            apijson.Field
-	Object              apijson.Field
-	PaymentOrderID      apijson.Field
-	Reason              apijson.Field
-	Reconciled          apijson.Field
-	Status              apijson.Field
-	TransactionIDs      apijson.Field
-	UpdatedAt           apijson.Field
-	raw                 string
-	ExtraFields         map[string]apijson.Field
+	ID                   apijson.Field
+	CreatedAt            apijson.Field
+	LedgerTransactionID  apijson.Field
+	LiveMode             apijson.Field
+	Metadata             apijson.Field
+	Object               apijson.Field
+	PaymentOrderID       apijson.Field
+	Reason               apijson.Field
+	ReconciliationStatus apijson.Field
+	Status               apijson.Field
+	TransactionIDs       apijson.Field
+	UpdatedAt            apijson.Field
+	raw                  string
+	ExtraFields          map[string]apijson.Field
 }
 
 func (r *Reversal) UnmarshalJSON(data []byte) (err error) {
@@ -159,6 +159,23 @@ const (
 func (r ReversalReason) IsKnown() bool {
 	switch r {
 	case ReversalReasonDuplicate, ReversalReasonIncorrectAmount, ReversalReasonIncorrectReceivingAccount, ReversalReasonDateEarlierThanIntended, ReversalReasonDateLaterThanIntended:
+		return true
+	}
+	return false
+}
+
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type ReversalReconciliationStatus string
+
+const (
+	ReversalReconciliationStatusReconciled            ReversalReconciliationStatus = "reconciled"
+	ReversalReconciliationStatusUnreconciled          ReversalReconciliationStatus = "unreconciled"
+	ReversalReconciliationStatusTentativelyReconciled ReversalReconciliationStatus = "tentatively_reconciled"
+)
+
+func (r ReversalReconciliationStatus) IsKnown() bool {
+	switch r {
+	case ReversalReconciliationStatusReconciled, ReversalReconciliationStatusUnreconciled, ReversalReconciliationStatusTentativelyReconciled:
 		return true
 	}
 	return false

@@ -372,12 +372,12 @@ type BulkRequestNewParamsResource struct {
 	// Either `receiving_account` or `receiving_account_id` must be present. When using
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
-	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
-	// True if the object is reconciled, false otherwise.
-	Reconciled                  param.Field[bool]        `json:"reconciled"`
+	ReceivingAccountID          param.Field[string]      `json:"receiving_account_id" format:"uuid"`
 	ReconciliationFilters       param.Field[interface{}] `json:"reconciliation_filters"`
 	ReconciliationGroups        param.Field[interface{}] `json:"reconciliation_groups"`
 	ReconciliationRuleVariables param.Field[interface{}] `json:"reconciliation_rule_variables"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus param.Field[BulkRequestNewParamsResourcesReconciliationStatus] `json:"reconciliation_status"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -547,8 +547,8 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
-	// True if the object is reconciled, false otherwise.
-	Reconciled param.Field[bool] `json:"reconciled"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatus] `json:"reconciliation_status"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -900,6 +900,23 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAcco
 	return false
 }
 
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatus string
+
+const (
+	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatusReconciled            BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatus = "reconciled"
+	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatusUnreconciled          BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatus = "unreconciled"
+	BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatusTentativelyReconciled BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatus = "tentatively_reconciled"
+)
+
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatus) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatusReconciled, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatusUnreconciled, BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatusTentativelyReconciled:
+		return true
+	}
+	return false
+}
+
 type BulkRequestNewParamsResourcesExpectedPaymentCreateRequest struct {
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
@@ -1187,8 +1204,8 @@ type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
-	// True if the object is reconciled, false otherwise.
-	Reconciled param.Field[bool] `json:"reconciled"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReconciliationStatus] `json:"reconciliation_status"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -1553,6 +1570,23 @@ func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAcc
 	return false
 }
 
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReconciliationStatus string
+
+const (
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReconciliationStatusReconciled            BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReconciliationStatus = "reconciled"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReconciliationStatusUnreconciled          BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReconciliationStatus = "unreconciled"
+	BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReconciliationStatusTentativelyReconciled BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReconciliationStatus = "tentatively_reconciled"
+)
+
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReconciliationStatus) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReconciliationStatusReconciled, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReconciliationStatusUnreconciled, BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReconciliationStatusTentativelyReconciled:
+		return true
+	}
+	return false
+}
+
 // To cancel a payment order, use `cancelled`. To redraft a returned payment order,
 // use `approved`. To undo approval on a denied or approved payment order, use
 // `needs_approval`.
@@ -1847,6 +1881,23 @@ const (
 func (r BulkRequestNewParamsResourcesPriority) IsKnown() bool {
 	switch r {
 	case BulkRequestNewParamsResourcesPriorityHigh, BulkRequestNewParamsResourcesPriorityNormal:
+		return true
+	}
+	return false
+}
+
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type BulkRequestNewParamsResourcesReconciliationStatus string
+
+const (
+	BulkRequestNewParamsResourcesReconciliationStatusReconciled            BulkRequestNewParamsResourcesReconciliationStatus = "reconciled"
+	BulkRequestNewParamsResourcesReconciliationStatusUnreconciled          BulkRequestNewParamsResourcesReconciliationStatus = "unreconciled"
+	BulkRequestNewParamsResourcesReconciliationStatusTentativelyReconciled BulkRequestNewParamsResourcesReconciliationStatus = "tentatively_reconciled"
+)
+
+func (r BulkRequestNewParamsResourcesReconciliationStatus) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesReconciliationStatusReconciled, BulkRequestNewParamsResourcesReconciliationStatusUnreconciled, BulkRequestNewParamsResourcesReconciliationStatusTentativelyReconciled:
 		return true
 	}
 	return false

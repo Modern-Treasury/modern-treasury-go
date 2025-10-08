@@ -289,7 +289,9 @@ type BulkResultEntity struct {
 	// The receiving account ID. Can be an `external_account` or `internal_account`.
 	ReceivingAccountID   string                               `json:"receiving_account_id" format:"uuid"`
 	ReceivingAccountType BulkResultEntityReceivingAccountType `json:"receiving_account_type"`
-	// True if the object is reconciled, false otherwise.
+	// This field will be `true` if a transaction is reconciled by the Modern Treasury
+	// system. This means that it has transaction line items that sum up to the
+	// transaction's amount.
 	Reconciled bool `json:"reconciled"`
 	// This field can have the runtime type of [interface{}].
 	ReconciliationFilters interface{} `json:"reconciliation_filters"`
@@ -301,6 +303,8 @@ type BulkResultEntity struct {
 	ReconciliationMethod BulkResultEntityReconciliationMethod `json:"reconciliation_method,nullable"`
 	// This field can have the runtime type of [[]ReconciliationRule].
 	ReconciliationRuleVariables interface{} `json:"reconciliation_rule_variables"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus BulkResultEntityReconciliationStatus `json:"reconciliation_status"`
 	// This field can have the runtime type of [[]PaymentOrderReferenceNumber].
 	ReferenceNumbers interface{} `json:"reference_numbers"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
@@ -442,6 +446,7 @@ type bulkResultEntityJSON struct {
 	ReconciliationGroups               apijson.Field
 	ReconciliationMethod               apijson.Field
 	ReconciliationRuleVariables        apijson.Field
+	ReconciliationStatus               apijson.Field
 	ReferenceNumbers                   apijson.Field
 	RemittanceInformation              apijson.Field
 	RequestErrors                      apijson.Field
@@ -705,6 +710,23 @@ const (
 func (r BulkResultEntityReconciliationMethod) IsKnown() bool {
 	switch r {
 	case BulkResultEntityReconciliationMethodAutomatic, BulkResultEntityReconciliationMethodManual:
+		return true
+	}
+	return false
+}
+
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type BulkResultEntityReconciliationStatus string
+
+const (
+	BulkResultEntityReconciliationStatusReconciled            BulkResultEntityReconciliationStatus = "reconciled"
+	BulkResultEntityReconciliationStatusUnreconciled          BulkResultEntityReconciliationStatus = "unreconciled"
+	BulkResultEntityReconciliationStatusTentativelyReconciled BulkResultEntityReconciliationStatus = "tentatively_reconciled"
+)
+
+func (r BulkResultEntityReconciliationStatus) IsKnown() bool {
+	switch r {
+	case BulkResultEntityReconciliationStatusReconciled, BulkResultEntityReconciliationStatusUnreconciled, BulkResultEntityReconciliationStatusTentativelyReconciled:
 		return true
 	}
 	return false

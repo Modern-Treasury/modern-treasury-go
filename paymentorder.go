@@ -228,9 +228,9 @@ type PaymentOrder struct {
 	// The receiving account ID. Can be an `external_account` or `internal_account`.
 	ReceivingAccountID   string                           `json:"receiving_account_id,required" format:"uuid"`
 	ReceivingAccountType PaymentOrderReceivingAccountType `json:"receiving_account_type,required"`
-	// True if the object is reconciled, false otherwise.
-	Reconciled       bool                          `json:"reconciled,required"`
-	ReferenceNumbers []PaymentOrderReferenceNumber `json:"reference_numbers,required"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus PaymentOrderReconciliationStatus `json:"reconciliation_status,required"`
+	ReferenceNumbers     []PaymentOrderReferenceNumber    `json:"reference_numbers,required"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -317,7 +317,7 @@ type paymentOrderJSON struct {
 	Purpose                            apijson.Field
 	ReceivingAccountID                 apijson.Field
 	ReceivingAccountType               apijson.Field
-	Reconciled                         apijson.Field
+	ReconciliationStatus               apijson.Field
 	ReferenceNumbers                   apijson.Field
 	RemittanceInformation              apijson.Field
 	SendRemittanceAdvice               apijson.Field
@@ -568,6 +568,23 @@ const (
 func (r PaymentOrderReceivingAccountType) IsKnown() bool {
 	switch r {
 	case PaymentOrderReceivingAccountTypeInternalAccount, PaymentOrderReceivingAccountTypeExternalAccount:
+		return true
+	}
+	return false
+}
+
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type PaymentOrderReconciliationStatus string
+
+const (
+	PaymentOrderReconciliationStatusReconciled            PaymentOrderReconciliationStatus = "reconciled"
+	PaymentOrderReconciliationStatusUnreconciled          PaymentOrderReconciliationStatus = "unreconciled"
+	PaymentOrderReconciliationStatusTentativelyReconciled PaymentOrderReconciliationStatus = "tentatively_reconciled"
+)
+
+func (r PaymentOrderReconciliationStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderReconciliationStatusReconciled, PaymentOrderReconciliationStatusUnreconciled, PaymentOrderReconciliationStatusTentativelyReconciled:
 		return true
 	}
 	return false
@@ -1149,8 +1166,8 @@ type PaymentOrderNewParams struct {
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
-	// True if the object is reconciled, false otherwise.
-	Reconciled param.Field[bool] `json:"reconciled"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus param.Field[PaymentOrderNewParamsReconciliationStatus] `json:"reconciliation_status"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -1546,6 +1563,23 @@ func (r PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType) IsKnown(
 	return false
 }
 
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type PaymentOrderNewParamsReconciliationStatus string
+
+const (
+	PaymentOrderNewParamsReconciliationStatusReconciled            PaymentOrderNewParamsReconciliationStatus = "reconciled"
+	PaymentOrderNewParamsReconciliationStatusUnreconciled          PaymentOrderNewParamsReconciliationStatus = "unreconciled"
+	PaymentOrderNewParamsReconciliationStatusTentativelyReconciled PaymentOrderNewParamsReconciliationStatus = "tentatively_reconciled"
+)
+
+func (r PaymentOrderNewParamsReconciliationStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewParamsReconciliationStatusReconciled, PaymentOrderNewParamsReconciliationStatusUnreconciled, PaymentOrderNewParamsReconciliationStatusTentativelyReconciled:
+		return true
+	}
+	return false
+}
+
 type PaymentOrderUpdateParams struct {
 	Accounting param.Field[PaymentOrderUpdateParamsAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
@@ -1626,8 +1660,8 @@ type PaymentOrderUpdateParams struct {
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
-	// True if the object is reconciled, false otherwise.
-	Reconciled param.Field[bool] `json:"reconciled"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus param.Field[PaymentOrderUpdateParamsReconciliationStatus] `json:"reconciliation_status"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -1989,6 +2023,23 @@ func (r PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType) IsKno
 	return false
 }
 
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type PaymentOrderUpdateParamsReconciliationStatus string
+
+const (
+	PaymentOrderUpdateParamsReconciliationStatusReconciled            PaymentOrderUpdateParamsReconciliationStatus = "reconciled"
+	PaymentOrderUpdateParamsReconciliationStatusUnreconciled          PaymentOrderUpdateParamsReconciliationStatus = "unreconciled"
+	PaymentOrderUpdateParamsReconciliationStatusTentativelyReconciled PaymentOrderUpdateParamsReconciliationStatus = "tentatively_reconciled"
+)
+
+func (r PaymentOrderUpdateParamsReconciliationStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateParamsReconciliationStatusReconciled, PaymentOrderUpdateParamsReconciliationStatusUnreconciled, PaymentOrderUpdateParamsReconciliationStatusTentativelyReconciled:
+		return true
+	}
+	return false
+}
+
 // To cancel a payment order, use `cancelled`. To redraft a returned payment order,
 // use `approved`. To undo approval on a denied or approved payment order, use
 // `needs_approval`.
@@ -2245,8 +2296,8 @@ type PaymentOrderNewAsyncParams struct {
 	// `receiving_account_id`, you may pass the id of an external account or an
 	// internal account.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
-	// True if the object is reconciled, false otherwise.
-	Reconciled param.Field[bool] `json:"reconciled"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus param.Field[PaymentOrderNewAsyncParamsReconciliationStatus] `json:"reconciliation_status"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
@@ -2590,6 +2641,23 @@ const (
 func (r PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
 	switch r {
 	case PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBase, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeEthereum, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeGBFps, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeInterac, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypePolygon, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRoSent, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSen, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSignet, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSknbi, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSolana, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeZengin:
+		return true
+	}
+	return false
+}
+
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type PaymentOrderNewAsyncParamsReconciliationStatus string
+
+const (
+	PaymentOrderNewAsyncParamsReconciliationStatusReconciled            PaymentOrderNewAsyncParamsReconciliationStatus = "reconciled"
+	PaymentOrderNewAsyncParamsReconciliationStatusUnreconciled          PaymentOrderNewAsyncParamsReconciliationStatus = "unreconciled"
+	PaymentOrderNewAsyncParamsReconciliationStatusTentativelyReconciled PaymentOrderNewAsyncParamsReconciliationStatus = "tentatively_reconciled"
+)
+
+func (r PaymentOrderNewAsyncParamsReconciliationStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderNewAsyncParamsReconciliationStatusReconciled, PaymentOrderNewAsyncParamsReconciliationStatusUnreconciled, PaymentOrderNewAsyncParamsReconciliationStatusTentativelyReconciled:
 		return true
 	}
 	return false
