@@ -40,10 +40,10 @@ func TestReturnNewWithOptionalParams(t *testing.T) {
 			RoutingNumber:                  moderntreasury.F("routing_number"),
 			TransactionCode:                moderntreasury.F("transaction_code"),
 		}),
-		Data:        moderntreasury.F[any](map[string]interface{}{}),
-		DateOfDeath: moderntreasury.F(time.Now()),
-		Reason:      moderntreasury.F("reason"),
-		Reconciled:  moderntreasury.F(true),
+		Data:                 moderntreasury.F[any](map[string]interface{}{}),
+		DateOfDeath:          moderntreasury.F(time.Now()),
+		Reason:               moderntreasury.F("reason"),
+		ReconciliationStatus: moderntreasury.F(moderntreasury.ReturnNewParamsReconciliationStatusReconciled),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

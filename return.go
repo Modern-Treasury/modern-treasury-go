@@ -117,8 +117,8 @@ type ReturnObject struct {
 	// Often the bank will provide an explanation for the return, which is a short
 	// human readable string.
 	Reason string `json:"reason,required,nullable"`
-	// True if the object is reconciled, false otherwise.
-	Reconciled bool `json:"reconciled,required"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus ReturnObjectReconciliationStatus `json:"reconciliation_status,required"`
 	// An array of Payment Reference objects.
 	ReferenceNumbers []ReturnObjectReferenceNumber `json:"reference_numbers,required"`
 	// The ID of the object being returned or `null`.
@@ -162,7 +162,7 @@ type returnObjectJSON struct {
 	LiveMode              apijson.Field
 	Object                apijson.Field
 	Reason                apijson.Field
-	Reconciled            apijson.Field
+	ReconciliationStatus  apijson.Field
 	ReferenceNumbers      apijson.Field
 	ReturnableID          apijson.Field
 	ReturnableType        apijson.Field
@@ -337,6 +337,23 @@ func (r *ReturnObjectCorrections) UnmarshalJSON(data []byte) (err error) {
 
 func (r returnObjectCorrectionsJSON) RawJSON() string {
 	return r.raw
+}
+
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type ReturnObjectReconciliationStatus string
+
+const (
+	ReturnObjectReconciliationStatusReconciled            ReturnObjectReconciliationStatus = "reconciled"
+	ReturnObjectReconciliationStatusUnreconciled          ReturnObjectReconciliationStatus = "unreconciled"
+	ReturnObjectReconciliationStatusTentativelyReconciled ReturnObjectReconciliationStatus = "tentatively_reconciled"
+)
+
+func (r ReturnObjectReconciliationStatus) IsKnown() bool {
+	switch r {
+	case ReturnObjectReconciliationStatusReconciled, ReturnObjectReconciliationStatusUnreconciled, ReturnObjectReconciliationStatusTentativelyReconciled:
+		return true
+	}
+	return false
 }
 
 type ReturnObjectReferenceNumber struct {
@@ -584,8 +601,8 @@ type ReturnNewParams struct {
 	// An optional description of the reason for the return. This is for internal usage
 	// and will not be transmitted to the bank.”
 	Reason param.Field[string] `json:"reason"`
-	// True if the object is reconciled, false otherwise.
-	Reconciled param.Field[bool] `json:"reconciled"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus param.Field[ReturnNewParamsReconciliationStatus] `json:"reconciliation_status"`
 }
 
 func (r ReturnNewParams) MarshalJSON() (data []byte, err error) {
@@ -741,6 +758,23 @@ type ReturnNewParamsCorrections struct {
 
 func (r ReturnNewParamsCorrections) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type ReturnNewParamsReconciliationStatus string
+
+const (
+	ReturnNewParamsReconciliationStatusReconciled            ReturnNewParamsReconciliationStatus = "reconciled"
+	ReturnNewParamsReconciliationStatusUnreconciled          ReturnNewParamsReconciliationStatus = "unreconciled"
+	ReturnNewParamsReconciliationStatusTentativelyReconciled ReturnNewParamsReconciliationStatus = "tentatively_reconciled"
+)
+
+func (r ReturnNewParamsReconciliationStatus) IsKnown() bool {
+	switch r {
+	case ReturnNewParamsReconciliationStatusReconciled, ReturnNewParamsReconciliationStatusUnreconciled, ReturnNewParamsReconciliationStatusTentativelyReconciled:
+		return true
+	}
+	return false
 }
 
 type ReturnListParams struct {
