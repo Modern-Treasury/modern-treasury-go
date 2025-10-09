@@ -265,14 +265,14 @@ func (r IncomingPaymentDetailOriginatingRoutingNumberType) IsKnown() bool {
 type IncomingPaymentDetailReconciliationStatus string
 
 const (
-	IncomingPaymentDetailReconciliationStatusReconciled            IncomingPaymentDetailReconciliationStatus = "reconciled"
 	IncomingPaymentDetailReconciliationStatusUnreconciled          IncomingPaymentDetailReconciliationStatus = "unreconciled"
 	IncomingPaymentDetailReconciliationStatusTentativelyReconciled IncomingPaymentDetailReconciliationStatus = "tentatively_reconciled"
+	IncomingPaymentDetailReconciliationStatusReconciled            IncomingPaymentDetailReconciliationStatus = "reconciled"
 )
 
 func (r IncomingPaymentDetailReconciliationStatus) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailReconciliationStatusReconciled, IncomingPaymentDetailReconciliationStatusUnreconciled, IncomingPaymentDetailReconciliationStatusTentativelyReconciled:
+	case IncomingPaymentDetailReconciliationStatusUnreconciled, IncomingPaymentDetailReconciliationStatusTentativelyReconciled, IncomingPaymentDetailReconciliationStatusReconciled:
 		return true
 	}
 	return false

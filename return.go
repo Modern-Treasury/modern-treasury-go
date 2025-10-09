@@ -343,14 +343,14 @@ func (r returnObjectCorrectionsJSON) RawJSON() string {
 type ReturnObjectReconciliationStatus string
 
 const (
-	ReturnObjectReconciliationStatusReconciled            ReturnObjectReconciliationStatus = "reconciled"
 	ReturnObjectReconciliationStatusUnreconciled          ReturnObjectReconciliationStatus = "unreconciled"
 	ReturnObjectReconciliationStatusTentativelyReconciled ReturnObjectReconciliationStatus = "tentatively_reconciled"
+	ReturnObjectReconciliationStatusReconciled            ReturnObjectReconciliationStatus = "reconciled"
 )
 
 func (r ReturnObjectReconciliationStatus) IsKnown() bool {
 	switch r {
-	case ReturnObjectReconciliationStatusReconciled, ReturnObjectReconciliationStatusUnreconciled, ReturnObjectReconciliationStatusTentativelyReconciled:
+	case ReturnObjectReconciliationStatusUnreconciled, ReturnObjectReconciliationStatusTentativelyReconciled, ReturnObjectReconciliationStatusReconciled:
 		return true
 	}
 	return false
@@ -764,14 +764,14 @@ func (r ReturnNewParamsCorrections) MarshalJSON() (data []byte, err error) {
 type ReturnNewParamsReconciliationStatus string
 
 const (
-	ReturnNewParamsReconciliationStatusReconciled            ReturnNewParamsReconciliationStatus = "reconciled"
 	ReturnNewParamsReconciliationStatusUnreconciled          ReturnNewParamsReconciliationStatus = "unreconciled"
 	ReturnNewParamsReconciliationStatusTentativelyReconciled ReturnNewParamsReconciliationStatus = "tentatively_reconciled"
+	ReturnNewParamsReconciliationStatusReconciled            ReturnNewParamsReconciliationStatus = "reconciled"
 )
 
 func (r ReturnNewParamsReconciliationStatus) IsKnown() bool {
 	switch r {
-	case ReturnNewParamsReconciliationStatusReconciled, ReturnNewParamsReconciliationStatusUnreconciled, ReturnNewParamsReconciliationStatusTentativelyReconciled:
+	case ReturnNewParamsReconciliationStatusUnreconciled, ReturnNewParamsReconciliationStatusTentativelyReconciled, ReturnNewParamsReconciliationStatusReconciled:
 		return true
 	}
 	return false
