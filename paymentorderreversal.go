@@ -168,14 +168,14 @@ func (r ReversalReason) IsKnown() bool {
 type ReversalReconciliationStatus string
 
 const (
-	ReversalReconciliationStatusReconciled            ReversalReconciliationStatus = "reconciled"
 	ReversalReconciliationStatusUnreconciled          ReversalReconciliationStatus = "unreconciled"
 	ReversalReconciliationStatusTentativelyReconciled ReversalReconciliationStatus = "tentatively_reconciled"
+	ReversalReconciliationStatusReconciled            ReversalReconciliationStatus = "reconciled"
 )
 
 func (r ReversalReconciliationStatus) IsKnown() bool {
 	switch r {
-	case ReversalReconciliationStatusReconciled, ReversalReconciliationStatusUnreconciled, ReversalReconciliationStatusTentativelyReconciled:
+	case ReversalReconciliationStatusUnreconciled, ReversalReconciliationStatusTentativelyReconciled, ReversalReconciliationStatusReconciled:
 		return true
 	}
 	return false

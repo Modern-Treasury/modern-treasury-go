@@ -577,14 +577,14 @@ func (r PaymentOrderReceivingAccountType) IsKnown() bool {
 type PaymentOrderReconciliationStatus string
 
 const (
-	PaymentOrderReconciliationStatusReconciled            PaymentOrderReconciliationStatus = "reconciled"
 	PaymentOrderReconciliationStatusUnreconciled          PaymentOrderReconciliationStatus = "unreconciled"
 	PaymentOrderReconciliationStatusTentativelyReconciled PaymentOrderReconciliationStatus = "tentatively_reconciled"
+	PaymentOrderReconciliationStatusReconciled            PaymentOrderReconciliationStatus = "reconciled"
 )
 
 func (r PaymentOrderReconciliationStatus) IsKnown() bool {
 	switch r {
-	case PaymentOrderReconciliationStatusReconciled, PaymentOrderReconciliationStatusUnreconciled, PaymentOrderReconciliationStatusTentativelyReconciled:
+	case PaymentOrderReconciliationStatusUnreconciled, PaymentOrderReconciliationStatusTentativelyReconciled, PaymentOrderReconciliationStatusReconciled:
 		return true
 	}
 	return false
@@ -1567,14 +1567,14 @@ func (r PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType) IsKnown(
 type PaymentOrderNewParamsReconciliationStatus string
 
 const (
-	PaymentOrderNewParamsReconciliationStatusReconciled            PaymentOrderNewParamsReconciliationStatus = "reconciled"
 	PaymentOrderNewParamsReconciliationStatusUnreconciled          PaymentOrderNewParamsReconciliationStatus = "unreconciled"
 	PaymentOrderNewParamsReconciliationStatusTentativelyReconciled PaymentOrderNewParamsReconciliationStatus = "tentatively_reconciled"
+	PaymentOrderNewParamsReconciliationStatusReconciled            PaymentOrderNewParamsReconciliationStatus = "reconciled"
 )
 
 func (r PaymentOrderNewParamsReconciliationStatus) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewParamsReconciliationStatusReconciled, PaymentOrderNewParamsReconciliationStatusUnreconciled, PaymentOrderNewParamsReconciliationStatusTentativelyReconciled:
+	case PaymentOrderNewParamsReconciliationStatusUnreconciled, PaymentOrderNewParamsReconciliationStatusTentativelyReconciled, PaymentOrderNewParamsReconciliationStatusReconciled:
 		return true
 	}
 	return false
@@ -2027,14 +2027,14 @@ func (r PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType) IsKno
 type PaymentOrderUpdateParamsReconciliationStatus string
 
 const (
-	PaymentOrderUpdateParamsReconciliationStatusReconciled            PaymentOrderUpdateParamsReconciliationStatus = "reconciled"
 	PaymentOrderUpdateParamsReconciliationStatusUnreconciled          PaymentOrderUpdateParamsReconciliationStatus = "unreconciled"
 	PaymentOrderUpdateParamsReconciliationStatusTentativelyReconciled PaymentOrderUpdateParamsReconciliationStatus = "tentatively_reconciled"
+	PaymentOrderUpdateParamsReconciliationStatusReconciled            PaymentOrderUpdateParamsReconciliationStatus = "reconciled"
 )
 
 func (r PaymentOrderUpdateParamsReconciliationStatus) IsKnown() bool {
 	switch r {
-	case PaymentOrderUpdateParamsReconciliationStatusReconciled, PaymentOrderUpdateParamsReconciliationStatusUnreconciled, PaymentOrderUpdateParamsReconciliationStatusTentativelyReconciled:
+	case PaymentOrderUpdateParamsReconciliationStatusUnreconciled, PaymentOrderUpdateParamsReconciliationStatusTentativelyReconciled, PaymentOrderUpdateParamsReconciliationStatusReconciled:
 		return true
 	}
 	return false
@@ -2650,14 +2650,14 @@ func (r PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType) IsK
 type PaymentOrderNewAsyncParamsReconciliationStatus string
 
 const (
-	PaymentOrderNewAsyncParamsReconciliationStatusReconciled            PaymentOrderNewAsyncParamsReconciliationStatus = "reconciled"
 	PaymentOrderNewAsyncParamsReconciliationStatusUnreconciled          PaymentOrderNewAsyncParamsReconciliationStatus = "unreconciled"
 	PaymentOrderNewAsyncParamsReconciliationStatusTentativelyReconciled PaymentOrderNewAsyncParamsReconciliationStatus = "tentatively_reconciled"
+	PaymentOrderNewAsyncParamsReconciliationStatusReconciled            PaymentOrderNewAsyncParamsReconciliationStatus = "reconciled"
 )
 
 func (r PaymentOrderNewAsyncParamsReconciliationStatus) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewAsyncParamsReconciliationStatusReconciled, PaymentOrderNewAsyncParamsReconciliationStatusUnreconciled, PaymentOrderNewAsyncParamsReconciliationStatusTentativelyReconciled:
+	case PaymentOrderNewAsyncParamsReconciliationStatusUnreconciled, PaymentOrderNewAsyncParamsReconciliationStatusTentativelyReconciled, PaymentOrderNewAsyncParamsReconciliationStatusReconciled:
 		return true
 	}
 	return false
