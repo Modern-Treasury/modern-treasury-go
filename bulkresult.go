@@ -719,14 +719,14 @@ func (r BulkResultEntityReconciliationMethod) IsKnown() bool {
 type BulkResultEntityReconciliationStatus string
 
 const (
-	BulkResultEntityReconciliationStatusReconciled            BulkResultEntityReconciliationStatus = "reconciled"
 	BulkResultEntityReconciliationStatusUnreconciled          BulkResultEntityReconciliationStatus = "unreconciled"
 	BulkResultEntityReconciliationStatusTentativelyReconciled BulkResultEntityReconciliationStatus = "tentatively_reconciled"
+	BulkResultEntityReconciliationStatusReconciled            BulkResultEntityReconciliationStatus = "reconciled"
 )
 
 func (r BulkResultEntityReconciliationStatus) IsKnown() bool {
 	switch r {
-	case BulkResultEntityReconciliationStatusReconciled, BulkResultEntityReconciliationStatusUnreconciled, BulkResultEntityReconciliationStatusTentativelyReconciled:
+	case BulkResultEntityReconciliationStatusUnreconciled, BulkResultEntityReconciliationStatusTentativelyReconciled, BulkResultEntityReconciliationStatusReconciled:
 		return true
 	}
 	return false

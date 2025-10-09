@@ -43,7 +43,7 @@ func TestReturnNewWithOptionalParams(t *testing.T) {
 		Data:                 moderntreasury.F[any](map[string]interface{}{}),
 		DateOfDeath:          moderntreasury.F(time.Now()),
 		Reason:               moderntreasury.F("reason"),
-		ReconciliationStatus: moderntreasury.F(moderntreasury.ReturnNewParamsReconciliationStatusReconciled),
+		ReconciliationStatus: moderntreasury.F(moderntreasury.ReturnNewParamsReconciliationStatusUnreconciled),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
