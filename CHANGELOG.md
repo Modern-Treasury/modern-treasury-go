@@ -1,5 +1,37 @@
 # Changelog
 
+## 2.34.0 (2025-10-09)
+
+Full Changelog: [v2.33.0...v2.34.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.33.0...v2.34.0)
+
+### Features
+
+* **api:** api update ([1464a9e](https://github.com/Modern-Treasury/modern-treasury-go/commit/1464a9ec947e0ad1cea0bb304d71997ba6dc6f96))
+* **api:** api update ([92e1928](https://github.com/Modern-Treasury/modern-treasury-go/commit/92e19287151585604e9d5c80fbc71523dacac3eb))
+* **api:** api update ([c5d323e](https://github.com/Modern-Treasury/modern-treasury-go/commit/c5d323eb51162f87c9be6f9a9ff1031f723001be))
+* **api:** api update ([db0528e](https://github.com/Modern-Treasury/modern-treasury-go/commit/db0528e8be8926d6e67e7f5b7a2c12627d402713))
+* **api:** api update ([f98b712](https://github.com/Modern-Treasury/modern-treasury-go/commit/f98b712bd3e6ee3c2d5988a7373edb8612326b06))
+* **api:** api update ([f909eb4](https://github.com/Modern-Treasury/modern-treasury-go/commit/f909eb4707216822f022693048b5193452ed632a))
+* **api:** api update ([7f07cbe](https://github.com/Modern-Treasury/modern-treasury-go/commit/7f07cbe14efe79eeb2c6ef7b26facd6aa193ee85))
+* **api:** api update ([8ca6074](https://github.com/Modern-Treasury/modern-treasury-go/commit/8ca6074a9e175c46e2c7866e776fc05d9759f378))
+* **api:** api update ([f2e0636](https://github.com/Modern-Treasury/modern-treasury-go/commit/f2e06363ae019f2870d44860fd8c3e61dffa62c9))
+* **api:** api update ([855dc39](https://github.com/Modern-Treasury/modern-treasury-go/commit/855dc39ad57b31ff5bf57a2ec86abbb342bf9700))
+* **api:** api update ([fca48e7](https://github.com/Modern-Treasury/modern-treasury-go/commit/fca48e78470778a79ec303216ce1f483e2862c80))
+* **api:** api update ([5684c2f](https://github.com/Modern-Treasury/modern-treasury-go/commit/5684c2fe47080fbeaf518bb9f3b821902306e80d))
+
+
+### Bug Fixes
+
+* bugfix for setting JSON keys with special characters ([38af819](https://github.com/Modern-Treasury/modern-treasury-go/commit/38af81926b652f8ef88133599382a7eb4b6b2c76))
+* use slices.Concat instead of sometimes modifying r.Options ([4da72ab](https://github.com/Modern-Treasury/modern-treasury-go/commit/4da72aba1c2ac3eb6a431ec289a4eb267fd63259))
+
+
+### Chores
+
+* bump minimum go version to 1.22 ([8a0ec14](https://github.com/Modern-Treasury/modern-treasury-go/commit/8a0ec14b4ae25abb2f9d486f929941aaa8fc63ba))
+* do not install brew dependencies in ./scripts/bootstrap by default ([f5d3e7b](https://github.com/Modern-Treasury/modern-treasury-go/commit/f5d3e7b9f20c14ca230165464df20d441ff83c21))
+* update more docs for 1.22 ([859cc98](https://github.com/Modern-Treasury/modern-treasury-go/commit/859cc986ac7b8ad5774b59683ca28e8c4c378215))
+
 ## 2.33.0 (2025-09-11)
 
 Full Changelog: [v2.32.0...v2.33.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.32.0...v2.33.0)
