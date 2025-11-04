@@ -985,6 +985,7 @@ const (
 	PaymentOrderSubtypeCie                         PaymentOrderSubtype = "CIE"
 	PaymentOrderSubtypeCtx                         PaymentOrderSubtype = "CTX"
 	PaymentOrderSubtypeIat                         PaymentOrderSubtype = "IAT"
+	PaymentOrderSubtypePos                         PaymentOrderSubtype = "POS"
 	PaymentOrderSubtypePpd                         PaymentOrderSubtype = "PPD"
 	PaymentOrderSubtypeTel                         PaymentOrderSubtype = "TEL"
 	PaymentOrderSubtypeWeb                         PaymentOrderSubtype = "WEB"
@@ -1011,7 +1012,7 @@ const (
 
 func (r PaymentOrderSubtype) IsKnown() bool {
 	switch r {
-	case PaymentOrderSubtypeBacsNewInstruction, PaymentOrderSubtypeBacsCancellationInstruction, PaymentOrderSubtypeBacsConversionInstruction, PaymentOrderSubtypeCcd, PaymentOrderSubtypeCie, PaymentOrderSubtypeCtx, PaymentOrderSubtypeIat, PaymentOrderSubtypePpd, PaymentOrderSubtypeTel, PaymentOrderSubtypeWeb, PaymentOrderSubtypeAuBecs, PaymentOrderSubtypeBacs, PaymentOrderSubtypeChats, PaymentOrderSubtypeDkNets, PaymentOrderSubtypeEft, PaymentOrderSubtypeHuIcs, PaymentOrderSubtypeMasav, PaymentOrderSubtypeMxCcen, PaymentOrderSubtypeNeft, PaymentOrderSubtypeNics, PaymentOrderSubtypeNzBecs, PaymentOrderSubtypePlElixir, PaymentOrderSubtypeRoSent, PaymentOrderSubtypeSeBankgirot, PaymentOrderSubtypeSepa, PaymentOrderSubtypeSgGiro, PaymentOrderSubtypeSic, PaymentOrderSubtypeSknbi, PaymentOrderSubtypeZengin:
+	case PaymentOrderSubtypeBacsNewInstruction, PaymentOrderSubtypeBacsCancellationInstruction, PaymentOrderSubtypeBacsConversionInstruction, PaymentOrderSubtypeCcd, PaymentOrderSubtypeCie, PaymentOrderSubtypeCtx, PaymentOrderSubtypeIat, PaymentOrderSubtypePos, PaymentOrderSubtypePpd, PaymentOrderSubtypeTel, PaymentOrderSubtypeWeb, PaymentOrderSubtypeAuBecs, PaymentOrderSubtypeBacs, PaymentOrderSubtypeChats, PaymentOrderSubtypeDkNets, PaymentOrderSubtypeEft, PaymentOrderSubtypeHuIcs, PaymentOrderSubtypeMasav, PaymentOrderSubtypeMxCcen, PaymentOrderSubtypeNeft, PaymentOrderSubtypeNics, PaymentOrderSubtypeNzBecs, PaymentOrderSubtypePlElixir, PaymentOrderSubtypeRoSent, PaymentOrderSubtypeSeBankgirot, PaymentOrderSubtypeSepa, PaymentOrderSubtypeSgGiro, PaymentOrderSubtypeSic, PaymentOrderSubtypeSknbi, PaymentOrderSubtypeZengin:
 		return true
 	}
 	return false
