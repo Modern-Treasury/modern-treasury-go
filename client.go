@@ -53,6 +53,9 @@ type Client struct {
 	LegalEntities                *LegalEntityService
 	LegalEntityAssociations      *LegalEntityAssociationService
 	PaymentActions               *PaymentActionService
+	JournalEntries               *JournalEntryService
+	JournalReports               *JournalReportService
+	Holds                        *HoldService
 }
 
 // DefaultClientOptions read from the environment (MODERN_TREASURY_API_KEY,
@@ -121,6 +124,9 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.LegalEntities = NewLegalEntityService(opts...)
 	r.LegalEntityAssociations = NewLegalEntityAssociationService(opts...)
 	r.PaymentActions = NewPaymentActionService(opts...)
+	r.JournalEntries = NewJournalEntryService(opts...)
+	r.JournalReports = NewJournalReportService(opts...)
+	r.Holds = NewHoldService(opts...)
 
 	return
 }
