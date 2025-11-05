@@ -42,10 +42,10 @@ func NewExternalAccountService(opts ...option.RequestOption) (r *ExternalAccount
 }
 
 // create external account
-func (r *ExternalAccountService) New(ctx context.Context, params ExternalAccountNewParams, opts ...option.RequestOption) (res *ExternalAccount, err error) {
+func (r *ExternalAccountService) New(ctx context.Context, body ExternalAccountNewParams, opts ...option.RequestOption) (res *ExternalAccount, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "api/external_accounts"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -679,15 +679,13 @@ func (r ExternalAccountVerifyResponseVerificationStatus) IsKnown() bool {
 }
 
 type ExternalAccountNewParams struct {
-	CounterpartyID param.Field[string] `json:"counterparty_id,required" format:"uuid"`
-	// An optional user-defined 180 character unique identifier.
-	QueryExternalID param.Field[string]                                  `query:"external_id"`
-	AccountDetails  param.Field[[]ExternalAccountNewParamsAccountDetail] `json:"account_details"`
+	CounterpartyID param.Field[string]                                  `json:"counterparty_id,required" format:"uuid"`
+	AccountDetails param.Field[[]ExternalAccountNewParamsAccountDetail] `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
 	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
 	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
 	// An optional user-defined 180 character unique identifier.
-	BodyExternalID param.Field[string] `json:"external_id"`
+	ExternalID param.Field[string] `json:"external_id"`
 	// Specifies a ledger account object that will be created with the external
 	// account. The resulting ledger account is linked to the external account for
 	// auto-ledgering Payment objects. See
@@ -715,15 +713,6 @@ type ExternalAccountNewParams struct {
 
 func (r ExternalAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-// URLQuery serializes [ExternalAccountNewParams]'s query parameters as
-// `url.Values`.
-func (r ExternalAccountNewParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
 }
 
 type ExternalAccountNewParamsAccountDetail struct {

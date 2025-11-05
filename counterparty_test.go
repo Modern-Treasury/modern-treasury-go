@@ -29,8 +29,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Counterparties.New(context.TODO(), moderntreasury.CounterpartyNewParams{
-		Name:            moderntreasury.F("name"),
-		QueryExternalID: moderntreasury.F("external_id"),
+		Name: moderntreasury.F("name"),
 		Accounting: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccounting{
 			Type: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountingTypeCustomer),
 		}),
@@ -85,9 +84,9 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
 			}}),
 		}}),
-		Email:          moderntreasury.F("dev@stainless.com"),
-		BodyExternalID: moderntreasury.F("external_id"),
-		LedgerType:     moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
+		Email:      moderntreasury.F("dev@stainless.com"),
+		ExternalID: moderntreasury.F("external_id"),
+		LedgerType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
 		LegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntity{
 			LegalEntityType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness),
 			Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{{
