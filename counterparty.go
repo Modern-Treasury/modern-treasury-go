@@ -40,10 +40,10 @@ func NewCounterpartyService(opts ...option.RequestOption) (r *CounterpartyServic
 }
 
 // Create a new counterparty.
-func (r *CounterpartyService) New(ctx context.Context, params CounterpartyNewParams, opts ...option.RequestOption) (res *Counterparty, err error) {
+func (r *CounterpartyService) New(ctx context.Context, body CounterpartyNewParams, opts ...option.RequestOption) (res *Counterparty, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "api/counterparties"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, params, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
 	return
 }
 
@@ -331,16 +331,14 @@ func (r counterpartyCollectAccountResponseJSON) RawJSON() string {
 
 type CounterpartyNewParams struct {
 	// A human friendly name for this counterparty.
-	Name param.Field[string] `json:"name,required"`
-	// An optional user-defined 180 character unique identifier.
-	QueryExternalID param.Field[string]                          `query:"external_id"`
-	Accounting      param.Field[CounterpartyNewParamsAccounting] `json:"accounting"`
+	Name       param.Field[string]                          `json:"name,required"`
+	Accounting param.Field[CounterpartyNewParamsAccounting] `json:"accounting"`
 	// The accounts for this counterparty.
 	Accounts param.Field[[]CounterpartyNewParamsAccount] `json:"accounts"`
 	// The counterparty's email.
 	Email param.Field[string] `json:"email" format:"email"`
 	// An optional user-defined 180 character unique identifier.
-	BodyExternalID param.Field[string] `json:"external_id"`
+	ExternalID param.Field[string] `json:"external_id"`
 	// An optional type to auto-sync the counterparty to your ledger. Either `customer`
 	// or `vendor`.
 	LedgerType  param.Field[CounterpartyNewParamsLedgerType]  `json:"ledger_type"`
@@ -361,14 +359,6 @@ type CounterpartyNewParams struct {
 
 func (r CounterpartyNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-// URLQuery serializes [CounterpartyNewParams]'s query parameters as `url.Values`.
-func (r CounterpartyNewParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
 }
 
 // Deprecated: deprecated
