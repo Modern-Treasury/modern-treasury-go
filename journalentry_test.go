@@ -36,7 +36,7 @@ func TestJournalEntryGet(t *testing.T) {
 	}
 }
 
-func TestJournalEntryList(t *testing.T) {
+func TestJournalEntryListWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -51,6 +51,8 @@ func TestJournalEntryList(t *testing.T) {
 	)
 	err := client.JournalEntries.List(context.TODO(), moderntreasury.JournalEntryListParams{
 		JournalReportID: moderntreasury.F("journal_report_id"),
+		Page:            moderntreasury.F(int64(0)),
+		PerPage:         moderntreasury.F(int64(0)),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

@@ -60,6 +60,10 @@ func (r *JournalEntryService) List(ctx context.Context, query JournalEntryListPa
 type JournalEntryListParams struct {
 	// The ID of the journal report
 	JournalReportID param.Field[string] `query:"journal_report_id,required"`
+	// Page number for pagination
+	Page param.Field[int64] `query:"page"`
+	// Number of items per page
+	PerPage param.Field[int64] `query:"per_page"`
 }
 
 // URLQuery serializes [JournalEntryListParams]'s query parameters as `url.Values`.
