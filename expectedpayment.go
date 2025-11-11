@@ -111,6 +111,18 @@ type ExpectedPayment struct {
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountLowerBound int64 `json:"amount_lower_bound,required,nullable"`
+	// The amount reconciled for this expected payment. Value in specified currency's
+	// smallest unit. e.g. $10 would be represented as 1000.
+	AmountReconciled int64 `json:"amount_reconciled,required,nullable"`
+	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+	// amount.
+	AmountReconciledDirection ExpectedPaymentAmountReconciledDirection `json:"amount_reconciled_direction,required,nullable"`
+	// The amount that remains unreconciled for this expected payment. Value in
+	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUnreconciled int64 `json:"amount_unreconciled,required,nullable"`
+	// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+	// debit amount.
+	AmountUnreconciledDirection ExpectedPaymentAmountUnreconciledDirection `json:"amount_unreconciled_direction,required,nullable"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUpperBound int64 `json:"amount_upper_bound,required,nullable"`
@@ -177,6 +189,10 @@ type ExpectedPayment struct {
 type expectedPaymentJSON struct {
 	ID                          apijson.Field
 	AmountLowerBound            apijson.Field
+	AmountReconciled            apijson.Field
+	AmountReconciledDirection   apijson.Field
+	AmountUnreconciled          apijson.Field
+	AmountUnreconciledDirection apijson.Field
 	AmountUpperBound            apijson.Field
 	CounterpartyID              apijson.Field
 	CreatedAt                   apijson.Field
@@ -215,6 +231,40 @@ func (r expectedPaymentJSON) RawJSON() string {
 }
 
 func (r ExpectedPayment) implementsBulkResultEntity() {}
+
+// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+// amount.
+type ExpectedPaymentAmountReconciledDirection string
+
+const (
+	ExpectedPaymentAmountReconciledDirectionCredit ExpectedPaymentAmountReconciledDirection = "credit"
+	ExpectedPaymentAmountReconciledDirectionDebit  ExpectedPaymentAmountReconciledDirection = "debit"
+)
+
+func (r ExpectedPaymentAmountReconciledDirection) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentAmountReconciledDirectionCredit, ExpectedPaymentAmountReconciledDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+// debit amount.
+type ExpectedPaymentAmountUnreconciledDirection string
+
+const (
+	ExpectedPaymentAmountUnreconciledDirectionCredit ExpectedPaymentAmountUnreconciledDirection = "credit"
+	ExpectedPaymentAmountUnreconciledDirectionDebit  ExpectedPaymentAmountUnreconciledDirection = "debit"
+)
+
+func (r ExpectedPaymentAmountUnreconciledDirection) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentAmountUnreconciledDirectionCredit, ExpectedPaymentAmountUnreconciledDirectionDebit:
+		return true
+	}
+	return false
+}
 
 // One of credit or debit. When you are receiving money, use credit. When you are
 // being charged, use debit.
@@ -474,6 +524,18 @@ type ExpectedPaymentNewParams struct {
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
+	// The amount reconciled for this expected payment. Value in specified currency's
+	// smallest unit. e.g. $10 would be represented as 1000.
+	AmountReconciled param.Field[int64] `json:"amount_reconciled"`
+	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+	// amount.
+	AmountReconciledDirection param.Field[ExpectedPaymentNewParamsAmountReconciledDirection] `json:"amount_reconciled_direction"`
+	// The amount that remains unreconciled for this expected payment. Value in
+	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUnreconciled param.Field[int64] `json:"amount_unreconciled"`
+	// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+	// debit amount.
+	AmountUnreconciledDirection param.Field[ExpectedPaymentNewParamsAmountUnreconciledDirection] `json:"amount_unreconciled_direction"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
@@ -532,6 +594,40 @@ func (r ExpectedPaymentNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+// amount.
+type ExpectedPaymentNewParamsAmountReconciledDirection string
+
+const (
+	ExpectedPaymentNewParamsAmountReconciledDirectionCredit ExpectedPaymentNewParamsAmountReconciledDirection = "credit"
+	ExpectedPaymentNewParamsAmountReconciledDirectionDebit  ExpectedPaymentNewParamsAmountReconciledDirection = "debit"
+)
+
+func (r ExpectedPaymentNewParamsAmountReconciledDirection) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentNewParamsAmountReconciledDirectionCredit, ExpectedPaymentNewParamsAmountReconciledDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+// debit amount.
+type ExpectedPaymentNewParamsAmountUnreconciledDirection string
+
+const (
+	ExpectedPaymentNewParamsAmountUnreconciledDirectionCredit ExpectedPaymentNewParamsAmountUnreconciledDirection = "credit"
+	ExpectedPaymentNewParamsAmountUnreconciledDirectionDebit  ExpectedPaymentNewParamsAmountUnreconciledDirection = "debit"
+)
+
+func (r ExpectedPaymentNewParamsAmountUnreconciledDirection) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentNewParamsAmountUnreconciledDirectionCredit, ExpectedPaymentNewParamsAmountUnreconciledDirectionDebit:
+		return true
+	}
+	return false
+}
+
 // One of credit or debit. When you are receiving money, use credit. When you are
 // being charged, use debit.
 type ExpectedPaymentNewParamsDirection string
@@ -571,6 +667,18 @@ type ExpectedPaymentUpdateParams struct {
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
+	// The amount reconciled for this expected payment. Value in specified currency's
+	// smallest unit. e.g. $10 would be represented as 1000.
+	AmountReconciled param.Field[int64] `json:"amount_reconciled"`
+	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+	// amount.
+	AmountReconciledDirection param.Field[ExpectedPaymentUpdateParamsAmountReconciledDirection] `json:"amount_reconciled_direction"`
+	// The amount that remains unreconciled for this expected payment. Value in
+	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUnreconciled param.Field[int64] `json:"amount_unreconciled"`
+	// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+	// debit amount.
+	AmountUnreconciledDirection param.Field[ExpectedPaymentUpdateParamsAmountUnreconciledDirection] `json:"amount_unreconciled_direction"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
@@ -619,6 +727,40 @@ type ExpectedPaymentUpdateParams struct {
 
 func (r ExpectedPaymentUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+// amount.
+type ExpectedPaymentUpdateParamsAmountReconciledDirection string
+
+const (
+	ExpectedPaymentUpdateParamsAmountReconciledDirectionCredit ExpectedPaymentUpdateParamsAmountReconciledDirection = "credit"
+	ExpectedPaymentUpdateParamsAmountReconciledDirectionDebit  ExpectedPaymentUpdateParamsAmountReconciledDirection = "debit"
+)
+
+func (r ExpectedPaymentUpdateParamsAmountReconciledDirection) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentUpdateParamsAmountReconciledDirectionCredit, ExpectedPaymentUpdateParamsAmountReconciledDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+// debit amount.
+type ExpectedPaymentUpdateParamsAmountUnreconciledDirection string
+
+const (
+	ExpectedPaymentUpdateParamsAmountUnreconciledDirectionCredit ExpectedPaymentUpdateParamsAmountUnreconciledDirection = "credit"
+	ExpectedPaymentUpdateParamsAmountUnreconciledDirectionDebit  ExpectedPaymentUpdateParamsAmountUnreconciledDirection = "debit"
+)
+
+func (r ExpectedPaymentUpdateParamsAmountUnreconciledDirection) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentUpdateParamsAmountUnreconciledDirectionCredit, ExpectedPaymentUpdateParamsAmountUnreconciledDirectionDebit:
+		return true
+	}
+	return false
 }
 
 // One of credit or debit. When you are receiving money, use credit. When you are

@@ -265,6 +265,18 @@ type BulkRequestNewParamsResource struct {
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
+	// The amount reconciled for this expected payment. Value in specified currency's
+	// smallest unit. e.g. $10 would be represented as 1000.
+	AmountReconciled param.Field[int64] `json:"amount_reconciled"`
+	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+	// amount.
+	AmountReconciledDirection param.Field[BulkRequestNewParamsResourcesAmountReconciledDirection] `json:"amount_reconciled_direction"`
+	// The amount that remains unreconciled for this expected payment. Value in
+	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUnreconciled param.Field[int64] `json:"amount_unreconciled"`
+	// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+	// debit amount.
+	AmountUnreconciledDirection param.Field[BulkRequestNewParamsResourcesAmountUnreconciledDirection] `json:"amount_unreconciled_direction"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
@@ -921,6 +933,18 @@ type BulkRequestNewParamsResourcesExpectedPaymentCreateRequest struct {
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
+	// The amount reconciled for this expected payment. Value in specified currency's
+	// smallest unit. e.g. $10 would be represented as 1000.
+	AmountReconciled param.Field[int64] `json:"amount_reconciled"`
+	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+	// amount.
+	AmountReconciledDirection param.Field[BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountReconciledDirection] `json:"amount_reconciled_direction"`
+	// The amount that remains unreconciled for this expected payment. Value in
+	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUnreconciled param.Field[int64] `json:"amount_unreconciled"`
+	// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+	// debit amount.
+	AmountUnreconciledDirection param.Field[BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountUnreconciledDirection] `json:"amount_unreconciled_direction"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
@@ -980,6 +1004,40 @@ func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequest) MarshalJSON()
 }
 
 func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequest) ImplementsBulkRequestNewParamsResourceUnion() {
+}
+
+// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+// amount.
+type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountReconciledDirection string
+
+const (
+	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountReconciledDirectionCredit BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountReconciledDirection = "credit"
+	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountReconciledDirectionDebit  BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountReconciledDirection = "debit"
+)
+
+func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountReconciledDirection) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountReconciledDirectionCredit, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountReconciledDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+// debit amount.
+type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountUnreconciledDirection string
+
+const (
+	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountUnreconciledDirectionCredit BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountUnreconciledDirection = "credit"
+	BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountUnreconciledDirectionDebit  BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountUnreconciledDirection = "debit"
+)
+
+func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountUnreconciledDirection) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountUnreconciledDirectionCredit, BulkRequestNewParamsResourcesExpectedPaymentCreateRequestAmountUnreconciledDirectionDebit:
+		return true
+	}
+	return false
 }
 
 // One of credit or debit. When you are receiving money, use credit. When you are
@@ -1621,6 +1679,18 @@ type BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID struct {
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
+	// The amount reconciled for this expected payment. Value in specified currency's
+	// smallest unit. e.g. $10 would be represented as 1000.
+	AmountReconciled param.Field[int64] `json:"amount_reconciled"`
+	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+	// amount.
+	AmountReconciledDirection param.Field[BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountReconciledDirection] `json:"amount_reconciled_direction"`
+	// The amount that remains unreconciled for this expected payment. Value in
+	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUnreconciled param.Field[int64] `json:"amount_unreconciled"`
+	// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+	// debit amount.
+	AmountUnreconciledDirection param.Field[BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountUnreconciledDirection] `json:"amount_unreconciled_direction"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
@@ -1672,6 +1742,40 @@ func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID) Marshal
 }
 
 func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID) ImplementsBulkRequestNewParamsResourceUnion() {
+}
+
+// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+// amount.
+type BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountReconciledDirection string
+
+const (
+	BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountReconciledDirectionCredit BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountReconciledDirection = "credit"
+	BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountReconciledDirectionDebit  BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountReconciledDirection = "debit"
+)
+
+func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountReconciledDirection) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountReconciledDirectionCredit, BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountReconciledDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+// debit amount.
+type BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountUnreconciledDirection string
+
+const (
+	BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountUnreconciledDirectionCredit BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountUnreconciledDirection = "credit"
+	BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountUnreconciledDirectionDebit  BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountUnreconciledDirection = "debit"
+)
+
+func (r BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountUnreconciledDirection) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountUnreconciledDirectionCredit, BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithIDAmountUnreconciledDirectionDebit:
+		return true
+	}
+	return false
 }
 
 // One of credit or debit. When you are receiving money, use credit. When you are
@@ -1784,6 +1888,40 @@ const (
 func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatus) IsKnown() bool {
 	switch r {
 	case BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatusArchived, BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatusPending, BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatusPosted:
+		return true
+	}
+	return false
+}
+
+// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+// amount.
+type BulkRequestNewParamsResourcesAmountReconciledDirection string
+
+const (
+	BulkRequestNewParamsResourcesAmountReconciledDirectionCredit BulkRequestNewParamsResourcesAmountReconciledDirection = "credit"
+	BulkRequestNewParamsResourcesAmountReconciledDirectionDebit  BulkRequestNewParamsResourcesAmountReconciledDirection = "debit"
+)
+
+func (r BulkRequestNewParamsResourcesAmountReconciledDirection) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesAmountReconciledDirectionCredit, BulkRequestNewParamsResourcesAmountReconciledDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+// debit amount.
+type BulkRequestNewParamsResourcesAmountUnreconciledDirection string
+
+const (
+	BulkRequestNewParamsResourcesAmountUnreconciledDirectionCredit BulkRequestNewParamsResourcesAmountUnreconciledDirection = "credit"
+	BulkRequestNewParamsResourcesAmountUnreconciledDirectionDebit  BulkRequestNewParamsResourcesAmountUnreconciledDirection = "debit"
+)
+
+func (r BulkRequestNewParamsResourcesAmountUnreconciledDirection) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesAmountUnreconciledDirectionCredit, BulkRequestNewParamsResourcesAmountUnreconciledDirectionDebit:
 		return true
 	}
 	return false
