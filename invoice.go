@@ -149,6 +149,8 @@ type Invoice struct {
 	// Organization.
 	InvoicerName string `json:"invoicer_name,required,nullable"`
 	// The ledger account settlement object linked to the invoice.
+	//
+	// Deprecated: deprecated
 	LedgerAccountSettlementID string `json:"ledger_account_settlement_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
@@ -444,18 +446,12 @@ type InvoiceNewParams struct {
 	// When payment_method is automatic, the fallback payment method to use when an
 	// automatic payment fails. One of `manual` or `ui`.
 	FallbackPaymentMethod param.Field[string] `json:"fallback_payment_method"`
-	// Whether to ingest the ledger_entries to populate the invoice line items. If this
-	// is false, then a line item must be provided. If this is true, line_items must be
-	// empty. Ignored if ledger_account_settlement_id is empty.
-	IngestLedgerEntries param.Field[bool] `json:"ingest_ledger_entries"`
 	// An array of invoice line items. The API supports a maximum of 50 invoice line
 	// items per invoice. If a greater number of invoice line items is required, please
 	// contact support.
 	InvoiceLineItems param.Field[[]InvoiceNewParamsInvoiceLineItem] `json:"invoice_line_items"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceNewParamsInvoicerAddress] `json:"invoicer_address"`
-	// The ID of the virtual account the invoice should be paid to.
-	LedgerAccountSettlementID param.Field[string] `json:"ledger_account_settlement_id" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -622,18 +618,12 @@ type InvoiceUpdateParams struct {
 	// When payment_method is automatic, the fallback payment method to use when an
 	// automatic payment fails. One of `manual` or `ui`.
 	FallbackPaymentMethod param.Field[string] `json:"fallback_payment_method"`
-	// Whether to ingest the ledger_entries to populate the invoice line items. If this
-	// is false, then a line item must be provided. If this is true, line_items must be
-	// empty. Ignored if ledger_account_settlement_id is empty.
-	IngestLedgerEntries param.Field[bool] `json:"ingest_ledger_entries"`
 	// An array of invoice line items. The API supports a maximum of 50 invoice line
 	// items per invoice. If a greater number of invoice line items is required, please
 	// contact support.
 	InvoiceLineItems param.Field[[]InvoiceUpdateParamsInvoiceLineItem] `json:"invoice_line_items"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceUpdateParamsInvoicerAddress] `json:"invoicer_address"`
-	// The ID of the virtual account the invoice should be paid to.
-	LedgerAccountSettlementID param.Field[string] `json:"ledger_account_settlement_id" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
