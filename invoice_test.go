@@ -62,7 +62,6 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 		Currency:              moderntreasury.F(shared.CurrencyAed),
 		Description:           moderntreasury.F("description"),
 		FallbackPaymentMethod: moderntreasury.F("fallback_payment_method"),
-		IngestLedgerEntries:   moderntreasury.F(true),
 		InvoiceLineItems: moderntreasury.F([]moderntreasury.InvoiceNewParamsInvoiceLineItem{{
 			Name:        moderntreasury.F("name"),
 			UnitAmount:  moderntreasury.F(int64(0)),
@@ -84,7 +83,6 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 			Region:     moderntreasury.F("region"),
 			Line2:      moderntreasury.F("line2"),
 		}),
-		LedgerAccountSettlementID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
@@ -181,7 +179,6 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 			Description:           moderntreasury.F("description"),
 			DueDate:               moderntreasury.F(time.Now()),
 			FallbackPaymentMethod: moderntreasury.F("fallback_payment_method"),
-			IngestLedgerEntries:   moderntreasury.F(true),
 			InvoiceLineItems: moderntreasury.F([]moderntreasury.InvoiceUpdateParamsInvoiceLineItem{{
 				Name:        moderntreasury.F("name"),
 				UnitAmount:  moderntreasury.F(int64(0)),
@@ -203,7 +200,6 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 				Region:     moderntreasury.F("region"),
 				Line2:      moderntreasury.F("line2"),
 			}),
-			LedgerAccountSettlementID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",

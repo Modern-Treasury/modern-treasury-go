@@ -164,6 +164,18 @@ type BulkResultEntity struct {
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountLowerBound int64 `json:"amount_lower_bound,nullable"`
+	// The amount reconciled for this expected payment. Value in specified currency's
+	// smallest unit. e.g. $10 would be represented as 1000.
+	AmountReconciled int64 `json:"amount_reconciled,nullable"`
+	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+	// amount.
+	AmountReconciledDirection BulkResultEntityAmountReconciledDirection `json:"amount_reconciled_direction,nullable"`
+	// The amount that remains unreconciled for this expected payment. Value in
+	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUnreconciled int64 `json:"amount_unreconciled,nullable"`
+	// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+	// debit amount.
+	AmountUnreconciledDirection BulkResultEntityAmountUnreconciledDirection `json:"amount_unreconciled_direction,nullable"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUpperBound int64 `json:"amount_upper_bound,nullable"`
@@ -395,6 +407,10 @@ type bulkResultEntityJSON struct {
 	AccountingLedgerClassID            apijson.Field
 	Amount                             apijson.Field
 	AmountLowerBound                   apijson.Field
+	AmountReconciled                   apijson.Field
+	AmountReconciledDirection          apijson.Field
+	AmountUnreconciled                 apijson.Field
+	AmountUnreconciledDirection        apijson.Field
 	AmountUpperBound                   apijson.Field
 	ArchivedReason                     apijson.Field
 	AsOfDate                           apijson.Field
@@ -600,6 +616,40 @@ func (r *BulkResultEntityBulkErrorRequestError) UnmarshalJSON(data []byte) (err 
 
 func (r bulkResultEntityBulkErrorRequestErrorJSON) RawJSON() string {
 	return r.raw
+}
+
+// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+// amount.
+type BulkResultEntityAmountReconciledDirection string
+
+const (
+	BulkResultEntityAmountReconciledDirectionCredit BulkResultEntityAmountReconciledDirection = "credit"
+	BulkResultEntityAmountReconciledDirectionDebit  BulkResultEntityAmountReconciledDirection = "debit"
+)
+
+func (r BulkResultEntityAmountReconciledDirection) IsKnown() bool {
+	switch r {
+	case BulkResultEntityAmountReconciledDirectionCredit, BulkResultEntityAmountReconciledDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+// debit amount.
+type BulkResultEntityAmountUnreconciledDirection string
+
+const (
+	BulkResultEntityAmountUnreconciledDirectionCredit BulkResultEntityAmountUnreconciledDirection = "credit"
+	BulkResultEntityAmountUnreconciledDirectionDebit  BulkResultEntityAmountUnreconciledDirection = "debit"
+)
+
+func (r BulkResultEntityAmountUnreconciledDirection) IsKnown() bool {
+	switch r {
+	case BulkResultEntityAmountUnreconciledDirectionCredit, BulkResultEntityAmountUnreconciledDirectionDebit:
+		return true
+	}
+	return false
 }
 
 // The party that will pay the fees for the payment order. See
