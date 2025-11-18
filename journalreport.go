@@ -37,7 +37,7 @@ func NewJournalReportService(opts ...option.RequestOption) (r *JournalReportServ
 // Retrieve a specific journal report
 func (r *JournalReportService) Get(ctx context.Context, id string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -50,7 +50,7 @@ func (r *JournalReportService) Get(ctx context.Context, id string, opts ...optio
 // Update a journal report
 func (r *JournalReportService) Update(ctx context.Context, id string, body JournalReportUpdateParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -63,7 +63,7 @@ func (r *JournalReportService) Update(ctx context.Context, id string, body Journ
 // Retrieve a list of journal reports
 func (r *JournalReportService) List(ctx context.Context, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "api/journal_reports"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, nil, opts...)
 	return

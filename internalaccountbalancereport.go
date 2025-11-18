@@ -93,7 +93,7 @@ func (r *InternalAccountBalanceReportService) ListAutoPaging(ctx context.Context
 // Deletes a given balance report.
 func (r *InternalAccountBalanceReportService) Delete(ctx context.Context, internalAccountID string, id string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if internalAccountID == "" {
 		err = errors.New("missing required internal_account_id parameter")
 		return
