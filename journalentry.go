@@ -38,7 +38,7 @@ func NewJournalEntryService(opts ...option.RequestOption) (r *JournalEntryServic
 // Retrieve a specific journal entry
 func (r *JournalEntryService) Get(ctx context.Context, id string, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return
@@ -51,7 +51,7 @@ func (r *JournalEntryService) Get(ctx context.Context, id string, opts ...option
 // Retrieve a list of journal entries
 func (r *JournalEntryService) List(ctx context.Context, query JournalEntryListParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "")}, opts...)
+	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "api/journal_entries"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, nil, opts...)
 	return
