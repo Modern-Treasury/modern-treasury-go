@@ -135,6 +135,9 @@ type InternalAccount struct {
 	AccountType InternalAccountAccountType `json:"account_type,required,nullable"`
 	// Specifies which financial institution the accounts belong to.
 	Connection Connection `json:"connection,required"`
+	// If the internal account links to a contra ledger account in Modern Treasury, the
+	// id of the contra ledger account will be populated here.
+	ContraLedgerAccountID string `json:"contra_ledger_account_id,required,nullable" format:"uuid"`
 	// The Counterparty associated to this account.
 	CounterpartyID string    `json:"counterparty_id,required,nullable" format:"uuid"`
 	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
@@ -174,30 +177,31 @@ type InternalAccount struct {
 
 // internalAccountJSON contains the JSON metadata for the struct [InternalAccount]
 type internalAccountJSON struct {
-	ID                  apijson.Field
-	AccountCapabilities apijson.Field
-	AccountDetails      apijson.Field
-	AccountType         apijson.Field
-	Connection          apijson.Field
-	CounterpartyID      apijson.Field
-	CreatedAt           apijson.Field
-	Currency            apijson.Field
-	LedgerAccountID     apijson.Field
-	LegalEntityID       apijson.Field
-	LiveMode            apijson.Field
-	Metadata            apijson.Field
-	Name                apijson.Field
-	Object              apijson.Field
-	ParentAccountID     apijson.Field
-	PartyAddress        apijson.Field
-	PartyName           apijson.Field
-	PartyType           apijson.Field
-	RoutingDetails      apijson.Field
-	Status              apijson.Field
-	UpdatedAt           apijson.Field
-	VendorID            apijson.Field
-	raw                 string
-	ExtraFields         map[string]apijson.Field
+	ID                    apijson.Field
+	AccountCapabilities   apijson.Field
+	AccountDetails        apijson.Field
+	AccountType           apijson.Field
+	Connection            apijson.Field
+	ContraLedgerAccountID apijson.Field
+	CounterpartyID        apijson.Field
+	CreatedAt             apijson.Field
+	Currency              apijson.Field
+	LedgerAccountID       apijson.Field
+	LegalEntityID         apijson.Field
+	LiveMode              apijson.Field
+	Metadata              apijson.Field
+	Name                  apijson.Field
+	Object                apijson.Field
+	ParentAccountID       apijson.Field
+	PartyAddress          apijson.Field
+	PartyName             apijson.Field
+	PartyType             apijson.Field
+	RoutingDetails        apijson.Field
+	Status                apijson.Field
+	UpdatedAt             apijson.Field
+	VendorID              apijson.Field
+	raw                   string
+	ExtraFields           map[string]apijson.Field
 }
 
 func (r *InternalAccount) UnmarshalJSON(data []byte) (err error) {
@@ -636,6 +640,8 @@ func (r InternalAccountNewParamsPartyAddress) MarshalJSON() (data []byte, err er
 }
 
 type InternalAccountUpdateParams struct {
+	// The Contra Ledger Account associated to this account.
+	ContraLedgerAccountID param.Field[string] `json:"contra_ledger_account_id"`
 	// The Counterparty associated to this account.
 	CounterpartyID param.Field[string] `json:"counterparty_id"`
 	// The Ledger Account associated to this account.
