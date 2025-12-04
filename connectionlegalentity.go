@@ -143,15 +143,17 @@ func (r connectionLegalEntityJSON) RawJSON() string {
 type ConnectionLegalEntityStatus string
 
 const (
+	ConnectionLegalEntityStatusClosed     ConnectionLegalEntityStatus = "closed"
 	ConnectionLegalEntityStatusCompleted  ConnectionLegalEntityStatus = "completed"
 	ConnectionLegalEntityStatusDenied     ConnectionLegalEntityStatus = "denied"
 	ConnectionLegalEntityStatusFailed     ConnectionLegalEntityStatus = "failed"
 	ConnectionLegalEntityStatusProcessing ConnectionLegalEntityStatus = "processing"
+	ConnectionLegalEntityStatusSuspended  ConnectionLegalEntityStatus = "suspended"
 )
 
 func (r ConnectionLegalEntityStatus) IsKnown() bool {
 	switch r {
-	case ConnectionLegalEntityStatusCompleted, ConnectionLegalEntityStatusDenied, ConnectionLegalEntityStatusFailed, ConnectionLegalEntityStatusProcessing:
+	case ConnectionLegalEntityStatusClosed, ConnectionLegalEntityStatusCompleted, ConnectionLegalEntityStatusDenied, ConnectionLegalEntityStatusFailed, ConnectionLegalEntityStatusProcessing, ConnectionLegalEntityStatusSuspended:
 		return true
 	}
 	return false
@@ -365,15 +367,17 @@ func (r ConnectionLegalEntityListParams) URLQuery() (v url.Values) {
 type ConnectionLegalEntityListParamsStatus string
 
 const (
+	ConnectionLegalEntityListParamsStatusClosed     ConnectionLegalEntityListParamsStatus = "closed"
 	ConnectionLegalEntityListParamsStatusCompleted  ConnectionLegalEntityListParamsStatus = "completed"
 	ConnectionLegalEntityListParamsStatusDenied     ConnectionLegalEntityListParamsStatus = "denied"
 	ConnectionLegalEntityListParamsStatusFailed     ConnectionLegalEntityListParamsStatus = "failed"
 	ConnectionLegalEntityListParamsStatusProcessing ConnectionLegalEntityListParamsStatus = "processing"
+	ConnectionLegalEntityListParamsStatusSuspended  ConnectionLegalEntityListParamsStatus = "suspended"
 )
 
 func (r ConnectionLegalEntityListParamsStatus) IsKnown() bool {
 	switch r {
-	case ConnectionLegalEntityListParamsStatusCompleted, ConnectionLegalEntityListParamsStatusDenied, ConnectionLegalEntityListParamsStatusFailed, ConnectionLegalEntityListParamsStatusProcessing:
+	case ConnectionLegalEntityListParamsStatusClosed, ConnectionLegalEntityListParamsStatusCompleted, ConnectionLegalEntityListParamsStatusDenied, ConnectionLegalEntityListParamsStatusFailed, ConnectionLegalEntityListParamsStatusProcessing, ConnectionLegalEntityListParamsStatusSuspended:
 		return true
 	}
 	return false
