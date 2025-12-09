@@ -301,24 +301,28 @@ func (r IncomingPaymentDetailStatus) IsKnown() bool {
 type IncomingPaymentDetailType string
 
 const (
-	IncomingPaymentDetailTypeACH     IncomingPaymentDetailType = "ach"
-	IncomingPaymentDetailTypeAuBecs  IncomingPaymentDetailType = "au_becs"
-	IncomingPaymentDetailTypeBacs    IncomingPaymentDetailType = "bacs"
-	IncomingPaymentDetailTypeBook    IncomingPaymentDetailType = "book"
-	IncomingPaymentDetailTypeCheck   IncomingPaymentDetailType = "check"
-	IncomingPaymentDetailTypeEft     IncomingPaymentDetailType = "eft"
-	IncomingPaymentDetailTypeInterac IncomingPaymentDetailType = "interac"
-	IncomingPaymentDetailTypeNeft    IncomingPaymentDetailType = "neft"
-	IncomingPaymentDetailTypeNzBecs  IncomingPaymentDetailType = "nz_becs"
-	IncomingPaymentDetailTypeRtp     IncomingPaymentDetailType = "rtp"
-	IncomingPaymentDetailTypeSepa    IncomingPaymentDetailType = "sepa"
-	IncomingPaymentDetailTypeSignet  IncomingPaymentDetailType = "signet"
-	IncomingPaymentDetailTypeWire    IncomingPaymentDetailType = "wire"
+	IncomingPaymentDetailTypeACH      IncomingPaymentDetailType = "ach"
+	IncomingPaymentDetailTypeAuBecs   IncomingPaymentDetailType = "au_becs"
+	IncomingPaymentDetailTypeBacs     IncomingPaymentDetailType = "bacs"
+	IncomingPaymentDetailTypeBase     IncomingPaymentDetailType = "base"
+	IncomingPaymentDetailTypeBook     IncomingPaymentDetailType = "book"
+	IncomingPaymentDetailTypeCheck    IncomingPaymentDetailType = "check"
+	IncomingPaymentDetailTypeEft      IncomingPaymentDetailType = "eft"
+	IncomingPaymentDetailTypeEthereum IncomingPaymentDetailType = "ethereum"
+	IncomingPaymentDetailTypeInterac  IncomingPaymentDetailType = "interac"
+	IncomingPaymentDetailTypeNeft     IncomingPaymentDetailType = "neft"
+	IncomingPaymentDetailTypeNzBecs   IncomingPaymentDetailType = "nz_becs"
+	IncomingPaymentDetailTypePolygon  IncomingPaymentDetailType = "polygon"
+	IncomingPaymentDetailTypeRtp      IncomingPaymentDetailType = "rtp"
+	IncomingPaymentDetailTypeSepa     IncomingPaymentDetailType = "sepa"
+	IncomingPaymentDetailTypeSignet   IncomingPaymentDetailType = "signet"
+	IncomingPaymentDetailTypeSolana   IncomingPaymentDetailType = "solana"
+	IncomingPaymentDetailTypeWire     IncomingPaymentDetailType = "wire"
 )
 
 func (r IncomingPaymentDetailType) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailTypeACH, IncomingPaymentDetailTypeAuBecs, IncomingPaymentDetailTypeBacs, IncomingPaymentDetailTypeBook, IncomingPaymentDetailTypeCheck, IncomingPaymentDetailTypeEft, IncomingPaymentDetailTypeInterac, IncomingPaymentDetailTypeNeft, IncomingPaymentDetailTypeNzBecs, IncomingPaymentDetailTypeRtp, IncomingPaymentDetailTypeSepa, IncomingPaymentDetailTypeSignet, IncomingPaymentDetailTypeWire:
+	case IncomingPaymentDetailTypeACH, IncomingPaymentDetailTypeAuBecs, IncomingPaymentDetailTypeBacs, IncomingPaymentDetailTypeBase, IncomingPaymentDetailTypeBook, IncomingPaymentDetailTypeCheck, IncomingPaymentDetailTypeEft, IncomingPaymentDetailTypeEthereum, IncomingPaymentDetailTypeInterac, IncomingPaymentDetailTypeNeft, IncomingPaymentDetailTypeNzBecs, IncomingPaymentDetailTypePolygon, IncomingPaymentDetailTypeRtp, IncomingPaymentDetailTypeSepa, IncomingPaymentDetailTypeSignet, IncomingPaymentDetailTypeSolana, IncomingPaymentDetailTypeWire:
 		return true
 	}
 	return false
@@ -392,24 +396,28 @@ func (r IncomingPaymentDetailListParamsStatus) IsKnown() bool {
 type IncomingPaymentDetailListParamsType string
 
 const (
-	IncomingPaymentDetailListParamsTypeACH     IncomingPaymentDetailListParamsType = "ach"
-	IncomingPaymentDetailListParamsTypeAuBecs  IncomingPaymentDetailListParamsType = "au_becs"
-	IncomingPaymentDetailListParamsTypeBacs    IncomingPaymentDetailListParamsType = "bacs"
-	IncomingPaymentDetailListParamsTypeBook    IncomingPaymentDetailListParamsType = "book"
-	IncomingPaymentDetailListParamsTypeCheck   IncomingPaymentDetailListParamsType = "check"
-	IncomingPaymentDetailListParamsTypeEft     IncomingPaymentDetailListParamsType = "eft"
-	IncomingPaymentDetailListParamsTypeInterac IncomingPaymentDetailListParamsType = "interac"
-	IncomingPaymentDetailListParamsTypeNeft    IncomingPaymentDetailListParamsType = "neft"
-	IncomingPaymentDetailListParamsTypeNzBecs  IncomingPaymentDetailListParamsType = "nz_becs"
-	IncomingPaymentDetailListParamsTypeRtp     IncomingPaymentDetailListParamsType = "rtp"
-	IncomingPaymentDetailListParamsTypeSepa    IncomingPaymentDetailListParamsType = "sepa"
-	IncomingPaymentDetailListParamsTypeSignet  IncomingPaymentDetailListParamsType = "signet"
-	IncomingPaymentDetailListParamsTypeWire    IncomingPaymentDetailListParamsType = "wire"
+	IncomingPaymentDetailListParamsTypeACH      IncomingPaymentDetailListParamsType = "ach"
+	IncomingPaymentDetailListParamsTypeAuBecs   IncomingPaymentDetailListParamsType = "au_becs"
+	IncomingPaymentDetailListParamsTypeBacs     IncomingPaymentDetailListParamsType = "bacs"
+	IncomingPaymentDetailListParamsTypeBase     IncomingPaymentDetailListParamsType = "base"
+	IncomingPaymentDetailListParamsTypeBook     IncomingPaymentDetailListParamsType = "book"
+	IncomingPaymentDetailListParamsTypeCheck    IncomingPaymentDetailListParamsType = "check"
+	IncomingPaymentDetailListParamsTypeEft      IncomingPaymentDetailListParamsType = "eft"
+	IncomingPaymentDetailListParamsTypeEthereum IncomingPaymentDetailListParamsType = "ethereum"
+	IncomingPaymentDetailListParamsTypeInterac  IncomingPaymentDetailListParamsType = "interac"
+	IncomingPaymentDetailListParamsTypeNeft     IncomingPaymentDetailListParamsType = "neft"
+	IncomingPaymentDetailListParamsTypeNzBecs   IncomingPaymentDetailListParamsType = "nz_becs"
+	IncomingPaymentDetailListParamsTypePolygon  IncomingPaymentDetailListParamsType = "polygon"
+	IncomingPaymentDetailListParamsTypeRtp      IncomingPaymentDetailListParamsType = "rtp"
+	IncomingPaymentDetailListParamsTypeSepa     IncomingPaymentDetailListParamsType = "sepa"
+	IncomingPaymentDetailListParamsTypeSignet   IncomingPaymentDetailListParamsType = "signet"
+	IncomingPaymentDetailListParamsTypeSolana   IncomingPaymentDetailListParamsType = "solana"
+	IncomingPaymentDetailListParamsTypeWire     IncomingPaymentDetailListParamsType = "wire"
 )
 
 func (r IncomingPaymentDetailListParamsType) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailListParamsTypeACH, IncomingPaymentDetailListParamsTypeAuBecs, IncomingPaymentDetailListParamsTypeBacs, IncomingPaymentDetailListParamsTypeBook, IncomingPaymentDetailListParamsTypeCheck, IncomingPaymentDetailListParamsTypeEft, IncomingPaymentDetailListParamsTypeInterac, IncomingPaymentDetailListParamsTypeNeft, IncomingPaymentDetailListParamsTypeNzBecs, IncomingPaymentDetailListParamsTypeRtp, IncomingPaymentDetailListParamsTypeSepa, IncomingPaymentDetailListParamsTypeSignet, IncomingPaymentDetailListParamsTypeWire:
+	case IncomingPaymentDetailListParamsTypeACH, IncomingPaymentDetailListParamsTypeAuBecs, IncomingPaymentDetailListParamsTypeBacs, IncomingPaymentDetailListParamsTypeBase, IncomingPaymentDetailListParamsTypeBook, IncomingPaymentDetailListParamsTypeCheck, IncomingPaymentDetailListParamsTypeEft, IncomingPaymentDetailListParamsTypeEthereum, IncomingPaymentDetailListParamsTypeInterac, IncomingPaymentDetailListParamsTypeNeft, IncomingPaymentDetailListParamsTypeNzBecs, IncomingPaymentDetailListParamsTypePolygon, IncomingPaymentDetailListParamsTypeRtp, IncomingPaymentDetailListParamsTypeSepa, IncomingPaymentDetailListParamsTypeSignet, IncomingPaymentDetailListParamsTypeSolana, IncomingPaymentDetailListParamsTypeWire:
 		return true
 	}
 	return false
@@ -463,24 +471,28 @@ func (r IncomingPaymentDetailNewAsyncParamsDirection) IsKnown() bool {
 type IncomingPaymentDetailNewAsyncParamsType string
 
 const (
-	IncomingPaymentDetailNewAsyncParamsTypeACH     IncomingPaymentDetailNewAsyncParamsType = "ach"
-	IncomingPaymentDetailNewAsyncParamsTypeAuBecs  IncomingPaymentDetailNewAsyncParamsType = "au_becs"
-	IncomingPaymentDetailNewAsyncParamsTypeBacs    IncomingPaymentDetailNewAsyncParamsType = "bacs"
-	IncomingPaymentDetailNewAsyncParamsTypeBook    IncomingPaymentDetailNewAsyncParamsType = "book"
-	IncomingPaymentDetailNewAsyncParamsTypeCheck   IncomingPaymentDetailNewAsyncParamsType = "check"
-	IncomingPaymentDetailNewAsyncParamsTypeEft     IncomingPaymentDetailNewAsyncParamsType = "eft"
-	IncomingPaymentDetailNewAsyncParamsTypeInterac IncomingPaymentDetailNewAsyncParamsType = "interac"
-	IncomingPaymentDetailNewAsyncParamsTypeNeft    IncomingPaymentDetailNewAsyncParamsType = "neft"
-	IncomingPaymentDetailNewAsyncParamsTypeNzBecs  IncomingPaymentDetailNewAsyncParamsType = "nz_becs"
-	IncomingPaymentDetailNewAsyncParamsTypeRtp     IncomingPaymentDetailNewAsyncParamsType = "rtp"
-	IncomingPaymentDetailNewAsyncParamsTypeSepa    IncomingPaymentDetailNewAsyncParamsType = "sepa"
-	IncomingPaymentDetailNewAsyncParamsTypeSignet  IncomingPaymentDetailNewAsyncParamsType = "signet"
-	IncomingPaymentDetailNewAsyncParamsTypeWire    IncomingPaymentDetailNewAsyncParamsType = "wire"
+	IncomingPaymentDetailNewAsyncParamsTypeACH      IncomingPaymentDetailNewAsyncParamsType = "ach"
+	IncomingPaymentDetailNewAsyncParamsTypeAuBecs   IncomingPaymentDetailNewAsyncParamsType = "au_becs"
+	IncomingPaymentDetailNewAsyncParamsTypeBacs     IncomingPaymentDetailNewAsyncParamsType = "bacs"
+	IncomingPaymentDetailNewAsyncParamsTypeBase     IncomingPaymentDetailNewAsyncParamsType = "base"
+	IncomingPaymentDetailNewAsyncParamsTypeBook     IncomingPaymentDetailNewAsyncParamsType = "book"
+	IncomingPaymentDetailNewAsyncParamsTypeCheck    IncomingPaymentDetailNewAsyncParamsType = "check"
+	IncomingPaymentDetailNewAsyncParamsTypeEft      IncomingPaymentDetailNewAsyncParamsType = "eft"
+	IncomingPaymentDetailNewAsyncParamsTypeEthereum IncomingPaymentDetailNewAsyncParamsType = "ethereum"
+	IncomingPaymentDetailNewAsyncParamsTypeInterac  IncomingPaymentDetailNewAsyncParamsType = "interac"
+	IncomingPaymentDetailNewAsyncParamsTypeNeft     IncomingPaymentDetailNewAsyncParamsType = "neft"
+	IncomingPaymentDetailNewAsyncParamsTypeNzBecs   IncomingPaymentDetailNewAsyncParamsType = "nz_becs"
+	IncomingPaymentDetailNewAsyncParamsTypePolygon  IncomingPaymentDetailNewAsyncParamsType = "polygon"
+	IncomingPaymentDetailNewAsyncParamsTypeRtp      IncomingPaymentDetailNewAsyncParamsType = "rtp"
+	IncomingPaymentDetailNewAsyncParamsTypeSepa     IncomingPaymentDetailNewAsyncParamsType = "sepa"
+	IncomingPaymentDetailNewAsyncParamsTypeSignet   IncomingPaymentDetailNewAsyncParamsType = "signet"
+	IncomingPaymentDetailNewAsyncParamsTypeSolana   IncomingPaymentDetailNewAsyncParamsType = "solana"
+	IncomingPaymentDetailNewAsyncParamsTypeWire     IncomingPaymentDetailNewAsyncParamsType = "wire"
 )
 
 func (r IncomingPaymentDetailNewAsyncParamsType) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailNewAsyncParamsTypeACH, IncomingPaymentDetailNewAsyncParamsTypeAuBecs, IncomingPaymentDetailNewAsyncParamsTypeBacs, IncomingPaymentDetailNewAsyncParamsTypeBook, IncomingPaymentDetailNewAsyncParamsTypeCheck, IncomingPaymentDetailNewAsyncParamsTypeEft, IncomingPaymentDetailNewAsyncParamsTypeInterac, IncomingPaymentDetailNewAsyncParamsTypeNeft, IncomingPaymentDetailNewAsyncParamsTypeNzBecs, IncomingPaymentDetailNewAsyncParamsTypeRtp, IncomingPaymentDetailNewAsyncParamsTypeSepa, IncomingPaymentDetailNewAsyncParamsTypeSignet, IncomingPaymentDetailNewAsyncParamsTypeWire:
+	case IncomingPaymentDetailNewAsyncParamsTypeACH, IncomingPaymentDetailNewAsyncParamsTypeAuBecs, IncomingPaymentDetailNewAsyncParamsTypeBacs, IncomingPaymentDetailNewAsyncParamsTypeBase, IncomingPaymentDetailNewAsyncParamsTypeBook, IncomingPaymentDetailNewAsyncParamsTypeCheck, IncomingPaymentDetailNewAsyncParamsTypeEft, IncomingPaymentDetailNewAsyncParamsTypeEthereum, IncomingPaymentDetailNewAsyncParamsTypeInterac, IncomingPaymentDetailNewAsyncParamsTypeNeft, IncomingPaymentDetailNewAsyncParamsTypeNzBecs, IncomingPaymentDetailNewAsyncParamsTypePolygon, IncomingPaymentDetailNewAsyncParamsTypeRtp, IncomingPaymentDetailNewAsyncParamsTypeSepa, IncomingPaymentDetailNewAsyncParamsTypeSignet, IncomingPaymentDetailNewAsyncParamsTypeSolana, IncomingPaymentDetailNewAsyncParamsTypeWire:
 		return true
 	}
 	return false

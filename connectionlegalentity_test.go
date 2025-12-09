@@ -153,9 +153,10 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 						Object:              moderntreasury.F("object"),
 						UpdatedAt:           moderntreasury.F(time.Now()),
 					}}),
-					LastName:        moderntreasury.F("last_name"),
-					LegalEntityType: moderntreasury.F(shared.ChildLegalEntityCreateLegalEntityTypeBusiness),
-					LegalStructure:  moderntreasury.F(shared.ChildLegalEntityCreateLegalStructureCorporation),
+					LastName:                moderntreasury.F("last_name"),
+					LegalEntityAssociations: moderntreasury.F([]interface{}{map[string]interface{}{}}),
+					LegalEntityType:         moderntreasury.F(shared.ChildLegalEntityCreateLegalEntityTypeBusiness),
+					LegalStructure:          moderntreasury.F(shared.ChildLegalEntityCreateLegalStructureCorporation),
 					Metadata: moderntreasury.F(map[string]string{
 						"key":    "value",
 						"foo":    "bar",

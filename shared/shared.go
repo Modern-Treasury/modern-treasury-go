@@ -167,6 +167,8 @@ type ChildLegalEntityCreateParam struct {
 	IndustryClassifications param.Field[[]LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
+	// The legal entity associations and its child legal entities.
+	LegalEntityAssociations param.Field[[]interface{}] `json:"legal_entity_associations"`
 	// The type of legal entity.
 	LegalEntityType param.Field[ChildLegalEntityCreateLegalEntityType] `json:"legal_entity_type"`
 	// The business's legal structure.
