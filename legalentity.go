@@ -99,12 +99,17 @@ type LegalEntity struct {
 	// A list of addresses for the entity.
 	Addresses    []LegalEntityAddress           `json:"addresses,required"`
 	BankSettings shared.LegalEntityBankSettings `json:"bank_settings,required,nullable"`
+	// A description of the business.
+	BusinessDescription string `json:"business_description,required,nullable"`
 	// The business's legal business name.
 	BusinessName string `json:"business_name,required,nullable"`
 	// The country of citizenship for an individual.
 	CitizenshipCountry string                             `json:"citizenship_country,required,nullable"`
 	ComplianceDetails  shared.LegalEntityComplianceDetail `json:"compliance_details,required,nullable"`
-	CreatedAt          time.Time                          `json:"created_at,required" format:"date-time"`
+	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
+	// alpha-3 formats.
+	CountryOfIncorporation string    `json:"country_of_incorporation,required,nullable"`
+	CreatedAt              time.Time `json:"created_at,required" format:"date-time"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed time.Time `json:"date_formed,required,nullable" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -113,16 +118,18 @@ type LegalEntity struct {
 	DoingBusinessAsNames []string  `json:"doing_business_as_names,required"`
 	// The entity's primary email.
 	Email string `json:"email,required,nullable"`
+	// Monthly expected transaction volume in entity's local currency.
+	ExpectedActivityVolume int64 `json:"expected_activity_volume,required,nullable"`
 	// An individual's first name.
 	FirstName string `json:"first_name,required,nullable"`
 	// A list of identifications for the legal entity.
 	Identifications []LegalEntityIdentification `json:"identifications,required"`
 	// A list of industry classifications for the legal entity.
 	IndustryClassifications []shared.LegalEntityIndustryClassification `json:"industry_classifications,required"`
+	// A description of the intended use of the legal entity.
+	IntendedUse string `json:"intended_use,required,nullable"`
 	// An individual's last name.
 	LastName string `json:"last_name,required,nullable"`
-	// The legal entity associations and its child legal entities.
-	LegalEntityAssociations []LegalEntityAssociation `json:"legal_entity_associations,required,nullable"`
 	// The type of legal entity.
 	LegalEntityType LegalEntityLegalEntityType `json:"legal_entity_type,required"`
 	// The business's legal structure.
@@ -134,15 +141,20 @@ type LegalEntity struct {
 	// strings.
 	Metadata map[string]string `json:"metadata,required"`
 	// An individual's middle name.
-	MiddleName   string                   `json:"middle_name,required,nullable"`
-	Object       string                   `json:"object,required"`
-	PhoneNumbers []LegalEntityPhoneNumber `json:"phone_numbers,required"`
+	MiddleName string `json:"middle_name,required,nullable"`
+	Object     string `json:"object,required"`
+	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
+	// codes).
+	OperatingJurisdictions []string                 `json:"operating_jurisdictions,required"`
+	PhoneNumbers           []LegalEntityPhoneNumber `json:"phone_numbers,required"`
 	// Whether the individual is a politically exposed person.
 	PoliticallyExposedPerson bool `json:"politically_exposed_person,required,nullable"`
 	// An individual's preferred name.
 	PreferredName string `json:"preferred_name,required,nullable"`
 	// An individual's prefix.
 	Prefix string `json:"prefix,required,nullable"`
+	// A list of primary social media URLs for the business.
+	PrimarySocialMediaSites []string `json:"primary_social_media_sites,required"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating LegalEntityRiskRating `json:"risk_rating,required,nullable"`
 	// An individual's suffix.
@@ -150,8 +162,10 @@ type LegalEntity struct {
 	UpdatedAt                  time.Time                                `json:"updated_at,required" format:"date-time"`
 	WealthAndEmploymentDetails shared.LegalEntityWealthEmploymentDetail `json:"wealth_and_employment_details,required,nullable"`
 	// The entity's primary website URL.
-	Website string          `json:"website,required,nullable"`
-	JSON    legalEntityJSON `json:"-"`
+	Website string `json:"website,required,nullable"`
+	// The legal entity associations and its child legal entities.
+	LegalEntityAssociations []LegalEntityAssociation `json:"legal_entity_associations,nullable"`
+	JSON                    legalEntityJSON          `json:"-"`
 }
 
 // legalEntityJSON contains the JSON metadata for the struct [LegalEntity]
@@ -159,35 +173,41 @@ type legalEntityJSON struct {
 	ID                         apijson.Field
 	Addresses                  apijson.Field
 	BankSettings               apijson.Field
+	BusinessDescription        apijson.Field
 	BusinessName               apijson.Field
 	CitizenshipCountry         apijson.Field
 	ComplianceDetails          apijson.Field
+	CountryOfIncorporation     apijson.Field
 	CreatedAt                  apijson.Field
 	DateFormed                 apijson.Field
 	DateOfBirth                apijson.Field
 	DiscardedAt                apijson.Field
 	DoingBusinessAsNames       apijson.Field
 	Email                      apijson.Field
+	ExpectedActivityVolume     apijson.Field
 	FirstName                  apijson.Field
 	Identifications            apijson.Field
 	IndustryClassifications    apijson.Field
+	IntendedUse                apijson.Field
 	LastName                   apijson.Field
-	LegalEntityAssociations    apijson.Field
 	LegalEntityType            apijson.Field
 	LegalStructure             apijson.Field
 	LiveMode                   apijson.Field
 	Metadata                   apijson.Field
 	MiddleName                 apijson.Field
 	Object                     apijson.Field
+	OperatingJurisdictions     apijson.Field
 	PhoneNumbers               apijson.Field
 	PoliticallyExposedPerson   apijson.Field
 	PreferredName              apijson.Field
 	Prefix                     apijson.Field
+	PrimarySocialMediaSites    apijson.Field
 	RiskRating                 apijson.Field
 	Suffix                     apijson.Field
 	UpdatedAt                  apijson.Field
 	WealthAndEmploymentDetails apijson.Field
 	Website                    apijson.Field
+	LegalEntityAssociations    apijson.Field
 	raw                        string
 	ExtraFields                map[string]apijson.Field
 }
@@ -435,11 +455,16 @@ type LegalEntityNewParams struct {
 	// A list of addresses for the entity.
 	Addresses    param.Field[[]shared.LegalEntityAddressCreateRequestParam] `json:"addresses"`
 	BankSettings param.Field[shared.LegalEntityBankSettingsParam]           `json:"bank_settings"`
+	// A description of the business.
+	BusinessDescription param.Field[string] `json:"business_description"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
 	CitizenshipCountry param.Field[string]                                  `json:"citizenship_country"`
 	ComplianceDetails  param.Field[shared.LegalEntityComplianceDetailParam] `json:"compliance_details"`
+	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
+	// alpha-3 formats.
+	CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -447,12 +472,16 @@ type LegalEntityNewParams struct {
 	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
 	// The entity's primary email.
 	Email param.Field[string] `json:"email"`
+	// Monthly expected transaction volume in entity's local currency.
+	ExpectedActivityVolume param.Field[int64] `json:"expected_activity_volume"`
 	// An individual's first name.
 	FirstName param.Field[string] `json:"first_name"`
 	// A list of identifications for the legal entity.
 	Identifications param.Field[[]shared.IdentificationCreateRequestParam] `json:"identifications"`
 	// A list of industry classifications for the legal entity.
 	IndustryClassifications param.Field[[]shared.LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
+	// A description of the intended use of the legal entity.
+	IntendedUse param.Field[string] `json:"intended_use"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
 	// The legal entity associations and its child legal entities.
@@ -463,14 +492,19 @@ type LegalEntityNewParams struct {
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// An individual's middle name.
-	MiddleName   param.Field[string]                            `json:"middle_name"`
-	PhoneNumbers param.Field[[]LegalEntityNewParamsPhoneNumber] `json:"phone_numbers"`
+	MiddleName param.Field[string] `json:"middle_name"`
+	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
+	// codes).
+	OperatingJurisdictions param.Field[[]string]                          `json:"operating_jurisdictions"`
+	PhoneNumbers           param.Field[[]LegalEntityNewParamsPhoneNumber] `json:"phone_numbers"`
 	// Whether the individual is a politically exposed person.
 	PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
 	// An individual's preferred name.
 	PreferredName param.Field[string] `json:"preferred_name"`
 	// An individual's prefix.
 	Prefix param.Field[string] `json:"prefix"`
+	// A list of primary social media URLs for the business.
+	PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[LegalEntityNewParamsRiskRating] `json:"risk_rating"`
 	// An individual's suffix.
@@ -583,11 +617,16 @@ type LegalEntityUpdateParams struct {
 	// A list of addresses for the entity.
 	Addresses    param.Field[[]shared.LegalEntityAddressCreateRequestParam] `json:"addresses"`
 	BankSettings param.Field[shared.LegalEntityBankSettingsParam]           `json:"bank_settings"`
+	// A description of the business.
+	BusinessDescription param.Field[string] `json:"business_description"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
 	CitizenshipCountry param.Field[string]                                  `json:"citizenship_country"`
 	ComplianceDetails  param.Field[shared.LegalEntityComplianceDetailParam] `json:"compliance_details"`
+	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
+	// alpha-3 formats.
+	CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
@@ -595,12 +634,16 @@ type LegalEntityUpdateParams struct {
 	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
 	// The entity's primary email.
 	Email param.Field[string] `json:"email"`
+	// Monthly expected transaction volume in entity's local currency.
+	ExpectedActivityVolume param.Field[int64] `json:"expected_activity_volume"`
 	// An individual's first name.
 	FirstName param.Field[string] `json:"first_name"`
 	// A list of identifications for the legal entity.
 	Identifications param.Field[[]shared.IdentificationCreateRequestParam] `json:"identifications"`
 	// A list of industry classifications for the legal entity.
 	IndustryClassifications param.Field[[]shared.LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
+	// A description of the intended use of the legal entity.
+	IntendedUse param.Field[string] `json:"intended_use"`
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
 	// The business's legal structure.
@@ -609,14 +652,19 @@ type LegalEntityUpdateParams struct {
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// An individual's middle name.
-	MiddleName   param.Field[string]                               `json:"middle_name"`
-	PhoneNumbers param.Field[[]LegalEntityUpdateParamsPhoneNumber] `json:"phone_numbers"`
+	MiddleName param.Field[string] `json:"middle_name"`
+	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
+	// codes).
+	OperatingJurisdictions param.Field[[]string]                             `json:"operating_jurisdictions"`
+	PhoneNumbers           param.Field[[]LegalEntityUpdateParamsPhoneNumber] `json:"phone_numbers"`
 	// Whether the individual is a politically exposed person.
 	PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
 	// An individual's preferred name.
 	PreferredName param.Field[string] `json:"preferred_name"`
 	// An individual's prefix.
 	Prefix param.Field[string] `json:"prefix"`
+	// A list of primary social media URLs for the business.
+	PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[LegalEntityUpdateParamsRiskRating] `json:"risk_rating"`
 	// An individual's suffix.
