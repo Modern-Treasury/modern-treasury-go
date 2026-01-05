@@ -41,6 +41,7 @@ func TestPaymentOrderReversalNewWithOptionalParams(t *testing.T) {
 					AvailableBalanceAmount: moderntreasury.F(map[string]int64{
 						"foo": int64(0),
 					}),
+					EffectiveAt: moderntreasury.F(time.Now()),
 					LockVersion: moderntreasury.F(int64(0)),
 					Metadata: moderntreasury.F(map[string]string{
 						"key":    "value",
