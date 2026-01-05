@@ -781,6 +781,9 @@ type LedgerEntryCreateRequestParam struct {
 	// account’s available balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
 	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
+	// The timestamp (ISO8601 format) at which the ledger transaction happened for
+	// reporting purposes.
+	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
 	// Lock version of the ledger account. This can be passed when creating a ledger
 	// transaction to only succeed if no ledger transactions have posted since the
 	// given version. See our post about Designing the Ledgers API with Optimistic

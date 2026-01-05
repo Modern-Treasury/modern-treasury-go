@@ -98,6 +98,9 @@ type LedgerEntry struct {
 	// rtp, and check payments will always be `credit`.
 	Direction   shared.TransactionDirection `json:"direction,required"`
 	DiscardedAt time.Time                   `json:"discarded_at,required,nullable" format:"date-time"`
+	// The timestamp (ISO8601 format) at which the ledger transaction happened for
+	// reporting purposes.
+	EffectiveAt time.Time `json:"effective_at,required" format:"date-time"`
 	// The currency of the ledger account.
 	LedgerAccountCurrency string `json:"ledger_account_currency,required"`
 	// The currency exponent of the ledger account.
@@ -140,6 +143,7 @@ type ledgerEntryJSON struct {
 	CreatedAt                      apijson.Field
 	Direction                      apijson.Field
 	DiscardedAt                    apijson.Field
+	EffectiveAt                    apijson.Field
 	LedgerAccountCurrency          apijson.Field
 	LedgerAccountCurrencyExponent  apijson.Field
 	LedgerAccountID                apijson.Field
