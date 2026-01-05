@@ -163,6 +163,9 @@ type LedgerTransactionVersionLedgerEntry struct {
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
 	Direction shared.TransactionDirection `json:"direction,required"`
+	// The timestamp (ISO8601 format) at which the ledger transaction happened for
+	// reporting purposes.
+	EffectiveAt time.Time `json:"effective_at,required" format:"date-time"`
 	// The currency of the ledger account.
 	LedgerAccountCurrency string `json:"ledger_account_currency,required"`
 	// The currency exponent of the ledger account.
@@ -204,6 +207,7 @@ type ledgerTransactionVersionLedgerEntryJSON struct {
 	Amount                         apijson.Field
 	CreatedAt                      apijson.Field
 	Direction                      apijson.Field
+	EffectiveAt                    apijson.Field
 	LedgerAccountCurrency          apijson.Field
 	LedgerAccountCurrencyExponent  apijson.Field
 	LedgerAccountID                apijson.Field
