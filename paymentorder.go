@@ -3,19 +3,15 @@
 package moderntreasury
 
 import (
-	"bytes"
 	"context"
 	"errors"
 	"fmt"
-	"io"
-	"mime/multipart"
 	"net/http"
 	"net/url"
 	"reflect"
 	"slices"
 	"time"
 
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiform"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
@@ -138,7 +134,7 @@ func (r ContactDetailCreateRequestContactIdentifierType) IsKnown() bool {
 type PaymentOrder struct {
 	ID string `json:"id,required" format:"uuid"`
 	// Deprecated: deprecated
-	Accounting PaymentOrderAccounting `json:"accounting,required"`
+	Accounting Accounting `json:"accounting,required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
@@ -164,7 +160,7 @@ type PaymentOrder struct {
 	Currency shared.Currency `json:"currency,required"`
 	// If the payment order's status is `held`, this will include the hold object's
 	// data.
-	CurrentHold PaymentOrderCurrentHold `json:"current_hold,required,nullable"`
+	CurrentHold Hold `json:"current_hold,required,nullable"`
 	// If the payment order's status is `returned`, this will include the return
 	// object's data.
 	CurrentReturn ReturnObject `json:"current_return,required,nullable"`
@@ -350,39 +346,6 @@ func (r paymentOrderJSON) RawJSON() string {
 
 func (r PaymentOrder) implementsBulkResultEntity() {}
 
-// Deprecated: deprecated
-type PaymentOrderAccounting struct {
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	AccountID string `json:"account_id,nullable" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	ClassID string                     `json:"class_id,nullable" format:"uuid"`
-	JSON    paymentOrderAccountingJSON `json:"-"`
-}
-
-// paymentOrderAccountingJSON contains the JSON metadata for the struct
-// [PaymentOrderAccounting]
-type paymentOrderAccountingJSON struct {
-	AccountID   apijson.Field
-	ClassID     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *PaymentOrderAccounting) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r paymentOrderAccountingJSON) RawJSON() string {
-	return r.raw
-}
-
 // The party that will pay the fees for the payment order. See
 // https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
 // differences between the options.
@@ -397,107 +360,6 @@ const (
 func (r PaymentOrderChargeBearer) IsKnown() bool {
 	switch r {
 	case PaymentOrderChargeBearerShared, PaymentOrderChargeBearerSender, PaymentOrderChargeBearerReceiver:
-		return true
-	}
-	return false
-}
-
-// If the payment order's status is `held`, this will include the hold object's
-// data.
-type PaymentOrderCurrentHold struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	// The type of object
-	Object PaymentOrderCurrentHoldObject `json:"object,required"`
-	// The status of the hold
-	Status PaymentOrderCurrentHoldStatus `json:"status,required"`
-	// The ID of the target being held
-	TargetID string `json:"target_id,required" format:"uuid"`
-	// The type of target being held
-	TargetType PaymentOrderCurrentHoldTargetType `json:"target_type,required"`
-	UpdatedAt  time.Time                         `json:"updated_at,required" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode"`
-	// Additional metadata for the hold
-	Metadata map[string]string `json:"metadata,nullable"`
-	// The reason for the hold
-	Reason string `json:"reason,nullable"`
-	// The resolution of the hold
-	Resolution string `json:"resolution,nullable"`
-	// When the hold was resolved
-	ResolvedAt time.Time                   `json:"resolved_at,nullable" format:"date-time"`
-	JSON       paymentOrderCurrentHoldJSON `json:"-"`
-}
-
-// paymentOrderCurrentHoldJSON contains the JSON metadata for the struct
-// [PaymentOrderCurrentHold]
-type paymentOrderCurrentHoldJSON struct {
-	ID          apijson.Field
-	CreatedAt   apijson.Field
-	Object      apijson.Field
-	Status      apijson.Field
-	TargetID    apijson.Field
-	TargetType  apijson.Field
-	UpdatedAt   apijson.Field
-	LiveMode    apijson.Field
-	Metadata    apijson.Field
-	Reason      apijson.Field
-	Resolution  apijson.Field
-	ResolvedAt  apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *PaymentOrderCurrentHold) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r paymentOrderCurrentHoldJSON) RawJSON() string {
-	return r.raw
-}
-
-// The type of object
-type PaymentOrderCurrentHoldObject string
-
-const (
-	PaymentOrderCurrentHoldObjectHold PaymentOrderCurrentHoldObject = "hold"
-)
-
-func (r PaymentOrderCurrentHoldObject) IsKnown() bool {
-	switch r {
-	case PaymentOrderCurrentHoldObjectHold:
-		return true
-	}
-	return false
-}
-
-// The status of the hold
-type PaymentOrderCurrentHoldStatus string
-
-const (
-	PaymentOrderCurrentHoldStatusActive   PaymentOrderCurrentHoldStatus = "active"
-	PaymentOrderCurrentHoldStatusResolved PaymentOrderCurrentHoldStatus = "resolved"
-)
-
-func (r PaymentOrderCurrentHoldStatus) IsKnown() bool {
-	switch r {
-	case PaymentOrderCurrentHoldStatusActive, PaymentOrderCurrentHoldStatusResolved:
-		return true
-	}
-	return false
-}
-
-// The type of target being held
-type PaymentOrderCurrentHoldTargetType string
-
-const (
-	PaymentOrderCurrentHoldTargetTypePaymentOrder PaymentOrderCurrentHoldTargetType = "payment_order"
-)
-
-func (r PaymentOrderCurrentHoldTargetType) IsKnown() bool {
-	switch r {
-	case PaymentOrderCurrentHoldTargetTypePaymentOrder:
 		return true
 	}
 	return false
@@ -781,7 +643,7 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	// This field can have the runtime type of [[]RoutingDetail].
 	RoutingDetails interface{} `json:"routing_details,required"`
 	UpdatedAt      time.Time   `json:"updated_at,required" format:"date-time"`
-	// This field can have the runtime type of [[]InternalAccountAccountCapability].
+	// This field can have the runtime type of [[]AccountCapability].
 	AccountCapabilities interface{} `json:"account_capabilities"`
 	// Can be checking, savings or other.
 	AccountType PaymentOrderUltimateOriginatingAccountAccountType `json:"account_type,nullable"`
@@ -979,6 +841,435 @@ func (r PaymentOrderUltimateOriginatingAccountType) IsKnown() bool {
 	return false
 }
 
+type PaymentOrderAsyncCreateParam struct {
+	// Value in specified currency's smallest unit. e.g. $10 would be represented as
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
+	Amount param.Field[int64] `json:"amount,required"`
+	// One of `credit`, `debit`. Describes the direction money is flowing in the
+	// transaction. A `credit` moves money from your account to someone else's. A
+	// `debit` pulls money from someone else's account to your own. Note that wire,
+	// rtp, and check payments will always be `credit`.
+	Direction param.Field[PaymentOrderAsyncCreateDirection] `json:"direction,required"`
+	// The ID of one of your organization's internal accounts.
+	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
+	Type param.Field[PaymentOrderType] `json:"type,required"`
+	// Deprecated: deprecated
+	Accounting param.Field[AccountingParam] `json:"accounting"`
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
+	// The ID of one of your accounting ledger classes. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
+	// The party that will pay the fees for the payment order. See
+	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+	// differences between the options.
+	ChargeBearer param.Field[PaymentOrderAsyncCreateChargeBearer] `json:"charge_bearer"`
+	// Defaults to the currency of the originating account.
+	Currency param.Field[shared.Currency] `json:"currency"`
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
+	// Date transactions are to be posted to the participants' account. Defaults to the
+	// current business day or the next business day if the current day is a bank
+	// holiday or weekend. Format: yyyy-mm-dd.
+	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
+	// RFP payments require an expires_at. This value must be past the effective_date.
+	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
+	// A payment type to fallback to if the original type is not valid for the
+	// receiving account. Currently, this only supports falling back from RTP to ACH
+	// (type=rtp and fallback_type=ach)
+	FallbackType param.Field[PaymentOrderAsyncCreateFallbackType] `json:"fallback_type"`
+	// If present, indicates a specific foreign exchange contract number that has been
+	// generated by your financial institution.
+	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract"`
+	// Indicates the type of FX transfer to initiate, can be either
+	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+	// currency matches the originating account currency.
+	ForeignExchangeIndicator param.Field[PaymentOrderAsyncCreateForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
+	// Specifies a ledger transaction object that will be created with the payment
+	// order. If the ledger transaction cannot be created, then the payment order
+	// creation will fail. The resulting ledger transaction will mirror the status of
+	// the payment order.
+	LedgerTransaction param.Field[shared.LedgerTransactionCreateRequestParam] `json:"ledger_transaction"`
+	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
+	// pending ledger transaction can be attached upon payment order creation. Once the
+	// payment order is created, the status of the ledger transaction tracks the
+	// payment order automatically.
+	LedgerTransactionID param.Field[string] `json:"ledger_transaction_id" format:"uuid"`
+	// An array of line items that must sum up to the amount of the payment order.
+	LineItems param.Field[[]LineItemParam] `json:"line_items"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// A boolean to determine if NSF Protection is enabled for this payment order. Note
+	// that this setting must also be turned on in your organization settings page.
+	NsfProtected param.Field[bool] `json:"nsf_protected"`
+	// If present, this will replace your default company name on receiver's bank
+	// statement. This field can only be used for ACH payments currently. For ACH, only
+	// the first 16 characters of this string will be used. Any additional characters
+	// will be truncated.
+	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
+	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+	// an overnight check rather than standard mail.
+	Priority param.Field[PaymentOrderAsyncCreatePriority] `json:"priority"`
+	// If present, Modern Treasury will not process the payment until after this time.
+	// If `process_after` is past the cutoff for `effective_date`, `process_after` will
+	// take precedence and `effective_date` will automatically update to reflect the
+	// earliest possible sending date after `process_after`. Format is ISO8601
+	// timestamp.
+	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
+	// For `wire`, this is usually the purpose which is transmitted via the
+	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
+	// digit CPA Code that will be attached to the payment.
+	Purpose param.Field[string] `json:"purpose"`
+	// Either `receiving_account` or `receiving_account_id` must be present. When using
+	// `receiving_account_id`, you may pass the id of an external account or an
+	// internal account.
+	ReceivingAccount param.Field[PaymentOrderAsyncCreateReceivingAccountParam] `json:"receiving_account"`
+	// Either `receiving_account` or `receiving_account_id` must be present. When using
+	// `receiving_account_id`, you may pass the id of an external account or an
+	// internal account.
+	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus param.Field[PaymentOrderAsyncCreateReconciliationStatus] `json:"reconciliation_status"`
+	// For `ach`, this field will be passed through on an addenda record. For `wire`
+	// payments the field will be passed through as the "Originator to Beneficiary
+	// Information", also known as OBI or Fedwire tag 6000.
+	RemittanceInformation param.Field[string] `json:"remittance_information"`
+	// Send an email to the counterparty when the payment order is sent to the bank. If
+	// `null`, `send_remittance_advice` on the Counterparty is used.
+	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
+	// An optional descriptor which will appear in the receiver's statement. For
+	// `check` payments this field will be used as the memo line. For `ach` the maximum
+	// length is 10 characters. Note that for ACH payments, the name on your bank
+	// account will be included automatically by the bank, so you can use the
+	// characters for other useful information. For `eft` the maximum length is 15
+	// characters.
+	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
+	// An additional layer of classification for the type of payment order you are
+	// doing. This field is only used for `ach` payment orders currently. For `ach`
+	// payment orders, the `subtype` represents the SEC code. We currently support
+	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
+	Subtype param.Field[PaymentOrderSubtype] `json:"subtype"`
+	// A flag that determines whether a payment order should go through transaction
+	// monitoring.
+	TransactionMonitoringEnabled param.Field[bool] `json:"transaction_monitoring_enabled"`
+	// Identifier of the ultimate originator of the payment order.
+	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
+	// Name of the ultimate originator of the payment order.
+	UltimateOriginatingPartyName param.Field[string] `json:"ultimate_originating_party_name"`
+	// Identifier of the ultimate funds recipient.
+	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
+	// Name of the ultimate funds recipient.
+	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
+}
+
+func (r PaymentOrderAsyncCreateParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r PaymentOrderAsyncCreateParam) ImplementsBulkRequestNewParamsResourceUnion() {}
+
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
+type PaymentOrderAsyncCreateDirection string
+
+const (
+	PaymentOrderAsyncCreateDirectionCredit PaymentOrderAsyncCreateDirection = "credit"
+	PaymentOrderAsyncCreateDirectionDebit  PaymentOrderAsyncCreateDirection = "debit"
+)
+
+func (r PaymentOrderAsyncCreateDirection) IsKnown() bool {
+	switch r {
+	case PaymentOrderAsyncCreateDirectionCredit, PaymentOrderAsyncCreateDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// The party that will pay the fees for the payment order. See
+// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+// differences between the options.
+type PaymentOrderAsyncCreateChargeBearer string
+
+const (
+	PaymentOrderAsyncCreateChargeBearerShared   PaymentOrderAsyncCreateChargeBearer = "shared"
+	PaymentOrderAsyncCreateChargeBearerSender   PaymentOrderAsyncCreateChargeBearer = "sender"
+	PaymentOrderAsyncCreateChargeBearerReceiver PaymentOrderAsyncCreateChargeBearer = "receiver"
+)
+
+func (r PaymentOrderAsyncCreateChargeBearer) IsKnown() bool {
+	switch r {
+	case PaymentOrderAsyncCreateChargeBearerShared, PaymentOrderAsyncCreateChargeBearerSender, PaymentOrderAsyncCreateChargeBearerReceiver:
+		return true
+	}
+	return false
+}
+
+// A payment type to fallback to if the original type is not valid for the
+// receiving account. Currently, this only supports falling back from RTP to ACH
+// (type=rtp and fallback_type=ach)
+type PaymentOrderAsyncCreateFallbackType string
+
+const (
+	PaymentOrderAsyncCreateFallbackTypeACH PaymentOrderAsyncCreateFallbackType = "ach"
+)
+
+func (r PaymentOrderAsyncCreateFallbackType) IsKnown() bool {
+	switch r {
+	case PaymentOrderAsyncCreateFallbackTypeACH:
+		return true
+	}
+	return false
+}
+
+// Indicates the type of FX transfer to initiate, can be either
+// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+// currency matches the originating account currency.
+type PaymentOrderAsyncCreateForeignExchangeIndicator string
+
+const (
+	PaymentOrderAsyncCreateForeignExchangeIndicatorFixedToVariable PaymentOrderAsyncCreateForeignExchangeIndicator = "fixed_to_variable"
+	PaymentOrderAsyncCreateForeignExchangeIndicatorVariableToFixed PaymentOrderAsyncCreateForeignExchangeIndicator = "variable_to_fixed"
+)
+
+func (r PaymentOrderAsyncCreateForeignExchangeIndicator) IsKnown() bool {
+	switch r {
+	case PaymentOrderAsyncCreateForeignExchangeIndicatorFixedToVariable, PaymentOrderAsyncCreateForeignExchangeIndicatorVariableToFixed:
+		return true
+	}
+	return false
+}
+
+// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+// an overnight check rather than standard mail.
+type PaymentOrderAsyncCreatePriority string
+
+const (
+	PaymentOrderAsyncCreatePriorityHigh   PaymentOrderAsyncCreatePriority = "high"
+	PaymentOrderAsyncCreatePriorityNormal PaymentOrderAsyncCreatePriority = "normal"
+)
+
+func (r PaymentOrderAsyncCreatePriority) IsKnown() bool {
+	switch r {
+	case PaymentOrderAsyncCreatePriorityHigh, PaymentOrderAsyncCreatePriorityNormal:
+		return true
+	}
+	return false
+}
+
+// Either `receiving_account` or `receiving_account_id` must be present. When using
+// `receiving_account_id`, you may pass the id of an external account or an
+// internal account.
+type PaymentOrderAsyncCreateReceivingAccountParam struct {
+	AccountDetails param.Field[[]PaymentOrderAsyncCreateReceivingAccountAccountDetailParam] `json:"account_details"`
+	// Can be `checking`, `savings` or `other`.
+	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
+	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
+	// Specifies a ledger account object that will be created with the external
+	// account. The resulting ledger account is linked to the external account for
+	// auto-ledgering Payment objects. See
+	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
+	// for more details.
+	LedgerAccount param.Field[shared.LedgerAccountCreateRequestParam] `json:"ledger_account"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// A nickname for the external account. This is only for internal usage and won't
+	// affect any payments
+	Name param.Field[string] `json:"name"`
+	// Required if receiving wire payments.
+	PartyAddress    param.Field[shared.AddressRequestParam] `json:"party_address"`
+	PartyIdentifier param.Field[string]                     `json:"party_identifier"`
+	// If this value isn't provided, it will be inherited from the counterparty's name.
+	PartyName param.Field[string] `json:"party_name"`
+	// Either `individual` or `business`.
+	PartyType param.Field[PaymentOrderAsyncCreateReceivingAccountPartyType] `json:"party_type"`
+	// If you've enabled the Modern Treasury + Plaid integration in your Plaid account,
+	// you can pass the processor token in this field.
+	PlaidProcessorToken param.Field[string]                                                      `json:"plaid_processor_token"`
+	RoutingDetails      param.Field[[]PaymentOrderAsyncCreateReceivingAccountRoutingDetailParam] `json:"routing_details"`
+}
+
+func (r PaymentOrderAsyncCreateReceivingAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderAsyncCreateReceivingAccountAccountDetailParam struct {
+	AccountNumber     param.Field[string]                                                                 `json:"account_number,required"`
+	AccountNumberType param.Field[PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType] `json:"account_number_type"`
+}
+
+func (r PaymentOrderAsyncCreateReceivingAccountAccountDetailParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType string
+
+const (
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeAuNumber        PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "au_number"
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeBaseAddress     PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "base_address"
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeClabe           PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "clabe"
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeEthereumAddress PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "ethereum_address"
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeHkNumber        PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "hk_number"
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeIban            PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "iban"
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeIDNumber        PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "id_number"
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeNzNumber        PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "nz_number"
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeOther           PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "other"
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypePan             PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "pan"
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypePolygonAddress  PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "polygon_address"
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeSgNumber        PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "sg_number"
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeSolanaAddress   PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "solana_address"
+	PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeWalletAddress   PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
+)
+
+func (r PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
+	switch r {
+	case PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeAuNumber, PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeBaseAddress, PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeClabe, PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeEthereumAddress, PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeHkNumber, PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeIban, PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeIDNumber, PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeNzNumber, PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeOther, PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypePan, PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypePolygonAddress, PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeSgNumber, PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeSolanaAddress, PaymentOrderAsyncCreateReceivingAccountAccountDetailsAccountNumberTypeWalletAddress:
+		return true
+	}
+	return false
+}
+
+// Either `individual` or `business`.
+type PaymentOrderAsyncCreateReceivingAccountPartyType string
+
+const (
+	PaymentOrderAsyncCreateReceivingAccountPartyTypeBusiness   PaymentOrderAsyncCreateReceivingAccountPartyType = "business"
+	PaymentOrderAsyncCreateReceivingAccountPartyTypeIndividual PaymentOrderAsyncCreateReceivingAccountPartyType = "individual"
+)
+
+func (r PaymentOrderAsyncCreateReceivingAccountPartyType) IsKnown() bool {
+	switch r {
+	case PaymentOrderAsyncCreateReceivingAccountPartyTypeBusiness, PaymentOrderAsyncCreateReceivingAccountPartyTypeIndividual:
+		return true
+	}
+	return false
+}
+
+type PaymentOrderAsyncCreateReceivingAccountRoutingDetailParam struct {
+	RoutingNumber     param.Field[string]                                                                 `json:"routing_number,required"`
+	RoutingNumberType param.Field[PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
+	PaymentType       param.Field[PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType]       `json:"payment_type"`
+}
+
+func (r PaymentOrderAsyncCreateReceivingAccountRoutingDetailParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType string
+
+const (
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeAba                     PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "aba"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb                   PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "au_bsb"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo                PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "br_codigo"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa                   PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "ca_cpa"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeChips                   PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "chips"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeCnaps                   PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "cnaps"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "dk_interbank_clearing_code"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode              PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode              PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "il_bank_code"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier        PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "mx_bank_identifier"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "sg_interbank_clearing_code"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "swift"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode  PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType = "za_national_clearing_code"
+)
+
+func (r PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
+	switch r {
+	case PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
+		return true
+	}
+	return false
+}
+
+type PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType string
+
+const (
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeACH         PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "ach"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeAuBecs      PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "au_becs"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeBacs        PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "bacs"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeBase        PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "base"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeBook        PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "book"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeCard        PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "card"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeChats       PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "chats"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeCheck       PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "check"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeCrossBorder PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "cross_border"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeDkNets      PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "dk_nets"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeEft         PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "eft"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeEthereum    PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "ethereum"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeGBFps       PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "gb_fps"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeHuIcs       PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "hu_ics"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeInterac     PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "interac"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeMasav       PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "masav"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeMxCcen      PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "mx_ccen"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeNeft        PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "neft"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeNics        PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "nics"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeNzBecs      PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "nz_becs"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypePlElixir    PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "pl_elixir"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypePolygon     PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "polygon"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "provxchange"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeRoSent      PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "ro_sent"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "rtp"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSeBankgirot PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSen         PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "sen"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "sepa"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSgGiro      PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "sg_giro"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSic         PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "sic"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "signet"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSknbi       PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "sknbi"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSolana      PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "solana"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "wire"
+	PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType = "zengin"
+)
+
+func (r PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
+	switch r {
+	case PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeBase, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeEthereum, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeGBFps, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeHuIcs, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeInterac, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypePolygon, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeProvxchange, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeRoSent, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSen, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSignet, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSknbi, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeSolana, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderAsyncCreateReceivingAccountRoutingDetailsPaymentTypeZengin:
+		return true
+	}
+	return false
+}
+
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type PaymentOrderAsyncCreateReconciliationStatus string
+
+const (
+	PaymentOrderAsyncCreateReconciliationStatusUnreconciled          PaymentOrderAsyncCreateReconciliationStatus = "unreconciled"
+	PaymentOrderAsyncCreateReconciliationStatusTentativelyReconciled PaymentOrderAsyncCreateReconciliationStatus = "tentatively_reconciled"
+	PaymentOrderAsyncCreateReconciliationStatusReconciled            PaymentOrderAsyncCreateReconciliationStatus = "reconciled"
+)
+
+func (r PaymentOrderAsyncCreateReconciliationStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderAsyncCreateReconciliationStatusUnreconciled, PaymentOrderAsyncCreateReconciliationStatusTentativelyReconciled, PaymentOrderAsyncCreateReconciliationStatusReconciled:
+		return true
+	}
+	return false
+}
+
 // An additional layer of classification for the type of payment order you are
 // doing. This field is only used for `ach` payment orders currently. For `ach`
 // payment orders, the `subtype` represents the SEC code. We currently support
@@ -1076,6 +1367,463 @@ func (r PaymentOrderType) IsKnown() bool {
 	return false
 }
 
+type PaymentOrderUpdateParam struct {
+	// Deprecated: deprecated
+	Accounting param.Field[AccountingParam] `json:"accounting"`
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
+	// The ID of one of your accounting ledger classes. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
+	// Value in specified currency's smallest unit. e.g. $10 would be represented as
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
+	Amount param.Field[int64] `json:"amount"`
+	// The party that will pay the fees for the payment order. See
+	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+	// differences between the options.
+	ChargeBearer param.Field[PaymentOrderUpdateChargeBearer] `json:"charge_bearer"`
+	// Required when receiving_account_id is passed the ID of an external account.
+	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
+	// Defaults to the currency of the originating account.
+	Currency param.Field[shared.Currency] `json:"currency"`
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
+	// One of `credit`, `debit`. Describes the direction money is flowing in the
+	// transaction. A `credit` moves money from your account to someone else's. A
+	// `debit` pulls money from someone else's account to your own. Note that wire,
+	// rtp, and check payments will always be `credit`.
+	Direction param.Field[PaymentOrderUpdateDirection] `json:"direction"`
+	// Date transactions are to be posted to the participants' account. Defaults to the
+	// current business day or the next business day if the current day is a bank
+	// holiday or weekend. Format: yyyy-mm-dd.
+	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
+	// RFP payments require an expires_at. This value must be past the effective_date.
+	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
+	// A payment type to fallback to if the original type is not valid for the
+	// receiving account. Currently, this only supports falling back from RTP to ACH
+	// (type=rtp and fallback_type=ach)
+	FallbackType param.Field[PaymentOrderUpdateFallbackType] `json:"fallback_type"`
+	// If present, indicates a specific foreign exchange contract number that has been
+	// generated by your financial institution.
+	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract"`
+	// Indicates the type of FX transfer to initiate, can be either
+	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+	// currency matches the originating account currency.
+	ForeignExchangeIndicator param.Field[PaymentOrderUpdateForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
+	// An array of line items that must sum up to the amount of the payment order.
+	LineItems param.Field[[]LineItemParam] `json:"line_items"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// A boolean to determine if NSF Protection is enabled for this payment order. Note
+	// that this setting must also be turned on in your organization settings page.
+	NsfProtected param.Field[bool] `json:"nsf_protected"`
+	// The ID of one of your organization's internal accounts.
+	OriginatingAccountID param.Field[string] `json:"originating_account_id" format:"uuid"`
+	// If present, this will replace your default company name on receiver's bank
+	// statement. This field can only be used for ACH payments currently. For ACH, only
+	// the first 16 characters of this string will be used. Any additional characters
+	// will be truncated.
+	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
+	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+	// an overnight check rather than standard mail.
+	Priority param.Field[PaymentOrderUpdatePriority] `json:"priority"`
+	// If present, Modern Treasury will not process the payment until after this time.
+	// If `process_after` is past the cutoff for `effective_date`, `process_after` will
+	// take precedence and `effective_date` will automatically update to reflect the
+	// earliest possible sending date after `process_after`. Format is ISO8601
+	// timestamp.
+	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
+	// For `wire`, this is usually the purpose which is transmitted via the
+	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
+	// digit CPA Code that will be attached to the payment.
+	Purpose param.Field[string] `json:"purpose"`
+	// Either `receiving_account` or `receiving_account_id` must be present. When using
+	// `receiving_account_id`, you may pass the id of an external account or an
+	// internal account.
+	ReceivingAccount param.Field[PaymentOrderUpdateReceivingAccountParam] `json:"receiving_account"`
+	// Either `receiving_account` or `receiving_account_id` must be present. When using
+	// `receiving_account_id`, you may pass the id of an external account or an
+	// internal account.
+	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
+	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+	ReconciliationStatus param.Field[PaymentOrderUpdateReconciliationStatus] `json:"reconciliation_status"`
+	// For `ach`, this field will be passed through on an addenda record. For `wire`
+	// payments the field will be passed through as the "Originator to Beneficiary
+	// Information", also known as OBI or Fedwire tag 6000.
+	RemittanceInformation param.Field[string] `json:"remittance_information"`
+	// Send an email to the counterparty when the payment order is sent to the bank. If
+	// `null`, `send_remittance_advice` on the Counterparty is used.
+	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
+	// An optional descriptor which will appear in the receiver's statement. For
+	// `check` payments this field will be used as the memo line. For `ach` the maximum
+	// length is 10 characters. Note that for ACH payments, the name on your bank
+	// account will be included automatically by the bank, so you can use the
+	// characters for other useful information. For `eft` the maximum length is 15
+	// characters.
+	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
+	// To cancel a payment order, use `cancelled`. To redraft a returned payment order,
+	// use `approved`. To undo approval on a denied or approved payment order, use
+	// `needs_approval`.
+	Status param.Field[PaymentOrderUpdateStatus] `json:"status"`
+	// An additional layer of classification for the type of payment order you are
+	// doing. This field is only used for `ach` payment orders currently. For `ach`
+	// payment orders, the `subtype` represents the SEC code. We currently support
+	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
+	Subtype param.Field[PaymentOrderSubtype] `json:"subtype"`
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
+	Type param.Field[PaymentOrderType] `json:"type"`
+	// This represents the identifier by which the person is known to the receiver when
+	// using the CIE subtype for ACH payments. Only the first 22 characters of this
+	// string will be used. Any additional characters will be truncated.
+	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
+	// This represents the name of the person that the payment is on behalf of when
+	// using the CIE subtype for ACH payments. Only the first 15 characters of this
+	// string will be used. Any additional characters will be truncated.
+	UltimateOriginatingPartyName param.Field[string] `json:"ultimate_originating_party_name"`
+	// This represents the name of the merchant that the payment is being sent to when
+	// using the CIE subtype for ACH payments. Only the first 22 characters of this
+	// string will be used. Any additional characters will be truncated.
+	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
+	// This represents the identifier by which the merchant is known to the person
+	// initiating an ACH payment with CIE subtype. Only the first 15 characters of this
+	// string will be used. Any additional characters will be truncated.
+	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
+}
+
+func (r PaymentOrderUpdateParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The party that will pay the fees for the payment order. See
+// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
+// differences between the options.
+type PaymentOrderUpdateChargeBearer string
+
+const (
+	PaymentOrderUpdateChargeBearerShared   PaymentOrderUpdateChargeBearer = "shared"
+	PaymentOrderUpdateChargeBearerSender   PaymentOrderUpdateChargeBearer = "sender"
+	PaymentOrderUpdateChargeBearerReceiver PaymentOrderUpdateChargeBearer = "receiver"
+)
+
+func (r PaymentOrderUpdateChargeBearer) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateChargeBearerShared, PaymentOrderUpdateChargeBearerSender, PaymentOrderUpdateChargeBearerReceiver:
+		return true
+	}
+	return false
+}
+
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
+type PaymentOrderUpdateDirection string
+
+const (
+	PaymentOrderUpdateDirectionCredit PaymentOrderUpdateDirection = "credit"
+	PaymentOrderUpdateDirectionDebit  PaymentOrderUpdateDirection = "debit"
+)
+
+func (r PaymentOrderUpdateDirection) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateDirectionCredit, PaymentOrderUpdateDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// A payment type to fallback to if the original type is not valid for the
+// receiving account. Currently, this only supports falling back from RTP to ACH
+// (type=rtp and fallback_type=ach)
+type PaymentOrderUpdateFallbackType string
+
+const (
+	PaymentOrderUpdateFallbackTypeACH PaymentOrderUpdateFallbackType = "ach"
+)
+
+func (r PaymentOrderUpdateFallbackType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateFallbackTypeACH:
+		return true
+	}
+	return false
+}
+
+// Indicates the type of FX transfer to initiate, can be either
+// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
+// currency matches the originating account currency.
+type PaymentOrderUpdateForeignExchangeIndicator string
+
+const (
+	PaymentOrderUpdateForeignExchangeIndicatorFixedToVariable PaymentOrderUpdateForeignExchangeIndicator = "fixed_to_variable"
+	PaymentOrderUpdateForeignExchangeIndicatorVariableToFixed PaymentOrderUpdateForeignExchangeIndicator = "variable_to_fixed"
+)
+
+func (r PaymentOrderUpdateForeignExchangeIndicator) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateForeignExchangeIndicatorFixedToVariable, PaymentOrderUpdateForeignExchangeIndicatorVariableToFixed:
+		return true
+	}
+	return false
+}
+
+// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
+// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
+// an overnight check rather than standard mail.
+type PaymentOrderUpdatePriority string
+
+const (
+	PaymentOrderUpdatePriorityHigh   PaymentOrderUpdatePriority = "high"
+	PaymentOrderUpdatePriorityNormal PaymentOrderUpdatePriority = "normal"
+)
+
+func (r PaymentOrderUpdatePriority) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdatePriorityHigh, PaymentOrderUpdatePriorityNormal:
+		return true
+	}
+	return false
+}
+
+// Either `receiving_account` or `receiving_account_id` must be present. When using
+// `receiving_account_id`, you may pass the id of an external account or an
+// internal account.
+type PaymentOrderUpdateReceivingAccountParam struct {
+	AccountDetails param.Field[[]PaymentOrderUpdateReceivingAccountAccountDetailParam] `json:"account_details"`
+	// Can be `checking`, `savings` or `other`.
+	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
+	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
+	// Specifies a ledger account object that will be created with the external
+	// account. The resulting ledger account is linked to the external account for
+	// auto-ledgering Payment objects. See
+	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
+	// for more details.
+	LedgerAccount param.Field[shared.LedgerAccountCreateRequestParam] `json:"ledger_account"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// A nickname for the external account. This is only for internal usage and won't
+	// affect any payments
+	Name param.Field[string] `json:"name"`
+	// Required if receiving wire payments.
+	PartyAddress    param.Field[shared.AddressRequestParam] `json:"party_address"`
+	PartyIdentifier param.Field[string]                     `json:"party_identifier"`
+	// If this value isn't provided, it will be inherited from the counterparty's name.
+	PartyName param.Field[string] `json:"party_name"`
+	// Either `individual` or `business`.
+	PartyType param.Field[PaymentOrderUpdateReceivingAccountPartyType] `json:"party_type"`
+	// If you've enabled the Modern Treasury + Plaid integration in your Plaid account,
+	// you can pass the processor token in this field.
+	PlaidProcessorToken param.Field[string]                                                 `json:"plaid_processor_token"`
+	RoutingDetails      param.Field[[]PaymentOrderUpdateReceivingAccountRoutingDetailParam] `json:"routing_details"`
+}
+
+func (r PaymentOrderUpdateReceivingAccountParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderUpdateReceivingAccountAccountDetailParam struct {
+	AccountNumber     param.Field[string]                                                            `json:"account_number,required"`
+	AccountNumberType param.Field[PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType] `json:"account_number_type"`
+}
+
+func (r PaymentOrderUpdateReceivingAccountAccountDetailParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType string
+
+const (
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeAuNumber        PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "au_number"
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeBaseAddress     PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "base_address"
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeClabe           PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "clabe"
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeEthereumAddress PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "ethereum_address"
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeHkNumber        PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "hk_number"
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeIban            PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "iban"
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeIDNumber        PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "id_number"
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeNzNumber        PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "nz_number"
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeOther           PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "other"
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypePan             PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "pan"
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypePolygonAddress  PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "polygon_address"
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeSgNumber        PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "sg_number"
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeSolanaAddress   PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "solana_address"
+	PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeWalletAddress   PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
+)
+
+func (r PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeAuNumber, PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeBaseAddress, PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeClabe, PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeEthereumAddress, PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeHkNumber, PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeIban, PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeIDNumber, PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeNzNumber, PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeOther, PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypePan, PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypePolygonAddress, PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeSgNumber, PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeSolanaAddress, PaymentOrderUpdateReceivingAccountAccountDetailsAccountNumberTypeWalletAddress:
+		return true
+	}
+	return false
+}
+
+// Either `individual` or `business`.
+type PaymentOrderUpdateReceivingAccountPartyType string
+
+const (
+	PaymentOrderUpdateReceivingAccountPartyTypeBusiness   PaymentOrderUpdateReceivingAccountPartyType = "business"
+	PaymentOrderUpdateReceivingAccountPartyTypeIndividual PaymentOrderUpdateReceivingAccountPartyType = "individual"
+)
+
+func (r PaymentOrderUpdateReceivingAccountPartyType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateReceivingAccountPartyTypeBusiness, PaymentOrderUpdateReceivingAccountPartyTypeIndividual:
+		return true
+	}
+	return false
+}
+
+type PaymentOrderUpdateReceivingAccountRoutingDetailParam struct {
+	RoutingNumber     param.Field[string]                                                            `json:"routing_number,required"`
+	RoutingNumberType param.Field[PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
+	PaymentType       param.Field[PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType]       `json:"payment_type"`
+}
+
+func (r PaymentOrderUpdateReceivingAccountRoutingDetailParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType string
+
+const (
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeAba                     PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "aba"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb                   PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "au_bsb"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo                PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "br_codigo"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa                   PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "ca_cpa"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeChips                   PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "chips"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeCnaps                   PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "cnaps"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "dk_interbank_clearing_code"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode              PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode              PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "il_bank_code"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier        PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "mx_bank_identifier"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "sg_interbank_clearing_code"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "swift"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode  PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType = "za_national_clearing_code"
+)
+
+func (r PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderUpdateReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
+		return true
+	}
+	return false
+}
+
+type PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType string
+
+const (
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeACH         PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "ach"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeAuBecs      PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "au_becs"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeBacs        PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "bacs"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeBase        PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "base"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeBook        PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "book"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeCard        PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "card"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeChats       PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "chats"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeCheck       PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "check"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeCrossBorder PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "cross_border"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeDkNets      PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "dk_nets"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeEft         PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "eft"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeEthereum    PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "ethereum"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeGBFps       PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "gb_fps"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeHuIcs       PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "hu_ics"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeInterac     PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "interac"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeMasav       PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "masav"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeMxCcen      PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "mx_ccen"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeNeft        PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "neft"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeNics        PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "nics"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeNzBecs      PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "nz_becs"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypePlElixir    PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "pl_elixir"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypePolygon     PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "polygon"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "provxchange"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeRoSent      PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "ro_sent"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "rtp"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSeBankgirot PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSen         PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "sen"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "sepa"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSgGiro      PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "sg_giro"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSic         PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "sic"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "signet"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSknbi       PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "sknbi"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSolana      PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "solana"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "wire"
+	PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType = "zengin"
+)
+
+func (r PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeBase, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeEthereum, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeGBFps, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeHuIcs, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeInterac, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypePolygon, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeProvxchange, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeRoSent, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSen, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSignet, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSknbi, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeSolana, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderUpdateReceivingAccountRoutingDetailsPaymentTypeZengin:
+		return true
+	}
+	return false
+}
+
+// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
+type PaymentOrderUpdateReconciliationStatus string
+
+const (
+	PaymentOrderUpdateReconciliationStatusUnreconciled          PaymentOrderUpdateReconciliationStatus = "unreconciled"
+	PaymentOrderUpdateReconciliationStatusTentativelyReconciled PaymentOrderUpdateReconciliationStatus = "tentatively_reconciled"
+	PaymentOrderUpdateReconciliationStatusReconciled            PaymentOrderUpdateReconciliationStatus = "reconciled"
+)
+
+func (r PaymentOrderUpdateReconciliationStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateReconciliationStatusUnreconciled, PaymentOrderUpdateReconciliationStatusTentativelyReconciled, PaymentOrderUpdateReconciliationStatusReconciled:
+		return true
+	}
+	return false
+}
+
+// To cancel a payment order, use `cancelled`. To redraft a returned payment order,
+// use `approved`. To undo approval on a denied or approved payment order, use
+// `needs_approval`.
+type PaymentOrderUpdateStatus string
+
+const (
+	PaymentOrderUpdateStatusApproved      PaymentOrderUpdateStatus = "approved"
+	PaymentOrderUpdateStatusCancelled     PaymentOrderUpdateStatus = "cancelled"
+	PaymentOrderUpdateStatusCompleted     PaymentOrderUpdateStatus = "completed"
+	PaymentOrderUpdateStatusDenied        PaymentOrderUpdateStatus = "denied"
+	PaymentOrderUpdateStatusFailed        PaymentOrderUpdateStatus = "failed"
+	PaymentOrderUpdateStatusHeld          PaymentOrderUpdateStatus = "held"
+	PaymentOrderUpdateStatusNeedsApproval PaymentOrderUpdateStatus = "needs_approval"
+	PaymentOrderUpdateStatusPending       PaymentOrderUpdateStatus = "pending"
+	PaymentOrderUpdateStatusProcessing    PaymentOrderUpdateStatus = "processing"
+	PaymentOrderUpdateStatusReturned      PaymentOrderUpdateStatus = "returned"
+	PaymentOrderUpdateStatusReversed      PaymentOrderUpdateStatus = "reversed"
+	PaymentOrderUpdateStatusSent          PaymentOrderUpdateStatus = "sent"
+	PaymentOrderUpdateStatusStopped       PaymentOrderUpdateStatus = "stopped"
+)
+
+func (r PaymentOrderUpdateStatus) IsKnown() bool {
+	switch r {
+	case PaymentOrderUpdateStatusApproved, PaymentOrderUpdateStatusCancelled, PaymentOrderUpdateStatusCompleted, PaymentOrderUpdateStatusDenied, PaymentOrderUpdateStatusFailed, PaymentOrderUpdateStatusHeld, PaymentOrderUpdateStatusNeedsApproval, PaymentOrderUpdateStatusPending, PaymentOrderUpdateStatusProcessing, PaymentOrderUpdateStatusReturned, PaymentOrderUpdateStatusReversed, PaymentOrderUpdateStatusSent, PaymentOrderUpdateStatusStopped:
+		return true
+	}
+	return false
+}
+
 type PaymentOrderNewParams struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
@@ -1090,8 +1838,8 @@ type PaymentOrderNewParams struct {
 	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
 	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
 	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
-	Type       param.Field[PaymentOrderType]                `json:"type,required"`
-	Accounting param.Field[PaymentOrderNewParamsAccounting] `json:"accounting"`
+	Type       param.Field[PaymentOrderType] `json:"type,required"`
+	Accounting param.Field[AccountingParam]  `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
@@ -1108,7 +1856,7 @@ type PaymentOrderNewParams struct {
 	Description param.Field[string] `json:"description"`
 	// An array of documents to be attached to the payment order. Note that if you
 	// attach documents, the request's content type must be `multipart/form-data`.
-	Documents param.Field[[]PaymentOrderNewParamsDocument] `json:"documents"`
+	Documents param.Field[[]DocumentCreateParam] `json:"documents"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.
@@ -1137,7 +1885,7 @@ type PaymentOrderNewParams struct {
 	// payment order automatically.
 	LedgerTransactionID param.Field[string] `json:"ledger_transaction_id" format:"uuid"`
 	// An array of line items that must sum up to the amount of the payment order.
-	LineItems param.Field[[]PaymentOrderNewParamsLineItem] `json:"line_items"`
+	LineItems param.Field[[]LineItemParam] `json:"line_items"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -1205,19 +1953,8 @@ type PaymentOrderNewParams struct {
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
 }
 
-func (r PaymentOrderNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
-	buf := bytes.NewBuffer(nil)
-	writer := multipart.NewWriter(buf)
-	err = apiform.MarshalRoot(r, writer)
-	if err != nil {
-		writer.Close()
-		return nil, "", err
-	}
-	err = writer.Close()
-	if err != nil {
-		return nil, "", err
-	}
-	return buf.Bytes(), writer.FormDataContentType(), nil
+func (r PaymentOrderNewParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 // One of `credit`, `debit`. Describes the direction money is flowing in the
@@ -1239,25 +1976,6 @@ func (r PaymentOrderNewParamsDirection) IsKnown() bool {
 	return false
 }
 
-// Deprecated: deprecated
-type PaymentOrderNewParamsAccounting struct {
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	AccountID param.Field[string] `json:"account_id" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	ClassID param.Field[string] `json:"class_id" format:"uuid"`
-}
-
-func (r PaymentOrderNewParamsAccounting) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
 // The party that will pay the fees for the payment order. See
 // https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
 // differences between the options.
@@ -1272,42 +1990,6 @@ const (
 func (r PaymentOrderNewParamsChargeBearer) IsKnown() bool {
 	switch r {
 	case PaymentOrderNewParamsChargeBearerShared, PaymentOrderNewParamsChargeBearerSender, PaymentOrderNewParamsChargeBearerReceiver:
-		return true
-	}
-	return false
-}
-
-type PaymentOrderNewParamsDocument struct {
-	// The unique identifier for the associated object.
-	DocumentableID   param.Field[string]                                         `json:"documentable_id,required"`
-	DocumentableType param.Field[PaymentOrderNewParamsDocumentsDocumentableType] `json:"documentable_type,required"`
-	File             param.Field[io.Reader]                                      `json:"file,required" format:"binary"`
-	// A category given to the document, can be `null`.
-	DocumentType param.Field[string] `json:"document_type"`
-}
-
-func (r PaymentOrderNewParamsDocument) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type PaymentOrderNewParamsDocumentsDocumentableType string
-
-const (
-	PaymentOrderNewParamsDocumentsDocumentableTypeCounterparties         PaymentOrderNewParamsDocumentsDocumentableType = "counterparties"
-	PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayments       PaymentOrderNewParamsDocumentsDocumentableType = "expected_payments"
-	PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccounts       PaymentOrderNewParamsDocumentsDocumentableType = "external_accounts"
-	PaymentOrderNewParamsDocumentsDocumentableTypeIdentifications        PaymentOrderNewParamsDocumentsDocumentableType = "identifications"
-	PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetails PaymentOrderNewParamsDocumentsDocumentableType = "incoming_payment_details"
-	PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccounts       PaymentOrderNewParamsDocumentsDocumentableType = "internal_accounts"
-	PaymentOrderNewParamsDocumentsDocumentableTypeOrganizations          PaymentOrderNewParamsDocumentsDocumentableType = "organizations"
-	PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrders          PaymentOrderNewParamsDocumentsDocumentableType = "payment_orders"
-	PaymentOrderNewParamsDocumentsDocumentableTypeTransactions           PaymentOrderNewParamsDocumentsDocumentableType = "transactions"
-	PaymentOrderNewParamsDocumentsDocumentableTypeConnections            PaymentOrderNewParamsDocumentsDocumentableType = "connections"
-)
-
-func (r PaymentOrderNewParamsDocumentsDocumentableType) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewParamsDocumentsDocumentableTypeCounterparties, PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayments, PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccounts, PaymentOrderNewParamsDocumentsDocumentableTypeIdentifications, PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetails, PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccounts, PaymentOrderNewParamsDocumentsDocumentableTypeOrganizations, PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrders, PaymentOrderNewParamsDocumentsDocumentableTypeTransactions, PaymentOrderNewParamsDocumentsDocumentableTypeConnections:
 		return true
 	}
 	return false
@@ -1346,24 +2028,6 @@ func (r PaymentOrderNewParamsForeignExchangeIndicator) IsKnown() bool {
 		return true
 	}
 	return false
-}
-
-type PaymentOrderNewParamsLineItem struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`
-	// A free-form description of the line item.
-	Description param.Field[string] `json:"description"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-}
-
-func (r PaymentOrderNewParamsLineItem) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
 }
 
 // Either `normal` or `high`. For ACH and EFT payments, `high` represents a
@@ -1586,492 +2250,11 @@ func (r PaymentOrderNewParamsReconciliationStatus) IsKnown() bool {
 }
 
 type PaymentOrderUpdateParams struct {
-	Accounting param.Field[PaymentOrderUpdateParamsAccounting] `json:"accounting"`
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
-	// The ID of one of your accounting ledger classes. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
-	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
-	Amount param.Field[int64] `json:"amount"`
-	// The party that will pay the fees for the payment order. See
-	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
-	// differences between the options.
-	ChargeBearer param.Field[PaymentOrderUpdateParamsChargeBearer] `json:"charge_bearer"`
-	// Required when receiving_account_id is passed the ID of an external account.
-	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
-	// Defaults to the currency of the originating account.
-	Currency param.Field[shared.Currency] `json:"currency"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// One of `credit`, `debit`. Describes the direction money is flowing in the
-	// transaction. A `credit` moves money from your account to someone else's. A
-	// `debit` pulls money from someone else's account to your own. Note that wire,
-	// rtp, and check payments will always be `credit`.
-	Direction param.Field[PaymentOrderUpdateParamsDirection] `json:"direction"`
-	// Date transactions are to be posted to the participants' account. Defaults to the
-	// current business day or the next business day if the current day is a bank
-	// holiday or weekend. Format: yyyy-mm-dd.
-	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
-	// RFP payments require an expires_at. This value must be past the effective_date.
-	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
-	// A payment type to fallback to if the original type is not valid for the
-	// receiving account. Currently, this only supports falling back from RTP to ACH
-	// (type=rtp and fallback_type=ach)
-	FallbackType param.Field[PaymentOrderUpdateParamsFallbackType] `json:"fallback_type"`
-	// If present, indicates a specific foreign exchange contract number that has been
-	// generated by your financial institution.
-	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract"`
-	// Indicates the type of FX transfer to initiate, can be either
-	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
-	// currency matches the originating account currency.
-	ForeignExchangeIndicator param.Field[PaymentOrderUpdateParamsForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
-	// An array of line items that must sum up to the amount of the payment order.
-	LineItems param.Field[[]PaymentOrderUpdateParamsLineItem] `json:"line_items"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// A boolean to determine if NSF Protection is enabled for this payment order. Note
-	// that this setting must also be turned on in your organization settings page.
-	NsfProtected param.Field[bool] `json:"nsf_protected"`
-	// The ID of one of your organization's internal accounts.
-	OriginatingAccountID param.Field[string] `json:"originating_account_id" format:"uuid"`
-	// If present, this will replace your default company name on receiver's bank
-	// statement. This field can only be used for ACH payments currently. For ACH, only
-	// the first 16 characters of this string will be used. Any additional characters
-	// will be truncated.
-	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
-	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
-	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
-	// an overnight check rather than standard mail.
-	Priority param.Field[PaymentOrderUpdateParamsPriority] `json:"priority"`
-	// If present, Modern Treasury will not process the payment until after this time.
-	// If `process_after` is past the cutoff for `effective_date`, `process_after` will
-	// take precedence and `effective_date` will automatically update to reflect the
-	// earliest possible sending date after `process_after`. Format is ISO8601
-	// timestamp.
-	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
-	// For `wire`, this is usually the purpose which is transmitted via the
-	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
-	// digit CPA Code that will be attached to the payment.
-	Purpose param.Field[string] `json:"purpose"`
-	// Either `receiving_account` or `receiving_account_id` must be present. When using
-	// `receiving_account_id`, you may pass the id of an external account or an
-	// internal account.
-	ReceivingAccount param.Field[PaymentOrderUpdateParamsReceivingAccount] `json:"receiving_account"`
-	// Either `receiving_account` or `receiving_account_id` must be present. When using
-	// `receiving_account_id`, you may pass the id of an external account or an
-	// internal account.
-	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
-	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
-	ReconciliationStatus param.Field[PaymentOrderUpdateParamsReconciliationStatus] `json:"reconciliation_status"`
-	// For `ach`, this field will be passed through on an addenda record. For `wire`
-	// payments the field will be passed through as the "Originator to Beneficiary
-	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation param.Field[string] `json:"remittance_information"`
-	// Send an email to the counterparty when the payment order is sent to the bank. If
-	// `null`, `send_remittance_advice` on the Counterparty is used.
-	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
-	// An optional descriptor which will appear in the receiver's statement. For
-	// `check` payments this field will be used as the memo line. For `ach` the maximum
-	// length is 10 characters. Note that for ACH payments, the name on your bank
-	// account will be included automatically by the bank, so you can use the
-	// characters for other useful information. For `eft` the maximum length is 15
-	// characters.
-	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
-	// To cancel a payment order, use `cancelled`. To redraft a returned payment order,
-	// use `approved`. To undo approval on a denied or approved payment order, use
-	// `needs_approval`.
-	Status param.Field[PaymentOrderUpdateParamsStatus] `json:"status"`
-	// An additional layer of classification for the type of payment order you are
-	// doing. This field is only used for `ach` payment orders currently. For `ach`
-	// payment orders, the `subtype` represents the SEC code. We currently support
-	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
-	Subtype param.Field[PaymentOrderSubtype] `json:"subtype"`
-	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
-	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
-	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
-	Type param.Field[PaymentOrderType] `json:"type"`
-	// This represents the identifier by which the person is known to the receiver when
-	// using the CIE subtype for ACH payments. Only the first 22 characters of this
-	// string will be used. Any additional characters will be truncated.
-	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
-	// This represents the name of the person that the payment is on behalf of when
-	// using the CIE subtype for ACH payments. Only the first 15 characters of this
-	// string will be used. Any additional characters will be truncated.
-	UltimateOriginatingPartyName param.Field[string] `json:"ultimate_originating_party_name"`
-	// This represents the name of the merchant that the payment is being sent to when
-	// using the CIE subtype for ACH payments. Only the first 22 characters of this
-	// string will be used. Any additional characters will be truncated.
-	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
-	// This represents the identifier by which the merchant is known to the person
-	// initiating an ACH payment with CIE subtype. Only the first 15 characters of this
-	// string will be used. Any additional characters will be truncated.
-	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
+	PaymentOrderUpdate PaymentOrderUpdateParam `json:"payment_order_update"`
 }
 
 func (r PaymentOrderUpdateParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Deprecated: deprecated
-type PaymentOrderUpdateParamsAccounting struct {
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	AccountID param.Field[string] `json:"account_id" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	ClassID param.Field[string] `json:"class_id" format:"uuid"`
-}
-
-func (r PaymentOrderUpdateParamsAccounting) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The party that will pay the fees for the payment order. See
-// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
-// differences between the options.
-type PaymentOrderUpdateParamsChargeBearer string
-
-const (
-	PaymentOrderUpdateParamsChargeBearerShared   PaymentOrderUpdateParamsChargeBearer = "shared"
-	PaymentOrderUpdateParamsChargeBearerSender   PaymentOrderUpdateParamsChargeBearer = "sender"
-	PaymentOrderUpdateParamsChargeBearerReceiver PaymentOrderUpdateParamsChargeBearer = "receiver"
-)
-
-func (r PaymentOrderUpdateParamsChargeBearer) IsKnown() bool {
-	switch r {
-	case PaymentOrderUpdateParamsChargeBearerShared, PaymentOrderUpdateParamsChargeBearerSender, PaymentOrderUpdateParamsChargeBearerReceiver:
-		return true
-	}
-	return false
-}
-
-// One of `credit`, `debit`. Describes the direction money is flowing in the
-// transaction. A `credit` moves money from your account to someone else's. A
-// `debit` pulls money from someone else's account to your own. Note that wire,
-// rtp, and check payments will always be `credit`.
-type PaymentOrderUpdateParamsDirection string
-
-const (
-	PaymentOrderUpdateParamsDirectionCredit PaymentOrderUpdateParamsDirection = "credit"
-	PaymentOrderUpdateParamsDirectionDebit  PaymentOrderUpdateParamsDirection = "debit"
-)
-
-func (r PaymentOrderUpdateParamsDirection) IsKnown() bool {
-	switch r {
-	case PaymentOrderUpdateParamsDirectionCredit, PaymentOrderUpdateParamsDirectionDebit:
-		return true
-	}
-	return false
-}
-
-// A payment type to fallback to if the original type is not valid for the
-// receiving account. Currently, this only supports falling back from RTP to ACH
-// (type=rtp and fallback_type=ach)
-type PaymentOrderUpdateParamsFallbackType string
-
-const (
-	PaymentOrderUpdateParamsFallbackTypeACH PaymentOrderUpdateParamsFallbackType = "ach"
-)
-
-func (r PaymentOrderUpdateParamsFallbackType) IsKnown() bool {
-	switch r {
-	case PaymentOrderUpdateParamsFallbackTypeACH:
-		return true
-	}
-	return false
-}
-
-// Indicates the type of FX transfer to initiate, can be either
-// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
-// currency matches the originating account currency.
-type PaymentOrderUpdateParamsForeignExchangeIndicator string
-
-const (
-	PaymentOrderUpdateParamsForeignExchangeIndicatorFixedToVariable PaymentOrderUpdateParamsForeignExchangeIndicator = "fixed_to_variable"
-	PaymentOrderUpdateParamsForeignExchangeIndicatorVariableToFixed PaymentOrderUpdateParamsForeignExchangeIndicator = "variable_to_fixed"
-)
-
-func (r PaymentOrderUpdateParamsForeignExchangeIndicator) IsKnown() bool {
-	switch r {
-	case PaymentOrderUpdateParamsForeignExchangeIndicatorFixedToVariable, PaymentOrderUpdateParamsForeignExchangeIndicatorVariableToFixed:
-		return true
-	}
-	return false
-}
-
-type PaymentOrderUpdateParamsLineItem struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`
-	// A free-form description of the line item.
-	Description param.Field[string] `json:"description"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-}
-
-func (r PaymentOrderUpdateParamsLineItem) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
-// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
-// an overnight check rather than standard mail.
-type PaymentOrderUpdateParamsPriority string
-
-const (
-	PaymentOrderUpdateParamsPriorityHigh   PaymentOrderUpdateParamsPriority = "high"
-	PaymentOrderUpdateParamsPriorityNormal PaymentOrderUpdateParamsPriority = "normal"
-)
-
-func (r PaymentOrderUpdateParamsPriority) IsKnown() bool {
-	switch r {
-	case PaymentOrderUpdateParamsPriorityHigh, PaymentOrderUpdateParamsPriorityNormal:
-		return true
-	}
-	return false
-}
-
-// Either `receiving_account` or `receiving_account_id` must be present. When using
-// `receiving_account_id`, you may pass the id of an external account or an
-// internal account.
-type PaymentOrderUpdateParamsReceivingAccount struct {
-	AccountDetails param.Field[[]PaymentOrderUpdateParamsReceivingAccountAccountDetail] `json:"account_details"`
-	// Can be `checking`, `savings` or `other`.
-	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
-	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `json:"external_id"`
-	// Specifies a ledger account object that will be created with the external
-	// account. The resulting ledger account is linked to the external account for
-	// auto-ledgering Payment objects. See
-	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
-	// for more details.
-	LedgerAccount param.Field[shared.LedgerAccountCreateRequestParam] `json:"ledger_account"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// A nickname for the external account. This is only for internal usage and won't
-	// affect any payments
-	Name param.Field[string] `json:"name"`
-	// Required if receiving wire payments.
-	PartyAddress    param.Field[shared.AddressRequestParam] `json:"party_address"`
-	PartyIdentifier param.Field[string]                     `json:"party_identifier"`
-	// If this value isn't provided, it will be inherited from the counterparty's name.
-	PartyName param.Field[string] `json:"party_name"`
-	// Either `individual` or `business`.
-	PartyType param.Field[PaymentOrderUpdateParamsReceivingAccountPartyType] `json:"party_type"`
-	// If you've enabled the Modern Treasury + Plaid integration in your Plaid account,
-	// you can pass the processor token in this field.
-	PlaidProcessorToken param.Field[string]                                                  `json:"plaid_processor_token"`
-	RoutingDetails      param.Field[[]PaymentOrderUpdateParamsReceivingAccountRoutingDetail] `json:"routing_details"`
-}
-
-func (r PaymentOrderUpdateParamsReceivingAccount) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type PaymentOrderUpdateParamsReceivingAccountAccountDetail struct {
-	AccountNumber     param.Field[string]                                                                  `json:"account_number,required"`
-	AccountNumberType param.Field[PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType] `json:"account_number_type"`
-}
-
-func (r PaymentOrderUpdateParamsReceivingAccountAccountDetail) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType string
-
-const (
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber        PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "au_number"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeBaseAddress     PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "base_address"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeClabe           PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "clabe"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeEthereumAddress PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "ethereum_address"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber        PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "hk_number"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIban            PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "iban"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIDNumber        PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "id_number"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeNzNumber        PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "nz_number"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeOther           PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "other"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypePan             PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "pan"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypePolygonAddress  PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "polygon_address"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeSgNumber        PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "sg_number"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeSolanaAddress   PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "solana_address"
-	PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress   PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
-)
-
-func (r PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
-	switch r {
-	case PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeBaseAddress, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeClabe, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeEthereumAddress, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIban, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeIDNumber, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeNzNumber, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeOther, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypePan, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypePolygonAddress, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeSgNumber, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeSolanaAddress, PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress:
-		return true
-	}
-	return false
-}
-
-// Either `individual` or `business`.
-type PaymentOrderUpdateParamsReceivingAccountPartyType string
-
-const (
-	PaymentOrderUpdateParamsReceivingAccountPartyTypeBusiness   PaymentOrderUpdateParamsReceivingAccountPartyType = "business"
-	PaymentOrderUpdateParamsReceivingAccountPartyTypeIndividual PaymentOrderUpdateParamsReceivingAccountPartyType = "individual"
-)
-
-func (r PaymentOrderUpdateParamsReceivingAccountPartyType) IsKnown() bool {
-	switch r {
-	case PaymentOrderUpdateParamsReceivingAccountPartyTypeBusiness, PaymentOrderUpdateParamsReceivingAccountPartyTypeIndividual:
-		return true
-	}
-	return false
-}
-
-type PaymentOrderUpdateParamsReceivingAccountRoutingDetail struct {
-	RoutingNumber     param.Field[string]                                                                  `json:"routing_number,required"`
-	RoutingNumberType param.Field[PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
-	PaymentType       param.Field[PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType]       `json:"payment_type"`
-}
-
-func (r PaymentOrderUpdateParamsReceivingAccountRoutingDetail) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType string
-
-const (
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba                     PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "aba"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb                   PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "au_bsb"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo                PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "br_codigo"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa                   PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "ca_cpa"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips                   PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "chips"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps                   PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "cnaps"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "dk_interbank_clearing_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode              PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode              PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "il_bank_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "mx_bank_identifier"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "sg_interbank_clearing_code"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "za_national_clearing_code"
-)
-
-func (r PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
-	switch r {
-	case PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
-		return true
-	}
-	return false
-}
-
-type PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType string
-
-const (
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeACH         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "ach"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "au_becs"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBacs        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "bacs"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBase        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "base"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBook        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "book"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCard        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "card"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeChats       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "chats"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCheck       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "check"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "cross_border"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeDkNets      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "dk_nets"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeEft         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "eft"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeEthereum    PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "ethereum"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeGBFps       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "gb_fps"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "hu_ics"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeInterac     PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "interac"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMasav       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "masav"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "mx_ccen"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNeft        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "neft"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNics        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "nics"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "nz_becs"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypePlElixir    PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "pl_elixir"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypePolygon     PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "polygon"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRoSent      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "ro_sent"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSen         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sen"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sg_giro"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSic         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sic"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "signet"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSknbi       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sknbi"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSolana      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "solana"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "wire"
-	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
-)
-
-func (r PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
-	switch r {
-	case PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBase, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeEthereum, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeGBFps, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeInterac, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypePolygon, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRoSent, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSen, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSignet, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSknbi, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSolana, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeZengin:
-		return true
-	}
-	return false
-}
-
-// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
-type PaymentOrderUpdateParamsReconciliationStatus string
-
-const (
-	PaymentOrderUpdateParamsReconciliationStatusUnreconciled          PaymentOrderUpdateParamsReconciliationStatus = "unreconciled"
-	PaymentOrderUpdateParamsReconciliationStatusTentativelyReconciled PaymentOrderUpdateParamsReconciliationStatus = "tentatively_reconciled"
-	PaymentOrderUpdateParamsReconciliationStatusReconciled            PaymentOrderUpdateParamsReconciliationStatus = "reconciled"
-)
-
-func (r PaymentOrderUpdateParamsReconciliationStatus) IsKnown() bool {
-	switch r {
-	case PaymentOrderUpdateParamsReconciliationStatusUnreconciled, PaymentOrderUpdateParamsReconciliationStatusTentativelyReconciled, PaymentOrderUpdateParamsReconciliationStatusReconciled:
-		return true
-	}
-	return false
-}
-
-// To cancel a payment order, use `cancelled`. To redraft a returned payment order,
-// use `approved`. To undo approval on a denied or approved payment order, use
-// `needs_approval`.
-type PaymentOrderUpdateParamsStatus string
-
-const (
-	PaymentOrderUpdateParamsStatusApproved      PaymentOrderUpdateParamsStatus = "approved"
-	PaymentOrderUpdateParamsStatusCancelled     PaymentOrderUpdateParamsStatus = "cancelled"
-	PaymentOrderUpdateParamsStatusCompleted     PaymentOrderUpdateParamsStatus = "completed"
-	PaymentOrderUpdateParamsStatusDenied        PaymentOrderUpdateParamsStatus = "denied"
-	PaymentOrderUpdateParamsStatusFailed        PaymentOrderUpdateParamsStatus = "failed"
-	PaymentOrderUpdateParamsStatusHeld          PaymentOrderUpdateParamsStatus = "held"
-	PaymentOrderUpdateParamsStatusNeedsApproval PaymentOrderUpdateParamsStatus = "needs_approval"
-	PaymentOrderUpdateParamsStatusPending       PaymentOrderUpdateParamsStatus = "pending"
-	PaymentOrderUpdateParamsStatusProcessing    PaymentOrderUpdateParamsStatus = "processing"
-	PaymentOrderUpdateParamsStatusReturned      PaymentOrderUpdateParamsStatus = "returned"
-	PaymentOrderUpdateParamsStatusReversed      PaymentOrderUpdateParamsStatus = "reversed"
-	PaymentOrderUpdateParamsStatusSent          PaymentOrderUpdateParamsStatus = "sent"
-	PaymentOrderUpdateParamsStatusStopped       PaymentOrderUpdateParamsStatus = "stopped"
-)
-
-func (r PaymentOrderUpdateParamsStatus) IsKnown() bool {
-	switch r {
-	case PaymentOrderUpdateParamsStatusApproved, PaymentOrderUpdateParamsStatusCancelled, PaymentOrderUpdateParamsStatusCompleted, PaymentOrderUpdateParamsStatusDenied, PaymentOrderUpdateParamsStatusFailed, PaymentOrderUpdateParamsStatusHeld, PaymentOrderUpdateParamsStatusNeedsApproval, PaymentOrderUpdateParamsStatusPending, PaymentOrderUpdateParamsStatusProcessing, PaymentOrderUpdateParamsStatusReturned, PaymentOrderUpdateParamsStatusReversed, PaymentOrderUpdateParamsStatusSent, PaymentOrderUpdateParamsStatusStopped:
-		return true
-	}
-	return false
+	return apijson.MarshalRoot(r.PaymentOrderUpdate)
 }
 
 type PaymentOrderListParams struct {
@@ -2210,460 +2393,9 @@ func (r PaymentOrderListParamsType) IsKnown() bool {
 }
 
 type PaymentOrderNewAsyncParams struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
-	Amount param.Field[int64] `json:"amount,required"`
-	// One of `credit`, `debit`. Describes the direction money is flowing in the
-	// transaction. A `credit` moves money from your account to someone else's. A
-	// `debit` pulls money from someone else's account to your own. Note that wire,
-	// rtp, and check payments will always be `credit`.
-	Direction param.Field[PaymentOrderNewAsyncParamsDirection] `json:"direction,required"`
-	// The ID of one of your organization's internal accounts.
-	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
-	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
-	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
-	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
-	Type       param.Field[PaymentOrderType]                     `json:"type,required"`
-	Accounting param.Field[PaymentOrderNewAsyncParamsAccounting] `json:"accounting"`
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountingCategoryID param.Field[string] `json:"accounting_category_id" format:"uuid"`
-	// The ID of one of your accounting ledger classes. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
-	// The party that will pay the fees for the payment order. See
-	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
-	// differences between the options.
-	ChargeBearer param.Field[PaymentOrderNewAsyncParamsChargeBearer] `json:"charge_bearer"`
-	// Defaults to the currency of the originating account.
-	Currency param.Field[shared.Currency] `json:"currency"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// Date transactions are to be posted to the participants' account. Defaults to the
-	// current business day or the next business day if the current day is a bank
-	// holiday or weekend. Format: yyyy-mm-dd.
-	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
-	// RFP payments require an expires_at. This value must be past the effective_date.
-	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
-	// A payment type to fallback to if the original type is not valid for the
-	// receiving account. Currently, this only supports falling back from RTP to ACH
-	// (type=rtp and fallback_type=ach)
-	FallbackType param.Field[PaymentOrderNewAsyncParamsFallbackType] `json:"fallback_type"`
-	// If present, indicates a specific foreign exchange contract number that has been
-	// generated by your financial institution.
-	ForeignExchangeContract param.Field[string] `json:"foreign_exchange_contract"`
-	// Indicates the type of FX transfer to initiate, can be either
-	// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
-	// currency matches the originating account currency.
-	ForeignExchangeIndicator param.Field[PaymentOrderNewAsyncParamsForeignExchangeIndicator] `json:"foreign_exchange_indicator"`
-	// Specifies a ledger transaction object that will be created with the payment
-	// order. If the ledger transaction cannot be created, then the payment order
-	// creation will fail. The resulting ledger transaction will mirror the status of
-	// the payment order.
-	LedgerTransaction param.Field[shared.LedgerTransactionCreateRequestParam] `json:"ledger_transaction"`
-	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
-	// pending ledger transaction can be attached upon payment order creation. Once the
-	// payment order is created, the status of the ledger transaction tracks the
-	// payment order automatically.
-	LedgerTransactionID param.Field[string] `json:"ledger_transaction_id" format:"uuid"`
-	// An array of line items that must sum up to the amount of the payment order.
-	LineItems param.Field[[]PaymentOrderNewAsyncParamsLineItem] `json:"line_items"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// A boolean to determine if NSF Protection is enabled for this payment order. Note
-	// that this setting must also be turned on in your organization settings page.
-	NsfProtected param.Field[bool] `json:"nsf_protected"`
-	// If present, this will replace your default company name on receiver's bank
-	// statement. This field can only be used for ACH payments currently. For ACH, only
-	// the first 16 characters of this string will be used. Any additional characters
-	// will be truncated.
-	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
-	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
-	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
-	// an overnight check rather than standard mail.
-	Priority param.Field[PaymentOrderNewAsyncParamsPriority] `json:"priority"`
-	// If present, Modern Treasury will not process the payment until after this time.
-	// If `process_after` is past the cutoff for `effective_date`, `process_after` will
-	// take precedence and `effective_date` will automatically update to reflect the
-	// earliest possible sending date after `process_after`. Format is ISO8601
-	// timestamp.
-	ProcessAfter param.Field[time.Time] `json:"process_after" format:"date-time"`
-	// For `wire`, this is usually the purpose which is transmitted via the
-	// "InstrForDbtrAgt" field in the ISO20022 file. For `eft`, this field is the 3
-	// digit CPA Code that will be attached to the payment.
-	Purpose param.Field[string] `json:"purpose"`
-	// Either `receiving_account` or `receiving_account_id` must be present. When using
-	// `receiving_account_id`, you may pass the id of an external account or an
-	// internal account.
-	ReceivingAccount param.Field[PaymentOrderNewAsyncParamsReceivingAccount] `json:"receiving_account"`
-	// Either `receiving_account` or `receiving_account_id` must be present. When using
-	// `receiving_account_id`, you may pass the id of an external account or an
-	// internal account.
-	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
-	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
-	ReconciliationStatus param.Field[PaymentOrderNewAsyncParamsReconciliationStatus] `json:"reconciliation_status"`
-	// For `ach`, this field will be passed through on an addenda record. For `wire`
-	// payments the field will be passed through as the "Originator to Beneficiary
-	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation param.Field[string] `json:"remittance_information"`
-	// Send an email to the counterparty when the payment order is sent to the bank. If
-	// `null`, `send_remittance_advice` on the Counterparty is used.
-	SendRemittanceAdvice param.Field[bool] `json:"send_remittance_advice"`
-	// An optional descriptor which will appear in the receiver's statement. For
-	// `check` payments this field will be used as the memo line. For `ach` the maximum
-	// length is 10 characters. Note that for ACH payments, the name on your bank
-	// account will be included automatically by the bank, so you can use the
-	// characters for other useful information. For `eft` the maximum length is 15
-	// characters.
-	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
-	// An additional layer of classification for the type of payment order you are
-	// doing. This field is only used for `ach` payment orders currently. For `ach`
-	// payment orders, the `subtype` represents the SEC code. We currently support
-	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
-	Subtype param.Field[PaymentOrderSubtype] `json:"subtype"`
-	// A flag that determines whether a payment order should go through transaction
-	// monitoring.
-	TransactionMonitoringEnabled param.Field[bool] `json:"transaction_monitoring_enabled"`
-	// Identifier of the ultimate originator of the payment order.
-	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
-	// Name of the ultimate originator of the payment order.
-	UltimateOriginatingPartyName param.Field[string] `json:"ultimate_originating_party_name"`
-	// Identifier of the ultimate funds recipient.
-	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
-	// Name of the ultimate funds recipient.
-	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
+	PaymentOrderAsyncCreate PaymentOrderAsyncCreateParam `json:"payment_order_async_create,required"`
 }
 
 func (r PaymentOrderNewAsyncParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// One of `credit`, `debit`. Describes the direction money is flowing in the
-// transaction. A `credit` moves money from your account to someone else's. A
-// `debit` pulls money from someone else's account to your own. Note that wire,
-// rtp, and check payments will always be `credit`.
-type PaymentOrderNewAsyncParamsDirection string
-
-const (
-	PaymentOrderNewAsyncParamsDirectionCredit PaymentOrderNewAsyncParamsDirection = "credit"
-	PaymentOrderNewAsyncParamsDirectionDebit  PaymentOrderNewAsyncParamsDirection = "debit"
-)
-
-func (r PaymentOrderNewAsyncParamsDirection) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsDirectionCredit, PaymentOrderNewAsyncParamsDirectionDebit:
-		return true
-	}
-	return false
-}
-
-// Deprecated: deprecated
-type PaymentOrderNewAsyncParamsAccounting struct {
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	AccountID param.Field[string] `json:"account_id" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	ClassID param.Field[string] `json:"class_id" format:"uuid"`
-}
-
-func (r PaymentOrderNewAsyncParamsAccounting) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The party that will pay the fees for the payment order. See
-// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
-// differences between the options.
-type PaymentOrderNewAsyncParamsChargeBearer string
-
-const (
-	PaymentOrderNewAsyncParamsChargeBearerShared   PaymentOrderNewAsyncParamsChargeBearer = "shared"
-	PaymentOrderNewAsyncParamsChargeBearerSender   PaymentOrderNewAsyncParamsChargeBearer = "sender"
-	PaymentOrderNewAsyncParamsChargeBearerReceiver PaymentOrderNewAsyncParamsChargeBearer = "receiver"
-)
-
-func (r PaymentOrderNewAsyncParamsChargeBearer) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsChargeBearerShared, PaymentOrderNewAsyncParamsChargeBearerSender, PaymentOrderNewAsyncParamsChargeBearerReceiver:
-		return true
-	}
-	return false
-}
-
-// A payment type to fallback to if the original type is not valid for the
-// receiving account. Currently, this only supports falling back from RTP to ACH
-// (type=rtp and fallback_type=ach)
-type PaymentOrderNewAsyncParamsFallbackType string
-
-const (
-	PaymentOrderNewAsyncParamsFallbackTypeACH PaymentOrderNewAsyncParamsFallbackType = "ach"
-)
-
-func (r PaymentOrderNewAsyncParamsFallbackType) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsFallbackTypeACH:
-		return true
-	}
-	return false
-}
-
-// Indicates the type of FX transfer to initiate, can be either
-// `variable_to_fixed`, `fixed_to_variable`, or `null` if the payment order
-// currency matches the originating account currency.
-type PaymentOrderNewAsyncParamsForeignExchangeIndicator string
-
-const (
-	PaymentOrderNewAsyncParamsForeignExchangeIndicatorFixedToVariable PaymentOrderNewAsyncParamsForeignExchangeIndicator = "fixed_to_variable"
-	PaymentOrderNewAsyncParamsForeignExchangeIndicatorVariableToFixed PaymentOrderNewAsyncParamsForeignExchangeIndicator = "variable_to_fixed"
-)
-
-func (r PaymentOrderNewAsyncParamsForeignExchangeIndicator) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsForeignExchangeIndicatorFixedToVariable, PaymentOrderNewAsyncParamsForeignExchangeIndicatorVariableToFixed:
-		return true
-	}
-	return false
-}
-
-type PaymentOrderNewAsyncParamsLineItem struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`
-	// A free-form description of the line item.
-	Description param.Field[string] `json:"description"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-}
-
-func (r PaymentOrderNewAsyncParamsLineItem) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
-// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
-// an overnight check rather than standard mail.
-type PaymentOrderNewAsyncParamsPriority string
-
-const (
-	PaymentOrderNewAsyncParamsPriorityHigh   PaymentOrderNewAsyncParamsPriority = "high"
-	PaymentOrderNewAsyncParamsPriorityNormal PaymentOrderNewAsyncParamsPriority = "normal"
-)
-
-func (r PaymentOrderNewAsyncParamsPriority) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsPriorityHigh, PaymentOrderNewAsyncParamsPriorityNormal:
-		return true
-	}
-	return false
-}
-
-// Either `receiving_account` or `receiving_account_id` must be present. When using
-// `receiving_account_id`, you may pass the id of an external account or an
-// internal account.
-type PaymentOrderNewAsyncParamsReceivingAccount struct {
-	AccountDetails param.Field[[]PaymentOrderNewAsyncParamsReceivingAccountAccountDetail] `json:"account_details"`
-	// Can be `checking`, `savings` or `other`.
-	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
-	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `json:"external_id"`
-	// Specifies a ledger account object that will be created with the external
-	// account. The resulting ledger account is linked to the external account for
-	// auto-ledgering Payment objects. See
-	// https://docs.moderntreasury.com/docs/linking-to-other-modern-treasury-objects
-	// for more details.
-	LedgerAccount param.Field[shared.LedgerAccountCreateRequestParam] `json:"ledger_account"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// A nickname for the external account. This is only for internal usage and won't
-	// affect any payments
-	Name param.Field[string] `json:"name"`
-	// Required if receiving wire payments.
-	PartyAddress    param.Field[shared.AddressRequestParam] `json:"party_address"`
-	PartyIdentifier param.Field[string]                     `json:"party_identifier"`
-	// If this value isn't provided, it will be inherited from the counterparty's name.
-	PartyName param.Field[string] `json:"party_name"`
-	// Either `individual` or `business`.
-	PartyType param.Field[PaymentOrderNewAsyncParamsReceivingAccountPartyType] `json:"party_type"`
-	// If you've enabled the Modern Treasury + Plaid integration in your Plaid account,
-	// you can pass the processor token in this field.
-	PlaidProcessorToken param.Field[string]                                                    `json:"plaid_processor_token"`
-	RoutingDetails      param.Field[[]PaymentOrderNewAsyncParamsReceivingAccountRoutingDetail] `json:"routing_details"`
-}
-
-func (r PaymentOrderNewAsyncParamsReceivingAccount) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type PaymentOrderNewAsyncParamsReceivingAccountAccountDetail struct {
-	AccountNumber     param.Field[string]                                                                    `json:"account_number,required"`
-	AccountNumberType param.Field[PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType] `json:"account_number_type"`
-}
-
-func (r PaymentOrderNewAsyncParamsReceivingAccountAccountDetail) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType string
-
-const (
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber        PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "au_number"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeBaseAddress     PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "base_address"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeClabe           PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "clabe"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeEthereumAddress PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "ethereum_address"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber        PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "hk_number"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIban            PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "iban"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIDNumber        PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "id_number"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeNzNumber        PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "nz_number"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeOther           PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "other"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypePan             PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "pan"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypePolygonAddress  PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "polygon_address"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeSgNumber        PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "sg_number"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeSolanaAddress   PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "solana_address"
-	PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress   PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType = "wallet_address"
-)
-
-func (r PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberType) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeBaseAddress, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeClabe, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeEthereumAddress, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeHkNumber, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIban, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeIDNumber, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeNzNumber, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeOther, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypePan, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypePolygonAddress, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeSgNumber, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeSolanaAddress, PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeWalletAddress:
-		return true
-	}
-	return false
-}
-
-// Either `individual` or `business`.
-type PaymentOrderNewAsyncParamsReceivingAccountPartyType string
-
-const (
-	PaymentOrderNewAsyncParamsReceivingAccountPartyTypeBusiness   PaymentOrderNewAsyncParamsReceivingAccountPartyType = "business"
-	PaymentOrderNewAsyncParamsReceivingAccountPartyTypeIndividual PaymentOrderNewAsyncParamsReceivingAccountPartyType = "individual"
-)
-
-func (r PaymentOrderNewAsyncParamsReceivingAccountPartyType) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsReceivingAccountPartyTypeBusiness, PaymentOrderNewAsyncParamsReceivingAccountPartyTypeIndividual:
-		return true
-	}
-	return false
-}
-
-type PaymentOrderNewAsyncParamsReceivingAccountRoutingDetail struct {
-	RoutingNumber     param.Field[string]                                                                    `json:"routing_number,required"`
-	RoutingNumberType param.Field[PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
-	PaymentType       param.Field[PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType]       `json:"payment_type"`
-}
-
-func (r PaymentOrderNewAsyncParamsReceivingAccountRoutingDetail) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType string
-
-const (
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba                     PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "aba"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb                   PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "au_bsb"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo                PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "br_codigo"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa                   PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "ca_cpa"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips                   PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "chips"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps                   PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "cnaps"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "dk_interbank_clearing_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode              PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode              PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "il_bank_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode            PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "my_branch_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "mx_bank_identifier"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "sg_interbank_clearing_code"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift                   PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "swift"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "za_national_clearing_code"
-)
-
-func (r PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
-		return true
-	}
-	return false
-}
-
-type PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType string
-
-const (
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeACH         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "ach"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "au_becs"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBacs        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "bacs"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBase        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "base"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBook        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "book"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCard        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "card"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeChats       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "chats"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCheck       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "check"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "cross_border"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeDkNets      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "dk_nets"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeEft         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "eft"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeEthereum    PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "ethereum"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeGBFps       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "gb_fps"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "hu_ics"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeInterac     PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "interac"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMasav       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "masav"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "mx_ccen"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNeft        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "neft"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNics        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "nics"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "nz_becs"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypePlElixir    PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "pl_elixir"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypePolygon     PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "polygon"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRoSent      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "ro_sent"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSen         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sen"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sg_giro"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSic         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sic"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "signet"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSknbi       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sknbi"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSolana      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "solana"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "wire"
-	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
-)
-
-func (r PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBase, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeEthereum, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeGBFps, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeInterac, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypePolygon, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRoSent, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSen, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSignet, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSknbi, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSolana, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeZengin:
-		return true
-	}
-	return false
-}
-
-// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
-type PaymentOrderNewAsyncParamsReconciliationStatus string
-
-const (
-	PaymentOrderNewAsyncParamsReconciliationStatusUnreconciled          PaymentOrderNewAsyncParamsReconciliationStatus = "unreconciled"
-	PaymentOrderNewAsyncParamsReconciliationStatusTentativelyReconciled PaymentOrderNewAsyncParamsReconciliationStatus = "tentatively_reconciled"
-	PaymentOrderNewAsyncParamsReconciliationStatusReconciled            PaymentOrderNewAsyncParamsReconciliationStatus = "reconciled"
-)
-
-func (r PaymentOrderNewAsyncParamsReconciliationStatus) IsKnown() bool {
-	switch r {
-	case PaymentOrderNewAsyncParamsReconciliationStatusUnreconciled, PaymentOrderNewAsyncParamsReconciliationStatusTentativelyReconciled, PaymentOrderNewAsyncParamsReconciliationStatusReconciled:
-		return true
-	}
-	return false
+	return apijson.MarshalRoot(r.PaymentOrderAsyncCreate)
 }

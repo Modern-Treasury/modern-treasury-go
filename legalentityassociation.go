@@ -42,12 +42,368 @@ func (r *LegalEntityAssociationService) New(ctx context.Context, body LegalEntit
 	return
 }
 
+type ChildLegalEntity struct {
+	ID string `json:"id,required" format:"uuid"`
+	// A list of addresses for the entity.
+	Addresses    []ChildLegalEntityAddress      `json:"addresses,required"`
+	BankSettings shared.LegalEntityBankSettings `json:"bank_settings,required,nullable"`
+	// A description of the business.
+	BusinessDescription string `json:"business_description,required,nullable"`
+	// The business's legal business name.
+	BusinessName string `json:"business_name,required,nullable"`
+	// The country of citizenship for an individual.
+	CitizenshipCountry string                             `json:"citizenship_country,required,nullable"`
+	ComplianceDetails  shared.LegalEntityComplianceDetail `json:"compliance_details,required,nullable"`
+	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
+	// alpha-3 formats.
+	CountryOfIncorporation string    `json:"country_of_incorporation,required,nullable"`
+	CreatedAt              time.Time `json:"created_at,required" format:"date-time"`
+	// A business's formation date (YYYY-MM-DD).
+	DateFormed time.Time `json:"date_formed,required,nullable" format:"date"`
+	// An individual's date of birth (YYYY-MM-DD).
+	DateOfBirth          time.Time `json:"date_of_birth,required,nullable" format:"date"`
+	DiscardedAt          time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	DoingBusinessAsNames []string  `json:"doing_business_as_names,required"`
+	// The entity's primary email.
+	Email string `json:"email,required,nullable"`
+	// Monthly expected transaction volume in entity's local currency.
+	ExpectedActivityVolume int64 `json:"expected_activity_volume,required,nullable"`
+	// An individual's first name.
+	FirstName string `json:"first_name,required,nullable"`
+	// A list of identifications for the legal entity.
+	Identifications []ChildLegalEntityIdentification `json:"identifications,required"`
+	// A list of industry classifications for the legal entity.
+	IndustryClassifications []shared.LegalEntityIndustryClassification `json:"industry_classifications,required"`
+	// A description of the intended use of the legal entity.
+	IntendedUse string `json:"intended_use,required,nullable"`
+	// An individual's last name.
+	LastName string `json:"last_name,required,nullable"`
+	// The legal entity associations and its child legal entities.
+	LegalEntityAssociations []LegalEntityAssociation `json:"legal_entity_associations,required,nullable"`
+	// The type of legal entity.
+	LegalEntityType ChildLegalEntityLegalEntityType `json:"legal_entity_type,required"`
+	// The business's legal structure.
+	LegalStructure ChildLegalEntityLegalStructure `json:"legal_structure,required,nullable"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata map[string]string `json:"metadata,required"`
+	// An individual's middle name.
+	MiddleName string `json:"middle_name,required,nullable"`
+	Object     string `json:"object,required"`
+	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
+	// codes).
+	OperatingJurisdictions []string                      `json:"operating_jurisdictions,required"`
+	PhoneNumbers           []ChildLegalEntityPhoneNumber `json:"phone_numbers,required"`
+	// Whether the individual is a politically exposed person.
+	PoliticallyExposedPerson bool `json:"politically_exposed_person,required,nullable"`
+	// An individual's preferred name.
+	PreferredName string `json:"preferred_name,required,nullable"`
+	// An individual's prefix.
+	Prefix string `json:"prefix,required,nullable"`
+	// A list of primary social media URLs for the business.
+	PrimarySocialMediaSites []string `json:"primary_social_media_sites,required"`
+	// The risk rating of the legal entity. One of low, medium, high.
+	RiskRating ChildLegalEntityRiskRating `json:"risk_rating,required,nullable"`
+	// An individual's suffix.
+	Suffix                     string                                   `json:"suffix,required,nullable"`
+	UpdatedAt                  time.Time                                `json:"updated_at,required" format:"date-time"`
+	WealthAndEmploymentDetails shared.LegalEntityWealthEmploymentDetail `json:"wealth_and_employment_details,required,nullable"`
+	// The entity's primary website URL.
+	Website string               `json:"website,required,nullable"`
+	JSON    childLegalEntityJSON `json:"-"`
+}
+
+// childLegalEntityJSON contains the JSON metadata for the struct
+// [ChildLegalEntity]
+type childLegalEntityJSON struct {
+	ID                         apijson.Field
+	Addresses                  apijson.Field
+	BankSettings               apijson.Field
+	BusinessDescription        apijson.Field
+	BusinessName               apijson.Field
+	CitizenshipCountry         apijson.Field
+	ComplianceDetails          apijson.Field
+	CountryOfIncorporation     apijson.Field
+	CreatedAt                  apijson.Field
+	DateFormed                 apijson.Field
+	DateOfBirth                apijson.Field
+	DiscardedAt                apijson.Field
+	DoingBusinessAsNames       apijson.Field
+	Email                      apijson.Field
+	ExpectedActivityVolume     apijson.Field
+	FirstName                  apijson.Field
+	Identifications            apijson.Field
+	IndustryClassifications    apijson.Field
+	IntendedUse                apijson.Field
+	LastName                   apijson.Field
+	LegalEntityAssociations    apijson.Field
+	LegalEntityType            apijson.Field
+	LegalStructure             apijson.Field
+	LiveMode                   apijson.Field
+	Metadata                   apijson.Field
+	MiddleName                 apijson.Field
+	Object                     apijson.Field
+	OperatingJurisdictions     apijson.Field
+	PhoneNumbers               apijson.Field
+	PoliticallyExposedPerson   apijson.Field
+	PreferredName              apijson.Field
+	Prefix                     apijson.Field
+	PrimarySocialMediaSites    apijson.Field
+	RiskRating                 apijson.Field
+	Suffix                     apijson.Field
+	UpdatedAt                  apijson.Field
+	WealthAndEmploymentDetails apijson.Field
+	Website                    apijson.Field
+	raw                        string
+	ExtraFields                map[string]apijson.Field
+}
+
+func (r *ChildLegalEntity) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r childLegalEntityJSON) RawJSON() string {
+	return r.raw
+}
+
+type ChildLegalEntityAddress struct {
+	ID string `json:"id,required" format:"uuid"`
+	// The types of this address.
+	AddressTypes []ChildLegalEntityAddressesAddressType `json:"address_types,required"`
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country     string    `json:"country,required,nullable"`
+	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
+	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	Line1       string    `json:"line1,required,nullable"`
+	Line2       string    `json:"line2,required,nullable"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// Locality or City.
+	Locality string `json:"locality,required,nullable"`
+	Object   string `json:"object,required"`
+	// The postal code of the address.
+	PostalCode string `json:"postal_code,required,nullable"`
+	// Region or State.
+	Region    string                      `json:"region,required,nullable"`
+	UpdatedAt time.Time                   `json:"updated_at,required" format:"date-time"`
+	JSON      childLegalEntityAddressJSON `json:"-"`
+}
+
+// childLegalEntityAddressJSON contains the JSON metadata for the struct
+// [ChildLegalEntityAddress]
+type childLegalEntityAddressJSON struct {
+	ID           apijson.Field
+	AddressTypes apijson.Field
+	Country      apijson.Field
+	CreatedAt    apijson.Field
+	DiscardedAt  apijson.Field
+	Line1        apijson.Field
+	Line2        apijson.Field
+	LiveMode     apijson.Field
+	Locality     apijson.Field
+	Object       apijson.Field
+	PostalCode   apijson.Field
+	Region       apijson.Field
+	UpdatedAt    apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
+}
+
+func (r *ChildLegalEntityAddress) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r childLegalEntityAddressJSON) RawJSON() string {
+	return r.raw
+}
+
+type ChildLegalEntityAddressesAddressType string
+
+const (
+	ChildLegalEntityAddressesAddressTypeBusiness    ChildLegalEntityAddressesAddressType = "business"
+	ChildLegalEntityAddressesAddressTypeMailing     ChildLegalEntityAddressesAddressType = "mailing"
+	ChildLegalEntityAddressesAddressTypeOther       ChildLegalEntityAddressesAddressType = "other"
+	ChildLegalEntityAddressesAddressTypePoBox       ChildLegalEntityAddressesAddressType = "po_box"
+	ChildLegalEntityAddressesAddressTypeResidential ChildLegalEntityAddressesAddressType = "residential"
+)
+
+func (r ChildLegalEntityAddressesAddressType) IsKnown() bool {
+	switch r {
+	case ChildLegalEntityAddressesAddressTypeBusiness, ChildLegalEntityAddressesAddressTypeMailing, ChildLegalEntityAddressesAddressTypeOther, ChildLegalEntityAddressesAddressTypePoBox, ChildLegalEntityAddressesAddressTypeResidential:
+		return true
+	}
+	return false
+}
+
+type ChildLegalEntityIdentification struct {
+	ID          string    `json:"id,required" format:"uuid"`
+	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
+	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	// The date when the Identification is no longer considered valid by the issuing
+	// authority.
+	ExpirationDate time.Time `json:"expiration_date,required,nullable" format:"date"`
+	// The type of ID number.
+	IDType ChildLegalEntityIdentificationsIDType `json:"id_type,required"`
+	// The ISO 3166-1 alpha-2 country code of the country that issued the
+	// identification
+	IssuingCountry string `json:"issuing_country,required,nullable"`
+	// The region in which the identifcation was issued.
+	IssuingRegion string `json:"issuing_region,required,nullable"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode  bool                               `json:"live_mode,required"`
+	Object    string                             `json:"object,required"`
+	UpdatedAt time.Time                          `json:"updated_at,required" format:"date-time"`
+	JSON      childLegalEntityIdentificationJSON `json:"-"`
+}
+
+// childLegalEntityIdentificationJSON contains the JSON metadata for the struct
+// [ChildLegalEntityIdentification]
+type childLegalEntityIdentificationJSON struct {
+	ID             apijson.Field
+	CreatedAt      apijson.Field
+	DiscardedAt    apijson.Field
+	ExpirationDate apijson.Field
+	IDType         apijson.Field
+	IssuingCountry apijson.Field
+	IssuingRegion  apijson.Field
+	LiveMode       apijson.Field
+	Object         apijson.Field
+	UpdatedAt      apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *ChildLegalEntityIdentification) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r childLegalEntityIdentificationJSON) RawJSON() string {
+	return r.raw
+}
+
+// The type of ID number.
+type ChildLegalEntityIdentificationsIDType string
+
+const (
+	ChildLegalEntityIdentificationsIDTypeArCuil         ChildLegalEntityIdentificationsIDType = "ar_cuil"
+	ChildLegalEntityIdentificationsIDTypeArCuit         ChildLegalEntityIdentificationsIDType = "ar_cuit"
+	ChildLegalEntityIdentificationsIDTypeBrCnpj         ChildLegalEntityIdentificationsIDType = "br_cnpj"
+	ChildLegalEntityIdentificationsIDTypeBrCpf          ChildLegalEntityIdentificationsIDType = "br_cpf"
+	ChildLegalEntityIdentificationsIDTypeClRun          ChildLegalEntityIdentificationsIDType = "cl_run"
+	ChildLegalEntityIdentificationsIDTypeClRut          ChildLegalEntityIdentificationsIDType = "cl_rut"
+	ChildLegalEntityIdentificationsIDTypeCoCedulas      ChildLegalEntityIdentificationsIDType = "co_cedulas"
+	ChildLegalEntityIdentificationsIDTypeCoNit          ChildLegalEntityIdentificationsIDType = "co_nit"
+	ChildLegalEntityIdentificationsIDTypeDriversLicense ChildLegalEntityIdentificationsIDType = "drivers_license"
+	ChildLegalEntityIdentificationsIDTypeHnID           ChildLegalEntityIdentificationsIDType = "hn_id"
+	ChildLegalEntityIdentificationsIDTypeHnRtn          ChildLegalEntityIdentificationsIDType = "hn_rtn"
+	ChildLegalEntityIdentificationsIDTypeInLei          ChildLegalEntityIdentificationsIDType = "in_lei"
+	ChildLegalEntityIdentificationsIDTypeKrBrn          ChildLegalEntityIdentificationsIDType = "kr_brn"
+	ChildLegalEntityIdentificationsIDTypeKrCrn          ChildLegalEntityIdentificationsIDType = "kr_crn"
+	ChildLegalEntityIdentificationsIDTypeKrRrn          ChildLegalEntityIdentificationsIDType = "kr_rrn"
+	ChildLegalEntityIdentificationsIDTypePassport       ChildLegalEntityIdentificationsIDType = "passport"
+	ChildLegalEntityIdentificationsIDTypeSaTin          ChildLegalEntityIdentificationsIDType = "sa_tin"
+	ChildLegalEntityIdentificationsIDTypeSaVat          ChildLegalEntityIdentificationsIDType = "sa_vat"
+	ChildLegalEntityIdentificationsIDTypeUsEin          ChildLegalEntityIdentificationsIDType = "us_ein"
+	ChildLegalEntityIdentificationsIDTypeUsItin         ChildLegalEntityIdentificationsIDType = "us_itin"
+	ChildLegalEntityIdentificationsIDTypeUsSsn          ChildLegalEntityIdentificationsIDType = "us_ssn"
+	ChildLegalEntityIdentificationsIDTypeVnTin          ChildLegalEntityIdentificationsIDType = "vn_tin"
+)
+
+func (r ChildLegalEntityIdentificationsIDType) IsKnown() bool {
+	switch r {
+	case ChildLegalEntityIdentificationsIDTypeArCuil, ChildLegalEntityIdentificationsIDTypeArCuit, ChildLegalEntityIdentificationsIDTypeBrCnpj, ChildLegalEntityIdentificationsIDTypeBrCpf, ChildLegalEntityIdentificationsIDTypeClRun, ChildLegalEntityIdentificationsIDTypeClRut, ChildLegalEntityIdentificationsIDTypeCoCedulas, ChildLegalEntityIdentificationsIDTypeCoNit, ChildLegalEntityIdentificationsIDTypeDriversLicense, ChildLegalEntityIdentificationsIDTypeHnID, ChildLegalEntityIdentificationsIDTypeHnRtn, ChildLegalEntityIdentificationsIDTypeInLei, ChildLegalEntityIdentificationsIDTypeKrBrn, ChildLegalEntityIdentificationsIDTypeKrCrn, ChildLegalEntityIdentificationsIDTypeKrRrn, ChildLegalEntityIdentificationsIDTypePassport, ChildLegalEntityIdentificationsIDTypeSaTin, ChildLegalEntityIdentificationsIDTypeSaVat, ChildLegalEntityIdentificationsIDTypeUsEin, ChildLegalEntityIdentificationsIDTypeUsItin, ChildLegalEntityIdentificationsIDTypeUsSsn, ChildLegalEntityIdentificationsIDTypeVnTin:
+		return true
+	}
+	return false
+}
+
+// The type of legal entity.
+type ChildLegalEntityLegalEntityType string
+
+const (
+	ChildLegalEntityLegalEntityTypeBusiness   ChildLegalEntityLegalEntityType = "business"
+	ChildLegalEntityLegalEntityTypeIndividual ChildLegalEntityLegalEntityType = "individual"
+	ChildLegalEntityLegalEntityTypeJoint      ChildLegalEntityLegalEntityType = "joint"
+)
+
+func (r ChildLegalEntityLegalEntityType) IsKnown() bool {
+	switch r {
+	case ChildLegalEntityLegalEntityTypeBusiness, ChildLegalEntityLegalEntityTypeIndividual, ChildLegalEntityLegalEntityTypeJoint:
+		return true
+	}
+	return false
+}
+
+// The business's legal structure.
+type ChildLegalEntityLegalStructure string
+
+const (
+	ChildLegalEntityLegalStructureCorporation        ChildLegalEntityLegalStructure = "corporation"
+	ChildLegalEntityLegalStructureLlc                ChildLegalEntityLegalStructure = "llc"
+	ChildLegalEntityLegalStructureNonProfit          ChildLegalEntityLegalStructure = "non_profit"
+	ChildLegalEntityLegalStructurePartnership        ChildLegalEntityLegalStructure = "partnership"
+	ChildLegalEntityLegalStructureSoleProprietorship ChildLegalEntityLegalStructure = "sole_proprietorship"
+	ChildLegalEntityLegalStructureTrust              ChildLegalEntityLegalStructure = "trust"
+)
+
+func (r ChildLegalEntityLegalStructure) IsKnown() bool {
+	switch r {
+	case ChildLegalEntityLegalStructureCorporation, ChildLegalEntityLegalStructureLlc, ChildLegalEntityLegalStructureNonProfit, ChildLegalEntityLegalStructurePartnership, ChildLegalEntityLegalStructureSoleProprietorship, ChildLegalEntityLegalStructureTrust:
+		return true
+	}
+	return false
+}
+
+// A list of phone numbers in E.164 format.
+type ChildLegalEntityPhoneNumber struct {
+	PhoneNumber string                          `json:"phone_number"`
+	JSON        childLegalEntityPhoneNumberJSON `json:"-"`
+}
+
+// childLegalEntityPhoneNumberJSON contains the JSON metadata for the struct
+// [ChildLegalEntityPhoneNumber]
+type childLegalEntityPhoneNumberJSON struct {
+	PhoneNumber apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ChildLegalEntityPhoneNumber) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r childLegalEntityPhoneNumberJSON) RawJSON() string {
+	return r.raw
+}
+
+// The risk rating of the legal entity. One of low, medium, high.
+type ChildLegalEntityRiskRating string
+
+const (
+	ChildLegalEntityRiskRatingLow    ChildLegalEntityRiskRating = "low"
+	ChildLegalEntityRiskRatingMedium ChildLegalEntityRiskRating = "medium"
+	ChildLegalEntityRiskRatingHigh   ChildLegalEntityRiskRating = "high"
+)
+
+func (r ChildLegalEntityRiskRating) IsKnown() bool {
+	switch r {
+	case ChildLegalEntityRiskRatingLow, ChildLegalEntityRiskRatingMedium, ChildLegalEntityRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
 type LegalEntityAssociation struct {
 	ID string `json:"id,required" format:"uuid"`
 	// The child legal entity.
-	ChildLegalEntity interface{} `json:"child_legal_entity,required"`
-	CreatedAt        time.Time   `json:"created_at,required" format:"date-time"`
-	DiscardedAt      time.Time   `json:"discarded_at,required,nullable" format:"date-time"`
+	ChildLegalEntity *ChildLegalEntity `json:"child_legal_entity,required"`
+	CreatedAt        time.Time         `json:"created_at,required" format:"date-time"`
+	DiscardedAt      time.Time         `json:"discarded_at,required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool   `json:"live_mode,required"`

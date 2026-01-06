@@ -225,19 +225,50 @@ func (r documentFileJSON) RawJSON() string {
 	return r.raw
 }
 
-type DocumentNewParams struct {
+type DocumentCreateParam struct {
 	// The unique identifier for the associated object.
-	DocumentableID   param.Field[string]                            `json:"documentable_id,required"`
-	DocumentableType param.Field[DocumentNewParamsDocumentableType] `json:"documentable_type,required"`
-	File             param.Field[io.Reader]                         `json:"file,required" format:"binary"`
+	DocumentableID   param.Field[string]                         `json:"documentable_id,required"`
+	DocumentableType param.Field[DocumentCreateDocumentableType] `json:"documentable_type,required"`
+	File             param.Field[io.Reader]                      `json:"file,required" format:"binary"`
 	// A category given to the document, can be `null`.
 	DocumentType param.Field[string] `json:"document_type"`
+}
+
+func (r DocumentCreateParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type DocumentCreateDocumentableType string
+
+const (
+	DocumentCreateDocumentableTypeCounterparties         DocumentCreateDocumentableType = "counterparties"
+	DocumentCreateDocumentableTypeExpectedPayments       DocumentCreateDocumentableType = "expected_payments"
+	DocumentCreateDocumentableTypeExternalAccounts       DocumentCreateDocumentableType = "external_accounts"
+	DocumentCreateDocumentableTypeIdentifications        DocumentCreateDocumentableType = "identifications"
+	DocumentCreateDocumentableTypeIncomingPaymentDetails DocumentCreateDocumentableType = "incoming_payment_details"
+	DocumentCreateDocumentableTypeInternalAccounts       DocumentCreateDocumentableType = "internal_accounts"
+	DocumentCreateDocumentableTypeOrganizations          DocumentCreateDocumentableType = "organizations"
+	DocumentCreateDocumentableTypePaymentOrders          DocumentCreateDocumentableType = "payment_orders"
+	DocumentCreateDocumentableTypeTransactions           DocumentCreateDocumentableType = "transactions"
+	DocumentCreateDocumentableTypeConnections            DocumentCreateDocumentableType = "connections"
+)
+
+func (r DocumentCreateDocumentableType) IsKnown() bool {
+	switch r {
+	case DocumentCreateDocumentableTypeCounterparties, DocumentCreateDocumentableTypeExpectedPayments, DocumentCreateDocumentableTypeExternalAccounts, DocumentCreateDocumentableTypeIdentifications, DocumentCreateDocumentableTypeIncomingPaymentDetails, DocumentCreateDocumentableTypeInternalAccounts, DocumentCreateDocumentableTypeOrganizations, DocumentCreateDocumentableTypePaymentOrders, DocumentCreateDocumentableTypeTransactions, DocumentCreateDocumentableTypeConnections:
+		return true
+	}
+	return false
+}
+
+type DocumentNewParams struct {
+	DocumentCreate DocumentCreateParam `json:"document_create,required"`
 }
 
 func (r DocumentNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
 	buf := bytes.NewBuffer(nil)
 	writer := multipart.NewWriter(buf)
-	err = apiform.MarshalRoot(r, writer)
+	err = apiform.MarshalRoot(r.DocumentCreate, writer)
 	if err != nil {
 		writer.Close()
 		return nil, "", err
@@ -247,29 +278,6 @@ func (r DocumentNewParams) MarshalMultipart() (data []byte, contentType string, 
 		return nil, "", err
 	}
 	return buf.Bytes(), writer.FormDataContentType(), nil
-}
-
-type DocumentNewParamsDocumentableType string
-
-const (
-	DocumentNewParamsDocumentableTypeCounterparties         DocumentNewParamsDocumentableType = "counterparties"
-	DocumentNewParamsDocumentableTypeExpectedPayments       DocumentNewParamsDocumentableType = "expected_payments"
-	DocumentNewParamsDocumentableTypeExternalAccounts       DocumentNewParamsDocumentableType = "external_accounts"
-	DocumentNewParamsDocumentableTypeIdentifications        DocumentNewParamsDocumentableType = "identifications"
-	DocumentNewParamsDocumentableTypeIncomingPaymentDetails DocumentNewParamsDocumentableType = "incoming_payment_details"
-	DocumentNewParamsDocumentableTypeInternalAccounts       DocumentNewParamsDocumentableType = "internal_accounts"
-	DocumentNewParamsDocumentableTypeOrganizations          DocumentNewParamsDocumentableType = "organizations"
-	DocumentNewParamsDocumentableTypePaymentOrders          DocumentNewParamsDocumentableType = "payment_orders"
-	DocumentNewParamsDocumentableTypeTransactions           DocumentNewParamsDocumentableType = "transactions"
-	DocumentNewParamsDocumentableTypeConnections            DocumentNewParamsDocumentableType = "connections"
-)
-
-func (r DocumentNewParamsDocumentableType) IsKnown() bool {
-	switch r {
-	case DocumentNewParamsDocumentableTypeCounterparties, DocumentNewParamsDocumentableTypeExpectedPayments, DocumentNewParamsDocumentableTypeExternalAccounts, DocumentNewParamsDocumentableTypeIdentifications, DocumentNewParamsDocumentableTypeIncomingPaymentDetails, DocumentNewParamsDocumentableTypeInternalAccounts, DocumentNewParamsDocumentableTypeOrganizations, DocumentNewParamsDocumentableTypePaymentOrders, DocumentNewParamsDocumentableTypeTransactions, DocumentNewParamsDocumentableTypeConnections:
-		return true
-	}
-	return false
 }
 
 type DocumentListParams struct {

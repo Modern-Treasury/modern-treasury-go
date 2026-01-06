@@ -146,8 +146,8 @@ type BulkResultEntity struct {
 	LiveMode  bool      `json:"live_mode,required"`
 	Object    string    `json:"object,required"`
 	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	// This field can have the runtime type of [PaymentOrderAccounting].
-	Accounting interface{} `json:"accounting"`
+	// Deprecated: deprecated
+	Accounting Accounting `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
@@ -203,8 +203,9 @@ type BulkResultEntity struct {
 	CounterpartyID string `json:"counterparty_id,nullable" format:"uuid"`
 	// Defaults to the currency of the originating account.
 	Currency shared.Currency `json:"currency,nullable"`
-	// This field can have the runtime type of [PaymentOrderCurrentHold].
-	CurrentHold interface{} `json:"current_hold"`
+	// If the payment order's status is `held`, this will include the hold object's
+	// data.
+	CurrentHold Hold `json:"current_hold,nullable"`
 	// If the payment order's status is `returned`, this will include the return
 	// object's data.
 	CurrentReturn ReturnObject `json:"current_return,nullable"`
