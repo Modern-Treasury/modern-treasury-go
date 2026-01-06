@@ -190,7 +190,7 @@ func (r invoiceLineItemJSON) RawJSON() string {
 	return r.raw
 }
 
-type InvoiceLineItemNewParams struct {
+type InvoiceLineItemCreateParam struct {
 	// The name of the line item, typically a product or SKU name.
 	Name param.Field[string] `json:"name,required"`
 	// The cost per unit of the product or service that this line item is for,
@@ -214,8 +214,16 @@ type InvoiceLineItemNewParams struct {
 	UnitAmountDecimal param.Field[string] `json:"unit_amount_decimal"`
 }
 
-func (r InvoiceLineItemNewParams) MarshalJSON() (data []byte, err error) {
+func (r InvoiceLineItemCreateParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type InvoiceLineItemNewParams struct {
+	InvoiceLineItemCreate InvoiceLineItemCreateParam `json:"invoice_line_item_create,required"`
+}
+
+func (r InvoiceLineItemNewParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r.InvoiceLineItemCreate)
 }
 
 type InvoiceLineItemUpdateParams struct {

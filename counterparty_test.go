@@ -87,8 +87,8 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 		Email:      moderntreasury.F("dev@stainless.com"),
 		ExternalID: moderntreasury.F("external_id"),
 		LedgerType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
-		LegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntity{
-			LegalEntityType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness),
+		LegalEntity: moderntreasury.F(moderntreasury.LegalEntityCreateParam{
+			LegalEntityType: moderntreasury.F(moderntreasury.LegalEntityCreateLegalEntityTypeBusiness),
 			Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{{
 				Country:      moderntreasury.F("country"),
 				Line1:        moderntreasury.F("line1"),
@@ -153,8 +153,8 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			}}),
 			IntendedUse: moderntreasury.F("intended_use"),
 			LastName:    moderntreasury.F("last_name"),
-			LegalEntityAssociations: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociation{{
-				RelationshipTypes: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipType{moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeAuthorizedSigner}),
+			LegalEntityAssociations: moderntreasury.F([]moderntreasury.LegalEntityAssociationInlineCreateParam{{
+				RelationshipTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationInlineCreateRelationshipType{moderntreasury.LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner}),
 				ChildLegalEntity: moderntreasury.F(shared.ChildLegalEntityCreateParam{
 					Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{{
 						Country:      moderntreasury.F("country"),
@@ -220,7 +220,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 					}}),
 					IntendedUse:             moderntreasury.F("intended_use"),
 					LastName:                moderntreasury.F("last_name"),
-					LegalEntityAssociations: moderntreasury.F([]interface{}{map[string]interface{}{}}),
+					LegalEntityAssociations: moderntreasury.F([]moderntreasury.LegalEntityAssociationInlineCreateParam{}),
 					LegalEntityType:         moderntreasury.F(shared.ChildLegalEntityCreateLegalEntityTypeBusiness),
 					LegalStructure:          moderntreasury.F(shared.ChildLegalEntityCreateLegalStructureCorporation),
 					Metadata: moderntreasury.F(map[string]string{
@@ -265,7 +265,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				OwnershipPercentage: moderntreasury.F(int64(0)),
 				Title:               moderntreasury.F("title"),
 			}}),
-			LegalStructure: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalStructureCorporation),
+			LegalStructure: moderntreasury.F(moderntreasury.LegalEntityCreateLegalStructureCorporation),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
@@ -273,14 +273,14 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			}),
 			MiddleName:             moderntreasury.F("middle_name"),
 			OperatingJurisdictions: moderntreasury.F([]string{"string"}),
-			PhoneNumbers: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityPhoneNumber{{
+			PhoneNumbers: moderntreasury.F([]moderntreasury.LegalEntityCreatePhoneNumberParam{{
 				PhoneNumber: moderntreasury.F("phone_number"),
 			}}),
 			PoliticallyExposedPerson: moderntreasury.F(true),
 			PreferredName:            moderntreasury.F("preferred_name"),
 			Prefix:                   moderntreasury.F("prefix"),
 			PrimarySocialMediaSites:  moderntreasury.F([]string{"string"}),
-			RiskRating:               moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityRiskRatingLow),
+			RiskRating:               moderntreasury.F(moderntreasury.LegalEntityCreateRiskRatingLow),
 			Suffix:                   moderntreasury.F("suffix"),
 			WealthAndEmploymentDetails: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailParam{
 				ID:               moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),

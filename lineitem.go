@@ -39,7 +39,7 @@ func NewLineItemService(opts ...option.RequestOption) (r *LineItemService) {
 }
 
 // Get a single line item
-func (r *LineItemService) Get(ctx context.Context, itemizableType LineItemGetParamsItemizableType, itemizableID string, id string, opts ...option.RequestOption) (res *LineItem, err error) {
+func (r *LineItemService) Get(ctx context.Context, itemizableType LineItemGetParamsItemizableType, itemizableID string, id string, opts ...option.RequestOption) (res *LineItemGetResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if itemizableID == "" {
 		err = errors.New("missing required itemizable_id parameter")
@@ -55,7 +55,7 @@ func (r *LineItemService) Get(ctx context.Context, itemizableType LineItemGetPar
 }
 
 // update line item
-func (r *LineItemService) Update(ctx context.Context, itemizableType LineItemUpdateParamsItemizableType, itemizableID string, id string, body LineItemUpdateParams, opts ...option.RequestOption) (res *LineItem, err error) {
+func (r *LineItemService) Update(ctx context.Context, itemizableType LineItemUpdateParamsItemizableType, itemizableID string, id string, body LineItemUpdateParams, opts ...option.RequestOption) (res *LineItemUpdateResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if itemizableID == "" {
 		err = errors.New("missing required itemizable_id parameter")
@@ -71,7 +71,7 @@ func (r *LineItemService) Update(ctx context.Context, itemizableType LineItemUpd
 }
 
 // Get a list of line items
-func (r *LineItemService) List(ctx context.Context, itemizableType LineItemListParamsItemizableType, itemizableID string, query LineItemListParams, opts ...option.RequestOption) (res *pagination.Page[LineItem], err error) {
+func (r *LineItemService) List(ctx context.Context, itemizableType LineItemListParamsItemizableType, itemizableID string, query LineItemListParams, opts ...option.RequestOption) (res *pagination.Page[LineItemListResponse], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -93,14 +93,65 @@ func (r *LineItemService) List(ctx context.Context, itemizableType LineItemListP
 }
 
 // Get a list of line items
-func (r *LineItemService) ListAutoPaging(ctx context.Context, itemizableType LineItemListParamsItemizableType, itemizableID string, query LineItemListParams, opts ...option.RequestOption) *pagination.PageAutoPager[LineItem] {
+func (r *LineItemService) ListAutoPaging(ctx context.Context, itemizableType LineItemListParamsItemizableType, itemizableID string, query LineItemListParams, opts ...option.RequestOption) *pagination.PageAutoPager[LineItemListResponse] {
 	return pagination.NewPageAutoPager(r.List(ctx, itemizableType, itemizableID, query, opts...))
 }
 
-type LineItem struct {
+// Deprecated: deprecated
+type Accounting struct {
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountID string `json:"account_id,nullable" format:"uuid"`
+	// The ID of one of the class objects in your accounting system. Class objects
+	// track segments of your business independent of client or project. Note that
+	// these will only be accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	ClassID string         `json:"class_id,nullable" format:"uuid"`
+	JSON    accountingJSON `json:"-"`
+}
+
+// accountingJSON contains the JSON metadata for the struct [Accounting]
+type accountingJSON struct {
+	AccountID   apijson.Field
+	ClassID     apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *Accounting) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r accountingJSON) RawJSON() string {
+	return r.raw
+}
+
+// Deprecated: deprecated
+type AccountingParam struct {
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountID param.Field[string] `json:"account_id" format:"uuid"`
+	// The ID of one of the class objects in your accounting system. Class objects
+	// track segments of your business independent of client or project. Note that
+	// these will only be accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	ClassID param.Field[string] `json:"class_id" format:"uuid"`
+}
+
+func (r AccountingParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type LineItemGetResponse struct {
 	ID string `json:"id,required" format:"uuid"`
 	// Deprecated: deprecated
-	Accounting LineItemAccounting `json:"accounting,required"`
+	Accounting Accounting `json:"accounting,required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
@@ -121,20 +172,21 @@ type LineItem struct {
 	// The ID of the payment order or expected payment.
 	ItemizableID string `json:"itemizable_id,required" format:"uuid"`
 	// One of `payment_orders` or `expected_payments`.
-	ItemizableType LineItemItemizableType `json:"itemizable_type,required"`
+	ItemizableType LineItemGetResponseItemizableType `json:"itemizable_type,required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode,required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata  map[string]string `json:"metadata,required"`
-	Object    string            `json:"object,required"`
-	UpdatedAt time.Time         `json:"updated_at,required" format:"date-time"`
-	JSON      lineItemJSON      `json:"-"`
+	Metadata  map[string]string       `json:"metadata,required"`
+	Object    string                  `json:"object,required"`
+	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
+	JSON      lineItemGetResponseJSON `json:"-"`
 }
 
-// lineItemJSON contains the JSON metadata for the struct [LineItem]
-type lineItemJSON struct {
+// lineItemGetResponseJSON contains the JSON metadata for the struct
+// [LineItemGetResponse]
+type lineItemGetResponseJSON struct {
 	ID                      apijson.Field
 	Accounting              apijson.Field
 	AccountingCategoryID    apijson.Field
@@ -152,58 +204,185 @@ type lineItemJSON struct {
 	ExtraFields             map[string]apijson.Field
 }
 
-func (r *LineItem) UnmarshalJSON(data []byte) (err error) {
+func (r *LineItemGetResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r lineItemJSON) RawJSON() string {
+func (r lineItemGetResponseJSON) RawJSON() string {
 	return r.raw
 }
 
-// Deprecated: deprecated
-type LineItemAccounting struct {
+// One of `payment_orders` or `expected_payments`.
+type LineItemGetResponseItemizableType string
+
+const (
+	LineItemGetResponseItemizableTypeExpectedPayment LineItemGetResponseItemizableType = "ExpectedPayment"
+	LineItemGetResponseItemizableTypePaymentOrder    LineItemGetResponseItemizableType = "PaymentOrder"
+)
+
+func (r LineItemGetResponseItemizableType) IsKnown() bool {
+	switch r {
+	case LineItemGetResponseItemizableTypeExpectedPayment, LineItemGetResponseItemizableTypePaymentOrder:
+		return true
+	}
+	return false
+}
+
+type LineItemUpdateResponse struct {
+	ID string `json:"id,required" format:"uuid"`
+	// Deprecated: deprecated
+	Accounting Accounting `json:"accounting,required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
-	AccountID string `json:"account_id,nullable" format:"uuid"`
+	AccountingCategoryID string `json:"accounting_category_id,required,nullable" format:"uuid"`
 	// The ID of one of the class objects in your accounting system. Class objects
 	// track segments of your business independent of client or project. Note that
 	// these will only be accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
-	ClassID string                 `json:"class_id,nullable" format:"uuid"`
-	JSON    lineItemAccountingJSON `json:"-"`
+	AccountingLedgerClassID string `json:"accounting_ledger_class_id,required,nullable" format:"uuid"`
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000.
+	Amount    int64     `json:"amount,required"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	// A free-form description of the line item.
+	Description string `json:"description,required,nullable"`
+	// The ID of the payment order or expected payment.
+	ItemizableID string `json:"itemizable_id,required" format:"uuid"`
+	// One of `payment_orders` or `expected_payments`.
+	ItemizableType LineItemUpdateResponseItemizableType `json:"itemizable_type,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata  map[string]string          `json:"metadata,required"`
+	Object    string                     `json:"object,required"`
+	UpdatedAt time.Time                  `json:"updated_at,required" format:"date-time"`
+	JSON      lineItemUpdateResponseJSON `json:"-"`
 }
 
-// lineItemAccountingJSON contains the JSON metadata for the struct
-// [LineItemAccounting]
-type lineItemAccountingJSON struct {
-	AccountID   apijson.Field
-	ClassID     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+// lineItemUpdateResponseJSON contains the JSON metadata for the struct
+// [LineItemUpdateResponse]
+type lineItemUpdateResponseJSON struct {
+	ID                      apijson.Field
+	Accounting              apijson.Field
+	AccountingCategoryID    apijson.Field
+	AccountingLedgerClassID apijson.Field
+	Amount                  apijson.Field
+	CreatedAt               apijson.Field
+	Description             apijson.Field
+	ItemizableID            apijson.Field
+	ItemizableType          apijson.Field
+	LiveMode                apijson.Field
+	Metadata                apijson.Field
+	Object                  apijson.Field
+	UpdatedAt               apijson.Field
+	raw                     string
+	ExtraFields             map[string]apijson.Field
 }
 
-func (r *LineItemAccounting) UnmarshalJSON(data []byte) (err error) {
+func (r *LineItemUpdateResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r lineItemAccountingJSON) RawJSON() string {
+func (r lineItemUpdateResponseJSON) RawJSON() string {
 	return r.raw
 }
 
 // One of `payment_orders` or `expected_payments`.
-type LineItemItemizableType string
+type LineItemUpdateResponseItemizableType string
 
 const (
-	LineItemItemizableTypeExpectedPayment LineItemItemizableType = "ExpectedPayment"
-	LineItemItemizableTypePaymentOrder    LineItemItemizableType = "PaymentOrder"
+	LineItemUpdateResponseItemizableTypeExpectedPayment LineItemUpdateResponseItemizableType = "ExpectedPayment"
+	LineItemUpdateResponseItemizableTypePaymentOrder    LineItemUpdateResponseItemizableType = "PaymentOrder"
 )
 
-func (r LineItemItemizableType) IsKnown() bool {
+func (r LineItemUpdateResponseItemizableType) IsKnown() bool {
 	switch r {
-	case LineItemItemizableTypeExpectedPayment, LineItemItemizableTypePaymentOrder:
+	case LineItemUpdateResponseItemizableTypeExpectedPayment, LineItemUpdateResponseItemizableTypePaymentOrder:
+		return true
+	}
+	return false
+}
+
+type LineItemListResponse struct {
+	ID string `json:"id,required" format:"uuid"`
+	// Deprecated: deprecated
+	Accounting Accounting `json:"accounting,required"`
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountingCategoryID string `json:"accounting_category_id,required,nullable" format:"uuid"`
+	// The ID of one of the class objects in your accounting system. Class objects
+	// track segments of your business independent of client or project. Note that
+	// these will only be accessible if your accounting system has been connected.
+	//
+	// Deprecated: deprecated
+	AccountingLedgerClassID string `json:"accounting_ledger_class_id,required,nullable" format:"uuid"`
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000.
+	Amount    int64     `json:"amount,required"`
+	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	// A free-form description of the line item.
+	Description string `json:"description,required,nullable"`
+	// The ID of the payment order or expected payment.
+	ItemizableID string `json:"itemizable_id,required" format:"uuid"`
+	// One of `payment_orders` or `expected_payments`.
+	ItemizableType LineItemListResponseItemizableType `json:"itemizable_type,required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool `json:"live_mode,required"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata  map[string]string        `json:"metadata,required"`
+	Object    string                   `json:"object,required"`
+	UpdatedAt time.Time                `json:"updated_at,required" format:"date-time"`
+	JSON      lineItemListResponseJSON `json:"-"`
+}
+
+// lineItemListResponseJSON contains the JSON metadata for the struct
+// [LineItemListResponse]
+type lineItemListResponseJSON struct {
+	ID                      apijson.Field
+	Accounting              apijson.Field
+	AccountingCategoryID    apijson.Field
+	AccountingLedgerClassID apijson.Field
+	Amount                  apijson.Field
+	CreatedAt               apijson.Field
+	Description             apijson.Field
+	ItemizableID            apijson.Field
+	ItemizableType          apijson.Field
+	LiveMode                apijson.Field
+	Metadata                apijson.Field
+	Object                  apijson.Field
+	UpdatedAt               apijson.Field
+	raw                     string
+	ExtraFields             map[string]apijson.Field
+}
+
+func (r *LineItemListResponse) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r lineItemListResponseJSON) RawJSON() string {
+	return r.raw
+}
+
+// One of `payment_orders` or `expected_payments`.
+type LineItemListResponseItemizableType string
+
+const (
+	LineItemListResponseItemizableTypeExpectedPayment LineItemListResponseItemizableType = "ExpectedPayment"
+	LineItemListResponseItemizableTypePaymentOrder    LineItemListResponseItemizableType = "PaymentOrder"
+)
+
+func (r LineItemListResponseItemizableType) IsKnown() bool {
+	switch r {
+	case LineItemListResponseItemizableTypeExpectedPayment, LineItemListResponseItemizableTypePaymentOrder:
 		return true
 	}
 	return false

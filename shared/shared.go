@@ -5,6 +5,7 @@ package shared
 import (
 	"time"
 
+	"github.com/Modern-Treasury/modern-treasury-go/v2"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 )
@@ -177,7 +178,7 @@ type ChildLegalEntityCreateParam struct {
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
 	// The legal entity associations and its child legal entities.
-	LegalEntityAssociations param.Field[[]interface{}] `json:"legal_entity_associations"`
+	LegalEntityAssociations param.Field[[]moderntreasury.LegalEntityAssociationInlineCreateParam] `json:"legal_entity_associations"`
 	// The type of legal entity.
 	LegalEntityType param.Field[ChildLegalEntityCreateLegalEntityType] `json:"legal_entity_type"`
 	// The business's legal structure.

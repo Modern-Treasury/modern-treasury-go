@@ -319,6 +319,133 @@ func (r ExpectedPaymentStatus) IsKnown() bool {
 	return false
 }
 
+type ExpectedPaymentCreateParam struct {
+	// The lowest amount this expected payment may be equal to. Value in specified
+	// currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
+	// The amount reconciled for this expected payment. Value in specified currency's
+	// smallest unit. e.g. $10 would be represented as 1000.
+	AmountReconciled param.Field[int64] `json:"amount_reconciled"`
+	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+	// amount.
+	AmountReconciledDirection param.Field[ExpectedPaymentCreateAmountReconciledDirection] `json:"amount_reconciled_direction"`
+	// The amount that remains unreconciled for this expected payment. Value in
+	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUnreconciled param.Field[int64] `json:"amount_unreconciled"`
+	// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+	// debit amount.
+	AmountUnreconciledDirection param.Field[ExpectedPaymentCreateAmountUnreconciledDirection] `json:"amount_unreconciled_direction"`
+	// The highest amount this expected payment may be equal to. Value in specified
+	// currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
+	// The ID of the counterparty you expect for this payment.
+	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
+	// Must conform to ISO 4217. Defaults to the currency of the internal account.
+	Currency param.Field[shared.Currency] `json:"currency"`
+	// The earliest date the payment may come in. Format: yyyy-mm-dd
+	DateLowerBound param.Field[time.Time] `json:"date_lower_bound" format:"date"`
+	// The latest date the payment may come in. Format: yyyy-mm-dd
+	DateUpperBound param.Field[time.Time] `json:"date_upper_bound" format:"date"`
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
+	// One of credit or debit. When you are receiving money, use credit. When you are
+	// being charged, use debit.
+	Direction param.Field[ExpectedPaymentCreateDirection] `json:"direction"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
+	// The ID of the Internal Account for the expected payment.
+	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
+	// Specifies a ledger transaction object that will be created with the expected
+	// payment. If the ledger transaction cannot be created, then the expected payment
+	// creation will fail. The resulting ledger transaction will mirror the status of
+	// the expected payment.
+	LedgerTransaction param.Field[shared.LedgerTransactionCreateRequestParam] `json:"ledger_transaction"`
+	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
+	// pending ledger transaction can be attached upon expected payment creation. Once
+	// the expected payment is created, the status of the ledger transaction tracks the
+	// expected payment automatically.
+	LedgerTransactionID param.Field[string]          `json:"ledger_transaction_id" format:"uuid"`
+	LineItems           param.Field[[]LineItemParam] `json:"line_items"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The reconciliation filters you have for this payment.
+	ReconciliationFilters param.Field[interface{}] `json:"reconciliation_filters"`
+	// The reconciliation groups you have for this payment.
+	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
+	// An array of reconciliation rule variables for this payment.
+	ReconciliationRuleVariables param.Field[[]ReconciliationRuleParam] `json:"reconciliation_rule_variables"`
+	// For `ach`, this field will be passed through on an addenda record. For `wire`
+	// payments the field will be passed through as the "Originator to Beneficiary
+	// Information", also known as OBI or Fedwire tag 6000.
+	RemittanceInformation param.Field[string] `json:"remittance_information"`
+	// The statement description you expect to see on the transaction. For ACH
+	// payments, this will be the full line item passed from the bank. For wire
+	// payments, this will be the OBI field on the wire. For check payments, this will
+	// be the memo field.
+	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
+	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
+	// sepa, signet, wire.
+	Type param.Field[ExpectedPaymentType] `json:"type"`
+}
+
+func (r ExpectedPaymentCreateParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r ExpectedPaymentCreateParam) ImplementsBulkRequestNewParamsResourceUnion() {}
+
+// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+// amount.
+type ExpectedPaymentCreateAmountReconciledDirection string
+
+const (
+	ExpectedPaymentCreateAmountReconciledDirectionCredit ExpectedPaymentCreateAmountReconciledDirection = "credit"
+	ExpectedPaymentCreateAmountReconciledDirectionDebit  ExpectedPaymentCreateAmountReconciledDirection = "debit"
+)
+
+func (r ExpectedPaymentCreateAmountReconciledDirection) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentCreateAmountReconciledDirectionCredit, ExpectedPaymentCreateAmountReconciledDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+// debit amount.
+type ExpectedPaymentCreateAmountUnreconciledDirection string
+
+const (
+	ExpectedPaymentCreateAmountUnreconciledDirectionCredit ExpectedPaymentCreateAmountUnreconciledDirection = "credit"
+	ExpectedPaymentCreateAmountUnreconciledDirectionDebit  ExpectedPaymentCreateAmountUnreconciledDirection = "debit"
+)
+
+func (r ExpectedPaymentCreateAmountUnreconciledDirection) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentCreateAmountUnreconciledDirectionCredit, ExpectedPaymentCreateAmountUnreconciledDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// One of credit or debit. When you are receiving money, use credit. When you are
+// being charged, use debit.
+type ExpectedPaymentCreateDirection string
+
+const (
+	ExpectedPaymentCreateDirectionCredit ExpectedPaymentCreateDirection = "credit"
+	ExpectedPaymentCreateDirectionDebit  ExpectedPaymentCreateDirection = "debit"
+)
+
+func (r ExpectedPaymentCreateDirection) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentCreateDirectionCredit, ExpectedPaymentCreateDirectionDebit:
+		return true
+	}
+	return false
+}
+
 // One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
 // sepa, signet, wire.
 type ExpectedPaymentType string
@@ -367,6 +494,157 @@ func (r ExpectedPaymentType) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+type ExpectedPaymentUpdateParam struct {
+	// The lowest amount this expected payment may be equal to. Value in specified
+	// currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
+	// The amount reconciled for this expected payment. Value in specified currency's
+	// smallest unit. e.g. $10 would be represented as 1000.
+	AmountReconciled param.Field[int64] `json:"amount_reconciled"`
+	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+	// amount.
+	AmountReconciledDirection param.Field[ExpectedPaymentUpdateAmountReconciledDirection] `json:"amount_reconciled_direction"`
+	// The amount that remains unreconciled for this expected payment. Value in
+	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUnreconciled param.Field[int64] `json:"amount_unreconciled"`
+	// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+	// debit amount.
+	AmountUnreconciledDirection param.Field[ExpectedPaymentUpdateAmountUnreconciledDirection] `json:"amount_unreconciled_direction"`
+	// The highest amount this expected payment may be equal to. Value in specified
+	// currency's smallest unit. e.g. $10 would be represented as 1000.
+	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
+	// The ID of the counterparty you expect for this payment.
+	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
+	// Must conform to ISO 4217. Defaults to the currency of the internal account.
+	Currency param.Field[shared.Currency] `json:"currency"`
+	// The earliest date the payment may come in. Format: yyyy-mm-dd
+	DateLowerBound param.Field[time.Time] `json:"date_lower_bound" format:"date"`
+	// The latest date the payment may come in. Format: yyyy-mm-dd
+	DateUpperBound param.Field[time.Time] `json:"date_upper_bound" format:"date"`
+	// An optional description for internal use.
+	Description param.Field[string] `json:"description"`
+	// One of credit or debit. When you are receiving money, use credit. When you are
+	// being charged, use debit.
+	Direction param.Field[ExpectedPaymentUpdateDirection] `json:"direction"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
+	// The ID of the Internal Account for the expected payment.
+	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The reconciliation filters you have for this payment.
+	ReconciliationFilters param.Field[interface{}] `json:"reconciliation_filters"`
+	// The reconciliation groups you have for this payment.
+	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
+	// An array of reconciliation rule variables for this payment.
+	ReconciliationRuleVariables param.Field[[]ReconciliationRuleParam] `json:"reconciliation_rule_variables"`
+	// For `ach`, this field will be passed through on an addenda record. For `wire`
+	// payments the field will be passed through as the "Originator to Beneficiary
+	// Information", also known as OBI or Fedwire tag 6000.
+	RemittanceInformation param.Field[string] `json:"remittance_information"`
+	// The statement description you expect to see on the transaction. For ACH
+	// payments, this will be the full line item passed from the bank. For wire
+	// payments, this will be the OBI field on the wire. For check payments, this will
+	// be the memo field.
+	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
+	// The Expected Payment's status can be updated from partially_reconciled to
+	// reconciled.
+	Status param.Field[ExpectedPaymentUpdateStatus] `json:"status"`
+	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
+	// sepa, signet, wire.
+	Type param.Field[ExpectedPaymentType] `json:"type"`
+}
+
+func (r ExpectedPaymentUpdateParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
+// amount.
+type ExpectedPaymentUpdateAmountReconciledDirection string
+
+const (
+	ExpectedPaymentUpdateAmountReconciledDirectionCredit ExpectedPaymentUpdateAmountReconciledDirection = "credit"
+	ExpectedPaymentUpdateAmountReconciledDirectionDebit  ExpectedPaymentUpdateAmountReconciledDirection = "debit"
+)
+
+func (r ExpectedPaymentUpdateAmountReconciledDirection) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentUpdateAmountReconciledDirectionCredit, ExpectedPaymentUpdateAmountReconciledDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// One of credit or debit. Indicates whether amount_unreconciled is a credit or
+// debit amount.
+type ExpectedPaymentUpdateAmountUnreconciledDirection string
+
+const (
+	ExpectedPaymentUpdateAmountUnreconciledDirectionCredit ExpectedPaymentUpdateAmountUnreconciledDirection = "credit"
+	ExpectedPaymentUpdateAmountUnreconciledDirectionDebit  ExpectedPaymentUpdateAmountUnreconciledDirection = "debit"
+)
+
+func (r ExpectedPaymentUpdateAmountUnreconciledDirection) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentUpdateAmountUnreconciledDirectionCredit, ExpectedPaymentUpdateAmountUnreconciledDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// One of credit or debit. When you are receiving money, use credit. When you are
+// being charged, use debit.
+type ExpectedPaymentUpdateDirection string
+
+const (
+	ExpectedPaymentUpdateDirectionCredit ExpectedPaymentUpdateDirection = "credit"
+	ExpectedPaymentUpdateDirectionDebit  ExpectedPaymentUpdateDirection = "debit"
+)
+
+func (r ExpectedPaymentUpdateDirection) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentUpdateDirectionCredit, ExpectedPaymentUpdateDirectionDebit:
+		return true
+	}
+	return false
+}
+
+// The Expected Payment's status can be updated from partially_reconciled to
+// reconciled.
+type ExpectedPaymentUpdateStatus string
+
+const (
+	ExpectedPaymentUpdateStatusReconciled ExpectedPaymentUpdateStatus = "reconciled"
+)
+
+func (r ExpectedPaymentUpdateStatus) IsKnown() bool {
+	switch r {
+	case ExpectedPaymentUpdateStatusReconciled:
+		return true
+	}
+	return false
+}
+
+type LineItemParam struct {
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000.
+	Amount param.Field[int64] `json:"amount,required"`
+	// The ID of one of your accounting categories. Note that these will only be
+	// accessible if your accounting system has been connected.
+	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`
+	// A free-form description of the line item.
+	Description param.Field[string] `json:"description"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+}
+
+func (r LineItemParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type ReconciliationRule struct {
@@ -521,279 +799,19 @@ func (r ReconciliationRuleParam) MarshalJSON() (data []byte, err error) {
 }
 
 type ExpectedPaymentNewParams struct {
-	// The lowest amount this expected payment may be equal to. Value in specified
-	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
-	// The amount reconciled for this expected payment. Value in specified currency's
-	// smallest unit. e.g. $10 would be represented as 1000.
-	AmountReconciled param.Field[int64] `json:"amount_reconciled"`
-	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
-	// amount.
-	AmountReconciledDirection param.Field[ExpectedPaymentNewParamsAmountReconciledDirection] `json:"amount_reconciled_direction"`
-	// The amount that remains unreconciled for this expected payment. Value in
-	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUnreconciled param.Field[int64] `json:"amount_unreconciled"`
-	// One of credit or debit. Indicates whether amount_unreconciled is a credit or
-	// debit amount.
-	AmountUnreconciledDirection param.Field[ExpectedPaymentNewParamsAmountUnreconciledDirection] `json:"amount_unreconciled_direction"`
-	// The highest amount this expected payment may be equal to. Value in specified
-	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
-	// The ID of the counterparty you expect for this payment.
-	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
-	// Must conform to ISO 4217. Defaults to the currency of the internal account.
-	Currency param.Field[shared.Currency] `json:"currency"`
-	// The earliest date the payment may come in. Format: yyyy-mm-dd
-	DateLowerBound param.Field[time.Time] `json:"date_lower_bound" format:"date"`
-	// The latest date the payment may come in. Format: yyyy-mm-dd
-	DateUpperBound param.Field[time.Time] `json:"date_upper_bound" format:"date"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// One of credit or debit. When you are receiving money, use credit. When you are
-	// being charged, use debit.
-	Direction param.Field[ExpectedPaymentNewParamsDirection] `json:"direction"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `json:"external_id"`
-	// The ID of the Internal Account for the expected payment.
-	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
-	// Specifies a ledger transaction object that will be created with the expected
-	// payment. If the ledger transaction cannot be created, then the expected payment
-	// creation will fail. The resulting ledger transaction will mirror the status of
-	// the expected payment.
-	LedgerTransaction param.Field[shared.LedgerTransactionCreateRequestParam] `json:"ledger_transaction"`
-	// Either ledger_transaction or ledger_transaction_id can be provided. Only a
-	// pending ledger transaction can be attached upon expected payment creation. Once
-	// the expected payment is created, the status of the ledger transaction tracks the
-	// expected payment automatically.
-	LedgerTransactionID param.Field[string]                             `json:"ledger_transaction_id" format:"uuid"`
-	LineItems           param.Field[[]ExpectedPaymentNewParamsLineItem] `json:"line_items"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The reconciliation filters you have for this payment.
-	ReconciliationFilters param.Field[interface{}] `json:"reconciliation_filters"`
-	// The reconciliation groups you have for this payment.
-	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
-	// An array of reconciliation rule variables for this payment.
-	ReconciliationRuleVariables param.Field[[]ReconciliationRuleParam] `json:"reconciliation_rule_variables"`
-	// For `ach`, this field will be passed through on an addenda record. For `wire`
-	// payments the field will be passed through as the "Originator to Beneficiary
-	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation param.Field[string] `json:"remittance_information"`
-	// The statement description you expect to see on the transaction. For ACH
-	// payments, this will be the full line item passed from the bank. For wire
-	// payments, this will be the OBI field on the wire. For check payments, this will
-	// be the memo field.
-	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
-	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
-	// sepa, signet, wire.
-	Type param.Field[ExpectedPaymentType] `json:"type"`
+	ExpectedPaymentCreate ExpectedPaymentCreateParam `json:"expected_payment_create"`
 }
 
 func (r ExpectedPaymentNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
-// amount.
-type ExpectedPaymentNewParamsAmountReconciledDirection string
-
-const (
-	ExpectedPaymentNewParamsAmountReconciledDirectionCredit ExpectedPaymentNewParamsAmountReconciledDirection = "credit"
-	ExpectedPaymentNewParamsAmountReconciledDirectionDebit  ExpectedPaymentNewParamsAmountReconciledDirection = "debit"
-)
-
-func (r ExpectedPaymentNewParamsAmountReconciledDirection) IsKnown() bool {
-	switch r {
-	case ExpectedPaymentNewParamsAmountReconciledDirectionCredit, ExpectedPaymentNewParamsAmountReconciledDirectionDebit:
-		return true
-	}
-	return false
-}
-
-// One of credit or debit. Indicates whether amount_unreconciled is a credit or
-// debit amount.
-type ExpectedPaymentNewParamsAmountUnreconciledDirection string
-
-const (
-	ExpectedPaymentNewParamsAmountUnreconciledDirectionCredit ExpectedPaymentNewParamsAmountUnreconciledDirection = "credit"
-	ExpectedPaymentNewParamsAmountUnreconciledDirectionDebit  ExpectedPaymentNewParamsAmountUnreconciledDirection = "debit"
-)
-
-func (r ExpectedPaymentNewParamsAmountUnreconciledDirection) IsKnown() bool {
-	switch r {
-	case ExpectedPaymentNewParamsAmountUnreconciledDirectionCredit, ExpectedPaymentNewParamsAmountUnreconciledDirectionDebit:
-		return true
-	}
-	return false
-}
-
-// One of credit or debit. When you are receiving money, use credit. When you are
-// being charged, use debit.
-type ExpectedPaymentNewParamsDirection string
-
-const (
-	ExpectedPaymentNewParamsDirectionCredit ExpectedPaymentNewParamsDirection = "credit"
-	ExpectedPaymentNewParamsDirectionDebit  ExpectedPaymentNewParamsDirection = "debit"
-)
-
-func (r ExpectedPaymentNewParamsDirection) IsKnown() bool {
-	switch r {
-	case ExpectedPaymentNewParamsDirectionCredit, ExpectedPaymentNewParamsDirectionDebit:
-		return true
-	}
-	return false
-}
-
-type ExpectedPaymentNewParamsLineItem struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`
-	// A free-form description of the line item.
-	Description param.Field[string] `json:"description"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-}
-
-func (r ExpectedPaymentNewParamsLineItem) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+	return apijson.MarshalRoot(r.ExpectedPaymentCreate)
 }
 
 type ExpectedPaymentUpdateParams struct {
-	// The lowest amount this expected payment may be equal to. Value in specified
-	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountLowerBound param.Field[int64] `json:"amount_lower_bound"`
-	// The amount reconciled for this expected payment. Value in specified currency's
-	// smallest unit. e.g. $10 would be represented as 1000.
-	AmountReconciled param.Field[int64] `json:"amount_reconciled"`
-	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
-	// amount.
-	AmountReconciledDirection param.Field[ExpectedPaymentUpdateParamsAmountReconciledDirection] `json:"amount_reconciled_direction"`
-	// The amount that remains unreconciled for this expected payment. Value in
-	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUnreconciled param.Field[int64] `json:"amount_unreconciled"`
-	// One of credit or debit. Indicates whether amount_unreconciled is a credit or
-	// debit amount.
-	AmountUnreconciledDirection param.Field[ExpectedPaymentUpdateParamsAmountUnreconciledDirection] `json:"amount_unreconciled_direction"`
-	// The highest amount this expected payment may be equal to. Value in specified
-	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
-	// The ID of the counterparty you expect for this payment.
-	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
-	// Must conform to ISO 4217. Defaults to the currency of the internal account.
-	Currency param.Field[shared.Currency] `json:"currency"`
-	// The earliest date the payment may come in. Format: yyyy-mm-dd
-	DateLowerBound param.Field[time.Time] `json:"date_lower_bound" format:"date"`
-	// The latest date the payment may come in. Format: yyyy-mm-dd
-	DateUpperBound param.Field[time.Time] `json:"date_upper_bound" format:"date"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// One of credit or debit. When you are receiving money, use credit. When you are
-	// being charged, use debit.
-	Direction param.Field[ExpectedPaymentUpdateParamsDirection] `json:"direction"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `json:"external_id"`
-	// The ID of the Internal Account for the expected payment.
-	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The reconciliation filters you have for this payment.
-	ReconciliationFilters param.Field[interface{}] `json:"reconciliation_filters"`
-	// The reconciliation groups you have for this payment.
-	ReconciliationGroups param.Field[interface{}] `json:"reconciliation_groups"`
-	// An array of reconciliation rule variables for this payment.
-	ReconciliationRuleVariables param.Field[[]ReconciliationRuleParam] `json:"reconciliation_rule_variables"`
-	// For `ach`, this field will be passed through on an addenda record. For `wire`
-	// payments the field will be passed through as the "Originator to Beneficiary
-	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation param.Field[string] `json:"remittance_information"`
-	// The statement description you expect to see on the transaction. For ACH
-	// payments, this will be the full line item passed from the bank. For wire
-	// payments, this will be the OBI field on the wire. For check payments, this will
-	// be the memo field.
-	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
-	// The Expected Payment's status can be updated from partially_reconciled to
-	// reconciled.
-	Status param.Field[ExpectedPaymentUpdateParamsStatus] `json:"status"`
-	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
-	// sepa, signet, wire.
-	Type param.Field[ExpectedPaymentType] `json:"type"`
+	ExpectedPaymentUpdate ExpectedPaymentUpdateParam `json:"expected_payment_update"`
 }
 
 func (r ExpectedPaymentUpdateParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
-// amount.
-type ExpectedPaymentUpdateParamsAmountReconciledDirection string
-
-const (
-	ExpectedPaymentUpdateParamsAmountReconciledDirectionCredit ExpectedPaymentUpdateParamsAmountReconciledDirection = "credit"
-	ExpectedPaymentUpdateParamsAmountReconciledDirectionDebit  ExpectedPaymentUpdateParamsAmountReconciledDirection = "debit"
-)
-
-func (r ExpectedPaymentUpdateParamsAmountReconciledDirection) IsKnown() bool {
-	switch r {
-	case ExpectedPaymentUpdateParamsAmountReconciledDirectionCredit, ExpectedPaymentUpdateParamsAmountReconciledDirectionDebit:
-		return true
-	}
-	return false
-}
-
-// One of credit or debit. Indicates whether amount_unreconciled is a credit or
-// debit amount.
-type ExpectedPaymentUpdateParamsAmountUnreconciledDirection string
-
-const (
-	ExpectedPaymentUpdateParamsAmountUnreconciledDirectionCredit ExpectedPaymentUpdateParamsAmountUnreconciledDirection = "credit"
-	ExpectedPaymentUpdateParamsAmountUnreconciledDirectionDebit  ExpectedPaymentUpdateParamsAmountUnreconciledDirection = "debit"
-)
-
-func (r ExpectedPaymentUpdateParamsAmountUnreconciledDirection) IsKnown() bool {
-	switch r {
-	case ExpectedPaymentUpdateParamsAmountUnreconciledDirectionCredit, ExpectedPaymentUpdateParamsAmountUnreconciledDirectionDebit:
-		return true
-	}
-	return false
-}
-
-// One of credit or debit. When you are receiving money, use credit. When you are
-// being charged, use debit.
-type ExpectedPaymentUpdateParamsDirection string
-
-const (
-	ExpectedPaymentUpdateParamsDirectionCredit ExpectedPaymentUpdateParamsDirection = "credit"
-	ExpectedPaymentUpdateParamsDirectionDebit  ExpectedPaymentUpdateParamsDirection = "debit"
-)
-
-func (r ExpectedPaymentUpdateParamsDirection) IsKnown() bool {
-	switch r {
-	case ExpectedPaymentUpdateParamsDirectionCredit, ExpectedPaymentUpdateParamsDirectionDebit:
-		return true
-	}
-	return false
-}
-
-// The Expected Payment's status can be updated from partially_reconciled to
-// reconciled.
-type ExpectedPaymentUpdateParamsStatus string
-
-const (
-	ExpectedPaymentUpdateParamsStatusReconciled ExpectedPaymentUpdateParamsStatus = "reconciled"
-)
-
-func (r ExpectedPaymentUpdateParamsStatus) IsKnown() bool {
-	switch r {
-	case ExpectedPaymentUpdateParamsStatusReconciled:
-		return true
-	}
-	return false
+	return apijson.MarshalRoot(r.ExpectedPaymentUpdate)
 }
 
 type ExpectedPaymentListParams struct {
