@@ -39,7 +39,7 @@ func NewHoldService(opts ...option.RequestOption) (r *HoldService) {
 }
 
 // Create a new hold
-func (r *HoldService) New(ctx context.Context, body HoldNewParams, opts ...option.RequestOption) (res *HoldNewResponse, err error) {
+func (r *HoldService) New(ctx context.Context, body HoldNewParams, opts ...option.RequestOption) (res *Hold, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "api/holds"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -47,7 +47,7 @@ func (r *HoldService) New(ctx context.Context, body HoldNewParams, opts ...optio
 }
 
 // Get a specific hold
-func (r *HoldService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *HoldGetResponse, err error) {
+func (r *HoldService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *Hold, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
@@ -59,7 +59,7 @@ func (r *HoldService) Get(ctx context.Context, id string, opts ...option.Request
 }
 
 // Update a hold
-func (r *HoldService) Update(ctx context.Context, id string, body HoldUpdateParams, opts ...option.RequestOption) (res *HoldUpdateResponse, err error) {
+func (r *HoldService) Update(ctx context.Context, id string, body HoldUpdateParams, opts ...option.RequestOption) (res *Hold, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
@@ -71,7 +71,7 @@ func (r *HoldService) Update(ctx context.Context, id string, body HoldUpdatePara
 }
 
 // Get a list of holds.
-func (r *HoldService) List(ctx context.Context, query HoldListParams, opts ...option.RequestOption) (res *pagination.Page[HoldListResponse], err error) {
+func (r *HoldService) List(ctx context.Context, query HoldListParams, opts ...option.RequestOption) (res *pagination.Page[Hold], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -89,22 +89,22 @@ func (r *HoldService) List(ctx context.Context, query HoldListParams, opts ...op
 }
 
 // Get a list of holds.
-func (r *HoldService) ListAutoPaging(ctx context.Context, query HoldListParams, opts ...option.RequestOption) *pagination.PageAutoPager[HoldListResponse] {
+func (r *HoldService) ListAutoPaging(ctx context.Context, query HoldListParams, opts ...option.RequestOption) *pagination.PageAutoPager[Hold] {
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
-type HoldNewResponse struct {
+type Hold struct {
 	ID        string    `json:"id,required" format:"uuid"`
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
 	// The type of object
-	Object HoldNewResponseObject `json:"object,required"`
+	Object HoldObject `json:"object,required"`
 	// The status of the hold
-	Status HoldNewResponseStatus `json:"status,required"`
+	Status HoldStatus `json:"status,required"`
 	// The ID of the target being held
 	TargetID string `json:"target_id,required" format:"uuid"`
 	// The type of target being held
-	TargetType HoldNewResponseTargetType `json:"target_type,required"`
-	UpdatedAt  time.Time                 `json:"updated_at,required" format:"date-time"`
+	TargetType HoldTargetType `json:"target_type,required"`
+	UpdatedAt  time.Time      `json:"updated_at,required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode"`
@@ -115,12 +115,12 @@ type HoldNewResponse struct {
 	// The resolution of the hold
 	Resolution string `json:"resolution,nullable"`
 	// When the hold was resolved
-	ResolvedAt time.Time           `json:"resolved_at,nullable" format:"date-time"`
-	JSON       holdNewResponseJSON `json:"-"`
+	ResolvedAt time.Time `json:"resolved_at,nullable" format:"date-time"`
+	JSON       holdJSON  `json:"-"`
 }
 
-// holdNewResponseJSON contains the JSON metadata for the struct [HoldNewResponse]
-type holdNewResponseJSON struct {
+// holdJSON contains the JSON metadata for the struct [Hold]
+type holdJSON struct {
 	ID          apijson.Field
 	CreatedAt   apijson.Field
 	Object      apijson.Field
@@ -137,351 +137,55 @@ type holdNewResponseJSON struct {
 	ExtraFields map[string]apijson.Field
 }
 
-func (r *HoldNewResponse) UnmarshalJSON(data []byte) (err error) {
+func (r *Hold) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r holdNewResponseJSON) RawJSON() string {
+func (r holdJSON) RawJSON() string {
 	return r.raw
 }
 
 // The type of object
-type HoldNewResponseObject string
+type HoldObject string
 
 const (
-	HoldNewResponseObjectHold HoldNewResponseObject = "hold"
+	HoldObjectHold HoldObject = "hold"
 )
 
-func (r HoldNewResponseObject) IsKnown() bool {
+func (r HoldObject) IsKnown() bool {
 	switch r {
-	case HoldNewResponseObjectHold:
+	case HoldObjectHold:
 		return true
 	}
 	return false
 }
 
 // The status of the hold
-type HoldNewResponseStatus string
+type HoldStatus string
 
 const (
-	HoldNewResponseStatusActive   HoldNewResponseStatus = "active"
-	HoldNewResponseStatusResolved HoldNewResponseStatus = "resolved"
+	HoldStatusActive   HoldStatus = "active"
+	HoldStatusResolved HoldStatus = "resolved"
 )
 
-func (r HoldNewResponseStatus) IsKnown() bool {
+func (r HoldStatus) IsKnown() bool {
 	switch r {
-	case HoldNewResponseStatusActive, HoldNewResponseStatusResolved:
+	case HoldStatusActive, HoldStatusResolved:
 		return true
 	}
 	return false
 }
 
 // The type of target being held
-type HoldNewResponseTargetType string
+type HoldTargetType string
 
 const (
-	HoldNewResponseTargetTypePaymentOrder HoldNewResponseTargetType = "payment_order"
+	HoldTargetTypePaymentOrder HoldTargetType = "payment_order"
 )
 
-func (r HoldNewResponseTargetType) IsKnown() bool {
+func (r HoldTargetType) IsKnown() bool {
 	switch r {
-	case HoldNewResponseTargetTypePaymentOrder:
-		return true
-	}
-	return false
-}
-
-type HoldGetResponse struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	// The type of object
-	Object HoldGetResponseObject `json:"object,required"`
-	// The status of the hold
-	Status HoldGetResponseStatus `json:"status,required"`
-	// The ID of the target being held
-	TargetID string `json:"target_id,required" format:"uuid"`
-	// The type of target being held
-	TargetType HoldGetResponseTargetType `json:"target_type,required"`
-	UpdatedAt  time.Time                 `json:"updated_at,required" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode"`
-	// Additional metadata for the hold
-	Metadata map[string]string `json:"metadata,nullable"`
-	// The reason for the hold
-	Reason string `json:"reason,nullable"`
-	// The resolution of the hold
-	Resolution string `json:"resolution,nullable"`
-	// When the hold was resolved
-	ResolvedAt time.Time           `json:"resolved_at,nullable" format:"date-time"`
-	JSON       holdGetResponseJSON `json:"-"`
-}
-
-// holdGetResponseJSON contains the JSON metadata for the struct [HoldGetResponse]
-type holdGetResponseJSON struct {
-	ID          apijson.Field
-	CreatedAt   apijson.Field
-	Object      apijson.Field
-	Status      apijson.Field
-	TargetID    apijson.Field
-	TargetType  apijson.Field
-	UpdatedAt   apijson.Field
-	LiveMode    apijson.Field
-	Metadata    apijson.Field
-	Reason      apijson.Field
-	Resolution  apijson.Field
-	ResolvedAt  apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *HoldGetResponse) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r holdGetResponseJSON) RawJSON() string {
-	return r.raw
-}
-
-// The type of object
-type HoldGetResponseObject string
-
-const (
-	HoldGetResponseObjectHold HoldGetResponseObject = "hold"
-)
-
-func (r HoldGetResponseObject) IsKnown() bool {
-	switch r {
-	case HoldGetResponseObjectHold:
-		return true
-	}
-	return false
-}
-
-// The status of the hold
-type HoldGetResponseStatus string
-
-const (
-	HoldGetResponseStatusActive   HoldGetResponseStatus = "active"
-	HoldGetResponseStatusResolved HoldGetResponseStatus = "resolved"
-)
-
-func (r HoldGetResponseStatus) IsKnown() bool {
-	switch r {
-	case HoldGetResponseStatusActive, HoldGetResponseStatusResolved:
-		return true
-	}
-	return false
-}
-
-// The type of target being held
-type HoldGetResponseTargetType string
-
-const (
-	HoldGetResponseTargetTypePaymentOrder HoldGetResponseTargetType = "payment_order"
-)
-
-func (r HoldGetResponseTargetType) IsKnown() bool {
-	switch r {
-	case HoldGetResponseTargetTypePaymentOrder:
-		return true
-	}
-	return false
-}
-
-type HoldUpdateResponse struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	// The type of object
-	Object HoldUpdateResponseObject `json:"object,required"`
-	// The status of the hold
-	Status HoldUpdateResponseStatus `json:"status,required"`
-	// The ID of the target being held
-	TargetID string `json:"target_id,required" format:"uuid"`
-	// The type of target being held
-	TargetType HoldUpdateResponseTargetType `json:"target_type,required"`
-	UpdatedAt  time.Time                    `json:"updated_at,required" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode"`
-	// Additional metadata for the hold
-	Metadata map[string]string `json:"metadata,nullable"`
-	// The reason for the hold
-	Reason string `json:"reason,nullable"`
-	// The resolution of the hold
-	Resolution string `json:"resolution,nullable"`
-	// When the hold was resolved
-	ResolvedAt time.Time              `json:"resolved_at,nullable" format:"date-time"`
-	JSON       holdUpdateResponseJSON `json:"-"`
-}
-
-// holdUpdateResponseJSON contains the JSON metadata for the struct
-// [HoldUpdateResponse]
-type holdUpdateResponseJSON struct {
-	ID          apijson.Field
-	CreatedAt   apijson.Field
-	Object      apijson.Field
-	Status      apijson.Field
-	TargetID    apijson.Field
-	TargetType  apijson.Field
-	UpdatedAt   apijson.Field
-	LiveMode    apijson.Field
-	Metadata    apijson.Field
-	Reason      apijson.Field
-	Resolution  apijson.Field
-	ResolvedAt  apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *HoldUpdateResponse) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r holdUpdateResponseJSON) RawJSON() string {
-	return r.raw
-}
-
-// The type of object
-type HoldUpdateResponseObject string
-
-const (
-	HoldUpdateResponseObjectHold HoldUpdateResponseObject = "hold"
-)
-
-func (r HoldUpdateResponseObject) IsKnown() bool {
-	switch r {
-	case HoldUpdateResponseObjectHold:
-		return true
-	}
-	return false
-}
-
-// The status of the hold
-type HoldUpdateResponseStatus string
-
-const (
-	HoldUpdateResponseStatusActive   HoldUpdateResponseStatus = "active"
-	HoldUpdateResponseStatusResolved HoldUpdateResponseStatus = "resolved"
-)
-
-func (r HoldUpdateResponseStatus) IsKnown() bool {
-	switch r {
-	case HoldUpdateResponseStatusActive, HoldUpdateResponseStatusResolved:
-		return true
-	}
-	return false
-}
-
-// The type of target being held
-type HoldUpdateResponseTargetType string
-
-const (
-	HoldUpdateResponseTargetTypePaymentOrder HoldUpdateResponseTargetType = "payment_order"
-)
-
-func (r HoldUpdateResponseTargetType) IsKnown() bool {
-	switch r {
-	case HoldUpdateResponseTargetTypePaymentOrder:
-		return true
-	}
-	return false
-}
-
-type HoldListResponse struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	// The type of object
-	Object HoldListResponseObject `json:"object,required"`
-	// The status of the hold
-	Status HoldListResponseStatus `json:"status,required"`
-	// The ID of the target being held
-	TargetID string `json:"target_id,required" format:"uuid"`
-	// The type of target being held
-	TargetType HoldListResponseTargetType `json:"target_type,required"`
-	UpdatedAt  time.Time                  `json:"updated_at,required" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode"`
-	// Additional metadata for the hold
-	Metadata map[string]string `json:"metadata,nullable"`
-	// The reason for the hold
-	Reason string `json:"reason,nullable"`
-	// The resolution of the hold
-	Resolution string `json:"resolution,nullable"`
-	// When the hold was resolved
-	ResolvedAt time.Time            `json:"resolved_at,nullable" format:"date-time"`
-	JSON       holdListResponseJSON `json:"-"`
-}
-
-// holdListResponseJSON contains the JSON metadata for the struct
-// [HoldListResponse]
-type holdListResponseJSON struct {
-	ID          apijson.Field
-	CreatedAt   apijson.Field
-	Object      apijson.Field
-	Status      apijson.Field
-	TargetID    apijson.Field
-	TargetType  apijson.Field
-	UpdatedAt   apijson.Field
-	LiveMode    apijson.Field
-	Metadata    apijson.Field
-	Reason      apijson.Field
-	Resolution  apijson.Field
-	ResolvedAt  apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *HoldListResponse) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r holdListResponseJSON) RawJSON() string {
-	return r.raw
-}
-
-// The type of object
-type HoldListResponseObject string
-
-const (
-	HoldListResponseObjectHold HoldListResponseObject = "hold"
-)
-
-func (r HoldListResponseObject) IsKnown() bool {
-	switch r {
-	case HoldListResponseObjectHold:
-		return true
-	}
-	return false
-}
-
-// The status of the hold
-type HoldListResponseStatus string
-
-const (
-	HoldListResponseStatusActive   HoldListResponseStatus = "active"
-	HoldListResponseStatusResolved HoldListResponseStatus = "resolved"
-)
-
-func (r HoldListResponseStatus) IsKnown() bool {
-	switch r {
-	case HoldListResponseStatusActive, HoldListResponseStatusResolved:
-		return true
-	}
-	return false
-}
-
-// The type of target being held
-type HoldListResponseTargetType string
-
-const (
-	HoldListResponseTargetTypePaymentOrder HoldListResponseTargetType = "payment_order"
-)
-
-func (r HoldListResponseTargetType) IsKnown() bool {
-	switch r {
-	case HoldListResponseTargetTypePaymentOrder:
+	case HoldTargetTypePaymentOrder:
 		return true
 	}
 	return false

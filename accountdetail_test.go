@@ -32,8 +32,10 @@ func TestAccountDetailNewWithOptionalParams(t *testing.T) {
 		moderntreasury.AccountDetailNewParamsAccountsTypeExternalAccounts,
 		"account_id",
 		moderntreasury.AccountDetailNewParams{
-			AccountNumber:     moderntreasury.F("account_number"),
-			AccountNumberType: moderntreasury.F(moderntreasury.AccountDetailNewParamsAccountNumberTypeAuNumber),
+			AccountDetailCreate: moderntreasury.AccountDetailCreateParam{
+				AccountNumber:     moderntreasury.F("account_number"),
+				AccountNumberType: moderntreasury.F(moderntreasury.AccountDetailCreateAccountNumberTypeAuNumber),
+			},
 		},
 	)
 	if err != nil {

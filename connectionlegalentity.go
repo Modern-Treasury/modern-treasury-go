@@ -207,7 +207,7 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
 	// The legal entity associations and its child legal entities.
-	LegalEntityAssociations param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociation] `json:"legal_entity_associations"`
+	LegalEntityAssociations param.Field[[]LegalEntityAssociationInlineCreateParam] `json:"legal_entity_associations"`
 	// The type of legal entity.
 	LegalEntityType param.Field[ConnectionLegalEntityNewParamsLegalEntityLegalEntityType] `json:"legal_entity_type"`
 	// The business's legal structure.
@@ -240,39 +240,6 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 
 func (r ConnectionLegalEntityNewParamsLegalEntity) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociation struct {
-	RelationshipTypes param.Field[[]ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType] `json:"relationship_types,required"`
-	// The child legal entity.
-	ChildLegalEntity param.Field[shared.ChildLegalEntityCreateParam] `json:"child_legal_entity"`
-	// The ID of the child legal entity.
-	ChildLegalEntityID param.Field[string] `json:"child_legal_entity_id"`
-	// The child entity's ownership percentage iff they are a beneficial owner.
-	OwnershipPercentage param.Field[int64] `json:"ownership_percentage"`
-	// The job title of the child entity at the parent entity.
-	Title param.Field[string] `json:"title"`
-}
-
-func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociation) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// A list of relationship types for how the child entity relates to parent entity.
-type ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType string
-
-const (
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeAuthorizedSigner ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType = "authorized_signer"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner  ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType = "beneficial_owner"
-	ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeControlPerson    ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType = "control_person"
-)
-
-func (r ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipType) IsKnown() bool {
-	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeAuthorizedSigner, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeBeneficialOwner, ConnectionLegalEntityNewParamsLegalEntityLegalEntityAssociationsRelationshipTypeControlPerson:
-		return true
-	}
-	return false
 }
 
 // The type of legal entity.

@@ -449,7 +449,7 @@ type InvoiceNewParams struct {
 	// An array of invoice line items. The API supports a maximum of 50 invoice line
 	// items per invoice. If a greater number of invoice line items is required, please
 	// contact support.
-	InvoiceLineItems param.Field[[]InvoiceNewParamsInvoiceLineItem] `json:"invoice_line_items"`
+	InvoiceLineItems param.Field[[]InvoiceLineItemCreateParam] `json:"invoice_line_items"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceNewParamsInvoicerAddress] `json:"invoicer_address"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -532,34 +532,6 @@ func (r InvoiceNewParamsCounterpartyShippingAddress) MarshalJSON() (data []byte,
 	return apijson.MarshalRoot(r)
 }
 
-type InvoiceNewParamsInvoiceLineItem struct {
-	// The name of the line item, typically a product or SKU name.
-	Name param.Field[string] `json:"name,required"`
-	// The cost per unit of the product or service that this line item is for,
-	// specified in the invoice currency's smallest unit.
-	UnitAmount param.Field[int64] `json:"unit_amount,required"`
-	// An optional free-form description of the line item.
-	Description param.Field[string] `json:"description"`
-	// Either `debit` or `credit`. `debit` indicates that a client owes the business
-	// money and increases the invoice's `total_amount` due. `credit` has the opposite
-	// intention and effect.
-	Direction param.Field[string] `json:"direction"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The number of units of a product or service that this line item is for. Must be
-	// a whole number. Defaults to 1 if not provided.
-	Quantity param.Field[int64] `json:"quantity"`
-	// The cost per unit of the product or service that this line item is for,
-	// specified in the invoice currency's smallest unit. Accepts decimal strings with
-	// up to 12 decimals
-	UnitAmountDecimal param.Field[string] `json:"unit_amount_decimal"`
-}
-
-func (r InvoiceNewParamsInvoiceLineItem) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
 // The invoice issuer's business address.
 type InvoiceNewParamsInvoicerAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
@@ -621,7 +593,7 @@ type InvoiceUpdateParams struct {
 	// An array of invoice line items. The API supports a maximum of 50 invoice line
 	// items per invoice. If a greater number of invoice line items is required, please
 	// contact support.
-	InvoiceLineItems param.Field[[]InvoiceUpdateParamsInvoiceLineItem] `json:"invoice_line_items"`
+	InvoiceLineItems param.Field[[]InvoiceLineItemCreateParam] `json:"invoice_line_items"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceUpdateParamsInvoicerAddress] `json:"invoicer_address"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -707,34 +679,6 @@ type InvoiceUpdateParamsCounterpartyShippingAddress struct {
 }
 
 func (r InvoiceUpdateParamsCounterpartyShippingAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type InvoiceUpdateParamsInvoiceLineItem struct {
-	// The name of the line item, typically a product or SKU name.
-	Name param.Field[string] `json:"name,required"`
-	// The cost per unit of the product or service that this line item is for,
-	// specified in the invoice currency's smallest unit.
-	UnitAmount param.Field[int64] `json:"unit_amount,required"`
-	// An optional free-form description of the line item.
-	Description param.Field[string] `json:"description"`
-	// Either `debit` or `credit`. `debit` indicates that a client owes the business
-	// money and increases the invoice's `total_amount` due. `credit` has the opposite
-	// intention and effect.
-	Direction param.Field[string] `json:"direction"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The number of units of a product or service that this line item is for. Must be
-	// a whole number. Defaults to 1 if not provided.
-	Quantity param.Field[int64] `json:"quantity"`
-	// The cost per unit of the product or service that this line item is for,
-	// specified in the invoice currency's smallest unit. Accepts decimal strings with
-	// up to 12 decimals
-	UnitAmountDecimal param.Field[string] `json:"unit_amount_decimal"`
-}
-
-func (r InvoiceUpdateParamsInvoiceLineItem) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

@@ -115,38 +115,40 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		moderntreasury.LedgerTransactionUpdateParams{
-			Description: moderntreasury.F("description"),
-			EffectiveAt: moderntreasury.F(time.Now()),
-			LedgerEntries: moderntreasury.F([]shared.LedgerEntryCreateRequestParam{{
-				Amount:          moderntreasury.F(int64(0)),
-				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
-				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
+			LedgerTransactionUpdate: moderntreasury.LedgerTransactionUpdateParam{
+				Description: moderntreasury.F("description"),
 				EffectiveAt: moderntreasury.F(time.Now()),
-				LockVersion: moderntreasury.F(int64(0)),
+				LedgerEntries: moderntreasury.F([]shared.LedgerEntryCreateRequestParam{{
+					Amount:          moderntreasury.F(int64(0)),
+					Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
+					LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+					AvailableBalanceAmount: moderntreasury.F(map[string]int64{
+						"foo": int64(0),
+					}),
+					EffectiveAt: moderntreasury.F(time.Now()),
+					LockVersion: moderntreasury.F(int64(0)),
+					Metadata: moderntreasury.F(map[string]string{
+						"key":    "value",
+						"foo":    "bar",
+						"modern": "treasury",
+					}),
+					PendingBalanceAmount: moderntreasury.F(map[string]int64{
+						"foo": int64(0),
+					}),
+					PostedBalanceAmount: moderntreasury.F(map[string]int64{
+						"foo": int64(0),
+					}),
+					ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+				}}),
+				LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionUpdateLedgerableTypeExpectedPayment),
 				Metadata: moderntreasury.F(map[string]string{
 					"key":    "value",
 					"foo":    "bar",
 					"modern": "treasury",
 				}),
-				PendingBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				PostedBalanceAmount: moderntreasury.F(map[string]int64{
-					"foo": int64(0),
-				}),
-				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
-			}}),
-			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionUpdateParamsLedgerableTypeExpectedPayment),
-			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
-				"foo":    "bar",
-				"modern": "treasury",
-			}),
-			Status: moderntreasury.F(moderntreasury.LedgerTransactionUpdateParamsStatusArchived),
+				Status: moderntreasury.F(moderntreasury.LedgerTransactionUpdateStatusArchived),
+			},
 		},
 	)
 	if err != nil {

@@ -263,23 +263,29 @@ which can be used to wrap any `io.Reader` with the appropriate file name and con
 // A file from the file system
 file, err := os.Open("my/file.txt")
 moderntreasury.DocumentNewParams{
-	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
-	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
-	File:             moderntreasury.F[io.Reader](file),
+	DocumentCreate: moderntreasury.DocumentCreateParam{
+		DocumentableID:   moderntreasury.F("documentable_id"),
+		DocumentableType: moderntreasury.F(moderntreasury.DocumentCreateDocumentableTypeCounterparties),
+		File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
+	},
 }
 
 // A file from a string
 moderntreasury.DocumentNewParams{
-	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
-	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
-	File:             moderntreasury.F[io.Reader](strings.NewReader("my file contents")),
+	DocumentCreate: moderntreasury.DocumentCreateParam{
+		DocumentableID:   moderntreasury.F("documentable_id"),
+		DocumentableType: moderntreasury.F(moderntreasury.DocumentCreateDocumentableTypeCounterparties),
+		File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
+	},
 }
 
 // With a custom filename and contentType
 moderntreasury.DocumentNewParams{
-	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
-	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
-	File:             moderntreasury.FileParam(strings.NewReader(`{"hello": "foo"}`), "file.go", "application/json"),
+	DocumentCreate: moderntreasury.DocumentCreateParam{
+		DocumentableID:   moderntreasury.F("documentable_id"),
+		DocumentableType: moderntreasury.F(moderntreasury.DocumentCreateDocumentableTypeCounterparties),
+		File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
+	},
 }
 ```
 

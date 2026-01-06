@@ -83,7 +83,10 @@ Methods:
 
 Params Types:
 
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ExpectedPaymentCreateParam">ExpectedPaymentCreateParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ExpectedPaymentType">ExpectedPaymentType</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ExpectedPaymentUpdateParam">ExpectedPaymentUpdateParam</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemParam">LineItemParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ReconciliationRuleParam">ReconciliationRuleParam</a>
 
 Response Types:
@@ -151,6 +154,10 @@ Methods:
 
 ## LineItems
 
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#InvoiceLineItemCreateParam">InvoiceLineItemCreateParam</a>
+
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#InvoiceLineItem">InvoiceLineItem</a>
@@ -164,6 +171,10 @@ Methods:
 - <code title="delete /api/invoices/{invoice_id}/invoice_line_items/{id}">client.Invoices.LineItems.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#InvoiceLineItemService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, invoiceID <a href="https://pkg.go.dev/builtin#string">string</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#InvoiceLineItem">InvoiceLineItem</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Documents
+
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#DocumentCreateParam">DocumentCreateParam</a>
 
 Response Types:
 
@@ -190,6 +201,10 @@ Methods:
 
 # AccountDetails
 
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#AccountDetailCreateParam">AccountDetailCreateParam</a>
+
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#AccountDetail">AccountDetail</a>
@@ -202,6 +217,10 @@ Methods:
 - <code title="delete /api/{accounts_type}/{account_id}/account_details/{id}">client.AccountDetails.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#AccountDetailService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, accountsType <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#AccountDetailDeleteParamsAccountsType">AccountDetailDeleteParamsAccountsType</a>, accountID <a href="https://pkg.go.dev/builtin#string">string</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) <a href="https://pkg.go.dev/builtin#error">error</a></code>
 
 # RoutingDetails
+
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#RoutingDetailCreateParam">RoutingDetailCreateParam</a>
 
 Response Types:
 
@@ -216,8 +235,13 @@ Methods:
 
 # InternalAccounts
 
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#AccountCapabilityParam">AccountCapabilityParam</a>
+
 Response Types:
 
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#AccountCapability">AccountCapability</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#InternalAccount">InternalAccount</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#InternalAccountUpdateAccountCapabilityResponse">InternalAccountUpdateAccountCapabilityResponse</a>
 
@@ -307,13 +331,12 @@ Methods:
 
 Response Types:
 
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerAccountStatementNewResponse">LedgerAccountStatementNewResponse</a>
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerAccountStatementGetResponse">LedgerAccountStatementGetResponse</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerAccountStatement">LedgerAccountStatement</a>
 
 Methods:
 
-- <code title="post /api/ledger_account_statements">client.LedgerAccountStatements.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerAccountStatementService.New">New</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerAccountStatementNewParams">LedgerAccountStatementNewParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerAccountStatementNewResponse">LedgerAccountStatementNewResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="get /api/ledger_account_statements/{id}">client.LedgerAccountStatements.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerAccountStatementService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerAccountStatementGetResponse">LedgerAccountStatementGetResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="post /api/ledger_account_statements">client.LedgerAccountStatements.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerAccountStatementService.New">New</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerAccountStatementNewParams">LedgerAccountStatementNewParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerAccountStatement">LedgerAccountStatement</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="get /api/ledger_account_statements/{id}">client.LedgerAccountStatements.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerAccountStatementService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerAccountStatement">LedgerAccountStatement</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # LedgerEntries
 
@@ -328,6 +351,10 @@ Methods:
 - <code title="get /api/ledger_entries">client.LedgerEntries.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerEntryService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerEntryListParams">LedgerEntryListParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination#Page">Page</a>[<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerEntry">LedgerEntry</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # LedgerTransactions
+
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LedgerTransactionUpdateParam">LedgerTransactionUpdateParam</a>
 
 Response Types:
 
@@ -354,15 +381,22 @@ Methods:
 
 # LineItems
 
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#AccountingParam">AccountingParam</a>
+
 Response Types:
 
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItem">LineItem</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#Accounting">Accounting</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemGetResponse">LineItemGetResponse</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemUpdateResponse">LineItemUpdateResponse</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemListResponse">LineItemListResponse</a>
 
 Methods:
 
-- <code title="get /api/{itemizable_type}/{itemizable_id}/line_items/{id}">client.LineItems.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, itemizableType <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemGetParamsItemizableType">LineItemGetParamsItemizableType</a>, itemizableID <a href="https://pkg.go.dev/builtin#string">string</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItem">LineItem</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="patch /api/{itemizable_type}/{itemizable_id}/line_items/{id}">client.LineItems.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, itemizableType <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemUpdateParamsItemizableType">LineItemUpdateParamsItemizableType</a>, itemizableID <a href="https://pkg.go.dev/builtin#string">string</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemUpdateParams">LineItemUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItem">LineItem</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="get /api/{itemizable_type}/{itemizable_id}/line_items">client.LineItems.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, itemizableType <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemListParamsItemizableType">LineItemListParamsItemizableType</a>, itemizableID <a href="https://pkg.go.dev/builtin#string">string</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemListParams">LineItemListParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination#Page">Page</a>[<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItem">LineItem</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="get /api/{itemizable_type}/{itemizable_id}/line_items/{id}">client.LineItems.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, itemizableType <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemGetParamsItemizableType">LineItemGetParamsItemizableType</a>, itemizableID <a href="https://pkg.go.dev/builtin#string">string</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemGetResponse">LineItemGetResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="patch /api/{itemizable_type}/{itemizable_id}/line_items/{id}">client.LineItems.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, itemizableType <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemUpdateParamsItemizableType">LineItemUpdateParamsItemizableType</a>, itemizableID <a href="https://pkg.go.dev/builtin#string">string</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemUpdateParams">LineItemUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemUpdateResponse">LineItemUpdateResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="get /api/{itemizable_type}/{itemizable_id}/line_items">client.LineItems.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, itemizableType <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemListParamsItemizableType">LineItemListParamsItemizableType</a>, itemizableID <a href="https://pkg.go.dev/builtin#string">string</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemListParams">LineItemListParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination#Page">Page</a>[<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LineItemListResponse">LineItemListResponse</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # PaymentFlows
 
@@ -382,8 +416,10 @@ Methods:
 Params Types:
 
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ContactDetailCreateRequestParam">ContactDetailCreateRequestParam</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentOrderAsyncCreateParam">PaymentOrderAsyncCreateParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentOrderSubtype">PaymentOrderSubtype</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentOrderType">PaymentOrderType</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentOrderUpdateParam">PaymentOrderUpdateParam</a>
 
 Response Types:
 
@@ -435,6 +471,11 @@ Methods:
 - <code title="get /api/returns">client.Returns.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ReturnService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ReturnListParams">ReturnListParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination#Page">Page</a>[<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ReturnObject">ReturnObject</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # Transactions
+
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#TransactionCreateParam">TransactionCreateParam</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#TransactionUpdateParam">TransactionUpdateParam</a>
 
 Response Types:
 
@@ -555,6 +596,11 @@ Methods:
 
 # LegalEntities
 
+Params Types:
+
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntityAssociationInlineCreateParam">LegalEntityAssociationInlineCreateParam</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntityCreateParam">LegalEntityCreateParam</a>
+
 Response Types:
 
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntity">LegalEntity</a>
@@ -570,6 +616,7 @@ Methods:
 
 Response Types:
 
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ChildLegalEntity">ChildLegalEntity</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntityAssociation">LegalEntityAssociation</a>
 
 Methods:
@@ -580,17 +627,14 @@ Methods:
 
 Response Types:
 
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionNewResponse">PaymentActionNewResponse</a>
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionGetResponse">PaymentActionGetResponse</a>
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionUpdateResponse">PaymentActionUpdateResponse</a>
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionListResponse">PaymentActionListResponse</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentAction">PaymentAction</a>
 
 Methods:
 
-- <code title="post /api/payment_actions">client.PaymentActions.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionService.New">New</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionNewParams">PaymentActionNewParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionNewResponse">PaymentActionNewResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="get /api/payment_actions/{id}">client.PaymentActions.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionGetResponse">PaymentActionGetResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="patch /api/payment_actions/{id}">client.PaymentActions.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionUpdateParams">PaymentActionUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionUpdateResponse">PaymentActionUpdateResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="get /api/payment_actions">client.PaymentActions.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionListParams">PaymentActionListParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination#Page">Page</a>[<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionListResponse">PaymentActionListResponse</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="post /api/payment_actions">client.PaymentActions.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionService.New">New</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionNewParams">PaymentActionNewParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentAction">PaymentAction</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="get /api/payment_actions/{id}">client.PaymentActions.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentAction">PaymentAction</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="patch /api/payment_actions/{id}">client.PaymentActions.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionUpdateParams">PaymentActionUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentAction">PaymentAction</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="get /api/payment_actions">client.PaymentActions.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentActionListParams">PaymentActionListParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination#Page">Page</a>[<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentAction">PaymentAction</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # JournalEntries
 
@@ -611,14 +655,11 @@ Methods:
 
 Response Types:
 
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldNewResponse">HoldNewResponse</a>
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldGetResponse">HoldGetResponse</a>
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldUpdateResponse">HoldUpdateResponse</a>
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldListResponse">HoldListResponse</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#Hold">Hold</a>
 
 Methods:
 
-- <code title="post /api/holds">client.Holds.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldService.New">New</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldNewParams">HoldNewParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldNewResponse">HoldNewResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="get /api/holds/{id}">client.Holds.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldGetResponse">HoldGetResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="patch /api/holds/{id}">client.Holds.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldUpdateParams">HoldUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldUpdateResponse">HoldUpdateResponse</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code title="get /api/holds">client.Holds.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldListParams">HoldListParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination#Page">Page</a>[<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldListResponse">HoldListResponse</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="post /api/holds">client.Holds.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldService.New">New</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldNewParams">HoldNewParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#Hold">Hold</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="get /api/holds/{id}">client.Holds.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#Hold">Hold</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="patch /api/holds/{id}">client.Holds.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldUpdateParams">HoldUpdateParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#Hold">Hold</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
+- <code title="get /api/holds">client.Holds.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#HoldListParams">HoldListParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination#Page">Page</a>[<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#Hold">Hold</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>

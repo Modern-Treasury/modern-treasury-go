@@ -62,7 +62,7 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 		Currency:              moderntreasury.F(shared.CurrencyAed),
 		Description:           moderntreasury.F("description"),
 		FallbackPaymentMethod: moderntreasury.F("fallback_payment_method"),
-		InvoiceLineItems: moderntreasury.F([]moderntreasury.InvoiceNewParamsInvoiceLineItem{{
+		InvoiceLineItems: moderntreasury.F([]moderntreasury.InvoiceLineItemCreateParam{{
 			Name:        moderntreasury.F("name"),
 			UnitAmount:  moderntreasury.F(int64(0)),
 			Description: moderntreasury.F("description"),
@@ -179,7 +179,7 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 			Description:           moderntreasury.F("description"),
 			DueDate:               moderntreasury.F(time.Now()),
 			FallbackPaymentMethod: moderntreasury.F("fallback_payment_method"),
-			InvoiceLineItems: moderntreasury.F([]moderntreasury.InvoiceUpdateParamsInvoiceLineItem{{
+			InvoiceLineItems: moderntreasury.F([]moderntreasury.InvoiceLineItemCreateParam{{
 				Name:        moderntreasury.F("name"),
 				UnitAmount:  moderntreasury.F(int64(0)),
 				Description: moderntreasury.F("description"),
