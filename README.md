@@ -31,7 +31,7 @@ Or to pin the version:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/Modern-Treasury/modern-treasury-go/v2@v2.36.0'
+go get -u 'github.com/Modern-Treasury/modern-treasury-go/v2@v2.37.0'
 ```
 
 <!-- x-release-please-end -->
