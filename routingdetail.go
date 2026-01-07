@@ -248,116 +248,20 @@ func (r RoutingDetailRoutingNumberType) IsKnown() bool {
 	return false
 }
 
-type RoutingDetailCreateParam struct {
+type RoutingDetailNewParams struct {
 	// The routing number of the bank.
 	RoutingNumber param.Field[string] `json:"routing_number,required"`
 	// The type of routing number. See
 	// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
 	// more details.
-	RoutingNumberType param.Field[RoutingDetailCreateRoutingNumberType] `json:"routing_number_type,required"`
+	RoutingNumberType param.Field[RoutingDetailNewParamsRoutingNumberType] `json:"routing_number_type,required"`
 	// If the routing detail is to be used for a specific payment type this field will
 	// be populated, otherwise null.
-	PaymentType param.Field[RoutingDetailCreatePaymentType] `json:"payment_type"`
-}
-
-func (r RoutingDetailCreateParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The type of routing number. See
-// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
-// more details.
-type RoutingDetailCreateRoutingNumberType string
-
-const (
-	RoutingDetailCreateRoutingNumberTypeAba                     RoutingDetailCreateRoutingNumberType = "aba"
-	RoutingDetailCreateRoutingNumberTypeAuBsb                   RoutingDetailCreateRoutingNumberType = "au_bsb"
-	RoutingDetailCreateRoutingNumberTypeBrCodigo                RoutingDetailCreateRoutingNumberType = "br_codigo"
-	RoutingDetailCreateRoutingNumberTypeCaCpa                   RoutingDetailCreateRoutingNumberType = "ca_cpa"
-	RoutingDetailCreateRoutingNumberTypeChips                   RoutingDetailCreateRoutingNumberType = "chips"
-	RoutingDetailCreateRoutingNumberTypeCnaps                   RoutingDetailCreateRoutingNumberType = "cnaps"
-	RoutingDetailCreateRoutingNumberTypeDkInterbankClearingCode RoutingDetailCreateRoutingNumberType = "dk_interbank_clearing_code"
-	RoutingDetailCreateRoutingNumberTypeGBSortCode              RoutingDetailCreateRoutingNumberType = "gb_sort_code"
-	RoutingDetailCreateRoutingNumberTypeHkInterbankClearingCode RoutingDetailCreateRoutingNumberType = "hk_interbank_clearing_code"
-	RoutingDetailCreateRoutingNumberTypeHuInterbankClearingCode RoutingDetailCreateRoutingNumberType = "hu_interbank_clearing_code"
-	RoutingDetailCreateRoutingNumberTypeIDSknbiCode             RoutingDetailCreateRoutingNumberType = "id_sknbi_code"
-	RoutingDetailCreateRoutingNumberTypeIlBankCode              RoutingDetailCreateRoutingNumberType = "il_bank_code"
-	RoutingDetailCreateRoutingNumberTypeInIfsc                  RoutingDetailCreateRoutingNumberType = "in_ifsc"
-	RoutingDetailCreateRoutingNumberTypeJpZenginCode            RoutingDetailCreateRoutingNumberType = "jp_zengin_code"
-	RoutingDetailCreateRoutingNumberTypeMxBankIdentifier        RoutingDetailCreateRoutingNumberType = "mx_bank_identifier"
-	RoutingDetailCreateRoutingNumberTypeMyBranchCode            RoutingDetailCreateRoutingNumberType = "my_branch_code"
-	RoutingDetailCreateRoutingNumberTypeNzNationalClearingCode  RoutingDetailCreateRoutingNumberType = "nz_national_clearing_code"
-	RoutingDetailCreateRoutingNumberTypePlNationalClearingCode  RoutingDetailCreateRoutingNumberType = "pl_national_clearing_code"
-	RoutingDetailCreateRoutingNumberTypeSeBankgiroClearingCode  RoutingDetailCreateRoutingNumberType = "se_bankgiro_clearing_code"
-	RoutingDetailCreateRoutingNumberTypeSgInterbankClearingCode RoutingDetailCreateRoutingNumberType = "sg_interbank_clearing_code"
-	RoutingDetailCreateRoutingNumberTypeSwift                   RoutingDetailCreateRoutingNumberType = "swift"
-	RoutingDetailCreateRoutingNumberTypeZaNationalClearingCode  RoutingDetailCreateRoutingNumberType = "za_national_clearing_code"
-)
-
-func (r RoutingDetailCreateRoutingNumberType) IsKnown() bool {
-	switch r {
-	case RoutingDetailCreateRoutingNumberTypeAba, RoutingDetailCreateRoutingNumberTypeAuBsb, RoutingDetailCreateRoutingNumberTypeBrCodigo, RoutingDetailCreateRoutingNumberTypeCaCpa, RoutingDetailCreateRoutingNumberTypeChips, RoutingDetailCreateRoutingNumberTypeCnaps, RoutingDetailCreateRoutingNumberTypeDkInterbankClearingCode, RoutingDetailCreateRoutingNumberTypeGBSortCode, RoutingDetailCreateRoutingNumberTypeHkInterbankClearingCode, RoutingDetailCreateRoutingNumberTypeHuInterbankClearingCode, RoutingDetailCreateRoutingNumberTypeIDSknbiCode, RoutingDetailCreateRoutingNumberTypeIlBankCode, RoutingDetailCreateRoutingNumberTypeInIfsc, RoutingDetailCreateRoutingNumberTypeJpZenginCode, RoutingDetailCreateRoutingNumberTypeMxBankIdentifier, RoutingDetailCreateRoutingNumberTypeMyBranchCode, RoutingDetailCreateRoutingNumberTypeNzNationalClearingCode, RoutingDetailCreateRoutingNumberTypePlNationalClearingCode, RoutingDetailCreateRoutingNumberTypeSeBankgiroClearingCode, RoutingDetailCreateRoutingNumberTypeSgInterbankClearingCode, RoutingDetailCreateRoutingNumberTypeSwift, RoutingDetailCreateRoutingNumberTypeZaNationalClearingCode:
-		return true
-	}
-	return false
-}
-
-// If the routing detail is to be used for a specific payment type this field will
-// be populated, otherwise null.
-type RoutingDetailCreatePaymentType string
-
-const (
-	RoutingDetailCreatePaymentTypeACH         RoutingDetailCreatePaymentType = "ach"
-	RoutingDetailCreatePaymentTypeAuBecs      RoutingDetailCreatePaymentType = "au_becs"
-	RoutingDetailCreatePaymentTypeBacs        RoutingDetailCreatePaymentType = "bacs"
-	RoutingDetailCreatePaymentTypeBase        RoutingDetailCreatePaymentType = "base"
-	RoutingDetailCreatePaymentTypeBook        RoutingDetailCreatePaymentType = "book"
-	RoutingDetailCreatePaymentTypeCard        RoutingDetailCreatePaymentType = "card"
-	RoutingDetailCreatePaymentTypeChats       RoutingDetailCreatePaymentType = "chats"
-	RoutingDetailCreatePaymentTypeCheck       RoutingDetailCreatePaymentType = "check"
-	RoutingDetailCreatePaymentTypeCrossBorder RoutingDetailCreatePaymentType = "cross_border"
-	RoutingDetailCreatePaymentTypeDkNets      RoutingDetailCreatePaymentType = "dk_nets"
-	RoutingDetailCreatePaymentTypeEft         RoutingDetailCreatePaymentType = "eft"
-	RoutingDetailCreatePaymentTypeEthereum    RoutingDetailCreatePaymentType = "ethereum"
-	RoutingDetailCreatePaymentTypeGBFps       RoutingDetailCreatePaymentType = "gb_fps"
-	RoutingDetailCreatePaymentTypeHuIcs       RoutingDetailCreatePaymentType = "hu_ics"
-	RoutingDetailCreatePaymentTypeInterac     RoutingDetailCreatePaymentType = "interac"
-	RoutingDetailCreatePaymentTypeMasav       RoutingDetailCreatePaymentType = "masav"
-	RoutingDetailCreatePaymentTypeMxCcen      RoutingDetailCreatePaymentType = "mx_ccen"
-	RoutingDetailCreatePaymentTypeNeft        RoutingDetailCreatePaymentType = "neft"
-	RoutingDetailCreatePaymentTypeNics        RoutingDetailCreatePaymentType = "nics"
-	RoutingDetailCreatePaymentTypeNzBecs      RoutingDetailCreatePaymentType = "nz_becs"
-	RoutingDetailCreatePaymentTypePlElixir    RoutingDetailCreatePaymentType = "pl_elixir"
-	RoutingDetailCreatePaymentTypePolygon     RoutingDetailCreatePaymentType = "polygon"
-	RoutingDetailCreatePaymentTypeProvxchange RoutingDetailCreatePaymentType = "provxchange"
-	RoutingDetailCreatePaymentTypeRoSent      RoutingDetailCreatePaymentType = "ro_sent"
-	RoutingDetailCreatePaymentTypeRtp         RoutingDetailCreatePaymentType = "rtp"
-	RoutingDetailCreatePaymentTypeSeBankgirot RoutingDetailCreatePaymentType = "se_bankgirot"
-	RoutingDetailCreatePaymentTypeSen         RoutingDetailCreatePaymentType = "sen"
-	RoutingDetailCreatePaymentTypeSepa        RoutingDetailCreatePaymentType = "sepa"
-	RoutingDetailCreatePaymentTypeSgGiro      RoutingDetailCreatePaymentType = "sg_giro"
-	RoutingDetailCreatePaymentTypeSic         RoutingDetailCreatePaymentType = "sic"
-	RoutingDetailCreatePaymentTypeSignet      RoutingDetailCreatePaymentType = "signet"
-	RoutingDetailCreatePaymentTypeSknbi       RoutingDetailCreatePaymentType = "sknbi"
-	RoutingDetailCreatePaymentTypeSolana      RoutingDetailCreatePaymentType = "solana"
-	RoutingDetailCreatePaymentTypeWire        RoutingDetailCreatePaymentType = "wire"
-	RoutingDetailCreatePaymentTypeZengin      RoutingDetailCreatePaymentType = "zengin"
-)
-
-func (r RoutingDetailCreatePaymentType) IsKnown() bool {
-	switch r {
-	case RoutingDetailCreatePaymentTypeACH, RoutingDetailCreatePaymentTypeAuBecs, RoutingDetailCreatePaymentTypeBacs, RoutingDetailCreatePaymentTypeBase, RoutingDetailCreatePaymentTypeBook, RoutingDetailCreatePaymentTypeCard, RoutingDetailCreatePaymentTypeChats, RoutingDetailCreatePaymentTypeCheck, RoutingDetailCreatePaymentTypeCrossBorder, RoutingDetailCreatePaymentTypeDkNets, RoutingDetailCreatePaymentTypeEft, RoutingDetailCreatePaymentTypeEthereum, RoutingDetailCreatePaymentTypeGBFps, RoutingDetailCreatePaymentTypeHuIcs, RoutingDetailCreatePaymentTypeInterac, RoutingDetailCreatePaymentTypeMasav, RoutingDetailCreatePaymentTypeMxCcen, RoutingDetailCreatePaymentTypeNeft, RoutingDetailCreatePaymentTypeNics, RoutingDetailCreatePaymentTypeNzBecs, RoutingDetailCreatePaymentTypePlElixir, RoutingDetailCreatePaymentTypePolygon, RoutingDetailCreatePaymentTypeProvxchange, RoutingDetailCreatePaymentTypeRoSent, RoutingDetailCreatePaymentTypeRtp, RoutingDetailCreatePaymentTypeSeBankgirot, RoutingDetailCreatePaymentTypeSen, RoutingDetailCreatePaymentTypeSepa, RoutingDetailCreatePaymentTypeSgGiro, RoutingDetailCreatePaymentTypeSic, RoutingDetailCreatePaymentTypeSignet, RoutingDetailCreatePaymentTypeSknbi, RoutingDetailCreatePaymentTypeSolana, RoutingDetailCreatePaymentTypeWire, RoutingDetailCreatePaymentTypeZengin:
-		return true
-	}
-	return false
-}
-
-type RoutingDetailNewParams struct {
-	RoutingDetailCreate RoutingDetailCreateParam `json:"routing_detail_create,required"`
+	PaymentType param.Field[RoutingDetailNewParamsPaymentType] `json:"payment_type"`
 }
 
 func (r RoutingDetailNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r.RoutingDetailCreate)
+	return apijson.MarshalRoot(r)
 }
 
 type RoutingDetailNewParamsAccountsType string
@@ -369,6 +273,94 @@ const (
 func (r RoutingDetailNewParamsAccountsType) IsKnown() bool {
 	switch r {
 	case RoutingDetailNewParamsAccountsTypeExternalAccounts:
+		return true
+	}
+	return false
+}
+
+// The type of routing number. See
+// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
+// more details.
+type RoutingDetailNewParamsRoutingNumberType string
+
+const (
+	RoutingDetailNewParamsRoutingNumberTypeAba                     RoutingDetailNewParamsRoutingNumberType = "aba"
+	RoutingDetailNewParamsRoutingNumberTypeAuBsb                   RoutingDetailNewParamsRoutingNumberType = "au_bsb"
+	RoutingDetailNewParamsRoutingNumberTypeBrCodigo                RoutingDetailNewParamsRoutingNumberType = "br_codigo"
+	RoutingDetailNewParamsRoutingNumberTypeCaCpa                   RoutingDetailNewParamsRoutingNumberType = "ca_cpa"
+	RoutingDetailNewParamsRoutingNumberTypeChips                   RoutingDetailNewParamsRoutingNumberType = "chips"
+	RoutingDetailNewParamsRoutingNumberTypeCnaps                   RoutingDetailNewParamsRoutingNumberType = "cnaps"
+	RoutingDetailNewParamsRoutingNumberTypeDkInterbankClearingCode RoutingDetailNewParamsRoutingNumberType = "dk_interbank_clearing_code"
+	RoutingDetailNewParamsRoutingNumberTypeGBSortCode              RoutingDetailNewParamsRoutingNumberType = "gb_sort_code"
+	RoutingDetailNewParamsRoutingNumberTypeHkInterbankClearingCode RoutingDetailNewParamsRoutingNumberType = "hk_interbank_clearing_code"
+	RoutingDetailNewParamsRoutingNumberTypeHuInterbankClearingCode RoutingDetailNewParamsRoutingNumberType = "hu_interbank_clearing_code"
+	RoutingDetailNewParamsRoutingNumberTypeIDSknbiCode             RoutingDetailNewParamsRoutingNumberType = "id_sknbi_code"
+	RoutingDetailNewParamsRoutingNumberTypeIlBankCode              RoutingDetailNewParamsRoutingNumberType = "il_bank_code"
+	RoutingDetailNewParamsRoutingNumberTypeInIfsc                  RoutingDetailNewParamsRoutingNumberType = "in_ifsc"
+	RoutingDetailNewParamsRoutingNumberTypeJpZenginCode            RoutingDetailNewParamsRoutingNumberType = "jp_zengin_code"
+	RoutingDetailNewParamsRoutingNumberTypeMxBankIdentifier        RoutingDetailNewParamsRoutingNumberType = "mx_bank_identifier"
+	RoutingDetailNewParamsRoutingNumberTypeMyBranchCode            RoutingDetailNewParamsRoutingNumberType = "my_branch_code"
+	RoutingDetailNewParamsRoutingNumberTypeNzNationalClearingCode  RoutingDetailNewParamsRoutingNumberType = "nz_national_clearing_code"
+	RoutingDetailNewParamsRoutingNumberTypePlNationalClearingCode  RoutingDetailNewParamsRoutingNumberType = "pl_national_clearing_code"
+	RoutingDetailNewParamsRoutingNumberTypeSeBankgiroClearingCode  RoutingDetailNewParamsRoutingNumberType = "se_bankgiro_clearing_code"
+	RoutingDetailNewParamsRoutingNumberTypeSgInterbankClearingCode RoutingDetailNewParamsRoutingNumberType = "sg_interbank_clearing_code"
+	RoutingDetailNewParamsRoutingNumberTypeSwift                   RoutingDetailNewParamsRoutingNumberType = "swift"
+	RoutingDetailNewParamsRoutingNumberTypeZaNationalClearingCode  RoutingDetailNewParamsRoutingNumberType = "za_national_clearing_code"
+)
+
+func (r RoutingDetailNewParamsRoutingNumberType) IsKnown() bool {
+	switch r {
+	case RoutingDetailNewParamsRoutingNumberTypeAba, RoutingDetailNewParamsRoutingNumberTypeAuBsb, RoutingDetailNewParamsRoutingNumberTypeBrCodigo, RoutingDetailNewParamsRoutingNumberTypeCaCpa, RoutingDetailNewParamsRoutingNumberTypeChips, RoutingDetailNewParamsRoutingNumberTypeCnaps, RoutingDetailNewParamsRoutingNumberTypeDkInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeGBSortCode, RoutingDetailNewParamsRoutingNumberTypeHkInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeHuInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeIDSknbiCode, RoutingDetailNewParamsRoutingNumberTypeIlBankCode, RoutingDetailNewParamsRoutingNumberTypeInIfsc, RoutingDetailNewParamsRoutingNumberTypeJpZenginCode, RoutingDetailNewParamsRoutingNumberTypeMxBankIdentifier, RoutingDetailNewParamsRoutingNumberTypeMyBranchCode, RoutingDetailNewParamsRoutingNumberTypeNzNationalClearingCode, RoutingDetailNewParamsRoutingNumberTypePlNationalClearingCode, RoutingDetailNewParamsRoutingNumberTypeSeBankgiroClearingCode, RoutingDetailNewParamsRoutingNumberTypeSgInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeSwift, RoutingDetailNewParamsRoutingNumberTypeZaNationalClearingCode:
+		return true
+	}
+	return false
+}
+
+// If the routing detail is to be used for a specific payment type this field will
+// be populated, otherwise null.
+type RoutingDetailNewParamsPaymentType string
+
+const (
+	RoutingDetailNewParamsPaymentTypeACH         RoutingDetailNewParamsPaymentType = "ach"
+	RoutingDetailNewParamsPaymentTypeAuBecs      RoutingDetailNewParamsPaymentType = "au_becs"
+	RoutingDetailNewParamsPaymentTypeBacs        RoutingDetailNewParamsPaymentType = "bacs"
+	RoutingDetailNewParamsPaymentTypeBase        RoutingDetailNewParamsPaymentType = "base"
+	RoutingDetailNewParamsPaymentTypeBook        RoutingDetailNewParamsPaymentType = "book"
+	RoutingDetailNewParamsPaymentTypeCard        RoutingDetailNewParamsPaymentType = "card"
+	RoutingDetailNewParamsPaymentTypeChats       RoutingDetailNewParamsPaymentType = "chats"
+	RoutingDetailNewParamsPaymentTypeCheck       RoutingDetailNewParamsPaymentType = "check"
+	RoutingDetailNewParamsPaymentTypeCrossBorder RoutingDetailNewParamsPaymentType = "cross_border"
+	RoutingDetailNewParamsPaymentTypeDkNets      RoutingDetailNewParamsPaymentType = "dk_nets"
+	RoutingDetailNewParamsPaymentTypeEft         RoutingDetailNewParamsPaymentType = "eft"
+	RoutingDetailNewParamsPaymentTypeEthereum    RoutingDetailNewParamsPaymentType = "ethereum"
+	RoutingDetailNewParamsPaymentTypeGBFps       RoutingDetailNewParamsPaymentType = "gb_fps"
+	RoutingDetailNewParamsPaymentTypeHuIcs       RoutingDetailNewParamsPaymentType = "hu_ics"
+	RoutingDetailNewParamsPaymentTypeInterac     RoutingDetailNewParamsPaymentType = "interac"
+	RoutingDetailNewParamsPaymentTypeMasav       RoutingDetailNewParamsPaymentType = "masav"
+	RoutingDetailNewParamsPaymentTypeMxCcen      RoutingDetailNewParamsPaymentType = "mx_ccen"
+	RoutingDetailNewParamsPaymentTypeNeft        RoutingDetailNewParamsPaymentType = "neft"
+	RoutingDetailNewParamsPaymentTypeNics        RoutingDetailNewParamsPaymentType = "nics"
+	RoutingDetailNewParamsPaymentTypeNzBecs      RoutingDetailNewParamsPaymentType = "nz_becs"
+	RoutingDetailNewParamsPaymentTypePlElixir    RoutingDetailNewParamsPaymentType = "pl_elixir"
+	RoutingDetailNewParamsPaymentTypePolygon     RoutingDetailNewParamsPaymentType = "polygon"
+	RoutingDetailNewParamsPaymentTypeProvxchange RoutingDetailNewParamsPaymentType = "provxchange"
+	RoutingDetailNewParamsPaymentTypeRoSent      RoutingDetailNewParamsPaymentType = "ro_sent"
+	RoutingDetailNewParamsPaymentTypeRtp         RoutingDetailNewParamsPaymentType = "rtp"
+	RoutingDetailNewParamsPaymentTypeSeBankgirot RoutingDetailNewParamsPaymentType = "se_bankgirot"
+	RoutingDetailNewParamsPaymentTypeSen         RoutingDetailNewParamsPaymentType = "sen"
+	RoutingDetailNewParamsPaymentTypeSepa        RoutingDetailNewParamsPaymentType = "sepa"
+	RoutingDetailNewParamsPaymentTypeSgGiro      RoutingDetailNewParamsPaymentType = "sg_giro"
+	RoutingDetailNewParamsPaymentTypeSic         RoutingDetailNewParamsPaymentType = "sic"
+	RoutingDetailNewParamsPaymentTypeSignet      RoutingDetailNewParamsPaymentType = "signet"
+	RoutingDetailNewParamsPaymentTypeSknbi       RoutingDetailNewParamsPaymentType = "sknbi"
+	RoutingDetailNewParamsPaymentTypeSolana      RoutingDetailNewParamsPaymentType = "solana"
+	RoutingDetailNewParamsPaymentTypeWire        RoutingDetailNewParamsPaymentType = "wire"
+	RoutingDetailNewParamsPaymentTypeZengin      RoutingDetailNewParamsPaymentType = "zengin"
+)
+
+func (r RoutingDetailNewParamsPaymentType) IsKnown() bool {
+	switch r {
+	case RoutingDetailNewParamsPaymentTypeACH, RoutingDetailNewParamsPaymentTypeAuBecs, RoutingDetailNewParamsPaymentTypeBacs, RoutingDetailNewParamsPaymentTypeBase, RoutingDetailNewParamsPaymentTypeBook, RoutingDetailNewParamsPaymentTypeCard, RoutingDetailNewParamsPaymentTypeChats, RoutingDetailNewParamsPaymentTypeCheck, RoutingDetailNewParamsPaymentTypeCrossBorder, RoutingDetailNewParamsPaymentTypeDkNets, RoutingDetailNewParamsPaymentTypeEft, RoutingDetailNewParamsPaymentTypeEthereum, RoutingDetailNewParamsPaymentTypeGBFps, RoutingDetailNewParamsPaymentTypeHuIcs, RoutingDetailNewParamsPaymentTypeInterac, RoutingDetailNewParamsPaymentTypeMasav, RoutingDetailNewParamsPaymentTypeMxCcen, RoutingDetailNewParamsPaymentTypeNeft, RoutingDetailNewParamsPaymentTypeNics, RoutingDetailNewParamsPaymentTypeNzBecs, RoutingDetailNewParamsPaymentTypePlElixir, RoutingDetailNewParamsPaymentTypePolygon, RoutingDetailNewParamsPaymentTypeProvxchange, RoutingDetailNewParamsPaymentTypeRoSent, RoutingDetailNewParamsPaymentTypeRtp, RoutingDetailNewParamsPaymentTypeSeBankgirot, RoutingDetailNewParamsPaymentTypeSen, RoutingDetailNewParamsPaymentTypeSepa, RoutingDetailNewParamsPaymentTypeSgGiro, RoutingDetailNewParamsPaymentTypeSic, RoutingDetailNewParamsPaymentTypeSignet, RoutingDetailNewParamsPaymentTypeSknbi, RoutingDetailNewParamsPaymentTypeSolana, RoutingDetailNewParamsPaymentTypeWire, RoutingDetailNewParamsPaymentTypeZengin:
 		return true
 	}
 	return false

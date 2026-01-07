@@ -30,9 +30,9 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 	_, err := client.VirtualAccounts.New(context.TODO(), moderntreasury.VirtualAccountNewParams{
 		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Name:              moderntreasury.F("name"),
-		AccountDetails: moderntreasury.F([]moderntreasury.AccountDetailCreateParam{{
+		AccountDetails: moderntreasury.F([]moderntreasury.VirtualAccountNewParamsAccountDetail{{
 			AccountNumber:     moderntreasury.F("account_number"),
-			AccountNumberType: moderntreasury.F(moderntreasury.AccountDetailCreateAccountNumberTypeAuNumber),
+			AccountNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber),
 		}}),
 		CounterpartyID:        moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		CreditLedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -57,10 +57,10 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		RoutingDetails: moderntreasury.F([]moderntreasury.RoutingDetailCreateParam{{
+		RoutingDetails: moderntreasury.F([]moderntreasury.VirtualAccountNewParamsRoutingDetail{{
 			RoutingNumber:     moderntreasury.F("routing_number"),
-			RoutingNumberType: moderntreasury.F(moderntreasury.RoutingDetailCreateRoutingNumberTypeAba),
-			PaymentType:       moderntreasury.F(moderntreasury.RoutingDetailCreatePaymentTypeACH),
+			RoutingNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
+			PaymentType:       moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsPaymentTypeACH),
 		}}),
 	})
 	if err != nil {

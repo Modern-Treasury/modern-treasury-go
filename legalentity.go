@@ -482,9 +482,9 @@ func (r LegalEntityAssociationInlineCreateRelationshipType) IsKnown() bool {
 	return false
 }
 
-type LegalEntityCreateParam struct {
+type LegalEntityNewParams struct {
 	// The type of legal entity.
-	LegalEntityType param.Field[LegalEntityCreateLegalEntityType] `json:"legal_entity_type,required"`
+	LegalEntityType param.Field[LegalEntityNewParamsLegalEntityType] `json:"legal_entity_type,required"`
 	// A list of addresses for the entity.
 	Addresses    param.Field[[]shared.LegalEntityAddressCreateRequestParam] `json:"addresses"`
 	BankSettings param.Field[shared.LegalEntityBankSettingsParam]           `json:"bank_settings"`
@@ -520,7 +520,7 @@ type LegalEntityCreateParam struct {
 	// The legal entity associations and its child legal entities.
 	LegalEntityAssociations param.Field[[]LegalEntityAssociationInlineCreateParam] `json:"legal_entity_associations"`
 	// The business's legal structure.
-	LegalStructure param.Field[LegalEntityCreateLegalStructure] `json:"legal_structure"`
+	LegalStructure param.Field[LegalEntityNewParamsLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -528,8 +528,8 @@ type LegalEntityCreateParam struct {
 	MiddleName param.Field[string] `json:"middle_name"`
 	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
 	// codes).
-	OperatingJurisdictions param.Field[[]string]                            `json:"operating_jurisdictions"`
-	PhoneNumbers           param.Field[[]LegalEntityCreatePhoneNumberParam] `json:"phone_numbers"`
+	OperatingJurisdictions param.Field[[]string]                          `json:"operating_jurisdictions"`
+	PhoneNumbers           param.Field[[]LegalEntityNewParamsPhoneNumber] `json:"phone_numbers"`
 	// Whether the individual is a politically exposed person.
 	PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
 	// An individual's preferred name.
@@ -539,7 +539,7 @@ type LegalEntityCreateParam struct {
 	// A list of primary social media URLs for the business.
 	PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
 	// The risk rating of the legal entity. One of low, medium, high.
-	RiskRating param.Field[LegalEntityCreateRiskRating] `json:"risk_rating"`
+	RiskRating param.Field[LegalEntityNewParamsRiskRating] `json:"risk_rating"`
 	// An individual's suffix.
 	Suffix                     param.Field[string]                                        `json:"suffix"`
 	WealthAndEmploymentDetails param.Field[shared.LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
@@ -547,78 +547,70 @@ type LegalEntityCreateParam struct {
 	Website param.Field[string] `json:"website"`
 }
 
-func (r LegalEntityCreateParam) MarshalJSON() (data []byte, err error) {
+func (r LegalEntityNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 // The type of legal entity.
-type LegalEntityCreateLegalEntityType string
+type LegalEntityNewParamsLegalEntityType string
 
 const (
-	LegalEntityCreateLegalEntityTypeBusiness   LegalEntityCreateLegalEntityType = "business"
-	LegalEntityCreateLegalEntityTypeIndividual LegalEntityCreateLegalEntityType = "individual"
+	LegalEntityNewParamsLegalEntityTypeBusiness   LegalEntityNewParamsLegalEntityType = "business"
+	LegalEntityNewParamsLegalEntityTypeIndividual LegalEntityNewParamsLegalEntityType = "individual"
 )
 
-func (r LegalEntityCreateLegalEntityType) IsKnown() bool {
+func (r LegalEntityNewParamsLegalEntityType) IsKnown() bool {
 	switch r {
-	case LegalEntityCreateLegalEntityTypeBusiness, LegalEntityCreateLegalEntityTypeIndividual:
+	case LegalEntityNewParamsLegalEntityTypeBusiness, LegalEntityNewParamsLegalEntityTypeIndividual:
 		return true
 	}
 	return false
 }
 
 // The business's legal structure.
-type LegalEntityCreateLegalStructure string
+type LegalEntityNewParamsLegalStructure string
 
 const (
-	LegalEntityCreateLegalStructureCorporation        LegalEntityCreateLegalStructure = "corporation"
-	LegalEntityCreateLegalStructureLlc                LegalEntityCreateLegalStructure = "llc"
-	LegalEntityCreateLegalStructureNonProfit          LegalEntityCreateLegalStructure = "non_profit"
-	LegalEntityCreateLegalStructurePartnership        LegalEntityCreateLegalStructure = "partnership"
-	LegalEntityCreateLegalStructureSoleProprietorship LegalEntityCreateLegalStructure = "sole_proprietorship"
-	LegalEntityCreateLegalStructureTrust              LegalEntityCreateLegalStructure = "trust"
+	LegalEntityNewParamsLegalStructureCorporation        LegalEntityNewParamsLegalStructure = "corporation"
+	LegalEntityNewParamsLegalStructureLlc                LegalEntityNewParamsLegalStructure = "llc"
+	LegalEntityNewParamsLegalStructureNonProfit          LegalEntityNewParamsLegalStructure = "non_profit"
+	LegalEntityNewParamsLegalStructurePartnership        LegalEntityNewParamsLegalStructure = "partnership"
+	LegalEntityNewParamsLegalStructureSoleProprietorship LegalEntityNewParamsLegalStructure = "sole_proprietorship"
+	LegalEntityNewParamsLegalStructureTrust              LegalEntityNewParamsLegalStructure = "trust"
 )
 
-func (r LegalEntityCreateLegalStructure) IsKnown() bool {
+func (r LegalEntityNewParamsLegalStructure) IsKnown() bool {
 	switch r {
-	case LegalEntityCreateLegalStructureCorporation, LegalEntityCreateLegalStructureLlc, LegalEntityCreateLegalStructureNonProfit, LegalEntityCreateLegalStructurePartnership, LegalEntityCreateLegalStructureSoleProprietorship, LegalEntityCreateLegalStructureTrust:
+	case LegalEntityNewParamsLegalStructureCorporation, LegalEntityNewParamsLegalStructureLlc, LegalEntityNewParamsLegalStructureNonProfit, LegalEntityNewParamsLegalStructurePartnership, LegalEntityNewParamsLegalStructureSoleProprietorship, LegalEntityNewParamsLegalStructureTrust:
 		return true
 	}
 	return false
 }
 
 // A list of phone numbers in E.164 format.
-type LegalEntityCreatePhoneNumberParam struct {
+type LegalEntityNewParamsPhoneNumber struct {
 	PhoneNumber param.Field[string] `json:"phone_number"`
 }
 
-func (r LegalEntityCreatePhoneNumberParam) MarshalJSON() (data []byte, err error) {
+func (r LegalEntityNewParamsPhoneNumber) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 // The risk rating of the legal entity. One of low, medium, high.
-type LegalEntityCreateRiskRating string
+type LegalEntityNewParamsRiskRating string
 
 const (
-	LegalEntityCreateRiskRatingLow    LegalEntityCreateRiskRating = "low"
-	LegalEntityCreateRiskRatingMedium LegalEntityCreateRiskRating = "medium"
-	LegalEntityCreateRiskRatingHigh   LegalEntityCreateRiskRating = "high"
+	LegalEntityNewParamsRiskRatingLow    LegalEntityNewParamsRiskRating = "low"
+	LegalEntityNewParamsRiskRatingMedium LegalEntityNewParamsRiskRating = "medium"
+	LegalEntityNewParamsRiskRatingHigh   LegalEntityNewParamsRiskRating = "high"
 )
 
-func (r LegalEntityCreateRiskRating) IsKnown() bool {
+func (r LegalEntityNewParamsRiskRating) IsKnown() bool {
 	switch r {
-	case LegalEntityCreateRiskRatingLow, LegalEntityCreateRiskRatingMedium, LegalEntityCreateRiskRatingHigh:
+	case LegalEntityNewParamsRiskRatingLow, LegalEntityNewParamsRiskRatingMedium, LegalEntityNewParamsRiskRatingHigh:
 		return true
 	}
 	return false
-}
-
-type LegalEntityNewParams struct {
-	LegalEntityCreate LegalEntityCreateParam `json:"legal_entity_create,required"`
-}
-
-func (r LegalEntityNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r.LegalEntityCreate)
 }
 
 type LegalEntityUpdateParams struct {

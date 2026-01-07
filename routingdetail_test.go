@@ -32,11 +32,9 @@ func TestRoutingDetailNewWithOptionalParams(t *testing.T) {
 		moderntreasury.RoutingDetailNewParamsAccountsTypeExternalAccounts,
 		"account_id",
 		moderntreasury.RoutingDetailNewParams{
-			RoutingDetailCreate: moderntreasury.RoutingDetailCreateParam{
-				RoutingNumber:     moderntreasury.F("routing_number"),
-				RoutingNumberType: moderntreasury.F(moderntreasury.RoutingDetailCreateRoutingNumberTypeAba),
-				PaymentType:       moderntreasury.F(moderntreasury.RoutingDetailCreatePaymentTypeACH),
-			},
+			RoutingNumber:     moderntreasury.F("routing_number"),
+			RoutingNumberType: moderntreasury.F(moderntreasury.RoutingDetailNewParamsRoutingNumberTypeAba),
+			PaymentType:       moderntreasury.F(moderntreasury.RoutingDetailNewParamsPaymentTypeACH),
 		},
 	)
 	if err != nil {

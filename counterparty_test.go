@@ -87,8 +87,8 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 		Email:      moderntreasury.F("dev@stainless.com"),
 		ExternalID: moderntreasury.F("external_id"),
 		LedgerType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
-		LegalEntity: moderntreasury.F(moderntreasury.LegalEntityCreateParam{
-			LegalEntityType: moderntreasury.F(moderntreasury.LegalEntityCreateLegalEntityTypeBusiness),
+		LegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntity{
+			LegalEntityType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness),
 			Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{{
 				Country:      moderntreasury.F("country"),
 				Line1:        moderntreasury.F("line1"),
@@ -265,7 +265,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				OwnershipPercentage: moderntreasury.F(int64(0)),
 				Title:               moderntreasury.F("title"),
 			}}),
-			LegalStructure: moderntreasury.F(moderntreasury.LegalEntityCreateLegalStructureCorporation),
+			LegalStructure: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalStructureCorporation),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
@@ -273,14 +273,14 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			}),
 			MiddleName:             moderntreasury.F("middle_name"),
 			OperatingJurisdictions: moderntreasury.F([]string{"string"}),
-			PhoneNumbers: moderntreasury.F([]moderntreasury.LegalEntityCreatePhoneNumberParam{{
+			PhoneNumbers: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityPhoneNumber{{
 				PhoneNumber: moderntreasury.F("phone_number"),
 			}}),
 			PoliticallyExposedPerson: moderntreasury.F(true),
 			PreferredName:            moderntreasury.F("preferred_name"),
 			Prefix:                   moderntreasury.F("prefix"),
 			PrimarySocialMediaSites:  moderntreasury.F([]string{"string"}),
-			RiskRating:               moderntreasury.F(moderntreasury.LegalEntityCreateRiskRatingLow),
+			RiskRating:               moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityRiskRatingLow),
 			Suffix:                   moderntreasury.F("suffix"),
 			WealthAndEmploymentDetails: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailParam{
 				ID:               moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
