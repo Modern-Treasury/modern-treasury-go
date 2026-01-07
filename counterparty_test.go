@@ -153,8 +153,8 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			}}),
 			IntendedUse: moderntreasury.F("intended_use"),
 			LastName:    moderntreasury.F("last_name"),
-			LegalEntityAssociations: moderntreasury.F([]moderntreasury.LegalEntityAssociationInlineCreateParam{{
-				RelationshipTypes: moderntreasury.F([]moderntreasury.LegalEntityAssociationInlineCreateRelationshipType{moderntreasury.LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner}),
+			LegalEntityAssociations: moderntreasury.F([]shared.LegalEntityAssociationInlineCreateParam{{
+				RelationshipTypes: moderntreasury.F([]shared.LegalEntityAssociationInlineCreateRelationshipType{shared.LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner}),
 				ChildLegalEntity: moderntreasury.F(shared.ChildLegalEntityCreateParam{
 					Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{{
 						Country:      moderntreasury.F("country"),
@@ -220,7 +220,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 					}}),
 					IntendedUse:             moderntreasury.F("intended_use"),
 					LastName:                moderntreasury.F("last_name"),
-					LegalEntityAssociations: moderntreasury.F([]moderntreasury.LegalEntityAssociationInlineCreateParam{}),
+					LegalEntityAssociations: moderntreasury.F([]shared.LegalEntityAssociationInlineCreateParam{}),
 					LegalEntityType:         moderntreasury.F(shared.ChildLegalEntityCreateLegalEntityTypeBusiness),
 					LegalStructure:          moderntreasury.F(shared.ChildLegalEntityCreateLegalStructureCorporation),
 					Metadata: moderntreasury.F(map[string]string{

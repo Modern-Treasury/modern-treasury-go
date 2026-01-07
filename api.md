@@ -10,6 +10,7 @@
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LedgerEntryCreateRequestParam">LedgerEntryCreateRequestParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LedgerTransactionCreateRequestParam">LedgerTransactionCreateRequestParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityAddressCreateRequestParam">LegalEntityAddressCreateRequestParam</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityAssociationInlineCreateParam">LegalEntityAssociationInlineCreateParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityBankSettingsParam">LegalEntityBankSettingsParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityComplianceDetailParam">LegalEntityComplianceDetailParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityIndustryClassificationParam">LegalEntityIndustryClassificationParam</a>
@@ -554,10 +555,6 @@ Methods:
 - <code title="get /api/connection_legal_entities">client.ConnectionLegalEntities.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ConnectionLegalEntityService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ConnectionLegalEntityListParams">ConnectionLegalEntityListParams</a>) (<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination#Page">Page</a>[<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ConnectionLegalEntity">ConnectionLegalEntity</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
 # LegalEntities
-
-Params Types:
-
-- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntityAssociationInlineCreateParam">LegalEntityAssociationInlineCreateParam</a>
 
 Response Types:
 

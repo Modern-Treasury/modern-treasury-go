@@ -623,7 +623,7 @@ type CounterpartyNewParamsLegalEntity struct {
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
 	// The legal entity associations and its child legal entities.
-	LegalEntityAssociations param.Field[[]LegalEntityAssociationInlineCreateParam] `json:"legal_entity_associations"`
+	LegalEntityAssociations param.Field[[]shared.LegalEntityAssociationInlineCreateParam] `json:"legal_entity_associations"`
 	// The business's legal structure.
 	LegalStructure param.Field[CounterpartyNewParamsLegalEntityLegalStructure] `json:"legal_structure"`
 	// Additional data represented as key-value pairs. Both the key and value must be

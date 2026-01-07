@@ -5,7 +5,6 @@ package shared
 import (
 	"time"
 
-	"github.com/Modern-Treasury/modern-treasury-go/v2"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 )
@@ -178,7 +177,7 @@ type ChildLegalEntityCreateParam struct {
 	// An individual's last name.
 	LastName param.Field[string] `json:"last_name"`
 	// The legal entity associations and its child legal entities.
-	LegalEntityAssociations param.Field[[]moderntreasury.LegalEntityAssociationInlineCreateParam] `json:"legal_entity_associations"`
+	LegalEntityAssociations param.Field[[]LegalEntityAssociationInlineCreateParam] `json:"legal_entity_associations"`
 	// The type of legal entity.
 	LegalEntityType param.Field[ChildLegalEntityCreateLegalEntityType] `json:"legal_entity_type"`
 	// The business's legal structure.
@@ -914,6 +913,39 @@ const (
 func (r LegalEntityAddressCreateRequestAddressType) IsKnown() bool {
 	switch r {
 	case LegalEntityAddressCreateRequestAddressTypeBusiness, LegalEntityAddressCreateRequestAddressTypeMailing, LegalEntityAddressCreateRequestAddressTypeOther, LegalEntityAddressCreateRequestAddressTypePoBox, LegalEntityAddressCreateRequestAddressTypeResidential:
+		return true
+	}
+	return false
+}
+
+type LegalEntityAssociationInlineCreateParam struct {
+	RelationshipTypes param.Field[[]LegalEntityAssociationInlineCreateRelationshipType] `json:"relationship_types,required"`
+	// The child legal entity.
+	ChildLegalEntity param.Field[ChildLegalEntityCreateParam] `json:"child_legal_entity"`
+	// The ID of the child legal entity.
+	ChildLegalEntityID param.Field[string] `json:"child_legal_entity_id"`
+	// The child entity's ownership percentage iff they are a beneficial owner.
+	OwnershipPercentage param.Field[int64] `json:"ownership_percentage"`
+	// The job title of the child entity at the parent entity.
+	Title param.Field[string] `json:"title"`
+}
+
+func (r LegalEntityAssociationInlineCreateParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A list of relationship types for how the child entity relates to parent entity.
+type LegalEntityAssociationInlineCreateRelationshipType string
+
+const (
+	LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner LegalEntityAssociationInlineCreateRelationshipType = "authorized_signer"
+	LegalEntityAssociationInlineCreateRelationshipTypeBeneficialOwner  LegalEntityAssociationInlineCreateRelationshipType = "beneficial_owner"
+	LegalEntityAssociationInlineCreateRelationshipTypeControlPerson    LegalEntityAssociationInlineCreateRelationshipType = "control_person"
+)
+
+func (r LegalEntityAssociationInlineCreateRelationshipType) IsKnown() bool {
+	switch r {
+	case LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner, LegalEntityAssociationInlineCreateRelationshipTypeBeneficialOwner, LegalEntityAssociationInlineCreateRelationshipTypeControlPerson:
 		return true
 	}
 	return false
