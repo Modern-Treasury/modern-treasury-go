@@ -30,19 +30,17 @@ func TestInvoiceLineItemNewWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"invoice_id",
 		moderntreasury.InvoiceLineItemNewParams{
-			InvoiceLineItemCreate: moderntreasury.InvoiceLineItemCreateParam{
-				Name:        moderntreasury.F("name"),
-				UnitAmount:  moderntreasury.F(int64(0)),
-				Description: moderntreasury.F("description"),
-				Direction:   moderntreasury.F("direction"),
-				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
-					"foo":    "bar",
-					"modern": "treasury",
-				}),
-				Quantity:          moderntreasury.F(int64(0)),
-				UnitAmountDecimal: moderntreasury.F("unit_amount_decimal"),
-			},
+			Name:        moderntreasury.F("name"),
+			UnitAmount:  moderntreasury.F(int64(0)),
+			Description: moderntreasury.F("description"),
+			Direction:   moderntreasury.F("direction"),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
+			Quantity:          moderntreasury.F(int64(0)),
+			UnitAmountDecimal: moderntreasury.F("unit_amount_decimal"),
 		},
 	)
 	if err != nil {

@@ -29,12 +29,10 @@ func TestDocumentNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Documents.New(context.TODO(), moderntreasury.DocumentNewParams{
-		DocumentCreate: moderntreasury.DocumentCreateParam{
-			DocumentableID:   moderntreasury.F("documentable_id"),
-			DocumentableType: moderntreasury.F(moderntreasury.DocumentCreateDocumentableTypeCounterparties),
-			File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
-			DocumentType:     moderntreasury.F("document_type"),
-		},
+		DocumentableID:   moderntreasury.F("documentable_id"),
+		DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
+		File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
+		DocumentType:     moderntreasury.F("document_type"),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
