@@ -1,5 +1,42 @@
 # Changelog
 
+## 2.37.0 (2026-01-07)
+
+Full Changelog: [v2.36.0...v2.37.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.36.0...v2.37.0)
+
+### Features
+
+* **api:** api update ([a7fa714](https://github.com/Modern-Treasury/modern-treasury-go/commit/a7fa714cc2189395c893dc36619a239c05963071))
+* **api:** api update ([8901de2](https://github.com/Modern-Treasury/modern-treasury-go/commit/8901de22a29b012c831df14249c14cbeb35018f9))
+* **api:** api update ([f24d940](https://github.com/Modern-Treasury/modern-treasury-go/commit/f24d94085d09638daeb5d613847364eba287405e))
+* **api:** api update ([2a0771b](https://github.com/Modern-Treasury/modern-treasury-go/commit/2a0771b22d8309b54746d277de850de6d9ed61b7))
+* **api:** api update ([4d1be7b](https://github.com/Modern-Treasury/modern-treasury-go/commit/4d1be7b9a8f12893c0369a307c5e7fab090e6339))
+* **api:** api update ([25ea286](https://github.com/Modern-Treasury/modern-treasury-go/commit/25ea286194a1a41316f3511c9b6f9ae80833b044))
+* **api:** manual updates ([bf9f1bf](https://github.com/Modern-Treasury/modern-treasury-go/commit/bf9f1bfebade8b583b987362cb3efdc58a5506aa))
+* **api:** manual updates ([8404fe8](https://github.com/Modern-Treasury/modern-treasury-go/commit/8404fe85b046dfd4e1d5a30f906ac3b24f36e0f1))
+* **api:** manual updates ([37ee74e](https://github.com/Modern-Treasury/modern-treasury-go/commit/37ee74ebfca99778c190845550de2a04ae628a57))
+* **api:** manual updates ([17d41b9](https://github.com/Modern-Treasury/modern-treasury-go/commit/17d41b9065e3ae66f9a0f968580dcd43443de091))
+
+
+### Bug Fixes
+
+* **client:** correctly specify Accept header with */* instead of empty ([cc9de20](https://github.com/Modern-Treasury/modern-treasury-go/commit/cc9de20384ac7f67c631429a73773a846bc183d9))
+* **mcp:** correct code tool API endpoint ([36ce92c](https://github.com/Modern-Treasury/modern-treasury-go/commit/36ce92c6a41217906c630a3a56a2d636bdb218e2))
+* rename param to avoid collision ([833009c](https://github.com/Modern-Treasury/modern-treasury-go/commit/833009c3dc948fde7595f6d025d81cf492aa192f))
+
+
+### Chores
+
+* elide duplicate aliases ([d2aa3a9](https://github.com/Modern-Treasury/modern-treasury-go/commit/d2aa3a985f265b44f14b961be6f1b5c11f7b636a))
+* **internal:** codegen related update ([398a6c2](https://github.com/Modern-Treasury/modern-treasury-go/commit/398a6c2b654e6e6af48872398a4990845b6d3917))
+* **internal:** codegen related update ([32480e9](https://github.com/Modern-Treasury/modern-treasury-go/commit/32480e903fa87ebbc6cd368d54df858802b6e5a6))
+* **internal:** use different example values for some enums ([8b1c1b5](https://github.com/Modern-Treasury/modern-treasury-go/commit/8b1c1b5f95f9138690da9ba80c66f0c4b2206a43))
+
+
+### Documentation
+
+* prominently feature MCP server setup in root SDK readmes ([a0a5a81](https://github.com/Modern-Treasury/modern-treasury-go/commit/a0a5a814308555920b200b4227e4858286ee041b))
+
 ## 2.36.0 (2025-11-05)
 
 Full Changelog: [v2.35.0...v2.36.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.35.0...v2.36.0)
