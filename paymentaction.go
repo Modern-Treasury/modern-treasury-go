@@ -39,7 +39,7 @@ func NewPaymentActionService(opts ...option.RequestOption) (r *PaymentActionServ
 }
 
 // Create a payment action.
-func (r *PaymentActionService) New(ctx context.Context, body PaymentActionNewParams, opts ...option.RequestOption) (res *PaymentAction, err error) {
+func (r *PaymentActionService) New(ctx context.Context, body PaymentActionNewParams, opts ...option.RequestOption) (res *PaymentActionNewResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "api/payment_actions"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
@@ -47,7 +47,7 @@ func (r *PaymentActionService) New(ctx context.Context, body PaymentActionNewPar
 }
 
 // Get details on a single payment action.
-func (r *PaymentActionService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *PaymentAction, err error) {
+func (r *PaymentActionService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *PaymentActionGetResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
@@ -59,7 +59,7 @@ func (r *PaymentActionService) Get(ctx context.Context, id string, opts ...optio
 }
 
 // Update a single payment action.
-func (r *PaymentActionService) Update(ctx context.Context, id string, body PaymentActionUpdateParams, opts ...option.RequestOption) (res *PaymentAction, err error) {
+func (r *PaymentActionService) Update(ctx context.Context, id string, body PaymentActionUpdateParams, opts ...option.RequestOption) (res *PaymentActionUpdateResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
@@ -71,7 +71,7 @@ func (r *PaymentActionService) Update(ctx context.Context, id string, body Payme
 }
 
 // Get a list of all payment actions.
-func (r *PaymentActionService) List(ctx context.Context, query PaymentActionListParams, opts ...option.RequestOption) (res *pagination.Page[PaymentAction], err error) {
+func (r *PaymentActionService) List(ctx context.Context, query PaymentActionListParams, opts ...option.RequestOption) (res *pagination.Page[PaymentActionListResponse], err error) {
 	var raw *http.Response
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
@@ -89,11 +89,11 @@ func (r *PaymentActionService) List(ctx context.Context, query PaymentActionList
 }
 
 // Get a list of all payment actions.
-func (r *PaymentActionService) ListAutoPaging(ctx context.Context, query PaymentActionListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PaymentAction] {
+func (r *PaymentActionService) ListAutoPaging(ctx context.Context, query PaymentActionListParams, opts ...option.RequestOption) *pagination.PageAutoPager[PaymentActionListResponse] {
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
-type PaymentAction struct {
+type PaymentActionNewResponse struct {
 	ID string `json:"id,required" format:"uuid"`
 	// The ID of the associated actionable object.
 	ActionableID string `json:"actionable_id,required,nullable" format:"uuid"`
@@ -113,13 +113,14 @@ type PaymentAction struct {
 	// `sent`, `acknowledged`, `cancelled`, or `failed`.
 	Status string `json:"status,required"`
 	// The type of the payment action. Determines the action to be taken.
-	Type      string            `json:"type,required"`
-	UpdatedAt time.Time         `json:"updated_at,required" format:"date-time"`
-	JSON      paymentActionJSON `json:"-"`
+	Type      string                       `json:"type,required"`
+	UpdatedAt time.Time                    `json:"updated_at,required" format:"date-time"`
+	JSON      paymentActionNewResponseJSON `json:"-"`
 }
 
-// paymentActionJSON contains the JSON metadata for the struct [PaymentAction]
-type paymentActionJSON struct {
+// paymentActionNewResponseJSON contains the JSON metadata for the struct
+// [PaymentActionNewResponse]
+type paymentActionNewResponseJSON struct {
 	ID                apijson.Field
 	ActionableID      apijson.Field
 	ActionableType    apijson.Field
@@ -135,11 +136,164 @@ type paymentActionJSON struct {
 	ExtraFields       map[string]apijson.Field
 }
 
-func (r *PaymentAction) UnmarshalJSON(data []byte) (err error) {
+func (r *PaymentActionNewResponse) UnmarshalJSON(data []byte) (err error) {
 	return apijson.UnmarshalRoot(data, r)
 }
 
-func (r paymentActionJSON) RawJSON() string {
+func (r paymentActionNewResponseJSON) RawJSON() string {
+	return r.raw
+}
+
+type PaymentActionGetResponse struct {
+	ID string `json:"id,required" format:"uuid"`
+	// The ID of the associated actionable object.
+	ActionableID string `json:"actionable_id,required,nullable" format:"uuid"`
+	// The type of the associated actionable object. One of `payment_order`,
+	// `expected_payment`.
+	ActionableType string    `json:"actionable_type,required,nullable"`
+	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	// The specifc details of the payment action based on type.
+	Details interface{} `json:"details,required"`
+	// The ID of the internal account associated with the payment action.
+	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
+	// The current status of the payment action. One of `pending`, `processing`,
+	// `sent`, `acknowledged`, `cancelled`, or `failed`.
+	Status string `json:"status,required"`
+	// The type of the payment action. Determines the action to be taken.
+	Type      string                       `json:"type,required"`
+	UpdatedAt time.Time                    `json:"updated_at,required" format:"date-time"`
+	JSON      paymentActionGetResponseJSON `json:"-"`
+}
+
+// paymentActionGetResponseJSON contains the JSON metadata for the struct
+// [PaymentActionGetResponse]
+type paymentActionGetResponseJSON struct {
+	ID                apijson.Field
+	ActionableID      apijson.Field
+	ActionableType    apijson.Field
+	CreatedAt         apijson.Field
+	Details           apijson.Field
+	InternalAccountID apijson.Field
+	LiveMode          apijson.Field
+	Object            apijson.Field
+	Status            apijson.Field
+	Type              apijson.Field
+	UpdatedAt         apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
+}
+
+func (r *PaymentActionGetResponse) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r paymentActionGetResponseJSON) RawJSON() string {
+	return r.raw
+}
+
+type PaymentActionUpdateResponse struct {
+	ID string `json:"id,required" format:"uuid"`
+	// The ID of the associated actionable object.
+	ActionableID string `json:"actionable_id,required,nullable" format:"uuid"`
+	// The type of the associated actionable object. One of `payment_order`,
+	// `expected_payment`.
+	ActionableType string    `json:"actionable_type,required,nullable"`
+	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	// The specifc details of the payment action based on type.
+	Details interface{} `json:"details,required"`
+	// The ID of the internal account associated with the payment action.
+	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
+	// The current status of the payment action. One of `pending`, `processing`,
+	// `sent`, `acknowledged`, `cancelled`, or `failed`.
+	Status string `json:"status,required"`
+	// The type of the payment action. Determines the action to be taken.
+	Type      string                          `json:"type,required"`
+	UpdatedAt time.Time                       `json:"updated_at,required" format:"date-time"`
+	JSON      paymentActionUpdateResponseJSON `json:"-"`
+}
+
+// paymentActionUpdateResponseJSON contains the JSON metadata for the struct
+// [PaymentActionUpdateResponse]
+type paymentActionUpdateResponseJSON struct {
+	ID                apijson.Field
+	ActionableID      apijson.Field
+	ActionableType    apijson.Field
+	CreatedAt         apijson.Field
+	Details           apijson.Field
+	InternalAccountID apijson.Field
+	LiveMode          apijson.Field
+	Object            apijson.Field
+	Status            apijson.Field
+	Type              apijson.Field
+	UpdatedAt         apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
+}
+
+func (r *PaymentActionUpdateResponse) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r paymentActionUpdateResponseJSON) RawJSON() string {
+	return r.raw
+}
+
+type PaymentActionListResponse struct {
+	ID string `json:"id,required" format:"uuid"`
+	// The ID of the associated actionable object.
+	ActionableID string `json:"actionable_id,required,nullable" format:"uuid"`
+	// The type of the associated actionable object. One of `payment_order`,
+	// `expected_payment`.
+	ActionableType string    `json:"actionable_type,required,nullable"`
+	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	// The specifc details of the payment action based on type.
+	Details interface{} `json:"details,required"`
+	// The ID of the internal account associated with the payment action.
+	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool   `json:"live_mode,required"`
+	Object   string `json:"object,required"`
+	// The current status of the payment action. One of `pending`, `processing`,
+	// `sent`, `acknowledged`, `cancelled`, or `failed`.
+	Status string `json:"status,required"`
+	// The type of the payment action. Determines the action to be taken.
+	Type      string                        `json:"type,required"`
+	UpdatedAt time.Time                     `json:"updated_at,required" format:"date-time"`
+	JSON      paymentActionListResponseJSON `json:"-"`
+}
+
+// paymentActionListResponseJSON contains the JSON metadata for the struct
+// [PaymentActionListResponse]
+type paymentActionListResponseJSON struct {
+	ID                apijson.Field
+	ActionableID      apijson.Field
+	ActionableType    apijson.Field
+	CreatedAt         apijson.Field
+	Details           apijson.Field
+	InternalAccountID apijson.Field
+	LiveMode          apijson.Field
+	Object            apijson.Field
+	Status            apijson.Field
+	Type              apijson.Field
+	UpdatedAt         apijson.Field
+	raw               string
+	ExtraFields       map[string]apijson.Field
+}
+
+func (r *PaymentActionListResponse) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r paymentActionListResponseJSON) RawJSON() string {
 	return r.raw
 }
 

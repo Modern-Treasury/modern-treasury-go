@@ -183,7 +183,7 @@ type VirtualAccountNewParams struct {
 	// The name of the virtual account.
 	Name param.Field[string] `json:"name,required"`
 	// An array of account detail objects.
-	AccountDetails param.Field[[]AccountDetailCreateParam] `json:"account_details"`
+	AccountDetails param.Field[[]VirtualAccountNewParamsAccountDetail] `json:"account_details"`
 	// The ID of the counterparty that the virtual account belongs to.
 	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
 	// The ID of a credit normal ledger account. When money leaves the virtual account,
@@ -204,11 +204,156 @@ type VirtualAccountNewParams struct {
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// An array of routing detail objects.
-	RoutingDetails param.Field[[]RoutingDetailCreateParam] `json:"routing_details"`
+	RoutingDetails param.Field[[]VirtualAccountNewParamsRoutingDetail] `json:"routing_details"`
 }
 
 func (r VirtualAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type VirtualAccountNewParamsAccountDetail struct {
+	// The account number for the bank account.
+	AccountNumber param.Field[string] `json:"account_number,required"`
+	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
+	// account number is in a generic format.
+	AccountNumberType param.Field[VirtualAccountNewParamsAccountDetailsAccountNumberType] `json:"account_number_type"`
+}
+
+func (r VirtualAccountNewParamsAccountDetail) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
+// account number is in a generic format.
+type VirtualAccountNewParamsAccountDetailsAccountNumberType string
+
+const (
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber        VirtualAccountNewParamsAccountDetailsAccountNumberType = "au_number"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeBaseAddress     VirtualAccountNewParamsAccountDetailsAccountNumberType = "base_address"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeClabe           VirtualAccountNewParamsAccountDetailsAccountNumberType = "clabe"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeEthereumAddress VirtualAccountNewParamsAccountDetailsAccountNumberType = "ethereum_address"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeHkNumber        VirtualAccountNewParamsAccountDetailsAccountNumberType = "hk_number"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeIban            VirtualAccountNewParamsAccountDetailsAccountNumberType = "iban"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeIDNumber        VirtualAccountNewParamsAccountDetailsAccountNumberType = "id_number"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeNzNumber        VirtualAccountNewParamsAccountDetailsAccountNumberType = "nz_number"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeOther           VirtualAccountNewParamsAccountDetailsAccountNumberType = "other"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypePan             VirtualAccountNewParamsAccountDetailsAccountNumberType = "pan"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypePolygonAddress  VirtualAccountNewParamsAccountDetailsAccountNumberType = "polygon_address"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeSgNumber        VirtualAccountNewParamsAccountDetailsAccountNumberType = "sg_number"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeSolanaAddress   VirtualAccountNewParamsAccountDetailsAccountNumberType = "solana_address"
+	VirtualAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress   VirtualAccountNewParamsAccountDetailsAccountNumberType = "wallet_address"
+)
+
+func (r VirtualAccountNewParamsAccountDetailsAccountNumberType) IsKnown() bool {
+	switch r {
+	case VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeBaseAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeClabe, VirtualAccountNewParamsAccountDetailsAccountNumberTypeEthereumAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeHkNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeIban, VirtualAccountNewParamsAccountDetailsAccountNumberTypeIDNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeNzNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeOther, VirtualAccountNewParamsAccountDetailsAccountNumberTypePan, VirtualAccountNewParamsAccountDetailsAccountNumberTypePolygonAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeSgNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeSolanaAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress:
+		return true
+	}
+	return false
+}
+
+type VirtualAccountNewParamsRoutingDetail struct {
+	// The routing number of the bank.
+	RoutingNumber param.Field[string] `json:"routing_number,required"`
+	// The type of routing number. See
+	// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
+	// more details.
+	RoutingNumberType param.Field[VirtualAccountNewParamsRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
+	// If the routing detail is to be used for a specific payment type this field will
+	// be populated, otherwise null.
+	PaymentType param.Field[VirtualAccountNewParamsRoutingDetailsPaymentType] `json:"payment_type"`
+}
+
+func (r VirtualAccountNewParamsRoutingDetail) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The type of routing number. See
+// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
+// more details.
+type VirtualAccountNewParamsRoutingDetailsRoutingNumberType string
+
+const (
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba                     VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "aba"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAuBsb                   VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "au_bsb"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeBrCodigo                VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "br_codigo"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCaCpa                   VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "ca_cpa"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeChips                   VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "chips"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCnaps                   VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "cnaps"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeDkInterbankClearingCode VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "dk_interbank_clearing_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeGBSortCode              VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "gb_sort_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeHkInterbankClearingCode VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeHuInterbankClearingCode VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeIDSknbiCode             VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "id_sknbi_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeIlBankCode              VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "il_bank_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeInIfsc                  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "in_ifsc"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeJpZenginCode            VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "jp_zengin_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeMxBankIdentifier        VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "mx_bank_identifier"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeMyBranchCode            VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "my_branch_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeNzNationalClearingCode  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "nz_national_clearing_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypePlNationalClearingCode  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "pl_national_clearing_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "se_bankgiro_clearing_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSgInterbankClearingCode VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "sg_interbank_clearing_code"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSwift                   VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "swift"
+	VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeZaNationalClearingCode  VirtualAccountNewParamsRoutingDetailsRoutingNumberType = "za_national_clearing_code"
+)
+
+func (r VirtualAccountNewParamsRoutingDetailsRoutingNumberType) IsKnown() bool {
+	switch r {
+	case VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAuBsb, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeBrCodigo, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCaCpa, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeChips, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeCnaps, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeGBSortCode, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeIDSknbiCode, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeIlBankCode, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeInIfsc, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeJpZenginCode, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeMxBankIdentifier, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeMyBranchCode, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeNzNationalClearingCode, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypePlNationalClearingCode, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeSwift, VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
+		return true
+	}
+	return false
+}
+
+// If the routing detail is to be used for a specific payment type this field will
+// be populated, otherwise null.
+type VirtualAccountNewParamsRoutingDetailsPaymentType string
+
+const (
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeACH         VirtualAccountNewParamsRoutingDetailsPaymentType = "ach"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeAuBecs      VirtualAccountNewParamsRoutingDetailsPaymentType = "au_becs"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeBacs        VirtualAccountNewParamsRoutingDetailsPaymentType = "bacs"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeBase        VirtualAccountNewParamsRoutingDetailsPaymentType = "base"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeBook        VirtualAccountNewParamsRoutingDetailsPaymentType = "book"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeCard        VirtualAccountNewParamsRoutingDetailsPaymentType = "card"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeChats       VirtualAccountNewParamsRoutingDetailsPaymentType = "chats"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeCheck       VirtualAccountNewParamsRoutingDetailsPaymentType = "check"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeCrossBorder VirtualAccountNewParamsRoutingDetailsPaymentType = "cross_border"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeDkNets      VirtualAccountNewParamsRoutingDetailsPaymentType = "dk_nets"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeEft         VirtualAccountNewParamsRoutingDetailsPaymentType = "eft"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeEthereum    VirtualAccountNewParamsRoutingDetailsPaymentType = "ethereum"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeGBFps       VirtualAccountNewParamsRoutingDetailsPaymentType = "gb_fps"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeHuIcs       VirtualAccountNewParamsRoutingDetailsPaymentType = "hu_ics"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeInterac     VirtualAccountNewParamsRoutingDetailsPaymentType = "interac"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeMasav       VirtualAccountNewParamsRoutingDetailsPaymentType = "masav"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeMxCcen      VirtualAccountNewParamsRoutingDetailsPaymentType = "mx_ccen"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeNeft        VirtualAccountNewParamsRoutingDetailsPaymentType = "neft"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeNics        VirtualAccountNewParamsRoutingDetailsPaymentType = "nics"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeNzBecs      VirtualAccountNewParamsRoutingDetailsPaymentType = "nz_becs"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypePlElixir    VirtualAccountNewParamsRoutingDetailsPaymentType = "pl_elixir"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypePolygon     VirtualAccountNewParamsRoutingDetailsPaymentType = "polygon"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeProvxchange VirtualAccountNewParamsRoutingDetailsPaymentType = "provxchange"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeRoSent      VirtualAccountNewParamsRoutingDetailsPaymentType = "ro_sent"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeRtp         VirtualAccountNewParamsRoutingDetailsPaymentType = "rtp"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSeBankgirot VirtualAccountNewParamsRoutingDetailsPaymentType = "se_bankgirot"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSen         VirtualAccountNewParamsRoutingDetailsPaymentType = "sen"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSepa        VirtualAccountNewParamsRoutingDetailsPaymentType = "sepa"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSgGiro      VirtualAccountNewParamsRoutingDetailsPaymentType = "sg_giro"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSic         VirtualAccountNewParamsRoutingDetailsPaymentType = "sic"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSignet      VirtualAccountNewParamsRoutingDetailsPaymentType = "signet"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSknbi       VirtualAccountNewParamsRoutingDetailsPaymentType = "sknbi"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeSolana      VirtualAccountNewParamsRoutingDetailsPaymentType = "solana"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeWire        VirtualAccountNewParamsRoutingDetailsPaymentType = "wire"
+	VirtualAccountNewParamsRoutingDetailsPaymentTypeZengin      VirtualAccountNewParamsRoutingDetailsPaymentType = "zengin"
+)
+
+func (r VirtualAccountNewParamsRoutingDetailsPaymentType) IsKnown() bool {
+	switch r {
+	case VirtualAccountNewParamsRoutingDetailsPaymentTypeACH, VirtualAccountNewParamsRoutingDetailsPaymentTypeAuBecs, VirtualAccountNewParamsRoutingDetailsPaymentTypeBacs, VirtualAccountNewParamsRoutingDetailsPaymentTypeBase, VirtualAccountNewParamsRoutingDetailsPaymentTypeBook, VirtualAccountNewParamsRoutingDetailsPaymentTypeCard, VirtualAccountNewParamsRoutingDetailsPaymentTypeChats, VirtualAccountNewParamsRoutingDetailsPaymentTypeCheck, VirtualAccountNewParamsRoutingDetailsPaymentTypeCrossBorder, VirtualAccountNewParamsRoutingDetailsPaymentTypeDkNets, VirtualAccountNewParamsRoutingDetailsPaymentTypeEft, VirtualAccountNewParamsRoutingDetailsPaymentTypeEthereum, VirtualAccountNewParamsRoutingDetailsPaymentTypeGBFps, VirtualAccountNewParamsRoutingDetailsPaymentTypeHuIcs, VirtualAccountNewParamsRoutingDetailsPaymentTypeInterac, VirtualAccountNewParamsRoutingDetailsPaymentTypeMasav, VirtualAccountNewParamsRoutingDetailsPaymentTypeMxCcen, VirtualAccountNewParamsRoutingDetailsPaymentTypeNeft, VirtualAccountNewParamsRoutingDetailsPaymentTypeNics, VirtualAccountNewParamsRoutingDetailsPaymentTypeNzBecs, VirtualAccountNewParamsRoutingDetailsPaymentTypePlElixir, VirtualAccountNewParamsRoutingDetailsPaymentTypePolygon, VirtualAccountNewParamsRoutingDetailsPaymentTypeProvxchange, VirtualAccountNewParamsRoutingDetailsPaymentTypeRoSent, VirtualAccountNewParamsRoutingDetailsPaymentTypeRtp, VirtualAccountNewParamsRoutingDetailsPaymentTypeSeBankgirot, VirtualAccountNewParamsRoutingDetailsPaymentTypeSen, VirtualAccountNewParamsRoutingDetailsPaymentTypeSepa, VirtualAccountNewParamsRoutingDetailsPaymentTypeSgGiro, VirtualAccountNewParamsRoutingDetailsPaymentTypeSic, VirtualAccountNewParamsRoutingDetailsPaymentTypeSignet, VirtualAccountNewParamsRoutingDetailsPaymentTypeSknbi, VirtualAccountNewParamsRoutingDetailsPaymentTypeSolana, VirtualAccountNewParamsRoutingDetailsPaymentTypeWire, VirtualAccountNewParamsRoutingDetailsPaymentTypeZengin:
+		return true
+	}
+	return false
 }
 
 type VirtualAccountUpdateParams struct {

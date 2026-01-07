@@ -341,8 +341,8 @@ type CounterpartyNewParams struct {
 	ExternalID param.Field[string] `json:"external_id"`
 	// An optional type to auto-sync the counterparty to your ledger. Either `customer`
 	// or `vendor`.
-	LedgerType  param.Field[CounterpartyNewParamsLedgerType] `json:"ledger_type"`
-	LegalEntity param.Field[LegalEntityCreateParam]          `json:"legal_entity"`
+	LedgerType  param.Field[CounterpartyNewParamsLedgerType]  `json:"ledger_type"`
+	LegalEntity param.Field[CounterpartyNewParamsLegalEntity] `json:"legal_entity"`
 	// The id of the legal entity.
 	LegalEntityID param.Field[string] `json:"legal_entity_id" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -582,6 +582,137 @@ const (
 func (r CounterpartyNewParamsLedgerType) IsKnown() bool {
 	switch r {
 	case CounterpartyNewParamsLedgerTypeCustomer, CounterpartyNewParamsLedgerTypeVendor:
+		return true
+	}
+	return false
+}
+
+type CounterpartyNewParamsLegalEntity struct {
+	// The type of legal entity.
+	LegalEntityType param.Field[CounterpartyNewParamsLegalEntityLegalEntityType] `json:"legal_entity_type,required"`
+	// A list of addresses for the entity.
+	Addresses    param.Field[[]shared.LegalEntityAddressCreateRequestParam] `json:"addresses"`
+	BankSettings param.Field[shared.LegalEntityBankSettingsParam]           `json:"bank_settings"`
+	// A description of the business.
+	BusinessDescription param.Field[string] `json:"business_description"`
+	// The business's legal business name.
+	BusinessName param.Field[string] `json:"business_name"`
+	// The country of citizenship for an individual.
+	CitizenshipCountry param.Field[string]                                  `json:"citizenship_country"`
+	ComplianceDetails  param.Field[shared.LegalEntityComplianceDetailParam] `json:"compliance_details"`
+	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
+	// alpha-3 formats.
+	CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`
+	// A business's formation date (YYYY-MM-DD).
+	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
+	// An individual's date of birth (YYYY-MM-DD).
+	DateOfBirth          param.Field[time.Time] `json:"date_of_birth" format:"date"`
+	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
+	// The entity's primary email.
+	Email param.Field[string] `json:"email"`
+	// Monthly expected transaction volume in entity's local currency.
+	ExpectedActivityVolume param.Field[int64] `json:"expected_activity_volume"`
+	// An individual's first name.
+	FirstName param.Field[string] `json:"first_name"`
+	// A list of identifications for the legal entity.
+	Identifications param.Field[[]shared.IdentificationCreateRequestParam] `json:"identifications"`
+	// A list of industry classifications for the legal entity.
+	IndustryClassifications param.Field[[]shared.LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
+	// A description of the intended use of the legal entity.
+	IntendedUse param.Field[string] `json:"intended_use"`
+	// An individual's last name.
+	LastName param.Field[string] `json:"last_name"`
+	// The legal entity associations and its child legal entities.
+	LegalEntityAssociations param.Field[[]LegalEntityAssociationInlineCreateParam] `json:"legal_entity_associations"`
+	// The business's legal structure.
+	LegalStructure param.Field[CounterpartyNewParamsLegalEntityLegalStructure] `json:"legal_structure"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// An individual's middle name.
+	MiddleName param.Field[string] `json:"middle_name"`
+	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
+	// codes).
+	OperatingJurisdictions param.Field[[]string]                                      `json:"operating_jurisdictions"`
+	PhoneNumbers           param.Field[[]CounterpartyNewParamsLegalEntityPhoneNumber] `json:"phone_numbers"`
+	// Whether the individual is a politically exposed person.
+	PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
+	// An individual's preferred name.
+	PreferredName param.Field[string] `json:"preferred_name"`
+	// An individual's prefix.
+	Prefix param.Field[string] `json:"prefix"`
+	// A list of primary social media URLs for the business.
+	PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
+	// The risk rating of the legal entity. One of low, medium, high.
+	RiskRating param.Field[CounterpartyNewParamsLegalEntityRiskRating] `json:"risk_rating"`
+	// An individual's suffix.
+	Suffix                     param.Field[string]                                        `json:"suffix"`
+	WealthAndEmploymentDetails param.Field[shared.LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
+	// The entity's primary website URL.
+	Website param.Field[string] `json:"website"`
+}
+
+func (r CounterpartyNewParamsLegalEntity) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The type of legal entity.
+type CounterpartyNewParamsLegalEntityLegalEntityType string
+
+const (
+	CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness   CounterpartyNewParamsLegalEntityLegalEntityType = "business"
+	CounterpartyNewParamsLegalEntityLegalEntityTypeIndividual CounterpartyNewParamsLegalEntityLegalEntityType = "individual"
+)
+
+func (r CounterpartyNewParamsLegalEntityLegalEntityType) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness, CounterpartyNewParamsLegalEntityLegalEntityTypeIndividual:
+		return true
+	}
+	return false
+}
+
+// The business's legal structure.
+type CounterpartyNewParamsLegalEntityLegalStructure string
+
+const (
+	CounterpartyNewParamsLegalEntityLegalStructureCorporation        CounterpartyNewParamsLegalEntityLegalStructure = "corporation"
+	CounterpartyNewParamsLegalEntityLegalStructureLlc                CounterpartyNewParamsLegalEntityLegalStructure = "llc"
+	CounterpartyNewParamsLegalEntityLegalStructureNonProfit          CounterpartyNewParamsLegalEntityLegalStructure = "non_profit"
+	CounterpartyNewParamsLegalEntityLegalStructurePartnership        CounterpartyNewParamsLegalEntityLegalStructure = "partnership"
+	CounterpartyNewParamsLegalEntityLegalStructureSoleProprietorship CounterpartyNewParamsLegalEntityLegalStructure = "sole_proprietorship"
+	CounterpartyNewParamsLegalEntityLegalStructureTrust              CounterpartyNewParamsLegalEntityLegalStructure = "trust"
+)
+
+func (r CounterpartyNewParamsLegalEntityLegalStructure) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityLegalStructureCorporation, CounterpartyNewParamsLegalEntityLegalStructureLlc, CounterpartyNewParamsLegalEntityLegalStructureNonProfit, CounterpartyNewParamsLegalEntityLegalStructurePartnership, CounterpartyNewParamsLegalEntityLegalStructureSoleProprietorship, CounterpartyNewParamsLegalEntityLegalStructureTrust:
+		return true
+	}
+	return false
+}
+
+// A list of phone numbers in E.164 format.
+type CounterpartyNewParamsLegalEntityPhoneNumber struct {
+	PhoneNumber param.Field[string] `json:"phone_number"`
+}
+
+func (r CounterpartyNewParamsLegalEntityPhoneNumber) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The risk rating of the legal entity. One of low, medium, high.
+type CounterpartyNewParamsLegalEntityRiskRating string
+
+const (
+	CounterpartyNewParamsLegalEntityRiskRatingLow    CounterpartyNewParamsLegalEntityRiskRating = "low"
+	CounterpartyNewParamsLegalEntityRiskRatingMedium CounterpartyNewParamsLegalEntityRiskRating = "medium"
+	CounterpartyNewParamsLegalEntityRiskRatingHigh   CounterpartyNewParamsLegalEntityRiskRating = "high"
+)
+
+func (r CounterpartyNewParamsLegalEntityRiskRating) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityRiskRatingLow, CounterpartyNewParamsLegalEntityRiskRatingMedium, CounterpartyNewParamsLegalEntityRiskRatingHigh:
 		return true
 	}
 	return false
