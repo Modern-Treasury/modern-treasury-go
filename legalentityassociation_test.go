@@ -96,8 +96,8 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 			}}),
 			IntendedUse: moderntreasury.F("intended_use"),
 			LastName:    moderntreasury.F("last_name"),
-			LegalEntityAssociations: moderntreasury.F([]moderntreasury.LegalEntityAssociationInlineCreateParam{{
-				RelationshipTypes:   moderntreasury.F([]moderntreasury.LegalEntityAssociationInlineCreateRelationshipType{moderntreasury.LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner}),
+			LegalEntityAssociations: moderntreasury.F([]shared.LegalEntityAssociationInlineCreateParam{{
+				RelationshipTypes:   moderntreasury.F([]shared.LegalEntityAssociationInlineCreateRelationshipType{shared.LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner}),
 				ChildLegalEntityID:  moderntreasury.F("child_legal_entity_id"),
 				OwnershipPercentage: moderntreasury.F(int64(0)),
 				Title:               moderntreasury.F("title"),

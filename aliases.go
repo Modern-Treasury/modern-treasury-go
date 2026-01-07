@@ -866,6 +866,23 @@ const LegalEntityAddressCreateRequestAddressTypePoBox = shared.LegalEntityAddres
 const LegalEntityAddressCreateRequestAddressTypeResidential = shared.LegalEntityAddressCreateRequestAddressTypeResidential
 
 // This is an alias to an internal type.
+type LegalEntityAssociationInlineCreateParam = shared.LegalEntityAssociationInlineCreateParam
+
+// A list of relationship types for how the child entity relates to parent entity.
+//
+// This is an alias to an internal type.
+type LegalEntityAssociationInlineCreateRelationshipType = shared.LegalEntityAssociationInlineCreateRelationshipType
+
+// This is an alias to an internal value.
+const LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner = shared.LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner
+
+// This is an alias to an internal value.
+const LegalEntityAssociationInlineCreateRelationshipTypeBeneficialOwner = shared.LegalEntityAssociationInlineCreateRelationshipTypeBeneficialOwner
+
+// This is an alias to an internal value.
+const LegalEntityAssociationInlineCreateRelationshipTypeControlPerson = shared.LegalEntityAssociationInlineCreateRelationshipTypeControlPerson
+
+// This is an alias to an internal type.
 type LegalEntityBankSettings = shared.LegalEntityBankSettings
 
 // This is an alias to an internal type.
