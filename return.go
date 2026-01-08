@@ -535,6 +535,7 @@ func (r ReturnObjectRole) IsKnown() bool {
 type ReturnObjectStatus string
 
 const (
+	ReturnObjectStatusCancelled  ReturnObjectStatus = "cancelled"
 	ReturnObjectStatusCompleted  ReturnObjectStatus = "completed"
 	ReturnObjectStatusFailed     ReturnObjectStatus = "failed"
 	ReturnObjectStatusPending    ReturnObjectStatus = "pending"
@@ -545,7 +546,7 @@ const (
 
 func (r ReturnObjectStatus) IsKnown() bool {
 	switch r {
-	case ReturnObjectStatusCompleted, ReturnObjectStatusFailed, ReturnObjectStatusPending, ReturnObjectStatusProcessing, ReturnObjectStatusReturned, ReturnObjectStatusSent:
+	case ReturnObjectStatusCancelled, ReturnObjectStatusCompleted, ReturnObjectStatusFailed, ReturnObjectStatusPending, ReturnObjectStatusProcessing, ReturnObjectStatusReturned, ReturnObjectStatusSent:
 		return true
 	}
 	return false
