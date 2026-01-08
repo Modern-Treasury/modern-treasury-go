@@ -60,9 +60,11 @@
     }
   ],
   "reviewers": [
-    "cleb11",
-    "chen-annie",
-    "samridh90"
+    "samridh90",
+    "wzhu20",
+    "bullfight",
+    "ankitk-mt",
+    "eveyili"
   ],
   "release-type": "go",
   "extra-files": [
