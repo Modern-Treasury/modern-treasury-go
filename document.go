@@ -93,11 +93,11 @@ type Document struct {
 	// A category given to the document, can be `null`.
 	DocumentType string `json:"document_type,required,nullable"`
 	// The unique identifier for the associated object.
-	DocumentableID string `json:"documentable_id,required" format:"uuid"`
+	DocumentableID string `json:"documentable_id,required,nullable" format:"uuid"`
 	// The type of the associated object. Currently can be one of `payment_order`,
 	// `transaction`, `expected_payment`, `counterparty`, `organization`, `case`,
 	// `internal_account`, `decision`, or `external_account`.
-	DocumentableType DocumentDocumentableType `json:"documentable_type,required"`
+	DocumentableType DocumentDocumentableType `json:"documentable_type,required,nullable"`
 	File             DocumentFile             `json:"file,required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
@@ -178,21 +178,22 @@ func (r documentDocumentDetailJSON) RawJSON() string {
 type DocumentDocumentableType string
 
 const (
+	DocumentDocumentableTypeConnection            DocumentDocumentableType = "connection"
 	DocumentDocumentableTypeCounterparty          DocumentDocumentableType = "counterparty"
 	DocumentDocumentableTypeExpectedPayment       DocumentDocumentableType = "expected_payment"
 	DocumentDocumentableTypeExternalAccount       DocumentDocumentableType = "external_account"
 	DocumentDocumentableTypeIdentification        DocumentDocumentableType = "identification"
 	DocumentDocumentableTypeIncomingPaymentDetail DocumentDocumentableType = "incoming_payment_detail"
 	DocumentDocumentableTypeInternalAccount       DocumentDocumentableType = "internal_account"
+	DocumentDocumentableTypeLegalEntity           DocumentDocumentableType = "legal_entity"
 	DocumentDocumentableTypeOrganization          DocumentDocumentableType = "organization"
 	DocumentDocumentableTypePaymentOrder          DocumentDocumentableType = "payment_order"
 	DocumentDocumentableTypeTransaction           DocumentDocumentableType = "transaction"
-	DocumentDocumentableTypeConnection            DocumentDocumentableType = "connection"
 )
 
 func (r DocumentDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentDocumentableTypeCounterparty, DocumentDocumentableTypeExpectedPayment, DocumentDocumentableTypeExternalAccount, DocumentDocumentableTypeIdentification, DocumentDocumentableTypeIncomingPaymentDetail, DocumentDocumentableTypeInternalAccount, DocumentDocumentableTypeOrganization, DocumentDocumentableTypePaymentOrder, DocumentDocumentableTypeTransaction, DocumentDocumentableTypeConnection:
+	case DocumentDocumentableTypeConnection, DocumentDocumentableTypeCounterparty, DocumentDocumentableTypeExpectedPayment, DocumentDocumentableTypeExternalAccount, DocumentDocumentableTypeIdentification, DocumentDocumentableTypeIncomingPaymentDetail, DocumentDocumentableTypeInternalAccount, DocumentDocumentableTypeLegalEntity, DocumentDocumentableTypeOrganization, DocumentDocumentableTypePaymentOrder, DocumentDocumentableTypeTransaction:
 		return true
 	}
 	return false
@@ -226,12 +227,12 @@ func (r documentFileJSON) RawJSON() string {
 }
 
 type DocumentNewParams struct {
-	// The unique identifier for the associated object.
-	DocumentableID   param.Field[string]                            `json:"documentable_id,required"`
-	DocumentableType param.Field[DocumentNewParamsDocumentableType] `json:"documentable_type,required"`
-	File             param.Field[io.Reader]                         `json:"file,required" format:"binary"`
+	File param.Field[io.Reader] `json:"file,required" format:"binary"`
 	// A category given to the document, can be `null`.
 	DocumentType param.Field[string] `json:"document_type"`
+	// The unique identifier for the associated object.
+	DocumentableID   param.Field[string]                            `json:"documentable_id"`
+	DocumentableType param.Field[DocumentNewParamsDocumentableType] `json:"documentable_type"`
 }
 
 func (r DocumentNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
@@ -252,21 +253,22 @@ func (r DocumentNewParams) MarshalMultipart() (data []byte, contentType string, 
 type DocumentNewParamsDocumentableType string
 
 const (
+	DocumentNewParamsDocumentableTypeConnections            DocumentNewParamsDocumentableType = "connections"
 	DocumentNewParamsDocumentableTypeCounterparties         DocumentNewParamsDocumentableType = "counterparties"
 	DocumentNewParamsDocumentableTypeExpectedPayments       DocumentNewParamsDocumentableType = "expected_payments"
 	DocumentNewParamsDocumentableTypeExternalAccounts       DocumentNewParamsDocumentableType = "external_accounts"
 	DocumentNewParamsDocumentableTypeIdentifications        DocumentNewParamsDocumentableType = "identifications"
 	DocumentNewParamsDocumentableTypeIncomingPaymentDetails DocumentNewParamsDocumentableType = "incoming_payment_details"
 	DocumentNewParamsDocumentableTypeInternalAccounts       DocumentNewParamsDocumentableType = "internal_accounts"
+	DocumentNewParamsDocumentableTypeLegalEntities          DocumentNewParamsDocumentableType = "legal_entities"
 	DocumentNewParamsDocumentableTypeOrganizations          DocumentNewParamsDocumentableType = "organizations"
 	DocumentNewParamsDocumentableTypePaymentOrders          DocumentNewParamsDocumentableType = "payment_orders"
 	DocumentNewParamsDocumentableTypeTransactions           DocumentNewParamsDocumentableType = "transactions"
-	DocumentNewParamsDocumentableTypeConnections            DocumentNewParamsDocumentableType = "connections"
 )
 
 func (r DocumentNewParamsDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentNewParamsDocumentableTypeCounterparties, DocumentNewParamsDocumentableTypeExpectedPayments, DocumentNewParamsDocumentableTypeExternalAccounts, DocumentNewParamsDocumentableTypeIdentifications, DocumentNewParamsDocumentableTypeIncomingPaymentDetails, DocumentNewParamsDocumentableTypeInternalAccounts, DocumentNewParamsDocumentableTypeOrganizations, DocumentNewParamsDocumentableTypePaymentOrders, DocumentNewParamsDocumentableTypeTransactions, DocumentNewParamsDocumentableTypeConnections:
+	case DocumentNewParamsDocumentableTypeConnections, DocumentNewParamsDocumentableTypeCounterparties, DocumentNewParamsDocumentableTypeExpectedPayments, DocumentNewParamsDocumentableTypeExternalAccounts, DocumentNewParamsDocumentableTypeIdentifications, DocumentNewParamsDocumentableTypeIncomingPaymentDetails, DocumentNewParamsDocumentableTypeInternalAccounts, DocumentNewParamsDocumentableTypeLegalEntities, DocumentNewParamsDocumentableTypeOrganizations, DocumentNewParamsDocumentableTypePaymentOrders, DocumentNewParamsDocumentableTypeTransactions:
 		return true
 	}
 	return false
@@ -297,21 +299,22 @@ func (r DocumentListParams) URLQuery() (v url.Values) {
 type DocumentListParamsDocumentableType string
 
 const (
+	DocumentListParamsDocumentableTypeConnections            DocumentListParamsDocumentableType = "connections"
 	DocumentListParamsDocumentableTypeCounterparties         DocumentListParamsDocumentableType = "counterparties"
 	DocumentListParamsDocumentableTypeExpectedPayments       DocumentListParamsDocumentableType = "expected_payments"
 	DocumentListParamsDocumentableTypeExternalAccounts       DocumentListParamsDocumentableType = "external_accounts"
 	DocumentListParamsDocumentableTypeIdentifications        DocumentListParamsDocumentableType = "identifications"
 	DocumentListParamsDocumentableTypeIncomingPaymentDetails DocumentListParamsDocumentableType = "incoming_payment_details"
 	DocumentListParamsDocumentableTypeInternalAccounts       DocumentListParamsDocumentableType = "internal_accounts"
+	DocumentListParamsDocumentableTypeLegalEntities          DocumentListParamsDocumentableType = "legal_entities"
 	DocumentListParamsDocumentableTypeOrganizations          DocumentListParamsDocumentableType = "organizations"
 	DocumentListParamsDocumentableTypePaymentOrders          DocumentListParamsDocumentableType = "payment_orders"
 	DocumentListParamsDocumentableTypeTransactions           DocumentListParamsDocumentableType = "transactions"
-	DocumentListParamsDocumentableTypeConnections            DocumentListParamsDocumentableType = "connections"
 )
 
 func (r DocumentListParamsDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentListParamsDocumentableTypeCounterparties, DocumentListParamsDocumentableTypeExpectedPayments, DocumentListParamsDocumentableTypeExternalAccounts, DocumentListParamsDocumentableTypeIdentifications, DocumentListParamsDocumentableTypeIncomingPaymentDetails, DocumentListParamsDocumentableTypeInternalAccounts, DocumentListParamsDocumentableTypeOrganizations, DocumentListParamsDocumentableTypePaymentOrders, DocumentListParamsDocumentableTypeTransactions, DocumentListParamsDocumentableTypeConnections:
+	case DocumentListParamsDocumentableTypeConnections, DocumentListParamsDocumentableTypeCounterparties, DocumentListParamsDocumentableTypeExpectedPayments, DocumentListParamsDocumentableTypeExternalAccounts, DocumentListParamsDocumentableTypeIdentifications, DocumentListParamsDocumentableTypeIncomingPaymentDetails, DocumentListParamsDocumentableTypeInternalAccounts, DocumentListParamsDocumentableTypeLegalEntities, DocumentListParamsDocumentableTypeOrganizations, DocumentListParamsDocumentableTypePaymentOrders, DocumentListParamsDocumentableTypeTransactions:
 		return true
 	}
 	return false
