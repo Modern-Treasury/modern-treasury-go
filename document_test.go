@@ -29,10 +29,10 @@ func TestDocumentNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Documents.New(context.TODO(), moderntreasury.DocumentNewParams{
-		DocumentableID:   moderntreasury.F("documentable_id"),
-		DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
 		File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
 		DocumentType:     moderntreasury.F("document_type"),
+		DocumentableID:   moderntreasury.F("documentable_id"),
+		DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeConnections),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -82,7 +82,7 @@ func TestDocumentListWithOptionalParams(t *testing.T) {
 	_, err := client.Documents.List(context.TODO(), moderntreasury.DocumentListParams{
 		AfterCursor:      moderntreasury.F("after_cursor"),
 		DocumentableID:   moderntreasury.F("documentable_id"),
-		DocumentableType: moderntreasury.F(moderntreasury.DocumentListParamsDocumentableTypeCounterparties),
+		DocumentableType: moderntreasury.F(moderntreasury.DocumentListParamsDocumentableTypeConnections),
 		PerPage:          moderntreasury.F(int64(0)),
 	})
 	if err != nil {
