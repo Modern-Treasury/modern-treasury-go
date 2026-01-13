@@ -1,5 +1,22 @@
 # Changelog
 
+## 2.38.0 (2026-01-13)
+
+Full Changelog: [v2.37.0...v2.38.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.37.0...v2.38.0)
+
+### Features
+
+* **api:** api update ([8a673c1](https://github.com/Modern-Treasury/modern-treasury-go/commit/8a673c1b871fbcc40bb6415e8163cece6e0c50b4))
+* **api:** api update ([1243ca3](https://github.com/Modern-Treasury/modern-treasury-go/commit/1243ca337d9098622159bee3e08e34c33bca7917))
+* **api:** manual updates ([79659ec](https://github.com/Modern-Treasury/modern-treasury-go/commit/79659eca587ad55b3fd171d8e4e3bafdb30ab0ab))
+* **api:** manual updates ([a53463a](https://github.com/Modern-Treasury/modern-treasury-go/commit/a53463a2640f8d6002ad185d4f68a9dd0cf361b0))
+* **api:** manual updates ([2396a1a](https://github.com/Modern-Treasury/modern-treasury-go/commit/2396a1a276c3a5b5a811b3c99dc489121bfbb0a6))
+
+
+### Chores
+
+* add splat as owner of SDK PRs ([ec23c0a](https://github.com/Modern-Treasury/modern-treasury-go/commit/ec23c0a9196d05a12ef5378c94cd705e9a117658))
+
 ## 2.37.0 (2026-01-07)
 
 Full Changelog: [v2.36.0...v2.37.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.36.0...v2.37.0)
