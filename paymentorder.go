@@ -1278,12 +1278,12 @@ func (r PaymentOrderNewParamsChargeBearer) IsKnown() bool {
 }
 
 type PaymentOrderNewParamsDocument struct {
-	// The unique identifier for the associated object.
-	DocumentableID   param.Field[string]                                         `json:"documentable_id,required"`
-	DocumentableType param.Field[PaymentOrderNewParamsDocumentsDocumentableType] `json:"documentable_type,required"`
-	File             param.Field[io.Reader]                                      `json:"file,required" format:"binary"`
+	File param.Field[io.Reader] `json:"file,required" format:"binary"`
 	// A category given to the document, can be `null`.
 	DocumentType param.Field[string] `json:"document_type"`
+	// The unique identifier for the associated object.
+	DocumentableID   param.Field[string]                                         `json:"documentable_id"`
+	DocumentableType param.Field[PaymentOrderNewParamsDocumentsDocumentableType] `json:"documentable_type"`
 }
 
 func (r PaymentOrderNewParamsDocument) MarshalJSON() (data []byte, err error) {
@@ -1293,21 +1293,22 @@ func (r PaymentOrderNewParamsDocument) MarshalJSON() (data []byte, err error) {
 type PaymentOrderNewParamsDocumentsDocumentableType string
 
 const (
+	PaymentOrderNewParamsDocumentsDocumentableTypeConnections            PaymentOrderNewParamsDocumentsDocumentableType = "connections"
 	PaymentOrderNewParamsDocumentsDocumentableTypeCounterparties         PaymentOrderNewParamsDocumentsDocumentableType = "counterparties"
 	PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayments       PaymentOrderNewParamsDocumentsDocumentableType = "expected_payments"
 	PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccounts       PaymentOrderNewParamsDocumentsDocumentableType = "external_accounts"
 	PaymentOrderNewParamsDocumentsDocumentableTypeIdentifications        PaymentOrderNewParamsDocumentsDocumentableType = "identifications"
 	PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetails PaymentOrderNewParamsDocumentsDocumentableType = "incoming_payment_details"
 	PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccounts       PaymentOrderNewParamsDocumentsDocumentableType = "internal_accounts"
+	PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntities          PaymentOrderNewParamsDocumentsDocumentableType = "legal_entities"
 	PaymentOrderNewParamsDocumentsDocumentableTypeOrganizations          PaymentOrderNewParamsDocumentsDocumentableType = "organizations"
 	PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrders          PaymentOrderNewParamsDocumentsDocumentableType = "payment_orders"
 	PaymentOrderNewParamsDocumentsDocumentableTypeTransactions           PaymentOrderNewParamsDocumentsDocumentableType = "transactions"
-	PaymentOrderNewParamsDocumentsDocumentableTypeConnections            PaymentOrderNewParamsDocumentsDocumentableType = "connections"
 )
 
 func (r PaymentOrderNewParamsDocumentsDocumentableType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewParamsDocumentsDocumentableTypeCounterparties, PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayments, PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccounts, PaymentOrderNewParamsDocumentsDocumentableTypeIdentifications, PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetails, PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccounts, PaymentOrderNewParamsDocumentsDocumentableTypeOrganizations, PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrders, PaymentOrderNewParamsDocumentsDocumentableTypeTransactions, PaymentOrderNewParamsDocumentsDocumentableTypeConnections:
+	case PaymentOrderNewParamsDocumentsDocumentableTypeConnections, PaymentOrderNewParamsDocumentsDocumentableTypeCounterparties, PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayments, PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccounts, PaymentOrderNewParamsDocumentsDocumentableTypeIdentifications, PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetails, PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccounts, PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntities, PaymentOrderNewParamsDocumentsDocumentableTypeOrganizations, PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrders, PaymentOrderNewParamsDocumentsDocumentableTypeTransactions:
 		return true
 	}
 	return false

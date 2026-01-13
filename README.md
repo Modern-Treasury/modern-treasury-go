@@ -263,23 +263,23 @@ which can be used to wrap any `io.Reader` with the appropriate file name and con
 // A file from the file system
 file, err := os.Open("my/file.txt")
 moderntreasury.DocumentNewParams{
+	File:             moderntreasury.F[io.Reader](file),
 	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
 	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
-	File:             moderntreasury.F[io.Reader](file),
 }
 
 // A file from a string
 moderntreasury.DocumentNewParams{
+	File:             moderntreasury.F[io.Reader](strings.NewReader("my file contents")),
 	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
 	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
-	File:             moderntreasury.F[io.Reader](strings.NewReader("my file contents")),
 }
 
 // With a custom filename and contentType
 moderntreasury.DocumentNewParams{
+	File:             moderntreasury.FileParam(strings.NewReader(`{"hello": "foo"}`), "file.go", "application/json"),
 	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
 	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
-	File:             moderntreasury.FileParam(strings.NewReader(`{"hello": "foo"}`), "file.go", "application/json"),
 }
 ```
 
