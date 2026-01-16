@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.38.1 (2026-01-16)
+
+Full Changelog: [v2.38.0...v2.38.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.38.0...v2.38.1)
+
+### Bug Fixes
+
+* **docs:** add missing pointer prefix to api.md return types ([11ef4b3](https://github.com/Modern-Treasury/modern-treasury-go/commit/11ef4b3c5256489b04ce585cd14ca867843be8ea))
+
+
+### Chores
+
+* **internal:** update `actions/checkout` version ([8defca7](https://github.com/Modern-Treasury/modern-treasury-go/commit/8defca7878ec055b7c9d75f620ab650c13e5ad3d))
+
 ## 2.38.0 (2026-01-13)
 
 Full Changelog: [v2.37.0...v2.38.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.37.0...v2.38.0)
