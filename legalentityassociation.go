@@ -61,12 +61,13 @@ type ChildLegalEntity struct {
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed time.Time `json:"date_formed,required,nullable" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
-	DateOfBirth          time.Time `json:"date_of_birth,required,nullable" format:"date"`
-	DiscardedAt          time.Time `json:"discarded_at,required,nullable" format:"date-time"`
-	DoingBusinessAsNames []string  `json:"doing_business_as_names,required"`
+	DateOfBirth          time.Time  `json:"date_of_birth,required,nullable" format:"date"`
+	DiscardedAt          time.Time  `json:"discarded_at,required,nullable" format:"date-time"`
+	Documents            []Document `json:"documents,required"`
+	DoingBusinessAsNames []string   `json:"doing_business_as_names,required"`
 	// The entity's primary email.
 	Email string `json:"email,required,nullable"`
-	// Monthly expected transaction volume in entity's local currency.
+	// Monthly expected transaction volume in USD.
 	ExpectedActivityVolume int64 `json:"expected_activity_volume,required,nullable"`
 	// An individual's first name.
 	FirstName string `json:"first_name,required,nullable"`
@@ -131,6 +132,7 @@ type childLegalEntityJSON struct {
 	DateFormed                 apijson.Field
 	DateOfBirth                apijson.Field
 	DiscardedAt                apijson.Field
+	Documents                  apijson.Field
 	DoingBusinessAsNames       apijson.Field
 	Email                      apijson.Field
 	ExpectedActivityVolume     apijson.Field
@@ -240,9 +242,10 @@ func (r ChildLegalEntityAddressesAddressType) IsKnown() bool {
 }
 
 type ChildLegalEntityIdentification struct {
-	ID          string    `json:"id,required" format:"uuid"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	ID          string     `json:"id,required" format:"uuid"`
+	CreatedAt   time.Time  `json:"created_at,required" format:"date-time"`
+	DiscardedAt time.Time  `json:"discarded_at,required,nullable" format:"date-time"`
+	Documents   []Document `json:"documents,required"`
 	// The date when the Identification is no longer considered valid by the issuing
 	// authority.
 	ExpirationDate time.Time `json:"expiration_date,required,nullable" format:"date"`
@@ -267,6 +270,7 @@ type childLegalEntityIdentificationJSON struct {
 	ID             apijson.Field
 	CreatedAt      apijson.Field
 	DiscardedAt    apijson.Field
+	Documents      apijson.Field
 	ExpirationDate apijson.Field
 	IDType         apijson.Field
 	IssuingCountry apijson.Field
