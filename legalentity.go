@@ -113,12 +113,13 @@ type LegalEntity struct {
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed time.Time `json:"date_formed,required,nullable" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
-	DateOfBirth          time.Time `json:"date_of_birth,required,nullable" format:"date"`
-	DiscardedAt          time.Time `json:"discarded_at,required,nullable" format:"date-time"`
-	DoingBusinessAsNames []string  `json:"doing_business_as_names,required"`
+	DateOfBirth          time.Time  `json:"date_of_birth,required,nullable" format:"date"`
+	DiscardedAt          time.Time  `json:"discarded_at,required,nullable" format:"date-time"`
+	Documents            []Document `json:"documents,required"`
+	DoingBusinessAsNames []string   `json:"doing_business_as_names,required"`
 	// The entity's primary email.
 	Email string `json:"email,required,nullable"`
-	// Monthly expected transaction volume in entity's local currency.
+	// Monthly expected transaction volume in USD.
 	ExpectedActivityVolume int64 `json:"expected_activity_volume,required,nullable"`
 	// An individual's first name.
 	FirstName string `json:"first_name,required,nullable"`
@@ -182,6 +183,7 @@ type legalEntityJSON struct {
 	DateFormed                 apijson.Field
 	DateOfBirth                apijson.Field
 	DiscardedAt                apijson.Field
+	Documents                  apijson.Field
 	DoingBusinessAsNames       apijson.Field
 	Email                      apijson.Field
 	ExpectedActivityVolume     apijson.Field
@@ -291,9 +293,10 @@ func (r LegalEntityAddressesAddressType) IsKnown() bool {
 }
 
 type LegalEntityIdentification struct {
-	ID          string    `json:"id,required" format:"uuid"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	ID          string     `json:"id,required" format:"uuid"`
+	CreatedAt   time.Time  `json:"created_at,required" format:"date-time"`
+	DiscardedAt time.Time  `json:"discarded_at,required,nullable" format:"date-time"`
+	Documents   []Document `json:"documents,required"`
 	// The date when the Identification is no longer considered valid by the issuing
 	// authority.
 	ExpirationDate time.Time `json:"expiration_date,required,nullable" format:"date"`
@@ -318,6 +321,7 @@ type legalEntityIdentificationJSON struct {
 	ID             apijson.Field
 	CreatedAt      apijson.Field
 	DiscardedAt    apijson.Field
+	Documents      apijson.Field
 	ExpirationDate apijson.Field
 	IDType         apijson.Field
 	IssuingCountry apijson.Field
@@ -462,6 +466,12 @@ type LegalEntityNewParams struct {
 	// The country of citizenship for an individual.
 	CitizenshipCountry param.Field[string]                                  `json:"citizenship_country"`
 	ComplianceDetails  param.Field[shared.LegalEntityComplianceDetailParam] `json:"compliance_details"`
+	// The connection ID for the connection the legal entity is associated with.
+	// Defaults to the id of the connection designated with an is_default value of true
+	// or the id of an existing operational connection if only one is available. Pass
+	// in a value of null to prevent the connection from being associated with the
+	// legal entity.
+	ConnectionID param.Field[string] `json:"connection_id"`
 	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
 	// alpha-3 formats.
 	CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`
@@ -472,7 +482,7 @@ type LegalEntityNewParams struct {
 	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
 	// The entity's primary email.
 	Email param.Field[string] `json:"email"`
-	// Monthly expected transaction volume in entity's local currency.
+	// Monthly expected transaction volume in USD.
 	ExpectedActivityVolume param.Field[int64] `json:"expected_activity_volume"`
 	// An individual's first name.
 	FirstName param.Field[string] `json:"first_name"`
@@ -601,7 +611,7 @@ type LegalEntityUpdateParams struct {
 	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
 	// The entity's primary email.
 	Email param.Field[string] `json:"email"`
-	// Monthly expected transaction volume in entity's local currency.
+	// Monthly expected transaction volume in USD.
 	ExpectedActivityVolume param.Field[int64] `json:"expected_activity_volume"`
 	// An individual's first name.
 	FirstName param.Field[string] `json:"first_name"`

@@ -160,6 +160,7 @@ type AccountDetailAccountNumberType string
 const (
 	AccountDetailAccountNumberTypeAuNumber        AccountDetailAccountNumberType = "au_number"
 	AccountDetailAccountNumberTypeBaseAddress     AccountDetailAccountNumberType = "base_address"
+	AccountDetailAccountNumberTypeCardToken       AccountDetailAccountNumberType = "card_token"
 	AccountDetailAccountNumberTypeClabe           AccountDetailAccountNumberType = "clabe"
 	AccountDetailAccountNumberTypeEthereumAddress AccountDetailAccountNumberType = "ethereum_address"
 	AccountDetailAccountNumberTypeHkNumber        AccountDetailAccountNumberType = "hk_number"
@@ -176,7 +177,7 @@ const (
 
 func (r AccountDetailAccountNumberType) IsKnown() bool {
 	switch r {
-	case AccountDetailAccountNumberTypeAuNumber, AccountDetailAccountNumberTypeBaseAddress, AccountDetailAccountNumberTypeClabe, AccountDetailAccountNumberTypeEthereumAddress, AccountDetailAccountNumberTypeHkNumber, AccountDetailAccountNumberTypeIban, AccountDetailAccountNumberTypeIDNumber, AccountDetailAccountNumberTypeNzNumber, AccountDetailAccountNumberTypeOther, AccountDetailAccountNumberTypePan, AccountDetailAccountNumberTypePolygonAddress, AccountDetailAccountNumberTypeSgNumber, AccountDetailAccountNumberTypeSolanaAddress, AccountDetailAccountNumberTypeWalletAddress:
+	case AccountDetailAccountNumberTypeAuNumber, AccountDetailAccountNumberTypeBaseAddress, AccountDetailAccountNumberTypeCardToken, AccountDetailAccountNumberTypeClabe, AccountDetailAccountNumberTypeEthereumAddress, AccountDetailAccountNumberTypeHkNumber, AccountDetailAccountNumberTypeIban, AccountDetailAccountNumberTypeIDNumber, AccountDetailAccountNumberTypeNzNumber, AccountDetailAccountNumberTypeOther, AccountDetailAccountNumberTypePan, AccountDetailAccountNumberTypePolygonAddress, AccountDetailAccountNumberTypeSgNumber, AccountDetailAccountNumberTypeSolanaAddress, AccountDetailAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false
@@ -215,6 +216,7 @@ type AccountDetailNewParamsAccountNumberType string
 const (
 	AccountDetailNewParamsAccountNumberTypeAuNumber        AccountDetailNewParamsAccountNumberType = "au_number"
 	AccountDetailNewParamsAccountNumberTypeBaseAddress     AccountDetailNewParamsAccountNumberType = "base_address"
+	AccountDetailNewParamsAccountNumberTypeCardToken       AccountDetailNewParamsAccountNumberType = "card_token"
 	AccountDetailNewParamsAccountNumberTypeClabe           AccountDetailNewParamsAccountNumberType = "clabe"
 	AccountDetailNewParamsAccountNumberTypeEthereumAddress AccountDetailNewParamsAccountNumberType = "ethereum_address"
 	AccountDetailNewParamsAccountNumberTypeHkNumber        AccountDetailNewParamsAccountNumberType = "hk_number"
@@ -231,7 +233,7 @@ const (
 
 func (r AccountDetailNewParamsAccountNumberType) IsKnown() bool {
 	switch r {
-	case AccountDetailNewParamsAccountNumberTypeAuNumber, AccountDetailNewParamsAccountNumberTypeBaseAddress, AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeEthereumAddress, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeIDNumber, AccountDetailNewParamsAccountNumberTypeNzNumber, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypePolygonAddress, AccountDetailNewParamsAccountNumberTypeSgNumber, AccountDetailNewParamsAccountNumberTypeSolanaAddress, AccountDetailNewParamsAccountNumberTypeWalletAddress:
+	case AccountDetailNewParamsAccountNumberTypeAuNumber, AccountDetailNewParamsAccountNumberTypeBaseAddress, AccountDetailNewParamsAccountNumberTypeCardToken, AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeEthereumAddress, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeIDNumber, AccountDetailNewParamsAccountNumberTypeNzNumber, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypePolygonAddress, AccountDetailNewParamsAccountNumberTypeSgNumber, AccountDetailNewParamsAccountNumberTypeSolanaAddress, AccountDetailNewParamsAccountNumberTypeWalletAddress:
 		return true
 	}
 	return false
