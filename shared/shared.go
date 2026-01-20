@@ -154,6 +154,12 @@ type ChildLegalEntityCreateParam struct {
 	// The country of citizenship for an individual.
 	CitizenshipCountry param.Field[string]                           `json:"citizenship_country"`
 	ComplianceDetails  param.Field[LegalEntityComplianceDetailParam] `json:"compliance_details"`
+	// The connection ID for the connection the legal entity is associated with.
+	// Defaults to the id of the connection designated with an is_default value of true
+	// or the id of an existing operational connection if only one is available. Pass
+	// in a value of null to prevent the connection from being associated with the
+	// legal entity.
+	ConnectionID param.Field[string] `json:"connection_id"`
 	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
 	// alpha-3 formats.
 	CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`
@@ -164,7 +170,7 @@ type ChildLegalEntityCreateParam struct {
 	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
 	// The entity's primary email.
 	Email param.Field[string] `json:"email"`
-	// Monthly expected transaction volume in entity's local currency.
+	// Monthly expected transaction volume in USD.
 	ExpectedActivityVolume param.Field[int64] `json:"expected_activity_volume"`
 	// An individual's first name.
 	FirstName param.Field[string] `json:"first_name"`
@@ -1194,7 +1200,7 @@ func (r LegalEntityIndustryClassificationParam) MarshalJSON() (data []byte, err 
 
 type LegalEntityWealthEmploymentDetail struct {
 	ID string `json:"id,required" format:"uuid"`
-	// The annual income of the individual.
+	// The annual income of the individual in USD.
 	AnnualIncome int64     `json:"annual_income,required,nullable"`
 	CreatedAt    time.Time `json:"created_at,required" format:"date-time"`
 	DiscardedAt  time.Time `json:"discarded_at,required,nullable" format:"date-time"`
@@ -1432,7 +1438,7 @@ func (r LegalEntityWealthEmploymentDetailWealthSource) IsKnown() bool {
 
 type LegalEntityWealthEmploymentDetailParam struct {
 	ID param.Field[string] `json:"id,required" format:"uuid"`
-	// The annual income of the individual.
+	// The annual income of the individual in USD.
 	AnnualIncome param.Field[int64]     `json:"annual_income,required"`
 	CreatedAt    param.Field[time.Time] `json:"created_at,required" format:"date-time"`
 	DiscardedAt  param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
