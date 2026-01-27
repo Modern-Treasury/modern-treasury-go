@@ -85,6 +85,8 @@ type ChildLegalEntity struct {
 	LegalEntityType ChildLegalEntityLegalEntityType `json:"legal_entity_type,required"`
 	// The business's legal structure.
 	LegalStructure ChildLegalEntityLegalStructure `json:"legal_structure,required,nullable"`
+	// ISO 10383 market identifier code.
+	ListedExchange string `json:"listed_exchange,required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode,required"`
@@ -106,10 +108,16 @@ type ChildLegalEntity struct {
 	Prefix string `json:"prefix,required,nullable"`
 	// A list of primary social media URLs for the business.
 	PrimarySocialMediaSites []string `json:"primary_social_media_sites,required"`
+	// Array of regulatory bodies overseeing this institution.
+	Regulators []ChildLegalEntityRegulator `json:"regulators,required,nullable"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating ChildLegalEntityRiskRating `json:"risk_rating,required,nullable"`
 	// An individual's suffix.
-	Suffix                     string                                   `json:"suffix,required,nullable"`
+	Suffix string `json:"suffix,required,nullable"`
+	// Information describing a third-party verification run by an external vendor.
+	ThirdPartyVerification ChildLegalEntityThirdPartyVerification `json:"third_party_verification,required,nullable"`
+	// Stock ticker symbol for publicly traded companies.
+	TickerSymbol               string                                   `json:"ticker_symbol,required,nullable"`
 	UpdatedAt                  time.Time                                `json:"updated_at,required" format:"date-time"`
 	WealthAndEmploymentDetails shared.LegalEntityWealthEmploymentDetail `json:"wealth_and_employment_details,required,nullable"`
 	// The entity's primary website URL.
@@ -144,6 +152,7 @@ type childLegalEntityJSON struct {
 	LegalEntityAssociations    apijson.Field
 	LegalEntityType            apijson.Field
 	LegalStructure             apijson.Field
+	ListedExchange             apijson.Field
 	LiveMode                   apijson.Field
 	Metadata                   apijson.Field
 	MiddleName                 apijson.Field
@@ -154,8 +163,11 @@ type childLegalEntityJSON struct {
 	PreferredName              apijson.Field
 	Prefix                     apijson.Field
 	PrimarySocialMediaSites    apijson.Field
+	Regulators                 apijson.Field
 	RiskRating                 apijson.Field
 	Suffix                     apijson.Field
+	ThirdPartyVerification     apijson.Field
+	TickerSymbol               apijson.Field
 	UpdatedAt                  apijson.Field
 	WealthAndEmploymentDetails apijson.Field
 	Website                    apijson.Field
@@ -385,6 +397,35 @@ func (r childLegalEntityPhoneNumberJSON) RawJSON() string {
 	return r.raw
 }
 
+type ChildLegalEntityRegulator struct {
+	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
+	// (e.g., "US", "CA", "GB").
+	Jurisdiction string `json:"jurisdiction,required"`
+	// Full name of the regulatory body.
+	Name string `json:"name,required"`
+	// Registration or identification number with the regulator.
+	RegistrationNumber string                        `json:"registration_number,required"`
+	JSON               childLegalEntityRegulatorJSON `json:"-"`
+}
+
+// childLegalEntityRegulatorJSON contains the JSON metadata for the struct
+// [ChildLegalEntityRegulator]
+type childLegalEntityRegulatorJSON struct {
+	Jurisdiction       apijson.Field
+	Name               apijson.Field
+	RegistrationNumber apijson.Field
+	raw                string
+	ExtraFields        map[string]apijson.Field
+}
+
+func (r *ChildLegalEntityRegulator) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r childLegalEntityRegulatorJSON) RawJSON() string {
+	return r.raw
+}
+
 // The risk rating of the legal entity. One of low, medium, high.
 type ChildLegalEntityRiskRating string
 
@@ -397,6 +438,47 @@ const (
 func (r ChildLegalEntityRiskRating) IsKnown() bool {
 	switch r {
 	case ChildLegalEntityRiskRatingLow, ChildLegalEntityRiskRatingMedium, ChildLegalEntityRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
+// Information describing a third-party verification run by an external vendor.
+type ChildLegalEntityThirdPartyVerification struct {
+	// The vendor that performed the verification, e.g. `persona`.
+	Vendor ChildLegalEntityThirdPartyVerificationVendor `json:"vendor,required"`
+	// The identification of the third party verification in `vendor`'s system.
+	VendorVerificationID string                                     `json:"vendor_verification_id,required"`
+	JSON                 childLegalEntityThirdPartyVerificationJSON `json:"-"`
+}
+
+// childLegalEntityThirdPartyVerificationJSON contains the JSON metadata for the
+// struct [ChildLegalEntityThirdPartyVerification]
+type childLegalEntityThirdPartyVerificationJSON struct {
+	Vendor               apijson.Field
+	VendorVerificationID apijson.Field
+	raw                  string
+	ExtraFields          map[string]apijson.Field
+}
+
+func (r *ChildLegalEntityThirdPartyVerification) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r childLegalEntityThirdPartyVerificationJSON) RawJSON() string {
+	return r.raw
+}
+
+// The vendor that performed the verification, e.g. `persona`.
+type ChildLegalEntityThirdPartyVerificationVendor string
+
+const (
+	ChildLegalEntityThirdPartyVerificationVendorPersona ChildLegalEntityThirdPartyVerificationVendor = "persona"
+)
+
+func (r ChildLegalEntityThirdPartyVerificationVendor) IsKnown() bool {
+	switch r {
+	case ChildLegalEntityThirdPartyVerificationVendorPersona:
 		return true
 	}
 	return false
