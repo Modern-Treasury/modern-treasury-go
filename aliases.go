@@ -72,6 +72,9 @@ const ChildLegalEntityCreateLegalStructureTrust = shared.ChildLegalEntityCreateL
 // This is an alias to an internal type.
 type ChildLegalEntityCreatePhoneNumberParam = shared.ChildLegalEntityCreatePhoneNumberParam
 
+// This is an alias to an internal type.
+type ChildLegalEntityCreateRegulatorParam = shared.ChildLegalEntityCreateRegulatorParam
+
 // The risk rating of the legal entity. One of low, medium, high.
 //
 // This is an alias to an internal type.
@@ -85,6 +88,19 @@ const ChildLegalEntityCreateRiskRatingMedium = shared.ChildLegalEntityCreateRisk
 
 // This is an alias to an internal value.
 const ChildLegalEntityCreateRiskRatingHigh = shared.ChildLegalEntityCreateRiskRatingHigh
+
+// Information describing a third-party verification run by an external vendor.
+//
+// This is an alias to an internal type.
+type ChildLegalEntityCreateThirdPartyVerificationParam = shared.ChildLegalEntityCreateThirdPartyVerificationParam
+
+// The vendor that performed the verification, e.g. `persona`.
+//
+// This is an alias to an internal type.
+type ChildLegalEntityCreateThirdPartyVerificationVendor = shared.ChildLegalEntityCreateThirdPartyVerificationVendor
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateThirdPartyVerificationVendorPersona = shared.ChildLegalEntityCreateThirdPartyVerificationVendorPersona
 
 // This is an alias to an internal type.
 type ContactDetail = shared.ContactDetail
