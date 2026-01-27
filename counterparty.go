@@ -633,6 +633,8 @@ type CounterpartyNewParamsLegalEntity struct {
 	LegalEntityAssociations param.Field[[]shared.LegalEntityAssociationInlineCreateParam] `json:"legal_entity_associations"`
 	// The business's legal structure.
 	LegalStructure param.Field[CounterpartyNewParamsLegalEntityLegalStructure] `json:"legal_structure"`
+	// ISO 10383 market identifier code.
+	ListedExchange param.Field[string] `json:"listed_exchange"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -650,10 +652,16 @@ type CounterpartyNewParamsLegalEntity struct {
 	Prefix param.Field[string] `json:"prefix"`
 	// A list of primary social media URLs for the business.
 	PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
+	// Array of regulatory bodies overseeing this institution.
+	Regulators param.Field[[]CounterpartyNewParamsLegalEntityRegulator] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[CounterpartyNewParamsLegalEntityRiskRating] `json:"risk_rating"`
 	// An individual's suffix.
-	Suffix                     param.Field[string]                                        `json:"suffix"`
+	Suffix param.Field[string] `json:"suffix"`
+	// Information describing a third-party verification run by an external vendor.
+	ThirdPartyVerification param.Field[CounterpartyNewParamsLegalEntityThirdPartyVerification] `json:"third_party_verification"`
+	// Stock ticker symbol for publicly traded companies.
+	TickerSymbol               param.Field[string]                                        `json:"ticker_symbol"`
 	WealthAndEmploymentDetails param.Field[shared.LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
@@ -708,6 +716,20 @@ func (r CounterpartyNewParamsLegalEntityPhoneNumber) MarshalJSON() (data []byte,
 	return apijson.MarshalRoot(r)
 }
 
+type CounterpartyNewParamsLegalEntityRegulator struct {
+	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
+	// (e.g., "US", "CA", "GB").
+	Jurisdiction param.Field[string] `json:"jurisdiction,required"`
+	// Full name of the regulatory body.
+	Name param.Field[string] `json:"name,required"`
+	// Registration or identification number with the regulator.
+	RegistrationNumber param.Field[string] `json:"registration_number,required"`
+}
+
+func (r CounterpartyNewParamsLegalEntityRegulator) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 // The risk rating of the legal entity. One of low, medium, high.
 type CounterpartyNewParamsLegalEntityRiskRating string
 
@@ -720,6 +742,33 @@ const (
 func (r CounterpartyNewParamsLegalEntityRiskRating) IsKnown() bool {
 	switch r {
 	case CounterpartyNewParamsLegalEntityRiskRatingLow, CounterpartyNewParamsLegalEntityRiskRatingMedium, CounterpartyNewParamsLegalEntityRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
+// Information describing a third-party verification run by an external vendor.
+type CounterpartyNewParamsLegalEntityThirdPartyVerification struct {
+	// The vendor that performed the verification, e.g. `persona`.
+	Vendor param.Field[CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor] `json:"vendor,required"`
+	// The identification of the third party verification in `vendor`'s system.
+	VendorVerificationID param.Field[string] `json:"vendor_verification_id,required"`
+}
+
+func (r CounterpartyNewParamsLegalEntityThirdPartyVerification) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The vendor that performed the verification, e.g. `persona`.
+type CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor string
+
+const (
+	CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorPersona CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor = "persona"
+)
+
+func (r CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorPersona:
 		return true
 	}
 	return false

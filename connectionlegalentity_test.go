@@ -167,6 +167,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 					LegalEntityAssociations: moderntreasury.F([]shared.LegalEntityAssociationInlineCreateParam{}),
 					LegalEntityType:         moderntreasury.F(shared.ChildLegalEntityCreateLegalEntityTypeBusiness),
 					LegalStructure:          moderntreasury.F(shared.ChildLegalEntityCreateLegalStructureCorporation),
+					ListedExchange:          moderntreasury.F("listed_exchange"),
 					Metadata: moderntreasury.F(map[string]string{
 						"key":    "value",
 						"foo":    "bar",
@@ -181,8 +182,18 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 					PreferredName:            moderntreasury.F("preferred_name"),
 					Prefix:                   moderntreasury.F("prefix"),
 					PrimarySocialMediaSites:  moderntreasury.F([]string{"string"}),
-					RiskRating:               moderntreasury.F(shared.ChildLegalEntityCreateRiskRatingLow),
-					Suffix:                   moderntreasury.F("suffix"),
+					Regulators: moderntreasury.F([]shared.ChildLegalEntityCreateRegulatorParam{{
+						Jurisdiction:       moderntreasury.F("jurisdiction"),
+						Name:               moderntreasury.F("name"),
+						RegistrationNumber: moderntreasury.F("registration_number"),
+					}}),
+					RiskRating: moderntreasury.F(shared.ChildLegalEntityCreateRiskRatingLow),
+					Suffix:     moderntreasury.F("suffix"),
+					ThirdPartyVerification: moderntreasury.F(shared.ChildLegalEntityCreateThirdPartyVerificationParam{
+						Vendor:               moderntreasury.F(shared.ChildLegalEntityCreateThirdPartyVerificationVendorPersona),
+						VendorVerificationID: moderntreasury.F("vendor_verification_id"),
+					}),
+					TickerSymbol: moderntreasury.F("ticker_symbol"),
 					WealthAndEmploymentDetails: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailParam{
 						ID:               moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 						AnnualIncome:     moderntreasury.F(int64(0)),
@@ -211,6 +222,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 			}}),
 			LegalEntityType: moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalEntityTypeBusiness),
 			LegalStructure:  moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalStructureCorporation),
+			ListedExchange:  moderntreasury.F("listed_exchange"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",
@@ -225,8 +237,18 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 			PreferredName:            moderntreasury.F("preferred_name"),
 			Prefix:                   moderntreasury.F("prefix"),
 			PrimarySocialMediaSites:  moderntreasury.F([]string{"string"}),
-			RiskRating:               moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityRiskRatingLow),
-			Suffix:                   moderntreasury.F("suffix"),
+			Regulators: moderntreasury.F([]moderntreasury.ConnectionLegalEntityNewParamsLegalEntityRegulator{{
+				Jurisdiction:       moderntreasury.F("jurisdiction"),
+				Name:               moderntreasury.F("name"),
+				RegistrationNumber: moderntreasury.F("registration_number"),
+			}}),
+			RiskRating: moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityRiskRatingLow),
+			Suffix:     moderntreasury.F("suffix"),
+			ThirdPartyVerification: moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerification{
+				Vendor:               moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorPersona),
+				VendorVerificationID: moderntreasury.F("vendor_verification_id"),
+			}),
+			TickerSymbol: moderntreasury.F("ticker_symbol"),
 			WealthAndEmploymentDetails: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailParam{
 				ID:               moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				AnnualIncome:     moderntreasury.F(int64(0)),

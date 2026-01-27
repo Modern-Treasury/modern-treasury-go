@@ -135,6 +135,8 @@ type LegalEntity struct {
 	LegalEntityType LegalEntityLegalEntityType `json:"legal_entity_type,required"`
 	// The business's legal structure.
 	LegalStructure LegalEntityLegalStructure `json:"legal_structure,required,nullable"`
+	// ISO 10383 market identifier code.
+	ListedExchange string `json:"listed_exchange,required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode,required"`
@@ -156,10 +158,16 @@ type LegalEntity struct {
 	Prefix string `json:"prefix,required,nullable"`
 	// A list of primary social media URLs for the business.
 	PrimarySocialMediaSites []string `json:"primary_social_media_sites,required"`
+	// Array of regulatory bodies overseeing this institution.
+	Regulators []LegalEntityRegulator `json:"regulators,required,nullable"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating LegalEntityRiskRating `json:"risk_rating,required,nullable"`
 	// An individual's suffix.
-	Suffix                     string                                   `json:"suffix,required,nullable"`
+	Suffix string `json:"suffix,required,nullable"`
+	// Information describing a third-party verification run by an external vendor.
+	ThirdPartyVerification LegalEntityThirdPartyVerification `json:"third_party_verification,required,nullable"`
+	// Stock ticker symbol for publicly traded companies.
+	TickerSymbol               string                                   `json:"ticker_symbol,required,nullable"`
 	UpdatedAt                  time.Time                                `json:"updated_at,required" format:"date-time"`
 	WealthAndEmploymentDetails shared.LegalEntityWealthEmploymentDetail `json:"wealth_and_employment_details,required,nullable"`
 	// The entity's primary website URL.
@@ -194,6 +202,7 @@ type legalEntityJSON struct {
 	LastName                   apijson.Field
 	LegalEntityType            apijson.Field
 	LegalStructure             apijson.Field
+	ListedExchange             apijson.Field
 	LiveMode                   apijson.Field
 	Metadata                   apijson.Field
 	MiddleName                 apijson.Field
@@ -204,8 +213,11 @@ type legalEntityJSON struct {
 	PreferredName              apijson.Field
 	Prefix                     apijson.Field
 	PrimarySocialMediaSites    apijson.Field
+	Regulators                 apijson.Field
 	RiskRating                 apijson.Field
 	Suffix                     apijson.Field
+	ThirdPartyVerification     apijson.Field
+	TickerSymbol               apijson.Field
 	UpdatedAt                  apijson.Field
 	WealthAndEmploymentDetails apijson.Field
 	Website                    apijson.Field
@@ -436,6 +448,35 @@ func (r legalEntityPhoneNumberJSON) RawJSON() string {
 	return r.raw
 }
 
+type LegalEntityRegulator struct {
+	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
+	// (e.g., "US", "CA", "GB").
+	Jurisdiction string `json:"jurisdiction,required"`
+	// Full name of the regulatory body.
+	Name string `json:"name,required"`
+	// Registration or identification number with the regulator.
+	RegistrationNumber string                   `json:"registration_number,required"`
+	JSON               legalEntityRegulatorJSON `json:"-"`
+}
+
+// legalEntityRegulatorJSON contains the JSON metadata for the struct
+// [LegalEntityRegulator]
+type legalEntityRegulatorJSON struct {
+	Jurisdiction       apijson.Field
+	Name               apijson.Field
+	RegistrationNumber apijson.Field
+	raw                string
+	ExtraFields        map[string]apijson.Field
+}
+
+func (r *LegalEntityRegulator) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r legalEntityRegulatorJSON) RawJSON() string {
+	return r.raw
+}
+
 // The risk rating of the legal entity. One of low, medium, high.
 type LegalEntityRiskRating string
 
@@ -448,6 +489,47 @@ const (
 func (r LegalEntityRiskRating) IsKnown() bool {
 	switch r {
 	case LegalEntityRiskRatingLow, LegalEntityRiskRatingMedium, LegalEntityRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
+// Information describing a third-party verification run by an external vendor.
+type LegalEntityThirdPartyVerification struct {
+	// The vendor that performed the verification, e.g. `persona`.
+	Vendor LegalEntityThirdPartyVerificationVendor `json:"vendor,required"`
+	// The identification of the third party verification in `vendor`'s system.
+	VendorVerificationID string                                `json:"vendor_verification_id,required"`
+	JSON                 legalEntityThirdPartyVerificationJSON `json:"-"`
+}
+
+// legalEntityThirdPartyVerificationJSON contains the JSON metadata for the struct
+// [LegalEntityThirdPartyVerification]
+type legalEntityThirdPartyVerificationJSON struct {
+	Vendor               apijson.Field
+	VendorVerificationID apijson.Field
+	raw                  string
+	ExtraFields          map[string]apijson.Field
+}
+
+func (r *LegalEntityThirdPartyVerification) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r legalEntityThirdPartyVerificationJSON) RawJSON() string {
+	return r.raw
+}
+
+// The vendor that performed the verification, e.g. `persona`.
+type LegalEntityThirdPartyVerificationVendor string
+
+const (
+	LegalEntityThirdPartyVerificationVendorPersona LegalEntityThirdPartyVerificationVendor = "persona"
+)
+
+func (r LegalEntityThirdPartyVerificationVendor) IsKnown() bool {
+	switch r {
+	case LegalEntityThirdPartyVerificationVendorPersona:
 		return true
 	}
 	return false
@@ -498,6 +580,8 @@ type LegalEntityNewParams struct {
 	LegalEntityAssociations param.Field[[]shared.LegalEntityAssociationInlineCreateParam] `json:"legal_entity_associations"`
 	// The business's legal structure.
 	LegalStructure param.Field[LegalEntityNewParamsLegalStructure] `json:"legal_structure"`
+	// ISO 10383 market identifier code.
+	ListedExchange param.Field[string] `json:"listed_exchange"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -515,10 +599,16 @@ type LegalEntityNewParams struct {
 	Prefix param.Field[string] `json:"prefix"`
 	// A list of primary social media URLs for the business.
 	PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
+	// Array of regulatory bodies overseeing this institution.
+	Regulators param.Field[[]LegalEntityNewParamsRegulator] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[LegalEntityNewParamsRiskRating] `json:"risk_rating"`
 	// An individual's suffix.
-	Suffix                     param.Field[string]                                        `json:"suffix"`
+	Suffix param.Field[string] `json:"suffix"`
+	// Information describing a third-party verification run by an external vendor.
+	ThirdPartyVerification param.Field[LegalEntityNewParamsThirdPartyVerification] `json:"third_party_verification"`
+	// Stock ticker symbol for publicly traded companies.
+	TickerSymbol               param.Field[string]                                        `json:"ticker_symbol"`
 	WealthAndEmploymentDetails param.Field[shared.LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
@@ -573,6 +663,20 @@ func (r LegalEntityNewParamsPhoneNumber) MarshalJSON() (data []byte, err error) 
 	return apijson.MarshalRoot(r)
 }
 
+type LegalEntityNewParamsRegulator struct {
+	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
+	// (e.g., "US", "CA", "GB").
+	Jurisdiction param.Field[string] `json:"jurisdiction,required"`
+	// Full name of the regulatory body.
+	Name param.Field[string] `json:"name,required"`
+	// Registration or identification number with the regulator.
+	RegistrationNumber param.Field[string] `json:"registration_number,required"`
+}
+
+func (r LegalEntityNewParamsRegulator) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 // The risk rating of the legal entity. One of low, medium, high.
 type LegalEntityNewParamsRiskRating string
 
@@ -585,6 +689,33 @@ const (
 func (r LegalEntityNewParamsRiskRating) IsKnown() bool {
 	switch r {
 	case LegalEntityNewParamsRiskRatingLow, LegalEntityNewParamsRiskRatingMedium, LegalEntityNewParamsRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
+// Information describing a third-party verification run by an external vendor.
+type LegalEntityNewParamsThirdPartyVerification struct {
+	// The vendor that performed the verification, e.g. `persona`.
+	Vendor param.Field[LegalEntityNewParamsThirdPartyVerificationVendor] `json:"vendor,required"`
+	// The identification of the third party verification in `vendor`'s system.
+	VendorVerificationID param.Field[string] `json:"vendor_verification_id,required"`
+}
+
+func (r LegalEntityNewParamsThirdPartyVerification) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The vendor that performed the verification, e.g. `persona`.
+type LegalEntityNewParamsThirdPartyVerificationVendor string
+
+const (
+	LegalEntityNewParamsThirdPartyVerificationVendorPersona LegalEntityNewParamsThirdPartyVerificationVendor = "persona"
+)
+
+func (r LegalEntityNewParamsThirdPartyVerificationVendor) IsKnown() bool {
+	switch r {
+	case LegalEntityNewParamsThirdPartyVerificationVendorPersona:
 		return true
 	}
 	return false
@@ -625,6 +756,8 @@ type LegalEntityUpdateParams struct {
 	LastName param.Field[string] `json:"last_name"`
 	// The business's legal structure.
 	LegalStructure param.Field[LegalEntityUpdateParamsLegalStructure] `json:"legal_structure"`
+	// ISO 10383 market identifier code.
+	ListedExchange param.Field[string] `json:"listed_exchange"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -642,10 +775,16 @@ type LegalEntityUpdateParams struct {
 	Prefix param.Field[string] `json:"prefix"`
 	// A list of primary social media URLs for the business.
 	PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
+	// Array of regulatory bodies overseeing this institution.
+	Regulators param.Field[[]LegalEntityUpdateParamsRegulator] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[LegalEntityUpdateParamsRiskRating] `json:"risk_rating"`
 	// An individual's suffix.
-	Suffix                     param.Field[string]                                        `json:"suffix"`
+	Suffix param.Field[string] `json:"suffix"`
+	// Information describing a third-party verification run by an external vendor.
+	ThirdPartyVerification param.Field[LegalEntityUpdateParamsThirdPartyVerification] `json:"third_party_verification"`
+	// Stock ticker symbol for publicly traded companies.
+	TickerSymbol               param.Field[string]                                        `json:"ticker_symbol"`
 	WealthAndEmploymentDetails param.Field[shared.LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
 	// The entity's primary website URL.
 	Website param.Field[string] `json:"website"`
@@ -684,6 +823,20 @@ func (r LegalEntityUpdateParamsPhoneNumber) MarshalJSON() (data []byte, err erro
 	return apijson.MarshalRoot(r)
 }
 
+type LegalEntityUpdateParamsRegulator struct {
+	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
+	// (e.g., "US", "CA", "GB").
+	Jurisdiction param.Field[string] `json:"jurisdiction,required"`
+	// Full name of the regulatory body.
+	Name param.Field[string] `json:"name,required"`
+	// Registration or identification number with the regulator.
+	RegistrationNumber param.Field[string] `json:"registration_number,required"`
+}
+
+func (r LegalEntityUpdateParamsRegulator) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 // The risk rating of the legal entity. One of low, medium, high.
 type LegalEntityUpdateParamsRiskRating string
 
@@ -696,6 +849,33 @@ const (
 func (r LegalEntityUpdateParamsRiskRating) IsKnown() bool {
 	switch r {
 	case LegalEntityUpdateParamsRiskRatingLow, LegalEntityUpdateParamsRiskRatingMedium, LegalEntityUpdateParamsRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
+// Information describing a third-party verification run by an external vendor.
+type LegalEntityUpdateParamsThirdPartyVerification struct {
+	// The vendor that performed the verification, e.g. `persona`.
+	Vendor param.Field[LegalEntityUpdateParamsThirdPartyVerificationVendor] `json:"vendor,required"`
+	// The identification of the third party verification in `vendor`'s system.
+	VendorVerificationID param.Field[string] `json:"vendor_verification_id,required"`
+}
+
+func (r LegalEntityUpdateParamsThirdPartyVerification) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The vendor that performed the verification, e.g. `persona`.
+type LegalEntityUpdateParamsThirdPartyVerificationVendor string
+
+const (
+	LegalEntityUpdateParamsThirdPartyVerificationVendorPersona LegalEntityUpdateParamsThirdPartyVerificationVendor = "persona"
+)
+
+func (r LegalEntityUpdateParamsThirdPartyVerificationVendor) IsKnown() bool {
+	switch r {
+	case LegalEntityUpdateParamsThirdPartyVerificationVendorPersona:
 		return true
 	}
 	return false
