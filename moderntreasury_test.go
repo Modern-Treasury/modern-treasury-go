@@ -13,7 +13,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
-func TestModerntreasuryPing(t *testing.T) {
+func TestPing(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
