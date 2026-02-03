@@ -152,41 +152,51 @@ type IncomingPaymentDetail struct {
 	// Account.
 	VirtualAccountID string `json:"virtual_account_id,required,nullable" format:"uuid"`
 	// The account number of the originating account for the incoming payment detail.
-	OriginatingAccountNumber string                    `json:"originating_account_number,nullable"`
-	JSON                     incomingPaymentDetailJSON `json:"-"`
+	OriginatingAccountNumber string `json:"originating_account_number,nullable"`
+	// The address of the originating party for the incoming payment detail, or `null`.
+	OriginatingPartyAddress shared.Address `json:"originating_party_address,nullable"`
+	// The name of the originating party for the incoming payment detail.
+	OriginatingPartyName string `json:"originating_party_name,nullable"`
+	// The vendor-assigned identifier for the originating party of the incoming payment
+	// detail, or `null`.
+	OriginatingPartyVendorIdentifier string                    `json:"originating_party_vendor_identifier,nullable"`
+	JSON                             incomingPaymentDetailJSON `json:"-"`
 }
 
 // incomingPaymentDetailJSON contains the JSON metadata for the struct
 // [IncomingPaymentDetail]
 type incomingPaymentDetailJSON struct {
-	ID                           apijson.Field
-	Amount                       apijson.Field
-	AsOfDate                     apijson.Field
-	CreatedAt                    apijson.Field
-	Currency                     apijson.Field
-	Data                         apijson.Field
-	Direction                    apijson.Field
-	InternalAccountID            apijson.Field
-	LedgerTransactionID          apijson.Field
-	LiveMode                     apijson.Field
-	Metadata                     apijson.Field
-	Object                       apijson.Field
-	OriginatingAccountNumberSafe apijson.Field
-	OriginatingAccountNumberType apijson.Field
-	OriginatingRoutingNumber     apijson.Field
-	OriginatingRoutingNumberType apijson.Field
-	ReconciliationStatus         apijson.Field
-	Status                       apijson.Field
-	TransactionID                apijson.Field
-	TransactionLineItemID        apijson.Field
-	Type                         apijson.Field
-	UpdatedAt                    apijson.Field
-	VendorID                     apijson.Field
-	VirtualAccount               apijson.Field
-	VirtualAccountID             apijson.Field
-	OriginatingAccountNumber     apijson.Field
-	raw                          string
-	ExtraFields                  map[string]apijson.Field
+	ID                               apijson.Field
+	Amount                           apijson.Field
+	AsOfDate                         apijson.Field
+	CreatedAt                        apijson.Field
+	Currency                         apijson.Field
+	Data                             apijson.Field
+	Direction                        apijson.Field
+	InternalAccountID                apijson.Field
+	LedgerTransactionID              apijson.Field
+	LiveMode                         apijson.Field
+	Metadata                         apijson.Field
+	Object                           apijson.Field
+	OriginatingAccountNumberSafe     apijson.Field
+	OriginatingAccountNumberType     apijson.Field
+	OriginatingRoutingNumber         apijson.Field
+	OriginatingRoutingNumberType     apijson.Field
+	ReconciliationStatus             apijson.Field
+	Status                           apijson.Field
+	TransactionID                    apijson.Field
+	TransactionLineItemID            apijson.Field
+	Type                             apijson.Field
+	UpdatedAt                        apijson.Field
+	VendorID                         apijson.Field
+	VirtualAccount                   apijson.Field
+	VirtualAccountID                 apijson.Field
+	OriginatingAccountNumber         apijson.Field
+	OriginatingPartyAddress          apijson.Field
+	OriginatingPartyName             apijson.Field
+	OriginatingPartyVendorIdentifier apijson.Field
+	raw                              string
+	ExtraFields                      map[string]apijson.Field
 }
 
 func (r *IncomingPaymentDetail) UnmarshalJSON(data []byte) (err error) {
