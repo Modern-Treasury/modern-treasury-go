@@ -162,6 +162,9 @@ type LegalEntity struct {
 	Regulators []LegalEntityRegulator `json:"regulators,required,nullable"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating LegalEntityRiskRating `json:"risk_rating,required,nullable"`
+	// The activation status of the legal entity. One of pending, active, suspended, or
+	// closed.
+	Status LegalEntityStatus `json:"status,required,nullable"`
 	// An individual's suffix.
 	Suffix string `json:"suffix,required,nullable"`
 	// Information describing a third-party verification run by an external vendor.
@@ -215,6 +218,7 @@ type legalEntityJSON struct {
 	PrimarySocialMediaSites    apijson.Field
 	Regulators                 apijson.Field
 	RiskRating                 apijson.Field
+	Status                     apijson.Field
 	Suffix                     apijson.Field
 	ThirdPartyVerification     apijson.Field
 	TickerSymbol               apijson.Field
@@ -494,6 +498,25 @@ func (r LegalEntityRiskRating) IsKnown() bool {
 	return false
 }
 
+// The activation status of the legal entity. One of pending, active, suspended, or
+// closed.
+type LegalEntityStatus string
+
+const (
+	LegalEntityStatusActive    LegalEntityStatus = "active"
+	LegalEntityStatusClosed    LegalEntityStatus = "closed"
+	LegalEntityStatusPending   LegalEntityStatus = "pending"
+	LegalEntityStatusSuspended LegalEntityStatus = "suspended"
+)
+
+func (r LegalEntityStatus) IsKnown() bool {
+	switch r {
+	case LegalEntityStatusActive, LegalEntityStatusClosed, LegalEntityStatusPending, LegalEntityStatusSuspended:
+		return true
+	}
+	return false
+}
+
 // Information describing a third-party verification run by an external vendor.
 type LegalEntityThirdPartyVerification struct {
 	// The vendor that performed the verification, e.g. `persona`.
@@ -603,6 +626,9 @@ type LegalEntityNewParams struct {
 	Regulators param.Field[[]LegalEntityNewParamsRegulator] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[LegalEntityNewParamsRiskRating] `json:"risk_rating"`
+	// The activation status of the legal entity. One of pending, active, suspended, or
+	// closed.
+	Status param.Field[LegalEntityNewParamsStatus] `json:"status"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
 	// Information describing a third-party verification run by an external vendor.
@@ -694,6 +720,25 @@ func (r LegalEntityNewParamsRiskRating) IsKnown() bool {
 	return false
 }
 
+// The activation status of the legal entity. One of pending, active, suspended, or
+// closed.
+type LegalEntityNewParamsStatus string
+
+const (
+	LegalEntityNewParamsStatusActive    LegalEntityNewParamsStatus = "active"
+	LegalEntityNewParamsStatusClosed    LegalEntityNewParamsStatus = "closed"
+	LegalEntityNewParamsStatusPending   LegalEntityNewParamsStatus = "pending"
+	LegalEntityNewParamsStatusSuspended LegalEntityNewParamsStatus = "suspended"
+)
+
+func (r LegalEntityNewParamsStatus) IsKnown() bool {
+	switch r {
+	case LegalEntityNewParamsStatusActive, LegalEntityNewParamsStatusClosed, LegalEntityNewParamsStatusPending, LegalEntityNewParamsStatusSuspended:
+		return true
+	}
+	return false
+}
+
 // Information describing a third-party verification run by an external vendor.
 type LegalEntityNewParamsThirdPartyVerification struct {
 	// The vendor that performed the verification, e.g. `persona`.
@@ -779,6 +824,9 @@ type LegalEntityUpdateParams struct {
 	Regulators param.Field[[]LegalEntityUpdateParamsRegulator] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[LegalEntityUpdateParamsRiskRating] `json:"risk_rating"`
+	// The activation status of the legal entity. One of pending, active, suspended, or
+	// closed.
+	Status param.Field[LegalEntityUpdateParamsStatus] `json:"status"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
 	// Information describing a third-party verification run by an external vendor.
@@ -854,6 +902,25 @@ func (r LegalEntityUpdateParamsRiskRating) IsKnown() bool {
 	return false
 }
 
+// The activation status of the legal entity. One of pending, active, suspended, or
+// closed.
+type LegalEntityUpdateParamsStatus string
+
+const (
+	LegalEntityUpdateParamsStatusActive    LegalEntityUpdateParamsStatus = "active"
+	LegalEntityUpdateParamsStatusClosed    LegalEntityUpdateParamsStatus = "closed"
+	LegalEntityUpdateParamsStatusPending   LegalEntityUpdateParamsStatus = "pending"
+	LegalEntityUpdateParamsStatusSuspended LegalEntityUpdateParamsStatus = "suspended"
+)
+
+func (r LegalEntityUpdateParamsStatus) IsKnown() bool {
+	switch r {
+	case LegalEntityUpdateParamsStatusActive, LegalEntityUpdateParamsStatusClosed, LegalEntityUpdateParamsStatusPending, LegalEntityUpdateParamsStatusSuspended:
+		return true
+	}
+	return false
+}
+
 // Information describing a third-party verification run by an external vendor.
 type LegalEntityUpdateParamsThirdPartyVerification struct {
 	// The vendor that performed the verification, e.g. `persona`.
@@ -887,9 +954,10 @@ type LegalEntityListParams struct {
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
-	Metadata    param.Field[map[string]string] `query:"metadata"`
-	PerPage     param.Field[int64]             `query:"per_page"`
-	ShowDeleted param.Field[string]            `query:"show_deleted"`
+	Metadata    param.Field[map[string]string]           `query:"metadata"`
+	PerPage     param.Field[int64]                       `query:"per_page"`
+	ShowDeleted param.Field[string]                      `query:"show_deleted"`
+	Status      param.Field[LegalEntityListParamsStatus] `query:"status"`
 }
 
 // URLQuery serializes [LegalEntityListParams]'s query parameters as `url.Values`.
@@ -910,6 +978,23 @@ const (
 func (r LegalEntityListParamsLegalEntityType) IsKnown() bool {
 	switch r {
 	case LegalEntityListParamsLegalEntityTypeBusiness, LegalEntityListParamsLegalEntityTypeIndividual:
+		return true
+	}
+	return false
+}
+
+type LegalEntityListParamsStatus string
+
+const (
+	LegalEntityListParamsStatusPending   LegalEntityListParamsStatus = "pending"
+	LegalEntityListParamsStatusActive    LegalEntityListParamsStatus = "active"
+	LegalEntityListParamsStatusSuspended LegalEntityListParamsStatus = "suspended"
+	LegalEntityListParamsStatusClosed    LegalEntityListParamsStatus = "closed"
+)
+
+func (r LegalEntityListParamsStatus) IsKnown() bool {
+	switch r {
+	case LegalEntityListParamsStatusPending, LegalEntityListParamsStatusActive, LegalEntityListParamsStatusSuspended, LegalEntityListParamsStatusClosed:
 		return true
 	}
 	return false
