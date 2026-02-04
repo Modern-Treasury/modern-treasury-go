@@ -211,6 +211,9 @@ type ChildLegalEntityCreateParam struct {
 	Regulators param.Field[[]ChildLegalEntityCreateRegulatorParam] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[ChildLegalEntityCreateRiskRating] `json:"risk_rating"`
+	// The activation status of the legal entity. One of pending, active, suspended, or
+	// closed.
+	Status param.Field[ChildLegalEntityCreateStatus] `json:"status"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
 	// Information describing a third-party verification run by an external vendor.
@@ -297,6 +300,25 @@ const (
 func (r ChildLegalEntityCreateRiskRating) IsKnown() bool {
 	switch r {
 	case ChildLegalEntityCreateRiskRatingLow, ChildLegalEntityCreateRiskRatingMedium, ChildLegalEntityCreateRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
+// The activation status of the legal entity. One of pending, active, suspended, or
+// closed.
+type ChildLegalEntityCreateStatus string
+
+const (
+	ChildLegalEntityCreateStatusActive    ChildLegalEntityCreateStatus = "active"
+	ChildLegalEntityCreateStatusClosed    ChildLegalEntityCreateStatus = "closed"
+	ChildLegalEntityCreateStatusPending   ChildLegalEntityCreateStatus = "pending"
+	ChildLegalEntityCreateStatusSuspended ChildLegalEntityCreateStatus = "suspended"
+)
+
+func (r ChildLegalEntityCreateStatus) IsKnown() bool {
+	switch r {
+	case ChildLegalEntityCreateStatusActive, ChildLegalEntityCreateStatusClosed, ChildLegalEntityCreateStatusPending, ChildLegalEntityCreateStatusSuspended:
 		return true
 	}
 	return false
