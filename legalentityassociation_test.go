@@ -126,6 +126,7 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 				RegistrationNumber: moderntreasury.F("registration_number"),
 			}}),
 			RiskRating: moderntreasury.F(shared.ChildLegalEntityCreateRiskRatingLow),
+			Status:     moderntreasury.F(shared.ChildLegalEntityCreateStatusActive),
 			Suffix:     moderntreasury.F("suffix"),
 			ThirdPartyVerification: moderntreasury.F(shared.ChildLegalEntityCreateThirdPartyVerificationParam{
 				Vendor:               moderntreasury.F(shared.ChildLegalEntityCreateThirdPartyVerificationVendorPersona),

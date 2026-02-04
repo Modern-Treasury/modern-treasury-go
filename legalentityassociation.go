@@ -112,6 +112,9 @@ type ChildLegalEntity struct {
 	Regulators []ChildLegalEntityRegulator `json:"regulators,required,nullable"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating ChildLegalEntityRiskRating `json:"risk_rating,required,nullable"`
+	// The activation status of the legal entity. One of pending, active, suspended, or
+	// closed.
+	Status ChildLegalEntityStatus `json:"status,required,nullable"`
 	// An individual's suffix.
 	Suffix string `json:"suffix,required,nullable"`
 	// Information describing a third-party verification run by an external vendor.
@@ -165,6 +168,7 @@ type childLegalEntityJSON struct {
 	PrimarySocialMediaSites    apijson.Field
 	Regulators                 apijson.Field
 	RiskRating                 apijson.Field
+	Status                     apijson.Field
 	Suffix                     apijson.Field
 	ThirdPartyVerification     apijson.Field
 	TickerSymbol               apijson.Field
@@ -438,6 +442,25 @@ const (
 func (r ChildLegalEntityRiskRating) IsKnown() bool {
 	switch r {
 	case ChildLegalEntityRiskRatingLow, ChildLegalEntityRiskRatingMedium, ChildLegalEntityRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
+// The activation status of the legal entity. One of pending, active, suspended, or
+// closed.
+type ChildLegalEntityStatus string
+
+const (
+	ChildLegalEntityStatusActive    ChildLegalEntityStatus = "active"
+	ChildLegalEntityStatusClosed    ChildLegalEntityStatus = "closed"
+	ChildLegalEntityStatusPending   ChildLegalEntityStatus = "pending"
+	ChildLegalEntityStatusSuspended ChildLegalEntityStatus = "suspended"
+)
+
+func (r ChildLegalEntityStatus) IsKnown() bool {
+	switch r {
+	case ChildLegalEntityStatusActive, ChildLegalEntityStatusClosed, ChildLegalEntityStatusPending, ChildLegalEntityStatusSuspended:
 		return true
 	}
 	return false
