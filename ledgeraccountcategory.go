@@ -246,6 +246,8 @@ type LedgerAccountCategoryNewParams struct {
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account category.
 	Description param.Field[string] `json:"description"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// The array of ledger account category ids that this ledger account category
 	// should be a child of.
 	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
