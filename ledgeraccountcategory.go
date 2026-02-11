@@ -329,9 +329,7 @@ type LedgerAccountCategoryListParams struct {
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
 	// parameters.
 	Metadata param.Field[map[string]string] `query:"metadata"`
-	// If you have specific names to retrieve in bulk, you can pass them as query
-	// parameters delimited with `name[]=`, for example `?name[]=123&name[]=abc`.
-	Name param.Field[[]string] `query:"name"`
+	Name     param.Field[string]            `query:"name"`
 	// Query categories that are nested underneath a parent category
 	ParentLedgerAccountCategoryID param.Field[string] `query:"parent_ledger_account_category_id"`
 	PerPage                       param.Field[int64]  `query:"per_page"`

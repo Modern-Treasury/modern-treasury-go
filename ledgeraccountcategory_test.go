@@ -145,7 +145,7 @@ func TestLedgerAccountCategoryListWithOptionalParams(t *testing.T) {
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
-		Name:                          moderntreasury.F([]string{"string"}),
+		Name:                          moderntreasury.F("name"),
 		ParentLedgerAccountCategoryID: moderntreasury.F("parent_ledger_account_category_id"),
 		PerPage:                       moderntreasury.F(int64(0)),
 	})
