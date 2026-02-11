@@ -262,7 +262,7 @@ type LedgerEntryListParams struct {
 	// Get all ledger entries that match the status specified. One of `pending`,
 	// `posted`, or `archived`. For multiple statuses, use
 	// `status[]=pending&status[]=posted`.
-	Status param.Field[[]LedgerEntryListParamsStatus] `query:"status"`
+	Status param.Field[LedgerEntryListParamsStatus] `query:"status"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to filter by the
 	// posted at timestamp. For example, for all times after Jan 1 2000 12:00 UTC, use
 	// updated_at%5Bgt%5D=2000-01-01T12:00:00Z.
@@ -342,6 +342,9 @@ func (r LedgerEntryListParamsOrderByEffectiveAt) IsKnown() bool {
 	return false
 }
 
+// Get all ledger entries that match the status specified. One of `pending`,
+// `posted`, or `archived`. For multiple statuses, use
+// `status[]=pending&status[]=posted`.
 type LedgerEntryListParamsStatus string
 
 const (
