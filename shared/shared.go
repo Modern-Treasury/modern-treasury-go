@@ -152,8 +152,7 @@ type ChildLegalEntityCreateParam struct {
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
-	CitizenshipCountry param.Field[string]                           `json:"citizenship_country"`
-	ComplianceDetails  param.Field[LegalEntityComplianceDetailParam] `json:"compliance_details"`
+	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
 	// The connection ID for the connection the legal entity is associated with.
 	// Defaults to the id of the connection designated with an is_default value of true
 	// or the id of an existing operational connection if only one is available. Pass
@@ -1103,84 +1102,6 @@ type LegalEntityBankSettingsParam struct {
 }
 
 func (r LegalEntityBankSettingsParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type LegalEntityComplianceDetail struct {
-	ID          string    `json:"id,required" format:"uuid"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
-	// The issuer of the compliance token.
-	Issuer string `json:"issuer,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
-	// The timestamp when the compliance token expires.
-	TokenExpiresAt time.Time `json:"token_expires_at,required,nullable" format:"date-time"`
-	// The timestamp when the compliance token was issued.
-	TokenIssuedAt time.Time `json:"token_issued_at,required,nullable" format:"date-time"`
-	// The URL to the compliance token. (ex. provider portal URL)
-	TokenURL  string    `json:"token_url,required,nullable"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
-	// Whether entity corresponding to the compliance token has been validated.
-	Validated bool `json:"validated,required"`
-	// The timestamp when the entity was validated.
-	ValidatedAt time.Time                       `json:"validated_at,required,nullable" format:"date-time"`
-	JSON        legalEntityComplianceDetailJSON `json:"-"`
-}
-
-// legalEntityComplianceDetailJSON contains the JSON metadata for the struct
-// [LegalEntityComplianceDetail]
-type legalEntityComplianceDetailJSON struct {
-	ID             apijson.Field
-	CreatedAt      apijson.Field
-	DiscardedAt    apijson.Field
-	Issuer         apijson.Field
-	LiveMode       apijson.Field
-	Object         apijson.Field
-	TokenExpiresAt apijson.Field
-	TokenIssuedAt  apijson.Field
-	TokenURL       apijson.Field
-	UpdatedAt      apijson.Field
-	Validated      apijson.Field
-	ValidatedAt    apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
-}
-
-func (r *LegalEntityComplianceDetail) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r legalEntityComplianceDetailJSON) RawJSON() string {
-	return r.raw
-}
-
-type LegalEntityComplianceDetailParam struct {
-	ID          param.Field[string]    `json:"id,required" format:"uuid"`
-	CreatedAt   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
-	DiscardedAt param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
-	// The issuer of the compliance token.
-	Issuer param.Field[string] `json:"issuer,required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode param.Field[bool]   `json:"live_mode,required"`
-	Object   param.Field[string] `json:"object,required"`
-	// The timestamp when the compliance token expires.
-	TokenExpiresAt param.Field[time.Time] `json:"token_expires_at,required" format:"date-time"`
-	// The timestamp when the compliance token was issued.
-	TokenIssuedAt param.Field[time.Time] `json:"token_issued_at,required" format:"date-time"`
-	// The URL to the compliance token. (ex. provider portal URL)
-	TokenURL  param.Field[string]    `json:"token_url,required"`
-	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
-	// Whether entity corresponding to the compliance token has been validated.
-	Validated param.Field[bool] `json:"validated,required"`
-	// The timestamp when the entity was validated.
-	ValidatedAt param.Field[time.Time] `json:"validated_at,required" format:"date-time"`
-}
-
-func (r LegalEntityComplianceDetailParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
