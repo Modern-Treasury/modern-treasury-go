@@ -52,8 +52,9 @@ type ChildLegalEntity struct {
 	// The business's legal business name.
 	BusinessName string `json:"business_name,required,nullable"`
 	// The country of citizenship for an individual.
-	CitizenshipCountry string                             `json:"citizenship_country,required,nullable"`
-	ComplianceDetails  shared.LegalEntityComplianceDetail `json:"compliance_details,required,nullable"`
+	CitizenshipCountry string `json:"citizenship_country,required,nullable"`
+	// Deprecated: deprecated
+	ComplianceDetails interface{} `json:"compliance_details,required,nullable"`
 	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
 	// alpha-3 formats.
 	CountryOfIncorporation string    `json:"country_of_incorporation,required,nullable"`

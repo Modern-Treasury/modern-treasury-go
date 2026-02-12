@@ -152,6 +152,9 @@ type PaymentOrder struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount int64 `json:"amount,required"`
+	// The ID of the batch in which the payment order is included. Only populated after
+	// the payment order begins processing.
+	BatchID string `json:"batch_id,required,nullable" format:"uuid"`
 	// The party that will pay the fees for the payment order. See
 	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
 	// differences between the options.
@@ -291,6 +294,7 @@ type paymentOrderJSON struct {
 	AccountingCategoryID               apijson.Field
 	AccountingLedgerClassID            apijson.Field
 	Amount                             apijson.Field
+	BatchID                            apijson.Field
 	ChargeBearer                       apijson.Field
 	CounterpartyID                     apijson.Field
 	CreatedAt                          apijson.Field
