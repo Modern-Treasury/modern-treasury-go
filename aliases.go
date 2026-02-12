@@ -923,12 +923,6 @@ type LegalEntityBankSettings = shared.LegalEntityBankSettings
 type LegalEntityBankSettingsParam = shared.LegalEntityBankSettingsParam
 
 // This is an alias to an internal type.
-type LegalEntityComplianceDetail = shared.LegalEntityComplianceDetail
-
-// This is an alias to an internal type.
-type LegalEntityComplianceDetailParam = shared.LegalEntityComplianceDetailParam
-
-// This is an alias to an internal type.
 type LegalEntityIndustryClassification = shared.LegalEntityIndustryClassification
 
 // The classification system of the classification codes.

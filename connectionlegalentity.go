@@ -182,8 +182,7 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
-	CitizenshipCountry param.Field[string]                                  `json:"citizenship_country"`
-	ComplianceDetails  param.Field[shared.LegalEntityComplianceDetailParam] `json:"compliance_details"`
+	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
 	// The connection ID for the connection the legal entity is associated with.
 	// Defaults to the id of the connection designated with an is_default value of true
 	// or the id of an existing operational connection if only one is available. Pass

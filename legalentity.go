@@ -104,8 +104,9 @@ type LegalEntity struct {
 	// The business's legal business name.
 	BusinessName string `json:"business_name,required,nullable"`
 	// The country of citizenship for an individual.
-	CitizenshipCountry string                             `json:"citizenship_country,required,nullable"`
-	ComplianceDetails  shared.LegalEntityComplianceDetail `json:"compliance_details,required,nullable"`
+	CitizenshipCountry string `json:"citizenship_country,required,nullable"`
+	// Deprecated: deprecated
+	ComplianceDetails interface{} `json:"compliance_details,required,nullable"`
 	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
 	// alpha-3 formats.
 	CountryOfIncorporation string    `json:"country_of_incorporation,required,nullable"`
@@ -569,8 +570,7 @@ type LegalEntityNewParams struct {
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
-	CitizenshipCountry param.Field[string]                                  `json:"citizenship_country"`
-	ComplianceDetails  param.Field[shared.LegalEntityComplianceDetailParam] `json:"compliance_details"`
+	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
 	// The connection ID for the connection the legal entity is associated with.
 	// Defaults to the id of the connection designated with an is_default value of true
 	// or the id of an existing operational connection if only one is available. Pass
@@ -775,8 +775,7 @@ type LegalEntityUpdateParams struct {
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
-	CitizenshipCountry param.Field[string]                                  `json:"citizenship_country"`
-	ComplianceDetails  param.Field[shared.LegalEntityComplianceDetailParam] `json:"compliance_details"`
+	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
 	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
 	// alpha-3 formats.
 	CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`

@@ -194,6 +194,9 @@ type BulkResultEntity struct {
 	AsOfTimezone string `json:"as_of_timezone,nullable"`
 	// This field can have the runtime type of [LedgerAccountBalances].
 	Balances interface{} `json:"balances"`
+	// The ID of the batch in which the payment order is included. Only populated after
+	// the payment order begins processing.
+	BatchID string `json:"batch_id,nullable" format:"uuid"`
 	// The party that will pay the fees for the payment order. See
 	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
 	// differences between the options.
@@ -417,6 +420,7 @@ type bulkResultEntityJSON struct {
 	AsOfTime                           apijson.Field
 	AsOfTimezone                       apijson.Field
 	Balances                           apijson.Field
+	BatchID                            apijson.Field
 	ChargeBearer                       apijson.Field
 	CounterpartyID                     apijson.Field
 	Currency                           apijson.Field
