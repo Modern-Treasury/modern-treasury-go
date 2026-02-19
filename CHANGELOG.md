@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.39.1 (2026-02-19)
+
+Full Changelog: [v2.39.0...v2.39.1](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.39.0...v2.39.1)
+
+### Bug Fixes
+
+* allow canceling a request while it is waiting to retry ([e784a20](https://github.com/Modern-Treasury/modern-treasury-go/commit/e784a20410cbdc284f6c34dc9161c775c7d8da0d))
+
 ## 2.39.0 (2026-02-19)
 
 Full Changelog: [v2.38.0...v2.39.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.38.0...v2.39.0)
