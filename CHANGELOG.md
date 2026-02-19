@@ -1,5 +1,35 @@
 # Changelog
 
+## 2.39.0 (2026-02-19)
+
+Full Changelog: [v2.38.0...v2.39.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.38.0...v2.39.0)
+
+### Features
+
+* **api:** api update ([9defd6c](https://github.com/Modern-Treasury/modern-treasury-go/commit/9defd6c4a37d93c1c07c750bc7981f5280e753a2))
+* **api:** api update ([a628a38](https://github.com/Modern-Treasury/modern-treasury-go/commit/a628a38fe24946128959e11b637369a1ca44d87e))
+* **api:** api update ([be143b8](https://github.com/Modern-Treasury/modern-treasury-go/commit/be143b8dd3ea023025133a8b37c0c821ec8a62f3))
+* **api:** api update ([45918bc](https://github.com/Modern-Treasury/modern-treasury-go/commit/45918bcbbeb7e2f5e7bbfd944241a6b30d245223))
+* **api:** api update ([eaf6f6f](https://github.com/Modern-Treasury/modern-treasury-go/commit/eaf6f6f2f68890e82da5a0047fddb3eb68662ed9))
+* **api:** api update ([47b08b0](https://github.com/Modern-Treasury/modern-treasury-go/commit/47b08b0df25cd4f2a58ee42a7abdff705c3fc387))
+* **api:** api update ([a8020f1](https://github.com/Modern-Treasury/modern-treasury-go/commit/a8020f10f0efbc125d09ea4ead28175d82cb33f9))
+* **api:** api update ([5c2e295](https://github.com/Modern-Treasury/modern-treasury-go/commit/5c2e2957543fb9f2a6e4befeed8768808caef1da))
+
+
+### Bug Fixes
+
+* **docs:** add missing pointer prefix to api.md return types ([11ef4b3](https://github.com/Modern-Treasury/modern-treasury-go/commit/11ef4b3c5256489b04ce585cd14ca867843be8ea))
+* **docs:** fix mcp installation instructions for remote servers ([9a5b5f0](https://github.com/Modern-Treasury/modern-treasury-go/commit/9a5b5f0b5f0a8cf0c5e759a14587988fe3808ec5))
+* fix for namespace collisions with client and resource test methods ([c6f8ad3](https://github.com/Modern-Treasury/modern-treasury-go/commit/c6f8ad3c21c0051e46cc0a17a73a1c6277714ef2))
+
+
+### Chores
+
+* **client:** improve example values ([f6f534a](https://github.com/Modern-Treasury/modern-treasury-go/commit/f6f534a811dc66378b21449a8e6952c30bebead1))
+* **internal:** codegen related update ([ad85498](https://github.com/Modern-Treasury/modern-treasury-go/commit/ad85498d30e0d35f64599d11818cb526f4201146))
+* **internal:** update `actions/checkout` version ([8defca7](https://github.com/Modern-Treasury/modern-treasury-go/commit/8defca7878ec055b7c9d75f620ab650c13e5ad3d))
+* update mock server docs ([6c9e7dc](https://github.com/Modern-Treasury/modern-treasury-go/commit/6c9e7dc4d98863eb7090dc15d5968cb6bb9d7bdc))
+
 ## 2.38.0 (2026-01-13)
 
 Full Changelog: [v2.37.0...v2.38.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.37.0...v2.38.0)
