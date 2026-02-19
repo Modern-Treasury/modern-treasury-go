@@ -1190,6 +1190,12 @@ const LegalEntityWealthEmploymentDetailSourceOfFundsAnnuity = shared.LegalEntity
 const LegalEntityWealthEmploymentDetailSourceOfFundsBusinessOwner = shared.LegalEntityWealthEmploymentDetailSourceOfFundsBusinessOwner
 
 // This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsBusinessRevenue = shared.LegalEntityWealthEmploymentDetailSourceOfFundsBusinessRevenue
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsDebtFinancing = shared.LegalEntityWealthEmploymentDetailSourceOfFundsDebtFinancing
+
+// This is an alias to an internal value.
 const LegalEntityWealthEmploymentDetailSourceOfFundsGeneralEmployee = shared.LegalEntityWealthEmploymentDetailSourceOfFundsGeneralEmployee
 
 // This is an alias to an internal value.
@@ -1202,7 +1208,13 @@ const LegalEntityWealthEmploymentDetailSourceOfFundsHomemaker = shared.LegalEnti
 const LegalEntityWealthEmploymentDetailSourceOfFundsInheritanceGift = shared.LegalEntityWealthEmploymentDetailSourceOfFundsInheritanceGift
 
 // This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsIntercompanyLoan = shared.LegalEntityWealthEmploymentDetailSourceOfFundsIntercompanyLoan
+
+// This is an alias to an internal value.
 const LegalEntityWealthEmploymentDetailSourceOfFundsInvestment = shared.LegalEntityWealthEmploymentDetailSourceOfFundsInvestment
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsInvestorFunding = shared.LegalEntityWealthEmploymentDetailSourceOfFundsInvestorFunding
 
 // This is an alias to an internal value.
 const LegalEntityWealthEmploymentDetailSourceOfFundsLegalSettlement = shared.LegalEntityWealthEmploymentDetailSourceOfFundsLegalSettlement
@@ -1214,6 +1226,9 @@ const LegalEntityWealthEmploymentDetailSourceOfFundsLottery = shared.LegalEntity
 const LegalEntityWealthEmploymentDetailSourceOfFundsRealEstate = shared.LegalEntityWealthEmploymentDetailSourceOfFundsRealEstate
 
 // This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsRetainedEarningsOrSavings = shared.LegalEntityWealthEmploymentDetailSourceOfFundsRetainedEarningsOrSavings
+
+// This is an alias to an internal value.
 const LegalEntityWealthEmploymentDetailSourceOfFundsRetired = shared.LegalEntityWealthEmploymentDetailSourceOfFundsRetired
 
 // This is an alias to an internal value.
@@ -1221,6 +1236,12 @@ const LegalEntityWealthEmploymentDetailSourceOfFundsRetirement = shared.LegalEnt
 
 // This is an alias to an internal value.
 const LegalEntityWealthEmploymentDetailSourceOfFundsSalary = shared.LegalEntityWealthEmploymentDetailSourceOfFundsSalary
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfBusinessAssets = shared.LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfBusinessAssets
+
+// This is an alias to an internal value.
+const LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfRealEstate = shared.LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfRealEstate
 
 // This is an alias to an internal value.
 const LegalEntityWealthEmploymentDetailSourceOfFundsSelfEmployed = shared.LegalEntityWealthEmploymentDetailSourceOfFundsSelfEmployed
