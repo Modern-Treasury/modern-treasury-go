@@ -1379,28 +1379,35 @@ func (r LegalEntityWealthEmploymentDetailOccupation) IsKnown() bool {
 type LegalEntityWealthEmploymentDetailSourceOfFunds string
 
 const (
-	LegalEntityWealthEmploymentDetailSourceOfFundsAlimony            LegalEntityWealthEmploymentDetailSourceOfFunds = "alimony"
-	LegalEntityWealthEmploymentDetailSourceOfFundsAnnuity            LegalEntityWealthEmploymentDetailSourceOfFunds = "annuity"
-	LegalEntityWealthEmploymentDetailSourceOfFundsBusinessOwner      LegalEntityWealthEmploymentDetailSourceOfFunds = "business_owner"
-	LegalEntityWealthEmploymentDetailSourceOfFundsGeneralEmployee    LegalEntityWealthEmploymentDetailSourceOfFunds = "general_employee"
-	LegalEntityWealthEmploymentDetailSourceOfFundsGovernmentBenefits LegalEntityWealthEmploymentDetailSourceOfFunds = "government_benefits"
-	LegalEntityWealthEmploymentDetailSourceOfFundsHomemaker          LegalEntityWealthEmploymentDetailSourceOfFunds = "homemaker"
-	LegalEntityWealthEmploymentDetailSourceOfFundsInheritanceGift    LegalEntityWealthEmploymentDetailSourceOfFunds = "inheritance_gift"
-	LegalEntityWealthEmploymentDetailSourceOfFundsInvestment         LegalEntityWealthEmploymentDetailSourceOfFunds = "investment"
-	LegalEntityWealthEmploymentDetailSourceOfFundsLegalSettlement    LegalEntityWealthEmploymentDetailSourceOfFunds = "legal_settlement"
-	LegalEntityWealthEmploymentDetailSourceOfFundsLottery            LegalEntityWealthEmploymentDetailSourceOfFunds = "lottery"
-	LegalEntityWealthEmploymentDetailSourceOfFundsRealEstate         LegalEntityWealthEmploymentDetailSourceOfFunds = "real_estate"
-	LegalEntityWealthEmploymentDetailSourceOfFundsRetired            LegalEntityWealthEmploymentDetailSourceOfFunds = "retired"
-	LegalEntityWealthEmploymentDetailSourceOfFundsRetirement         LegalEntityWealthEmploymentDetailSourceOfFunds = "retirement"
-	LegalEntityWealthEmploymentDetailSourceOfFundsSalary             LegalEntityWealthEmploymentDetailSourceOfFunds = "salary"
-	LegalEntityWealthEmploymentDetailSourceOfFundsSelfEmployed       LegalEntityWealthEmploymentDetailSourceOfFunds = "self_employed"
-	LegalEntityWealthEmploymentDetailSourceOfFundsSeniorExecutive    LegalEntityWealthEmploymentDetailSourceOfFunds = "senior_executive"
-	LegalEntityWealthEmploymentDetailSourceOfFundsTrustIncome        LegalEntityWealthEmploymentDetailSourceOfFunds = "trust_income"
+	LegalEntityWealthEmploymentDetailSourceOfFundsAlimony                   LegalEntityWealthEmploymentDetailSourceOfFunds = "alimony"
+	LegalEntityWealthEmploymentDetailSourceOfFundsAnnuity                   LegalEntityWealthEmploymentDetailSourceOfFunds = "annuity"
+	LegalEntityWealthEmploymentDetailSourceOfFundsBusinessOwner             LegalEntityWealthEmploymentDetailSourceOfFunds = "business_owner"
+	LegalEntityWealthEmploymentDetailSourceOfFundsBusinessRevenue           LegalEntityWealthEmploymentDetailSourceOfFunds = "business_revenue"
+	LegalEntityWealthEmploymentDetailSourceOfFundsDebtFinancing             LegalEntityWealthEmploymentDetailSourceOfFunds = "debt_financing"
+	LegalEntityWealthEmploymentDetailSourceOfFundsGeneralEmployee           LegalEntityWealthEmploymentDetailSourceOfFunds = "general_employee"
+	LegalEntityWealthEmploymentDetailSourceOfFundsGovernmentBenefits        LegalEntityWealthEmploymentDetailSourceOfFunds = "government_benefits"
+	LegalEntityWealthEmploymentDetailSourceOfFundsHomemaker                 LegalEntityWealthEmploymentDetailSourceOfFunds = "homemaker"
+	LegalEntityWealthEmploymentDetailSourceOfFundsInheritanceGift           LegalEntityWealthEmploymentDetailSourceOfFunds = "inheritance_gift"
+	LegalEntityWealthEmploymentDetailSourceOfFundsIntercompanyLoan          LegalEntityWealthEmploymentDetailSourceOfFunds = "intercompany_loan"
+	LegalEntityWealthEmploymentDetailSourceOfFundsInvestment                LegalEntityWealthEmploymentDetailSourceOfFunds = "investment"
+	LegalEntityWealthEmploymentDetailSourceOfFundsInvestorFunding           LegalEntityWealthEmploymentDetailSourceOfFunds = "investor_funding"
+	LegalEntityWealthEmploymentDetailSourceOfFundsLegalSettlement           LegalEntityWealthEmploymentDetailSourceOfFunds = "legal_settlement"
+	LegalEntityWealthEmploymentDetailSourceOfFundsLottery                   LegalEntityWealthEmploymentDetailSourceOfFunds = "lottery"
+	LegalEntityWealthEmploymentDetailSourceOfFundsRealEstate                LegalEntityWealthEmploymentDetailSourceOfFunds = "real_estate"
+	LegalEntityWealthEmploymentDetailSourceOfFundsRetainedEarningsOrSavings LegalEntityWealthEmploymentDetailSourceOfFunds = "retained_earnings_or_savings"
+	LegalEntityWealthEmploymentDetailSourceOfFundsRetired                   LegalEntityWealthEmploymentDetailSourceOfFunds = "retired"
+	LegalEntityWealthEmploymentDetailSourceOfFundsRetirement                LegalEntityWealthEmploymentDetailSourceOfFunds = "retirement"
+	LegalEntityWealthEmploymentDetailSourceOfFundsSalary                    LegalEntityWealthEmploymentDetailSourceOfFunds = "salary"
+	LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfBusinessAssets      LegalEntityWealthEmploymentDetailSourceOfFunds = "sale_of_business_assets"
+	LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfRealEstate          LegalEntityWealthEmploymentDetailSourceOfFunds = "sale_of_real_estate"
+	LegalEntityWealthEmploymentDetailSourceOfFundsSelfEmployed              LegalEntityWealthEmploymentDetailSourceOfFunds = "self_employed"
+	LegalEntityWealthEmploymentDetailSourceOfFundsSeniorExecutive           LegalEntityWealthEmploymentDetailSourceOfFunds = "senior_executive"
+	LegalEntityWealthEmploymentDetailSourceOfFundsTrustIncome               LegalEntityWealthEmploymentDetailSourceOfFunds = "trust_income"
 )
 
 func (r LegalEntityWealthEmploymentDetailSourceOfFunds) IsKnown() bool {
 	switch r {
-	case LegalEntityWealthEmploymentDetailSourceOfFundsAlimony, LegalEntityWealthEmploymentDetailSourceOfFundsAnnuity, LegalEntityWealthEmploymentDetailSourceOfFundsBusinessOwner, LegalEntityWealthEmploymentDetailSourceOfFundsGeneralEmployee, LegalEntityWealthEmploymentDetailSourceOfFundsGovernmentBenefits, LegalEntityWealthEmploymentDetailSourceOfFundsHomemaker, LegalEntityWealthEmploymentDetailSourceOfFundsInheritanceGift, LegalEntityWealthEmploymentDetailSourceOfFundsInvestment, LegalEntityWealthEmploymentDetailSourceOfFundsLegalSettlement, LegalEntityWealthEmploymentDetailSourceOfFundsLottery, LegalEntityWealthEmploymentDetailSourceOfFundsRealEstate, LegalEntityWealthEmploymentDetailSourceOfFundsRetired, LegalEntityWealthEmploymentDetailSourceOfFundsRetirement, LegalEntityWealthEmploymentDetailSourceOfFundsSalary, LegalEntityWealthEmploymentDetailSourceOfFundsSelfEmployed, LegalEntityWealthEmploymentDetailSourceOfFundsSeniorExecutive, LegalEntityWealthEmploymentDetailSourceOfFundsTrustIncome:
+	case LegalEntityWealthEmploymentDetailSourceOfFundsAlimony, LegalEntityWealthEmploymentDetailSourceOfFundsAnnuity, LegalEntityWealthEmploymentDetailSourceOfFundsBusinessOwner, LegalEntityWealthEmploymentDetailSourceOfFundsBusinessRevenue, LegalEntityWealthEmploymentDetailSourceOfFundsDebtFinancing, LegalEntityWealthEmploymentDetailSourceOfFundsGeneralEmployee, LegalEntityWealthEmploymentDetailSourceOfFundsGovernmentBenefits, LegalEntityWealthEmploymentDetailSourceOfFundsHomemaker, LegalEntityWealthEmploymentDetailSourceOfFundsInheritanceGift, LegalEntityWealthEmploymentDetailSourceOfFundsIntercompanyLoan, LegalEntityWealthEmploymentDetailSourceOfFundsInvestment, LegalEntityWealthEmploymentDetailSourceOfFundsInvestorFunding, LegalEntityWealthEmploymentDetailSourceOfFundsLegalSettlement, LegalEntityWealthEmploymentDetailSourceOfFundsLottery, LegalEntityWealthEmploymentDetailSourceOfFundsRealEstate, LegalEntityWealthEmploymentDetailSourceOfFundsRetainedEarningsOrSavings, LegalEntityWealthEmploymentDetailSourceOfFundsRetired, LegalEntityWealthEmploymentDetailSourceOfFundsRetirement, LegalEntityWealthEmploymentDetailSourceOfFundsSalary, LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfBusinessAssets, LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfRealEstate, LegalEntityWealthEmploymentDetailSourceOfFundsSelfEmployed, LegalEntityWealthEmploymentDetailSourceOfFundsSeniorExecutive, LegalEntityWealthEmploymentDetailSourceOfFundsTrustIncome:
 		return true
 	}
 	return false
