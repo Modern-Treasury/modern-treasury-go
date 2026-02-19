@@ -26,7 +26,7 @@ func TestAutoPagination(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	iter := client.Counterparties.ListAutoPaging(context.TODO(), moderntreasury.CounterpartyListParams{})
-	// Prism mock isn't going to give us real pagination
+	// The mock server isn't going to give us real pagination
 	for i := 0; i < 3 && iter.Next(); i++ {
 		counterparty := iter.Current()
 		t.Logf("%+v\n", counterparty.ID)
