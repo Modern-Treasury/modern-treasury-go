@@ -808,6 +808,8 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	// An optional free-form description for internal use.
 	Description string    `json:"description,nullable"`
 	DiscardedAt time.Time `json:"discarded_at,nullable" format:"date-time"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID string `json:"external_id,nullable"`
 	// The ID of the internal account that the virtual account is in.
 	InternalAccountID string `json:"internal_account_id" format:"uuid"`
 	// The Legal Entity associated to this account.
@@ -851,6 +853,7 @@ type paymentOrderUltimateOriginatingAccountJSON struct {
 	DebitLedgerAccountID  apijson.Field
 	Description           apijson.Field
 	DiscardedAt           apijson.Field
+	ExternalID            apijson.Field
 	InternalAccountID     apijson.Field
 	LegalEntityID         apijson.Field
 	ParentAccountID       apijson.Field
