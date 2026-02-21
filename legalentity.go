@@ -122,6 +122,8 @@ type LegalEntity struct {
 	Email string `json:"email,required,nullable"`
 	// Monthly expected transaction volume in USD.
 	ExpectedActivityVolume int64 `json:"expected_activity_volume,required,nullable"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID string `json:"external_id,required,nullable"`
 	// An individual's first name.
 	FirstName string `json:"first_name,required,nullable"`
 	// A list of identifications for the legal entity.
@@ -199,6 +201,7 @@ type legalEntityJSON struct {
 	DoingBusinessAsNames       apijson.Field
 	Email                      apijson.Field
 	ExpectedActivityVolume     apijson.Field
+	ExternalID                 apijson.Field
 	FirstName                  apijson.Field
 	Identifications            apijson.Field
 	IndustryClassifications    apijson.Field
@@ -589,6 +592,8 @@ type LegalEntityNewParams struct {
 	Email param.Field[string] `json:"email"`
 	// Monthly expected transaction volume in USD.
 	ExpectedActivityVolume param.Field[int64] `json:"expected_activity_volume"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// An individual's first name.
 	FirstName param.Field[string] `json:"first_name"`
 	// A list of identifications for the legal entity.
@@ -788,6 +793,8 @@ type LegalEntityUpdateParams struct {
 	Email param.Field[string] `json:"email"`
 	// Monthly expected transaction volume in USD.
 	ExpectedActivityVolume param.Field[int64] `json:"expected_activity_volume"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// An individual's first name.
 	FirstName param.Field[string] `json:"first_name"`
 	// A list of identifications for the legal entity.
@@ -948,7 +955,9 @@ func (r LegalEntityUpdateParamsThirdPartyVerificationVendor) IsKnown() bool {
 }
 
 type LegalEntityListParams struct {
-	AfterCursor     param.Field[string]                               `query:"after_cursor"`
+	AfterCursor param.Field[string] `query:"after_cursor"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID      param.Field[string]                               `query:"external_id"`
 	LegalEntityType param.Field[LegalEntityListParamsLegalEntityType] `query:"legal_entity_type"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
