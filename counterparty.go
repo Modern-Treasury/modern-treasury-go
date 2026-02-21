@@ -618,6 +618,8 @@ type CounterpartyNewParamsLegalEntity struct {
 	Email param.Field[string] `json:"email"`
 	// Monthly expected transaction volume in USD.
 	ExpectedActivityVolume param.Field[int64] `json:"expected_activity_volume"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// An individual's first name.
 	FirstName param.Field[string] `json:"first_name"`
 	// A list of identifications for the legal entity.

@@ -121,6 +121,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			DoingBusinessAsNames:   moderntreasury.F([]string{"string"}),
 			Email:                  moderntreasury.F("email"),
 			ExpectedActivityVolume: moderntreasury.F(int64(0)),
+			ExternalID:             moderntreasury.F("external_id"),
 			FirstName:              moderntreasury.F("first_name"),
 			Identifications: moderntreasury.F([]shared.IdentificationCreateRequestParam{{
 				IDNumber:       moderntreasury.F("id_number"),
@@ -175,6 +176,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 					DoingBusinessAsNames:   moderntreasury.F([]string{"string"}),
 					Email:                  moderntreasury.F("email"),
 					ExpectedActivityVolume: moderntreasury.F(int64(0)),
+					ExternalID:             moderntreasury.F("external_id"),
 					FirstName:              moderntreasury.F("first_name"),
 					Identifications: moderntreasury.F([]shared.IdentificationCreateRequestParam{{
 						IDNumber:       moderntreasury.F("id_number"),

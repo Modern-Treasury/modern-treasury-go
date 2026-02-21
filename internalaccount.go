@@ -143,6 +143,8 @@ type InternalAccount struct {
 	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
 	// The currency of the account.
 	Currency shared.Currency `json:"currency,required"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID string `json:"external_id,required,nullable"`
 	// If the internal account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
 	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
@@ -186,6 +188,7 @@ type internalAccountJSON struct {
 	CounterpartyID        apijson.Field
 	CreatedAt             apijson.Field
 	Currency              apijson.Field
+	ExternalID            apijson.Field
 	LedgerAccountID       apijson.Field
 	LegalEntityID         apijson.Field
 	LiveMode              apijson.Field
@@ -486,6 +489,8 @@ type InternalAccountNewParams struct {
 	AccountType param.Field[InternalAccountNewParamsAccountType] `json:"account_type"`
 	// The Counterparty associated to this account.
 	CounterpartyID param.Field[string] `json:"counterparty_id"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// The LegalEntity associated to this account.
 	LegalEntityID param.Field[string] `json:"legal_entity_id"`
 	// The parent internal account of this new account.
@@ -644,6 +649,8 @@ type InternalAccountUpdateParams struct {
 	ContraLedgerAccountID param.Field[string] `json:"contra_ledger_account_id"`
 	// The Counterparty associated to this account.
 	CounterpartyID param.Field[string] `json:"counterparty_id"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// The Ledger Account associated to this account.
 	LedgerAccountID param.Field[string] `json:"ledger_account_id"`
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
@@ -665,6 +672,8 @@ type InternalAccountListParams struct {
 	CounterpartyID param.Field[string] `query:"counterparty_id"`
 	// Only return internal accounts with this currency.
 	Currency param.Field[shared.Currency] `query:"currency"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `query:"external_id"`
 	// Only return internal accounts associated with this legal entity.
 	LegalEntityID param.Field[string] `query:"legal_entity_id"`
 	// For example, if you want to query for records with metadata key `Type` and value

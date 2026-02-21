@@ -61,6 +61,7 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 		DoingBusinessAsNames:   moderntreasury.F([]string{"string"}),
 		Email:                  moderntreasury.F("email"),
 		ExpectedActivityVolume: moderntreasury.F(int64(0)),
+		ExternalID:             moderntreasury.F("external_id"),
 		FirstName:              moderntreasury.F("first_name"),
 		Identifications: moderntreasury.F([]shared.IdentificationCreateRequestParam{{
 			IDNumber:       moderntreasury.F("id_number"),
@@ -115,6 +116,7 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 				DoingBusinessAsNames:   moderntreasury.F([]string{"string"}),
 				Email:                  moderntreasury.F("email"),
 				ExpectedActivityVolume: moderntreasury.F(int64(0)),
+				ExternalID:             moderntreasury.F("external_id"),
 				FirstName:              moderntreasury.F("first_name"),
 				Identifications: moderntreasury.F([]shared.IdentificationCreateRequestParam{{
 					IDNumber:       moderntreasury.F("id_number"),
@@ -322,6 +324,7 @@ func TestLegalEntityUpdateWithOptionalParams(t *testing.T) {
 			DoingBusinessAsNames:   moderntreasury.F([]string{"string"}),
 			Email:                  moderntreasury.F("email"),
 			ExpectedActivityVolume: moderntreasury.F(int64(0)),
+			ExternalID:             moderntreasury.F("external_id"),
 			FirstName:              moderntreasury.F("first_name"),
 			Identifications: moderntreasury.F([]shared.IdentificationCreateRequestParam{{
 				IDNumber:       moderntreasury.F("id_number"),
@@ -418,6 +421,7 @@ func TestLegalEntityListWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.LegalEntities.List(context.TODO(), moderntreasury.LegalEntityListParams{
 		AfterCursor:     moderntreasury.F("after_cursor"),
+		ExternalID:      moderntreasury.F("external_id"),
 		LegalEntityType: moderntreasury.F(moderntreasury.LegalEntityListParamsLegalEntityTypeBusiness),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",

@@ -70,6 +70,8 @@ type ChildLegalEntity struct {
 	Email string `json:"email,required,nullable"`
 	// Monthly expected transaction volume in USD.
 	ExpectedActivityVolume int64 `json:"expected_activity_volume,required,nullable"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID string `json:"external_id,required,nullable"`
 	// An individual's first name.
 	FirstName string `json:"first_name,required,nullable"`
 	// A list of identifications for the legal entity.
@@ -148,6 +150,7 @@ type childLegalEntityJSON struct {
 	DoingBusinessAsNames       apijson.Field
 	Email                      apijson.Field
 	ExpectedActivityVolume     apijson.Field
+	ExternalID                 apijson.Field
 	FirstName                  apijson.Field
 	Identifications            apijson.Field
 	IndustryClassifications    apijson.Field
