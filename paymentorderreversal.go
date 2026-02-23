@@ -97,6 +97,8 @@ func (r *PaymentOrderReversalService) ListAutoPaging(ctx context.Context, paymen
 type Reversal struct {
 	ID        string    `json:"id,required" format:"uuid"`
 	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	// The ID of the relevant Internal Account.
+	InternalAccountID string `json:"internal_account_id,required,nullable" format:"uuid"`
 	// The ID of the ledger transaction linked to the reversal.
 	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
@@ -123,6 +125,7 @@ type Reversal struct {
 type reversalJSON struct {
 	ID                   apijson.Field
 	CreatedAt            apijson.Field
+	InternalAccountID    apijson.Field
 	LedgerTransactionID  apijson.Field
 	LiveMode             apijson.Field
 	Metadata             apijson.Field
