@@ -48,6 +48,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 			Description:              moderntreasury.F("description"),
 			EffectiveDate:            moderntreasury.F(time.Now()),
 			ExpiresAt:                moderntreasury.F(time.Now()),
+			ExternalID:               moderntreasury.F("external_id"),
 			FallbackType:             moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestFallbackTypeACH),
 			ForeignExchangeContract:  moderntreasury.F("foreign_exchange_contract"),
 			ForeignExchangeIndicator: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchangeIndicatorFixedToVariable),

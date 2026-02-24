@@ -294,6 +294,8 @@ func (r LedgerAccountGetParamsBalances) URLQuery() (v url.Values) {
 type LedgerAccountUpdateParams struct {
 	// The description of the ledger account.
 	Description param.Field[string] `json:"description"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
