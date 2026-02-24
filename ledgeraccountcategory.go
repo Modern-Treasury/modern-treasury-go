@@ -175,33 +175,33 @@ func (r *LedgerAccountCategoryService) RemoveNestedCategory(ctx context.Context,
 }
 
 type LedgerAccountCategory struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The pending, posted, and available balances for this ledger account category.
 	// The posted balance is the sum of all posted entries on the account. The pending
 	// balance is the sum of all pending and posted entries on the account. The
 	// available balance is the posted incoming entries minus the sum of the pending
 	// and posted outgoing amounts.
-	Balances  shared.LedgerBalances `json:"balances,required"`
-	CreatedAt time.Time             `json:"created_at,required" format:"date-time"`
+	Balances  shared.LedgerBalances `json:"balances" api:"required"`
+	CreatedAt time.Time             `json:"created_at" api:"required" format:"date-time"`
 	// The description of the ledger account category.
-	Description string    `json:"description,required,nullable"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	Description string    `json:"description" api:"required,nullable"`
+	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// An optional user-defined 180 character unique identifier.
-	ExternalID string `json:"external_id,required,nullable"`
+	ExternalID string `json:"external_id" api:"required,nullable"`
 	// The id of the ledger that this account category belongs to.
-	LedgerID string `json:"ledger_id,required" format:"uuid"`
+	LedgerID string `json:"ledger_id" api:"required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
 	// The name of the ledger account category.
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The normal balance of the ledger account category.
-	NormalBalance shared.TransactionDirection `json:"normal_balance,required"`
-	Object        string                      `json:"object,required"`
-	UpdatedAt     time.Time                   `json:"updated_at,required" format:"date-time"`
+	NormalBalance shared.TransactionDirection `json:"normal_balance" api:"required"`
+	Object        string                      `json:"object" api:"required"`
+	UpdatedAt     time.Time                   `json:"updated_at" api:"required" format:"date-time"`
 	JSON          ledgerAccountCategoryJSON   `json:"-"`
 }
 
@@ -235,13 +235,13 @@ func (r ledgerAccountCategoryJSON) RawJSON() string {
 
 type LedgerAccountCategoryNewParams struct {
 	// The currency of the ledger account category.
-	Currency param.Field[string] `json:"currency,required"`
+	Currency param.Field[string] `json:"currency" api:"required"`
 	// The id of the ledger that this account category belongs to.
-	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
+	LedgerID param.Field[string] `json:"ledger_id" api:"required" format:"uuid"`
 	// The name of the ledger account category.
-	Name param.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// The normal balance of the ledger account category.
-	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance,required"`
+	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance" api:"required"`
 	// The currency exponent of the ledger account category.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account category.

@@ -88,23 +88,23 @@ func (r *PaymentReferenceService) Retireve(ctx context.Context, id string, opts 
 }
 
 type PaymentReference struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// The actual reference number assigned by the bank.
-	ReferenceNumber string `json:"reference_number,required"`
+	ReferenceNumber string `json:"reference_number" api:"required"`
 	// The type of reference number.
-	ReferenceNumberType PaymentReferenceReferenceNumberType `json:"reference_number_type,required"`
+	ReferenceNumberType PaymentReferenceReferenceNumberType `json:"reference_number_type" api:"required"`
 	// The id of the referenceable to search for. Must be accompanied by the
 	// referenceable_type or will return an error.
-	ReferenceableID string `json:"referenceable_id,required"`
+	ReferenceableID string `json:"referenceable_id" api:"required"`
 	// One of the referenceable types. This must be accompanied by the id of the
 	// referenceable or will return an error.
-	ReferenceableType PaymentReferenceReferenceableType `json:"referenceable_type,required"`
-	UpdatedAt         time.Time                         `json:"updated_at,required" format:"date-time"`
+	ReferenceableType PaymentReferenceReferenceableType `json:"referenceable_type" api:"required"`
+	UpdatedAt         time.Time                         `json:"updated_at" api:"required" format:"date-time"`
 	JSON              paymentReferenceJSON              `json:"-"`
 }
 

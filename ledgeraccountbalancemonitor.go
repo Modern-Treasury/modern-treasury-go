@@ -107,26 +107,26 @@ func (r *LedgerAccountBalanceMonitorService) Delete(ctx context.Context, id stri
 }
 
 type LedgerAccountBalanceMonitor struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// Describes the condition that must be satisfied for the monitor to be triggered.
-	AlertCondition LedgerAccountBalanceMonitorAlertCondition `json:"alert_condition,required"`
-	CreatedAt      time.Time                                 `json:"created_at,required" format:"date-time"`
+	AlertCondition LedgerAccountBalanceMonitorAlertCondition `json:"alert_condition" api:"required"`
+	CreatedAt      time.Time                                 `json:"created_at" api:"required" format:"date-time"`
 	// The ledger account's balances and the monitor state as of the current ledger
 	// account lock version.
-	CurrentLedgerAccountBalanceState LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceState `json:"current_ledger_account_balance_state,required"`
+	CurrentLedgerAccountBalanceState LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceState `json:"current_ledger_account_balance_state" api:"required"`
 	// An optional, free-form description for internal use.
-	Description string    `json:"description,required,nullable"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	Description string    `json:"description" api:"required,nullable"`
+	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// The ledger account associated with this balance monitor.
-	LedgerAccountID string `json:"ledger_account_id,required"`
+	LedgerAccountID string `json:"ledger_account_id" api:"required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata  map[string]string               `json:"metadata,required"`
-	Object    string                          `json:"object,required"`
-	UpdatedAt time.Time                       `json:"updated_at,required" format:"date-time"`
+	Metadata  map[string]string               `json:"metadata" api:"required"`
+	Object    string                          `json:"object" api:"required"`
+	UpdatedAt time.Time                       `json:"updated_at" api:"required" format:"date-time"`
 	JSON      ledgerAccountBalanceMonitorJSON `json:"-"`
 }
 
@@ -160,15 +160,15 @@ func (r ledgerAccountBalanceMonitorJSON) RawJSON() string {
 type LedgerAccountBalanceMonitorAlertCondition struct {
 	// One of `available_balance_amount`, `pending_balance_amount`,
 	// `posted_balance_amount`, `ledger_account_lock_version`.
-	Field string `json:"field,required"`
+	Field string `json:"field" api:"required"`
 	// A logical operator to compare the `field` against the `value`. One of
 	// `less_than`, `less_than_or_equals`, `equals`, `greater_than_or_equals`,
 	// `greater_than`.
-	Operator string `json:"operator,required"`
+	Operator string `json:"operator" api:"required"`
 	// The monitor's `current_ledger_account_balance_state.triggered` will be `true`
 	// when comparing the `field` to this integer value using the `operator` is
 	// logically true.
-	Value int64                                         `json:"value,required"`
+	Value int64                                         `json:"value" api:"required"`
 	JSON  ledgerAccountBalanceMonitorAlertConditionJSON `json:"-"`
 }
 
@@ -193,12 +193,12 @@ func (r ledgerAccountBalanceMonitorAlertConditionJSON) RawJSON() string {
 // The ledger account's balances and the monitor state as of the current ledger
 // account lock version.
 type LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceState struct {
-	Balances shared.LedgerBalances `json:"balances,required"`
+	Balances shared.LedgerBalances `json:"balances" api:"required"`
 	// The current lock version of the ledger account.
-	LedgerAccountLockVersion int64 `json:"ledger_account_lock_version,required"`
+	LedgerAccountLockVersion int64 `json:"ledger_account_lock_version" api:"required"`
 	// If `true`, the ledger account's balances satisfy the `alert_condition` at this
 	// lock version.
-	Triggered bool                                                            `json:"triggered,required"`
+	Triggered bool                                                            `json:"triggered" api:"required"`
 	JSON      ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateJSON `json:"-"`
 }
 
@@ -223,9 +223,9 @@ func (r ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateJSON) RawJSON
 
 type LedgerAccountBalanceMonitorNewParams struct {
 	// Describes the condition that must be satisfied for the monitor to be triggered.
-	AlertCondition param.Field[LedgerAccountBalanceMonitorNewParamsAlertCondition] `json:"alert_condition,required"`
+	AlertCondition param.Field[LedgerAccountBalanceMonitorNewParamsAlertCondition] `json:"alert_condition" api:"required"`
 	// The ledger account associated with this balance monitor.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id,required"`
+	LedgerAccountID param.Field[string] `json:"ledger_account_id" api:"required"`
 	// An optional, free-form description for internal use.
 	Description param.Field[string] `json:"description"`
 	// Additional data represented as key-value pairs. Both the key and value must be
@@ -241,15 +241,15 @@ func (r LedgerAccountBalanceMonitorNewParams) MarshalJSON() (data []byte, err er
 type LedgerAccountBalanceMonitorNewParamsAlertCondition struct {
 	// One of `available_balance_amount`, `pending_balance_amount`,
 	// `posted_balance_amount`, `ledger_account_lock_version`.
-	Field param.Field[string] `json:"field,required"`
+	Field param.Field[string] `json:"field" api:"required"`
 	// A logical operator to compare the `field` against the `value`. One of
 	// `less_than`, `less_than_or_equals`, `equals`, `greater_than_or_equals`,
 	// `greater_than`.
-	Operator param.Field[string] `json:"operator,required"`
+	Operator param.Field[string] `json:"operator" api:"required"`
 	// The monitor's `current_ledger_account_balance_state.triggered` will be `true`
 	// when comparing the `field` to this integer value using the `operator` is
 	// logically true.
-	Value param.Field[int64] `json:"value,required"`
+	Value param.Field[int64] `json:"value" api:"required"`
 }
 
 func (r LedgerAccountBalanceMonitorNewParamsAlertCondition) MarshalJSON() (data []byte, err error) {

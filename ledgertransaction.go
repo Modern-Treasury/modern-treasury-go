@@ -121,54 +121,54 @@ func (r *LedgerTransactionService) NewReversal(ctx context.Context, id string, b
 }
 
 type LedgerTransaction struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// System-set reason why the ledger transaction was archived; currently only
 	// 'balance_lock_failure' for transactions that violated balance constraints. Only
 	// populated when archive_on_balance_lock_failure is true and a balance lock
 	// violation occurs, otherwise null.
-	ArchivedReason string    `json:"archived_reason,required,nullable"`
-	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	ArchivedReason string    `json:"archived_reason" api:"required,nullable"`
+	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
 	// An optional description for internal use.
-	Description string `json:"description,required,nullable"`
+	Description string `json:"description" api:"required,nullable"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt time.Time `json:"effective_at,required" format:"date-time"`
+	EffectiveAt time.Time `json:"effective_at" api:"required" format:"date-time"`
 	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
 	// purposes.
-	EffectiveDate time.Time `json:"effective_date,required" format:"date"`
+	EffectiveDate time.Time `json:"effective_date" api:"required" format:"date"`
 	// A unique string to represent the ledger transaction. Only one pending or posted
 	// ledger transaction may have this ID in the ledger.
-	ExternalID string `json:"external_id,required,nullable"`
+	ExternalID string `json:"external_id" api:"required,nullable"`
 	// An array of ledger entry objects.
-	LedgerEntries []LedgerEntry `json:"ledger_entries,required"`
+	LedgerEntries []LedgerEntry `json:"ledger_entries" api:"required"`
 	// The ID of the ledger this ledger transaction belongs to.
-	LedgerID string `json:"ledger_id,required" format:"uuid"`
+	LedgerID string `json:"ledger_id" api:"required" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID string `json:"ledgerable_id,required,nullable" format:"uuid"`
+	LedgerableID string `json:"ledgerable_id" api:"required,nullable" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
 	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
-	LedgerableType LedgerTransactionLedgerableType `json:"ledgerable_type,required,nullable"`
+	LedgerableType LedgerTransactionLedgerableType `json:"ledgerable_type" api:"required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
-	Object   string            `json:"object,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
+	Object   string            `json:"object" api:"required"`
 	// The ID of the ledger transaction that this ledger transaction partially posts.
-	PartiallyPostsLedgerTransactionID string `json:"partially_posts_ledger_transaction_id,required,nullable"`
+	PartiallyPostsLedgerTransactionID string `json:"partially_posts_ledger_transaction_id" api:"required,nullable"`
 	// The time on which the ledger transaction posted. This is null if the ledger
 	// transaction is pending.
-	PostedAt time.Time `json:"posted_at,required,nullable" format:"date-time"`
+	PostedAt time.Time `json:"posted_at" api:"required,nullable" format:"date-time"`
 	// The ID of the ledger transaction that reversed this ledger transaction.
-	ReversedByLedgerTransactionID string `json:"reversed_by_ledger_transaction_id,required,nullable"`
+	ReversedByLedgerTransactionID string `json:"reversed_by_ledger_transaction_id" api:"required,nullable"`
 	// The ID of the original ledger transaction that this ledger transaction reverses.
-	ReversesLedgerTransactionID string `json:"reverses_ledger_transaction_id,required,nullable"`
+	ReversesLedgerTransactionID string `json:"reverses_ledger_transaction_id" api:"required,nullable"`
 	// To post a ledger transaction at creation, use `posted`.
-	Status    LedgerTransactionStatus `json:"status,required"`
-	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
+	Status    LedgerTransactionStatus `json:"status" api:"required"`
+	UpdatedAt time.Time               `json:"updated_at" api:"required" format:"date-time"`
 	JSON      ledgerTransactionJSON   `json:"-"`
 }
 
@@ -248,7 +248,7 @@ func (r LedgerTransactionStatus) IsKnown() bool {
 }
 
 type LedgerTransactionNewParams struct {
-	LedgerTransactionCreateRequest shared.LedgerTransactionCreateRequestParam `json:"ledger_transaction_create_request,required"`
+	LedgerTransactionCreateRequest shared.LedgerTransactionCreateRequestParam `json:"ledger_transaction_create_request" api:"required"`
 }
 
 func (r LedgerTransactionNewParams) MarshalJSON() (data []byte, err error) {
@@ -503,7 +503,7 @@ type LedgerTransactionNewPartialPostParams struct {
 	// An array of ledger entry objects to be set on the posted ledger transaction.
 	// There must be one entry for each of the existing entries with a lesser amount
 	// than the existing entry.
-	PostedLedgerEntries param.Field[[]LedgerTransactionNewPartialPostParamsPostedLedgerEntry] `json:"posted_ledger_entries,required"`
+	PostedLedgerEntries param.Field[[]LedgerTransactionNewPartialPostParamsPostedLedgerEntry] `json:"posted_ledger_entries" api:"required"`
 	// An optional free-form description for the posted ledger transaction. Maximum of
 	// 1000 characters allowed.
 	Description param.Field[string] `json:"description"`
@@ -522,14 +522,14 @@ func (r LedgerTransactionNewPartialPostParams) MarshalJSON() (data []byte, err e
 type LedgerTransactionNewPartialPostParamsPostedLedgerEntry struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
-	Direction param.Field[LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirection] `json:"direction,required"`
+	Direction param.Field[LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirection] `json:"direction" api:"required"`
 	// The ledger account that this ledger entry is associated with.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
+	LedgerAccountID param.Field[string] `json:"ledger_account_id" api:"required" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`

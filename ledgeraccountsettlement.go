@@ -96,43 +96,43 @@ func (r *LedgerAccountSettlementService) ListAutoPaging(ctx context.Context, que
 }
 
 type LedgerAccountSettlement struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The amount of the ledger account settlement.
-	Amount int64 `json:"amount,required,nullable"`
+	Amount int64 `json:"amount" api:"required,nullable"`
 	// The id of the contra ledger account that sends to or receives funds from the
 	// settled ledger account.
-	ContraLedgerAccountID string    `json:"contra_ledger_account_id,required" format:"uuid"`
-	CreatedAt             time.Time `json:"created_at,required" format:"date-time"`
+	ContraLedgerAccountID string    `json:"contra_ledger_account_id" api:"required" format:"uuid"`
+	CreatedAt             time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The currency of the ledger account settlement.
-	Currency string `json:"currency,required"`
+	Currency string `json:"currency" api:"required"`
 	// The currency exponent of the ledger account settlement.
-	CurrencyExponent int64 `json:"currency_exponent,required,nullable"`
+	CurrencyExponent int64 `json:"currency_exponent" api:"required,nullable"`
 	// The description of the ledger account settlement.
-	Description string `json:"description,required,nullable"`
+	Description string `json:"description" api:"required,nullable"`
 	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account settlement. The default value is the
 	// created_at timestamp of the ledger account settlement.
-	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound,required,nullable" format:"date-time"`
+	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound" api:"required,nullable" format:"date-time"`
 	// The id of the ledger that this ledger account settlement belongs to.
-	LedgerID string `json:"ledger_id,required" format:"uuid"`
+	LedgerID string `json:"ledger_id" api:"required" format:"uuid"`
 	// The id of the ledger transaction that this settlement is associated with.
-	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
+	LedgerTransactionID string `json:"ledger_transaction_id" api:"required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
-	Object   string            `json:"object,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
+	Object   string            `json:"object" api:"required"`
 	// The id of the settled ledger account whose ledger entries are queried against,
 	// and its balance is reduced as a result.
-	SettledLedgerAccountID string `json:"settled_ledger_account_id,required" format:"uuid"`
+	SettledLedgerAccountID string `json:"settled_ledger_account_id" api:"required" format:"uuid"`
 	// The direction of the ledger entry with the settlement_ledger_account.
-	SettlementEntryDirection string `json:"settlement_entry_direction,required,nullable"`
+	SettlementEntryDirection string `json:"settlement_entry_direction" api:"required,nullable"`
 	// The status of the ledger account settlement. One of `processing`, `pending`,
 	// `posted`, `archiving` or `archived`.
-	Status    LedgerAccountSettlementStatus `json:"status,required"`
-	UpdatedAt time.Time                     `json:"updated_at,required" format:"date-time"`
+	Status    LedgerAccountSettlementStatus `json:"status" api:"required"`
+	UpdatedAt time.Time                     `json:"updated_at" api:"required" format:"date-time"`
 	JSON      ledgerAccountSettlementJSON   `json:"-"`
 }
 
@@ -192,10 +192,10 @@ func (r LedgerAccountSettlementStatus) IsKnown() bool {
 type LedgerAccountSettlementNewParams struct {
 	// The id of the contra ledger account that sends to or receives funds from the
 	// settled ledger account.
-	ContraLedgerAccountID param.Field[string] `json:"contra_ledger_account_id,required" format:"uuid"`
+	ContraLedgerAccountID param.Field[string] `json:"contra_ledger_account_id" api:"required" format:"uuid"`
 	// The id of the settled ledger account whose ledger entries are queried against,
 	// and its balance is reduced as a result.
-	SettledLedgerAccountID param.Field[string] `json:"settled_ledger_account_id,required" format:"uuid"`
+	SettledLedgerAccountID param.Field[string] `json:"settled_ledger_account_id" api:"required" format:"uuid"`
 	// If true, the settlement amount and settlement_entry_direction will bring the
 	// settlement ledger account's balance closer to zero, even if the balance is
 	// negative.

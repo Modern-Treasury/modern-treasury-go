@@ -110,60 +110,60 @@ func (r *TransactionService) Delete(ctx context.Context, id string, opts ...opti
 }
 
 type Transaction struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
-	Amount int64 `json:"amount,required"`
+	Amount int64 `json:"amount" api:"required"`
 	// The date on which the transaction occurred.
-	AsOfDate time.Time `json:"as_of_date,required,nullable" format:"date"`
+	AsOfDate time.Time `json:"as_of_date" api:"required,nullable" format:"date"`
 	// The time on which the transaction occurred. Depending on the granularity of the
 	// timestamp information received from the bank, it may be `null`.
-	AsOfTime string `json:"as_of_time,required,nullable" format:"time"`
+	AsOfTime string `json:"as_of_time" api:"required,nullable" format:"time"`
 	// The timezone in which the `as_of_time` is represented. Can be `null` if the bank
 	// does not provide timezone info.
-	AsOfTimezone string    `json:"as_of_timezone,required,nullable"`
-	CreatedAt    time.Time `json:"created_at,required" format:"date-time"`
+	AsOfTimezone string    `json:"as_of_timezone" api:"required,nullable"`
+	CreatedAt    time.Time `json:"created_at" api:"required" format:"date-time"`
 	// Currency that this transaction is denominated in.
-	Currency shared.Currency `json:"currency,required"`
+	Currency shared.Currency `json:"currency" api:"required"`
 	// An object containing key-value pairs, each with a custom identifier as the key
 	// and a string value.
-	CustomIdentifiers map[string]string `json:"custom_identifiers,required"`
+	CustomIdentifiers map[string]string `json:"custom_identifiers" api:"required"`
 	// Either `credit` or `debit`.
-	Direction   string    `json:"direction,required"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	Direction   string    `json:"direction" api:"required"`
+	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// Associated serialized foreign exchange rate information.
-	ForeignExchangeRate shared.ForeignExchangeRate `json:"foreign_exchange_rate,required,nullable"`
+	ForeignExchangeRate shared.ForeignExchangeRate `json:"foreign_exchange_rate" api:"required,nullable"`
 	// The ID of the relevant Internal Account.
-	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id" api:"required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
-	Object   string            `json:"object,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
+	Object   string            `json:"object" api:"required"`
 	// This field will be `true` if the transaction has posted to the account.
-	Posted bool `json:"posted,required"`
+	Posted bool `json:"posted" api:"required"`
 	// This field will be `true` if a transaction is reconciled by the Modern Treasury
 	// system. This means that it has transaction line items that sum up to the
 	// transaction's amount.
-	Reconciled bool `json:"reconciled,required"`
+	Reconciled bool `json:"reconciled" api:"required"`
 	// The type of the transaction. Examples could be
 	// `card, `ach`, `wire`, `check`, `rtp`, `book`, or `sen`.
-	Type      TransactionType `json:"type,required"`
-	UpdatedAt time.Time       `json:"updated_at,required" format:"date-time"`
+	Type      TransactionType `json:"type" api:"required"`
+	UpdatedAt time.Time       `json:"updated_at" api:"required" format:"date-time"`
 	// When applicable, the bank-given code that determines the transaction's category.
 	// For most banks this is the BAI2/BTRS transaction code.
-	VendorCode string `json:"vendor_code,required,nullable"`
+	VendorCode string `json:"vendor_code" api:"required,nullable"`
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
 	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
 	// `swift`, `us_bank`, or others.
-	VendorCodeType TransactionVendorCodeType `json:"vendor_code_type,required,nullable"`
+	VendorCodeType TransactionVendorCodeType `json:"vendor_code_type" api:"required,nullable"`
 	// An identifier given to this transaction by the bank, often `null`.
-	VendorCustomerID string `json:"vendor_customer_id,required,nullable"`
+	VendorCustomerID string `json:"vendor_customer_id" api:"required,nullable"`
 	// An identifier given to this transaction by the bank.
-	VendorID string `json:"vendor_id,required,nullable"`
+	VendorID string `json:"vendor_id" api:"required,nullable"`
 	// This field contains additional information that the bank provided about the
 	// transaction. This is structured data. Some of the data in here might overlap
 	// with what is in the `vendor_description`. For example, the OBI could be a part
@@ -174,7 +174,7 @@ type Transaction struct {
 	Details map[string]string `json:"details"`
 	// The transaction detail text that often appears in on your bank statement and in
 	// your banking portal.
-	VendorDescription string          `json:"vendor_description,nullable"`
+	VendorDescription string          `json:"vendor_description" api:"nullable"`
 	JSON              transactionJSON `json:"-"`
 }
 
@@ -318,21 +318,21 @@ func (r TransactionVendorCodeType) IsKnown() bool {
 type TransactionNewParams struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// The date on which the transaction occurred.
-	AsOfDate param.Field[time.Time] `json:"as_of_date,required" format:"date"`
+	AsOfDate param.Field[time.Time] `json:"as_of_date" api:"required" format:"date"`
 	// Either `credit` or `debit`.
-	Direction param.Field[string] `json:"direction,required"`
+	Direction param.Field[string] `json:"direction" api:"required"`
 	// The ID of the relevant Internal Account.
-	InternalAccountID param.Field[string] `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID param.Field[string] `json:"internal_account_id" api:"required" format:"uuid"`
 	// When applicable, the bank-given code that determines the transaction's category.
 	// For most banks this is the BAI2/BTRS transaction code.
-	VendorCode param.Field[string] `json:"vendor_code,required"`
+	VendorCode param.Field[string] `json:"vendor_code" api:"required"`
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
 	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
 	// `swift`, `us_bank`, or others.
-	VendorCodeType param.Field[string] `json:"vendor_code_type,required"`
+	VendorCodeType param.Field[string] `json:"vendor_code_type" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`

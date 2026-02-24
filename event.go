@@ -74,23 +74,23 @@ func (r *EventService) ListAutoPaging(ctx context.Context, query EventListParams
 }
 
 type Event struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The body of the event.
-	Data map[string]interface{} `json:"data,required"`
+	Data map[string]interface{} `json:"data" api:"required"`
 	// The ID of the entity for the event.
-	EntityID string `json:"entity_id,required" format:"uuid"`
+	EntityID string `json:"entity_id" api:"required" format:"uuid"`
 	// The name of the event.
-	EventName string `json:"event_name,required"`
+	EventName string `json:"event_name" api:"required"`
 	// The time of the event.
-	EventTime time.Time `json:"event_time,required" format:"date-time"`
+	EventTime time.Time `json:"event_time" api:"required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// The type of resource for the event.
-	Resource  string    `json:"resource,required"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	Resource  string    `json:"resource" api:"required"`
+	UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
 	JSON      eventJSON `json:"-"`
 }
 

@@ -106,22 +106,22 @@ func (r *LedgerService) Delete(ctx context.Context, id string, opts ...option.Re
 }
 
 type Ledger struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// An optional free-form description for internal use.
-	Description string    `json:"description,required,nullable"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	Description string    `json:"description" api:"required,nullable"`
+	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
 	// The name of the ledger.
-	Name        string                 `json:"name,required"`
-	Object      string                 `json:"object,required"`
-	UpdatedAt   time.Time              `json:"updated_at,required" format:"date-time"`
-	ExtraFields map[string]interface{} `json:"-,extras"`
+	Name        string                 `json:"name" api:"required"`
+	Object      string                 `json:"object" api:"required"`
+	UpdatedAt   time.Time              `json:"updated_at" api:"required" format:"date-time"`
+	ExtraFields map[string]interface{} `json:"-" api:"extrafields"`
 	JSON        ledgerJSON             `json:"-"`
 }
 
@@ -150,7 +150,7 @@ func (r ledgerJSON) RawJSON() string {
 
 type LedgerNewParams struct {
 	// The name of the ledger.
-	Name param.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// An optional free-form description for internal use.
 	Description param.Field[string] `json:"description"`
 	// Additional data represented as key-value pairs. Both the key and value must be

@@ -95,22 +95,22 @@ func (r *ConnectionLegalEntityService) ListAutoPaging(ctx context.Context, query
 }
 
 type ConnectionLegalEntity struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The ID of the connection.
-	ConnectionID string    `json:"connection_id,required"`
-	CreatedAt    time.Time `json:"created_at,required" format:"date-time"`
-	DiscardedAt  time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	ConnectionID string    `json:"connection_id" api:"required"`
+	CreatedAt    time.Time `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt  time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// The ID of the legal entity.
-	LegalEntityID string `json:"legal_entity_id,required"`
+	LegalEntityID string `json:"legal_entity_id" api:"required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// The status of the connection legal entity.
-	Status    ConnectionLegalEntityStatus `json:"status,required"`
-	UpdatedAt time.Time                   `json:"updated_at,required" format:"date-time"`
+	Status    ConnectionLegalEntityStatus `json:"status" api:"required"`
+	UpdatedAt time.Time                   `json:"updated_at" api:"required" format:"date-time"`
 	// The ID of the legal entity at the vendor.
-	VendorID string                    `json:"vendor_id,required"`
+	VendorID string                    `json:"vendor_id" api:"required"`
 	JSON     connectionLegalEntityJSON `json:"-"`
 }
 
@@ -161,7 +161,7 @@ func (r ConnectionLegalEntityStatus) IsKnown() bool {
 
 type ConnectionLegalEntityNewParams struct {
 	// The ID of the connection.
-	ConnectionID param.Field[string] `json:"connection_id,required"`
+	ConnectionID param.Field[string] `json:"connection_id" api:"required"`
 	// The legal entity.
 	LegalEntity param.Field[ConnectionLegalEntityNewParamsLegalEntity] `json:"legal_entity"`
 	// The ID of the legal entity.
@@ -308,11 +308,11 @@ func (r ConnectionLegalEntityNewParamsLegalEntityPhoneNumber) MarshalJSON() (dat
 type ConnectionLegalEntityNewParamsLegalEntityRegulator struct {
 	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
 	// (e.g., "US", "CA", "GB").
-	Jurisdiction param.Field[string] `json:"jurisdiction,required"`
+	Jurisdiction param.Field[string] `json:"jurisdiction" api:"required"`
 	// Full name of the regulatory body.
-	Name param.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// Registration or identification number with the regulator.
-	RegistrationNumber param.Field[string] `json:"registration_number,required"`
+	RegistrationNumber param.Field[string] `json:"registration_number" api:"required"`
 }
 
 func (r ConnectionLegalEntityNewParamsLegalEntityRegulator) MarshalJSON() (data []byte, err error) {
@@ -358,9 +358,9 @@ func (r ConnectionLegalEntityNewParamsLegalEntityStatus) IsKnown() bool {
 // Information describing a third-party verification run by an external vendor.
 type ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerification struct {
 	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor] `json:"vendor,required"`
+	Vendor param.Field[ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor] `json:"vendor" api:"required"`
 	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id,required"`
+	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
 }
 
 func (r ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerification) MarshalJSON() (data []byte, err error) {

@@ -134,39 +134,39 @@ func (r *ExternalAccountService) Verify(ctx context.Context, id string, body Ext
 }
 
 type ExternalAccount struct {
-	ID             string          `json:"id,required" format:"uuid"`
-	AccountDetails []AccountDetail `json:"account_details,required"`
+	ID             string          `json:"id" api:"required" format:"uuid"`
+	AccountDetails []AccountDetail `json:"account_details" api:"required"`
 	// Can be `checking`, `savings` or `other`.
-	AccountType    ExternalAccountType    `json:"account_type,required"`
-	ContactDetails []shared.ContactDetail `json:"contact_details,required"`
-	CounterpartyID string                 `json:"counterparty_id,required,nullable" format:"uuid"`
-	CreatedAt      time.Time              `json:"created_at,required" format:"date-time"`
-	DiscardedAt    time.Time              `json:"discarded_at,required,nullable" format:"date-time"`
+	AccountType    ExternalAccountType    `json:"account_type" api:"required"`
+	ContactDetails []shared.ContactDetail `json:"contact_details" api:"required"`
+	CounterpartyID string                 `json:"counterparty_id" api:"required,nullable" format:"uuid"`
+	CreatedAt      time.Time              `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt    time.Time              `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// An optional user-defined 180 character unique identifier.
-	ExternalID string `json:"external_id,required,nullable"`
+	ExternalID string `json:"external_id" api:"required,nullable"`
 	// If the external account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
-	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
+	LedgerAccountID string `json:"ledger_account_id" api:"required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
 	// A nickname for the external account. This is only for internal usage and won't
 	// affect any payments
-	Name   string `json:"name,required,nullable"`
-	Object string `json:"object,required"`
+	Name   string `json:"name" api:"required,nullable"`
+	Object string `json:"object" api:"required"`
 	// The address associated with the owner or `null`.
-	PartyAddress shared.Address `json:"party_address,required,nullable"`
+	PartyAddress shared.Address `json:"party_address" api:"required,nullable"`
 	// The legal name of the entity which owns the account.
-	PartyName string `json:"party_name,required"`
+	PartyName string `json:"party_name" api:"required"`
 	// Either `individual` or `business`.
-	PartyType          ExternalAccountPartyType          `json:"party_type,required,nullable"`
-	RoutingDetails     []RoutingDetail                   `json:"routing_details,required"`
-	UpdatedAt          time.Time                         `json:"updated_at,required" format:"date-time"`
-	VerificationSource ExternalAccountVerificationSource `json:"verification_source,required,nullable"`
-	VerificationStatus ExternalAccountVerificationStatus `json:"verification_status,required"`
+	PartyType          ExternalAccountPartyType          `json:"party_type" api:"required,nullable"`
+	RoutingDetails     []RoutingDetail                   `json:"routing_details" api:"required"`
+	UpdatedAt          time.Time                         `json:"updated_at" api:"required" format:"date-time"`
+	VerificationSource ExternalAccountVerificationSource `json:"verification_source" api:"required,nullable"`
+	VerificationStatus ExternalAccountVerificationStatus `json:"verification_status" api:"required"`
 	JSON               externalAccountJSON               `json:"-"`
 }
 
@@ -282,52 +282,52 @@ func (r ExternalAccountType) IsKnown() bool {
 }
 
 type ExternalAccountVerifyResponse struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	Object    string    `json:"object,required"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	LiveMode  bool      `json:"live_mode" api:"required"`
+	Object    string    `json:"object" api:"required"`
+	UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
 	// This field can have the runtime type of [[]AccountDetail].
 	AccountDetails interface{} `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
 	AccountType ExternalAccountType `json:"account_type"`
 	// This field can have the runtime type of [[]shared.ContactDetail].
 	ContactDetails interface{} `json:"contact_details"`
-	CounterpartyID string      `json:"counterparty_id,nullable" format:"uuid"`
-	DiscardedAt    time.Time   `json:"discarded_at,nullable" format:"date-time"`
+	CounterpartyID string      `json:"counterparty_id" api:"nullable" format:"uuid"`
+	DiscardedAt    time.Time   `json:"discarded_at" api:"nullable" format:"date-time"`
 	// The ID of the external account.
 	ExternalAccountID string `json:"external_account_id" format:"uuid"`
 	// An optional user-defined 180 character unique identifier.
-	ExternalID string `json:"external_id,nullable"`
+	ExternalID string `json:"external_id" api:"nullable"`
 	// If the external account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
-	LedgerAccountID string `json:"ledger_account_id,nullable" format:"uuid"`
+	LedgerAccountID string `json:"ledger_account_id" api:"nullable" format:"uuid"`
 	// This field can have the runtime type of [map[string]string].
 	Metadata interface{} `json:"metadata"`
 	// A nickname for the external account. This is only for internal usage and won't
 	// affect any payments
-	Name string `json:"name,nullable"`
+	Name string `json:"name" api:"nullable"`
 	// The ID of the internal account where the micro-deposits originate from.
 	OriginatingAccountID string `json:"originating_account_id" format:"uuid"`
 	// The address associated with the owner or `null`.
-	PartyAddress shared.Address `json:"party_address,nullable"`
+	PartyAddress shared.Address `json:"party_address" api:"nullable"`
 	// The legal name of the entity which owns the account.
 	PartyName string `json:"party_name"`
 	// Either `individual` or `business`.
-	PartyType ExternalAccountVerifyResponsePartyType `json:"party_type,nullable"`
+	PartyType ExternalAccountVerifyResponsePartyType `json:"party_type" api:"nullable"`
 	// The type of payment that can be made to this account. Can be `ach`, `eft`, or
 	// `rtp`.
 	PaymentType ExternalAccountVerifyResponsePaymentType `json:"payment_type"`
 	// The priority of the payment. Can be `normal` or `high`.
-	Priority ExternalAccountVerifyResponsePriority `json:"priority,nullable"`
+	Priority ExternalAccountVerifyResponsePriority `json:"priority" api:"nullable"`
 	// This field can have the runtime type of [[]RoutingDetail].
 	RoutingDetails interface{} `json:"routing_details"`
 	// The status of the verification attempt. Can be `pending_verification`,
 	// `verified`, `failed`, or `cancelled`.
 	Status             ExternalAccountVerifyResponseStatus             `json:"status"`
-	VerificationSource ExternalAccountVerifyResponseVerificationSource `json:"verification_source,nullable"`
+	VerificationSource ExternalAccountVerifyResponseVerificationSource `json:"verification_source" api:"nullable"`
 	VerificationStatus ExternalAccountVerifyResponseVerificationStatus `json:"verification_status"`
 	JSON               externalAccountVerifyResponseJSON               `json:"-"`
 	union              ExternalAccountVerifyResponseUnion
@@ -409,25 +409,25 @@ func init() {
 }
 
 type ExternalAccountVerifyResponseExternalAccountVerificationAttempt struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The ID of the external account.
-	ExternalAccountID string `json:"external_account_id,required" format:"uuid"`
+	ExternalAccountID string `json:"external_account_id" api:"required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// The ID of the internal account where the micro-deposits originate from.
-	OriginatingAccountID string `json:"originating_account_id,required" format:"uuid"`
+	OriginatingAccountID string `json:"originating_account_id" api:"required" format:"uuid"`
 	// The type of payment that can be made to this account. Can be `ach`, `eft`, or
 	// `rtp`.
-	PaymentType ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType `json:"payment_type,required"`
+	PaymentType ExternalAccountVerifyResponseExternalAccountVerificationAttemptPaymentType `json:"payment_type" api:"required"`
 	// The priority of the payment. Can be `normal` or `high`.
-	Priority ExternalAccountVerifyResponseExternalAccountVerificationAttemptPriority `json:"priority,required,nullable"`
+	Priority ExternalAccountVerifyResponseExternalAccountVerificationAttemptPriority `json:"priority" api:"required,nullable"`
 	// The status of the verification attempt. Can be `pending_verification`,
 	// `verified`, `failed`, or `cancelled`.
-	Status    ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatus `json:"status,required"`
-	UpdatedAt time.Time                                                             `json:"updated_at,required" format:"date-time"`
+	Status    ExternalAccountVerifyResponseExternalAccountVerificationAttemptStatus `json:"status" api:"required"`
+	UpdatedAt time.Time                                                             `json:"updated_at" api:"required" format:"date-time"`
 	JSON      externalAccountVerifyResponseExternalAccountVerificationAttemptJSON   `json:"-"`
 }
 
@@ -679,7 +679,7 @@ func (r ExternalAccountVerifyResponseVerificationStatus) IsKnown() bool {
 }
 
 type ExternalAccountNewParams struct {
-	CounterpartyID param.Field[string]                                  `json:"counterparty_id,required" format:"uuid"`
+	CounterpartyID param.Field[string]                                  `json:"counterparty_id" api:"required" format:"uuid"`
 	AccountDetails param.Field[[]ExternalAccountNewParamsAccountDetail] `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
 	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
@@ -716,7 +716,7 @@ func (r ExternalAccountNewParams) MarshalJSON() (data []byte, err error) {
 }
 
 type ExternalAccountNewParamsAccountDetail struct {
-	AccountNumber     param.Field[string]                                                  `json:"account_number,required"`
+	AccountNumber     param.Field[string]                                                  `json:"account_number" api:"required"`
 	AccountNumberType param.Field[ExternalAccountNewParamsAccountDetailsAccountNumberType] `json:"account_number_type"`
 }
 
@@ -769,8 +769,8 @@ func (r ExternalAccountNewParamsPartyType) IsKnown() bool {
 }
 
 type ExternalAccountNewParamsRoutingDetail struct {
-	RoutingNumber     param.Field[string]                                                  `json:"routing_number,required"`
-	RoutingNumberType param.Field[ExternalAccountNewParamsRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
+	RoutingNumber     param.Field[string]                                                  `json:"routing_number" api:"required"`
+	RoutingNumberType param.Field[ExternalAccountNewParamsRoutingDetailsRoutingNumberType] `json:"routing_number_type" api:"required"`
 	PaymentType       param.Field[ExternalAccountNewParamsRoutingDetailsPaymentType]       `json:"payment_type"`
 }
 
@@ -932,9 +932,9 @@ func (r ExternalAccountCompleteVerificationParams) MarshalJSON() (data []byte, e
 type ExternalAccountVerifyParams struct {
 	// The ID of the internal account where the micro-deposits originate from. Both
 	// credit and debit capabilities must be enabled.
-	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
+	OriginatingAccountID param.Field[string] `json:"originating_account_id" api:"required" format:"uuid"`
 	// Can be `ach`, `eft`, or `rtp`.
-	PaymentType param.Field[ExternalAccountVerifyParamsPaymentType] `json:"payment_type,required"`
+	PaymentType param.Field[ExternalAccountVerifyParamsPaymentType] `json:"payment_type" api:"required"`
 	// Defaults to the currency of the originating account.
 	Currency param.Field[shared.Currency] `json:"currency"`
 	// A payment type to fallback to if the original type is not valid for the
