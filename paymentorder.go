@@ -1123,6 +1123,8 @@ type PaymentOrderNewParams struct {
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
 	// RFP payments require an expires_at. This value must be past the effective_date.
 	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// A payment type to fallback to if the original type is not valid for the
 	// receiving account. Currently, this only supports falling back from RTP to ACH
 	// (type=rtp and fallback_type=ach)
@@ -1627,6 +1629,8 @@ type PaymentOrderUpdateParams struct {
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
 	// RFP payments require an expires_at. This value must be past the effective_date.
 	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// A payment type to fallback to if the original type is not valid for the
 	// receiving account. Currently, this only supports falling back from RTP to ACH
 	// (type=rtp and fallback_type=ach)
@@ -2256,6 +2260,8 @@ type PaymentOrderNewAsyncParams struct {
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
 	// RFP payments require an expires_at. This value must be past the effective_date.
 	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// A payment type to fallback to if the original type is not valid for the
 	// receiving account. Currently, this only supports falling back from RTP to ACH
 	// (type=rtp and fallback_type=ach)

@@ -261,6 +261,9 @@ type LedgerTransactionUpdateParams struct {
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
 	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
+	// A unique string to represent the ledger transaction. Only one pending or posted
+	// ledger transaction may have this ID in the ledger.
+	ExternalID param.Field[string] `json:"external_id"`
 	// An array of ledger entry objects.
 	LedgerEntries param.Field[[]shared.LedgerEntryCreateRequestParam] `json:"ledger_entries"`
 	// If the ledger transaction can be reconciled to another object in Modern

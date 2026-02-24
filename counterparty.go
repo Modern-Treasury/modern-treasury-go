@@ -800,6 +800,8 @@ func (r CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor) IsKnown() 
 type CounterpartyUpdateParams struct {
 	// A new email for the counterparty.
 	Email param.Field[string] `json:"email" format:"email"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// The id of the legal entity.
 	LegalEntityID param.Field[string] `json:"legal_entity_id" format:"uuid"`
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
