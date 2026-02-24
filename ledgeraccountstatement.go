@@ -57,45 +57,45 @@ func (r *LedgerAccountStatementService) Get(ctx context.Context, id string, opts
 }
 
 type LedgerAccountStatementNewResponse struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The description of the ledger account statement.
-	Description string `json:"description,required,nullable"`
+	Description string `json:"description" api:"required,nullable"`
 	// The inclusive lower bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account statement.
-	EffectiveAtLowerBound time.Time `json:"effective_at_lower_bound,required" format:"date-time"`
+	EffectiveAtLowerBound time.Time `json:"effective_at_lower_bound" api:"required" format:"date-time"`
 	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account statement.
-	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound,required" format:"date-time"`
+	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound" api:"required" format:"date-time"`
 	// The pending, posted, and available balances for this ledger account at the
 	// `effective_at_upper_bound`. The posted balance is the sum of all posted entries
 	// on the account. The pending balance is the sum of all pending and posted entries
 	// on the account. The available balance is the posted incoming entries minus the
 	// sum of the pending and posted outgoing amounts.
-	EndingBalance shared.LedgerBalances `json:"ending_balance,required"`
+	EndingBalance shared.LedgerBalances `json:"ending_balance" api:"required"`
 	// The id of the ledger account whose ledger entries are queried against, and its
 	// balances are computed as a result.
-	LedgerAccountID string `json:"ledger_account_id,required" format:"uuid"`
+	LedgerAccountID string `json:"ledger_account_id" api:"required" format:"uuid"`
 	// Lock version of the ledger account at the time of statement generation.
-	LedgerAccountLockVersion int64 `json:"ledger_account_lock_version,required"`
+	LedgerAccountLockVersion int64 `json:"ledger_account_lock_version" api:"required"`
 	// The normal balance of the ledger account.
-	LedgerAccountNormalBalance shared.TransactionDirection `json:"ledger_account_normal_balance,required"`
+	LedgerAccountNormalBalance shared.TransactionDirection `json:"ledger_account_normal_balance" api:"required"`
 	// The id of the ledger that this ledger account statement belongs to.
-	LedgerID string `json:"ledger_id,required" format:"uuid"`
+	LedgerID string `json:"ledger_id" api:"required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
-	Object   string            `json:"object,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
+	Object   string            `json:"object" api:"required"`
 	// The pending, posted, and available balances for this ledger account at the
 	// `effective_at_lower_bound`. The posted balance is the sum of all posted entries
 	// on the account. The pending balance is the sum of all pending and posted entries
 	// on the account. The available balance is the posted incoming entries minus the
 	// sum of the pending and posted outgoing amounts.
-	StartingBalance shared.LedgerBalances                 `json:"starting_balance,required"`
-	UpdatedAt       time.Time                             `json:"updated_at,required" format:"date-time"`
+	StartingBalance shared.LedgerBalances                 `json:"starting_balance" api:"required"`
+	UpdatedAt       time.Time                             `json:"updated_at" api:"required" format:"date-time"`
 	JSON            ledgerAccountStatementNewResponseJSON `json:"-"`
 }
 
@@ -130,45 +130,45 @@ func (r ledgerAccountStatementNewResponseJSON) RawJSON() string {
 }
 
 type LedgerAccountStatementGetResponse struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The description of the ledger account statement.
-	Description string `json:"description,required,nullable"`
+	Description string `json:"description" api:"required,nullable"`
 	// The inclusive lower bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account statement.
-	EffectiveAtLowerBound time.Time `json:"effective_at_lower_bound,required" format:"date-time"`
+	EffectiveAtLowerBound time.Time `json:"effective_at_lower_bound" api:"required" format:"date-time"`
 	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account statement.
-	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound,required" format:"date-time"`
+	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound" api:"required" format:"date-time"`
 	// The pending, posted, and available balances for this ledger account at the
 	// `effective_at_upper_bound`. The posted balance is the sum of all posted entries
 	// on the account. The pending balance is the sum of all pending and posted entries
 	// on the account. The available balance is the posted incoming entries minus the
 	// sum of the pending and posted outgoing amounts.
-	EndingBalance shared.LedgerBalances `json:"ending_balance,required"`
+	EndingBalance shared.LedgerBalances `json:"ending_balance" api:"required"`
 	// The id of the ledger account whose ledger entries are queried against, and its
 	// balances are computed as a result.
-	LedgerAccountID string `json:"ledger_account_id,required" format:"uuid"`
+	LedgerAccountID string `json:"ledger_account_id" api:"required" format:"uuid"`
 	// Lock version of the ledger account at the time of statement generation.
-	LedgerAccountLockVersion int64 `json:"ledger_account_lock_version,required"`
+	LedgerAccountLockVersion int64 `json:"ledger_account_lock_version" api:"required"`
 	// The normal balance of the ledger account.
-	LedgerAccountNormalBalance shared.TransactionDirection `json:"ledger_account_normal_balance,required"`
+	LedgerAccountNormalBalance shared.TransactionDirection `json:"ledger_account_normal_balance" api:"required"`
 	// The id of the ledger that this ledger account statement belongs to.
-	LedgerID string `json:"ledger_id,required" format:"uuid"`
+	LedgerID string `json:"ledger_id" api:"required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
-	Object   string            `json:"object,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
+	Object   string            `json:"object" api:"required"`
 	// The pending, posted, and available balances for this ledger account at the
 	// `effective_at_lower_bound`. The posted balance is the sum of all posted entries
 	// on the account. The pending balance is the sum of all pending and posted entries
 	// on the account. The available balance is the posted incoming entries minus the
 	// sum of the pending and posted outgoing amounts.
-	StartingBalance shared.LedgerBalances                 `json:"starting_balance,required"`
-	UpdatedAt       time.Time                             `json:"updated_at,required" format:"date-time"`
+	StartingBalance shared.LedgerBalances                 `json:"starting_balance" api:"required"`
+	UpdatedAt       time.Time                             `json:"updated_at" api:"required" format:"date-time"`
 	JSON            ledgerAccountStatementGetResponseJSON `json:"-"`
 }
 
@@ -205,13 +205,13 @@ func (r ledgerAccountStatementGetResponseJSON) RawJSON() string {
 type LedgerAccountStatementNewParams struct {
 	// The inclusive lower bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account statement.
-	EffectiveAtLowerBound param.Field[time.Time] `json:"effective_at_lower_bound,required" format:"date-time"`
+	EffectiveAtLowerBound param.Field[time.Time] `json:"effective_at_lower_bound" api:"required" format:"date-time"`
 	// The exclusive upper bound of the effective_at timestamp of the ledger entries to
 	// be included in the ledger account statement.
-	EffectiveAtUpperBound param.Field[time.Time] `json:"effective_at_upper_bound,required" format:"date-time"`
+	EffectiveAtUpperBound param.Field[time.Time] `json:"effective_at_upper_bound" api:"required" format:"date-time"`
 	// The id of the ledger account whose ledger entries are queried against, and its
 	// balances are computed as a result.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
+	LedgerAccountID param.Field[string] `json:"ledger_account_id" api:"required" format:"uuid"`
 	// The description of the ledger account statement.
 	Description param.Field[string] `json:"description"`
 	// Additional data represented as key-value pairs. Both the key and value must be

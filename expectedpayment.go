@@ -107,81 +107,81 @@ func (r *ExpectedPaymentService) Delete(ctx context.Context, id string, opts ...
 }
 
 type ExpectedPayment struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountLowerBound int64 `json:"amount_lower_bound,required,nullable"`
+	AmountLowerBound int64 `json:"amount_lower_bound" api:"required,nullable"`
 	// The amount reconciled for this expected payment. Value in specified currency's
 	// smallest unit. e.g. $10 would be represented as 1000.
-	AmountReconciled int64 `json:"amount_reconciled,required,nullable"`
+	AmountReconciled int64 `json:"amount_reconciled" api:"required,nullable"`
 	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
 	// amount.
-	AmountReconciledDirection ExpectedPaymentAmountReconciledDirection `json:"amount_reconciled_direction,required,nullable"`
+	AmountReconciledDirection ExpectedPaymentAmountReconciledDirection `json:"amount_reconciled_direction" api:"required,nullable"`
 	// The amount that remains unreconciled for this expected payment. Value in
 	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUnreconciled int64 `json:"amount_unreconciled,required,nullable"`
+	AmountUnreconciled int64 `json:"amount_unreconciled" api:"required,nullable"`
 	// One of credit or debit. Indicates whether amount_unreconciled is a credit or
 	// debit amount.
-	AmountUnreconciledDirection ExpectedPaymentAmountUnreconciledDirection `json:"amount_unreconciled_direction,required,nullable"`
+	AmountUnreconciledDirection ExpectedPaymentAmountUnreconciledDirection `json:"amount_unreconciled_direction" api:"required,nullable"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUpperBound int64 `json:"amount_upper_bound,required,nullable"`
+	AmountUpperBound int64 `json:"amount_upper_bound" api:"required,nullable"`
 	// The ID of the counterparty you expect for this payment.
-	CounterpartyID string    `json:"counterparty_id,required,nullable" format:"uuid"`
-	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	CounterpartyID string    `json:"counterparty_id" api:"required,nullable" format:"uuid"`
+	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
 	// Must conform to ISO 4217. Defaults to the currency of the internal account.
-	Currency shared.Currency `json:"currency,required,nullable"`
+	Currency shared.Currency `json:"currency" api:"required,nullable"`
 	// The earliest date the payment may come in. Format: yyyy-mm-dd
-	DateLowerBound time.Time `json:"date_lower_bound,required,nullable" format:"date"`
+	DateLowerBound time.Time `json:"date_lower_bound" api:"required,nullable" format:"date"`
 	// The latest date the payment may come in. Format: yyyy-mm-dd
-	DateUpperBound time.Time `json:"date_upper_bound,required,nullable" format:"date"`
+	DateUpperBound time.Time `json:"date_upper_bound" api:"required,nullable" format:"date"`
 	// An optional description for internal use.
-	Description string `json:"description,required,nullable"`
+	Description string `json:"description" api:"required,nullable"`
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
-	Direction ExpectedPaymentDirection `json:"direction,required,nullable"`
+	Direction ExpectedPaymentDirection `json:"direction" api:"required,nullable"`
 	// An optional user-defined 180 character unique identifier.
-	ExternalID string `json:"external_id,required,nullable"`
+	ExternalID string `json:"external_id" api:"required,nullable"`
 	// The ID of the Internal Account for the expected payment.
-	InternalAccountID string `json:"internal_account_id,required,nullable" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id" api:"required,nullable" format:"uuid"`
 	// The ID of the ledger transaction linked to the expected payment.
-	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
+	LedgerTransactionID string `json:"ledger_transaction_id" api:"required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
-	Object   string            `json:"object,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
+	Object   string            `json:"object" api:"required"`
 	// The reconciliation filters you have for this payment.
-	ReconciliationFilters interface{} `json:"reconciliation_filters,required,nullable"`
+	ReconciliationFilters interface{} `json:"reconciliation_filters" api:"required,nullable"`
 	// The reconciliation groups you have for this payment.
-	ReconciliationGroups interface{} `json:"reconciliation_groups,required,nullable"`
+	ReconciliationGroups interface{} `json:"reconciliation_groups" api:"required,nullable"`
 	// One of manual if this expected payment was manually reconciled in the dashboard,
 	// automatic if it was automatically reconciled by Modern Treasury, or null if it
 	// is unreconciled.
-	ReconciliationMethod ExpectedPaymentReconciliationMethod `json:"reconciliation_method,required,nullable"`
+	ReconciliationMethod ExpectedPaymentReconciliationMethod `json:"reconciliation_method" api:"required,nullable"`
 	// An array of reconciliation rule variables for this payment.
-	ReconciliationRuleVariables []ReconciliationRule `json:"reconciliation_rule_variables,required,nullable"`
+	ReconciliationRuleVariables []ReconciliationRule `json:"reconciliation_rule_variables" api:"required,nullable"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
-	RemittanceInformation string `json:"remittance_information,required,nullable"`
+	RemittanceInformation string `json:"remittance_information" api:"required,nullable"`
 	// The statement description you expect to see on the transaction. For ACH
 	// payments, this will be the full line item passed from the bank. For wire
 	// payments, this will be the OBI field on the wire. For check payments, this will
 	// be the memo field.
-	StatementDescriptor string `json:"statement_descriptor,required,nullable"`
+	StatementDescriptor string `json:"statement_descriptor" api:"required,nullable"`
 	// One of unreconciled, partially_reconciled, reconciled, or archived.
-	Status ExpectedPaymentStatus `json:"status,required"`
+	Status ExpectedPaymentStatus `json:"status" api:"required"`
 	// The ID of the Transaction this expected payment object has been matched to.
-	TransactionID string `json:"transaction_id,required,nullable" format:"uuid"`
+	TransactionID string `json:"transaction_id" api:"required,nullable" format:"uuid"`
 	// The ID of the Transaction Line Item this expected payment has been matched to.
-	TransactionLineItemID string `json:"transaction_line_item_id,required,nullable" format:"uuid"`
+	TransactionLineItemID string `json:"transaction_line_item_id" api:"required,nullable" format:"uuid"`
 	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
 	// sepa, signet, wire.
-	Type      ExpectedPaymentType `json:"type,required,nullable"`
-	UpdatedAt time.Time           `json:"updated_at,required" format:"date-time"`
+	Type      ExpectedPaymentType `json:"type" api:"required,nullable"`
+	UpdatedAt time.Time           `json:"updated_at" api:"required" format:"date-time"`
 	JSON      expectedPaymentJSON `json:"-"`
 }
 
@@ -372,28 +372,28 @@ func (r ExpectedPaymentType) IsKnown() bool {
 type ReconciliationRule struct {
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountLowerBound int64 `json:"amount_lower_bound,required"`
+	AmountLowerBound int64 `json:"amount_lower_bound" api:"required"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUpperBound int64 `json:"amount_upper_bound,required"`
+	AmountUpperBound int64 `json:"amount_upper_bound" api:"required"`
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
-	Direction ReconciliationRuleDirection `json:"direction,required"`
+	Direction ReconciliationRuleDirection `json:"direction" api:"required"`
 	// The ID of the Internal Account for the expected payment
-	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id" api:"required" format:"uuid"`
 	// The ID of the counterparty you expect for this payment
-	CounterpartyID string `json:"counterparty_id,nullable" format:"uuid"`
+	CounterpartyID string `json:"counterparty_id" api:"nullable" format:"uuid"`
 	// Must conform to ISO 4217. Defaults to the currency of the internal account
 	Currency shared.Currency `json:"currency"`
 	// A hash of custom identifiers for this payment
-	CustomIdentifiers map[string]string `json:"custom_identifiers,nullable"`
+	CustomIdentifiers map[string]string `json:"custom_identifiers" api:"nullable"`
 	// The earliest date the payment may come in. Format is yyyy-mm-dd
-	DateLowerBound time.Time `json:"date_lower_bound,nullable" format:"date"`
+	DateLowerBound time.Time `json:"date_lower_bound" api:"nullable" format:"date"`
 	// The latest date the payment may come in. Format is yyyy-mm-dd
-	DateUpperBound time.Time `json:"date_upper_bound,nullable" format:"date"`
+	DateUpperBound time.Time `json:"date_upper_bound" api:"nullable" format:"date"`
 	// One of ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
 	// sepa, signet wire
-	Type ReconciliationRuleType `json:"type,nullable"`
+	Type ReconciliationRuleType `json:"type" api:"nullable"`
 	JSON reconciliationRuleJSON `json:"-"`
 }
 
@@ -492,15 +492,15 @@ func (r ReconciliationRuleType) IsKnown() bool {
 type ReconciliationRuleParam struct {
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountLowerBound param.Field[int64] `json:"amount_lower_bound,required"`
+	AmountLowerBound param.Field[int64] `json:"amount_lower_bound" api:"required"`
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
-	AmountUpperBound param.Field[int64] `json:"amount_upper_bound,required"`
+	AmountUpperBound param.Field[int64] `json:"amount_upper_bound" api:"required"`
 	// One of credit or debit. When you are receiving money, use credit. When you are
 	// being charged, use debit.
-	Direction param.Field[ReconciliationRuleDirection] `json:"direction,required"`
+	Direction param.Field[ReconciliationRuleDirection] `json:"direction" api:"required"`
 	// The ID of the Internal Account for the expected payment
-	InternalAccountID param.Field[string] `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID param.Field[string] `json:"internal_account_id" api:"required" format:"uuid"`
 	// The ID of the counterparty you expect for this payment
 	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
 	// Must conform to ISO 4217. Defaults to the currency of the internal account
@@ -648,7 +648,7 @@ func (r ExpectedPaymentNewParamsDirection) IsKnown() bool {
 type ExpectedPaymentNewParamsLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`

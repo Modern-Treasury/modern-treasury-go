@@ -7,7 +7,7 @@ import (
 )
 
 type PingResponse struct {
-	Ping string           `json:"ping,required"`
+	Ping string           `json:"ping" api:"required"`
 	JSON pingResponseJSON `json:"-"`
 }
 

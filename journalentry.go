@@ -59,7 +59,7 @@ func (r *JournalEntryService) List(ctx context.Context, query JournalEntryListPa
 
 type JournalEntryListParams struct {
 	// The ID of the journal report
-	JournalReportID param.Field[string] `query:"journal_report_id,required"`
+	JournalReportID param.Field[string] `query:"journal_report_id" api:"required"`
 	// Page number for pagination
 	Page param.Field[int64] `query:"page"`
 	// Number of items per page

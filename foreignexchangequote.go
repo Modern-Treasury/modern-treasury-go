@@ -83,28 +83,28 @@ func (r *ForeignExchangeQuoteService) ListAutoPaging(ctx context.Context, query 
 }
 
 type ForeignExchangeQuote struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The timestamp until when the quoted rate is valid.
-	EffectiveAt time.Time `json:"effective_at,required" format:"date-time"`
+	EffectiveAt time.Time `json:"effective_at" api:"required" format:"date-time"`
 	// The timestamp until which the quote must be booked by.
-	ExpiresAt time.Time `json:"expires_at,required" format:"date-time"`
+	ExpiresAt time.Time `json:"expires_at" api:"required" format:"date-time"`
 	// Either `fixed_to_variable` if the `base_amount` was specified, or
 	// `variable_to_fixed` if the `target_amount` was specified when requesting the
 	// quote.
-	ForeignExchangeIndicator string `json:"foreign_exchange_indicator,required"`
+	ForeignExchangeIndicator string `json:"foreign_exchange_indicator" api:"required"`
 	// The serialized rate information represented by this quote.
-	ForeignExchangeRate shared.ForeignExchangeRate `json:"foreign_exchange_rate,required"`
+	ForeignExchangeRate shared.ForeignExchangeRate `json:"foreign_exchange_rate" api:"required"`
 	// The ID for the `InternalAccount` this quote is associated with.
-	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id" api:"required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata  map[string]string `json:"metadata,required"`
-	Object    string            `json:"object,required"`
-	UpdatedAt time.Time         `json:"updated_at,required" format:"date-time"`
+	Metadata  map[string]string `json:"metadata" api:"required"`
+	Object    string            `json:"object" api:"required"`
+	UpdatedAt time.Time         `json:"updated_at" api:"required" format:"date-time"`
 	// This vendor assigned ID for this quote.
 	VendorID string                   `json:"vendor_id"`
 	JSON     foreignExchangeQuoteJSON `json:"-"`
@@ -139,9 +139,9 @@ func (r foreignExchangeQuoteJSON) RawJSON() string {
 
 type ForeignExchangeQuoteNewParams struct {
 	// The ID for the `InternalAccount` this quote is associated with.
-	InternalAccountID param.Field[string] `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID param.Field[string] `json:"internal_account_id" api:"required" format:"uuid"`
 	// Currency to convert the `base_currency` to, often called the "buy" currency.
-	TargetCurrency param.Field[shared.Currency] `json:"target_currency,required"`
+	TargetCurrency param.Field[shared.Currency] `json:"target_currency" api:"required"`
 	// Amount in the lowest denomination of the `base_currency` to convert, often
 	// called the "sell" amount.
 	BaseAmount param.Field[int64] `json:"base_amount"`

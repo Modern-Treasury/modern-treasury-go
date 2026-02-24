@@ -61,58 +61,58 @@ func (r *LedgerTransactionVersionService) ListAutoPaging(ctx context.Context, qu
 }
 
 type LedgerTransactionVersion struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// System-set reason why the ledger transaction was archived; currently only
 	// 'balance_lock_failure' for transactions that violated balance constraints. Only
 	// populated when archive_on_balance_lock_failure is true and a balance lock
 	// violation occurs, otherwise null.
-	ArchivedReason string    `json:"archived_reason,required,nullable"`
-	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	ArchivedReason string    `json:"archived_reason" api:"required,nullable"`
+	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
 	// An optional description for internal use.
-	Description string `json:"description,required,nullable"`
+	Description string `json:"description" api:"required,nullable"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt time.Time `json:"effective_at,required" format:"date-time"`
+	EffectiveAt time.Time `json:"effective_at" api:"required" format:"date-time"`
 	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
 	// purposes.
-	EffectiveDate time.Time `json:"effective_date,required" format:"date"`
+	EffectiveDate time.Time `json:"effective_date" api:"required" format:"date"`
 	// A unique string to represent the ledger transaction. Only one pending or posted
 	// ledger transaction may have this ID in the ledger.
-	ExternalID string `json:"external_id,required,nullable"`
+	ExternalID string `json:"external_id" api:"required,nullable"`
 	// An array of ledger entry objects.
-	LedgerEntries []LedgerTransactionVersionLedgerEntry `json:"ledger_entries,required"`
+	LedgerEntries []LedgerTransactionVersionLedgerEntry `json:"ledger_entries" api:"required"`
 	// The ID of the ledger this ledger transaction belongs to.
-	LedgerID string `json:"ledger_id,required" format:"uuid"`
+	LedgerID string `json:"ledger_id" api:"required" format:"uuid"`
 	// The ID of the ledger transaction
-	LedgerTransactionID string `json:"ledger_transaction_id,required" format:"uuid"`
+	LedgerTransactionID string `json:"ledger_transaction_id" api:"required" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID string `json:"ledgerable_id,required,nullable" format:"uuid"`
+	LedgerableID string `json:"ledgerable_id" api:"required,nullable" format:"uuid"`
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
 	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
-	LedgerableType LedgerTransactionVersionLedgerableType `json:"ledgerable_type,required,nullable"`
+	LedgerableType LedgerTransactionVersionLedgerableType `json:"ledgerable_type" api:"required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
-	Object   string            `json:"object,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
+	Object   string            `json:"object" api:"required"`
 	// The ID of the ledger transaction that this ledger transaction partially posts.
-	PartiallyPostsLedgerTransactionID string `json:"partially_posts_ledger_transaction_id,required,nullable"`
+	PartiallyPostsLedgerTransactionID string `json:"partially_posts_ledger_transaction_id" api:"required,nullable"`
 	// The time on which the ledger transaction posted. This is null if the ledger
 	// transaction is pending.
-	PostedAt time.Time `json:"posted_at,required,nullable" format:"date-time"`
+	PostedAt time.Time `json:"posted_at" api:"required,nullable" format:"date-time"`
 	// The ID of the ledger transaction that reversed this ledger transaction.
-	ReversedByLedgerTransactionID string `json:"reversed_by_ledger_transaction_id,required,nullable"`
+	ReversedByLedgerTransactionID string `json:"reversed_by_ledger_transaction_id" api:"required,nullable"`
 	// The ID of the original ledger transaction. that this ledger transaction
 	// reverses.
-	ReversesLedgerTransactionID string `json:"reverses_ledger_transaction_id,required,nullable"`
+	ReversesLedgerTransactionID string `json:"reverses_ledger_transaction_id" api:"required,nullable"`
 	// One of `pending`, `posted`, or `archived`.
-	Status LedgerTransactionVersionStatus `json:"status,required"`
+	Status LedgerTransactionVersionStatus `json:"status" api:"required"`
 	// Version number of the ledger transaction.
-	Version int64                        `json:"version,required"`
+	Version int64                        `json:"version" api:"required"`
 	JSON    ledgerTransactionVersionJSON `json:"-"`
 }
 
@@ -153,39 +153,39 @@ func (r ledgerTransactionVersionJSON) RawJSON() string {
 }
 
 type LedgerTransactionVersionLedgerEntry struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000. Can be any integer up to 36 digits.
-	Amount    int64     `json:"amount,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	Amount    int64     `json:"amount" api:"required"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
-	Direction shared.TransactionDirection `json:"direction,required"`
+	Direction shared.TransactionDirection `json:"direction" api:"required"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
-	EffectiveAt time.Time `json:"effective_at,required" format:"date-time"`
+	EffectiveAt time.Time `json:"effective_at" api:"required" format:"date-time"`
 	// The currency of the ledger account.
-	LedgerAccountCurrency string `json:"ledger_account_currency,required"`
+	LedgerAccountCurrency string `json:"ledger_account_currency" api:"required"`
 	// The currency exponent of the ledger account.
-	LedgerAccountCurrencyExponent int64 `json:"ledger_account_currency_exponent,required"`
+	LedgerAccountCurrencyExponent int64 `json:"ledger_account_currency_exponent" api:"required"`
 	// The ledger account that this ledger entry is associated with.
-	LedgerAccountID string `json:"ledger_account_id,required" format:"uuid"`
+	LedgerAccountID string `json:"ledger_account_id" api:"required" format:"uuid"`
 	// Lock version of the ledger account. This can be passed when creating a ledger
 	// transaction to only succeed if no ledger transactions have posted since the
 	// given version. See our post about Designing the Ledgers API with Optimistic
 	// Locking for more details.
-	LedgerAccountLockVersion int64 `json:"ledger_account_lock_version,required,nullable"`
+	LedgerAccountLockVersion int64 `json:"ledger_account_lock_version" api:"required,nullable"`
 	// The ledger transaction that this ledger entry is associated with.
-	LedgerTransactionID string `json:"ledger_transaction_id,required"`
+	LedgerTransactionID string `json:"ledger_transaction_id" api:"required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
-	Object   string            `json:"object,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
+	Object   string            `json:"object" api:"required"`
 	// The pending, posted, and available balances for this ledger entry's ledger
 	// account. The posted balance is the sum of all posted entries on the account. The
 	// pending balance is the sum of all pending and posted entries on the account. The
@@ -193,10 +193,10 @@ type LedgerTransactionVersionLedgerEntry struct {
 	// and posted outgoing amounts. Please see
 	// https://docs.moderntreasury.com/docs/transaction-status-and-balances for more
 	// details.
-	ResultingLedgerAccountBalances shared.LedgerBalances `json:"resulting_ledger_account_balances,required,nullable"`
+	ResultingLedgerAccountBalances shared.LedgerBalances `json:"resulting_ledger_account_balances" api:"required,nullable"`
 	// Equal to the state of the ledger transaction when the ledger entry was created.
 	// One of `pending`, `posted`, or `archived`.
-	Status LedgerTransactionVersionLedgerEntriesStatus `json:"status,required"`
+	Status LedgerTransactionVersionLedgerEntriesStatus `json:"status" api:"required"`
 	JSON   ledgerTransactionVersionLedgerEntryJSON     `json:"-"`
 }
 

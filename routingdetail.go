@@ -112,26 +112,26 @@ func (r *RoutingDetailService) Delete(ctx context.Context, accountsType RoutingD
 }
 
 type RoutingDetail struct {
-	ID          string         `json:"id,required" format:"uuid"`
-	BankAddress shared.Address `json:"bank_address,required,nullable"`
+	ID          string         `json:"id" api:"required" format:"uuid"`
+	BankAddress shared.Address `json:"bank_address" api:"required,nullable"`
 	// The name of the bank.
-	BankName    string    `json:"bank_name,required"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	BankName    string    `json:"bank_name" api:"required"`
+	CreatedAt   time.Time `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// If the routing detail is to be used for a specific payment type this field will
 	// be populated, otherwise null.
-	PaymentType RoutingDetailPaymentType `json:"payment_type,required,nullable"`
+	PaymentType RoutingDetailPaymentType `json:"payment_type" api:"required,nullable"`
 	// The routing number of the bank.
-	RoutingNumber string `json:"routing_number,required"`
+	RoutingNumber string `json:"routing_number" api:"required"`
 	// The type of routing number. See
 	// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
 	// more details.
-	RoutingNumberType RoutingDetailRoutingNumberType `json:"routing_number_type,required"`
-	UpdatedAt         time.Time                      `json:"updated_at,required" format:"date-time"`
+	RoutingNumberType RoutingDetailRoutingNumberType `json:"routing_number_type" api:"required"`
+	UpdatedAt         time.Time                      `json:"updated_at" api:"required" format:"date-time"`
 	JSON              routingDetailJSON              `json:"-"`
 }
 
@@ -250,11 +250,11 @@ func (r RoutingDetailRoutingNumberType) IsKnown() bool {
 
 type RoutingDetailNewParams struct {
 	// The routing number of the bank.
-	RoutingNumber param.Field[string] `json:"routing_number,required"`
+	RoutingNumber param.Field[string] `json:"routing_number" api:"required"`
 	// The type of routing number. See
 	// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
 	// more details.
-	RoutingNumberType param.Field[RoutingDetailNewParamsRoutingNumberType] `json:"routing_number_type,required"`
+	RoutingNumberType param.Field[RoutingDetailNewParamsRoutingNumberType] `json:"routing_number_type" api:"required"`
 	// If the routing detail is to be used for a specific payment type this field will
 	// be populated, otherwise null.
 	PaymentType param.Field[RoutingDetailNewParamsPaymentType] `json:"payment_type"`

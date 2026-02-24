@@ -83,65 +83,65 @@ func (r *ReturnService) ListAutoPaging(ctx context.Context, query ReturnListPara
 }
 
 type ReturnObject struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
-	Amount int64 `json:"amount,required"`
+	Amount int64 `json:"amount" api:"required"`
 	// The return code. For ACH returns, this is the required ACH return code.
-	Code ReturnObjectCode `json:"code,required,nullable"`
+	Code ReturnObjectCode `json:"code" api:"required,nullable"`
 	// Only relevant for ACH NOC returns. This is an object containing all of the new
 	// and corrected information provided by the bank that was previously incorrect on
 	// the original outgoing payment.
-	Corrections ReturnObjectCorrections `json:"corrections,required,nullable"`
-	CreatedAt   time.Time               `json:"created_at,required" format:"date-time"`
+	Corrections ReturnObjectCorrections `json:"corrections" api:"required,nullable"`
+	CreatedAt   time.Time               `json:"created_at" api:"required" format:"date-time"`
 	// Currency that this transaction is denominated in.
-	Currency shared.Currency `json:"currency,required"`
+	Currency shared.Currency `json:"currency" api:"required"`
 	// If the return's status is `returned`, this will include the return object's data
 	// that is returning this return.
-	CurrentReturn *ReturnObject `json:"current_return,required,nullable"`
+	CurrentReturn *ReturnObject `json:"current_return" api:"required,nullable"`
 	// If the return code is `R14` or `R15` this is the date the deceased counterparty
 	// passed away.
-	DateOfDeath time.Time `json:"date_of_death,required,nullable" format:"date"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	DateOfDeath time.Time `json:"date_of_death" api:"required,nullable" format:"date"`
+	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// If an originating return failed to be processed by the bank, a description of
 	// the failure reason will be available.
-	FailureReason string `json:"failure_reason,required,nullable"`
+	FailureReason string `json:"failure_reason" api:"required,nullable"`
 	// The ID of the relevant Internal Account.
-	InternalAccountID string `json:"internal_account_id,required,nullable" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id" api:"required,nullable" format:"uuid"`
 	// The ID of the ledger transaction linked to the return.
-	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
+	LedgerTransactionID string `json:"ledger_transaction_id" api:"required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// Often the bank will provide an explanation for the return, which is a short
 	// human readable string.
-	Reason string `json:"reason,required,nullable"`
+	Reason string `json:"reason" api:"required,nullable"`
 	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
-	ReconciliationStatus ReturnObjectReconciliationStatus `json:"reconciliation_status,required"`
+	ReconciliationStatus ReturnObjectReconciliationStatus `json:"reconciliation_status" api:"required"`
 	// An array of Payment Reference objects.
-	ReferenceNumbers []ReturnObjectReferenceNumber `json:"reference_numbers,required"`
+	ReferenceNumbers []ReturnObjectReferenceNumber `json:"reference_numbers" api:"required"`
 	// The ID of the object being returned or `null`.
-	ReturnableID string `json:"returnable_id,required,nullable" format:"uuid"`
+	ReturnableID string `json:"returnable_id" api:"required,nullable" format:"uuid"`
 	// The type of object being returned or `null`.
-	ReturnableType ReturnObjectReturnableType `json:"returnable_type,required,nullable"`
+	ReturnableType ReturnObjectReturnableType `json:"returnable_type" api:"required,nullable"`
 	// The role of the return, can be `originating` or `receiving`.
-	Role ReturnObjectRole `json:"role,required"`
+	Role ReturnObjectRole `json:"role" api:"required"`
 	// The current status of the return.
-	Status ReturnObjectStatus `json:"status,required"`
+	Status ReturnObjectStatus `json:"status" api:"required"`
 	// The ID of the relevant Transaction or `null`.
-	TransactionID string `json:"transaction_id,required,nullable" format:"uuid"`
+	TransactionID string `json:"transaction_id" api:"required,nullable" format:"uuid"`
 	// The ID of the relevant Transaction Line Item or `null`.
-	TransactionLineItemID string `json:"transaction_line_item_id,required,nullable" format:"uuid"`
+	TransactionLineItemID string `json:"transaction_line_item_id" api:"required,nullable" format:"uuid"`
 	// The type of return. Can be one of: `ach`, `ach_noc`, `au_becs`, `bacs`, `eft`,
 	// `interac`, `manual`, `paper_item`, `wire`.
-	Type      ReturnObjectType `json:"type,required"`
-	UpdatedAt time.Time        `json:"updated_at,required" format:"date-time"`
+	Type      ReturnObjectType `json:"type" api:"required"`
+	UpdatedAt time.Time        `json:"updated_at" api:"required" format:"date-time"`
 	// Some returns may include additional information from the bank. In these cases,
 	// this string will be present.
-	AdditionalInformation string `json:"additional_information,nullable"`
+	AdditionalInformation string `json:"additional_information" api:"nullable"`
 	// The raw data from the return file that we get from the bank.
-	Data interface{}      `json:"data,nullable"`
+	Data interface{}      `json:"data" api:"nullable"`
 	JSON returnObjectJSON `json:"-"`
 }
 
@@ -299,22 +299,22 @@ func (r ReturnObjectCode) IsKnown() bool {
 type ReturnObjectCorrections struct {
 	// The updated account number that should replace the one originally used on the
 	// outgoing payment.
-	AccountNumber string `json:"account_number,nullable"`
+	AccountNumber string `json:"account_number" api:"nullable"`
 	// The updated company ID that should replace the one originally used on the
 	// outgoing payment.
-	CompanyID string `json:"company_id,nullable"`
+	CompanyID string `json:"company_id" api:"nullable"`
 	// The updated company name that should replace the one originally used on the
 	// outgoing payment.
-	CompanyName string `json:"company_name,nullable"`
+	CompanyName string `json:"company_name" api:"nullable"`
 	// The updated individual identification number that should replace the one
 	// originally used on the outgoing payment.
-	IndividualIdentificationNumber string `json:"individual_identification_number,nullable"`
+	IndividualIdentificationNumber string `json:"individual_identification_number" api:"nullable"`
 	// The updated routing number that should replace the one originally used on the
 	// outgoing payment.
-	RoutingNumber string `json:"routing_number,nullable"`
+	RoutingNumber string `json:"routing_number" api:"nullable"`
 	// The updated account type code that should replace the one originally used on the
 	// outgoing payment.
-	TransactionCode string                      `json:"transaction_code,nullable"`
+	TransactionCode string                      `json:"transaction_code" api:"nullable"`
 	JSON            returnObjectCorrectionsJSON `json:"-"`
 }
 
@@ -357,17 +357,17 @@ func (r ReturnObjectReconciliationStatus) IsKnown() bool {
 }
 
 type ReturnObjectReferenceNumber struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// The vendor reference number.
-	ReferenceNumber string `json:"reference_number,required"`
+	ReferenceNumber string `json:"reference_number" api:"required"`
 	// The type of the reference number. Referring to the vendor payment id.
-	ReferenceNumberType ReturnObjectReferenceNumbersReferenceNumberType `json:"reference_number_type,required"`
-	UpdatedAt           time.Time                                       `json:"updated_at,required" format:"date-time"`
+	ReferenceNumberType ReturnObjectReferenceNumbersReferenceNumberType `json:"reference_number_type" api:"required"`
+	UpdatedAt           time.Time                                       `json:"updated_at" api:"required" format:"date-time"`
 	JSON                returnObjectReferenceNumberJSON                 `json:"-"`
 }
 
@@ -584,10 +584,10 @@ func (r ReturnObjectType) IsKnown() bool {
 
 type ReturnNewParams struct {
 	// The ID of the object being returned or `null`.
-	ReturnableID param.Field[string] `json:"returnable_id,required" format:"uuid"`
+	ReturnableID param.Field[string] `json:"returnable_id" api:"required" format:"uuid"`
 	// The type of object being returned. Currently, this may only be
 	// incoming_payment_detail.
-	ReturnableType param.Field[ReturnNewParamsReturnableType] `json:"returnable_type,required"`
+	ReturnableType param.Field[ReturnNewParamsReturnableType] `json:"returnable_type" api:"required"`
 	// Some returns may include additional information from the bank. In these cases,
 	// this string will be present.
 	AdditionalInformation param.Field[string] `json:"additional_information"`
