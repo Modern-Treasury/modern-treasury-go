@@ -108,24 +108,24 @@ func (r *InternalAccountBalanceReportService) Delete(ctx context.Context, intern
 }
 
 type BalanceReport struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The date of the balance report in local time.
-	AsOfDate time.Time `json:"as_of_date,required" format:"date"`
+	AsOfDate time.Time `json:"as_of_date" api:"required" format:"date"`
 	// The time (24-hour clock) of the balance report in local time.
-	AsOfTime string `json:"as_of_time,required,nullable" format:"time"`
+	AsOfTime string `json:"as_of_time" api:"required,nullable" format:"time"`
 	// The specific type of balance report. One of `intraday`, `previous_day`,
 	// `real_time`, or `other`.
-	BalanceReportType BalanceReportBalanceReportType `json:"balance_report_type,required"`
+	BalanceReportType BalanceReportBalanceReportType `json:"balance_report_type" api:"required"`
 	// An array of `Balance` objects.
-	Balances  []BalanceReportBalance `json:"balances,required"`
-	CreatedAt time.Time              `json:"created_at,required" format:"date-time"`
+	Balances  []BalanceReportBalance `json:"balances" api:"required"`
+	CreatedAt time.Time              `json:"created_at" api:"required" format:"date-time"`
 	// The ID of one of your organization's Internal Accounts.
-	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id" api:"required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool              `json:"live_mode,required"`
-	Object    string            `json:"object,required"`
-	UpdatedAt time.Time         `json:"updated_at,required" format:"date-time"`
+	LiveMode  bool              `json:"live_mode" api:"required"`
+	Object    string            `json:"object" api:"required"`
+	UpdatedAt time.Time         `json:"updated_at" api:"required" format:"date-time"`
 	JSON      balanceReportJSON `json:"-"`
 }
 
@@ -173,35 +173,35 @@ func (r BalanceReportBalanceReportType) IsKnown() bool {
 }
 
 type BalanceReportBalance struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The balance amount.
-	Amount int64 `json:"amount,required"`
+	Amount int64 `json:"amount" api:"required"`
 	// The date on which the balance became true for the account.
-	AsOfDate time.Time `json:"as_of_date,required,nullable" format:"date"`
+	AsOfDate time.Time `json:"as_of_date" api:"required,nullable" format:"date"`
 	// The time on which the balance became true for the account.
-	AsOfTime string `json:"as_of_time,required,nullable" format:"time"`
+	AsOfTime string `json:"as_of_time" api:"required,nullable" format:"time"`
 	// The specific type of balance reported. One of `opening_ledger`,
 	// `closing_ledger`, `current_ledger`, `opening_available`,
 	// `opening_available_next_business_day`, `closing_available`, `current_available`,
 	// 'previously_closed_book', or `other`.
-	BalanceType BalanceReportBalancesBalanceType `json:"balance_type,required"`
-	CreatedAt   time.Time                        `json:"created_at,required" format:"date-time"`
+	BalanceType BalanceReportBalancesBalanceType `json:"balance_type" api:"required"`
+	CreatedAt   time.Time                        `json:"created_at" api:"required" format:"date-time"`
 	// The currency of the balance.
-	Currency shared.Currency `json:"currency,required"`
+	Currency shared.Currency `json:"currency" api:"required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	Object    string    `json:"object,required"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	LiveMode  bool      `json:"live_mode" api:"required"`
+	Object    string    `json:"object" api:"required"`
+	UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
 	// The date on which the balance becomes available.
-	ValueDate time.Time `json:"value_date,required,nullable" format:"date"`
+	ValueDate time.Time `json:"value_date" api:"required,nullable" format:"date"`
 	// The code used by the bank when reporting this specific balance.
-	VendorCode string `json:"vendor_code,required"`
+	VendorCode string `json:"vendor_code" api:"required"`
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
 	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
 	// `swift`, or `us_bank`.
-	VendorCodeType string                   `json:"vendor_code_type,required,nullable"`
+	VendorCodeType string                   `json:"vendor_code_type" api:"required,nullable"`
 	JSON           balanceReportBalanceJSON `json:"-"`
 }
 
@@ -261,14 +261,14 @@ func (r BalanceReportBalancesBalanceType) IsKnown() bool {
 
 type BalanceReportNewParams struct {
 	// The date of the balance report in local time.
-	AsOfDate param.Field[time.Time] `json:"as_of_date,required" format:"date"`
+	AsOfDate param.Field[time.Time] `json:"as_of_date" api:"required" format:"date"`
 	// The time (24-hour clock) of the balance report in local time.
-	AsOfTime param.Field[string] `json:"as_of_time,required"`
+	AsOfTime param.Field[string] `json:"as_of_time" api:"required"`
 	// The specific type of balance report. One of `intraday`, `previous_day`,
 	// `real_time`, or `other`.
-	BalanceReportType param.Field[BalanceReportNewParamsBalanceReportType] `json:"balance_report_type,required"`
+	BalanceReportType param.Field[BalanceReportNewParamsBalanceReportType] `json:"balance_report_type" api:"required"`
 	// An array of `Balance` objects.
-	Balances param.Field[[]BalanceReportNewParamsBalance] `json:"balances,required"`
+	Balances param.Field[[]BalanceReportNewParamsBalance] `json:"balances" api:"required"`
 }
 
 func (r BalanceReportNewParams) MarshalJSON() (data []byte, err error) {
@@ -296,19 +296,19 @@ func (r BalanceReportNewParamsBalanceReportType) IsKnown() bool {
 
 type BalanceReportNewParamsBalance struct {
 	// The balance amount.
-	Amount param.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// The specific type of balance reported. One of `opening_ledger`,
 	// `closing_ledger`, `current_ledger`, `opening_available`,
 	// `opening_available_next_business_day`, `closing_available`, `current_available`,
 	// 'previously_closed_book', or `other`.
-	BalanceType param.Field[BalanceReportNewParamsBalancesBalanceType] `json:"balance_type,required"`
+	BalanceType param.Field[BalanceReportNewParamsBalancesBalanceType] `json:"balance_type" api:"required"`
 	// The code used by the bank when reporting this specific balance.
-	VendorCode param.Field[string] `json:"vendor_code,required"`
+	VendorCode param.Field[string] `json:"vendor_code" api:"required"`
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
 	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
 	// `swift`, or `us_bank`.
-	VendorCodeType param.Field[string] `json:"vendor_code_type,required"`
+	VendorCodeType param.Field[string] `json:"vendor_code_type" api:"required"`
 }
 
 func (r BalanceReportNewParamsBalance) MarshalJSON() (data []byte, err error) {

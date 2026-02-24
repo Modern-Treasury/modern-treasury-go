@@ -95,91 +95,91 @@ func (r *LegalEntityService) ListAutoPaging(ctx context.Context, query LegalEnti
 }
 
 type LegalEntity struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// A list of addresses for the entity.
-	Addresses    []LegalEntityAddress           `json:"addresses,required"`
-	BankSettings shared.LegalEntityBankSettings `json:"bank_settings,required,nullable"`
+	Addresses    []LegalEntityAddress           `json:"addresses" api:"required"`
+	BankSettings shared.LegalEntityBankSettings `json:"bank_settings" api:"required,nullable"`
 	// A description of the business.
-	BusinessDescription string `json:"business_description,required,nullable"`
+	BusinessDescription string `json:"business_description" api:"required,nullable"`
 	// The business's legal business name.
-	BusinessName string `json:"business_name,required,nullable"`
+	BusinessName string `json:"business_name" api:"required,nullable"`
 	// The country of citizenship for an individual.
-	CitizenshipCountry string `json:"citizenship_country,required,nullable"`
+	CitizenshipCountry string `json:"citizenship_country" api:"required,nullable"`
 	// Deprecated: deprecated
-	ComplianceDetails interface{} `json:"compliance_details,required,nullable"`
+	ComplianceDetails interface{} `json:"compliance_details" api:"required,nullable"`
 	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
 	// alpha-3 formats.
-	CountryOfIncorporation string    `json:"country_of_incorporation,required,nullable"`
-	CreatedAt              time.Time `json:"created_at,required" format:"date-time"`
+	CountryOfIncorporation string    `json:"country_of_incorporation" api:"required,nullable"`
+	CreatedAt              time.Time `json:"created_at" api:"required" format:"date-time"`
 	// A business's formation date (YYYY-MM-DD).
-	DateFormed time.Time `json:"date_formed,required,nullable" format:"date"`
+	DateFormed time.Time `json:"date_formed" api:"required,nullable" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
-	DateOfBirth          time.Time  `json:"date_of_birth,required,nullable" format:"date"`
-	DiscardedAt          time.Time  `json:"discarded_at,required,nullable" format:"date-time"`
-	Documents            []Document `json:"documents,required"`
-	DoingBusinessAsNames []string   `json:"doing_business_as_names,required"`
+	DateOfBirth          time.Time  `json:"date_of_birth" api:"required,nullable" format:"date"`
+	DiscardedAt          time.Time  `json:"discarded_at" api:"required,nullable" format:"date-time"`
+	Documents            []Document `json:"documents" api:"required"`
+	DoingBusinessAsNames []string   `json:"doing_business_as_names" api:"required"`
 	// The entity's primary email.
-	Email string `json:"email,required,nullable"`
+	Email string `json:"email" api:"required,nullable"`
 	// Monthly expected transaction volume in USD.
-	ExpectedActivityVolume int64 `json:"expected_activity_volume,required,nullable"`
+	ExpectedActivityVolume int64 `json:"expected_activity_volume" api:"required,nullable"`
 	// An optional user-defined 180 character unique identifier.
-	ExternalID string `json:"external_id,required,nullable"`
+	ExternalID string `json:"external_id" api:"required,nullable"`
 	// An individual's first name.
-	FirstName string `json:"first_name,required,nullable"`
+	FirstName string `json:"first_name" api:"required,nullable"`
 	// A list of identifications for the legal entity.
-	Identifications []LegalEntityIdentification `json:"identifications,required"`
+	Identifications []LegalEntityIdentification `json:"identifications" api:"required"`
 	// A list of industry classifications for the legal entity.
-	IndustryClassifications []shared.LegalEntityIndustryClassification `json:"industry_classifications,required"`
+	IndustryClassifications []shared.LegalEntityIndustryClassification `json:"industry_classifications" api:"required"`
 	// A description of the intended use of the legal entity.
-	IntendedUse string `json:"intended_use,required,nullable"`
+	IntendedUse string `json:"intended_use" api:"required,nullable"`
 	// An individual's last name.
-	LastName string `json:"last_name,required,nullable"`
+	LastName string `json:"last_name" api:"required,nullable"`
 	// The type of legal entity.
-	LegalEntityType LegalEntityLegalEntityType `json:"legal_entity_type,required"`
+	LegalEntityType LegalEntityLegalEntityType `json:"legal_entity_type" api:"required"`
 	// The business's legal structure.
-	LegalStructure LegalEntityLegalStructure `json:"legal_structure,required,nullable"`
+	LegalStructure LegalEntityLegalStructure `json:"legal_structure" api:"required,nullable"`
 	// ISO 10383 market identifier code.
-	ListedExchange string `json:"listed_exchange,required,nullable"`
+	ListedExchange string `json:"listed_exchange" api:"required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
 	// An individual's middle name.
-	MiddleName string `json:"middle_name,required,nullable"`
-	Object     string `json:"object,required"`
+	MiddleName string `json:"middle_name" api:"required,nullable"`
+	Object     string `json:"object" api:"required"`
 	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
 	// codes).
-	OperatingJurisdictions []string                 `json:"operating_jurisdictions,required"`
-	PhoneNumbers           []LegalEntityPhoneNumber `json:"phone_numbers,required"`
+	OperatingJurisdictions []string                 `json:"operating_jurisdictions" api:"required"`
+	PhoneNumbers           []LegalEntityPhoneNumber `json:"phone_numbers" api:"required"`
 	// Whether the individual is a politically exposed person.
-	PoliticallyExposedPerson bool `json:"politically_exposed_person,required,nullable"`
+	PoliticallyExposedPerson bool `json:"politically_exposed_person" api:"required,nullable"`
 	// An individual's preferred name.
-	PreferredName string `json:"preferred_name,required,nullable"`
+	PreferredName string `json:"preferred_name" api:"required,nullable"`
 	// An individual's prefix.
-	Prefix string `json:"prefix,required,nullable"`
+	Prefix string `json:"prefix" api:"required,nullable"`
 	// A list of primary social media URLs for the business.
-	PrimarySocialMediaSites []string `json:"primary_social_media_sites,required"`
+	PrimarySocialMediaSites []string `json:"primary_social_media_sites" api:"required"`
 	// Array of regulatory bodies overseeing this institution.
-	Regulators []LegalEntityRegulator `json:"regulators,required,nullable"`
+	Regulators []LegalEntityRegulator `json:"regulators" api:"required,nullable"`
 	// The risk rating of the legal entity. One of low, medium, high.
-	RiskRating LegalEntityRiskRating `json:"risk_rating,required,nullable"`
+	RiskRating LegalEntityRiskRating `json:"risk_rating" api:"required,nullable"`
 	// The activation status of the legal entity. One of pending, active, suspended, or
 	// closed.
-	Status LegalEntityStatus `json:"status,required,nullable"`
+	Status LegalEntityStatus `json:"status" api:"required,nullable"`
 	// An individual's suffix.
-	Suffix string `json:"suffix,required,nullable"`
+	Suffix string `json:"suffix" api:"required,nullable"`
 	// Information describing a third-party verification run by an external vendor.
-	ThirdPartyVerification LegalEntityThirdPartyVerification `json:"third_party_verification,required,nullable"`
+	ThirdPartyVerification LegalEntityThirdPartyVerification `json:"third_party_verification" api:"required,nullable"`
 	// Stock ticker symbol for publicly traded companies.
-	TickerSymbol               string                                   `json:"ticker_symbol,required,nullable"`
-	UpdatedAt                  time.Time                                `json:"updated_at,required" format:"date-time"`
-	WealthAndEmploymentDetails shared.LegalEntityWealthEmploymentDetail `json:"wealth_and_employment_details,required,nullable"`
+	TickerSymbol               string                                   `json:"ticker_symbol" api:"required,nullable"`
+	UpdatedAt                  time.Time                                `json:"updated_at" api:"required" format:"date-time"`
+	WealthAndEmploymentDetails shared.LegalEntityWealthEmploymentDetail `json:"wealth_and_employment_details" api:"required,nullable"`
 	// The entity's primary website URL.
-	Website string `json:"website,required,nullable"`
+	Website string `json:"website" api:"required,nullable"`
 	// The legal entity associations and its child legal entities.
-	LegalEntityAssociations []LegalEntityAssociation `json:"legal_entity_associations,nullable"`
+	LegalEntityAssociations []LegalEntityAssociation `json:"legal_entity_associations" api:"nullable"`
 	JSON                    legalEntityJSON          `json:"-"`
 }
 
@@ -243,26 +243,26 @@ func (r legalEntityJSON) RawJSON() string {
 }
 
 type LegalEntityAddress struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The types of this address.
-	AddressTypes []LegalEntityAddressesAddressType `json:"address_types,required"`
+	AddressTypes []LegalEntityAddressesAddressType `json:"address_types" api:"required"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country     string    `json:"country,required,nullable"`
-	CreatedAt   time.Time `json:"created_at,required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
-	Line1       string    `json:"line1,required,nullable"`
-	Line2       string    `json:"line2,required,nullable"`
+	Country     string    `json:"country" api:"required,nullable"`
+	CreatedAt   time.Time `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+	Line1       string    `json:"line1" api:"required,nullable"`
+	Line2       string    `json:"line2" api:"required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Locality or City.
-	Locality string `json:"locality,required,nullable"`
-	Object   string `json:"object,required"`
+	Locality string `json:"locality" api:"required,nullable"`
+	Object   string `json:"object" api:"required"`
 	// The postal code of the address.
-	PostalCode string `json:"postal_code,required,nullable"`
+	PostalCode string `json:"postal_code" api:"required,nullable"`
 	// Region or State.
-	Region    string                 `json:"region,required,nullable"`
-	UpdatedAt time.Time              `json:"updated_at,required" format:"date-time"`
+	Region    string                 `json:"region" api:"required,nullable"`
+	UpdatedAt time.Time              `json:"updated_at" api:"required" format:"date-time"`
 	JSON      legalEntityAddressJSON `json:"-"`
 }
 
@@ -313,25 +313,25 @@ func (r LegalEntityAddressesAddressType) IsKnown() bool {
 }
 
 type LegalEntityIdentification struct {
-	ID          string     `json:"id,required" format:"uuid"`
-	CreatedAt   time.Time  `json:"created_at,required" format:"date-time"`
-	DiscardedAt time.Time  `json:"discarded_at,required,nullable" format:"date-time"`
-	Documents   []Document `json:"documents,required"`
+	ID          string     `json:"id" api:"required" format:"uuid"`
+	CreatedAt   time.Time  `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt time.Time  `json:"discarded_at" api:"required,nullable" format:"date-time"`
+	Documents   []Document `json:"documents" api:"required"`
 	// The date when the Identification is no longer considered valid by the issuing
 	// authority.
-	ExpirationDate time.Time `json:"expiration_date,required,nullable" format:"date"`
+	ExpirationDate time.Time `json:"expiration_date" api:"required,nullable" format:"date"`
 	// The type of ID number.
-	IDType LegalEntityIdentificationsIDType `json:"id_type,required"`
+	IDType LegalEntityIdentificationsIDType `json:"id_type" api:"required"`
 	// The ISO 3166-1 alpha-2 country code of the country that issued the
 	// identification
-	IssuingCountry string `json:"issuing_country,required,nullable"`
+	IssuingCountry string `json:"issuing_country" api:"required,nullable"`
 	// The region in which the identifcation was issued.
-	IssuingRegion string `json:"issuing_region,required,nullable"`
+	IssuingRegion string `json:"issuing_region" api:"required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool                          `json:"live_mode,required"`
-	Object    string                        `json:"object,required"`
-	UpdatedAt time.Time                     `json:"updated_at,required" format:"date-time"`
+	LiveMode  bool                          `json:"live_mode" api:"required"`
+	Object    string                        `json:"object" api:"required"`
+	UpdatedAt time.Time                     `json:"updated_at" api:"required" format:"date-time"`
 	JSON      legalEntityIdentificationJSON `json:"-"`
 }
 
@@ -459,11 +459,11 @@ func (r legalEntityPhoneNumberJSON) RawJSON() string {
 type LegalEntityRegulator struct {
 	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
 	// (e.g., "US", "CA", "GB").
-	Jurisdiction string `json:"jurisdiction,required"`
+	Jurisdiction string `json:"jurisdiction" api:"required"`
 	// Full name of the regulatory body.
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// Registration or identification number with the regulator.
-	RegistrationNumber string                   `json:"registration_number,required"`
+	RegistrationNumber string                   `json:"registration_number" api:"required"`
 	JSON               legalEntityRegulatorJSON `json:"-"`
 }
 
@@ -524,9 +524,9 @@ func (r LegalEntityStatus) IsKnown() bool {
 // Information describing a third-party verification run by an external vendor.
 type LegalEntityThirdPartyVerification struct {
 	// The vendor that performed the verification, e.g. `persona`.
-	Vendor LegalEntityThirdPartyVerificationVendor `json:"vendor,required"`
+	Vendor LegalEntityThirdPartyVerificationVendor `json:"vendor" api:"required"`
 	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID string                                `json:"vendor_verification_id,required"`
+	VendorVerificationID string                                `json:"vendor_verification_id" api:"required"`
 	JSON                 legalEntityThirdPartyVerificationJSON `json:"-"`
 }
 
@@ -564,7 +564,7 @@ func (r LegalEntityThirdPartyVerificationVendor) IsKnown() bool {
 
 type LegalEntityNewParams struct {
 	// The type of legal entity.
-	LegalEntityType param.Field[LegalEntityNewParamsLegalEntityType] `json:"legal_entity_type,required"`
+	LegalEntityType param.Field[LegalEntityNewParamsLegalEntityType] `json:"legal_entity_type" api:"required"`
 	// A list of addresses for the entity.
 	Addresses    param.Field[[]shared.LegalEntityAddressCreateRequestParam] `json:"addresses"`
 	BankSettings param.Field[shared.LegalEntityBankSettingsParam]           `json:"bank_settings"`
@@ -697,11 +697,11 @@ func (r LegalEntityNewParamsPhoneNumber) MarshalJSON() (data []byte, err error) 
 type LegalEntityNewParamsRegulator struct {
 	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
 	// (e.g., "US", "CA", "GB").
-	Jurisdiction param.Field[string] `json:"jurisdiction,required"`
+	Jurisdiction param.Field[string] `json:"jurisdiction" api:"required"`
 	// Full name of the regulatory body.
-	Name param.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// Registration or identification number with the regulator.
-	RegistrationNumber param.Field[string] `json:"registration_number,required"`
+	RegistrationNumber param.Field[string] `json:"registration_number" api:"required"`
 }
 
 func (r LegalEntityNewParamsRegulator) MarshalJSON() (data []byte, err error) {
@@ -747,9 +747,9 @@ func (r LegalEntityNewParamsStatus) IsKnown() bool {
 // Information describing a third-party verification run by an external vendor.
 type LegalEntityNewParamsThirdPartyVerification struct {
 	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[LegalEntityNewParamsThirdPartyVerificationVendor] `json:"vendor,required"`
+	Vendor param.Field[LegalEntityNewParamsThirdPartyVerificationVendor] `json:"vendor" api:"required"`
 	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id,required"`
+	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
 }
 
 func (r LegalEntityNewParamsThirdPartyVerification) MarshalJSON() (data []byte, err error) {
@@ -880,11 +880,11 @@ func (r LegalEntityUpdateParamsPhoneNumber) MarshalJSON() (data []byte, err erro
 type LegalEntityUpdateParamsRegulator struct {
 	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
 	// (e.g., "US", "CA", "GB").
-	Jurisdiction param.Field[string] `json:"jurisdiction,required"`
+	Jurisdiction param.Field[string] `json:"jurisdiction" api:"required"`
 	// Full name of the regulatory body.
-	Name param.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// Registration or identification number with the regulator.
-	RegistrationNumber param.Field[string] `json:"registration_number,required"`
+	RegistrationNumber param.Field[string] `json:"registration_number" api:"required"`
 }
 
 func (r LegalEntityUpdateParamsRegulator) MarshalJSON() (data []byte, err error) {
@@ -930,9 +930,9 @@ func (r LegalEntityUpdateParamsStatus) IsKnown() bool {
 // Information describing a third-party verification run by an external vendor.
 type LegalEntityUpdateParamsThirdPartyVerification struct {
 	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[LegalEntityUpdateParamsThirdPartyVerificationVendor] `json:"vendor,required"`
+	Vendor param.Field[LegalEntityUpdateParamsThirdPartyVerificationVendor] `json:"vendor" api:"required"`
 	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id,required"`
+	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
 }
 
 func (r LegalEntityUpdateParamsThirdPartyVerification) MarshalJSON() (data []byte, err error) {

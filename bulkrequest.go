@@ -83,30 +83,30 @@ func (r *BulkRequestService) ListAutoPaging(ctx context.Context, query BulkReque
 }
 
 type BulkRequest struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// One of create, or update.
-	ActionType BulkRequestActionType `json:"action_type,required"`
-	CreatedAt  time.Time             `json:"created_at,required" format:"date-time"`
+	ActionType BulkRequestActionType `json:"action_type" api:"required"`
+	CreatedAt  time.Time             `json:"created_at" api:"required" format:"date-time"`
 	// Total number of failed bulk results so far for this request
-	FailedResultCount int64 `json:"failed_result_count,required"`
+	FailedResultCount int64 `json:"failed_result_count" api:"required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
-	Object   string            `json:"object,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
+	Object   string            `json:"object" api:"required"`
 	// One of payment_order, expected_payment, or ledger_transaction.
-	ResourceType BulkRequestResourceType `json:"resource_type,required"`
+	ResourceType BulkRequestResourceType `json:"resource_type" api:"required"`
 	// One of pending, processing, or completed.
-	Status BulkRequestStatus `json:"status,required"`
+	Status BulkRequestStatus `json:"status" api:"required"`
 	// Total number of successful bulk results so far for this request
-	SuccessResultCount int64 `json:"success_result_count,required"`
+	SuccessResultCount int64 `json:"success_result_count" api:"required"`
 	// Total number of items in the `resources` array. Once a bulk request is
 	// completed, `success_result_count` + `failed_result_count` will be equal to
 	// `total_result_count`.
-	TotalResourceCount int64           `json:"total_resource_count,required"`
-	UpdatedAt          time.Time       `json:"updated_at,required" format:"date-time"`
+	TotalResourceCount int64           `json:"total_resource_count" api:"required"`
+	UpdatedAt          time.Time       `json:"updated_at" api:"required" format:"date-time"`
 	JSON               bulkRequestJSON `json:"-"`
 }
 
@@ -193,12 +193,12 @@ func (r BulkRequestStatus) IsKnown() bool {
 
 type BulkRequestNewParams struct {
 	// One of create, or update.
-	ActionType param.Field[BulkRequestNewParamsActionType] `json:"action_type,required"`
+	ActionType param.Field[BulkRequestNewParamsActionType] `json:"action_type" api:"required"`
 	// One of payment_order, expected_payment, or ledger_transaction.
-	ResourceType param.Field[BulkRequestNewParamsResourceType] `json:"resource_type,required"`
+	ResourceType param.Field[BulkRequestNewParamsResourceType] `json:"resource_type" api:"required"`
 	// An array of objects where each object contains the input params for a single
 	// `action_type` request on a `resource_type` resource
-	Resources param.Field[[]BulkRequestNewParamsResourceUnion] `json:"resources,required"`
+	Resources param.Field[[]BulkRequestNewParamsResourceUnion] `json:"resources" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -467,18 +467,18 @@ type BulkRequestNewParamsResourceUnion interface {
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
 	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
-	Amount param.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
-	Direction param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestDirection] `json:"direction,required"`
+	Direction param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestDirection] `json:"direction" api:"required"`
 	// The ID of one of your organization's internal accounts.
-	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
+	OriginatingAccountID param.Field[string] `json:"originating_account_id" api:"required" format:"uuid"`
 	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
 	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
 	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
-	Type param.Field[PaymentOrderType] `json:"type,required"`
+	Type param.Field[PaymentOrderType] `json:"type" api:"required"`
 	// Deprecated: deprecated
 	Accounting param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
@@ -699,7 +699,7 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchan
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`
@@ -772,7 +772,7 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAcco
 }
 
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetail struct {
-	AccountNumber     param.Field[string]                                                                                                     `json:"account_number,required"`
+	AccountNumber     param.Field[string]                                                                                                     `json:"account_number" api:"required"`
 	AccountNumberType param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberType] `json:"account_number_type"`
 }
 
@@ -825,8 +825,8 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAcco
 }
 
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetail struct {
-	RoutingNumber     param.Field[string]                                                                                                     `json:"routing_number,required"`
-	RoutingNumberType param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
+	RoutingNumber     param.Field[string]                                                                                                     `json:"routing_number" api:"required"`
+	RoutingNumberType param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberType] `json:"routing_number_type" api:"required"`
 	PaymentType       param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentType]       `json:"payment_type"`
 }
 
@@ -1065,7 +1065,7 @@ func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestDirection) IsKn
 type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`
@@ -1083,21 +1083,21 @@ func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLineItem) Marsh
 type BulkRequestNewParamsResourcesTransactionCreateRequest struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// The date on which the transaction occurred.
-	AsOfDate param.Field[time.Time] `json:"as_of_date,required" format:"date"`
+	AsOfDate param.Field[time.Time] `json:"as_of_date" api:"required" format:"date"`
 	// Either `credit` or `debit`.
-	Direction param.Field[string] `json:"direction,required"`
+	Direction param.Field[string] `json:"direction" api:"required"`
 	// The ID of the relevant Internal Account.
-	InternalAccountID param.Field[string] `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID param.Field[string] `json:"internal_account_id" api:"required" format:"uuid"`
 	// When applicable, the bank-given code that determines the transaction's category.
 	// For most banks this is the BAI2/BTRS transaction code.
-	VendorCode param.Field[string] `json:"vendor_code,required"`
+	VendorCode param.Field[string] `json:"vendor_code" api:"required"`
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
 	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
 	// `swift`, `us_bank`, or others.
-	VendorCodeType param.Field[string] `json:"vendor_code_type,required"`
+	VendorCodeType param.Field[string] `json:"vendor_code_type" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -1416,7 +1416,7 @@ func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDForeignExcha
 type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDLineItem struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
-	Amount param.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	AccountingCategoryID param.Field[string] `json:"accounting_category_id"`
@@ -1489,7 +1489,7 @@ func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAcc
 }
 
 type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetail struct {
-	AccountNumber     param.Field[string]                                                                                                      `json:"account_number,required"`
+	AccountNumber     param.Field[string]                                                                                                      `json:"account_number" api:"required"`
 	AccountNumberType param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountAccountDetailsAccountNumberType] `json:"account_number_type"`
 }
 
@@ -1542,8 +1542,8 @@ func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAcc
 }
 
 type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetail struct {
-	RoutingNumber     param.Field[string]                                                                                                      `json:"routing_number,required"`
-	RoutingNumberType param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
+	RoutingNumber     param.Field[string]                                                                                                      `json:"routing_number" api:"required"`
+	RoutingNumberType param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsRoutingNumberType] `json:"routing_number_type" api:"required"`
 	PaymentType       param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDReceivingAccountRoutingDetailsPaymentType]       `json:"payment_type"`
 }
 

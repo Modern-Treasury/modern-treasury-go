@@ -125,55 +125,55 @@ func (r *InternalAccountService) UpdateAccountCapability(ctx context.Context, in
 }
 
 type InternalAccount struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// An array of AccountCapability objects that list the originating abilities of the
 	// internal account and any relevant information for them.
-	AccountCapabilities []InternalAccountAccountCapability `json:"account_capabilities,required"`
+	AccountCapabilities []InternalAccountAccountCapability `json:"account_capabilities" api:"required"`
 	// An array of account detail objects.
-	AccountDetails []AccountDetail `json:"account_details,required"`
+	AccountDetails []AccountDetail `json:"account_details" api:"required"`
 	// Can be checking, savings or other.
-	AccountType InternalAccountAccountType `json:"account_type,required,nullable"`
+	AccountType InternalAccountAccountType `json:"account_type" api:"required,nullable"`
 	// Specifies which financial institution the accounts belong to.
-	Connection Connection `json:"connection,required"`
+	Connection Connection `json:"connection" api:"required"`
 	// If the internal account links to a contra ledger account in Modern Treasury, the
 	// id of the contra ledger account will be populated here.
-	ContraLedgerAccountID string `json:"contra_ledger_account_id,required,nullable" format:"uuid"`
+	ContraLedgerAccountID string `json:"contra_ledger_account_id" api:"required,nullable" format:"uuid"`
 	// The Counterparty associated to this account.
-	CounterpartyID string    `json:"counterparty_id,required,nullable" format:"uuid"`
-	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	CounterpartyID string    `json:"counterparty_id" api:"required,nullable" format:"uuid"`
+	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The currency of the account.
-	Currency shared.Currency `json:"currency,required"`
+	Currency shared.Currency `json:"currency" api:"required"`
 	// An optional user-defined 180 character unique identifier.
-	ExternalID string `json:"external_id,required,nullable"`
+	ExternalID string `json:"external_id" api:"required,nullable"`
 	// If the internal account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
-	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
+	LedgerAccountID string `json:"ledger_account_id" api:"required,nullable" format:"uuid"`
 	// The Legal Entity associated to this account.
-	LegalEntityID string `json:"legal_entity_id,required,nullable" format:"uuid"`
+	LegalEntityID string `json:"legal_entity_id" api:"required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
 	// A nickname for the account.
-	Name   string `json:"name,required,nullable"`
-	Object string `json:"object,required"`
+	Name   string `json:"name" api:"required,nullable"`
+	Object string `json:"object" api:"required"`
 	// The parent InternalAccount of this account.
-	ParentAccountID string `json:"parent_account_id,required,nullable" format:"uuid"`
+	ParentAccountID string `json:"parent_account_id" api:"required,nullable" format:"uuid"`
 	// The address associated with the owner or null.
-	PartyAddress shared.Address `json:"party_address,required,nullable"`
+	PartyAddress shared.Address `json:"party_address" api:"required,nullable"`
 	// The legal name of the entity which owns the account.
-	PartyName string `json:"party_name,required"`
+	PartyName string `json:"party_name" api:"required"`
 	// Either individual or business.
-	PartyType InternalAccountPartyType `json:"party_type,required,nullable"`
+	PartyType InternalAccountPartyType `json:"party_type" api:"required,nullable"`
 	// An array of routing detail objects.
-	RoutingDetails []RoutingDetail `json:"routing_details,required"`
+	RoutingDetails []RoutingDetail `json:"routing_details" api:"required"`
 	// The internal account status.
-	Status    InternalAccountStatus `json:"status,required,nullable"`
-	UpdatedAt time.Time             `json:"updated_at,required" format:"date-time"`
+	Status    InternalAccountStatus `json:"status" api:"required,nullable"`
+	UpdatedAt time.Time             `json:"updated_at" api:"required" format:"date-time"`
 	// The vendor ID associated with this account.
-	VendorID string              `json:"vendor_id,required,nullable" format:"string"`
+	VendorID string              `json:"vendor_id" api:"required,nullable" format:"string"`
 	JSON     internalAccountJSON `json:"-"`
 }
 
@@ -218,24 +218,24 @@ func (r internalAccountJSON) RawJSON() string {
 func (r InternalAccount) implementsPaymentOrderUltimateOriginatingAccount() {}
 
 type InternalAccountAccountCapability struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// One of `debit` or `credit`. Indicates the direction of money movement this
 	// capability is responsible for.
-	Direction   shared.TransactionDirection `json:"direction,required"`
-	DiscardedAt time.Time                   `json:"discarded_at,required,nullable" format:"date-time"`
+	Direction   shared.TransactionDirection `json:"direction" api:"required"`
+	DiscardedAt time.Time                   `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// A unique reference assigned by your bank for tracking and recognizing payment
 	// files. It is important this is formatted exactly how the bank assigned it.
-	Identifier string `json:"identifier,required,nullable"`
+	Identifier string `json:"identifier" api:"required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// Indicates the the type of payment this capability is responsible for
 	// originating.
-	PaymentType InternalAccountAccountCapabilitiesPaymentType `json:"payment_type,required"`
-	UpdatedAt   time.Time                                     `json:"updated_at,required" format:"date-time"`
-	ExtraFields map[string]interface{}                        `json:"-,extras"`
+	PaymentType InternalAccountAccountCapabilitiesPaymentType `json:"payment_type" api:"required"`
+	UpdatedAt   time.Time                                     `json:"updated_at" api:"required" format:"date-time"`
+	ExtraFields map[string]interface{}                        `json:"-" api:"extrafields"`
 	JSON        internalAccountAccountCapabilityJSON          `json:"-"`
 }
 
@@ -376,24 +376,24 @@ func (r InternalAccountStatus) IsKnown() bool {
 }
 
 type InternalAccountUpdateAccountCapabilityResponse struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// One of `debit` or `credit`. Indicates the direction of money movement this
 	// capability is responsible for.
-	Direction   shared.TransactionDirection `json:"direction,required"`
-	DiscardedAt time.Time                   `json:"discarded_at,required,nullable" format:"date-time"`
+	Direction   shared.TransactionDirection `json:"direction" api:"required"`
+	DiscardedAt time.Time                   `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// A unique reference assigned by your bank for tracking and recognizing payment
 	// files. It is important this is formatted exactly how the bank assigned it.
-	Identifier string `json:"identifier,required,nullable"`
+	Identifier string `json:"identifier" api:"required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// Indicates the the type of payment this capability is responsible for
 	// originating.
-	PaymentType InternalAccountUpdateAccountCapabilityResponsePaymentType `json:"payment_type,required"`
-	UpdatedAt   time.Time                                                 `json:"updated_at,required" format:"date-time"`
-	ExtraFields map[string]interface{}                                    `json:"-,extras"`
+	PaymentType InternalAccountUpdateAccountCapabilityResponsePaymentType `json:"payment_type" api:"required"`
+	UpdatedAt   time.Time                                                 `json:"updated_at" api:"required" format:"date-time"`
+	ExtraFields map[string]interface{}                                    `json:"-" api:"extrafields"`
 	JSON        internalAccountUpdateAccountCapabilityResponseJSON        `json:"-"`
 }
 
@@ -473,14 +473,14 @@ func (r InternalAccountUpdateAccountCapabilityResponsePaymentType) IsKnown() boo
 
 type InternalAccountNewParams struct {
 	// The identifier of the financial institution the account belongs to.
-	ConnectionID param.Field[string] `json:"connection_id,required"`
+	ConnectionID param.Field[string] `json:"connection_id" api:"required"`
 	// Either "USD" or "CAD". Internal accounts created at Increase only supports
 	// "USD".
-	Currency param.Field[InternalAccountNewParamsCurrency] `json:"currency,required"`
+	Currency param.Field[InternalAccountNewParamsCurrency] `json:"currency" api:"required"`
 	// The nickname of the account.
-	Name param.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// The legal name of the entity which owns the account.
-	PartyName param.Field[string] `json:"party_name,required"`
+	PartyName param.Field[string] `json:"party_name" api:"required"`
 	// An array of AccountCapability objects that list the originating abilities of the
 	// internal account and any relevant information for them.
 	AccountCapabilities param.Field[[]InternalAccountNewParamsAccountCapability] `json:"account_capabilities"`
@@ -524,23 +524,23 @@ func (r InternalAccountNewParamsCurrency) IsKnown() bool {
 }
 
 type InternalAccountNewParamsAccountCapability struct {
-	ID        param.Field[string]    `json:"id,required" format:"uuid"`
-	CreatedAt param.Field[time.Time] `json:"created_at,required" format:"date-time"`
+	ID        param.Field[string]    `json:"id" api:"required" format:"uuid"`
+	CreatedAt param.Field[time.Time] `json:"created_at" api:"required" format:"date-time"`
 	// One of `debit` or `credit`. Indicates the direction of money movement this
 	// capability is responsible for.
-	Direction   param.Field[shared.TransactionDirection] `json:"direction,required"`
-	DiscardedAt param.Field[time.Time]                   `json:"discarded_at,required" format:"date-time"`
+	Direction   param.Field[shared.TransactionDirection] `json:"direction" api:"required"`
+	DiscardedAt param.Field[time.Time]                   `json:"discarded_at" api:"required" format:"date-time"`
 	// A unique reference assigned by your bank for tracking and recognizing payment
 	// files. It is important this is formatted exactly how the bank assigned it.
-	Identifier param.Field[string] `json:"identifier,required"`
+	Identifier param.Field[string] `json:"identifier" api:"required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode param.Field[bool]   `json:"live_mode,required"`
-	Object   param.Field[string] `json:"object,required"`
+	LiveMode param.Field[bool]   `json:"live_mode" api:"required"`
+	Object   param.Field[string] `json:"object" api:"required"`
 	// Indicates the the type of payment this capability is responsible for
 	// originating.
-	PaymentType param.Field[InternalAccountNewParamsAccountCapabilitiesPaymentType] `json:"payment_type,required"`
-	UpdatedAt   param.Field[time.Time]                                              `json:"updated_at,required" format:"date-time"`
+	PaymentType param.Field[InternalAccountNewParamsAccountCapabilitiesPaymentType] `json:"payment_type" api:"required"`
+	UpdatedAt   param.Field[time.Time]                                              `json:"updated_at" api:"required" format:"date-time"`
 	ExtraFields map[string]interface{}                                              `json:"-,extras"`
 }
 
@@ -629,14 +629,14 @@ func (r InternalAccountNewParamsAccountType) IsKnown() bool {
 // The address associated with the owner or null.
 type InternalAccountNewParamsPartyAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
+	Country param.Field[string] `json:"country" api:"required"`
+	Line1   param.Field[string] `json:"line1" api:"required"`
 	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
+	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
+	PostalCode param.Field[string] `json:"postal_code" api:"required"`
 	// Region or State.
-	Region param.Field[string] `json:"region,required"`
+	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
 
@@ -769,7 +769,7 @@ func (r InternalAccountListParamsStatus) IsKnown() bool {
 type InternalAccountUpdateAccountCapabilityParams struct {
 	// A unique reference assigned by your bank for tracking and recognizing payment
 	// files. It is important this is formatted exactly how the bank assigned it.
-	Identifier param.Field[string] `json:"identifier,required"`
+	Identifier param.Field[string] `json:"identifier" api:"required"`
 }
 
 func (r InternalAccountUpdateAccountCapabilityParams) MarshalJSON() (data []byte, err error) {

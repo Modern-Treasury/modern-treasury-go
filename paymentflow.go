@@ -103,7 +103,7 @@ type PaymentFlow struct {
 	ClientToken string `json:"client_token"`
 	// The ID of a counterparty associated with the payment. As part of the payment
 	// workflow an external account will be associated with this counterparty.
-	CounterpartyID string    `json:"counterparty_id,nullable" format:"uuid"`
+	CounterpartyID string    `json:"counterparty_id" api:"nullable" format:"uuid"`
 	CreatedAt      time.Time `json:"created_at" format:"date-time"`
 	// The currency of the payment.
 	Currency string `json:"currency"`
@@ -112,14 +112,14 @@ type PaymentFlow struct {
 	Direction PaymentFlowDirection `json:"direction"`
 	// The due date for the flow. Can only be passed in when
 	// `effective_date_selection_enabled` is `true`.
-	DueDate time.Time `json:"due_date,nullable" format:"date"`
+	DueDate time.Time `json:"due_date" api:"nullable" format:"date"`
 	// When `true`, your end-user can schedule the payment `effective_date` while
 	// completing the pre-built UI.
 	EffectiveDateSelectionEnabled bool `json:"effective_date_selection_enabled"`
 	// When `verified` and `external_account_collection` is `enabled`, filters the list
 	// of external accounts your end-user can select to those with a
 	// `verification_status` of `verified`.
-	ExistingExternalAccountsFilter PaymentFlowExistingExternalAccountsFilter `json:"existing_external_accounts_filter,nullable"`
+	ExistingExternalAccountsFilter PaymentFlowExistingExternalAccountsFilter `json:"existing_external_accounts_filter" api:"nullable"`
 	// When `enabled`, your end-user can select from an existing external account when
 	// completing the flow. When `disabled`, your end-user must add new payment details
 	// when completing the flow.
@@ -129,15 +129,15 @@ type PaymentFlow struct {
 	LiveMode bool   `json:"live_mode"`
 	Object   string `json:"object"`
 	// The ID of one of your organization's internal accounts.
-	OriginatingAccountID string `json:"originating_account_id,nullable" format:"uuid"`
+	OriginatingAccountID string `json:"originating_account_id" api:"nullable" format:"uuid"`
 	// If present, the ID of the payment order created using this flow.
-	PaymentOrderID string `json:"payment_order_id,nullable" format:"uuid"`
+	PaymentOrderID string `json:"payment_order_id" api:"nullable" format:"uuid"`
 	// If present, the ID of the external account created using this flow.
-	ReceivingAccountID string `json:"receiving_account_id,nullable" format:"uuid"`
+	ReceivingAccountID string `json:"receiving_account_id" api:"nullable" format:"uuid"`
 	// This field is set after your end-user selects a payment date while completing
 	// the pre-built UI. This field is always `null` unless
 	// `effective_date_selection_enabled` is `true`.
-	SelectedEffectiveDate time.Time `json:"selected_effective_date,nullable" format:"date"`
+	SelectedEffectiveDate time.Time `json:"selected_effective_date" api:"nullable" format:"date"`
 	// The current status of the payment flow. One of `pending`, `completed`,
 	// `expired`, or `cancelled`.
 	Status    PaymentFlowStatus `json:"status"`
@@ -252,17 +252,17 @@ func (r PaymentFlowStatus) IsKnown() bool {
 type PaymentFlowNewParams struct {
 	// Required. Value in specified currency's smallest unit. e.g. $10 would be
 	// represented as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// Required. The ID of a counterparty associated with the payment. As part of the
 	// payment workflow an external account will be associated with this model.
-	CounterpartyID param.Field[string] `json:"counterparty_id,required" format:"uuid"`
+	CounterpartyID param.Field[string] `json:"counterparty_id" api:"required" format:"uuid"`
 	// Required. The currency of the payment.
-	Currency param.Field[string] `json:"currency,required"`
+	Currency param.Field[string] `json:"currency" api:"required"`
 	// Required. Describes the direction money is flowing in the transaction. Can only
 	// be `debit`. A `debit` pulls money from someone else's account to your own.
-	Direction param.Field[PaymentFlowNewParamsDirection] `json:"direction,required"`
+	Direction param.Field[PaymentFlowNewParamsDirection] `json:"direction" api:"required"`
 	// Required. The ID of one of your organization's internal accounts.
-	OriginatingAccountID param.Field[string] `json:"originating_account_id,required" format:"uuid"`
+	OriginatingAccountID param.Field[string] `json:"originating_account_id" api:"required" format:"uuid"`
 	// Optional. Can only be passed in when `effective_date_selection_enabled` is
 	// `true`. When set, the due date is shown to your end-user in the pre-built UI as
 	// they are selecting a payment `effective_date`.
@@ -293,7 +293,7 @@ func (r PaymentFlowNewParamsDirection) IsKnown() bool {
 type PaymentFlowUpdateParams struct {
 	// Required. The updated status of the payment flow. Can only be used to mark a
 	// flow as `cancelled`.
-	Status param.Field[PaymentFlowUpdateParamsStatus] `json:"status,required"`
+	Status param.Field[PaymentFlowUpdateParamsStatus] `json:"status" api:"required"`
 }
 
 func (r PaymentFlowUpdateParams) MarshalJSON() (data []byte, err error) {

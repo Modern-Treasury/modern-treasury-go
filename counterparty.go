@@ -120,34 +120,34 @@ func (r *CounterpartyService) CollectAccount(ctx context.Context, id string, bod
 }
 
 type Counterparty struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The accounts for this counterparty.
-	Accounts    []CounterpartyAccount `json:"accounts,required"`
-	CreatedAt   time.Time             `json:"created_at,required" format:"date-time"`
-	DiscardedAt time.Time             `json:"discarded_at,required,nullable" format:"date-time"`
+	Accounts    []CounterpartyAccount `json:"accounts" api:"required"`
+	CreatedAt   time.Time             `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt time.Time             `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// The counterparty's email.
-	Email string `json:"email,required,nullable" format:"email"`
+	Email string `json:"email" api:"required,nullable" format:"email"`
 	// An optional user-defined 180 character unique identifier.
-	ExternalID string `json:"external_id,required,nullable"`
+	ExternalID string `json:"external_id" api:"required,nullable"`
 	// The id of the legal entity.
-	LegalEntityID string `json:"legal_entity_id,required,nullable" format:"uuid"`
+	LegalEntityID string `json:"legal_entity_id" api:"required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
 	// A human friendly name for this counterparty.
-	Name   string `json:"name,required,nullable"`
-	Object string `json:"object,required"`
+	Name   string `json:"name" api:"required,nullable"`
+	Object string `json:"object" api:"required"`
 	// Send an email to the counterparty whenever an associated payment order is sent
 	// to the bank.
-	SendRemittanceAdvice bool      `json:"send_remittance_advice,required"`
-	UpdatedAt            time.Time `json:"updated_at,required" format:"date-time"`
+	SendRemittanceAdvice bool      `json:"send_remittance_advice" api:"required"`
+	UpdatedAt            time.Time `json:"updated_at" api:"required" format:"date-time"`
 	// The verification status of the counterparty.
 	//
 	// Deprecated: deprecated
-	VerificationStatus string           `json:"verification_status,required"`
+	VerificationStatus string           `json:"verification_status" api:"required"`
 	JSON               counterpartyJSON `json:"-"`
 }
 
@@ -186,12 +186,12 @@ type CounterpartyAccount struct {
 	AccountType    ExternalAccountType    `json:"account_type"`
 	ContactDetails []shared.ContactDetail `json:"contact_details"`
 	CreatedAt      time.Time              `json:"created_at" format:"date-time"`
-	DiscardedAt    time.Time              `json:"discarded_at,nullable" format:"date-time"`
+	DiscardedAt    time.Time              `json:"discarded_at" api:"nullable" format:"date-time"`
 	// An optional user-defined 180 character unique identifier.
-	ExternalID string `json:"external_id,nullable"`
+	ExternalID string `json:"external_id" api:"nullable"`
 	// If the external account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
-	LedgerAccountID string `json:"ledger_account_id,nullable" format:"uuid"`
+	LedgerAccountID string `json:"ledger_account_id" api:"nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode"`
@@ -200,17 +200,17 @@ type CounterpartyAccount struct {
 	Metadata map[string]string `json:"metadata"`
 	// A nickname for the external account. This is only for internal usage and won't
 	// affect any payments
-	Name   string `json:"name,nullable"`
+	Name   string `json:"name" api:"nullable"`
 	Object string `json:"object"`
 	// The address associated with the owner or `null`.
-	PartyAddress shared.Address `json:"party_address,nullable"`
+	PartyAddress shared.Address `json:"party_address" api:"nullable"`
 	// The legal name of the entity which owns the account.
 	PartyName string `json:"party_name"`
 	// Either `individual` or `business`.
-	PartyType          CounterpartyAccountsPartyType          `json:"party_type,nullable"`
+	PartyType          CounterpartyAccountsPartyType          `json:"party_type" api:"nullable"`
 	RoutingDetails     []RoutingDetail                        `json:"routing_details"`
 	UpdatedAt          time.Time                              `json:"updated_at" format:"date-time"`
-	VerificationSource CounterpartyAccountsVerificationSource `json:"verification_source,nullable"`
+	VerificationSource CounterpartyAccountsVerificationSource `json:"verification_source" api:"nullable"`
 	VerificationStatus CounterpartyAccountsVerificationStatus `json:"verification_status"`
 	JSON               counterpartyAccountJSON                `json:"-"`
 }
@@ -299,15 +299,15 @@ func (r CounterpartyAccountsVerificationStatus) IsKnown() bool {
 
 type CounterpartyCollectAccountResponse struct {
 	// The id of the existing counterparty.
-	ID string `json:"id,required"`
+	ID string `json:"id" api:"required"`
 	// This is the link to the secure Modern Treasury form. By default, Modern Treasury
 	// will send an email to your counterparty that includes a link to this form.
 	// However, if `send_email` is passed as `false` in the body then Modern Treasury
 	// will not send the email and you can send it to the counterparty directly.
-	FormLink string `json:"form_link,required" format:"uri"`
+	FormLink string `json:"form_link" api:"required" format:"uri"`
 	// This field will be `true` if an email requesting account details has already
 	// been sent to this counterparty.
-	IsResend bool                                   `json:"is_resend,required"`
+	IsResend bool                                   `json:"is_resend" api:"required"`
 	JSON     counterpartyCollectAccountResponseJSON `json:"-"`
 }
 
@@ -331,7 +331,7 @@ func (r counterpartyCollectAccountResponseJSON) RawJSON() string {
 
 type CounterpartyNewParams struct {
 	// A human friendly name for this counterparty.
-	Name       param.Field[string]                          `json:"name,required"`
+	Name       param.Field[string]                          `json:"name" api:"required"`
 	Accounting param.Field[CounterpartyNewParamsAccounting] `json:"accounting"`
 	// The accounts for this counterparty.
 	Accounts param.Field[[]CounterpartyNewParamsAccount] `json:"accounts"`
@@ -426,7 +426,7 @@ func (r CounterpartyNewParamsAccount) MarshalJSON() (data []byte, err error) {
 }
 
 type CounterpartyNewParamsAccountsAccountDetail struct {
-	AccountNumber     param.Field[string]                                                       `json:"account_number,required"`
+	AccountNumber     param.Field[string]                                                       `json:"account_number" api:"required"`
 	AccountNumberType param.Field[CounterpartyNewParamsAccountsAccountDetailsAccountNumberType] `json:"account_number_type"`
 }
 
@@ -479,8 +479,8 @@ func (r CounterpartyNewParamsAccountsPartyType) IsKnown() bool {
 }
 
 type CounterpartyNewParamsAccountsRoutingDetail struct {
-	RoutingNumber     param.Field[string]                                                       `json:"routing_number,required"`
-	RoutingNumberType param.Field[CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
+	RoutingNumber     param.Field[string]                                                       `json:"routing_number" api:"required"`
+	RoutingNumberType param.Field[CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberType] `json:"routing_number_type" api:"required"`
 	PaymentType       param.Field[CounterpartyNewParamsAccountsRoutingDetailsPaymentType]       `json:"payment_type"`
 }
 
@@ -590,7 +590,7 @@ func (r CounterpartyNewParamsLedgerType) IsKnown() bool {
 
 type CounterpartyNewParamsLegalEntity struct {
 	// The type of legal entity.
-	LegalEntityType param.Field[CounterpartyNewParamsLegalEntityLegalEntityType] `json:"legal_entity_type,required"`
+	LegalEntityType param.Field[CounterpartyNewParamsLegalEntityLegalEntityType] `json:"legal_entity_type" api:"required"`
 	// A list of addresses for the entity.
 	Addresses    param.Field[[]shared.LegalEntityAddressCreateRequestParam] `json:"addresses"`
 	BankSettings param.Field[shared.LegalEntityBankSettingsParam]           `json:"bank_settings"`
@@ -723,11 +723,11 @@ func (r CounterpartyNewParamsLegalEntityPhoneNumber) MarshalJSON() (data []byte,
 type CounterpartyNewParamsLegalEntityRegulator struct {
 	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
 	// (e.g., "US", "CA", "GB").
-	Jurisdiction param.Field[string] `json:"jurisdiction,required"`
+	Jurisdiction param.Field[string] `json:"jurisdiction" api:"required"`
 	// Full name of the regulatory body.
-	Name param.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// Registration or identification number with the regulator.
-	RegistrationNumber param.Field[string] `json:"registration_number,required"`
+	RegistrationNumber param.Field[string] `json:"registration_number" api:"required"`
 }
 
 func (r CounterpartyNewParamsLegalEntityRegulator) MarshalJSON() (data []byte, err error) {
@@ -773,9 +773,9 @@ func (r CounterpartyNewParamsLegalEntityStatus) IsKnown() bool {
 // Information describing a third-party verification run by an external vendor.
 type CounterpartyNewParamsLegalEntityThirdPartyVerification struct {
 	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor] `json:"vendor,required"`
+	Vendor param.Field[CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor] `json:"vendor" api:"required"`
 	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id,required"`
+	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
 }
 
 func (r CounterpartyNewParamsLegalEntityThirdPartyVerification) MarshalJSON() (data []byte, err error) {
@@ -853,7 +853,7 @@ type CounterpartyCollectAccountParams struct {
 	// One of `credit` or `debit`. Use `credit` when you want to pay a counterparty.
 	// Use `debit` when you need to charge a counterparty. This field helps us send a
 	// more tailored email to your counterparties."
-	Direction param.Field[shared.TransactionDirection] `json:"direction,required"`
+	Direction param.Field[shared.TransactionDirection] `json:"direction" api:"required"`
 	// The URL you want your customer to visit upon filling out the form. By default,
 	// they will be sent to a Modern Treasury landing page. This must be a valid HTTPS
 	// URL if set.

@@ -94,28 +94,28 @@ func (r *HoldService) ListAutoPaging(ctx context.Context, query HoldListParams, 
 }
 
 type HoldNewResponse struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The type of object
-	Object HoldNewResponseObject `json:"object,required"`
+	Object HoldNewResponseObject `json:"object" api:"required"`
 	// The status of the hold
-	Status HoldNewResponseStatus `json:"status,required"`
+	Status HoldNewResponseStatus `json:"status" api:"required"`
 	// The ID of the target being held
-	TargetID string `json:"target_id,required" format:"uuid"`
+	TargetID string `json:"target_id" api:"required" format:"uuid"`
 	// The type of target being held
-	TargetType HoldNewResponseTargetType `json:"target_type,required"`
-	UpdatedAt  time.Time                 `json:"updated_at,required" format:"date-time"`
+	TargetType HoldNewResponseTargetType `json:"target_type" api:"required"`
+	UpdatedAt  time.Time                 `json:"updated_at" api:"required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode"`
 	// Additional metadata for the hold
-	Metadata map[string]string `json:"metadata,nullable"`
+	Metadata map[string]string `json:"metadata" api:"nullable"`
 	// The reason for the hold
-	Reason string `json:"reason,nullable"`
+	Reason string `json:"reason" api:"nullable"`
 	// The resolution of the hold
-	Resolution string `json:"resolution,nullable"`
+	Resolution string `json:"resolution" api:"nullable"`
 	// When the hold was resolved
-	ResolvedAt time.Time           `json:"resolved_at,nullable" format:"date-time"`
+	ResolvedAt time.Time           `json:"resolved_at" api:"nullable" format:"date-time"`
 	JSON       holdNewResponseJSON `json:"-"`
 }
 
@@ -192,28 +192,28 @@ func (r HoldNewResponseTargetType) IsKnown() bool {
 }
 
 type HoldGetResponse struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The type of object
-	Object HoldGetResponseObject `json:"object,required"`
+	Object HoldGetResponseObject `json:"object" api:"required"`
 	// The status of the hold
-	Status HoldGetResponseStatus `json:"status,required"`
+	Status HoldGetResponseStatus `json:"status" api:"required"`
 	// The ID of the target being held
-	TargetID string `json:"target_id,required" format:"uuid"`
+	TargetID string `json:"target_id" api:"required" format:"uuid"`
 	// The type of target being held
-	TargetType HoldGetResponseTargetType `json:"target_type,required"`
-	UpdatedAt  time.Time                 `json:"updated_at,required" format:"date-time"`
+	TargetType HoldGetResponseTargetType `json:"target_type" api:"required"`
+	UpdatedAt  time.Time                 `json:"updated_at" api:"required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode"`
 	// Additional metadata for the hold
-	Metadata map[string]string `json:"metadata,nullable"`
+	Metadata map[string]string `json:"metadata" api:"nullable"`
 	// The reason for the hold
-	Reason string `json:"reason,nullable"`
+	Reason string `json:"reason" api:"nullable"`
 	// The resolution of the hold
-	Resolution string `json:"resolution,nullable"`
+	Resolution string `json:"resolution" api:"nullable"`
 	// When the hold was resolved
-	ResolvedAt time.Time           `json:"resolved_at,nullable" format:"date-time"`
+	ResolvedAt time.Time           `json:"resolved_at" api:"nullable" format:"date-time"`
 	JSON       holdGetResponseJSON `json:"-"`
 }
 
@@ -290,28 +290,28 @@ func (r HoldGetResponseTargetType) IsKnown() bool {
 }
 
 type HoldUpdateResponse struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The type of object
-	Object HoldUpdateResponseObject `json:"object,required"`
+	Object HoldUpdateResponseObject `json:"object" api:"required"`
 	// The status of the hold
-	Status HoldUpdateResponseStatus `json:"status,required"`
+	Status HoldUpdateResponseStatus `json:"status" api:"required"`
 	// The ID of the target being held
-	TargetID string `json:"target_id,required" format:"uuid"`
+	TargetID string `json:"target_id" api:"required" format:"uuid"`
 	// The type of target being held
-	TargetType HoldUpdateResponseTargetType `json:"target_type,required"`
-	UpdatedAt  time.Time                    `json:"updated_at,required" format:"date-time"`
+	TargetType HoldUpdateResponseTargetType `json:"target_type" api:"required"`
+	UpdatedAt  time.Time                    `json:"updated_at" api:"required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode"`
 	// Additional metadata for the hold
-	Metadata map[string]string `json:"metadata,nullable"`
+	Metadata map[string]string `json:"metadata" api:"nullable"`
 	// The reason for the hold
-	Reason string `json:"reason,nullable"`
+	Reason string `json:"reason" api:"nullable"`
 	// The resolution of the hold
-	Resolution string `json:"resolution,nullable"`
+	Resolution string `json:"resolution" api:"nullable"`
 	// When the hold was resolved
-	ResolvedAt time.Time              `json:"resolved_at,nullable" format:"date-time"`
+	ResolvedAt time.Time              `json:"resolved_at" api:"nullable" format:"date-time"`
 	JSON       holdUpdateResponseJSON `json:"-"`
 }
 
@@ -389,28 +389,28 @@ func (r HoldUpdateResponseTargetType) IsKnown() bool {
 }
 
 type HoldListResponse struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The type of object
-	Object HoldListResponseObject `json:"object,required"`
+	Object HoldListResponseObject `json:"object" api:"required"`
 	// The status of the hold
-	Status HoldListResponseStatus `json:"status,required"`
+	Status HoldListResponseStatus `json:"status" api:"required"`
 	// The ID of the target being held
-	TargetID string `json:"target_id,required" format:"uuid"`
+	TargetID string `json:"target_id" api:"required" format:"uuid"`
 	// The type of target being held
-	TargetType HoldListResponseTargetType `json:"target_type,required"`
-	UpdatedAt  time.Time                  `json:"updated_at,required" format:"date-time"`
+	TargetType HoldListResponseTargetType `json:"target_type" api:"required"`
+	UpdatedAt  time.Time                  `json:"updated_at" api:"required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode"`
 	// Additional metadata for the hold
-	Metadata map[string]string `json:"metadata,nullable"`
+	Metadata map[string]string `json:"metadata" api:"nullable"`
 	// The reason for the hold
-	Reason string `json:"reason,nullable"`
+	Reason string `json:"reason" api:"nullable"`
 	// The resolution of the hold
-	Resolution string `json:"resolution,nullable"`
+	Resolution string `json:"resolution" api:"nullable"`
 	// When the hold was resolved
-	ResolvedAt time.Time            `json:"resolved_at,nullable" format:"date-time"`
+	ResolvedAt time.Time            `json:"resolved_at" api:"nullable" format:"date-time"`
 	JSON       holdListResponseJSON `json:"-"`
 }
 
@@ -489,11 +489,11 @@ func (r HoldListResponseTargetType) IsKnown() bool {
 
 type HoldNewParams struct {
 	// The status of the hold
-	Status param.Field[HoldNewParamsStatus] `json:"status,required"`
+	Status param.Field[HoldNewParamsStatus] `json:"status" api:"required"`
 	// The ID of the target to hold
-	TargetID param.Field[string] `json:"target_id,required" format:"uuid"`
+	TargetID param.Field[string] `json:"target_id" api:"required" format:"uuid"`
 	// The type of target to hold
-	TargetType param.Field[HoldNewParamsTargetType] `json:"target_type,required"`
+	TargetType param.Field[HoldNewParamsTargetType] `json:"target_type" api:"required"`
 	// Additional metadata for the hold
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// The reason for the hold
@@ -536,7 +536,7 @@ func (r HoldNewParamsTargetType) IsKnown() bool {
 
 type HoldUpdateParams struct {
 	// The new status of the hold
-	Status param.Field[HoldUpdateParamsStatus] `json:"status,required"`
+	Status param.Field[HoldUpdateParamsStatus] `json:"status" api:"required"`
 	// The resolution of the hold
 	Resolution param.Field[string] `json:"resolution"`
 }

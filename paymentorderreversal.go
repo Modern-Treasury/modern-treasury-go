@@ -95,29 +95,29 @@ func (r *PaymentOrderReversalService) ListAutoPaging(ctx context.Context, paymen
 }
 
 type Reversal struct {
-	ID        string    `json:"id,required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	ID        string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The ID of the relevant Internal Account.
-	InternalAccountID string `json:"internal_account_id,required,nullable" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id" api:"required,nullable" format:"uuid"`
 	// The ID of the ledger transaction linked to the reversal.
-	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
+	LedgerTransactionID string `json:"ledger_transaction_id" api:"required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
-	Object   string            `json:"object,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
+	Object   string            `json:"object" api:"required"`
 	// The ID of the relevant Payment Order.
-	PaymentOrderID string `json:"payment_order_id,required,nullable" format:"uuid"`
+	PaymentOrderID string `json:"payment_order_id" api:"required,nullable" format:"uuid"`
 	// The reason for the reversal.
-	Reason ReversalReason `json:"reason,required"`
+	Reason ReversalReason `json:"reason" api:"required"`
 	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
-	ReconciliationStatus ReversalReconciliationStatus `json:"reconciliation_status,required"`
+	ReconciliationStatus ReversalReconciliationStatus `json:"reconciliation_status" api:"required"`
 	// The current status of the reversal.
-	Status         ReversalStatus `json:"status,required"`
-	TransactionIDs []string       `json:"transaction_ids,required" format:"uuid"`
-	UpdatedAt      time.Time      `json:"updated_at,required" format:"date-time"`
+	Status         ReversalStatus `json:"status" api:"required"`
+	TransactionIDs []string       `json:"transaction_ids" api:"required" format:"uuid"`
+	UpdatedAt      time.Time      `json:"updated_at" api:"required" format:"date-time"`
 	JSON           reversalJSON   `json:"-"`
 }
 
@@ -208,7 +208,7 @@ type PaymentOrderReversalNewParams struct {
 	// The reason for the reversal. Must be one of `duplicate`, `incorrect_amount`,
 	// `incorrect_receiving_account`, `date_earlier_than_intended`,
 	// `date_later_than_intended`.
-	Reason param.Field[PaymentOrderReversalNewParamsReason] `json:"reason,required"`
+	Reason param.Field[PaymentOrderReversalNewParamsReason] `json:"reason" api:"required"`
 	// Specifies a ledger transaction object that will be created with the reversal. If
 	// the ledger transaction cannot be created, then the reversal creation will fail.
 	// The resulting ledger transaction will mirror the status of the reversal.

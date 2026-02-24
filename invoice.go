@@ -114,97 +114,97 @@ func (r *InvoiceService) AddPaymentOrder(ctx context.Context, id string, payment
 }
 
 type Invoice struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// Amount paid on the invoice in specified currency's smallest unit, e.g., $10 USD
 	// would be represented as 1000.
-	AmountPaid int64 `json:"amount_paid,required"`
+	AmountPaid int64 `json:"amount_paid" api:"required"`
 	// Amount remaining due on the invoice in specified currency's smallest unit, e.g.,
 	// $10 USD would be represented as 1000.
-	AmountRemaining int64 `json:"amount_remaining,required"`
+	AmountRemaining int64 `json:"amount_remaining" api:"required"`
 	// The invoicer's contact details displayed at the top of the invoice.
-	ContactDetails []shared.ContactDetail `json:"contact_details,required"`
+	ContactDetails []shared.ContactDetail `json:"contact_details" api:"required"`
 	// The counterparty's billing address.
-	CounterpartyBillingAddress InvoiceCounterpartyBillingAddress `json:"counterparty_billing_address,required,nullable"`
+	CounterpartyBillingAddress InvoiceCounterpartyBillingAddress `json:"counterparty_billing_address" api:"required,nullable"`
 	// The ID of the counterparty receiving the invoice.
-	CounterpartyID string `json:"counterparty_id,required"`
+	CounterpartyID string `json:"counterparty_id" api:"required"`
 	// The counterparty's shipping address where physical goods should be delivered.
-	CounterpartyShippingAddress InvoiceCounterpartyShippingAddress `json:"counterparty_shipping_address,required,nullable"`
-	CreatedAt                   time.Time                          `json:"created_at,required" format:"date-time"`
+	CounterpartyShippingAddress InvoiceCounterpartyShippingAddress `json:"counterparty_shipping_address" api:"required,nullable"`
+	CreatedAt                   time.Time                          `json:"created_at" api:"required" format:"date-time"`
 	// Currency that the invoice is denominated in. Defaults to `USD` if not provided.
-	Currency shared.Currency `json:"currency,required"`
+	Currency shared.Currency `json:"currency" api:"required"`
 	// An optional free-form description of the invoice.
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// A future date by when the invoice needs to be paid.
-	DueDate time.Time `json:"due_date,required" format:"date-time"`
+	DueDate time.Time `json:"due_date" api:"required" format:"date-time"`
 	// The expected payments created for an unpaid invoice.
-	ExpectedPayments []ExpectedPayment `json:"expected_payments,required"`
+	ExpectedPayments []ExpectedPayment `json:"expected_payments" api:"required"`
 	// When payment_method is automatic, the fallback payment method to use when an
 	// automatic payment fails. One of `manual` or `ui`.
-	FallbackPaymentMethod string `json:"fallback_payment_method,required,nullable"`
+	FallbackPaymentMethod string `json:"fallback_payment_method" api:"required,nullable"`
 	// The URL of the hosted web UI where the invoice can be viewed.
-	HostedURL string `json:"hosted_url,required"`
+	HostedURL string `json:"hosted_url" api:"required"`
 	// The invoice issuer's business address.
-	InvoicerAddress InvoiceInvoicerAddress `json:"invoicer_address,required,nullable"`
+	InvoicerAddress InvoiceInvoicerAddress `json:"invoicer_address" api:"required,nullable"`
 	// The name of the issuer for the invoice. Defaults to the name of the
 	// Organization.
-	InvoicerName string `json:"invoicer_name,required,nullable"`
+	InvoicerName string `json:"invoicer_name" api:"required,nullable"`
 	// The ledger account settlement object linked to the invoice.
 	//
 	// Deprecated: deprecated
-	LedgerAccountSettlementID string `json:"ledger_account_settlement_id,required,nullable" format:"uuid"`
+	LedgerAccountSettlementID string `json:"ledger_account_settlement_id" api:"required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required,nullable"`
+	Metadata map[string]string `json:"metadata" api:"required,nullable"`
 	// Emails in addition to the counterparty email to send invoice status
 	// notifications to. At least one email is required if notifications are enabled
 	// and the counterparty doesn't have an email.
-	NotificationEmailAddresses []string `json:"notification_email_addresses,required,nullable"`
+	NotificationEmailAddresses []string `json:"notification_email_addresses" api:"required,nullable"`
 	// If true, the invoice will send email notifications to the invoice recipients
 	// about invoice status changes.
-	NotificationsEnabled bool `json:"notifications_enabled,required"`
+	NotificationsEnabled bool `json:"notifications_enabled" api:"required"`
 	// A unique record number assigned to each invoice that is issued.
-	Number string `json:"number,required"`
-	Object string `json:"object,required"`
+	Number string `json:"number" api:"required"`
+	Object string `json:"object" api:"required"`
 	// The ID of the internal account the invoice should be paid to.
-	OriginatingAccountID string `json:"originating_account_id,required"`
+	OriginatingAccountID string `json:"originating_account_id" api:"required"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.
-	PaymentEffectiveDate time.Time `json:"payment_effective_date,required,nullable" format:"date"`
+	PaymentEffectiveDate time.Time `json:"payment_effective_date" api:"required,nullable" format:"date"`
 	// When opening an invoice, whether to show the embedded payment UI , automatically
 	// debit the recipient, or rely on manual payment from the recipient.
-	PaymentMethod InvoicePaymentMethod `json:"payment_method,required,nullable"`
+	PaymentMethod InvoicePaymentMethod `json:"payment_method" api:"required,nullable"`
 	// The payment orders created for paying the invoice through the invoice payment
 	// UI.
-	PaymentOrders []PaymentOrder `json:"payment_orders,required"`
+	PaymentOrders []PaymentOrder `json:"payment_orders" api:"required"`
 	// One of `ach` or `eft`.
-	PaymentType InvoicePaymentType `json:"payment_type,required,nullable"`
+	PaymentType InvoicePaymentType `json:"payment_type" api:"required,nullable"`
 	// The URL where the invoice PDF can be downloaded.
-	PdfURL string `json:"pdf_url,required,nullable"`
+	PdfURL string `json:"pdf_url" api:"required,nullable"`
 	// The receiving account ID. Can be an `internal_account`.
-	ReceivingAccountID string `json:"receiving_account_id,required,nullable" format:"uuid"`
+	ReceivingAccountID string `json:"receiving_account_id" api:"required,nullable" format:"uuid"`
 	// The email of the recipient of the invoice. Leaving this value as null will
 	// fallback to using the counterparty's name.
-	RecipientEmail string `json:"recipient_email,required,nullable"`
+	RecipientEmail string `json:"recipient_email" api:"required,nullable"`
 	// The name of the recipient of the invoice. Leaving this value as null will
 	// fallback to using the counterparty's name.
-	RecipientName string `json:"recipient_name,required,nullable"`
+	RecipientName string `json:"recipient_name" api:"required,nullable"`
 	// Number of days after due date when overdue reminder emails will be sent out to
 	// invoice recipients.
-	RemindAfterOverdueDays []int64 `json:"remind_after_overdue_days,required,nullable"`
+	RemindAfterOverdueDays []int64 `json:"remind_after_overdue_days" api:"required,nullable"`
 	// The status of the invoice.
-	Status InvoiceStatus `json:"status,required"`
+	Status InvoiceStatus `json:"status" api:"required"`
 	// Total amount due in specified currency's smallest unit, e.g., $10 USD would be
 	// represented as 1000.
-	TotalAmount int64 `json:"total_amount,required"`
+	TotalAmount int64 `json:"total_amount" api:"required"`
 	// IDs of transaction line items associated with an invoice.
-	TransactionLineItemIDs []string  `json:"transaction_line_item_ids,required" format:"uuid"`
-	UpdatedAt              time.Time `json:"updated_at,required" format:"date-time"`
+	TransactionLineItemIDs []string  `json:"transaction_line_item_ids" api:"required" format:"uuid"`
+	UpdatedAt              time.Time `json:"updated_at" api:"required" format:"date-time"`
 	// The ID of the virtual account the invoice should be paid to.
-	VirtualAccountID string      `json:"virtual_account_id,required,nullable" format:"uuid"`
+	VirtualAccountID string      `json:"virtual_account_id" api:"required,nullable" format:"uuid"`
 	JSON             invoiceJSON `json:"-"`
 }
 
@@ -263,14 +263,14 @@ func (r invoiceJSON) RawJSON() string {
 // The counterparty's billing address.
 type InvoiceCounterpartyBillingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country string `json:"country,required"`
-	Line1   string `json:"line1,required"`
+	Country string `json:"country" api:"required"`
+	Line1   string `json:"line1" api:"required"`
 	// Locality or City.
-	Locality string `json:"locality,required"`
+	Locality string `json:"locality" api:"required"`
 	// The postal code of the address.
-	PostalCode string `json:"postal_code,required"`
+	PostalCode string `json:"postal_code" api:"required"`
 	// Region or State.
-	Region string                                `json:"region,required"`
+	Region string                                `json:"region" api:"required"`
 	Line2  string                                `json:"line2"`
 	JSON   invoiceCounterpartyBillingAddressJSON `json:"-"`
 }
@@ -299,14 +299,14 @@ func (r invoiceCounterpartyBillingAddressJSON) RawJSON() string {
 // The counterparty's shipping address where physical goods should be delivered.
 type InvoiceCounterpartyShippingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country string `json:"country,required"`
-	Line1   string `json:"line1,required"`
+	Country string `json:"country" api:"required"`
+	Line1   string `json:"line1" api:"required"`
 	// Locality or City.
-	Locality string `json:"locality,required"`
+	Locality string `json:"locality" api:"required"`
 	// The postal code of the address.
-	PostalCode string `json:"postal_code,required"`
+	PostalCode string `json:"postal_code" api:"required"`
 	// Region or State.
-	Region string                                 `json:"region,required"`
+	Region string                                 `json:"region" api:"required"`
 	Line2  string                                 `json:"line2"`
 	JSON   invoiceCounterpartyShippingAddressJSON `json:"-"`
 }
@@ -335,14 +335,14 @@ func (r invoiceCounterpartyShippingAddressJSON) RawJSON() string {
 // The invoice issuer's business address.
 type InvoiceInvoicerAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country string `json:"country,required"`
-	Line1   string `json:"line1,required"`
+	Country string `json:"country" api:"required"`
+	Line1   string `json:"line1" api:"required"`
 	// Locality or City.
-	Locality string `json:"locality,required"`
+	Locality string `json:"locality" api:"required"`
 	// The postal code of the address.
-	PostalCode string `json:"postal_code,required"`
+	PostalCode string `json:"postal_code" api:"required"`
 	// Region or State.
-	Region string                     `json:"region,required"`
+	Region string                     `json:"region" api:"required"`
 	Line2  string                     `json:"line2"`
 	JSON   invoiceInvoicerAddressJSON `json:"-"`
 }
@@ -424,11 +424,11 @@ func (r InvoiceStatus) IsKnown() bool {
 
 type InvoiceNewParams struct {
 	// The ID of the counterparty receiving the invoice.
-	CounterpartyID param.Field[string] `json:"counterparty_id,required"`
+	CounterpartyID param.Field[string] `json:"counterparty_id" api:"required"`
 	// A future date by when the invoice needs to be paid.
-	DueDate param.Field[time.Time] `json:"due_date,required" format:"date-time"`
+	DueDate param.Field[time.Time] `json:"due_date" api:"required" format:"date-time"`
 	// The ID of the internal account the invoice should be paid to.
-	OriginatingAccountID param.Field[string] `json:"originating_account_id,required"`
+	OriginatingAccountID param.Field[string] `json:"originating_account_id" api:"required"`
 	// When true, the invoice will progress to unpaid automatically and cannot be
 	// edited after entering that state. If the invoice fails to progress to unpaid,
 	// the errors will be returned and the invoice will not be created.
@@ -499,14 +499,14 @@ func (r InvoiceNewParams) MarshalJSON() (data []byte, err error) {
 // The counterparty's billing address.
 type InvoiceNewParamsCounterpartyBillingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
+	Country param.Field[string] `json:"country" api:"required"`
+	Line1   param.Field[string] `json:"line1" api:"required"`
 	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
+	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
+	PostalCode param.Field[string] `json:"postal_code" api:"required"`
 	// Region or State.
-	Region param.Field[string] `json:"region,required"`
+	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
 
@@ -517,14 +517,14 @@ func (r InvoiceNewParamsCounterpartyBillingAddress) MarshalJSON() (data []byte, 
 // The counterparty's shipping address where physical goods should be delivered.
 type InvoiceNewParamsCounterpartyShippingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
+	Country param.Field[string] `json:"country" api:"required"`
+	Line1   param.Field[string] `json:"line1" api:"required"`
 	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
+	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
+	PostalCode param.Field[string] `json:"postal_code" api:"required"`
 	// Region or State.
-	Region param.Field[string] `json:"region,required"`
+	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
 
@@ -534,10 +534,10 @@ func (r InvoiceNewParamsCounterpartyShippingAddress) MarshalJSON() (data []byte,
 
 type InvoiceNewParamsInvoiceLineItem struct {
 	// The name of the line item, typically a product or SKU name.
-	Name param.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// The cost per unit of the product or service that this line item is for,
 	// specified in the invoice currency's smallest unit.
-	UnitAmount param.Field[int64] `json:"unit_amount,required"`
+	UnitAmount param.Field[int64] `json:"unit_amount" api:"required"`
 	// An optional free-form description of the line item.
 	Description param.Field[string] `json:"description"`
 	// Either `debit` or `credit`. `debit` indicates that a client owes the business
@@ -563,14 +563,14 @@ func (r InvoiceNewParamsInvoiceLineItem) MarshalJSON() (data []byte, err error) 
 // The invoice issuer's business address.
 type InvoiceNewParamsInvoicerAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
+	Country param.Field[string] `json:"country" api:"required"`
+	Line1   param.Field[string] `json:"line1" api:"required"`
 	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
+	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
+	PostalCode param.Field[string] `json:"postal_code" api:"required"`
 	// Region or State.
-	Region param.Field[string] `json:"region,required"`
+	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
 
@@ -677,14 +677,14 @@ func (r InvoiceUpdateParams) MarshalJSON() (data []byte, err error) {
 // The counterparty's billing address.
 type InvoiceUpdateParamsCounterpartyBillingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
+	Country param.Field[string] `json:"country" api:"required"`
+	Line1   param.Field[string] `json:"line1" api:"required"`
 	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
+	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
+	PostalCode param.Field[string] `json:"postal_code" api:"required"`
 	// Region or State.
-	Region param.Field[string] `json:"region,required"`
+	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
 
@@ -695,14 +695,14 @@ func (r InvoiceUpdateParamsCounterpartyBillingAddress) MarshalJSON() (data []byt
 // The counterparty's shipping address where physical goods should be delivered.
 type InvoiceUpdateParamsCounterpartyShippingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
+	Country param.Field[string] `json:"country" api:"required"`
+	Line1   param.Field[string] `json:"line1" api:"required"`
 	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
+	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
+	PostalCode param.Field[string] `json:"postal_code" api:"required"`
 	// Region or State.
-	Region param.Field[string] `json:"region,required"`
+	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
 
@@ -712,10 +712,10 @@ func (r InvoiceUpdateParamsCounterpartyShippingAddress) MarshalJSON() (data []by
 
 type InvoiceUpdateParamsInvoiceLineItem struct {
 	// The name of the line item, typically a product or SKU name.
-	Name param.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// The cost per unit of the product or service that this line item is for,
 	// specified in the invoice currency's smallest unit.
-	UnitAmount param.Field[int64] `json:"unit_amount,required"`
+	UnitAmount param.Field[int64] `json:"unit_amount" api:"required"`
 	// An optional free-form description of the line item.
 	Description param.Field[string] `json:"description"`
 	// Either `debit` or `credit`. `debit` indicates that a client owes the business
@@ -741,14 +741,14 @@ func (r InvoiceUpdateParamsInvoiceLineItem) MarshalJSON() (data []byte, err erro
 // The invoice issuer's business address.
 type InvoiceUpdateParamsInvoicerAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
+	Country param.Field[string] `json:"country" api:"required"`
+	Line1   param.Field[string] `json:"line1" api:"required"`
 	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
+	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
+	PostalCode param.Field[string] `json:"postal_code" api:"required"`
 	// Region or State.
-	Region param.Field[string] `json:"region,required"`
+	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
 

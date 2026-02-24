@@ -86,26 +86,26 @@ func (r *DocumentService) ListAutoPaging(ctx context.Context, query DocumentList
 }
 
 type Document struct {
-	ID              string                   `json:"id,required" format:"uuid"`
-	CreatedAt       time.Time                `json:"created_at,required" format:"date-time"`
-	DiscardedAt     time.Time                `json:"discarded_at,required,nullable" format:"date-time"`
-	DocumentDetails []DocumentDocumentDetail `json:"document_details,required"`
+	ID              string                   `json:"id" api:"required" format:"uuid"`
+	CreatedAt       time.Time                `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt     time.Time                `json:"discarded_at" api:"required,nullable" format:"date-time"`
+	DocumentDetails []DocumentDocumentDetail `json:"document_details" api:"required"`
 	// A category given to the document, can be `null`.
-	DocumentType string `json:"document_type,required,nullable"`
+	DocumentType string `json:"document_type" api:"required,nullable"`
 	// The unique identifier for the associated object.
-	DocumentableID string `json:"documentable_id,required,nullable" format:"uuid"`
+	DocumentableID string `json:"documentable_id" api:"required,nullable" format:"uuid"`
 	// The type of the associated object. Currently can be one of `payment_order`,
 	// `transaction`, `expected_payment`, `counterparty`, `organization`, `case`,
 	// `internal_account`, `decision`, or `external_account`.
-	DocumentableType DocumentDocumentableType `json:"documentable_type,required,nullable"`
-	File             DocumentFile             `json:"file,required"`
+	DocumentableType DocumentDocumentableType `json:"documentable_type" api:"required,nullable"`
+	File             DocumentFile             `json:"file" api:"required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// The source of the document. Can be `vendor`, `customer`, or `modern_treasury`.
-	Source    string       `json:"source,required"`
-	UpdatedAt time.Time    `json:"updated_at,required" format:"date-time"`
+	Source    string       `json:"source" api:"required"`
+	UpdatedAt time.Time    `json:"updated_at" api:"required" format:"date-time"`
 	JSON      documentJSON `json:"-"`
 }
 
@@ -136,16 +136,16 @@ func (r documentJSON) RawJSON() string {
 }
 
 type DocumentDocumentDetail struct {
-	ID                     string    `json:"id,required" format:"uuid"`
-	CreatedAt              time.Time `json:"created_at,required" format:"date-time"`
-	DiscardedAt            time.Time `json:"discarded_at,required,nullable" format:"date-time"`
-	DocumentIdentifier     string    `json:"document_identifier,required"`
-	DocumentIdentifierType string    `json:"document_identifier_type,required"`
+	ID                     string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt              time.Time `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt            time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+	DocumentIdentifier     string    `json:"document_identifier" api:"required"`
+	DocumentIdentifierType string    `json:"document_identifier_type" api:"required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool                       `json:"live_mode,required"`
-	Object    string                     `json:"object,required"`
-	UpdatedAt time.Time                  `json:"updated_at,required" format:"date-time"`
+	LiveMode  bool                       `json:"live_mode" api:"required"`
+	Object    string                     `json:"object" api:"required"`
+	UpdatedAt time.Time                  `json:"updated_at" api:"required" format:"date-time"`
 	JSON      documentDocumentDetailJSON `json:"-"`
 }
 
@@ -227,7 +227,7 @@ func (r documentFileJSON) RawJSON() string {
 }
 
 type DocumentNewParams struct {
-	File param.Field[io.Reader] `json:"file,required" format:"binary"`
+	File param.Field[io.Reader] `json:"file" api:"required" format:"binary"`
 	// A category given to the document, can be `null`.
 	DocumentType param.Field[string] `json:"document_type"`
 	// The unique identifier for the associated object.

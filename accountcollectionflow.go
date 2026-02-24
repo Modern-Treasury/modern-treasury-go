@@ -96,15 +96,15 @@ func (r *AccountCollectionFlowService) ListAutoPaging(ctx context.Context, query
 type AccountCollectionFlow struct {
 	// The ID of a counterparty. An external account created with this flow will be
 	// associated with this counterparty.
-	CounterpartyID string                             `json:"counterparty_id,required" format:"uuid"`
-	PaymentTypes   []AccountCollectionFlowPaymentType `json:"payment_types,required"`
+	CounterpartyID string                             `json:"counterparty_id" api:"required" format:"uuid"`
+	PaymentTypes   []AccountCollectionFlowPaymentType `json:"payment_types" api:"required"`
 	ID             string                             `json:"id" format:"uuid"`
 	// The client token of the account collection flow. This token can be used to embed
 	// account collection in your client-side application.
 	ClientToken string    `json:"client_token"`
 	CreatedAt   time.Time `json:"created_at" format:"date-time"`
 	// If present, the ID of the external account created using this flow.
-	ExternalAccountID string `json:"external_account_id,nullable" format:"uuid"`
+	ExternalAccountID string `json:"external_account_id" api:"nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode           bool                                    `json:"live_mode"`
@@ -213,8 +213,8 @@ func (r AccountCollectionFlowStatus) IsKnown() bool {
 
 type AccountCollectionFlowNewParams struct {
 	// Required.
-	CounterpartyID     param.Field[string]                                           `json:"counterparty_id,required" format:"uuid"`
-	PaymentTypes       param.Field[[]string]                                         `json:"payment_types,required"`
+	CounterpartyID     param.Field[string]                                           `json:"counterparty_id" api:"required" format:"uuid"`
+	PaymentTypes       param.Field[[]string]                                         `json:"payment_types" api:"required"`
 	ReceivingCountries param.Field[[]AccountCollectionFlowNewParamsReceivingCountry] `json:"receiving_countries"`
 }
 
@@ -257,7 +257,7 @@ func (r AccountCollectionFlowNewParamsReceivingCountry) IsKnown() bool {
 type AccountCollectionFlowUpdateParams struct {
 	// Required. The updated status of the account collection flow. Can only be used to
 	// mark a flow as `cancelled`.
-	Status param.Field[AccountCollectionFlowUpdateParamsStatus] `json:"status,required"`
+	Status param.Field[AccountCollectionFlowUpdateParamsStatus] `json:"status" api:"required"`
 }
 
 func (r AccountCollectionFlowUpdateParams) MarshalJSON() (data []byte, err error) {

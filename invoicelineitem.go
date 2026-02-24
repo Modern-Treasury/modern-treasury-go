@@ -126,39 +126,39 @@ func (r *InvoiceLineItemService) Delete(ctx context.Context, invoiceID string, i
 }
 
 type InvoiceLineItem struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The total amount for this line item specified in the invoice currency's smallest
 	// unit.
-	Amount    int64     `json:"amount,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	Amount    int64     `json:"amount" api:"required"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// An optional free-form description of the line item.
-	Description string `json:"description,required"`
+	Description string `json:"description" api:"required"`
 	// Either `debit` or `credit`. `debit` indicates that a client owes the business
 	// money and increases the invoice's `total_amount` due. `credit` has the opposite
 	// intention and effect.
-	Direction string `json:"direction,required"`
+	Direction string `json:"direction" api:"required"`
 	// The ID of the invoice for this line item.
-	InvoiceID string `json:"invoice_id,required"`
+	InvoiceID string `json:"invoice_id" api:"required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
 	// The name of the line item, typically a product or SKU name.
-	Name   string `json:"name,required"`
-	Object string `json:"object,required"`
+	Name   string `json:"name" api:"required"`
+	Object string `json:"object" api:"required"`
 	// The number of units of a product or service that this line item is for. Must be
 	// a whole number. Defaults to 1 if not provided.
-	Quantity int64 `json:"quantity,required"`
+	Quantity int64 `json:"quantity" api:"required"`
 	// The cost per unit of the product or service that this line item is for,
 	// specified in the invoice currency's smallest unit.
-	UnitAmount int64 `json:"unit_amount,required"`
+	UnitAmount int64 `json:"unit_amount" api:"required"`
 	// The cost per unit of the product or service that this line item is for,
 	// specified in the invoice currency's smallest unit. Accepts decimal strings with
 	// up to 12 decimals
-	UnitAmountDecimal string              `json:"unit_amount_decimal,required"`
-	UpdatedAt         time.Time           `json:"updated_at,required" format:"date-time"`
+	UnitAmountDecimal string              `json:"unit_amount_decimal" api:"required"`
+	UpdatedAt         time.Time           `json:"updated_at" api:"required" format:"date-time"`
 	JSON              invoiceLineItemJSON `json:"-"`
 }
 
@@ -192,10 +192,10 @@ func (r invoiceLineItemJSON) RawJSON() string {
 
 type InvoiceLineItemNewParams struct {
 	// The name of the line item, typically a product or SKU name.
-	Name param.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// The cost per unit of the product or service that this line item is for,
 	// specified in the invoice currency's smallest unit.
-	UnitAmount param.Field[int64] `json:"unit_amount,required"`
+	UnitAmount param.Field[int64] `json:"unit_amount" api:"required"`
 	// An optional free-form description of the line item.
 	Description param.Field[string] `json:"description"`
 	// Either `debit` or `credit`. `debit` indicates that a client owes the business

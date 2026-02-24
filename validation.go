@@ -163,12 +163,12 @@ func (r RoutingNumberLookupRequestSupportedPaymentType) IsKnown() bool {
 
 type ValidationValidateRoutingNumberParams struct {
 	// The routing number that is being validated.
-	RoutingNumber param.Field[string] `query:"routing_number,required"`
+	RoutingNumber param.Field[string] `query:"routing_number" api:"required"`
 	// The type of routing number. See
 	// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
 	// more details. In sandbox mode we currently only support `aba` and `swift` with
 	// routing numbers '123456789' and 'GRINUST0XXX' respectively.
-	RoutingNumberType param.Field[ValidationValidateRoutingNumberParamsRoutingNumberType] `query:"routing_number_type,required"`
+	RoutingNumberType param.Field[ValidationValidateRoutingNumberParamsRoutingNumberType] `query:"routing_number_type" api:"required"`
 }
 
 // URLQuery serializes [ValidationValidateRoutingNumberParams]'s query parameters

@@ -98,38 +98,38 @@ func (r *LineItemService) ListAutoPaging(ctx context.Context, itemizableType Lin
 }
 
 type LineItem struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// Deprecated: deprecated
-	Accounting LineItemAccounting `json:"accounting,required"`
+	Accounting LineItemAccounting `json:"accounting" api:"required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
-	AccountingCategoryID string `json:"accounting_category_id,required,nullable" format:"uuid"`
+	AccountingCategoryID string `json:"accounting_category_id" api:"required,nullable" format:"uuid"`
 	// The ID of one of the class objects in your accounting system. Class objects
 	// track segments of your business independent of client or project. Note that
 	// these will only be accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
-	AccountingLedgerClassID string `json:"accounting_ledger_class_id,required,nullable" format:"uuid"`
+	AccountingLedgerClassID string `json:"accounting_ledger_class_id" api:"required,nullable" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
-	Amount    int64     `json:"amount,required"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	Amount    int64     `json:"amount" api:"required"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// A free-form description of the line item.
-	Description string `json:"description,required,nullable"`
+	Description string `json:"description" api:"required,nullable"`
 	// The ID of the payment order or expected payment.
-	ItemizableID string `json:"itemizable_id,required" format:"uuid"`
+	ItemizableID string `json:"itemizable_id" api:"required" format:"uuid"`
 	// One of `payment_orders` or `expected_payments`.
-	ItemizableType LineItemItemizableType `json:"itemizable_type,required"`
+	ItemizableType LineItemItemizableType `json:"itemizable_type" api:"required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata  map[string]string `json:"metadata,required"`
-	Object    string            `json:"object,required"`
-	UpdatedAt time.Time         `json:"updated_at,required" format:"date-time"`
+	Metadata  map[string]string `json:"metadata" api:"required"`
+	Object    string            `json:"object" api:"required"`
+	UpdatedAt time.Time         `json:"updated_at" api:"required" format:"date-time"`
 	JSON      lineItemJSON      `json:"-"`
 }
 
@@ -166,13 +166,13 @@ type LineItemAccounting struct {
 	// accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
-	AccountID string `json:"account_id,nullable" format:"uuid"`
+	AccountID string `json:"account_id" api:"nullable" format:"uuid"`
 	// The ID of one of the class objects in your accounting system. Class objects
 	// track segments of your business independent of client or project. Note that
 	// these will only be accessible if your accounting system has been connected.
 	//
 	// Deprecated: deprecated
-	ClassID string                 `json:"class_id,nullable" format:"uuid"`
+	ClassID string                 `json:"class_id" api:"nullable" format:"uuid"`
 	JSON    lineItemAccountingJSON `json:"-"`
 }
 

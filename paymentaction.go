@@ -94,27 +94,27 @@ func (r *PaymentActionService) ListAutoPaging(ctx context.Context, query Payment
 }
 
 type PaymentActionNewResponse struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The ID of the associated actionable object.
-	ActionableID string `json:"actionable_id,required,nullable" format:"uuid"`
+	ActionableID string `json:"actionable_id" api:"required,nullable" format:"uuid"`
 	// The type of the associated actionable object. One of `payment_order`,
 	// `expected_payment`.
-	ActionableType string    `json:"actionable_type,required,nullable"`
-	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	ActionableType string    `json:"actionable_type" api:"required,nullable"`
+	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The specifc details of the payment action based on type.
-	Details interface{} `json:"details,required"`
+	Details interface{} `json:"details" api:"required"`
 	// The ID of the internal account associated with the payment action.
-	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id" api:"required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// The current status of the payment action. One of `pending`, `processing`,
 	// `sent`, `acknowledged`, `cancelled`, or `failed`.
-	Status string `json:"status,required"`
+	Status string `json:"status" api:"required"`
 	// The type of the payment action. Determines the action to be taken.
-	Type      string                       `json:"type,required"`
-	UpdatedAt time.Time                    `json:"updated_at,required" format:"date-time"`
+	Type      string                       `json:"type" api:"required"`
+	UpdatedAt time.Time                    `json:"updated_at" api:"required" format:"date-time"`
 	JSON      paymentActionNewResponseJSON `json:"-"`
 }
 
@@ -145,27 +145,27 @@ func (r paymentActionNewResponseJSON) RawJSON() string {
 }
 
 type PaymentActionGetResponse struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The ID of the associated actionable object.
-	ActionableID string `json:"actionable_id,required,nullable" format:"uuid"`
+	ActionableID string `json:"actionable_id" api:"required,nullable" format:"uuid"`
 	// The type of the associated actionable object. One of `payment_order`,
 	// `expected_payment`.
-	ActionableType string    `json:"actionable_type,required,nullable"`
-	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	ActionableType string    `json:"actionable_type" api:"required,nullable"`
+	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The specifc details of the payment action based on type.
-	Details interface{} `json:"details,required"`
+	Details interface{} `json:"details" api:"required"`
 	// The ID of the internal account associated with the payment action.
-	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id" api:"required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// The current status of the payment action. One of `pending`, `processing`,
 	// `sent`, `acknowledged`, `cancelled`, or `failed`.
-	Status string `json:"status,required"`
+	Status string `json:"status" api:"required"`
 	// The type of the payment action. Determines the action to be taken.
-	Type      string                       `json:"type,required"`
-	UpdatedAt time.Time                    `json:"updated_at,required" format:"date-time"`
+	Type      string                       `json:"type" api:"required"`
+	UpdatedAt time.Time                    `json:"updated_at" api:"required" format:"date-time"`
 	JSON      paymentActionGetResponseJSON `json:"-"`
 }
 
@@ -196,27 +196,27 @@ func (r paymentActionGetResponseJSON) RawJSON() string {
 }
 
 type PaymentActionUpdateResponse struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The ID of the associated actionable object.
-	ActionableID string `json:"actionable_id,required,nullable" format:"uuid"`
+	ActionableID string `json:"actionable_id" api:"required,nullable" format:"uuid"`
 	// The type of the associated actionable object. One of `payment_order`,
 	// `expected_payment`.
-	ActionableType string    `json:"actionable_type,required,nullable"`
-	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	ActionableType string    `json:"actionable_type" api:"required,nullable"`
+	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The specifc details of the payment action based on type.
-	Details interface{} `json:"details,required"`
+	Details interface{} `json:"details" api:"required"`
 	// The ID of the internal account associated with the payment action.
-	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id" api:"required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// The current status of the payment action. One of `pending`, `processing`,
 	// `sent`, `acknowledged`, `cancelled`, or `failed`.
-	Status string `json:"status,required"`
+	Status string `json:"status" api:"required"`
 	// The type of the payment action. Determines the action to be taken.
-	Type      string                          `json:"type,required"`
-	UpdatedAt time.Time                       `json:"updated_at,required" format:"date-time"`
+	Type      string                          `json:"type" api:"required"`
+	UpdatedAt time.Time                       `json:"updated_at" api:"required" format:"date-time"`
 	JSON      paymentActionUpdateResponseJSON `json:"-"`
 }
 
@@ -247,27 +247,27 @@ func (r paymentActionUpdateResponseJSON) RawJSON() string {
 }
 
 type PaymentActionListResponse struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The ID of the associated actionable object.
-	ActionableID string `json:"actionable_id,required,nullable" format:"uuid"`
+	ActionableID string `json:"actionable_id" api:"required,nullable" format:"uuid"`
 	// The type of the associated actionable object. One of `payment_order`,
 	// `expected_payment`.
-	ActionableType string    `json:"actionable_type,required,nullable"`
-	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	ActionableType string    `json:"actionable_type" api:"required,nullable"`
+	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The specifc details of the payment action based on type.
-	Details interface{} `json:"details,required"`
+	Details interface{} `json:"details" api:"required"`
 	// The ID of the internal account associated with the payment action.
-	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id" api:"required" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// The current status of the payment action. One of `pending`, `processing`,
 	// `sent`, `acknowledged`, `cancelled`, or `failed`.
-	Status string `json:"status,required"`
+	Status string `json:"status" api:"required"`
 	// The type of the payment action. Determines the action to be taken.
-	Type      string                        `json:"type,required"`
-	UpdatedAt time.Time                     `json:"updated_at,required" format:"date-time"`
+	Type      string                        `json:"type" api:"required"`
+	UpdatedAt time.Time                     `json:"updated_at" api:"required" format:"date-time"`
 	JSON      paymentActionListResponseJSON `json:"-"`
 }
 
@@ -299,7 +299,7 @@ func (r paymentActionListResponseJSON) RawJSON() string {
 
 type PaymentActionNewParams struct {
 	// Required. The type of the payment action. Determines the action to be taken.
-	Type param.Field[string] `json:"type,required"`
+	Type param.Field[string] `json:"type" api:"required"`
 	// Optional. The ID of the associated actionable object.
 	ActionableID param.Field[string] `json:"actionable_id" format:"uuid"`
 	// Optional. The type of the associated actionable object. One of `payment_order`,
@@ -320,7 +320,7 @@ type PaymentActionUpdateParams struct {
 	// Optional. Set the status of the payment action to `cancelled` to cancel the
 	// payment action. This will only work if the payment action is in a `pending`
 	// state.
-	Status param.Field[PaymentActionUpdateParamsStatus] `json:"status,required"`
+	Status param.Field[PaymentActionUpdateParamsStatus] `json:"status" api:"required"`
 }
 
 func (r PaymentActionUpdateParams) MarshalJSON() (data []byte, err error) {

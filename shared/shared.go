@@ -25,23 +25,23 @@ func (r AccountsType) IsKnown() bool {
 }
 
 type Address struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country   string    `json:"country,required,nullable"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
-	Line1     string    `json:"line1,required,nullable"`
-	Line2     string    `json:"line2,required,nullable"`
+	Country   string    `json:"country" api:"required,nullable"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
+	Line1     string    `json:"line1" api:"required,nullable"`
+	Line2     string    `json:"line2" api:"required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Locality or City.
-	Locality string `json:"locality,required,nullable"`
-	Object   string `json:"object,required"`
+	Locality string `json:"locality" api:"required,nullable"`
+	Object   string `json:"object" api:"required"`
 	// The postal code of the address.
-	PostalCode string `json:"postal_code,required,nullable"`
+	PostalCode string `json:"postal_code" api:"required,nullable"`
 	// Region or State.
-	Region    string      `json:"region,required,nullable"`
-	UpdatedAt time.Time   `json:"updated_at,required" format:"date-time"`
+	Region    string      `json:"region" api:"required,nullable"`
+	UpdatedAt time.Time   `json:"updated_at" api:"required" format:"date-time"`
 	JSON      addressJSON `json:"-"`
 }
 
@@ -72,15 +72,15 @@ func (r addressJSON) RawJSON() string {
 
 type AddressRequest struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country string `json:"country,nullable"`
-	Line1   string `json:"line1,nullable"`
-	Line2   string `json:"line2,nullable"`
+	Country string `json:"country" api:"nullable"`
+	Line1   string `json:"line1" api:"nullable"`
+	Line2   string `json:"line2" api:"nullable"`
 	// Locality or City.
-	Locality string `json:"locality,nullable"`
+	Locality string `json:"locality" api:"nullable"`
 	// The postal code of the address.
-	PostalCode string `json:"postal_code,nullable"`
+	PostalCode string `json:"postal_code" api:"nullable"`
 	// Region or State.
-	Region string             `json:"region,nullable"`
+	Region string             `json:"region" api:"nullable"`
 	JSON   addressRequestJSON `json:"-"`
 }
 
@@ -122,8 +122,8 @@ func (r AddressRequestParam) MarshalJSON() (data []byte, err error) {
 }
 
 type AsyncResponse struct {
-	ID     string            `json:"id,required" format:"uuid"`
-	Object string            `json:"object,required"`
+	ID     string            `json:"id" api:"required" format:"uuid"`
+	Object string            `json:"object" api:"required"`
 	JSON   asyncResponseJSON `json:"-"`
 }
 
@@ -278,11 +278,11 @@ func (r ChildLegalEntityCreatePhoneNumberParam) MarshalJSON() (data []byte, err 
 type ChildLegalEntityCreateRegulatorParam struct {
 	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
 	// (e.g., "US", "CA", "GB").
-	Jurisdiction param.Field[string] `json:"jurisdiction,required"`
+	Jurisdiction param.Field[string] `json:"jurisdiction" api:"required"`
 	// Full name of the regulatory body.
-	Name param.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// Registration or identification number with the regulator.
-	RegistrationNumber param.Field[string] `json:"registration_number,required"`
+	RegistrationNumber param.Field[string] `json:"registration_number" api:"required"`
 }
 
 func (r ChildLegalEntityCreateRegulatorParam) MarshalJSON() (data []byte, err error) {
@@ -328,9 +328,9 @@ func (r ChildLegalEntityCreateStatus) IsKnown() bool {
 // Information describing a third-party verification run by an external vendor.
 type ChildLegalEntityCreateThirdPartyVerificationParam struct {
 	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[ChildLegalEntityCreateThirdPartyVerificationVendor] `json:"vendor,required"`
+	Vendor param.Field[ChildLegalEntityCreateThirdPartyVerificationVendor] `json:"vendor" api:"required"`
 	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id,required"`
+	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
 }
 
 func (r ChildLegalEntityCreateThirdPartyVerificationParam) MarshalJSON() (data []byte, err error) {
@@ -353,16 +353,16 @@ func (r ChildLegalEntityCreateThirdPartyVerificationVendor) IsKnown() bool {
 }
 
 type ContactDetail struct {
-	ID                    string                             `json:"id,required" format:"uuid"`
-	ContactIdentifier     string                             `json:"contact_identifier,required"`
-	ContactIdentifierType ContactDetailContactIdentifierType `json:"contact_identifier_type,required"`
-	CreatedAt             time.Time                          `json:"created_at,required" format:"date-time"`
-	DiscardedAt           time.Time                          `json:"discarded_at,required,nullable" format:"date-time"`
+	ID                    string                             `json:"id" api:"required" format:"uuid"`
+	ContactIdentifier     string                             `json:"contact_identifier" api:"required"`
+	ContactIdentifierType ContactDetailContactIdentifierType `json:"contact_identifier_type" api:"required"`
+	CreatedAt             time.Time                          `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt           time.Time                          `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool              `json:"live_mode,required"`
-	Object    string            `json:"object,required"`
-	UpdatedAt time.Time         `json:"updated_at,required" format:"date-time"`
+	LiveMode  bool              `json:"live_mode" api:"required"`
+	Object    string            `json:"object" api:"required"`
+	UpdatedAt time.Time         `json:"updated_at" api:"required" format:"date-time"`
 	JSON      contactDetailJSON `json:"-"`
 }
 
@@ -405,16 +405,16 @@ func (r ContactDetailContactIdentifierType) IsKnown() bool {
 }
 
 type ContactDetailParam struct {
-	ID                    param.Field[string]                             `json:"id,required" format:"uuid"`
-	ContactIdentifier     param.Field[string]                             `json:"contact_identifier,required"`
-	ContactIdentifierType param.Field[ContactDetailContactIdentifierType] `json:"contact_identifier_type,required"`
-	CreatedAt             param.Field[time.Time]                          `json:"created_at,required" format:"date-time"`
-	DiscardedAt           param.Field[time.Time]                          `json:"discarded_at,required" format:"date-time"`
+	ID                    param.Field[string]                             `json:"id" api:"required" format:"uuid"`
+	ContactIdentifier     param.Field[string]                             `json:"contact_identifier" api:"required"`
+	ContactIdentifierType param.Field[ContactDetailContactIdentifierType] `json:"contact_identifier_type" api:"required"`
+	CreatedAt             param.Field[time.Time]                          `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt           param.Field[time.Time]                          `json:"discarded_at" api:"required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  param.Field[bool]      `json:"live_mode,required"`
-	Object    param.Field[string]    `json:"object,required"`
-	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
+	LiveMode  param.Field[bool]      `json:"live_mode" api:"required"`
+	Object    param.Field[string]    `json:"object" api:"required"`
+	UpdatedAt param.Field[time.Time] `json:"updated_at" api:"required" format:"date-time"`
 }
 
 func (r ContactDetailParam) MarshalJSON() (data []byte, err error) {
@@ -634,22 +634,22 @@ func (r Currency) IsKnown() bool {
 type ForeignExchangeRate struct {
 	// Amount in the lowest denomination of the `base_currency` to convert, often
 	// called the "sell" amount.
-	BaseAmount int64 `json:"base_amount,required"`
+	BaseAmount int64 `json:"base_amount" api:"required"`
 	// Currency to convert, often called the "sell" currency.
-	BaseCurrency Currency `json:"base_currency,required"`
+	BaseCurrency Currency `json:"base_currency" api:"required"`
 	// The exponent component of the rate. The decimal is calculated as `value` / (10 ^
 	// `exponent`).
-	Exponent int64 `json:"exponent,required"`
+	Exponent int64 `json:"exponent" api:"required"`
 	// A string representation of the rate.
-	RateString string `json:"rate_string,required"`
+	RateString string `json:"rate_string" api:"required"`
 	// Amount in the lowest denomination of the `target_currency`, often called the
 	// "buy" amount.
-	TargetAmount int64 `json:"target_amount,required"`
+	TargetAmount int64 `json:"target_amount" api:"required"`
 	// Currency to convert the `base_currency` to, often called the "buy" currency.
-	TargetCurrency Currency `json:"target_currency,required"`
+	TargetCurrency Currency `json:"target_currency" api:"required"`
 	// The whole number component of the rate. The decimal is calculated as `value` /
 	// (10 ^ `exponent`).
-	Value int64                   `json:"value,required"`
+	Value int64                   `json:"value" api:"required"`
 	JSON  foreignExchangeRateJSON `json:"-"`
 }
 
@@ -677,9 +677,9 @@ func (r foreignExchangeRateJSON) RawJSON() string {
 
 type IdentificationCreateRequestParam struct {
 	// The ID number of identification document.
-	IDNumber param.Field[string] `json:"id_number,required"`
+	IDNumber param.Field[string] `json:"id_number" api:"required"`
 	// The type of ID number.
-	IDType param.Field[IdentificationCreateRequestIDType] `json:"id_type,required"`
+	IDType param.Field[IdentificationCreateRequestIDType] `json:"id_type" api:"required"`
 	// The date when the Identification is no longer considered valid by the issuing
 	// authority.
 	ExpirationDate param.Field[time.Time] `json:"expiration_date" format:"date"`
@@ -732,13 +732,13 @@ func (r IdentificationCreateRequestIDType) IsKnown() bool {
 
 type LedgerAccountCreateRequestParam struct {
 	// The currency of the ledger account.
-	Currency param.Field[string] `json:"currency,required"`
+	Currency param.Field[string] `json:"currency" api:"required"`
 	// The id of the ledger that this account belongs to.
-	LedgerID param.Field[string] `json:"ledger_id,required" format:"uuid"`
+	LedgerID param.Field[string] `json:"ledger_id" api:"required" format:"uuid"`
 	// The name of the ledger account.
-	Name param.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// The normal balance of the ledger account.
-	NormalBalance param.Field[TransactionDirection] `json:"normal_balance,required"`
+	NormalBalance param.Field[TransactionDirection] `json:"normal_balance" api:"required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
 	// The description of the ledger account.
@@ -787,13 +787,13 @@ func (r LedgerAccountCreateRequestLedgerableType) IsKnown() bool {
 }
 
 type LedgerBalance struct {
-	Amount  int64 `json:"amount,required"`
-	Credits int64 `json:"credits,required"`
+	Amount  int64 `json:"amount" api:"required"`
+	Credits int64 `json:"credits" api:"required"`
 	// The currency of the ledger account.
-	Currency string `json:"currency,required"`
+	Currency string `json:"currency" api:"required"`
 	// The currency exponent of the ledger account.
-	CurrencyExponent int64             `json:"currency_exponent,required"`
-	Debits           int64             `json:"debits,required"`
+	CurrencyExponent int64             `json:"currency_exponent" api:"required"`
+	Debits           int64             `json:"debits" api:"required"`
 	JSON             ledgerBalanceJSON `json:"-"`
 }
 
@@ -821,11 +821,11 @@ type LedgerBalances struct {
 	// outbound entries. For credit normal, available_amount = posted_credits -
 	// pending_debits; for debit normal, available_amount = posted_debits -
 	// pending_credits.
-	AvailableBalance LedgerBalance `json:"available_balance,required"`
+	AvailableBalance LedgerBalance `json:"available_balance" api:"required"`
 	// The pending_balance is the sum of all pending and posted entries.
-	PendingBalance LedgerBalance `json:"pending_balance,required"`
+	PendingBalance LedgerBalance `json:"pending_balance" api:"required"`
 	// The posted_balance is the sum of all posted entries.
-	PostedBalance LedgerBalance      `json:"posted_balance,required"`
+	PostedBalance LedgerBalance      `json:"posted_balance" api:"required"`
 	JSON          ledgerBalancesJSON `json:"-"`
 }
 
@@ -849,14 +849,14 @@ func (r ledgerBalancesJSON) RawJSON() string {
 type LedgerEntryCreateRequestParam struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
-	Direction param.Field[TransactionDirection] `json:"direction,required"`
+	Direction param.Field[TransactionDirection] `json:"direction" api:"required"`
 	// The ledger account that this ledger entry is associated with.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id,required" format:"uuid"`
+	LedgerAccountID param.Field[string] `json:"ledger_account_id" api:"required" format:"uuid"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
 	// account’s available balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
@@ -891,7 +891,7 @@ func (r LedgerEntryCreateRequestParam) MarshalJSON() (data []byte, err error) {
 
 type LedgerTransactionCreateRequestParam struct {
 	// An array of ledger entry objects.
-	LedgerEntries param.Field[[]LedgerEntryCreateRequestParam] `json:"ledger_entries,required"`
+	LedgerEntries param.Field[[]LedgerEntryCreateRequestParam] `json:"ledger_entries" api:"required"`
 	// An optional description for internal use.
 	Description param.Field[string] `json:"description"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
@@ -963,14 +963,14 @@ func (r LedgerTransactionCreateRequestStatus) IsKnown() bool {
 
 type LegalEntityAddressCreateRequestParam struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country,required"`
-	Line1   param.Field[string] `json:"line1,required"`
+	Country param.Field[string] `json:"country" api:"required"`
+	Line1   param.Field[string] `json:"line1" api:"required"`
 	// Locality or City.
-	Locality param.Field[string] `json:"locality,required"`
+	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code,required"`
+	PostalCode param.Field[string] `json:"postal_code" api:"required"`
 	// Region or State.
-	Region param.Field[string] `json:"region,required"`
+	Region param.Field[string] `json:"region" api:"required"`
 	// The types of this address.
 	AddressTypes param.Field[[]LegalEntityAddressCreateRequestAddressType] `json:"address_types"`
 	Line2        param.Field[string]                                       `json:"line2"`
@@ -999,7 +999,7 @@ func (r LegalEntityAddressCreateRequestAddressType) IsKnown() bool {
 }
 
 type LegalEntityAssociationInlineCreateParam struct {
-	RelationshipTypes param.Field[[]LegalEntityAssociationInlineCreateRelationshipType] `json:"relationship_types,required"`
+	RelationshipTypes param.Field[[]LegalEntityAssociationInlineCreateRelationshipType] `json:"relationship_types" api:"required"`
 	// The child legal entity.
 	ChildLegalEntity param.Field[ChildLegalEntityCreateParam] `json:"child_legal_entity"`
 	// The ID of the child legal entity.
@@ -1032,26 +1032,26 @@ func (r LegalEntityAssociationInlineCreateRelationshipType) IsKnown() bool {
 }
 
 type LegalEntityBankSettings struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The percentage of backup withholding to apply to the legal entity.
-	BackupWithholdingPercentage int64     `json:"backup_withholding_percentage,required,nullable"`
-	CreatedAt                   time.Time `json:"created_at,required" format:"date-time"`
-	DiscardedAt                 time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	BackupWithholdingPercentage int64     `json:"backup_withholding_percentage" api:"required,nullable"`
+	CreatedAt                   time.Time `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt                 time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// Whether backup withholding is enabled. See more here -
 	// https://www.irs.gov/businesses/small-businesses-self-employed/backup-withholding.
-	EnableBackupWithholding bool `json:"enable_backup_withholding,required,nullable"`
+	EnableBackupWithholding bool `json:"enable_backup_withholding" api:"required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// Cross River Bank specific setting to opt out of privacy policy.
-	PrivacyOptOut bool `json:"privacy_opt_out,required,nullable"`
+	PrivacyOptOut bool `json:"privacy_opt_out" api:"required,nullable"`
 	// It covers, among other types of insider loans, extensions of credit by a member
 	// bank to an executive officer, director, or principal shareholder of the member
 	// bank; a bank holding company of which the member bank is a subsidiary; and any
 	// other subsidiary of that bank holding company.
-	RegulationO bool                        `json:"regulation_o,required,nullable"`
-	UpdatedAt   time.Time                   `json:"updated_at,required" format:"date-time"`
+	RegulationO bool                        `json:"regulation_o" api:"required,nullable"`
+	UpdatedAt   time.Time                   `json:"updated_at" api:"required" format:"date-time"`
 	JSON        legalEntityBankSettingsJSON `json:"-"`
 }
 
@@ -1081,26 +1081,26 @@ func (r legalEntityBankSettingsJSON) RawJSON() string {
 }
 
 type LegalEntityBankSettingsParam struct {
-	ID param.Field[string] `json:"id,required" format:"uuid"`
+	ID param.Field[string] `json:"id" api:"required" format:"uuid"`
 	// The percentage of backup withholding to apply to the legal entity.
-	BackupWithholdingPercentage param.Field[int64]     `json:"backup_withholding_percentage,required"`
-	CreatedAt                   param.Field[time.Time] `json:"created_at,required" format:"date-time"`
-	DiscardedAt                 param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
+	BackupWithholdingPercentage param.Field[int64]     `json:"backup_withholding_percentage" api:"required"`
+	CreatedAt                   param.Field[time.Time] `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt                 param.Field[time.Time] `json:"discarded_at" api:"required" format:"date-time"`
 	// Whether backup withholding is enabled. See more here -
 	// https://www.irs.gov/businesses/small-businesses-self-employed/backup-withholding.
-	EnableBackupWithholding param.Field[bool] `json:"enable_backup_withholding,required"`
+	EnableBackupWithholding param.Field[bool] `json:"enable_backup_withholding" api:"required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode param.Field[bool]   `json:"live_mode,required"`
-	Object   param.Field[string] `json:"object,required"`
+	LiveMode param.Field[bool]   `json:"live_mode" api:"required"`
+	Object   param.Field[string] `json:"object" api:"required"`
 	// Cross River Bank specific setting to opt out of privacy policy.
-	PrivacyOptOut param.Field[bool] `json:"privacy_opt_out,required"`
+	PrivacyOptOut param.Field[bool] `json:"privacy_opt_out" api:"required"`
 	// It covers, among other types of insider loans, extensions of credit by a member
 	// bank to an executive officer, director, or principal shareholder of the member
 	// bank; a bank holding company of which the member bank is a subsidiary; and any
 	// other subsidiary of that bank holding company.
-	RegulationO param.Field[bool]      `json:"regulation_o,required"`
-	UpdatedAt   param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
+	RegulationO param.Field[bool]      `json:"regulation_o" api:"required"`
+	UpdatedAt   param.Field[time.Time] `json:"updated_at" api:"required" format:"date-time"`
 }
 
 func (r LegalEntityBankSettingsParam) MarshalJSON() (data []byte, err error) {
@@ -1108,18 +1108,18 @@ func (r LegalEntityBankSettingsParam) MarshalJSON() (data []byte, err error) {
 }
 
 type LegalEntityIndustryClassification struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The industry classification codes for the legal entity.
-	ClassificationCodes []string `json:"classification_codes,required"`
+	ClassificationCodes []string `json:"classification_codes" api:"required"`
 	// The classification system of the classification codes.
-	ClassificationType LegalEntityIndustryClassificationClassificationType `json:"classification_type,required"`
-	CreatedAt          time.Time                                           `json:"created_at,required" format:"date-time"`
-	DiscardedAt        time.Time                                           `json:"discarded_at,required,nullable" format:"date-time"`
+	ClassificationType LegalEntityIndustryClassificationClassificationType `json:"classification_type" api:"required"`
+	CreatedAt          time.Time                                           `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt        time.Time                                           `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool                                  `json:"live_mode,required"`
-	Object    string                                `json:"object,required"`
-	UpdatedAt time.Time                             `json:"updated_at,required" format:"date-time"`
+	LiveMode  bool                                  `json:"live_mode" api:"required"`
+	Object    string                                `json:"object" api:"required"`
+	UpdatedAt time.Time                             `json:"updated_at" api:"required" format:"date-time"`
 	JSON      legalEntityIndustryClassificationJSON `json:"-"`
 }
 
@@ -1176,18 +1176,18 @@ func (r LegalEntityIndustryClassificationClassificationType) IsKnown() bool {
 }
 
 type LegalEntityIndustryClassificationParam struct {
-	ID param.Field[string] `json:"id,required" format:"uuid"`
+	ID param.Field[string] `json:"id" api:"required" format:"uuid"`
 	// The industry classification codes for the legal entity.
-	ClassificationCodes param.Field[[]string] `json:"classification_codes,required"`
+	ClassificationCodes param.Field[[]string] `json:"classification_codes" api:"required"`
 	// The classification system of the classification codes.
-	ClassificationType param.Field[LegalEntityIndustryClassificationClassificationType] `json:"classification_type,required"`
-	CreatedAt          param.Field[time.Time]                                           `json:"created_at,required" format:"date-time"`
-	DiscardedAt        param.Field[time.Time]                                           `json:"discarded_at,required" format:"date-time"`
+	ClassificationType param.Field[LegalEntityIndustryClassificationClassificationType] `json:"classification_type" api:"required"`
+	CreatedAt          param.Field[time.Time]                                           `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt        param.Field[time.Time]                                           `json:"discarded_at" api:"required" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  param.Field[bool]      `json:"live_mode,required"`
-	Object    param.Field[string]    `json:"object,required"`
-	UpdatedAt param.Field[time.Time] `json:"updated_at,required" format:"date-time"`
+	LiveMode  param.Field[bool]      `json:"live_mode" api:"required"`
+	Object    param.Field[string]    `json:"object" api:"required"`
+	UpdatedAt param.Field[time.Time] `json:"updated_at" api:"required" format:"date-time"`
 }
 
 func (r LegalEntityIndustryClassificationParam) MarshalJSON() (data []byte, err error) {
@@ -1195,38 +1195,38 @@ func (r LegalEntityIndustryClassificationParam) MarshalJSON() (data []byte, err 
 }
 
 type LegalEntityWealthEmploymentDetail struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The annual income of the individual in USD.
-	AnnualIncome int64     `json:"annual_income,required,nullable"`
-	CreatedAt    time.Time `json:"created_at,required" format:"date-time"`
-	DiscardedAt  time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	AnnualIncome int64     `json:"annual_income" api:"required,nullable"`
+	CreatedAt    time.Time `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt  time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// The country in which the employer is located.
-	EmployerCountry string `json:"employer_country,required,nullable"`
+	EmployerCountry string `json:"employer_country" api:"required,nullable"`
 	// The name of the employer.
-	EmployerName string `json:"employer_name,required,nullable"`
+	EmployerName string `json:"employer_name" api:"required,nullable"`
 	// The state in which the employer is located.
-	EmployerState string `json:"employer_state,required,nullable"`
+	EmployerState string `json:"employer_state" api:"required,nullable"`
 	// The employment status of the individual.
-	EmploymentStatus LegalEntityWealthEmploymentDetailEmploymentStatus `json:"employment_status,required,nullable"`
+	EmploymentStatus LegalEntityWealthEmploymentDetailEmploymentStatus `json:"employment_status" api:"required,nullable"`
 	// The country in which the individual's income is earned.
-	IncomeCountry string `json:"income_country,required,nullable"`
+	IncomeCountry string `json:"income_country" api:"required,nullable"`
 	// The source of the individual's income.
-	IncomeSource LegalEntityWealthEmploymentDetailIncomeSource `json:"income_source,required,nullable"`
+	IncomeSource LegalEntityWealthEmploymentDetailIncomeSource `json:"income_source" api:"required,nullable"`
 	// The state in which the individual's income is earned.
-	IncomeState string `json:"income_state,required,nullable"`
+	IncomeState string `json:"income_state" api:"required,nullable"`
 	// The industry of the individual.
-	Industry LegalEntityWealthEmploymentDetailIndustry `json:"industry,required,nullable"`
+	Industry LegalEntityWealthEmploymentDetailIndustry `json:"industry" api:"required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// The occupation of the individual.
-	Occupation LegalEntityWealthEmploymentDetailOccupation `json:"occupation,required,nullable"`
+	Occupation LegalEntityWealthEmploymentDetailOccupation `json:"occupation" api:"required,nullable"`
 	// The source of the individual's funds.
-	SourceOfFunds LegalEntityWealthEmploymentDetailSourceOfFunds `json:"source_of_funds,required,nullable"`
-	UpdatedAt     time.Time                                      `json:"updated_at,required" format:"date-time"`
+	SourceOfFunds LegalEntityWealthEmploymentDetailSourceOfFunds `json:"source_of_funds" api:"required,nullable"`
+	UpdatedAt     time.Time                                      `json:"updated_at" api:"required" format:"date-time"`
 	// The source of the individual's wealth.
-	WealthSource LegalEntityWealthEmploymentDetailWealthSource `json:"wealth_source,required,nullable"`
+	WealthSource LegalEntityWealthEmploymentDetailWealthSource `json:"wealth_source" api:"required,nullable"`
 	JSON         legalEntityWealthEmploymentDetailJSON         `json:"-"`
 }
 
@@ -1440,38 +1440,38 @@ func (r LegalEntityWealthEmploymentDetailWealthSource) IsKnown() bool {
 }
 
 type LegalEntityWealthEmploymentDetailParam struct {
-	ID param.Field[string] `json:"id,required" format:"uuid"`
+	ID param.Field[string] `json:"id" api:"required" format:"uuid"`
 	// The annual income of the individual in USD.
-	AnnualIncome param.Field[int64]     `json:"annual_income,required"`
-	CreatedAt    param.Field[time.Time] `json:"created_at,required" format:"date-time"`
-	DiscardedAt  param.Field[time.Time] `json:"discarded_at,required" format:"date-time"`
+	AnnualIncome param.Field[int64]     `json:"annual_income" api:"required"`
+	CreatedAt    param.Field[time.Time] `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt  param.Field[time.Time] `json:"discarded_at" api:"required" format:"date-time"`
 	// The country in which the employer is located.
-	EmployerCountry param.Field[string] `json:"employer_country,required"`
+	EmployerCountry param.Field[string] `json:"employer_country" api:"required"`
 	// The name of the employer.
-	EmployerName param.Field[string] `json:"employer_name,required"`
+	EmployerName param.Field[string] `json:"employer_name" api:"required"`
 	// The state in which the employer is located.
-	EmployerState param.Field[string] `json:"employer_state,required"`
+	EmployerState param.Field[string] `json:"employer_state" api:"required"`
 	// The employment status of the individual.
-	EmploymentStatus param.Field[LegalEntityWealthEmploymentDetailEmploymentStatus] `json:"employment_status,required"`
+	EmploymentStatus param.Field[LegalEntityWealthEmploymentDetailEmploymentStatus] `json:"employment_status" api:"required"`
 	// The country in which the individual's income is earned.
-	IncomeCountry param.Field[string] `json:"income_country,required"`
+	IncomeCountry param.Field[string] `json:"income_country" api:"required"`
 	// The source of the individual's income.
-	IncomeSource param.Field[LegalEntityWealthEmploymentDetailIncomeSource] `json:"income_source,required"`
+	IncomeSource param.Field[LegalEntityWealthEmploymentDetailIncomeSource] `json:"income_source" api:"required"`
 	// The state in which the individual's income is earned.
-	IncomeState param.Field[string] `json:"income_state,required"`
+	IncomeState param.Field[string] `json:"income_state" api:"required"`
 	// The industry of the individual.
-	Industry param.Field[LegalEntityWealthEmploymentDetailIndustry] `json:"industry,required"`
+	Industry param.Field[LegalEntityWealthEmploymentDetailIndustry] `json:"industry" api:"required"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode param.Field[bool]   `json:"live_mode,required"`
-	Object   param.Field[string] `json:"object,required"`
+	LiveMode param.Field[bool]   `json:"live_mode" api:"required"`
+	Object   param.Field[string] `json:"object" api:"required"`
 	// The occupation of the individual.
-	Occupation param.Field[LegalEntityWealthEmploymentDetailOccupation] `json:"occupation,required"`
+	Occupation param.Field[LegalEntityWealthEmploymentDetailOccupation] `json:"occupation" api:"required"`
 	// The source of the individual's funds.
-	SourceOfFunds param.Field[LegalEntityWealthEmploymentDetailSourceOfFunds] `json:"source_of_funds,required"`
-	UpdatedAt     param.Field[time.Time]                                      `json:"updated_at,required" format:"date-time"`
+	SourceOfFunds param.Field[LegalEntityWealthEmploymentDetailSourceOfFunds] `json:"source_of_funds" api:"required"`
+	UpdatedAt     param.Field[time.Time]                                      `json:"updated_at" api:"required" format:"date-time"`
 	// The source of the individual's wealth.
-	WealthSource param.Field[LegalEntityWealthEmploymentDetailWealthSource] `json:"wealth_source,required"`
+	WealthSource param.Field[LegalEntityWealthEmploymentDetailWealthSource] `json:"wealth_source" api:"required"`
 }
 
 func (r LegalEntityWealthEmploymentDetailParam) MarshalJSON() (data []byte, err error) {

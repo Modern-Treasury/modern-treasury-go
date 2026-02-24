@@ -107,41 +107,41 @@ func (r *VirtualAccountService) Delete(ctx context.Context, id string, opts ...o
 }
 
 type VirtualAccount struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// An array of account detail objects.
-	AccountDetails []AccountDetail `json:"account_details,required"`
+	AccountDetails []AccountDetail `json:"account_details" api:"required"`
 	// The ID of a counterparty that the virtual account belongs to. Optional.
-	CounterpartyID string    `json:"counterparty_id,required,nullable" format:"uuid"`
-	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	CounterpartyID string    `json:"counterparty_id" api:"required,nullable" format:"uuid"`
+	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The ID of a credit normal ledger account. When money enters the virtual account,
 	// this ledger account will be credited. Must be accompanied by a
 	// debit_ledger_account_id if present.
-	CreditLedgerAccountID string `json:"credit_ledger_account_id,required,nullable" format:"uuid"`
+	CreditLedgerAccountID string `json:"credit_ledger_account_id" api:"required,nullable" format:"uuid"`
 	// The ID of a debit normal ledger account. When money enters the virtual account,
 	// this ledger account will be debited. Must be accompanied by a
 	// credit_ledger_account_id if present.
-	DebitLedgerAccountID string `json:"debit_ledger_account_id,required,nullable" format:"uuid"`
+	DebitLedgerAccountID string `json:"debit_ledger_account_id" api:"required,nullable" format:"uuid"`
 	// An optional free-form description for internal use.
-	Description string    `json:"description,required,nullable"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	Description string    `json:"description" api:"required,nullable"`
+	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// The ID of the internal account that the virtual account is in.
-	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id" api:"required" format:"uuid"`
 	// If the virtual account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
-	LedgerAccountID string `json:"ledger_account_id,required,nullable" format:"uuid"`
+	LedgerAccountID string `json:"ledger_account_id" api:"required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
 	// The name of the virtual account.
-	Name   string `json:"name,required"`
-	Object string `json:"object,required"`
+	Name   string `json:"name" api:"required"`
+	Object string `json:"object" api:"required"`
 	// An array of routing detail objects. These will be the routing details of the
 	// internal account.
-	RoutingDetails []RoutingDetail    `json:"routing_details,required"`
-	UpdatedAt      time.Time          `json:"updated_at,required" format:"date-time"`
+	RoutingDetails []RoutingDetail    `json:"routing_details" api:"required"`
+	UpdatedAt      time.Time          `json:"updated_at" api:"required" format:"date-time"`
 	JSON           virtualAccountJSON `json:"-"`
 }
 
@@ -179,9 +179,9 @@ func (r VirtualAccount) implementsPaymentOrderUltimateOriginatingAccount() {}
 
 type VirtualAccountNewParams struct {
 	// The ID of the internal account that this virtual account is associated with.
-	InternalAccountID param.Field[string] `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID param.Field[string] `json:"internal_account_id" api:"required" format:"uuid"`
 	// The name of the virtual account.
-	Name param.Field[string] `json:"name,required"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// An array of account detail objects.
 	AccountDetails param.Field[[]VirtualAccountNewParamsAccountDetail] `json:"account_details"`
 	// The ID of the counterparty that the virtual account belongs to.
@@ -213,7 +213,7 @@ func (r VirtualAccountNewParams) MarshalJSON() (data []byte, err error) {
 
 type VirtualAccountNewParamsAccountDetail struct {
 	// The account number for the bank account.
-	AccountNumber param.Field[string] `json:"account_number,required"`
+	AccountNumber param.Field[string] `json:"account_number" api:"required"`
 	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
 	// account number is in a generic format.
 	AccountNumberType param.Field[VirtualAccountNewParamsAccountDetailsAccountNumberType] `json:"account_number_type"`
@@ -255,11 +255,11 @@ func (r VirtualAccountNewParamsAccountDetailsAccountNumberType) IsKnown() bool {
 
 type VirtualAccountNewParamsRoutingDetail struct {
 	// The routing number of the bank.
-	RoutingNumber param.Field[string] `json:"routing_number,required"`
+	RoutingNumber param.Field[string] `json:"routing_number" api:"required"`
 	// The type of routing number. See
 	// https://docs.moderntreasury.com/platform/reference/routing-detail-object for
 	// more details.
-	RoutingNumberType param.Field[VirtualAccountNewParamsRoutingDetailsRoutingNumberType] `json:"routing_number_type,required"`
+	RoutingNumberType param.Field[VirtualAccountNewParamsRoutingDetailsRoutingNumberType] `json:"routing_number_type" api:"required"`
 	// If the routing detail is to be used for a specific payment type this field will
 	// be populated, otherwise null.
 	PaymentType param.Field[VirtualAccountNewParamsRoutingDetailsPaymentType] `json:"payment_type"`

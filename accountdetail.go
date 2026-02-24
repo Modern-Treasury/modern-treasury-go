@@ -112,19 +112,19 @@ func (r *AccountDetailService) Delete(ctx context.Context, accountsType AccountD
 }
 
 type AccountDetail struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The last 4 digits of the account_number.
-	AccountNumberSafe string `json:"account_number_safe,required"`
+	AccountNumberSafe string `json:"account_number_safe" api:"required"`
 	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
 	// account number is in a generic format.
-	AccountNumberType AccountDetailAccountNumberType `json:"account_number_type,required"`
-	CreatedAt         time.Time                      `json:"created_at,required" format:"date-time"`
-	DiscardedAt       time.Time                      `json:"discarded_at,required,nullable" format:"date-time"`
+	AccountNumberType AccountDetailAccountNumberType `json:"account_number_type" api:"required"`
+	CreatedAt         time.Time                      `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt       time.Time                      `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode  bool      `json:"live_mode,required"`
-	Object    string    `json:"object,required"`
-	UpdatedAt time.Time `json:"updated_at,required" format:"date-time"`
+	LiveMode  bool      `json:"live_mode" api:"required"`
+	Object    string    `json:"object" api:"required"`
+	UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
 	// The account number for the bank account.
 	AccountNumber string            `json:"account_number"`
 	JSON          accountDetailJSON `json:"-"`
@@ -185,7 +185,7 @@ func (r AccountDetailAccountNumberType) IsKnown() bool {
 
 type AccountDetailNewParams struct {
 	// The account number for the bank account.
-	AccountNumber param.Field[string] `json:"account_number,required"`
+	AccountNumber param.Field[string] `json:"account_number" api:"required"`
 	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
 	// account number is in a generic format.
 	AccountNumberType param.Field[AccountDetailNewParamsAccountNumberType] `json:"account_number_type"`

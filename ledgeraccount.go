@@ -107,42 +107,42 @@ func (r *LedgerAccountService) Delete(ctx context.Context, id string, opts ...op
 }
 
 type LedgerAccount struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// The pending, posted, and available balances for this ledger account. The posted
 	// balance is the sum of all posted entries on the account. The pending balance is
 	// the sum of all pending and posted entries on the account. The available balance
 	// is the posted incoming entries minus the sum of the pending and posted outgoing
 	// amounts.
-	Balances  LedgerAccountBalances `json:"balances,required"`
-	CreatedAt time.Time             `json:"created_at,required" format:"date-time"`
+	Balances  LedgerAccountBalances `json:"balances" api:"required"`
+	CreatedAt time.Time             `json:"created_at" api:"required" format:"date-time"`
 	// The description of the ledger account.
-	Description string    `json:"description,required,nullable"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	Description string    `json:"description" api:"required,nullable"`
+	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// An optional user-defined 180 character unique identifier.
-	ExternalID string `json:"external_id,required,nullable"`
+	ExternalID string `json:"external_id" api:"required,nullable"`
 	// The id of the ledger that this account belongs to.
-	LedgerID string `json:"ledger_id,required" format:"uuid"`
+	LedgerID string `json:"ledger_id" api:"required" format:"uuid"`
 	// If the ledger account links to another object in Modern Treasury, the id will be
 	// populated here, otherwise null.
-	LedgerableID string `json:"ledgerable_id,required,nullable" format:"uuid"`
+	LedgerableID string `json:"ledgerable_id" api:"required,nullable" format:"uuid"`
 	// If the ledger account links to another object in Modern Treasury, the type will
 	// be populated here, otherwise null. The value is one of internal_account or
 	// external_account.
-	LedgerableType LedgerAccountLedgerableType `json:"ledgerable_type,required,nullable"`
+	LedgerableType LedgerAccountLedgerableType `json:"ledgerable_type" api:"required,nullable"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Lock version of the ledger account.
-	LockVersion int64 `json:"lock_version,required"`
+	LockVersion int64 `json:"lock_version" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
 	// The name of the ledger account.
-	Name string `json:"name,required"`
+	Name string `json:"name" api:"required"`
 	// The normal balance of the ledger account.
-	NormalBalance shared.TransactionDirection `json:"normal_balance,required"`
-	Object        string                      `json:"object,required"`
-	UpdatedAt     time.Time                   `json:"updated_at,required" format:"date-time"`
+	NormalBalance shared.TransactionDirection `json:"normal_balance" api:"required"`
+	Object        string                      `json:"object" api:"required"`
+	UpdatedAt     time.Time                   `json:"updated_at" api:"required" format:"date-time"`
 	JSON          ledgerAccountJSON           `json:"-"`
 }
 
@@ -188,17 +188,17 @@ type LedgerAccountBalances struct {
 	// outbound entries. For credit normal, available_amount = posted_credits -
 	// pending_debits; for debit normal, available_amount = posted_debits -
 	// pending_credits.
-	AvailableBalance shared.LedgerBalance `json:"available_balance,required"`
+	AvailableBalance shared.LedgerBalance `json:"available_balance" api:"required"`
 	// The inclusive lower bound of the effective_at timestamp for the returned
 	// balances.
-	EffectiveAtLowerBound time.Time `json:"effective_at_lower_bound,required,nullable" format:"date-time"`
+	EffectiveAtLowerBound time.Time `json:"effective_at_lower_bound" api:"required,nullable" format:"date-time"`
 	// The exclusive upper bound of the effective_at timestamp for the returned
 	// balances.
-	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound,required,nullable" format:"date-time"`
+	EffectiveAtUpperBound time.Time `json:"effective_at_upper_bound" api:"required,nullable" format:"date-time"`
 	// The pending_balance is the sum of all pending and posted entries.
-	PendingBalance shared.LedgerBalance `json:"pending_balance,required"`
+	PendingBalance shared.LedgerBalance `json:"pending_balance" api:"required"`
 	// The posted_balance is the sum of all posted entries.
-	PostedBalance shared.LedgerBalance      `json:"posted_balance,required"`
+	PostedBalance shared.LedgerBalance      `json:"posted_balance" api:"required"`
 	JSON          ledgerAccountBalancesJSON `json:"-"`
 }
 
@@ -243,7 +243,7 @@ func (r LedgerAccountLedgerableType) IsKnown() bool {
 }
 
 type LedgerAccountNewParams struct {
-	LedgerAccountCreateRequest shared.LedgerAccountCreateRequestParam `json:"ledger_account_create_request,required"`
+	LedgerAccountCreateRequest shared.LedgerAccountCreateRequestParam `json:"ledger_account_create_request" api:"required"`
 }
 
 func (r LedgerAccountNewParams) MarshalJSON() (data []byte, err error) {

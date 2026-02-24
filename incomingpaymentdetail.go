@@ -95,71 +95,71 @@ func (r *IncomingPaymentDetailService) NewAsync(ctx context.Context, body Incomi
 }
 
 type IncomingPaymentDetail struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
-	Amount int64 `json:"amount,required"`
+	Amount int64 `json:"amount" api:"required"`
 	// The date on which the corresponding transaction will occur.
-	AsOfDate  time.Time `json:"as_of_date,required" format:"date"`
-	CreatedAt time.Time `json:"created_at,required" format:"date-time"`
+	AsOfDate  time.Time `json:"as_of_date" api:"required" format:"date"`
+	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The currency of the incoming payment detail.
-	Currency shared.Currency `json:"currency,required"`
+	Currency shared.Currency `json:"currency" api:"required"`
 	// The raw data from the payment pre-notification file that we get from the bank.
-	Data map[string]interface{} `json:"data,required"`
+	Data map[string]interface{} `json:"data" api:"required"`
 	// One of `credit` or `debit`.
-	Direction shared.TransactionDirection `json:"direction,required"`
+	Direction shared.TransactionDirection `json:"direction" api:"required"`
 	// The ID of the Internal Account for the incoming payment detail. This is always
 	// present.
-	InternalAccountID string `json:"internal_account_id,required" format:"uuid"`
+	InternalAccountID string `json:"internal_account_id" api:"required" format:"uuid"`
 	// The ID of the ledger transaction linked to the incoming payment detail or
 	// `null`.
-	LedgerTransactionID string `json:"ledger_transaction_id,required,nullable" format:"uuid"`
+	LedgerTransactionID string `json:"ledger_transaction_id" api:"required,nullable" format:"uuid"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode,required"`
+	LiveMode bool `json:"live_mode" api:"required"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
-	Metadata map[string]string `json:"metadata,required"`
-	Object   string            `json:"object,required"`
+	Metadata map[string]string `json:"metadata" api:"required"`
+	Object   string            `json:"object" api:"required"`
 	// The last 4 digits of the originating account_number for the incoming payment
 	// detail.
-	OriginatingAccountNumberSafe string `json:"originating_account_number_safe,required,nullable"`
+	OriginatingAccountNumberSafe string `json:"originating_account_number_safe" api:"required,nullable"`
 	// The type of the originating account number for the incoming payment detail.
-	OriginatingAccountNumberType IncomingPaymentDetailOriginatingAccountNumberType `json:"originating_account_number_type,required,nullable"`
+	OriginatingAccountNumberType IncomingPaymentDetailOriginatingAccountNumberType `json:"originating_account_number_type" api:"required,nullable"`
 	// The routing number of the originating account for the incoming payment detail.
-	OriginatingRoutingNumber string `json:"originating_routing_number,required,nullable"`
+	OriginatingRoutingNumber string `json:"originating_routing_number" api:"required,nullable"`
 	// The type of the originating routing number for the incoming payment detail.
-	OriginatingRoutingNumberType IncomingPaymentDetailOriginatingRoutingNumberType `json:"originating_routing_number_type,required,nullable"`
+	OriginatingRoutingNumberType IncomingPaymentDetailOriginatingRoutingNumberType `json:"originating_routing_number_type" api:"required,nullable"`
 	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
-	ReconciliationStatus IncomingPaymentDetailReconciliationStatus `json:"reconciliation_status,required"`
+	ReconciliationStatus IncomingPaymentDetailReconciliationStatus `json:"reconciliation_status" api:"required"`
 	// The current status of the incoming payment order. One of `pending`, `completed`,
 	// or `returned`.
-	Status IncomingPaymentDetailStatus `json:"status,required"`
+	Status IncomingPaymentDetailStatus `json:"status" api:"required"`
 	// The ID of the reconciled Transaction or `null`.
-	TransactionID string `json:"transaction_id,required,nullable" format:"uuid"`
+	TransactionID string `json:"transaction_id" api:"required,nullable" format:"uuid"`
 	// The ID of the reconciled Transaction Line Item or `null`.
-	TransactionLineItemID string `json:"transaction_line_item_id,required,nullable" format:"uuid"`
+	TransactionLineItemID string `json:"transaction_line_item_id" api:"required,nullable" format:"uuid"`
 	// One of: `ach`, `book`, `check`, `eft`, `interac`, `rtp`, `sepa`, `signet`, or
 	// `wire`.
-	Type      IncomingPaymentDetailType `json:"type,required"`
-	UpdatedAt time.Time                 `json:"updated_at,required" format:"date-time"`
+	Type      IncomingPaymentDetailType `json:"type" api:"required"`
+	UpdatedAt time.Time                 `json:"updated_at" api:"required" format:"date-time"`
 	// The identifier of the vendor bank.
-	VendorID string `json:"vendor_id,required,nullable" format:"uuid"`
+	VendorID string `json:"vendor_id" api:"required,nullable" format:"uuid"`
 	// If the incoming payment detail is in a virtual account, the serialized virtual
 	// account object.
-	VirtualAccount VirtualAccount `json:"virtual_account,required,nullable"`
+	VirtualAccount VirtualAccount `json:"virtual_account" api:"required,nullable"`
 	// If the incoming payment detail is in a virtual account, the ID of the Virtual
 	// Account.
-	VirtualAccountID string `json:"virtual_account_id,required,nullable" format:"uuid"`
+	VirtualAccountID string `json:"virtual_account_id" api:"required,nullable" format:"uuid"`
 	// The account number of the originating account for the incoming payment detail.
-	OriginatingAccountNumber string `json:"originating_account_number,nullable"`
+	OriginatingAccountNumber string `json:"originating_account_number" api:"nullable"`
 	// The address of the originating party for the incoming payment detail, or `null`.
-	OriginatingPartyAddress shared.Address `json:"originating_party_address,nullable"`
+	OriginatingPartyAddress shared.Address `json:"originating_party_address" api:"nullable"`
 	// The name of the originating party for the incoming payment detail.
-	OriginatingPartyName string `json:"originating_party_name,nullable"`
+	OriginatingPartyName string `json:"originating_party_name" api:"nullable"`
 	// The vendor-assigned identifier for the originating party of the incoming payment
 	// detail, or `null`.
-	OriginatingPartyVendorIdentifier string                    `json:"originating_party_vendor_identifier,nullable"`
+	OriginatingPartyVendorIdentifier string                    `json:"originating_party_vendor_identifier" api:"nullable"`
 	JSON                             incomingPaymentDetailJSON `json:"-"`
 }
 

@@ -95,43 +95,43 @@ func (r *TransactionLineItemService) Delete(ctx context.Context, id string, opts
 }
 
 type TransactionLineItem struct {
-	ID string `json:"id,required" format:"uuid"`
+	ID string `json:"id" api:"required" format:"uuid"`
 	// If a matching object exists in Modern Treasury, `amount` will be populated.
 	// Value in specified currency's smallest unit (taken from parent Transaction).
-	Amount int64 `json:"amount,required"`
+	Amount int64 `json:"amount" api:"required"`
 	// The ID for the counterparty for this transaction line item.
-	CounterpartyID string    `json:"counterparty_id,required,nullable"`
-	CreatedAt      time.Time `json:"created_at,required" format:"date-time"`
+	CounterpartyID string    `json:"counterparty_id" api:"required,nullable"`
+	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
 	// If no matching object is found, `description` will be a free-form text field
 	// describing the line item. This field may contain personally identifiable
 	// information (PII) and is not included in API responses by default. Learn more
 	// about changing your settings at
 	// https://docs.moderntreasury.com/reference/personally-identifiable-information.
-	Description string    `json:"description,required"`
-	DiscardedAt time.Time `json:"discarded_at,required,nullable" format:"date-time"`
+	Description string    `json:"description" api:"required"`
+	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// The ID of the reconciled Expected Payment, otherwise `null`.
-	ExpectedPaymentID string `json:"expected_payment_id,required,nullable"`
+	ExpectedPaymentID string `json:"expected_payment_id" api:"required,nullable"`
 	// This field will be true if this object exists in the live environment, or false
 	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode,required"`
-	Object   string `json:"object,required"`
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
 	// Describes whether this line item should be counted towards the corresponding
 	// transaction’s reconciliation.
-	Reconcilable bool `json:"reconcilable,required"`
+	Reconcilable bool `json:"reconcilable" api:"required"`
 	// The ID of the reconciliation group this line item belongs to, otherwise `null`.
-	ReconciliationGroupID string `json:"reconciliation_group_id,required,nullable"`
+	ReconciliationGroupID string `json:"reconciliation_group_id" api:"required,nullable"`
 	// If a matching object exists in Modern Treasury, the ID will be populated here,
 	// otherwise `null`.
-	TransactableID string `json:"transactable_id,required,nullable"`
+	TransactableID string `json:"transactable_id" api:"required,nullable"`
 	// If a matching object exists in Modern Treasury, the type will be populated here,
 	// otherwise `null`.
-	TransactableType TransactionLineItemTransactableType `json:"transactable_type,required,nullable"`
+	TransactableType TransactionLineItemTransactableType `json:"transactable_type" api:"required,nullable"`
 	// The ID of the parent transaction.
-	TransactionID string `json:"transaction_id,required"`
+	TransactionID string `json:"transaction_id" api:"required"`
 	// Indicates whether the line item is `originating` or `receiving` (see
 	// https://www.moderntreasury.com/journal/beginners-guide-to-ach for more).
-	Type      TransactionLineItemType `json:"type,required"`
-	UpdatedAt time.Time               `json:"updated_at,required" format:"date-time"`
+	Type      TransactionLineItemType `json:"type" api:"required"`
+	UpdatedAt time.Time               `json:"updated_at" api:"required" format:"date-time"`
 	JSON      transactionLineItemJSON `json:"-"`
 }
 
@@ -206,11 +206,11 @@ func (r TransactionLineItemType) IsKnown() bool {
 type TransactionLineItemNewParams struct {
 	// If a matching object exists in Modern Treasury, `amount` will be populated.
 	// Value in specified currency's smallest unit (taken from parent Transaction).
-	Amount param.Field[int64] `json:"amount,required"`
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// The ID of the reconciled Expected Payment, otherwise `null`.
-	ExpectedPaymentID param.Field[string] `json:"expected_payment_id,required" format:"uuid"`
+	ExpectedPaymentID param.Field[string] `json:"expected_payment_id" api:"required" format:"uuid"`
 	// The ID of the parent transaction.
-	TransactionID param.Field[string] `json:"transaction_id,required" format:"uuid"`
+	TransactionID param.Field[string] `json:"transaction_id" api:"required" format:"uuid"`
 }
 
 func (r TransactionLineItemNewParams) MarshalJSON() (data []byte, err error) {
