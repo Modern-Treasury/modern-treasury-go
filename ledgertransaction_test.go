@@ -117,6 +117,7 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 		moderntreasury.LedgerTransactionUpdateParams{
 			Description: moderntreasury.F("description"),
 			EffectiveAt: moderntreasury.F(time.Now()),
+			ExternalID:  moderntreasury.F("external_id"),
 			LedgerEntries: moderntreasury.F([]shared.LedgerEntryCreateRequestParam{{
 				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),

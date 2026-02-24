@@ -365,6 +365,7 @@ func TestCounterpartyUpdateWithOptionalParams(t *testing.T) {
 		"id",
 		moderntreasury.CounterpartyUpdateParams{
 			Email:         moderntreasury.F("dev@stainless.com"),
+			ExternalID:    moderntreasury.F("external_id"),
 			LegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Metadata: moderntreasury.F(map[string]string{
 				"foo": "string",

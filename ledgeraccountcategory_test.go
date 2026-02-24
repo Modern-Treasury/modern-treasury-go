@@ -102,6 +102,7 @@ func TestLedgerAccountCategoryUpdateWithOptionalParams(t *testing.T) {
 		"id",
 		moderntreasury.LedgerAccountCategoryUpdateParams{
 			Description: moderntreasury.F("description"),
+			ExternalID:  moderntreasury.F("external_id"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",

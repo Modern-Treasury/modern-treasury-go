@@ -505,6 +505,8 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
 	// RFP payments require an expires_at. This value must be past the effective_date.
 	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// A payment type to fallback to if the original type is not valid for the
 	// receiving account. Currently, this only supports falling back from RTP to ACH
 	// (type=rtp and fallback_type=ach)
@@ -1219,6 +1221,8 @@ type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
 	// RFP payments require an expires_at. This value must be past the effective_date.
 	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
 	// A payment type to fallback to if the original type is not valid for the
 	// receiving account. Currently, this only supports falling back from RTP to ACH
 	// (type=rtp and fallback_type=ach)
@@ -1838,6 +1842,9 @@ type BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID struct {
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
 	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
+	// A unique string to represent the ledger transaction. Only one pending or posted
+	// ledger transaction may have this ID in the ledger.
+	ExternalID param.Field[string] `json:"external_id"`
 	// An array of ledger entry objects.
 	LedgerEntries param.Field[[]shared.LedgerEntryCreateRequestParam] `json:"ledger_entries"`
 	// If the ledger transaction can be reconciled to another object in Modern
