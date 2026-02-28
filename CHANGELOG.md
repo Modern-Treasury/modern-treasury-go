@@ -1,5 +1,20 @@
 # Changelog
 
+## 2.41.0 (2026-02-28)
+
+Full Changelog: [v2.40.0...v2.41.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.40.0...v2.41.0)
+
+### Features
+
+* **api:** api update ([d586669](https://github.com/Modern-Treasury/modern-treasury-go/commit/d58666974a1c8407769a0e38066f876bd7c9236d))
+* **api:** api update ([566b681](https://github.com/Modern-Treasury/modern-treasury-go/commit/566b6818bdf69c127a6ce400ff97dc0670ea35ad))
+
+
+### Chores
+
+* **api:** remove an obsolete reviewer ([cc7e279](https://github.com/Modern-Treasury/modern-treasury-go/commit/cc7e2791d09c2bd843749c63ba3cd052cd50fd8a))
+* **ci:** add build step ([90e0497](https://github.com/Modern-Treasury/modern-treasury-go/commit/90e0497c916dee7e1e25384eaf2e12198672193b))
+
 ## 2.40.0 (2026-02-24)
 
 Full Changelog: [v2.39.1...v2.40.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.39.1...v2.40.0)
