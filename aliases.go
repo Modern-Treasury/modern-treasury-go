@@ -755,6 +755,9 @@ const IdentificationCreateRequestIDTypeBrCnpj = shared.IdentificationCreateReque
 const IdentificationCreateRequestIDTypeBrCpf = shared.IdentificationCreateRequestIDTypeBrCpf
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeCaSin = shared.IdentificationCreateRequestIDTypeCaSin
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeClRun = shared.IdentificationCreateRequestIDTypeClRun
 
 // This is an alias to an internal value.

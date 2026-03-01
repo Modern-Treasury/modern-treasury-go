@@ -369,6 +369,7 @@ const (
 	LegalEntityIdentificationsIDTypeArCuit         LegalEntityIdentificationsIDType = "ar_cuit"
 	LegalEntityIdentificationsIDTypeBrCnpj         LegalEntityIdentificationsIDType = "br_cnpj"
 	LegalEntityIdentificationsIDTypeBrCpf          LegalEntityIdentificationsIDType = "br_cpf"
+	LegalEntityIdentificationsIDTypeCaSin          LegalEntityIdentificationsIDType = "ca_sin"
 	LegalEntityIdentificationsIDTypeClRun          LegalEntityIdentificationsIDType = "cl_run"
 	LegalEntityIdentificationsIDTypeClRut          LegalEntityIdentificationsIDType = "cl_rut"
 	LegalEntityIdentificationsIDTypeCoCedulas      LegalEntityIdentificationsIDType = "co_cedulas"
@@ -391,7 +392,7 @@ const (
 
 func (r LegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeDriversLicense, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeVnTin:
+	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeCaSin, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeDriversLicense, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false
