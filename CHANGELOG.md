@@ -1,5 +1,28 @@
 # Changelog
 
+## 2.41.0 (2026-03-05)
+
+Full Changelog: [v2.40.0...v2.41.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.40.0...v2.41.0)
+
+### Features
+
+* **api:** api update ([8dc8e77](https://github.com/Modern-Treasury/modern-treasury-go/commit/8dc8e77afc959f2f1bf6b180e96eb7508a966683))
+* **api:** api update ([119bad6](https://github.com/Modern-Treasury/modern-treasury-go/commit/119bad62adff5574ffcaed022f903f8c293209b7))
+* **api:** api update ([d586669](https://github.com/Modern-Treasury/modern-treasury-go/commit/d58666974a1c8407769a0e38066f876bd7c9236d))
+* **api:** api update ([566b681](https://github.com/Modern-Treasury/modern-treasury-go/commit/566b6818bdf69c127a6ce400ff97dc0670ea35ad))
+
+
+### Bug Fixes
+
+* fix request delays for retrying to be more respectful of high requested delays ([a30c06d](https://github.com/Modern-Treasury/modern-treasury-go/commit/a30c06d5a524d7d32793958664d334ab3c3f8cf0))
+
+
+### Chores
+
+* **api:** remove an obsolete reviewer ([cc7e279](https://github.com/Modern-Treasury/modern-treasury-go/commit/cc7e2791d09c2bd843749c63ba3cd052cd50fd8a))
+* **ci:** add build step ([90e0497](https://github.com/Modern-Treasury/modern-treasury-go/commit/90e0497c916dee7e1e25384eaf2e12198672193b))
+* **test:** do not count install time for mock server timeout ([6c88379](https://github.com/Modern-Treasury/modern-treasury-go/commit/6c88379023e36a3d6bf617fe5ce3ea3b1f72a91b))
+
 ## 2.40.0 (2026-02-24)
 
 Full Changelog: [v2.39.1...v2.40.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.39.1...v2.40.0)
