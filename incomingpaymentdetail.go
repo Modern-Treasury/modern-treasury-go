@@ -159,8 +159,14 @@ type IncomingPaymentDetail struct {
 	OriginatingPartyName string `json:"originating_party_name" api:"nullable"`
 	// The vendor-assigned identifier for the originating party of the incoming payment
 	// detail, or `null`.
-	OriginatingPartyVendorIdentifier string                    `json:"originating_party_vendor_identifier" api:"nullable"`
-	JSON                             incomingPaymentDetailJSON `json:"-"`
+	OriginatingPartyVendorIdentifier string `json:"originating_party_vendor_identifier" api:"nullable"`
+	// The account number of the receiving account for the incoming payment detail, or
+	// `null`.
+	ReceivingAccountNumber string `json:"receiving_account_number" api:"nullable"`
+	// The last 4 digits of the receiving account number for the incoming payment
+	// detail, or `null`.
+	ReceivingAccountNumberSafe string                    `json:"receiving_account_number_safe" api:"nullable"`
+	JSON                       incomingPaymentDetailJSON `json:"-"`
 }
 
 // incomingPaymentDetailJSON contains the JSON metadata for the struct
@@ -195,6 +201,8 @@ type incomingPaymentDetailJSON struct {
 	OriginatingPartyAddress          apijson.Field
 	OriginatingPartyName             apijson.Field
 	OriginatingPartyVendorIdentifier apijson.Field
+	ReceivingAccountNumber           apijson.Field
+	ReceivingAccountNumberSafe       apijson.Field
 	raw                              string
 	ExtraFields                      map[string]apijson.Field
 }
