@@ -188,6 +188,7 @@ func (r ReversalReconciliationStatus) IsKnown() bool {
 type ReversalStatus string
 
 const (
+	ReversalStatusCancelled  ReversalStatus = "cancelled"
 	ReversalStatusCompleted  ReversalStatus = "completed"
 	ReversalStatusFailed     ReversalStatus = "failed"
 	ReversalStatusPending    ReversalStatus = "pending"
@@ -198,7 +199,7 @@ const (
 
 func (r ReversalStatus) IsKnown() bool {
 	switch r {
-	case ReversalStatusCompleted, ReversalStatusFailed, ReversalStatusPending, ReversalStatusProcessing, ReversalStatusReturned, ReversalStatusSent:
+	case ReversalStatusCancelled, ReversalStatusCompleted, ReversalStatusFailed, ReversalStatusPending, ReversalStatusProcessing, ReversalStatusReturned, ReversalStatusSent:
 		return true
 	}
 	return false
