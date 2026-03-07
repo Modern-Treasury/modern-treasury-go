@@ -45,7 +45,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 		Currency:                moderntreasury.F(shared.CurrencyAed),
 		Description:             moderntreasury.F("description"),
 		Documents: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsDocument{{
-			File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("some file contents")))),
+			File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("Example data")))),
 			DocumentType:     moderntreasury.F("document_type"),
 			DocumentableID:   moderntreasury.F("documentable_id"),
 			DocumentableType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsDocumentsDocumentableTypeConnections),
