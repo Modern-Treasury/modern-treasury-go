@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.42.0 (2026-03-07)
+
+Full Changelog: [v2.41.0...v2.42.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.41.0...v2.42.0)
+
+### Features
+
+* **api:** api update ([efc0e65](https://github.com/Modern-Treasury/modern-treasury-go/commit/efc0e652cb1d694cc98803cc1c1bff3a7a496d03))
+
+
+### Chores
+
+* **ci:** skip uploading artifacts on stainless-internal branches ([eb9c5fb](https://github.com/Modern-Treasury/modern-treasury-go/commit/eb9c5fbfd9ffb61b23602a23edc0e9f2a075876c))
+* update placeholder string ([ba47f9d](https://github.com/Modern-Treasury/modern-treasury-go/commit/ba47f9d5b80caf877fa7bc5f0c5c607157f79899))
+
 ## 2.41.0 (2026-03-05)
 
 Full Changelog: [v2.40.0...v2.41.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.40.0...v2.41.0)
