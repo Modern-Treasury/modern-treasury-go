@@ -52,7 +52,7 @@ func (r *PaymentOrderService) New(ctx context.Context, body PaymentOrderNewParam
 	opts = slices.Concat(r.Options, opts)
 	path := "api/payment_orders"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get details on a single payment order
@@ -60,11 +60,11 @@ func (r *PaymentOrderService) Get(ctx context.Context, id string, opts ...option
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/payment_orders/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Update a payment order
@@ -72,11 +72,11 @@ func (r *PaymentOrderService) Update(ctx context.Context, id string, body Paymen
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/payment_orders/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of all payment orders
@@ -107,7 +107,7 @@ func (r *PaymentOrderService) NewAsync(ctx context.Context, body PaymentOrderNew
 	opts = slices.Concat(r.Options, opts)
 	path := "api/payment_orders/create_async"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type ContactDetailCreateRequestParam struct {

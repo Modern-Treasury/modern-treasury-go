@@ -44,7 +44,7 @@ func (r *CounterpartyService) New(ctx context.Context, body CounterpartyNewParam
 	opts = slices.Concat(r.Options, opts)
 	path := "api/counterparties"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get details on a single counterparty.
@@ -52,11 +52,11 @@ func (r *CounterpartyService) Get(ctx context.Context, id string, opts ...option
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/counterparties/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Updates a given counterparty with new information.
@@ -64,11 +64,11 @@ func (r *CounterpartyService) Update(ctx context.Context, id string, body Counte
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/counterparties/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a paginated list of all counterparties.
@@ -100,11 +100,11 @@ func (r *CounterpartyService) Delete(ctx context.Context, id string, opts ...opt
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("api/counterparties/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return
+	return err
 }
 
 // Send an email requesting account details.
@@ -112,11 +112,11 @@ func (r *CounterpartyService) CollectAccount(ctx context.Context, id string, bod
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/counterparties/%s/collect_account", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type Counterparty struct {

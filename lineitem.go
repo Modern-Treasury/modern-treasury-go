@@ -43,15 +43,15 @@ func (r *LineItemService) Get(ctx context.Context, itemizableType LineItemGetPar
 	opts = slices.Concat(r.Options, opts)
 	if itemizableID == "" {
 		err = errors.New("missing required itemizable_id parameter")
-		return
+		return nil, err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/%v/%s/line_items/%s", itemizableType, itemizableID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // update line item
@@ -59,15 +59,15 @@ func (r *LineItemService) Update(ctx context.Context, itemizableType LineItemUpd
 	opts = slices.Concat(r.Options, opts)
 	if itemizableID == "" {
 		err = errors.New("missing required itemizable_id parameter")
-		return
+		return nil, err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/%v/%s/line_items/%s", itemizableType, itemizableID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of line items
@@ -77,7 +77,7 @@ func (r *LineItemService) List(ctx context.Context, itemizableType LineItemListP
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if itemizableID == "" {
 		err = errors.New("missing required itemizable_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/%v/%s/line_items", itemizableType, itemizableID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

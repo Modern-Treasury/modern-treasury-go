@@ -44,7 +44,7 @@ func (r *BulkRequestService) New(ctx context.Context, body BulkRequestNewParams,
 	opts = slices.Concat(r.Options, opts)
 	path := "api/bulk_requests"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // get bulk_request
@@ -52,11 +52,11 @@ func (r *BulkRequestService) Get(ctx context.Context, id string, opts ...option.
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/bulk_requests/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // list bulk_requests

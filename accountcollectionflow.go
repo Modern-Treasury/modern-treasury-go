@@ -43,7 +43,7 @@ func (r *AccountCollectionFlowService) New(ctx context.Context, body AccountColl
 	opts = slices.Concat(r.Options, opts)
 	path := "api/account_collection_flows"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // get account_collection_flow
@@ -51,11 +51,11 @@ func (r *AccountCollectionFlowService) Get(ctx context.Context, id string, opts 
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/account_collection_flows/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // update account_collection_flow
@@ -63,11 +63,11 @@ func (r *AccountCollectionFlowService) Update(ctx context.Context, id string, bo
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/account_collection_flows/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // list account_collection_flows

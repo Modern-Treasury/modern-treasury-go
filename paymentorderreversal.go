@@ -44,11 +44,11 @@ func (r *PaymentOrderReversalService) New(ctx context.Context, paymentOrderID st
 	opts = slices.Concat(r.Options, opts)
 	if paymentOrderID == "" {
 		err = errors.New("missing required payment_order_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/payment_orders/%s/reversals", paymentOrderID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get details on a single reversal of a payment order.
@@ -56,15 +56,15 @@ func (r *PaymentOrderReversalService) Get(ctx context.Context, paymentOrderID st
 	opts = slices.Concat(r.Options, opts)
 	if paymentOrderID == "" {
 		err = errors.New("missing required payment_order_id parameter")
-		return
+		return nil, err
 	}
 	if reversalID == "" {
 		err = errors.New("missing required reversal_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/payment_orders/%s/reversals/%s", paymentOrderID, reversalID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of all reversals of a payment order.
@@ -74,7 +74,7 @@ func (r *PaymentOrderReversalService) List(ctx context.Context, paymentOrderID s
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if paymentOrderID == "" {
 		err = errors.New("missing required payment_order_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/payment_orders/%s/reversals", paymentOrderID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)

@@ -43,7 +43,7 @@ func (r *PaymentActionService) New(ctx context.Context, body PaymentActionNewPar
 	opts = slices.Concat(r.Options, opts)
 	path := "api/payment_actions"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get details on a single payment action.
@@ -51,11 +51,11 @@ func (r *PaymentActionService) Get(ctx context.Context, id string, opts ...optio
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/payment_actions/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Update a single payment action.
@@ -63,11 +63,11 @@ func (r *PaymentActionService) Update(ctx context.Context, id string, body Payme
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/payment_actions/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of all payment actions.

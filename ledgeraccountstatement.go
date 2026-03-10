@@ -41,7 +41,7 @@ func (r *LedgerAccountStatementService) New(ctx context.Context, body LedgerAcco
 	opts = slices.Concat(r.Options, opts)
 	path := "api/ledger_account_statements"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get details on a single ledger account statement.
@@ -49,11 +49,11 @@ func (r *LedgerAccountStatementService) Get(ctx context.Context, id string, opts
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/ledger_account_statements/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 type LedgerAccountStatementNewResponse struct {

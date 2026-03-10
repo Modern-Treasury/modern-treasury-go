@@ -45,7 +45,7 @@ func (r *LedgerAccountSettlementService) New(ctx context.Context, body LedgerAcc
 	opts = slices.Concat(r.Options, opts)
 	path := "api/ledger_account_settlements"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get details on a single ledger account settlement.
@@ -53,11 +53,11 @@ func (r *LedgerAccountSettlementService) Get(ctx context.Context, id string, opt
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/ledger_account_settlements/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Update the details of a ledger account settlement.
@@ -65,11 +65,11 @@ func (r *LedgerAccountSettlementService) Update(ctx context.Context, id string, 
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/ledger_account_settlements/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of ledger account settlements.

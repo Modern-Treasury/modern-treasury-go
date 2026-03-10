@@ -44,7 +44,7 @@ func (r *LegalEntityService) New(ctx context.Context, body LegalEntityNewParams,
 	opts = slices.Concat(r.Options, opts)
 	path := "api/legal_entities"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get details on a single legal entity.
@@ -52,11 +52,11 @@ func (r *LegalEntityService) Get(ctx context.Context, id string, opts ...option.
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/legal_entities/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Update a legal entity.
@@ -64,11 +64,11 @@ func (r *LegalEntityService) Update(ctx context.Context, id string, body LegalEn
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/legal_entities/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of all legal entities.

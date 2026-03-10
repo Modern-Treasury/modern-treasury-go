@@ -44,11 +44,11 @@ func (r *AccountDetailService) New(ctx context.Context, accountsType AccountDeta
 	opts = slices.Concat(r.Options, opts)
 	if accountID == "" {
 		err = errors.New("missing required account_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/%v/%s/account_details", accountsType, accountID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a single account detail for a single internal or external account.
@@ -56,15 +56,15 @@ func (r *AccountDetailService) Get(ctx context.Context, accountsType shared.Acco
 	opts = slices.Concat(r.Options, opts)
 	if accountID == "" {
 		err = errors.New("missing required account_id parameter")
-		return
+		return nil, err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/%v/%s/account_details/%s", accountsType, accountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of account details for a single internal or external account.
@@ -74,7 +74,7 @@ func (r *AccountDetailService) List(ctx context.Context, accountsType shared.Acc
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if accountID == "" {
 		err = errors.New("missing required account_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/%v/%s/account_details", accountsType, accountID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -100,15 +100,15 @@ func (r *AccountDetailService) Delete(ctx context.Context, accountsType AccountD
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if accountID == "" {
 		err = errors.New("missing required account_id parameter")
-		return
+		return err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("api/%v/%s/account_details/%s", accountsType, accountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return
+	return err
 }
 
 type AccountDetail struct {

@@ -39,7 +39,7 @@ func (r *LegalEntityAssociationService) New(ctx context.Context, body LegalEntit
 	opts = slices.Concat(r.Options, opts)
 	path := "api/legal_entity_associations"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type ChildLegalEntity struct {

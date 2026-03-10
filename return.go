@@ -44,7 +44,7 @@ func (r *ReturnService) New(ctx context.Context, body ReturnNewParams, opts ...o
 	opts = slices.Concat(r.Options, opts)
 	path := "api/returns"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a single return.
@@ -52,11 +52,11 @@ func (r *ReturnService) Get(ctx context.Context, id string, opts ...option.Reque
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/returns/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of returns.
