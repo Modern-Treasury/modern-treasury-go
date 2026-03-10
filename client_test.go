@@ -39,7 +39,7 @@ func TestUserAgentHeader(t *testing.T) {
 			},
 		}),
 	)
-	client.Counterparties.New(context.Background(), moderntreasury.CounterpartyNewParams{
+	_, _ = client.Counterparties.New(context.Background(), moderntreasury.CounterpartyNewParams{
 		Name: moderntreasury.F("my first counterparty"),
 	})
 	if userAgent != fmt.Sprintf("ModernTreasury/Go %s", internal.PackageVersion) {
