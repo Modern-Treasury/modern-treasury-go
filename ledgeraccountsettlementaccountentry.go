@@ -41,11 +41,11 @@ func (r *LedgerAccountSettlementAccountEntryService) Update(ctx context.Context,
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("api/ledger_account_settlements/%s/ledger_entries", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, nil, opts...)
-	return
+	return err
 }
 
 // Remove ledger entries from a draft ledger account settlement.
@@ -54,11 +54,11 @@ func (r *LedgerAccountSettlementAccountEntryService) Delete(ctx context.Context,
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("api/ledger_account_settlements/%s/ledger_entries", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, body, nil, opts...)
-	return
+	return err
 }
 
 type LedgerAccountSettlementAccountEntryUpdateParams struct {

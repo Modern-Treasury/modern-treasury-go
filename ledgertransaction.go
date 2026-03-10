@@ -46,7 +46,7 @@ func (r *LedgerTransactionService) New(ctx context.Context, body LedgerTransacti
 	opts = slices.Concat(r.Options, opts)
 	path := "api/ledger_transactions"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get details on a single ledger transaction.
@@ -54,11 +54,11 @@ func (r *LedgerTransactionService) Get(ctx context.Context, id string, opts ...o
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/ledger_transactions/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Update the details of a ledger transaction.
@@ -66,11 +66,11 @@ func (r *LedgerTransactionService) Update(ctx context.Context, id string, body L
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/ledger_transactions/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of ledger transactions.
@@ -101,11 +101,11 @@ func (r *LedgerTransactionService) NewPartialPost(ctx context.Context, id string
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/ledger_transactions/%s/partial_post", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Create a ledger transaction reversal.
@@ -113,11 +113,11 @@ func (r *LedgerTransactionService) NewReversal(ctx context.Context, id string, b
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/ledger_transactions/%s/reversal", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type LedgerTransaction struct {

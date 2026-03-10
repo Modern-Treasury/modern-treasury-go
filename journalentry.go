@@ -41,11 +41,11 @@ func (r *JournalEntryService) Get(ctx context.Context, id string, opts ...option
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("api/journal_entries/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, nil, opts...)
-	return
+	return err
 }
 
 // Retrieve a list of journal entries
@@ -54,7 +54,7 @@ func (r *JournalEntryService) List(ctx context.Context, query JournalEntryListPa
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "api/journal_entries"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, nil, opts...)
-	return
+	return err
 }
 
 type JournalEntryListParams struct {

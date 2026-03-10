@@ -44,11 +44,11 @@ func (r *InternalAccountBalanceReportService) New(ctx context.Context, internalA
 	opts = slices.Concat(r.Options, opts)
 	if internalAccountID == "" {
 		err = errors.New("missing required internal_account_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports", internalAccountID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a single balance report for a given internal account.
@@ -56,11 +56,11 @@ func (r *InternalAccountBalanceReportService) Get(ctx context.Context, internalA
 	opts = slices.Concat(r.Options, opts)
 	if internalAccountID == "" {
 		err = errors.New("missing required internal_account_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports/%v", internalAccountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Get all balance reports for a given internal account.
@@ -70,7 +70,7 @@ func (r *InternalAccountBalanceReportService) List(ctx context.Context, internal
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if internalAccountID == "" {
 		err = errors.New("missing required internal_account_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports", internalAccountID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -96,15 +96,15 @@ func (r *InternalAccountBalanceReportService) Delete(ctx context.Context, intern
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if internalAccountID == "" {
 		err = errors.New("missing required internal_account_id parameter")
-		return
+		return err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("api/internal_accounts/%s/balance_reports/%s", internalAccountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return
+	return err
 }
 
 type BalanceReport struct {

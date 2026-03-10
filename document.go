@@ -47,7 +47,7 @@ func (r *DocumentService) New(ctx context.Context, body DocumentNewParams, opts 
 	opts = slices.Concat(r.Options, opts)
 	path := "api/documents"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get an existing document.
@@ -55,11 +55,11 @@ func (r *DocumentService) Get(ctx context.Context, id string, opts ...option.Req
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/documents/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of documents.

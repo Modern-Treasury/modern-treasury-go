@@ -43,7 +43,7 @@ func (r *LedgerService) New(ctx context.Context, body LedgerNewParams, opts ...o
 	opts = slices.Concat(r.Options, opts)
 	path := "api/ledgers"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get details on a single ledger.
@@ -51,11 +51,11 @@ func (r *LedgerService) Get(ctx context.Context, id string, opts ...option.Reque
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/ledgers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Update the details of a ledger.
@@ -63,11 +63,11 @@ func (r *LedgerService) Update(ctx context.Context, id string, body LedgerUpdate
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/ledgers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of ledgers.
@@ -98,11 +98,11 @@ func (r *LedgerService) Delete(ctx context.Context, id string, opts ...option.Re
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/ledgers/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 type Ledger struct {

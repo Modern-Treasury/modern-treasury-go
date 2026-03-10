@@ -43,11 +43,11 @@ func (r *InvoiceLineItemService) New(ctx context.Context, invoiceID string, body
 	opts = slices.Concat(r.Options, opts)
 	if invoiceID == "" {
 		err = errors.New("missing required invoice_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/invoices/%s/invoice_line_items", invoiceID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // get invoice_line_item
@@ -55,15 +55,15 @@ func (r *InvoiceLineItemService) Get(ctx context.Context, invoiceID string, id s
 	opts = slices.Concat(r.Options, opts)
 	if invoiceID == "" {
 		err = errors.New("missing required invoice_id parameter")
-		return
+		return nil, err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/invoices/%s/invoice_line_items/%s", invoiceID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // update invoice_line_item
@@ -71,15 +71,15 @@ func (r *InvoiceLineItemService) Update(ctx context.Context, invoiceID string, i
 	opts = slices.Concat(r.Options, opts)
 	if invoiceID == "" {
 		err = errors.New("missing required invoice_id parameter")
-		return
+		return nil, err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/invoices/%s/invoice_line_items/%s", invoiceID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // list invoice_line_items
@@ -89,7 +89,7 @@ func (r *InvoiceLineItemService) List(ctx context.Context, invoiceID string, que
 	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
 	if invoiceID == "" {
 		err = errors.New("missing required invoice_id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/invoices/%s/invoice_line_items", invoiceID)
 	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
@@ -114,15 +114,15 @@ func (r *InvoiceLineItemService) Delete(ctx context.Context, invoiceID string, i
 	opts = slices.Concat(r.Options, opts)
 	if invoiceID == "" {
 		err = errors.New("missing required invoice_id parameter")
-		return
+		return nil, err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/invoices/%s/invoice_line_items/%s", invoiceID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 type InvoiceLineItem struct {

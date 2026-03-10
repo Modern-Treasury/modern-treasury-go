@@ -44,7 +44,7 @@ func (r *VirtualAccountService) New(ctx context.Context, body VirtualAccountNewP
 	opts = slices.Concat(r.Options, opts)
 	path := "api/virtual_accounts"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // get virtual_account
@@ -52,11 +52,11 @@ func (r *VirtualAccountService) Get(ctx context.Context, id string, opts ...opti
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/virtual_accounts/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // update virtual_account
@@ -64,11 +64,11 @@ func (r *VirtualAccountService) Update(ctx context.Context, id string, body Virt
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/virtual_accounts/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of virtual accounts.
@@ -99,11 +99,11 @@ func (r *VirtualAccountService) Delete(ctx context.Context, id string, opts ...o
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/virtual_accounts/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 type VirtualAccount struct {
