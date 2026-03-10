@@ -165,8 +165,11 @@ type ChildLegalEntityCreateParam struct {
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
-	DateOfBirth          param.Field[time.Time] `json:"date_of_birth" format:"date"`
-	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
+	DateOfBirth param.Field[time.Time] `json:"date_of_birth" format:"date"`
+	// A list of documents to attach to the legal entity (e.g. articles of
+	// incorporation, certificate of good standing, proof of address).
+	Documents            param.Field[[]ChildLegalEntityCreateDocumentParam] `json:"documents"`
+	DoingBusinessAsNames param.Field[[]string]                              `json:"doing_business_as_names"`
 	// The entity's primary email.
 	Email param.Field[string] `json:"email"`
 	// Monthly expected transaction volume in USD.
@@ -228,6 +231,39 @@ type ChildLegalEntityCreateParam struct {
 
 func (r ChildLegalEntityCreateParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type ChildLegalEntityCreateDocumentParam struct {
+	// A category given to the document, can be `null`.
+	DocumentType param.Field[ChildLegalEntityCreateDocumentsDocumentType] `json:"document_type" api:"required"`
+	// Base64-encoded file content for the document.
+	FileData param.Field[string] `json:"file_data" api:"required"`
+	// The original filename of the document.
+	Filename param.Field[string] `json:"filename"`
+}
+
+func (r ChildLegalEntityCreateDocumentParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A category given to the document, can be `null`.
+type ChildLegalEntityCreateDocumentsDocumentType string
+
+const (
+	ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation   ChildLegalEntityCreateDocumentsDocumentType = "articles_of_incorporation"
+	ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding ChildLegalEntityCreateDocumentsDocumentType = "certificate_of_good_standing"
+	ChildLegalEntityCreateDocumentsDocumentTypeEinLetter                 ChildLegalEntityCreateDocumentsDocumentType = "ein_letter"
+	ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack        ChildLegalEntityCreateDocumentsDocumentType = "identification_back"
+	ChildLegalEntityCreateDocumentsDocumentTypeIdentificationFront       ChildLegalEntityCreateDocumentsDocumentType = "identification_front"
+	ChildLegalEntityCreateDocumentsDocumentTypeProofOfAddress            ChildLegalEntityCreateDocumentsDocumentType = "proof_of_address"
+)
+
+func (r ChildLegalEntityCreateDocumentsDocumentType) IsKnown() bool {
+	switch r {
+	case ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation, ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding, ChildLegalEntityCreateDocumentsDocumentTypeEinLetter, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationFront, ChildLegalEntityCreateDocumentsDocumentTypeProofOfAddress:
+		return true
+	}
+	return false
 }
 
 // The type of legal entity.
@@ -680,6 +716,8 @@ type IdentificationCreateRequestParam struct {
 	IDNumber param.Field[string] `json:"id_number" api:"required"`
 	// The type of ID number.
 	IDType param.Field[IdentificationCreateRequestIDType] `json:"id_type" api:"required"`
+	// A list of documents to attach to the identification.
+	Documents param.Field[[]IdentificationCreateRequestDocumentParam] `json:"documents"`
 	// The date when the Identification is no longer considered valid by the issuing
 	// authority.
 	ExpirationDate param.Field[time.Time] `json:"expiration_date" format:"date"`
@@ -726,6 +764,39 @@ const (
 func (r IdentificationCreateRequestIDType) IsKnown() bool {
 	switch r {
 	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeVnTin:
+		return true
+	}
+	return false
+}
+
+type IdentificationCreateRequestDocumentParam struct {
+	// A category given to the document, can be `null`.
+	DocumentType param.Field[IdentificationCreateRequestDocumentsDocumentType] `json:"document_type" api:"required"`
+	// Base64-encoded file content for the document.
+	FileData param.Field[string] `json:"file_data" api:"required"`
+	// The original filename of the document.
+	Filename param.Field[string] `json:"filename"`
+}
+
+func (r IdentificationCreateRequestDocumentParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A category given to the document, can be `null`.
+type IdentificationCreateRequestDocumentsDocumentType string
+
+const (
+	IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation   IdentificationCreateRequestDocumentsDocumentType = "articles_of_incorporation"
+	IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding IdentificationCreateRequestDocumentsDocumentType = "certificate_of_good_standing"
+	IdentificationCreateRequestDocumentsDocumentTypeEinLetter                 IdentificationCreateRequestDocumentsDocumentType = "ein_letter"
+	IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack        IdentificationCreateRequestDocumentsDocumentType = "identification_back"
+	IdentificationCreateRequestDocumentsDocumentTypeIdentificationFront       IdentificationCreateRequestDocumentsDocumentType = "identification_front"
+	IdentificationCreateRequestDocumentsDocumentTypeProofOfAddress            IdentificationCreateRequestDocumentsDocumentType = "proof_of_address"
+)
+
+func (r IdentificationCreateRequestDocumentsDocumentType) IsKnown() bool {
+	switch r {
+	case IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation, IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding, IdentificationCreateRequestDocumentsDocumentTypeEinLetter, IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack, IdentificationCreateRequestDocumentsDocumentTypeIdentificationFront, IdentificationCreateRequestDocumentsDocumentTypeProofOfAddress:
 		return true
 	}
 	return false
