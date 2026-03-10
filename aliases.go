@@ -33,6 +33,32 @@ type AsyncResponse = shared.AsyncResponse
 // This is an alias to an internal type.
 type ChildLegalEntityCreateParam = shared.ChildLegalEntityCreateParam
 
+// This is an alias to an internal type.
+type ChildLegalEntityCreateDocumentParam = shared.ChildLegalEntityCreateDocumentParam
+
+// A category given to the document, can be `null`.
+//
+// This is an alias to an internal type.
+type ChildLegalEntityCreateDocumentsDocumentType = shared.ChildLegalEntityCreateDocumentsDocumentType
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation = shared.ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding = shared.ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateDocumentsDocumentTypeEinLetter = shared.ChildLegalEntityCreateDocumentsDocumentTypeEinLetter
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack = shared.ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateDocumentsDocumentTypeIdentificationFront = shared.ChildLegalEntityCreateDocumentsDocumentTypeIdentificationFront
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateDocumentsDocumentTypeProofOfAddress = shared.ChildLegalEntityCreateDocumentsDocumentTypeProofOfAddress
+
 // The type of legal entity.
 //
 // This is an alias to an internal type.
@@ -810,6 +836,32 @@ const IdentificationCreateRequestIDTypeUsSsn = shared.IdentificationCreateReques
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeVnTin = shared.IdentificationCreateRequestIDTypeVnTin
+
+// This is an alias to an internal type.
+type IdentificationCreateRequestDocumentParam = shared.IdentificationCreateRequestDocumentParam
+
+// A category given to the document, can be `null`.
+//
+// This is an alias to an internal type.
+type IdentificationCreateRequestDocumentsDocumentType = shared.IdentificationCreateRequestDocumentsDocumentType
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation = shared.IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding = shared.IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestDocumentsDocumentTypeEinLetter = shared.IdentificationCreateRequestDocumentsDocumentTypeEinLetter
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack = shared.IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestDocumentsDocumentTypeIdentificationFront = shared.IdentificationCreateRequestDocumentsDocumentTypeIdentificationFront
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestDocumentsDocumentTypeProofOfAddress = shared.IdentificationCreateRequestDocumentsDocumentTypeProofOfAddress
 
 // This is an alias to an internal type.
 type LedgerAccountCreateRequestParam = shared.LedgerAccountCreateRequestParam
