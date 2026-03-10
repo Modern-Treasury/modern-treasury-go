@@ -44,7 +44,7 @@ func (r *ExpectedPaymentService) New(ctx context.Context, body ExpectedPaymentNe
 	opts = slices.Concat(r.Options, opts)
 	path := "api/expected_payments"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // get expected payment
@@ -52,11 +52,11 @@ func (r *ExpectedPaymentService) Get(ctx context.Context, id string, opts ...opt
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/expected_payments/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // update expected payment
@@ -64,11 +64,11 @@ func (r *ExpectedPaymentService) Update(ctx context.Context, id string, body Exp
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/expected_payments/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // list expected_payments
@@ -99,11 +99,11 @@ func (r *ExpectedPaymentService) Delete(ctx context.Context, id string, opts ...
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/expected_payments/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 type ExpectedPayment struct {

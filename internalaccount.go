@@ -46,7 +46,7 @@ func (r *InternalAccountService) New(ctx context.Context, body InternalAccountNe
 	opts = slices.Concat(r.Options, opts)
 	path := "api/internal_accounts"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // get internal account
@@ -54,11 +54,11 @@ func (r *InternalAccountService) Get(ctx context.Context, id string, opts ...opt
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/internal_accounts/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // update internal account
@@ -66,11 +66,11 @@ func (r *InternalAccountService) Update(ctx context.Context, id string, body Int
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/internal_accounts/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // list internal accounts
@@ -101,11 +101,11 @@ func (r *InternalAccountService) RequestClosure(ctx context.Context, id string, 
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/internal_accounts/%s/request_closure", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // update account_capability
@@ -113,15 +113,15 @@ func (r *InternalAccountService) UpdateAccountCapability(ctx context.Context, in
 	opts = slices.Concat(r.Options, opts)
 	if internalAccountID == "" {
 		err = errors.New("missing required internal_account_id parameter")
-		return
+		return nil, err
 	}
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/internal_accounts/%s/account_capabilities/%s", internalAccountID, id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type InternalAccount struct {

@@ -204,5 +204,5 @@ func (r *Client) Ping(ctx context.Context, opts ...option.RequestOption) (res *P
 	opts = slices.Concat(r.Options, opts)
 	path := "api/ping"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }

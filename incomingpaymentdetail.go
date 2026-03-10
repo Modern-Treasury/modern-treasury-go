@@ -44,11 +44,11 @@ func (r *IncomingPaymentDetailService) Get(ctx context.Context, id string, opts 
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/incoming_payment_details/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Update an existing Incoming Payment Detail.
@@ -56,11 +56,11 @@ func (r *IncomingPaymentDetailService) Update(ctx context.Context, id string, bo
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/incoming_payment_details/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of Incoming Payment Details.
@@ -91,7 +91,7 @@ func (r *IncomingPaymentDetailService) NewAsync(ctx context.Context, body Incomi
 	opts = slices.Concat(r.Options, opts)
 	path := "api/simulations/incoming_payment_details/create_async"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type IncomingPaymentDetail struct {

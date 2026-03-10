@@ -43,7 +43,7 @@ func (r *HoldService) New(ctx context.Context, body HoldNewParams, opts ...optio
 	opts = slices.Concat(r.Options, opts)
 	path := "api/holds"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a specific hold
@@ -51,11 +51,11 @@ func (r *HoldService) Get(ctx context.Context, id string, opts ...option.Request
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/holds/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Update a hold
@@ -63,11 +63,11 @@ func (r *HoldService) Update(ctx context.Context, id string, body HoldUpdatePara
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/holds/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of holds.

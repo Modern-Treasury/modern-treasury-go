@@ -41,7 +41,7 @@ func (r *ValidationService) ValidateRoutingNumber(ctx context.Context, query Val
 	opts = slices.Concat(r.Options, opts)
 	path := "api/validations/routing_numbers"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	return res, err
 }
 
 type RoutingNumberLookupRequest struct {

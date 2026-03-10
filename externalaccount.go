@@ -46,7 +46,7 @@ func (r *ExternalAccountService) New(ctx context.Context, body ExternalAccountNe
 	opts = slices.Concat(r.Options, opts)
 	path := "api/external_accounts"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // show external account
@@ -54,11 +54,11 @@ func (r *ExternalAccountService) Get(ctx context.Context, id string, opts ...opt
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/external_accounts/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // update external account
@@ -66,11 +66,11 @@ func (r *ExternalAccountService) Update(ctx context.Context, id string, body Ext
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/external_accounts/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // list external accounts
@@ -102,11 +102,11 @@ func (r *ExternalAccountService) Delete(ctx context.Context, id string, opts ...
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("api/external_accounts/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return
+	return err
 }
 
 // complete verification of external account
@@ -114,11 +114,11 @@ func (r *ExternalAccountService) CompleteVerification(ctx context.Context, id st
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/external_accounts/%s/complete_verification", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // verify external account
@@ -126,11 +126,11 @@ func (r *ExternalAccountService) Verify(ctx context.Context, id string, body Ext
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/external_accounts/%s/verify", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 type ExternalAccount struct {

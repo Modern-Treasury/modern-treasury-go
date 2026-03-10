@@ -44,7 +44,7 @@ func (r *LedgerAccountCategoryService) New(ctx context.Context, body LedgerAccou
 	opts = slices.Concat(r.Options, opts)
 	path := "api/ledger_account_categories"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get the details on a single ledger account category.
@@ -52,11 +52,11 @@ func (r *LedgerAccountCategoryService) Get(ctx context.Context, id string, query
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return
+	return res, err
 }
 
 // Update the details of a ledger account category.
@@ -64,11 +64,11 @@ func (r *LedgerAccountCategoryService) Update(ctx context.Context, id string, bo
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return
+	return res, err
 }
 
 // Get a list of ledger account categories.
@@ -99,11 +99,11 @@ func (r *LedgerAccountCategoryService) Delete(ctx context.Context, id string, op
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return nil, err
 	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s", id)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return
+	return res, err
 }
 
 // Add a ledger account to a ledger account category.
@@ -112,15 +112,15 @@ func (r *LedgerAccountCategoryService) AddLedgerAccount(ctx context.Context, id 
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return err
 	}
 	if ledgerAccountID == "" {
 		err = errors.New("missing required ledger_account_id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_accounts/%s", id, ledgerAccountID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, nil, nil, opts...)
-	return
+	return err
 }
 
 // Add a ledger account category to a ledger account category.
@@ -129,15 +129,15 @@ func (r *LedgerAccountCategoryService) AddNestedCategory(ctx context.Context, id
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return err
 	}
 	if subCategoryID == "" {
 		err = errors.New("missing required sub_category_id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_account_categories/%s", id, subCategoryID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, nil, nil, opts...)
-	return
+	return err
 }
 
 // Remove a ledger account from a ledger account category.
@@ -146,15 +146,15 @@ func (r *LedgerAccountCategoryService) RemoveLedgerAccount(ctx context.Context, 
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return err
 	}
 	if ledgerAccountID == "" {
 		err = errors.New("missing required ledger_account_id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_accounts/%s", id, ledgerAccountID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return
+	return err
 }
 
 // Delete a ledger account category from a ledger account category.
@@ -163,15 +163,15 @@ func (r *LedgerAccountCategoryService) RemoveNestedCategory(ctx context.Context,
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	if id == "" {
 		err = errors.New("missing required id parameter")
-		return
+		return err
 	}
 	if subCategoryID == "" {
 		err = errors.New("missing required sub_category_id parameter")
-		return
+		return err
 	}
 	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_account_categories/%s", id, subCategoryID)
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return
+	return err
 }
 
 type LedgerAccountCategory struct {
