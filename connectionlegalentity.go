@@ -195,8 +195,11 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
 	// An individual's date of birth (YYYY-MM-DD).
-	DateOfBirth          param.Field[time.Time] `json:"date_of_birth" format:"date"`
-	DoingBusinessAsNames param.Field[[]string]  `json:"doing_business_as_names"`
+	DateOfBirth param.Field[time.Time] `json:"date_of_birth" format:"date"`
+	// A list of documents to attach to the legal entity (e.g. articles of
+	// incorporation, certificate of good standing, proof of address).
+	Documents            param.Field[[]ConnectionLegalEntityNewParamsLegalEntityDocument] `json:"documents"`
+	DoingBusinessAsNames param.Field[[]string]                                            `json:"doing_business_as_names"`
 	// The entity's primary email.
 	Email param.Field[string] `json:"email"`
 	// Monthly expected transaction volume in USD.
@@ -258,6 +261,39 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 
 func (r ConnectionLegalEntityNewParamsLegalEntity) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type ConnectionLegalEntityNewParamsLegalEntityDocument struct {
+	// A category given to the document, can be `null`.
+	DocumentType param.Field[ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentType] `json:"document_type" api:"required"`
+	// Base64-encoded file content for the document.
+	FileData param.Field[string] `json:"file_data" api:"required"`
+	// The original filename of the document.
+	Filename param.Field[string] `json:"filename"`
+}
+
+func (r ConnectionLegalEntityNewParamsLegalEntityDocument) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// A category given to the document, can be `null`.
+type ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentType string
+
+const (
+	ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeArticlesOfIncorporation   ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentType = "articles_of_incorporation"
+	ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeCertificateOfGoodStanding ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentType = "certificate_of_good_standing"
+	ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeEinLetter                 ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentType = "ein_letter"
+	ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeIdentificationBack        ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentType = "identification_back"
+	ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeIdentificationFront       ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentType = "identification_front"
+	ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeProofOfAddress            ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentType = "proof_of_address"
+)
+
+func (r ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentType) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeArticlesOfIncorporation, ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeCertificateOfGoodStanding, ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeEinLetter, ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeIdentificationBack, ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeIdentificationFront, ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeProofOfAddress:
+		return true
+	}
+	return false
 }
 
 // The type of legal entity.
