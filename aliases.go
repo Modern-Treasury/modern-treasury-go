@@ -662,6 +662,9 @@ const CurrencyUsdb = shared.CurrencyUsdb
 const CurrencyUsdc = shared.CurrencyUsdc
 
 // This is an alias to an internal value.
+const CurrencyUsdg = shared.CurrencyUsdg
+
+// This is an alias to an internal value.
 const CurrencyUsdp = shared.CurrencyUsdp
 
 // This is an alias to an internal value.
