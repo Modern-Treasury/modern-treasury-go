@@ -44,10 +44,13 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 			PaymentType: moderntreasury.F(moderntreasury.InternalAccountNewParamsAccountCapabilitiesPaymentTypeACH),
 			UpdatedAt:   moderntreasury.F(time.Now()),
 		}}),
-		AccountType:     moderntreasury.F(moderntreasury.InternalAccountNewParamsAccountTypeChecking),
-		CounterpartyID:  moderntreasury.F("counterparty_id"),
-		ExternalID:      moderntreasury.F("external_id"),
-		LegalEntityID:   moderntreasury.F("legal_entity_id"),
+		AccountType:    moderntreasury.F(moderntreasury.InternalAccountNewParamsAccountTypeChecking),
+		CounterpartyID: moderntreasury.F("counterparty_id"),
+		ExternalID:     moderntreasury.F("external_id"),
+		LegalEntityID:  moderntreasury.F("legal_entity_id"),
+		Metadata: moderntreasury.F(map[string]string{
+			"foo": "string",
+		}),
 		ParentAccountID: moderntreasury.F("parent_account_id"),
 		PartyAddress: moderntreasury.F(moderntreasury.InternalAccountNewParamsPartyAddress{
 			Country:    moderntreasury.F("country"),

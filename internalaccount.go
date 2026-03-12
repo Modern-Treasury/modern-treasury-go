@@ -493,6 +493,9 @@ type InternalAccountNewParams struct {
 	ExternalID param.Field[string] `json:"external_id"`
 	// The LegalEntity associated to this account.
 	LegalEntityID param.Field[string] `json:"legal_entity_id"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
 	// The parent internal account of this new account.
 	ParentAccountID param.Field[string] `json:"parent_account_id"`
 	// The address associated with the owner or null.
