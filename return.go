@@ -601,6 +601,10 @@ type ReturnNewParams struct {
 	// If the return code is `R14` or `R15` this is the date the deceased counterparty
 	// passed away.
 	DateOfDeath param.Field[time.Time] `json:"date_of_death" format:"date"`
+	// Specifies a ledger transaction object that will be created with the return. If
+	// the ledger transaction cannot be created, then the return creation will fail.
+	// The resulting ledger transaction will mirror the status of the return.
+	LedgerTransaction param.Field[shared.LedgerTransactionCreateRequestParam] `json:"ledger_transaction"`
 	// An optional description of the reason for the return. This is for internal usage
 	// and will not be transmitted to the bank.”
 	Reason param.Field[string] `json:"reason"`

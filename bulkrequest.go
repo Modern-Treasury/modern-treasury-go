@@ -420,6 +420,10 @@ type BulkRequestNewParamsResource struct {
 	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
 	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	Type param.Field[PaymentOrderType] `json:"type"`
+	// The ultimate originating account ID. Can be a `virtual_account` or
+	// `internal_account`.
+	UltimateOriginatingAccountID    param.Field[string]      `json:"ultimate_originating_account_id" format:"uuid"`
+	UltimateOriginatingPartyAddress param.Field[interface{}] `json:"ultimate_originating_party_address"`
 	// Identifier of the ultimate originator of the payment order.
 	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
 	// Name of the ultimate originator of the payment order.
@@ -427,7 +431,8 @@ type BulkRequestNewParamsResource struct {
 	// Identifier of the ultimate funds recipient.
 	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
 	// Name of the ultimate funds recipient.
-	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
+	UltimateReceivingPartyName param.Field[string]      `json:"ultimate_receiving_party_name"`
+	VendorAttributes           param.Field[interface{}] `json:"vendor_attributes"`
 	// When applicable, the bank-given code that determines the transaction's category.
 	// For most banks this is the BAI2/BTRS transaction code.
 	VendorCode param.Field[string] `json:"vendor_code"`
@@ -589,6 +594,11 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	//
 	// Deprecated: deprecated
 	TransactionMonitoringEnabled param.Field[bool] `json:"transaction_monitoring_enabled"`
+	// The ultimate originating account ID. Can be a `virtual_account` or
+	// `internal_account`.
+	UltimateOriginatingAccountID param.Field[string] `json:"ultimate_originating_account_id" format:"uuid"`
+	// Address of the ultimate originator of the payment order.
+	UltimateOriginatingPartyAddress param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestUltimateOriginatingPartyAddress] `json:"ultimate_originating_party_address"`
 	// Identifier of the ultimate originator of the payment order.
 	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
 	// Name of the ultimate originator of the payment order.
@@ -597,6 +607,9 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
 	// Name of the ultimate funds recipient.
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
+	// Additional vendor specific fields for this payment. Data must be represented as
+	// key-value pairs.
+	VendorAttributes param.Field[interface{}] `json:"vendor_attributes"`
 }
 
 func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest) MarshalJSON() (data []byte, err error) {
@@ -934,6 +947,24 @@ func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliatio
 		return true
 	}
 	return false
+}
+
+// Address of the ultimate originator of the payment order.
+type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestUltimateOriginatingPartyAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country param.Field[string] `json:"country"`
+	Line1   param.Field[string] `json:"line1"`
+	Line2   param.Field[string] `json:"line2"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code"`
+	// Region or State.
+	Region param.Field[string] `json:"region"`
+}
+
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestUltimateOriginatingPartyAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type BulkRequestNewParamsResourcesExpectedPaymentCreateRequest struct {
