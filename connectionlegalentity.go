@@ -183,6 +183,8 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
 	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
+	// Deprecated: deprecated
+	ComplianceDetails param.Field[interface{}] `json:"compliance_details"`
 	// The connection ID for the connection the legal entity is associated with.
 	// Defaults to the id of the connection designated with an is_default value of true
 	// or the id of an existing operational connection if only one is available. Pass
@@ -379,13 +381,14 @@ type ConnectionLegalEntityNewParamsLegalEntityStatus string
 const (
 	ConnectionLegalEntityNewParamsLegalEntityStatusActive    ConnectionLegalEntityNewParamsLegalEntityStatus = "active"
 	ConnectionLegalEntityNewParamsLegalEntityStatusClosed    ConnectionLegalEntityNewParamsLegalEntityStatus = "closed"
+	ConnectionLegalEntityNewParamsLegalEntityStatusDenied    ConnectionLegalEntityNewParamsLegalEntityStatus = "denied"
 	ConnectionLegalEntityNewParamsLegalEntityStatusPending   ConnectionLegalEntityNewParamsLegalEntityStatus = "pending"
 	ConnectionLegalEntityNewParamsLegalEntityStatusSuspended ConnectionLegalEntityNewParamsLegalEntityStatus = "suspended"
 )
 
 func (r ConnectionLegalEntityNewParamsLegalEntityStatus) IsKnown() bool {
 	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityStatusActive, ConnectionLegalEntityNewParamsLegalEntityStatusClosed, ConnectionLegalEntityNewParamsLegalEntityStatusPending, ConnectionLegalEntityNewParamsLegalEntityStatusSuspended:
+	case ConnectionLegalEntityNewParamsLegalEntityStatusActive, ConnectionLegalEntityNewParamsLegalEntityStatusClosed, ConnectionLegalEntityNewParamsLegalEntityStatusDenied, ConnectionLegalEntityNewParamsLegalEntityStatusPending, ConnectionLegalEntityNewParamsLegalEntityStatusSuspended:
 		return true
 	}
 	return false
