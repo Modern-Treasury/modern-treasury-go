@@ -153,6 +153,8 @@ type ChildLegalEntityCreateParam struct {
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
 	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
+	// Deprecated: deprecated
+	ComplianceDetails param.Field[interface{}] `json:"compliance_details"`
 	// The connection ID for the connection the legal entity is associated with.
 	// Defaults to the id of the connection designated with an is_default value of true
 	// or the id of an existing operational connection if only one is available. Pass
@@ -349,13 +351,14 @@ type ChildLegalEntityCreateStatus string
 const (
 	ChildLegalEntityCreateStatusActive    ChildLegalEntityCreateStatus = "active"
 	ChildLegalEntityCreateStatusClosed    ChildLegalEntityCreateStatus = "closed"
+	ChildLegalEntityCreateStatusDenied    ChildLegalEntityCreateStatus = "denied"
 	ChildLegalEntityCreateStatusPending   ChildLegalEntityCreateStatus = "pending"
 	ChildLegalEntityCreateStatusSuspended ChildLegalEntityCreateStatus = "suspended"
 )
 
 func (r ChildLegalEntityCreateStatus) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityCreateStatusActive, ChildLegalEntityCreateStatusClosed, ChildLegalEntityCreateStatusPending, ChildLegalEntityCreateStatusSuspended:
+	case ChildLegalEntityCreateStatusActive, ChildLegalEntityCreateStatusClosed, ChildLegalEntityCreateStatusDenied, ChildLegalEntityCreateStatusPending, ChildLegalEntityCreateStatusSuspended:
 		return true
 	}
 	return false

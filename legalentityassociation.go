@@ -459,13 +459,14 @@ type ChildLegalEntityStatus string
 const (
 	ChildLegalEntityStatusActive    ChildLegalEntityStatus = "active"
 	ChildLegalEntityStatusClosed    ChildLegalEntityStatus = "closed"
+	ChildLegalEntityStatusDenied    ChildLegalEntityStatus = "denied"
 	ChildLegalEntityStatusPending   ChildLegalEntityStatus = "pending"
 	ChildLegalEntityStatusSuspended ChildLegalEntityStatus = "suspended"
 )
 
 func (r ChildLegalEntityStatus) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityStatusActive, ChildLegalEntityStatusClosed, ChildLegalEntityStatusPending, ChildLegalEntityStatusSuspended:
+	case ChildLegalEntityStatusActive, ChildLegalEntityStatusClosed, ChildLegalEntityStatusDenied, ChildLegalEntityStatusPending, ChildLegalEntityStatusSuspended:
 		return true
 	}
 	return false

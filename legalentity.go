@@ -510,13 +510,14 @@ type LegalEntityStatus string
 const (
 	LegalEntityStatusActive    LegalEntityStatus = "active"
 	LegalEntityStatusClosed    LegalEntityStatus = "closed"
+	LegalEntityStatusDenied    LegalEntityStatus = "denied"
 	LegalEntityStatusPending   LegalEntityStatus = "pending"
 	LegalEntityStatusSuspended LegalEntityStatus = "suspended"
 )
 
 func (r LegalEntityStatus) IsKnown() bool {
 	switch r {
-	case LegalEntityStatusActive, LegalEntityStatusClosed, LegalEntityStatusPending, LegalEntityStatusSuspended:
+	case LegalEntityStatusActive, LegalEntityStatusClosed, LegalEntityStatusDenied, LegalEntityStatusPending, LegalEntityStatusSuspended:
 		return true
 	}
 	return false
@@ -574,7 +575,8 @@ type LegalEntityNewParams struct {
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
-	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
+	CitizenshipCountry param.Field[string]      `json:"citizenship_country"`
+	ComplianceDetails  param.Field[interface{}] `json:"compliance_details"`
 	// The connection ID for the connection the legal entity is associated with.
 	// Defaults to the id of the connection designated with an is_default value of true
 	// or the id of an existing operational connection if only one is available. Pass
@@ -769,13 +771,14 @@ type LegalEntityNewParamsStatus string
 const (
 	LegalEntityNewParamsStatusActive    LegalEntityNewParamsStatus = "active"
 	LegalEntityNewParamsStatusClosed    LegalEntityNewParamsStatus = "closed"
+	LegalEntityNewParamsStatusDenied    LegalEntityNewParamsStatus = "denied"
 	LegalEntityNewParamsStatusPending   LegalEntityNewParamsStatus = "pending"
 	LegalEntityNewParamsStatusSuspended LegalEntityNewParamsStatus = "suspended"
 )
 
 func (r LegalEntityNewParamsStatus) IsKnown() bool {
 	switch r {
-	case LegalEntityNewParamsStatusActive, LegalEntityNewParamsStatusClosed, LegalEntityNewParamsStatusPending, LegalEntityNewParamsStatusSuspended:
+	case LegalEntityNewParamsStatusActive, LegalEntityNewParamsStatusClosed, LegalEntityNewParamsStatusDenied, LegalEntityNewParamsStatusPending, LegalEntityNewParamsStatusSuspended:
 		return true
 	}
 	return false
@@ -952,13 +955,14 @@ type LegalEntityUpdateParamsStatus string
 const (
 	LegalEntityUpdateParamsStatusActive    LegalEntityUpdateParamsStatus = "active"
 	LegalEntityUpdateParamsStatusClosed    LegalEntityUpdateParamsStatus = "closed"
+	LegalEntityUpdateParamsStatusDenied    LegalEntityUpdateParamsStatus = "denied"
 	LegalEntityUpdateParamsStatusPending   LegalEntityUpdateParamsStatus = "pending"
 	LegalEntityUpdateParamsStatusSuspended LegalEntityUpdateParamsStatus = "suspended"
 )
 
 func (r LegalEntityUpdateParamsStatus) IsKnown() bool {
 	switch r {
-	case LegalEntityUpdateParamsStatusActive, LegalEntityUpdateParamsStatusClosed, LegalEntityUpdateParamsStatusPending, LegalEntityUpdateParamsStatusSuspended:
+	case LegalEntityUpdateParamsStatusActive, LegalEntityUpdateParamsStatusClosed, LegalEntityUpdateParamsStatusDenied, LegalEntityUpdateParamsStatusPending, LegalEntityUpdateParamsStatusSuspended:
 		return true
 	}
 	return false
@@ -1035,11 +1039,12 @@ const (
 	LegalEntityListParamsStatusActive    LegalEntityListParamsStatus = "active"
 	LegalEntityListParamsStatusSuspended LegalEntityListParamsStatus = "suspended"
 	LegalEntityListParamsStatusClosed    LegalEntityListParamsStatus = "closed"
+	LegalEntityListParamsStatusDenied    LegalEntityListParamsStatus = "denied"
 )
 
 func (r LegalEntityListParamsStatus) IsKnown() bool {
 	switch r {
-	case LegalEntityListParamsStatusPending, LegalEntityListParamsStatusActive, LegalEntityListParamsStatusSuspended, LegalEntityListParamsStatusClosed:
+	case LegalEntityListParamsStatusPending, LegalEntityListParamsStatusActive, LegalEntityListParamsStatusSuspended, LegalEntityListParamsStatusClosed, LegalEntityListParamsStatusDenied:
 		return true
 	}
 	return false
