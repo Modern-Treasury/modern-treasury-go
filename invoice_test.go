@@ -83,6 +83,7 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 			Region:     moderntreasury.F("region"),
 			Line2:      moderntreasury.F("line2"),
 		}),
+		InvoicerName: moderntreasury.F("invoicer_name"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
@@ -200,6 +201,7 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 				Region:     moderntreasury.F("region"),
 				Line2:      moderntreasury.F("line2"),
 			}),
+			InvoicerName: moderntreasury.F("invoicer_name"),
 			Metadata: moderntreasury.F(map[string]string{
 				"key":    "value",
 				"foo":    "bar",

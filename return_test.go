@@ -12,6 +12,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/testutil"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
 
 func TestReturnNewWithOptionalParams(t *testing.T) {
@@ -40,8 +41,44 @@ func TestReturnNewWithOptionalParams(t *testing.T) {
 			RoutingNumber:                  moderntreasury.F("routing_number"),
 			TransactionCode:                moderntreasury.F("transaction_code"),
 		}),
-		Data:                 moderntreasury.F[any](map[string]interface{}{}),
-		DateOfDeath:          moderntreasury.F(time.Now()),
+		Data:        moderntreasury.F[any](map[string]interface{}{}),
+		DateOfDeath: moderntreasury.F(time.Now()),
+		LedgerTransaction: moderntreasury.F(shared.LedgerTransactionCreateRequestParam{
+			LedgerEntries: moderntreasury.F([]shared.LedgerEntryCreateRequestParam{{
+				Amount:          moderntreasury.F(int64(0)),
+				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
+				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
+					"foo": int64(0),
+				}),
+				EffectiveAt: moderntreasury.F(time.Now()),
+				LockVersion: moderntreasury.F(int64(0)),
+				Metadata: moderntreasury.F(map[string]string{
+					"key":    "value",
+					"foo":    "bar",
+					"modern": "treasury",
+				}),
+				PendingBalanceAmount: moderntreasury.F(map[string]int64{
+					"foo": int64(0),
+				}),
+				PostedBalanceAmount: moderntreasury.F(map[string]int64{
+					"foo": int64(0),
+				}),
+				ShowResultingLedgerAccountBalances: moderntreasury.F(true),
+			}}),
+			Description:    moderntreasury.F("description"),
+			EffectiveAt:    moderntreasury.F(time.Now()),
+			EffectiveDate:  moderntreasury.F(time.Now()),
+			ExternalID:     moderntreasury.F("external_id"),
+			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			LedgerableType: moderntreasury.F(shared.LedgerTransactionCreateRequestLedgerableTypeExpectedPayment),
+			Metadata: moderntreasury.F(map[string]string{
+				"key":    "value",
+				"foo":    "bar",
+				"modern": "treasury",
+			}),
+			Status: moderntreasury.F(shared.LedgerTransactionCreateRequestStatusArchived),
+		}),
 		Reason:               moderntreasury.F("reason"),
 		ReconciliationStatus: moderntreasury.F(moderntreasury.ReturnNewParamsReconciliationStatusUnreconciled),
 	})

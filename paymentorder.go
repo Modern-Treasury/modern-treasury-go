@@ -1204,6 +1204,11 @@ type PaymentOrderNewParams struct {
 	// A flag that determines whether a payment order should go through transaction
 	// monitoring.
 	TransactionMonitoringEnabled param.Field[bool] `json:"transaction_monitoring_enabled"`
+	// The ultimate originating account ID. Can be a `virtual_account` or
+	// `internal_account`.
+	UltimateOriginatingAccountID param.Field[string] `json:"ultimate_originating_account_id" format:"uuid"`
+	// Address of the ultimate originator of the payment order.
+	UltimateOriginatingPartyAddress param.Field[PaymentOrderNewParamsUltimateOriginatingPartyAddress] `json:"ultimate_originating_party_address"`
 	// Identifier of the ultimate originator of the payment order.
 	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
 	// Name of the ultimate originator of the payment order.
@@ -1212,6 +1217,9 @@ type PaymentOrderNewParams struct {
 	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
 	// Name of the ultimate funds recipient.
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
+	// Additional vendor specific fields for this payment. Data must be represented as
+	// key-value pairs.
+	VendorAttributes param.Field[interface{}] `json:"vendor_attributes"`
 }
 
 func (r PaymentOrderNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
@@ -1594,6 +1602,24 @@ func (r PaymentOrderNewParamsReconciliationStatus) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+// Address of the ultimate originator of the payment order.
+type PaymentOrderNewParamsUltimateOriginatingPartyAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country param.Field[string] `json:"country"`
+	Line1   param.Field[string] `json:"line1"`
+	Line2   param.Field[string] `json:"line2"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code"`
+	// Region or State.
+	Region param.Field[string] `json:"region"`
+}
+
+func (r PaymentOrderNewParamsUltimateOriginatingPartyAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type PaymentOrderUpdateParams struct {
@@ -2341,6 +2367,11 @@ type PaymentOrderNewAsyncParams struct {
 	// A flag that determines whether a payment order should go through transaction
 	// monitoring.
 	TransactionMonitoringEnabled param.Field[bool] `json:"transaction_monitoring_enabled"`
+	// The ultimate originating account ID. Can be a `virtual_account` or
+	// `internal_account`.
+	UltimateOriginatingAccountID param.Field[string] `json:"ultimate_originating_account_id" format:"uuid"`
+	// Address of the ultimate originator of the payment order.
+	UltimateOriginatingPartyAddress param.Field[PaymentOrderNewAsyncParamsUltimateOriginatingPartyAddress] `json:"ultimate_originating_party_address"`
 	// Identifier of the ultimate originator of the payment order.
 	UltimateOriginatingPartyIdentifier param.Field[string] `json:"ultimate_originating_party_identifier"`
 	// Name of the ultimate originator of the payment order.
@@ -2349,6 +2380,9 @@ type PaymentOrderNewAsyncParams struct {
 	UltimateReceivingPartyIdentifier param.Field[string] `json:"ultimate_receiving_party_identifier"`
 	// Name of the ultimate funds recipient.
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
+	// Additional vendor specific fields for this payment. Data must be represented as
+	// key-value pairs.
+	VendorAttributes param.Field[interface{}] `json:"vendor_attributes"`
 }
 
 func (r PaymentOrderNewAsyncParams) MarshalJSON() (data []byte, err error) {
@@ -2683,4 +2717,22 @@ func (r PaymentOrderNewAsyncParamsReconciliationStatus) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+// Address of the ultimate originator of the payment order.
+type PaymentOrderNewAsyncParamsUltimateOriginatingPartyAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country param.Field[string] `json:"country"`
+	Line1   param.Field[string] `json:"line1"`
+	Line2   param.Field[string] `json:"line2"`
+	// Locality or City.
+	Locality param.Field[string] `json:"locality"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code"`
+	// Region or State.
+	Region param.Field[string] `json:"region"`
+}
+
+func (r PaymentOrderNewAsyncParamsUltimateOriginatingPartyAddress) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }

@@ -153,6 +153,8 @@ type ChildLegalEntityCreateParam struct {
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
 	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
+	// Deprecated: deprecated
+	ComplianceDetails param.Field[interface{}] `json:"compliance_details"`
 	// The connection ID for the connection the legal entity is associated with.
 	// Defaults to the id of the connection designated with an is_default value of true
 	// or the id of an existing operational connection if only one is available. Pass
@@ -349,13 +351,14 @@ type ChildLegalEntityCreateStatus string
 const (
 	ChildLegalEntityCreateStatusActive    ChildLegalEntityCreateStatus = "active"
 	ChildLegalEntityCreateStatusClosed    ChildLegalEntityCreateStatus = "closed"
+	ChildLegalEntityCreateStatusDenied    ChildLegalEntityCreateStatus = "denied"
 	ChildLegalEntityCreateStatusPending   ChildLegalEntityCreateStatus = "pending"
 	ChildLegalEntityCreateStatusSuspended ChildLegalEntityCreateStatus = "suspended"
 )
 
 func (r ChildLegalEntityCreateStatus) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityCreateStatusActive, ChildLegalEntityCreateStatusClosed, ChildLegalEntityCreateStatusPending, ChildLegalEntityCreateStatusSuspended:
+	case ChildLegalEntityCreateStatusActive, ChildLegalEntityCreateStatusClosed, ChildLegalEntityCreateStatusDenied, ChildLegalEntityCreateStatusPending, ChildLegalEntityCreateStatusSuspended:
 		return true
 	}
 	return false
@@ -602,11 +605,13 @@ const (
 	CurrencySgd   Currency = "SGD"
 	CurrencyShp   Currency = "SHP"
 	CurrencySkk   Currency = "SKK"
+	CurrencySle   Currency = "SLE"
 	CurrencySll   Currency = "SLL"
 	CurrencySos   Currency = "SOS"
 	CurrencySrd   Currency = "SRD"
 	CurrencySsp   Currency = "SSP"
 	CurrencyStd   Currency = "STD"
+	CurrencyStn   Currency = "STN"
 	CurrencySvc   Currency = "SVC"
 	CurrencySyp   Currency = "SYP"
 	CurrencySzl   Currency = "SZL"
@@ -643,6 +648,7 @@ const (
 	CurrencyXbc   Currency = "XBC"
 	CurrencyXbd   Currency = "XBD"
 	CurrencyXcd   Currency = "XCD"
+	CurrencyXcg   Currency = "XCG"
 	CurrencyXdr   Currency = "XDR"
 	CurrencyXfu   Currency = "XFU"
 	CurrencyXof   Currency = "XOF"
@@ -655,6 +661,7 @@ const (
 	CurrencyZmk   Currency = "ZMK"
 	CurrencyZmw   Currency = "ZMW"
 	CurrencyZwd   Currency = "ZWD"
+	CurrencyZwg   Currency = "ZWG"
 	CurrencyZwl   Currency = "ZWL"
 	CurrencyZwn   Currency = "ZWN"
 	CurrencyZwr   Currency = "ZWR"
@@ -662,7 +669,7 @@ const (
 
 func (r Currency) IsKnown() bool {
 	switch r {
-	case CurrencyAed, CurrencyAfn, CurrencyAll, CurrencyAmd, CurrencyAng, CurrencyAoa, CurrencyArs, CurrencyAud, CurrencyAwg, CurrencyAzn, CurrencyBam, CurrencyBbd, CurrencyBch, CurrencyBdt, CurrencyBgn, CurrencyBhd, CurrencyBif, CurrencyBmd, CurrencyBnd, CurrencyBob, CurrencyBrl, CurrencyBsd, CurrencyBtc, CurrencyBtn, CurrencyBwp, CurrencyByn, CurrencyByr, CurrencyBzd, CurrencyCad, CurrencyCdf, CurrencyChf, CurrencyClf, CurrencyClp, CurrencyCnh, CurrencyCny, CurrencyCop, CurrencyCrc, CurrencyCuc, CurrencyCup, CurrencyCve, CurrencyCzk, CurrencyDjf, CurrencyDkk, CurrencyDop, CurrencyDzd, CurrencyEek, CurrencyEgp, CurrencyErn, CurrencyEtb, CurrencyEur, CurrencyEurc, CurrencyFjd, CurrencyFkp, CurrencyGbp, CurrencyGbx, CurrencyGel, CurrencyGgp, CurrencyGhs, CurrencyGip, CurrencyGmd, CurrencyGnf, CurrencyGtq, CurrencyGyd, CurrencyHkd, CurrencyHnl, CurrencyHrk, CurrencyHtg, CurrencyHuf, CurrencyIdr, CurrencyIls, CurrencyImp, CurrencyInr, CurrencyIqd, CurrencyIrr, CurrencyIsk, CurrencyJep, CurrencyJmd, CurrencyJod, CurrencyJpy, CurrencyKes, CurrencyKgs, CurrencyKhr, CurrencyKmf, CurrencyKpw, CurrencyKrw, CurrencyKwd, CurrencyKyd, CurrencyKzt, CurrencyLak, CurrencyLbp, CurrencyLkr, CurrencyLrd, CurrencyLsl, CurrencyLtl, CurrencyLvl, CurrencyLyd, CurrencyMad, CurrencyMdl, CurrencyMga, CurrencyMkd, CurrencyMmk, CurrencyMnt, CurrencyMop, CurrencyMro, CurrencyMru, CurrencyMtl, CurrencyMur, CurrencyMvr, CurrencyMwk, CurrencyMxn, CurrencyMyr, CurrencyMzn, CurrencyNad, CurrencyNgn, CurrencyNio, CurrencyNok, CurrencyNpr, CurrencyNzd, CurrencyOmr, CurrencyPab, CurrencyPen, CurrencyPgk, CurrencyPhp, CurrencyPkr, CurrencyPln, CurrencyPyg, CurrencyPyusd, CurrencyQar, CurrencyRon, CurrencyRsd, CurrencyRub, CurrencyRwf, CurrencySar, CurrencySbc, CurrencySbd, CurrencyScr, CurrencySdg, CurrencySek, CurrencySgd, CurrencyShp, CurrencySkk, CurrencySll, CurrencySos, CurrencySrd, CurrencySsp, CurrencyStd, CurrencySvc, CurrencySyp, CurrencySzl, CurrencyThb, CurrencyTjs, CurrencyTmm, CurrencyTmt, CurrencyTnd, CurrencyTop, CurrencyTry, CurrencyTtd, CurrencyTwd, CurrencyTzs, CurrencyUah, CurrencyUgx, CurrencyUsd, CurrencyUsdb, CurrencyUsdc, CurrencyUsdg, CurrencyUsdp, CurrencyUsdt, CurrencyUyu, CurrencyUzs, CurrencyVef, CurrencyVes, CurrencyVnd, CurrencyVuv, CurrencyWst, CurrencyXaf, CurrencyXag, CurrencyXau, CurrencyXba, CurrencyXbb, CurrencyXbc, CurrencyXbd, CurrencyXcd, CurrencyXdr, CurrencyXfu, CurrencyXof, CurrencyXpd, CurrencyXpf, CurrencyXpt, CurrencyXts, CurrencyYer, CurrencyZar, CurrencyZmk, CurrencyZmw, CurrencyZwd, CurrencyZwl, CurrencyZwn, CurrencyZwr:
+	case CurrencyAed, CurrencyAfn, CurrencyAll, CurrencyAmd, CurrencyAng, CurrencyAoa, CurrencyArs, CurrencyAud, CurrencyAwg, CurrencyAzn, CurrencyBam, CurrencyBbd, CurrencyBch, CurrencyBdt, CurrencyBgn, CurrencyBhd, CurrencyBif, CurrencyBmd, CurrencyBnd, CurrencyBob, CurrencyBrl, CurrencyBsd, CurrencyBtc, CurrencyBtn, CurrencyBwp, CurrencyByn, CurrencyByr, CurrencyBzd, CurrencyCad, CurrencyCdf, CurrencyChf, CurrencyClf, CurrencyClp, CurrencyCnh, CurrencyCny, CurrencyCop, CurrencyCrc, CurrencyCuc, CurrencyCup, CurrencyCve, CurrencyCzk, CurrencyDjf, CurrencyDkk, CurrencyDop, CurrencyDzd, CurrencyEek, CurrencyEgp, CurrencyErn, CurrencyEtb, CurrencyEur, CurrencyEurc, CurrencyFjd, CurrencyFkp, CurrencyGbp, CurrencyGbx, CurrencyGel, CurrencyGgp, CurrencyGhs, CurrencyGip, CurrencyGmd, CurrencyGnf, CurrencyGtq, CurrencyGyd, CurrencyHkd, CurrencyHnl, CurrencyHrk, CurrencyHtg, CurrencyHuf, CurrencyIdr, CurrencyIls, CurrencyImp, CurrencyInr, CurrencyIqd, CurrencyIrr, CurrencyIsk, CurrencyJep, CurrencyJmd, CurrencyJod, CurrencyJpy, CurrencyKes, CurrencyKgs, CurrencyKhr, CurrencyKmf, CurrencyKpw, CurrencyKrw, CurrencyKwd, CurrencyKyd, CurrencyKzt, CurrencyLak, CurrencyLbp, CurrencyLkr, CurrencyLrd, CurrencyLsl, CurrencyLtl, CurrencyLvl, CurrencyLyd, CurrencyMad, CurrencyMdl, CurrencyMga, CurrencyMkd, CurrencyMmk, CurrencyMnt, CurrencyMop, CurrencyMro, CurrencyMru, CurrencyMtl, CurrencyMur, CurrencyMvr, CurrencyMwk, CurrencyMxn, CurrencyMyr, CurrencyMzn, CurrencyNad, CurrencyNgn, CurrencyNio, CurrencyNok, CurrencyNpr, CurrencyNzd, CurrencyOmr, CurrencyPab, CurrencyPen, CurrencyPgk, CurrencyPhp, CurrencyPkr, CurrencyPln, CurrencyPyg, CurrencyPyusd, CurrencyQar, CurrencyRon, CurrencyRsd, CurrencyRub, CurrencyRwf, CurrencySar, CurrencySbc, CurrencySbd, CurrencyScr, CurrencySdg, CurrencySek, CurrencySgd, CurrencyShp, CurrencySkk, CurrencySle, CurrencySll, CurrencySos, CurrencySrd, CurrencySsp, CurrencyStd, CurrencyStn, CurrencySvc, CurrencySyp, CurrencySzl, CurrencyThb, CurrencyTjs, CurrencyTmm, CurrencyTmt, CurrencyTnd, CurrencyTop, CurrencyTry, CurrencyTtd, CurrencyTwd, CurrencyTzs, CurrencyUah, CurrencyUgx, CurrencyUsd, CurrencyUsdb, CurrencyUsdc, CurrencyUsdg, CurrencyUsdp, CurrencyUsdt, CurrencyUyu, CurrencyUzs, CurrencyVef, CurrencyVes, CurrencyVnd, CurrencyVuv, CurrencyWst, CurrencyXaf, CurrencyXag, CurrencyXau, CurrencyXba, CurrencyXbb, CurrencyXbc, CurrencyXbd, CurrencyXcd, CurrencyXcg, CurrencyXdr, CurrencyXfu, CurrencyXof, CurrencyXpd, CurrencyXpf, CurrencyXpt, CurrencyXts, CurrencyYer, CurrencyZar, CurrencyZmk, CurrencyZmw, CurrencyZwd, CurrencyZwg, CurrencyZwl, CurrencyZwn, CurrencyZwr:
 		return true
 	}
 	return false

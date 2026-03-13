@@ -56,6 +56,7 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 			BusinessDescription:    moderntreasury.F("business_description"),
 			BusinessName:           moderntreasury.F("business_name"),
 			CitizenshipCountry:     moderntreasury.F("citizenship_country"),
+			ComplianceDetails:      moderntreasury.F[any](map[string]interface{}{}),
 			ConnectionID:           moderntreasury.F("connection_id"),
 			CountryOfIncorporation: moderntreasury.F("country_of_incorporation"),
 			DateFormed:             moderntreasury.F(time.Now()),

@@ -452,6 +452,9 @@ type InvoiceNewParams struct {
 	InvoiceLineItems param.Field[[]InvoiceNewParamsInvoiceLineItem] `json:"invoice_line_items"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceNewParamsInvoicerAddress] `json:"invoicer_address"`
+	// The name of the issuer for the invoice. Defaults to the name of the
+	// Organization.
+	InvoicerName param.Field[string] `json:"invoicer_name"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
@@ -624,6 +627,9 @@ type InvoiceUpdateParams struct {
 	InvoiceLineItems param.Field[[]InvoiceUpdateParamsInvoiceLineItem] `json:"invoice_line_items"`
 	// The invoice issuer's business address.
 	InvoicerAddress param.Field[InvoiceUpdateParamsInvoicerAddress] `json:"invoicer_address"`
+	// The name of the issuer for the invoice. Defaults to the name of the
+	// Organization.
+	InvoicerName param.Field[string] `json:"invoicer_name"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`

@@ -600,6 +600,8 @@ type CounterpartyNewParamsLegalEntity struct {
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
 	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
+	// Deprecated: deprecated
+	ComplianceDetails param.Field[interface{}] `json:"compliance_details"`
 	// The connection ID for the connection the legal entity is associated with.
 	// Defaults to the id of the connection designated with an is_default value of true
 	// or the id of an existing operational connection if only one is available. Pass
@@ -794,13 +796,14 @@ type CounterpartyNewParamsLegalEntityStatus string
 const (
 	CounterpartyNewParamsLegalEntityStatusActive    CounterpartyNewParamsLegalEntityStatus = "active"
 	CounterpartyNewParamsLegalEntityStatusClosed    CounterpartyNewParamsLegalEntityStatus = "closed"
+	CounterpartyNewParamsLegalEntityStatusDenied    CounterpartyNewParamsLegalEntityStatus = "denied"
 	CounterpartyNewParamsLegalEntityStatusPending   CounterpartyNewParamsLegalEntityStatus = "pending"
 	CounterpartyNewParamsLegalEntityStatusSuspended CounterpartyNewParamsLegalEntityStatus = "suspended"
 )
 
 func (r CounterpartyNewParamsLegalEntityStatus) IsKnown() bool {
 	switch r {
-	case CounterpartyNewParamsLegalEntityStatusActive, CounterpartyNewParamsLegalEntityStatusClosed, CounterpartyNewParamsLegalEntityStatusPending, CounterpartyNewParamsLegalEntityStatusSuspended:
+	case CounterpartyNewParamsLegalEntityStatusActive, CounterpartyNewParamsLegalEntityStatusClosed, CounterpartyNewParamsLegalEntityStatusDenied, CounterpartyNewParamsLegalEntityStatusPending, CounterpartyNewParamsLegalEntityStatusSuspended:
 		return true
 	}
 	return false
