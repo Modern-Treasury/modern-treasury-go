@@ -1,5 +1,16 @@
 # Changelog
 
+## 2.46.0 (2026-03-17)
+
+Full Changelog: [v2.45.0...v2.46.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.45.0...v2.46.0)
+
+### Features
+
+* **api:** api update ([56d1889](https://github.com/Modern-Treasury/modern-treasury-go/commit/56d18896b1a69a455bab2e26496a50340a2be394))
+* **api:** disable breaking change detection ([b38b37d](https://github.com/Modern-Treasury/modern-treasury-go/commit/b38b37d37c7efd439ba54e11a496ddf02c2c5d0f))
+* **api:** fix encoder to use bracket notation ([916cde4](https://github.com/Modern-Treasury/modern-treasury-go/commit/916cde432ebb3ec96fe20b79a42ff3884021b664))
+* **tests:** enable breaking change detection ([ce8fc0d](https://github.com/Modern-Treasury/modern-treasury-go/commit/ce8fc0d3f06d1435a9f30886d7821a8cb168e92f))
+
 ## 2.45.0 (2026-03-16)
 
 Full Changelog: [v2.44.0...v2.45.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.44.0...v2.45.0)
