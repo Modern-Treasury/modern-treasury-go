@@ -795,7 +795,6 @@ type CounterpartyNewParamsLegalEntityStatus string
 
 const (
 	CounterpartyNewParamsLegalEntityStatusActive    CounterpartyNewParamsLegalEntityStatus = "active"
-	CounterpartyNewParamsLegalEntityStatusClosed    CounterpartyNewParamsLegalEntityStatus = "closed"
 	CounterpartyNewParamsLegalEntityStatusDenied    CounterpartyNewParamsLegalEntityStatus = "denied"
 	CounterpartyNewParamsLegalEntityStatusPending   CounterpartyNewParamsLegalEntityStatus = "pending"
 	CounterpartyNewParamsLegalEntityStatusSuspended CounterpartyNewParamsLegalEntityStatus = "suspended"
@@ -803,7 +802,7 @@ const (
 
 func (r CounterpartyNewParamsLegalEntityStatus) IsKnown() bool {
 	switch r {
-	case CounterpartyNewParamsLegalEntityStatusActive, CounterpartyNewParamsLegalEntityStatusClosed, CounterpartyNewParamsLegalEntityStatusDenied, CounterpartyNewParamsLegalEntityStatusPending, CounterpartyNewParamsLegalEntityStatusSuspended:
+	case CounterpartyNewParamsLegalEntityStatusActive, CounterpartyNewParamsLegalEntityStatusDenied, CounterpartyNewParamsLegalEntityStatusPending, CounterpartyNewParamsLegalEntityStatusSuspended:
 		return true
 	}
 	return false
