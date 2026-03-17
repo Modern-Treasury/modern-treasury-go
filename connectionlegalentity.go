@@ -143,7 +143,6 @@ func (r connectionLegalEntityJSON) RawJSON() string {
 type ConnectionLegalEntityStatus string
 
 const (
-	ConnectionLegalEntityStatusClosed     ConnectionLegalEntityStatus = "closed"
 	ConnectionLegalEntityStatusCompleted  ConnectionLegalEntityStatus = "completed"
 	ConnectionLegalEntityStatusDenied     ConnectionLegalEntityStatus = "denied"
 	ConnectionLegalEntityStatusFailed     ConnectionLegalEntityStatus = "failed"
@@ -153,7 +152,7 @@ const (
 
 func (r ConnectionLegalEntityStatus) IsKnown() bool {
 	switch r {
-	case ConnectionLegalEntityStatusClosed, ConnectionLegalEntityStatusCompleted, ConnectionLegalEntityStatusDenied, ConnectionLegalEntityStatusFailed, ConnectionLegalEntityStatusProcessing, ConnectionLegalEntityStatusSuspended:
+	case ConnectionLegalEntityStatusCompleted, ConnectionLegalEntityStatusDenied, ConnectionLegalEntityStatusFailed, ConnectionLegalEntityStatusProcessing, ConnectionLegalEntityStatusSuspended:
 		return true
 	}
 	return false
@@ -380,7 +379,6 @@ type ConnectionLegalEntityNewParamsLegalEntityStatus string
 
 const (
 	ConnectionLegalEntityNewParamsLegalEntityStatusActive    ConnectionLegalEntityNewParamsLegalEntityStatus = "active"
-	ConnectionLegalEntityNewParamsLegalEntityStatusClosed    ConnectionLegalEntityNewParamsLegalEntityStatus = "closed"
 	ConnectionLegalEntityNewParamsLegalEntityStatusDenied    ConnectionLegalEntityNewParamsLegalEntityStatus = "denied"
 	ConnectionLegalEntityNewParamsLegalEntityStatusPending   ConnectionLegalEntityNewParamsLegalEntityStatus = "pending"
 	ConnectionLegalEntityNewParamsLegalEntityStatusSuspended ConnectionLegalEntityNewParamsLegalEntityStatus = "suspended"
@@ -388,7 +386,7 @@ const (
 
 func (r ConnectionLegalEntityNewParamsLegalEntityStatus) IsKnown() bool {
 	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityStatusActive, ConnectionLegalEntityNewParamsLegalEntityStatusClosed, ConnectionLegalEntityNewParamsLegalEntityStatusDenied, ConnectionLegalEntityNewParamsLegalEntityStatusPending, ConnectionLegalEntityNewParamsLegalEntityStatusSuspended:
+	case ConnectionLegalEntityNewParamsLegalEntityStatusActive, ConnectionLegalEntityNewParamsLegalEntityStatusDenied, ConnectionLegalEntityNewParamsLegalEntityStatusPending, ConnectionLegalEntityNewParamsLegalEntityStatusSuspended:
 		return true
 	}
 	return false
@@ -465,7 +463,6 @@ func (r ConnectionLegalEntityListParams) URLQuery() (v url.Values) {
 type ConnectionLegalEntityListParamsStatus string
 
 const (
-	ConnectionLegalEntityListParamsStatusClosed     ConnectionLegalEntityListParamsStatus = "closed"
 	ConnectionLegalEntityListParamsStatusCompleted  ConnectionLegalEntityListParamsStatus = "completed"
 	ConnectionLegalEntityListParamsStatusDenied     ConnectionLegalEntityListParamsStatus = "denied"
 	ConnectionLegalEntityListParamsStatusFailed     ConnectionLegalEntityListParamsStatus = "failed"
@@ -475,7 +472,7 @@ const (
 
 func (r ConnectionLegalEntityListParamsStatus) IsKnown() bool {
 	switch r {
-	case ConnectionLegalEntityListParamsStatusClosed, ConnectionLegalEntityListParamsStatusCompleted, ConnectionLegalEntityListParamsStatusDenied, ConnectionLegalEntityListParamsStatusFailed, ConnectionLegalEntityListParamsStatusProcessing, ConnectionLegalEntityListParamsStatusSuspended:
+	case ConnectionLegalEntityListParamsStatusCompleted, ConnectionLegalEntityListParamsStatusDenied, ConnectionLegalEntityListParamsStatusFailed, ConnectionLegalEntityListParamsStatusProcessing, ConnectionLegalEntityListParamsStatusSuspended:
 		return true
 	}
 	return false

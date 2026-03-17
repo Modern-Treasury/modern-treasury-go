@@ -350,7 +350,7 @@ func TestConnectionLegalEntityListWithOptionalParams(t *testing.T) {
 		ConnectionID:  moderntreasury.F("connection_id"),
 		LegalEntityID: moderntreasury.F("legal_entity_id"),
 		PerPage:       moderntreasury.F(int64(0)),
-		Status:        moderntreasury.F(moderntreasury.ConnectionLegalEntityListParamsStatusClosed),
+		Status:        moderntreasury.F(moderntreasury.ConnectionLegalEntityListParamsStatusCompleted),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error

@@ -509,7 +509,6 @@ type LegalEntityStatus string
 
 const (
 	LegalEntityStatusActive    LegalEntityStatus = "active"
-	LegalEntityStatusClosed    LegalEntityStatus = "closed"
 	LegalEntityStatusDenied    LegalEntityStatus = "denied"
 	LegalEntityStatusPending   LegalEntityStatus = "pending"
 	LegalEntityStatusSuspended LegalEntityStatus = "suspended"
@@ -517,7 +516,7 @@ const (
 
 func (r LegalEntityStatus) IsKnown() bool {
 	switch r {
-	case LegalEntityStatusActive, LegalEntityStatusClosed, LegalEntityStatusDenied, LegalEntityStatusPending, LegalEntityStatusSuspended:
+	case LegalEntityStatusActive, LegalEntityStatusDenied, LegalEntityStatusPending, LegalEntityStatusSuspended:
 		return true
 	}
 	return false
@@ -770,7 +769,6 @@ type LegalEntityNewParamsStatus string
 
 const (
 	LegalEntityNewParamsStatusActive    LegalEntityNewParamsStatus = "active"
-	LegalEntityNewParamsStatusClosed    LegalEntityNewParamsStatus = "closed"
 	LegalEntityNewParamsStatusDenied    LegalEntityNewParamsStatus = "denied"
 	LegalEntityNewParamsStatusPending   LegalEntityNewParamsStatus = "pending"
 	LegalEntityNewParamsStatusSuspended LegalEntityNewParamsStatus = "suspended"
@@ -778,7 +776,7 @@ const (
 
 func (r LegalEntityNewParamsStatus) IsKnown() bool {
 	switch r {
-	case LegalEntityNewParamsStatusActive, LegalEntityNewParamsStatusClosed, LegalEntityNewParamsStatusDenied, LegalEntityNewParamsStatusPending, LegalEntityNewParamsStatusSuspended:
+	case LegalEntityNewParamsStatusActive, LegalEntityNewParamsStatusDenied, LegalEntityNewParamsStatusPending, LegalEntityNewParamsStatusSuspended:
 		return true
 	}
 	return false
@@ -954,7 +952,6 @@ type LegalEntityUpdateParamsStatus string
 
 const (
 	LegalEntityUpdateParamsStatusActive    LegalEntityUpdateParamsStatus = "active"
-	LegalEntityUpdateParamsStatusClosed    LegalEntityUpdateParamsStatus = "closed"
 	LegalEntityUpdateParamsStatusDenied    LegalEntityUpdateParamsStatus = "denied"
 	LegalEntityUpdateParamsStatusPending   LegalEntityUpdateParamsStatus = "pending"
 	LegalEntityUpdateParamsStatusSuspended LegalEntityUpdateParamsStatus = "suspended"
@@ -962,7 +959,7 @@ const (
 
 func (r LegalEntityUpdateParamsStatus) IsKnown() bool {
 	switch r {
-	case LegalEntityUpdateParamsStatusActive, LegalEntityUpdateParamsStatusClosed, LegalEntityUpdateParamsStatusDenied, LegalEntityUpdateParamsStatusPending, LegalEntityUpdateParamsStatusSuspended:
+	case LegalEntityUpdateParamsStatusActive, LegalEntityUpdateParamsStatusDenied, LegalEntityUpdateParamsStatusPending, LegalEntityUpdateParamsStatusSuspended:
 		return true
 	}
 	return false
@@ -1038,13 +1035,12 @@ const (
 	LegalEntityListParamsStatusPending   LegalEntityListParamsStatus = "pending"
 	LegalEntityListParamsStatusActive    LegalEntityListParamsStatus = "active"
 	LegalEntityListParamsStatusSuspended LegalEntityListParamsStatus = "suspended"
-	LegalEntityListParamsStatusClosed    LegalEntityListParamsStatus = "closed"
 	LegalEntityListParamsStatusDenied    LegalEntityListParamsStatus = "denied"
 )
 
 func (r LegalEntityListParamsStatus) IsKnown() bool {
 	switch r {
-	case LegalEntityListParamsStatusPending, LegalEntityListParamsStatusActive, LegalEntityListParamsStatusSuspended, LegalEntityListParamsStatusClosed, LegalEntityListParamsStatusDenied:
+	case LegalEntityListParamsStatusPending, LegalEntityListParamsStatusActive, LegalEntityListParamsStatusSuspended, LegalEntityListParamsStatusDenied:
 		return true
 	}
 	return false

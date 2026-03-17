@@ -125,9 +125,6 @@ type ChildLegalEntityCreateStatus = shared.ChildLegalEntityCreateStatus
 const ChildLegalEntityCreateStatusActive = shared.ChildLegalEntityCreateStatusActive
 
 // This is an alias to an internal value.
-const ChildLegalEntityCreateStatusClosed = shared.ChildLegalEntityCreateStatusClosed
-
-// This is an alias to an internal value.
 const ChildLegalEntityCreateStatusDenied = shared.ChildLegalEntityCreateStatusDenied
 
 // This is an alias to an internal value.
