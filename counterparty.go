@@ -662,9 +662,6 @@ type CounterpartyNewParamsLegalEntity struct {
 	Regulators param.Field[[]CounterpartyNewParamsLegalEntityRegulator] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[CounterpartyNewParamsLegalEntityRiskRating] `json:"risk_rating"`
-	// The activation status of the legal entity. One of pending, active, suspended, or
-	// closed.
-	Status param.Field[CounterpartyNewParamsLegalEntityStatus] `json:"status"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
 	// Information describing a third-party verification run by an external vendor.
@@ -784,25 +781,6 @@ const (
 func (r CounterpartyNewParamsLegalEntityRiskRating) IsKnown() bool {
 	switch r {
 	case CounterpartyNewParamsLegalEntityRiskRatingLow, CounterpartyNewParamsLegalEntityRiskRatingMedium, CounterpartyNewParamsLegalEntityRiskRatingHigh:
-		return true
-	}
-	return false
-}
-
-// The activation status of the legal entity. One of pending, active, suspended, or
-// closed.
-type CounterpartyNewParamsLegalEntityStatus string
-
-const (
-	CounterpartyNewParamsLegalEntityStatusActive    CounterpartyNewParamsLegalEntityStatus = "active"
-	CounterpartyNewParamsLegalEntityStatusDenied    CounterpartyNewParamsLegalEntityStatus = "denied"
-	CounterpartyNewParamsLegalEntityStatusPending   CounterpartyNewParamsLegalEntityStatus = "pending"
-	CounterpartyNewParamsLegalEntityStatusSuspended CounterpartyNewParamsLegalEntityStatus = "suspended"
-)
-
-func (r CounterpartyNewParamsLegalEntityStatus) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsLegalEntityStatusActive, CounterpartyNewParamsLegalEntityStatusDenied, CounterpartyNewParamsLegalEntityStatusPending, CounterpartyNewParamsLegalEntityStatusSuspended:
 		return true
 	}
 	return false
