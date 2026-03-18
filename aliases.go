@@ -115,24 +115,6 @@ const ChildLegalEntityCreateRiskRatingMedium = shared.ChildLegalEntityCreateRisk
 // This is an alias to an internal value.
 const ChildLegalEntityCreateRiskRatingHigh = shared.ChildLegalEntityCreateRiskRatingHigh
 
-// The activation status of the legal entity. One of pending, active, suspended, or
-// closed.
-//
-// This is an alias to an internal type.
-type ChildLegalEntityCreateStatus = shared.ChildLegalEntityCreateStatus
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateStatusActive = shared.ChildLegalEntityCreateStatusActive
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateStatusDenied = shared.ChildLegalEntityCreateStatusDenied
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateStatusPending = shared.ChildLegalEntityCreateStatusPending
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateStatusSuspended = shared.ChildLegalEntityCreateStatusSuspended
-
 // Information describing a third-party verification run by an external vendor.
 //
 // This is an alias to an internal type.
