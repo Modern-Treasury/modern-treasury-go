@@ -116,7 +116,7 @@ type ChildLegalEntity struct {
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating ChildLegalEntityRiskRating `json:"risk_rating" api:"required,nullable"`
 	// The activation status of the legal entity. One of pending, active, suspended, or
-	// closed.
+	// denied.
 	Status ChildLegalEntityStatus `json:"status" api:"required,nullable"`
 	// An individual's suffix.
 	Suffix string `json:"suffix" api:"required,nullable"`
@@ -453,7 +453,7 @@ func (r ChildLegalEntityRiskRating) IsKnown() bool {
 }
 
 // The activation status of the legal entity. One of pending, active, suspended, or
-// closed.
+// denied.
 type ChildLegalEntityStatus string
 
 const (

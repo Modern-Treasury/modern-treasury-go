@@ -246,9 +246,6 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	Regulators param.Field[[]ConnectionLegalEntityNewParamsLegalEntityRegulator] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[ConnectionLegalEntityNewParamsLegalEntityRiskRating] `json:"risk_rating"`
-	// The activation status of the legal entity. One of pending, active, suspended, or
-	// closed.
-	Status param.Field[ConnectionLegalEntityNewParamsLegalEntityStatus] `json:"status"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
 	// Information describing a third-party verification run by an external vendor.
@@ -368,25 +365,6 @@ const (
 func (r ConnectionLegalEntityNewParamsLegalEntityRiskRating) IsKnown() bool {
 	switch r {
 	case ConnectionLegalEntityNewParamsLegalEntityRiskRatingLow, ConnectionLegalEntityNewParamsLegalEntityRiskRatingMedium, ConnectionLegalEntityNewParamsLegalEntityRiskRatingHigh:
-		return true
-	}
-	return false
-}
-
-// The activation status of the legal entity. One of pending, active, suspended, or
-// closed.
-type ConnectionLegalEntityNewParamsLegalEntityStatus string
-
-const (
-	ConnectionLegalEntityNewParamsLegalEntityStatusActive    ConnectionLegalEntityNewParamsLegalEntityStatus = "active"
-	ConnectionLegalEntityNewParamsLegalEntityStatusDenied    ConnectionLegalEntityNewParamsLegalEntityStatus = "denied"
-	ConnectionLegalEntityNewParamsLegalEntityStatusPending   ConnectionLegalEntityNewParamsLegalEntityStatus = "pending"
-	ConnectionLegalEntityNewParamsLegalEntityStatusSuspended ConnectionLegalEntityNewParamsLegalEntityStatus = "suspended"
-)
-
-func (r ConnectionLegalEntityNewParamsLegalEntityStatus) IsKnown() bool {
-	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityStatusActive, ConnectionLegalEntityNewParamsLegalEntityStatusDenied, ConnectionLegalEntityNewParamsLegalEntityStatusPending, ConnectionLegalEntityNewParamsLegalEntityStatusSuspended:
 		return true
 	}
 	return false

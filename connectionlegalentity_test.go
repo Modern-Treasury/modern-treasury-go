@@ -184,7 +184,6 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 						RegistrationNumber: moderntreasury.F("registration_number"),
 					}}),
 					RiskRating: moderntreasury.F(shared.ChildLegalEntityCreateRiskRatingLow),
-					Status:     moderntreasury.F(shared.ChildLegalEntityCreateStatusActive),
 					Suffix:     moderntreasury.F("suffix"),
 					ThirdPartyVerification: moderntreasury.F(shared.ChildLegalEntityCreateThirdPartyVerificationParam{
 						Vendor:               moderntreasury.F(shared.ChildLegalEntityCreateThirdPartyVerificationVendorPersona),
@@ -240,7 +239,6 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 				RegistrationNumber: moderntreasury.F("registration_number"),
 			}}),
 			RiskRating: moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityRiskRatingLow),
-			Status:     moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityStatusActive),
 			Suffix:     moderntreasury.F("suffix"),
 			ThirdPartyVerification: moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerification{
 				Vendor:               moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorPersona),
