@@ -567,11 +567,12 @@ const (
 	LegalEntityAssociationRelationshipTypeAuthorizedSigner LegalEntityAssociationRelationshipType = "authorized_signer"
 	LegalEntityAssociationRelationshipTypeBeneficialOwner  LegalEntityAssociationRelationshipType = "beneficial_owner"
 	LegalEntityAssociationRelationshipTypeControlPerson    LegalEntityAssociationRelationshipType = "control_person"
+	LegalEntityAssociationRelationshipTypeServiceCustomer  LegalEntityAssociationRelationshipType = "service_customer"
 )
 
 func (r LegalEntityAssociationRelationshipType) IsKnown() bool {
 	switch r {
-	case LegalEntityAssociationRelationshipTypeAuthorizedSigner, LegalEntityAssociationRelationshipTypeBeneficialOwner, LegalEntityAssociationRelationshipTypeControlPerson:
+	case LegalEntityAssociationRelationshipTypeAuthorizedSigner, LegalEntityAssociationRelationshipTypeBeneficialOwner, LegalEntityAssociationRelationshipTypeControlPerson, LegalEntityAssociationRelationshipTypeServiceCustomer:
 		return true
 	}
 	return false
@@ -603,11 +604,12 @@ const (
 	LegalEntityAssociationNewParamsRelationshipTypeAuthorizedSigner LegalEntityAssociationNewParamsRelationshipType = "authorized_signer"
 	LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner  LegalEntityAssociationNewParamsRelationshipType = "beneficial_owner"
 	LegalEntityAssociationNewParamsRelationshipTypeControlPerson    LegalEntityAssociationNewParamsRelationshipType = "control_person"
+	LegalEntityAssociationNewParamsRelationshipTypeServiceCustomer  LegalEntityAssociationNewParamsRelationshipType = "service_customer"
 )
 
 func (r LegalEntityAssociationNewParamsRelationshipType) IsKnown() bool {
 	switch r {
-	case LegalEntityAssociationNewParamsRelationshipTypeAuthorizedSigner, LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner, LegalEntityAssociationNewParamsRelationshipTypeControlPerson:
+	case LegalEntityAssociationNewParamsRelationshipTypeAuthorizedSigner, LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner, LegalEntityAssociationNewParamsRelationshipTypeControlPerson, LegalEntityAssociationNewParamsRelationshipTypeServiceCustomer:
 		return true
 	}
 	return false

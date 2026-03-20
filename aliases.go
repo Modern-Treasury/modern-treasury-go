@@ -968,6 +968,9 @@ const LegalEntityAssociationInlineCreateRelationshipTypeBeneficialOwner = shared
 // This is an alias to an internal value.
 const LegalEntityAssociationInlineCreateRelationshipTypeControlPerson = shared.LegalEntityAssociationInlineCreateRelationshipTypeControlPerson
 
+// This is an alias to an internal value.
+const LegalEntityAssociationInlineCreateRelationshipTypeServiceCustomer = shared.LegalEntityAssociationInlineCreateRelationshipTypeServiceCustomer
+
 // This is an alias to an internal type.
 type LegalEntityBankSettings = shared.LegalEntityBankSettings
 
