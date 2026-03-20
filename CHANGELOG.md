@@ -1,5 +1,25 @@
 # Changelog
 
+## 2.48.0 (2026-03-20)
+
+Full Changelog: [v2.47.0...v2.48.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.47.0...v2.48.0)
+
+### Features
+
+* **api:** api update ([011bbc1](https://github.com/Modern-Treasury/modern-treasury-go/commit/011bbc1ca91a0390e0d0e33ca05f0dadb617fb14))
+* **api:** api update ([e51c8ff](https://github.com/Modern-Treasury/modern-treasury-go/commit/e51c8ff36526855ff61e33bc03c5fe824591ad18))
+
+
+### Chores
+
+* **tests:** bump steady to v0.19.4 ([094361f](https://github.com/Modern-Treasury/modern-treasury-go/commit/094361fae4499eaf082ffb1f6fdaa47625b4a5fd))
+* **tests:** bump steady to v0.19.5 ([6e29f54](https://github.com/Modern-Treasury/modern-treasury-go/commit/6e29f54b101b0983fe41a13227468ebef95faedb))
+
+
+### Refactors
+
+* **tests:** switch from prism to steady ([e7efa9c](https://github.com/Modern-Treasury/modern-treasury-go/commit/e7efa9cd756c4ddfdad15c79f38c0b08902b1e26))
+
 ## 2.47.0 (2026-03-18)
 
 Full Changelog: [v2.46.0...v2.47.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.46.0...v2.47.0)
