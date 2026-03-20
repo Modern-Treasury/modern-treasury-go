@@ -283,6 +283,7 @@ const (
 	TransactionVendorCodeTypeBnkDev          TransactionVendorCodeType = "bnk_dev"
 	TransactionVendorCodeTypeBrale           TransactionVendorCodeType = "brale"
 	TransactionVendorCodeTypeCleartouch      TransactionVendorCodeType = "cleartouch"
+	TransactionVendorCodeTypeCoinbasePrime   TransactionVendorCodeType = "coinbase_prime"
 	TransactionVendorCodeTypeColumn          TransactionVendorCodeType = "column"
 	TransactionVendorCodeTypeCrossRiver      TransactionVendorCodeType = "cross_river"
 	TransactionVendorCodeTypeCurrencycloud   TransactionVendorCodeType = "currencycloud"
@@ -308,7 +309,7 @@ const (
 
 func (r TransactionVendorCodeType) IsKnown() bool {
 	switch r {
-	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankingCircle, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeBrale, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeFakeVendor, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeModernTreasury, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePaxos, TransactionVendorCodeTypePaypal, TransactionVendorCodeTypePnc, TransactionVendorCodeTypeSignet, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser, TransactionVendorCodeTypeWesternAlliance:
+	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankingCircle, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeBrale, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeCoinbasePrime, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeFakeVendor, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeModernTreasury, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePaxos, TransactionVendorCodeTypePaypal, TransactionVendorCodeTypePnc, TransactionVendorCodeTypeSignet, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser, TransactionVendorCodeTypeWesternAlliance:
 		return true
 	}
 	return false
