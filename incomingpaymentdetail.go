@@ -87,7 +87,7 @@ func (r *IncomingPaymentDetailService) ListAutoPaging(ctx context.Context, query
 }
 
 // Simulate Incoming Payment Detail
-func (r *IncomingPaymentDetailService) NewAsync(ctx context.Context, body IncomingPaymentDetailNewAsyncParams, opts ...option.RequestOption) (res *shared.AsyncResponse, err error) {
+func (r *IncomingPaymentDetailService) NewAsync(ctx context.Context, body IncomingPaymentDetailNewAsyncParams, opts ...option.RequestOption) (res *IncomingPaymentDetail, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "api/simulations/incoming_payment_details/create_async"
 	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
