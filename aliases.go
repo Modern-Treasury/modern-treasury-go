@@ -299,6 +299,9 @@ const CurrencyErn = shared.CurrencyErn
 const CurrencyEtb = shared.CurrencyEtb
 
 // This is an alias to an internal value.
+const CurrencyEth = shared.CurrencyEth
+
+// This is an alias to an internal value.
 const CurrencyEur = shared.CurrencyEur
 
 // This is an alias to an internal value.
@@ -507,6 +510,9 @@ const CurrencyNzd = shared.CurrencyNzd
 
 // This is an alias to an internal value.
 const CurrencyOmr = shared.CurrencyOmr
+
+// This is an alias to an internal value.
+const CurrencyOp = shared.CurrencyOp
 
 // This is an alias to an internal value.
 const CurrencyPab = shared.CurrencyPab
