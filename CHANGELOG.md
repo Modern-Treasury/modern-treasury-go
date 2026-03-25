@@ -1,5 +1,37 @@
 # Changelog
 
+## 2.48.0 (2026-03-25)
+
+Full Changelog: [v2.47.0...v2.48.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.47.0...v2.48.0)
+
+### Features
+
+* **api:** api update ([facc769](https://github.com/Modern-Treasury/modern-treasury-go/commit/facc7699011c6591689254395792ea81fd6de283))
+* **api:** api update ([8ec0547](https://github.com/Modern-Treasury/modern-treasury-go/commit/8ec0547229ac85a2b00107dc2fbbebcbe0c19169))
+* **api:** api update ([011bbc1](https://github.com/Modern-Treasury/modern-treasury-go/commit/011bbc1ca91a0390e0d0e33ca05f0dadb617fb14))
+* **api:** api update ([e51c8ff](https://github.com/Modern-Treasury/modern-treasury-go/commit/e51c8ff36526855ff61e33bc03c5fe824591ad18))
+* **api:** switch back to prism mock server ([88d6a21](https://github.com/Modern-Treasury/modern-treasury-go/commit/88d6a218266584800498c65d076d79792bd6dcc0))
+
+
+### Bug Fixes
+
+* **types:** generate shared enum types that are not referenced by other schemas ([2264fda](https://github.com/Modern-Treasury/modern-treasury-go/commit/2264fda9a3ec708d86da89262f429cf8be44ddfd))
+
+
+### Chores
+
+* **ci:** skip lint on metadata-only changes ([ad936d3](https://github.com/Modern-Treasury/modern-treasury-go/commit/ad936d31af6e52f903aa2a19004c820078cea47f))
+* **internal:** update gitignore ([9c41e1c](https://github.com/Modern-Treasury/modern-treasury-go/commit/9c41e1ca493481caf5d2097b0b43309e6913581c))
+* **tests:** bump steady to v0.19.4 ([094361f](https://github.com/Modern-Treasury/modern-treasury-go/commit/094361fae4499eaf082ffb1f6fdaa47625b4a5fd))
+* **tests:** bump steady to v0.19.5 ([6e29f54](https://github.com/Modern-Treasury/modern-treasury-go/commit/6e29f54b101b0983fe41a13227468ebef95faedb))
+* **tests:** bump steady to v0.19.6 ([fe8c3ff](https://github.com/Modern-Treasury/modern-treasury-go/commit/fe8c3ffd44a16bff72eec23a2d4a9612af4a86b6))
+* **tests:** bump steady to v0.19.7 ([f8f7efe](https://github.com/Modern-Treasury/modern-treasury-go/commit/f8f7efe34fd203e57bd6a95fd0b9e45bd321f570))
+
+
+### Refactors
+
+* **tests:** switch from prism to steady ([e7efa9c](https://github.com/Modern-Treasury/modern-treasury-go/commit/e7efa9cd756c4ddfdad15c79f38c0b08902b1e26))
+
 ## 2.47.0 (2026-03-18)
 
 Full Changelog: [v2.46.0...v2.47.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.46.0...v2.47.0)
