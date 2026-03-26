@@ -580,10 +580,6 @@ Response Types:
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ChildLegalEntity">ChildLegalEntity</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntityAssociation">LegalEntityAssociation</a>
 
-Methods:
-
-- <code title="post /api/legal_entity_associations">client.LegalEntityAssociations.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntityAssociationService.New">New</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntityAssociationNewParams">LegalEntityAssociationNewParams</a>) (\*<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntityAssociation">LegalEntityAssociation</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-
 # PaymentActions
 
 Response Types:
