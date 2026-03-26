@@ -3,14 +3,9 @@
 package moderntreasury
 
 import (
-	"context"
-	"net/http"
-	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
@@ -32,14 +27,6 @@ func NewLegalEntityAssociationService(opts ...option.RequestOption) (r *LegalEnt
 	r = &LegalEntityAssociationService{}
 	r.Options = opts
 	return
-}
-
-// create legal_entity_association
-func (r *LegalEntityAssociationService) New(ctx context.Context, body LegalEntityAssociationNewParams, opts ...option.RequestOption) (res *LegalEntityAssociation, err error) {
-	opts = slices.Concat(r.Options, opts)
-	path := "api/legal_entity_associations"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
 }
 
 type ChildLegalEntity struct {
@@ -567,49 +554,11 @@ const (
 	LegalEntityAssociationRelationshipTypeAuthorizedSigner LegalEntityAssociationRelationshipType = "authorized_signer"
 	LegalEntityAssociationRelationshipTypeBeneficialOwner  LegalEntityAssociationRelationshipType = "beneficial_owner"
 	LegalEntityAssociationRelationshipTypeControlPerson    LegalEntityAssociationRelationshipType = "control_person"
-	LegalEntityAssociationRelationshipTypeServiceCustomer  LegalEntityAssociationRelationshipType = "service_customer"
 )
 
 func (r LegalEntityAssociationRelationshipType) IsKnown() bool {
 	switch r {
-	case LegalEntityAssociationRelationshipTypeAuthorizedSigner, LegalEntityAssociationRelationshipTypeBeneficialOwner, LegalEntityAssociationRelationshipTypeControlPerson, LegalEntityAssociationRelationshipTypeServiceCustomer:
-		return true
-	}
-	return false
-}
-
-type LegalEntityAssociationNewParams struct {
-	// The ID of the parent legal entity. This must be a business or joint legal
-	// entity.
-	ParentLegalEntityID param.Field[string]                                            `json:"parent_legal_entity_id" api:"required"`
-	RelationshipTypes   param.Field[[]LegalEntityAssociationNewParamsRelationshipType] `json:"relationship_types" api:"required"`
-	// The child legal entity.
-	ChildLegalEntity param.Field[shared.ChildLegalEntityCreateParam] `json:"child_legal_entity"`
-	// The ID of the child legal entity.
-	ChildLegalEntityID param.Field[string] `json:"child_legal_entity_id"`
-	// The child entity's ownership percentage iff they are a beneficial owner.
-	OwnershipPercentage param.Field[int64] `json:"ownership_percentage"`
-	// The job title of the child entity at the parent entity.
-	Title param.Field[string] `json:"title"`
-}
-
-func (r LegalEntityAssociationNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// A list of relationship types for how the child entity relates to parent entity.
-type LegalEntityAssociationNewParamsRelationshipType string
-
-const (
-	LegalEntityAssociationNewParamsRelationshipTypeAuthorizedSigner LegalEntityAssociationNewParamsRelationshipType = "authorized_signer"
-	LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner  LegalEntityAssociationNewParamsRelationshipType = "beneficial_owner"
-	LegalEntityAssociationNewParamsRelationshipTypeControlPerson    LegalEntityAssociationNewParamsRelationshipType = "control_person"
-	LegalEntityAssociationNewParamsRelationshipTypeServiceCustomer  LegalEntityAssociationNewParamsRelationshipType = "service_customer"
-)
-
-func (r LegalEntityAssociationNewParamsRelationshipType) IsKnown() bool {
-	switch r {
-	case LegalEntityAssociationNewParamsRelationshipTypeAuthorizedSigner, LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner, LegalEntityAssociationNewParamsRelationshipTypeControlPerson, LegalEntityAssociationNewParamsRelationshipTypeServiceCustomer:
+	case LegalEntityAssociationRelationshipTypeAuthorizedSigner, LegalEntityAssociationRelationshipTypeBeneficialOwner, LegalEntityAssociationRelationshipTypeControlPerson:
 		return true
 	}
 	return false
