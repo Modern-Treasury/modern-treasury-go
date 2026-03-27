@@ -242,8 +242,9 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 						Name:               moderntreasury.F("name"),
 						RegistrationNumber: moderntreasury.F("registration_number"),
 					}}),
-					RiskRating: moderntreasury.F(shared.ChildLegalEntityCreateRiskRatingLow),
-					Suffix:     moderntreasury.F("suffix"),
+					RiskRating:                   moderntreasury.F(shared.ChildLegalEntityCreateRiskRatingLow),
+					ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+					Suffix:                       moderntreasury.F("suffix"),
 					ThirdPartyVerification: moderntreasury.F(shared.ChildLegalEntityCreateThirdPartyVerificationParam{
 						Vendor:               moderntreasury.F(shared.ChildLegalEntityCreateThirdPartyVerificationVendorPersona),
 						VendorVerificationID: moderntreasury.F("vendor_verification_id"),
@@ -296,8 +297,9 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				Name:               moderntreasury.F("name"),
 				RegistrationNumber: moderntreasury.F("registration_number"),
 			}}),
-			RiskRating: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityRiskRatingLow),
-			Suffix:     moderntreasury.F("suffix"),
+			RiskRating:                   moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityRiskRatingLow),
+			ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			Suffix:                       moderntreasury.F("suffix"),
 			ThirdPartyVerification: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityThirdPartyVerification{
 				Vendor:               moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorPersona),
 				VendorVerificationID: moderntreasury.F("vendor_verification_id"),
