@@ -7,9 +7,11 @@ import (
 	"errors"
 	"fmt"
 	"net/http"
+	"net/url"
 	"slices"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
+	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
@@ -61,11 +63,11 @@ func (r *JournalReportService) Update(ctx context.Context, id string, body Journ
 }
 
 // Retrieve a list of journal reports
-func (r *JournalReportService) List(ctx context.Context, opts ...option.RequestOption) (err error) {
+func (r *JournalReportService) List(ctx context.Context, query JournalReportListParams, opts ...option.RequestOption) (err error) {
 	opts = slices.Concat(r.Options, opts)
 	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
 	path := "api/journal_reports"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, nil, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, nil, opts...)
 	return err
 }
 
@@ -76,4 +78,33 @@ type JournalReportUpdateParams struct {
 
 func (r JournalReportUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type JournalReportListParams struct {
+	Status param.Field[JournalReportListParamsStatus] `query:"status"`
+}
+
+// URLQuery serializes [JournalReportListParams]'s query parameters as
+// `url.Values`.
+func (r JournalReportListParams) URLQuery() (v url.Values) {
+	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
+		NestedFormat: apiquery.NestedQueryFormatBrackets,
+	})
+}
+
+type JournalReportListParamsStatus string
+
+const (
+	JournalReportListParamsStatusDraft     JournalReportListParamsStatus = "draft"
+	JournalReportListParamsStatusPublished JournalReportListParamsStatus = "published"
+	JournalReportListParamsStatusReady     JournalReportListParamsStatus = "ready"
+)
+
+func (r JournalReportListParamsStatus) IsKnown() bool {
+	switch r {
+	case JournalReportListParamsStatusDraft, JournalReportListParamsStatusPublished, JournalReportListParamsStatusReady:
+		return true
+	}
+	return false
 }
