@@ -102,6 +102,8 @@ type ChildLegalEntity struct {
 	Regulators []ChildLegalEntityRegulator `json:"regulators" api:"required,nullable"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating ChildLegalEntityRiskRating `json:"risk_rating" api:"required,nullable"`
+	// The UUID of the parent legal entity in the service provider tree.
+	ServiceProviderLegalEntityID string `json:"service_provider_legal_entity_id" api:"required,nullable" format:"uuid"`
 	// The activation status of the legal entity. One of pending, active, suspended, or
 	// denied.
 	Status ChildLegalEntityStatus `json:"status" api:"required,nullable"`
@@ -121,53 +123,54 @@ type ChildLegalEntity struct {
 // childLegalEntityJSON contains the JSON metadata for the struct
 // [ChildLegalEntity]
 type childLegalEntityJSON struct {
-	ID                         apijson.Field
-	Addresses                  apijson.Field
-	BankSettings               apijson.Field
-	BusinessDescription        apijson.Field
-	BusinessName               apijson.Field
-	CitizenshipCountry         apijson.Field
-	ComplianceDetails          apijson.Field
-	CountryOfIncorporation     apijson.Field
-	CreatedAt                  apijson.Field
-	DateFormed                 apijson.Field
-	DateOfBirth                apijson.Field
-	DiscardedAt                apijson.Field
-	Documents                  apijson.Field
-	DoingBusinessAsNames       apijson.Field
-	Email                      apijson.Field
-	ExpectedActivityVolume     apijson.Field
-	ExternalID                 apijson.Field
-	FirstName                  apijson.Field
-	Identifications            apijson.Field
-	IndustryClassifications    apijson.Field
-	IntendedUse                apijson.Field
-	LastName                   apijson.Field
-	LegalEntityAssociations    apijson.Field
-	LegalEntityType            apijson.Field
-	LegalStructure             apijson.Field
-	ListedExchange             apijson.Field
-	LiveMode                   apijson.Field
-	Metadata                   apijson.Field
-	MiddleName                 apijson.Field
-	Object                     apijson.Field
-	OperatingJurisdictions     apijson.Field
-	PhoneNumbers               apijson.Field
-	PoliticallyExposedPerson   apijson.Field
-	PreferredName              apijson.Field
-	Prefix                     apijson.Field
-	PrimarySocialMediaSites    apijson.Field
-	Regulators                 apijson.Field
-	RiskRating                 apijson.Field
-	Status                     apijson.Field
-	Suffix                     apijson.Field
-	ThirdPartyVerification     apijson.Field
-	TickerSymbol               apijson.Field
-	UpdatedAt                  apijson.Field
-	WealthAndEmploymentDetails apijson.Field
-	Website                    apijson.Field
-	raw                        string
-	ExtraFields                map[string]apijson.Field
+	ID                           apijson.Field
+	Addresses                    apijson.Field
+	BankSettings                 apijson.Field
+	BusinessDescription          apijson.Field
+	BusinessName                 apijson.Field
+	CitizenshipCountry           apijson.Field
+	ComplianceDetails            apijson.Field
+	CountryOfIncorporation       apijson.Field
+	CreatedAt                    apijson.Field
+	DateFormed                   apijson.Field
+	DateOfBirth                  apijson.Field
+	DiscardedAt                  apijson.Field
+	Documents                    apijson.Field
+	DoingBusinessAsNames         apijson.Field
+	Email                        apijson.Field
+	ExpectedActivityVolume       apijson.Field
+	ExternalID                   apijson.Field
+	FirstName                    apijson.Field
+	Identifications              apijson.Field
+	IndustryClassifications      apijson.Field
+	IntendedUse                  apijson.Field
+	LastName                     apijson.Field
+	LegalEntityAssociations      apijson.Field
+	LegalEntityType              apijson.Field
+	LegalStructure               apijson.Field
+	ListedExchange               apijson.Field
+	LiveMode                     apijson.Field
+	Metadata                     apijson.Field
+	MiddleName                   apijson.Field
+	Object                       apijson.Field
+	OperatingJurisdictions       apijson.Field
+	PhoneNumbers                 apijson.Field
+	PoliticallyExposedPerson     apijson.Field
+	PreferredName                apijson.Field
+	Prefix                       apijson.Field
+	PrimarySocialMediaSites      apijson.Field
+	Regulators                   apijson.Field
+	RiskRating                   apijson.Field
+	ServiceProviderLegalEntityID apijson.Field
+	Status                       apijson.Field
+	Suffix                       apijson.Field
+	ThirdPartyVerification       apijson.Field
+	TickerSymbol                 apijson.Field
+	UpdatedAt                    apijson.Field
+	WealthAndEmploymentDetails   apijson.Field
+	Website                      apijson.Field
+	raw                          string
+	ExtraFields                  map[string]apijson.Field
 }
 
 func (r *ChildLegalEntity) UnmarshalJSON(data []byte) (err error) {

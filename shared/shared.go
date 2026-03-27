@@ -217,6 +217,8 @@ type ChildLegalEntityCreateParam struct {
 	Regulators param.Field[[]ChildLegalEntityCreateRegulatorParam] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[ChildLegalEntityCreateRiskRating] `json:"risk_rating"`
+	// The UUID of the parent legal entity in the service provider tree.
+	ServiceProviderLegalEntityID param.Field[string] `json:"service_provider_legal_entity_id" format:"uuid"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
 	// Information describing a third-party verification run by an external vendor.
