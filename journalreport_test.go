@@ -66,7 +66,7 @@ func TestJournalReportUpdateWithOptionalParams(t *testing.T) {
 	}
 }
 
-func TestJournalReportList(t *testing.T) {
+func TestJournalReportListWithOptionalParams(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -79,7 +79,9 @@ func TestJournalReportList(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	err := client.JournalReports.List(context.TODO())
+	err := client.JournalReports.List(context.TODO(), moderntreasury.JournalReportListParams{
+		Status: moderntreasury.F(moderntreasury.JournalReportListParamsStatusDraft),
+	})
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
