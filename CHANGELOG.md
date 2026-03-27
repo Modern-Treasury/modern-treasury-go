@@ -1,5 +1,28 @@
 # Changelog
 
+## 2.49.0 (2026-03-27)
+
+Full Changelog: [v2.48.0...v2.49.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.48.0...v2.49.0)
+
+### Features
+
+* **api:** api update ([fc153f1](https://github.com/Modern-Treasury/modern-treasury-go/commit/fc153f1d539b94635f6f0664d620563400455e24))
+* **api:** api update ([df13f75](https://github.com/Modern-Treasury/modern-treasury-go/commit/df13f750167b56d83dbb829b0d4724c1b66307e0))
+* **api:** api update ([c904d6d](https://github.com/Modern-Treasury/modern-treasury-go/commit/c904d6d5fc6e6e18e448e526607bae758248fb00))
+* **api:** api update ([1976224](https://github.com/Modern-Treasury/modern-treasury-go/commit/1976224150fe9a514945cd3de6c94ac60c2baa5d))
+* **internal:** support comma format in multipart form encoding ([fbbb19f](https://github.com/Modern-Treasury/modern-treasury-go/commit/fbbb19f5afd7288c3ecc27bd6ee9b7bd3dfd15ad))
+
+
+### Bug Fixes
+
+* prevent duplicate ? in query params ([6514c00](https://github.com/Modern-Treasury/modern-treasury-go/commit/6514c0092c6ee14d4d9c8d91759c02c35a9230e9))
+
+
+### Chores
+
+* **ci:** support opting out of skipping builds on metadata-only commits ([b958806](https://github.com/Modern-Treasury/modern-treasury-go/commit/b958806cbfb37513d3fb56c33448ad3c07caaf90))
+* remove unnecessary error check for url parsing ([68e6afa](https://github.com/Modern-Treasury/modern-treasury-go/commit/68e6afa35766e07974d75825afee0ef753ebc134))
+
 ## 2.48.0 (2026-03-25)
 
 Full Changelog: [v2.47.0...v2.48.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.47.0...v2.48.0)
