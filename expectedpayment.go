@@ -357,13 +357,14 @@ const (
 	ExpectedPaymentTypeSignet      ExpectedPaymentType = "signet"
 	ExpectedPaymentTypeSknbi       ExpectedPaymentType = "sknbi"
 	ExpectedPaymentTypeSolana      ExpectedPaymentType = "solana"
+	ExpectedPaymentTypeStablecoin  ExpectedPaymentType = "stablecoin"
 	ExpectedPaymentTypeWire        ExpectedPaymentType = "wire"
 	ExpectedPaymentTypeZengin      ExpectedPaymentType = "zengin"
 )
 
 func (r ExpectedPaymentType) IsKnown() bool {
 	switch r {
-	case ExpectedPaymentTypeACH, ExpectedPaymentTypeAuBecs, ExpectedPaymentTypeBacs, ExpectedPaymentTypeBase, ExpectedPaymentTypeBook, ExpectedPaymentTypeCard, ExpectedPaymentTypeChats, ExpectedPaymentTypeCheck, ExpectedPaymentTypeCrossBorder, ExpectedPaymentTypeDkNets, ExpectedPaymentTypeEft, ExpectedPaymentTypeEthereum, ExpectedPaymentTypeGBFps, ExpectedPaymentTypeHuIcs, ExpectedPaymentTypeInterac, ExpectedPaymentTypeMasav, ExpectedPaymentTypeMxCcen, ExpectedPaymentTypeNeft, ExpectedPaymentTypeNics, ExpectedPaymentTypeNzBecs, ExpectedPaymentTypePlElixir, ExpectedPaymentTypePolygon, ExpectedPaymentTypeProvxchange, ExpectedPaymentTypeRoSent, ExpectedPaymentTypeRtp, ExpectedPaymentTypeSeBankgirot, ExpectedPaymentTypeSen, ExpectedPaymentTypeSepa, ExpectedPaymentTypeSgGiro, ExpectedPaymentTypeSic, ExpectedPaymentTypeSignet, ExpectedPaymentTypeSknbi, ExpectedPaymentTypeSolana, ExpectedPaymentTypeWire, ExpectedPaymentTypeZengin:
+	case ExpectedPaymentTypeACH, ExpectedPaymentTypeAuBecs, ExpectedPaymentTypeBacs, ExpectedPaymentTypeBase, ExpectedPaymentTypeBook, ExpectedPaymentTypeCard, ExpectedPaymentTypeChats, ExpectedPaymentTypeCheck, ExpectedPaymentTypeCrossBorder, ExpectedPaymentTypeDkNets, ExpectedPaymentTypeEft, ExpectedPaymentTypeEthereum, ExpectedPaymentTypeGBFps, ExpectedPaymentTypeHuIcs, ExpectedPaymentTypeInterac, ExpectedPaymentTypeMasav, ExpectedPaymentTypeMxCcen, ExpectedPaymentTypeNeft, ExpectedPaymentTypeNics, ExpectedPaymentTypeNzBecs, ExpectedPaymentTypePlElixir, ExpectedPaymentTypePolygon, ExpectedPaymentTypeProvxchange, ExpectedPaymentTypeRoSent, ExpectedPaymentTypeRtp, ExpectedPaymentTypeSeBankgirot, ExpectedPaymentTypeSen, ExpectedPaymentTypeSepa, ExpectedPaymentTypeSgGiro, ExpectedPaymentTypeSic, ExpectedPaymentTypeSignet, ExpectedPaymentTypeSknbi, ExpectedPaymentTypeSolana, ExpectedPaymentTypeStablecoin, ExpectedPaymentTypeWire, ExpectedPaymentTypeZengin:
 		return true
 	}
 	return false
@@ -477,13 +478,14 @@ const (
 	ReconciliationRuleTypeSignet      ReconciliationRuleType = "signet"
 	ReconciliationRuleTypeSknbi       ReconciliationRuleType = "sknbi"
 	ReconciliationRuleTypeSolana      ReconciliationRuleType = "solana"
+	ReconciliationRuleTypeStablecoin  ReconciliationRuleType = "stablecoin"
 	ReconciliationRuleTypeWire        ReconciliationRuleType = "wire"
 	ReconciliationRuleTypeZengin      ReconciliationRuleType = "zengin"
 )
 
 func (r ReconciliationRuleType) IsKnown() bool {
 	switch r {
-	case ReconciliationRuleTypeACH, ReconciliationRuleTypeAuBecs, ReconciliationRuleTypeBacs, ReconciliationRuleTypeBase, ReconciliationRuleTypeBook, ReconciliationRuleTypeCard, ReconciliationRuleTypeChats, ReconciliationRuleTypeCheck, ReconciliationRuleTypeCrossBorder, ReconciliationRuleTypeDkNets, ReconciliationRuleTypeEft, ReconciliationRuleTypeEthereum, ReconciliationRuleTypeGBFps, ReconciliationRuleTypeHuIcs, ReconciliationRuleTypeInterac, ReconciliationRuleTypeMasav, ReconciliationRuleTypeMxCcen, ReconciliationRuleTypeNeft, ReconciliationRuleTypeNics, ReconciliationRuleTypeNzBecs, ReconciliationRuleTypePlElixir, ReconciliationRuleTypePolygon, ReconciliationRuleTypeProvxchange, ReconciliationRuleTypeRoSent, ReconciliationRuleTypeRtp, ReconciliationRuleTypeSeBankgirot, ReconciliationRuleTypeSen, ReconciliationRuleTypeSepa, ReconciliationRuleTypeSgGiro, ReconciliationRuleTypeSic, ReconciliationRuleTypeSignet, ReconciliationRuleTypeSknbi, ReconciliationRuleTypeSolana, ReconciliationRuleTypeWire, ReconciliationRuleTypeZengin:
+	case ReconciliationRuleTypeACH, ReconciliationRuleTypeAuBecs, ReconciliationRuleTypeBacs, ReconciliationRuleTypeBase, ReconciliationRuleTypeBook, ReconciliationRuleTypeCard, ReconciliationRuleTypeChats, ReconciliationRuleTypeCheck, ReconciliationRuleTypeCrossBorder, ReconciliationRuleTypeDkNets, ReconciliationRuleTypeEft, ReconciliationRuleTypeEthereum, ReconciliationRuleTypeGBFps, ReconciliationRuleTypeHuIcs, ReconciliationRuleTypeInterac, ReconciliationRuleTypeMasav, ReconciliationRuleTypeMxCcen, ReconciliationRuleTypeNeft, ReconciliationRuleTypeNics, ReconciliationRuleTypeNzBecs, ReconciliationRuleTypePlElixir, ReconciliationRuleTypePolygon, ReconciliationRuleTypeProvxchange, ReconciliationRuleTypeRoSent, ReconciliationRuleTypeRtp, ReconciliationRuleTypeSeBankgirot, ReconciliationRuleTypeSen, ReconciliationRuleTypeSepa, ReconciliationRuleTypeSgGiro, ReconciliationRuleTypeSic, ReconciliationRuleTypeSignet, ReconciliationRuleTypeSknbi, ReconciliationRuleTypeSolana, ReconciliationRuleTypeStablecoin, ReconciliationRuleTypeWire, ReconciliationRuleTypeZengin:
 		return true
 	}
 	return false
@@ -890,13 +892,14 @@ const (
 	ExpectedPaymentListParamsTypeSignet      ExpectedPaymentListParamsType = "signet"
 	ExpectedPaymentListParamsTypeSknbi       ExpectedPaymentListParamsType = "sknbi"
 	ExpectedPaymentListParamsTypeSolana      ExpectedPaymentListParamsType = "solana"
+	ExpectedPaymentListParamsTypeStablecoin  ExpectedPaymentListParamsType = "stablecoin"
 	ExpectedPaymentListParamsTypeWire        ExpectedPaymentListParamsType = "wire"
 	ExpectedPaymentListParamsTypeZengin      ExpectedPaymentListParamsType = "zengin"
 )
 
 func (r ExpectedPaymentListParamsType) IsKnown() bool {
 	switch r {
-	case ExpectedPaymentListParamsTypeACH, ExpectedPaymentListParamsTypeAuBecs, ExpectedPaymentListParamsTypeBacs, ExpectedPaymentListParamsTypeBase, ExpectedPaymentListParamsTypeBook, ExpectedPaymentListParamsTypeCard, ExpectedPaymentListParamsTypeChats, ExpectedPaymentListParamsTypeCheck, ExpectedPaymentListParamsTypeCrossBorder, ExpectedPaymentListParamsTypeDkNets, ExpectedPaymentListParamsTypeEft, ExpectedPaymentListParamsTypeEthereum, ExpectedPaymentListParamsTypeGBFps, ExpectedPaymentListParamsTypeHuIcs, ExpectedPaymentListParamsTypeInterac, ExpectedPaymentListParamsTypeMasav, ExpectedPaymentListParamsTypeMxCcen, ExpectedPaymentListParamsTypeNeft, ExpectedPaymentListParamsTypeNics, ExpectedPaymentListParamsTypeNzBecs, ExpectedPaymentListParamsTypePlElixir, ExpectedPaymentListParamsTypePolygon, ExpectedPaymentListParamsTypeProvxchange, ExpectedPaymentListParamsTypeRoSent, ExpectedPaymentListParamsTypeRtp, ExpectedPaymentListParamsTypeSeBankgirot, ExpectedPaymentListParamsTypeSen, ExpectedPaymentListParamsTypeSepa, ExpectedPaymentListParamsTypeSgGiro, ExpectedPaymentListParamsTypeSic, ExpectedPaymentListParamsTypeSignet, ExpectedPaymentListParamsTypeSknbi, ExpectedPaymentListParamsTypeSolana, ExpectedPaymentListParamsTypeWire, ExpectedPaymentListParamsTypeZengin:
+	case ExpectedPaymentListParamsTypeACH, ExpectedPaymentListParamsTypeAuBecs, ExpectedPaymentListParamsTypeBacs, ExpectedPaymentListParamsTypeBase, ExpectedPaymentListParamsTypeBook, ExpectedPaymentListParamsTypeCard, ExpectedPaymentListParamsTypeChats, ExpectedPaymentListParamsTypeCheck, ExpectedPaymentListParamsTypeCrossBorder, ExpectedPaymentListParamsTypeDkNets, ExpectedPaymentListParamsTypeEft, ExpectedPaymentListParamsTypeEthereum, ExpectedPaymentListParamsTypeGBFps, ExpectedPaymentListParamsTypeHuIcs, ExpectedPaymentListParamsTypeInterac, ExpectedPaymentListParamsTypeMasav, ExpectedPaymentListParamsTypeMxCcen, ExpectedPaymentListParamsTypeNeft, ExpectedPaymentListParamsTypeNics, ExpectedPaymentListParamsTypeNzBecs, ExpectedPaymentListParamsTypePlElixir, ExpectedPaymentListParamsTypePolygon, ExpectedPaymentListParamsTypeProvxchange, ExpectedPaymentListParamsTypeRoSent, ExpectedPaymentListParamsTypeRtp, ExpectedPaymentListParamsTypeSeBankgirot, ExpectedPaymentListParamsTypeSen, ExpectedPaymentListParamsTypeSepa, ExpectedPaymentListParamsTypeSgGiro, ExpectedPaymentListParamsTypeSic, ExpectedPaymentListParamsTypeSignet, ExpectedPaymentListParamsTypeSknbi, ExpectedPaymentListParamsTypeSolana, ExpectedPaymentListParamsTypeStablecoin, ExpectedPaymentListParamsTypeWire, ExpectedPaymentListParamsTypeZengin:
 		return true
 	}
 	return false

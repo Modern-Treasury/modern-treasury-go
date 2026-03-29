@@ -3,14 +3,9 @@
 package moderntreasury
 
 import (
-	"context"
-	"net/http"
-	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
@@ -32,14 +27,6 @@ func NewLegalEntityAssociationService(opts ...option.RequestOption) (r *LegalEnt
 	r = &LegalEntityAssociationService{}
 	r.Options = opts
 	return
-}
-
-// create legal_entity_association
-func (r *LegalEntityAssociationService) New(ctx context.Context, body LegalEntityAssociationNewParams, opts ...option.RequestOption) (res *LegalEntityAssociation, err error) {
-	opts = slices.Concat(r.Options, opts)
-	path := "api/legal_entity_associations"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
 }
 
 type ChildLegalEntity struct {
@@ -115,6 +102,8 @@ type ChildLegalEntity struct {
 	Regulators []ChildLegalEntityRegulator `json:"regulators" api:"required,nullable"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating ChildLegalEntityRiskRating `json:"risk_rating" api:"required,nullable"`
+	// The UUID of the parent legal entity in the service provider tree.
+	ServiceProviderLegalEntityID string `json:"service_provider_legal_entity_id" api:"required,nullable" format:"uuid"`
 	// The activation status of the legal entity. One of pending, active, suspended, or
 	// denied.
 	Status ChildLegalEntityStatus `json:"status" api:"required,nullable"`
@@ -134,53 +123,54 @@ type ChildLegalEntity struct {
 // childLegalEntityJSON contains the JSON metadata for the struct
 // [ChildLegalEntity]
 type childLegalEntityJSON struct {
-	ID                         apijson.Field
-	Addresses                  apijson.Field
-	BankSettings               apijson.Field
-	BusinessDescription        apijson.Field
-	BusinessName               apijson.Field
-	CitizenshipCountry         apijson.Field
-	ComplianceDetails          apijson.Field
-	CountryOfIncorporation     apijson.Field
-	CreatedAt                  apijson.Field
-	DateFormed                 apijson.Field
-	DateOfBirth                apijson.Field
-	DiscardedAt                apijson.Field
-	Documents                  apijson.Field
-	DoingBusinessAsNames       apijson.Field
-	Email                      apijson.Field
-	ExpectedActivityVolume     apijson.Field
-	ExternalID                 apijson.Field
-	FirstName                  apijson.Field
-	Identifications            apijson.Field
-	IndustryClassifications    apijson.Field
-	IntendedUse                apijson.Field
-	LastName                   apijson.Field
-	LegalEntityAssociations    apijson.Field
-	LegalEntityType            apijson.Field
-	LegalStructure             apijson.Field
-	ListedExchange             apijson.Field
-	LiveMode                   apijson.Field
-	Metadata                   apijson.Field
-	MiddleName                 apijson.Field
-	Object                     apijson.Field
-	OperatingJurisdictions     apijson.Field
-	PhoneNumbers               apijson.Field
-	PoliticallyExposedPerson   apijson.Field
-	PreferredName              apijson.Field
-	Prefix                     apijson.Field
-	PrimarySocialMediaSites    apijson.Field
-	Regulators                 apijson.Field
-	RiskRating                 apijson.Field
-	Status                     apijson.Field
-	Suffix                     apijson.Field
-	ThirdPartyVerification     apijson.Field
-	TickerSymbol               apijson.Field
-	UpdatedAt                  apijson.Field
-	WealthAndEmploymentDetails apijson.Field
-	Website                    apijson.Field
-	raw                        string
-	ExtraFields                map[string]apijson.Field
+	ID                           apijson.Field
+	Addresses                    apijson.Field
+	BankSettings                 apijson.Field
+	BusinessDescription          apijson.Field
+	BusinessName                 apijson.Field
+	CitizenshipCountry           apijson.Field
+	ComplianceDetails            apijson.Field
+	CountryOfIncorporation       apijson.Field
+	CreatedAt                    apijson.Field
+	DateFormed                   apijson.Field
+	DateOfBirth                  apijson.Field
+	DiscardedAt                  apijson.Field
+	Documents                    apijson.Field
+	DoingBusinessAsNames         apijson.Field
+	Email                        apijson.Field
+	ExpectedActivityVolume       apijson.Field
+	ExternalID                   apijson.Field
+	FirstName                    apijson.Field
+	Identifications              apijson.Field
+	IndustryClassifications      apijson.Field
+	IntendedUse                  apijson.Field
+	LastName                     apijson.Field
+	LegalEntityAssociations      apijson.Field
+	LegalEntityType              apijson.Field
+	LegalStructure               apijson.Field
+	ListedExchange               apijson.Field
+	LiveMode                     apijson.Field
+	Metadata                     apijson.Field
+	MiddleName                   apijson.Field
+	Object                       apijson.Field
+	OperatingJurisdictions       apijson.Field
+	PhoneNumbers                 apijson.Field
+	PoliticallyExposedPerson     apijson.Field
+	PreferredName                apijson.Field
+	Prefix                       apijson.Field
+	PrimarySocialMediaSites      apijson.Field
+	Regulators                   apijson.Field
+	RiskRating                   apijson.Field
+	ServiceProviderLegalEntityID apijson.Field
+	Status                       apijson.Field
+	Suffix                       apijson.Field
+	ThirdPartyVerification       apijson.Field
+	TickerSymbol                 apijson.Field
+	UpdatedAt                    apijson.Field
+	WealthAndEmploymentDetails   apijson.Field
+	Website                      apijson.Field
+	raw                          string
+	ExtraFields                  map[string]apijson.Field
 }
 
 func (r *ChildLegalEntity) UnmarshalJSON(data []byte) (err error) {
@@ -567,49 +557,11 @@ const (
 	LegalEntityAssociationRelationshipTypeAuthorizedSigner LegalEntityAssociationRelationshipType = "authorized_signer"
 	LegalEntityAssociationRelationshipTypeBeneficialOwner  LegalEntityAssociationRelationshipType = "beneficial_owner"
 	LegalEntityAssociationRelationshipTypeControlPerson    LegalEntityAssociationRelationshipType = "control_person"
-	LegalEntityAssociationRelationshipTypeServiceCustomer  LegalEntityAssociationRelationshipType = "service_customer"
 )
 
 func (r LegalEntityAssociationRelationshipType) IsKnown() bool {
 	switch r {
-	case LegalEntityAssociationRelationshipTypeAuthorizedSigner, LegalEntityAssociationRelationshipTypeBeneficialOwner, LegalEntityAssociationRelationshipTypeControlPerson, LegalEntityAssociationRelationshipTypeServiceCustomer:
-		return true
-	}
-	return false
-}
-
-type LegalEntityAssociationNewParams struct {
-	// The ID of the parent legal entity. This must be a business or joint legal
-	// entity.
-	ParentLegalEntityID param.Field[string]                                            `json:"parent_legal_entity_id" api:"required"`
-	RelationshipTypes   param.Field[[]LegalEntityAssociationNewParamsRelationshipType] `json:"relationship_types" api:"required"`
-	// The child legal entity.
-	ChildLegalEntity param.Field[shared.ChildLegalEntityCreateParam] `json:"child_legal_entity"`
-	// The ID of the child legal entity.
-	ChildLegalEntityID param.Field[string] `json:"child_legal_entity_id"`
-	// The child entity's ownership percentage iff they are a beneficial owner.
-	OwnershipPercentage param.Field[int64] `json:"ownership_percentage"`
-	// The job title of the child entity at the parent entity.
-	Title param.Field[string] `json:"title"`
-}
-
-func (r LegalEntityAssociationNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// A list of relationship types for how the child entity relates to parent entity.
-type LegalEntityAssociationNewParamsRelationshipType string
-
-const (
-	LegalEntityAssociationNewParamsRelationshipTypeAuthorizedSigner LegalEntityAssociationNewParamsRelationshipType = "authorized_signer"
-	LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner  LegalEntityAssociationNewParamsRelationshipType = "beneficial_owner"
-	LegalEntityAssociationNewParamsRelationshipTypeControlPerson    LegalEntityAssociationNewParamsRelationshipType = "control_person"
-	LegalEntityAssociationNewParamsRelationshipTypeServiceCustomer  LegalEntityAssociationNewParamsRelationshipType = "service_customer"
-)
-
-func (r LegalEntityAssociationNewParamsRelationshipType) IsKnown() bool {
-	switch r {
-	case LegalEntityAssociationNewParamsRelationshipTypeAuthorizedSigner, LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner, LegalEntityAssociationNewParamsRelationshipTypeControlPerson, LegalEntityAssociationNewParamsRelationshipTypeServiceCustomer:
+	case LegalEntityAssociationRelationshipTypeAuthorizedSigner, LegalEntityAssociationRelationshipTypeBeneficialOwner, LegalEntityAssociationRelationshipTypeControlPerson:
 		return true
 	}
 	return false

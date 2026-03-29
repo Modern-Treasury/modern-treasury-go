@@ -257,6 +257,7 @@ const (
 	TransactionTypeSignet      TransactionType = "signet"
 	TransactionTypeSknbi       TransactionType = "sknbi"
 	TransactionTypeSolana      TransactionType = "solana"
+	TransactionTypeStablecoin  TransactionType = "stablecoin"
 	TransactionTypeWire        TransactionType = "wire"
 	TransactionTypeZengin      TransactionType = "zengin"
 	TransactionTypeOther       TransactionType = "other"
@@ -264,7 +265,7 @@ const (
 
 func (r TransactionType) IsKnown() bool {
 	switch r {
-	case TransactionTypeACH, TransactionTypeAuBecs, TransactionTypeBacs, TransactionTypeBase, TransactionTypeBook, TransactionTypeCard, TransactionTypeChats, TransactionTypeCheck, TransactionTypeCrossBorder, TransactionTypeDkNets, TransactionTypeEft, TransactionTypeEthereum, TransactionTypeGBFps, TransactionTypeHuIcs, TransactionTypeInterac, TransactionTypeMasav, TransactionTypeMxCcen, TransactionTypeNeft, TransactionTypeNics, TransactionTypeNzBecs, TransactionTypePlElixir, TransactionTypePolygon, TransactionTypeProvxchange, TransactionTypeRoSent, TransactionTypeRtp, TransactionTypeSeBankgirot, TransactionTypeSen, TransactionTypeSepa, TransactionTypeSgGiro, TransactionTypeSic, TransactionTypeSignet, TransactionTypeSknbi, TransactionTypeSolana, TransactionTypeWire, TransactionTypeZengin, TransactionTypeOther:
+	case TransactionTypeACH, TransactionTypeAuBecs, TransactionTypeBacs, TransactionTypeBase, TransactionTypeBook, TransactionTypeCard, TransactionTypeChats, TransactionTypeCheck, TransactionTypeCrossBorder, TransactionTypeDkNets, TransactionTypeEft, TransactionTypeEthereum, TransactionTypeGBFps, TransactionTypeHuIcs, TransactionTypeInterac, TransactionTypeMasav, TransactionTypeMxCcen, TransactionTypeNeft, TransactionTypeNics, TransactionTypeNzBecs, TransactionTypePlElixir, TransactionTypePolygon, TransactionTypeProvxchange, TransactionTypeRoSent, TransactionTypeRtp, TransactionTypeSeBankgirot, TransactionTypeSen, TransactionTypeSepa, TransactionTypeSgGiro, TransactionTypeSic, TransactionTypeSignet, TransactionTypeSknbi, TransactionTypeSolana, TransactionTypeStablecoin, TransactionTypeWire, TransactionTypeZengin, TransactionTypeOther:
 		return true
 	}
 	return false
@@ -390,6 +391,7 @@ const (
 	TransactionNewParamsTypeSignet      TransactionNewParamsType = "signet"
 	TransactionNewParamsTypeSknbi       TransactionNewParamsType = "sknbi"
 	TransactionNewParamsTypeSolana      TransactionNewParamsType = "solana"
+	TransactionNewParamsTypeStablecoin  TransactionNewParamsType = "stablecoin"
 	TransactionNewParamsTypeWire        TransactionNewParamsType = "wire"
 	TransactionNewParamsTypeZengin      TransactionNewParamsType = "zengin"
 	TransactionNewParamsTypeOther       TransactionNewParamsType = "other"
@@ -397,7 +399,7 @@ const (
 
 func (r TransactionNewParamsType) IsKnown() bool {
 	switch r {
-	case TransactionNewParamsTypeACH, TransactionNewParamsTypeAuBecs, TransactionNewParamsTypeBacs, TransactionNewParamsTypeBase, TransactionNewParamsTypeBook, TransactionNewParamsTypeCard, TransactionNewParamsTypeChats, TransactionNewParamsTypeCheck, TransactionNewParamsTypeCrossBorder, TransactionNewParamsTypeDkNets, TransactionNewParamsTypeEft, TransactionNewParamsTypeEthereum, TransactionNewParamsTypeGBFps, TransactionNewParamsTypeHuIcs, TransactionNewParamsTypeInterac, TransactionNewParamsTypeMasav, TransactionNewParamsTypeMxCcen, TransactionNewParamsTypeNeft, TransactionNewParamsTypeNics, TransactionNewParamsTypeNzBecs, TransactionNewParamsTypePlElixir, TransactionNewParamsTypePolygon, TransactionNewParamsTypeProvxchange, TransactionNewParamsTypeRoSent, TransactionNewParamsTypeRtp, TransactionNewParamsTypeSeBankgirot, TransactionNewParamsTypeSen, TransactionNewParamsTypeSepa, TransactionNewParamsTypeSgGiro, TransactionNewParamsTypeSic, TransactionNewParamsTypeSignet, TransactionNewParamsTypeSknbi, TransactionNewParamsTypeSolana, TransactionNewParamsTypeWire, TransactionNewParamsTypeZengin, TransactionNewParamsTypeOther:
+	case TransactionNewParamsTypeACH, TransactionNewParamsTypeAuBecs, TransactionNewParamsTypeBacs, TransactionNewParamsTypeBase, TransactionNewParamsTypeBook, TransactionNewParamsTypeCard, TransactionNewParamsTypeChats, TransactionNewParamsTypeCheck, TransactionNewParamsTypeCrossBorder, TransactionNewParamsTypeDkNets, TransactionNewParamsTypeEft, TransactionNewParamsTypeEthereum, TransactionNewParamsTypeGBFps, TransactionNewParamsTypeHuIcs, TransactionNewParamsTypeInterac, TransactionNewParamsTypeMasav, TransactionNewParamsTypeMxCcen, TransactionNewParamsTypeNeft, TransactionNewParamsTypeNics, TransactionNewParamsTypeNzBecs, TransactionNewParamsTypePlElixir, TransactionNewParamsTypePolygon, TransactionNewParamsTypeProvxchange, TransactionNewParamsTypeRoSent, TransactionNewParamsTypeRtp, TransactionNewParamsTypeSeBankgirot, TransactionNewParamsTypeSen, TransactionNewParamsTypeSepa, TransactionNewParamsTypeSgGiro, TransactionNewParamsTypeSic, TransactionNewParamsTypeSignet, TransactionNewParamsTypeSknbi, TransactionNewParamsTypeSolana, TransactionNewParamsTypeStablecoin, TransactionNewParamsTypeWire, TransactionNewParamsTypeZengin, TransactionNewParamsTypeOther:
 		return true
 	}
 	return false
