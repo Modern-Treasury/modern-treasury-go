@@ -808,6 +808,9 @@ const IdentificationCreateRequestIDTypeHnID = shared.IdentificationCreateRequest
 const IdentificationCreateRequestIDTypeHnRtn = shared.IdentificationCreateRequestIDTypeHnRtn
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeIePps = shared.IdentificationCreateRequestIDTypeIePps
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeInLei = shared.IdentificationCreateRequestIDTypeInLei
 
 // This is an alias to an internal value.
