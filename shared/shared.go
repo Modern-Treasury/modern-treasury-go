@@ -737,6 +737,7 @@ const (
 	IdentificationCreateRequestIDTypeDriversLicense IdentificationCreateRequestIDType = "drivers_license"
 	IdentificationCreateRequestIDTypeHnID           IdentificationCreateRequestIDType = "hn_id"
 	IdentificationCreateRequestIDTypeHnRtn          IdentificationCreateRequestIDType = "hn_rtn"
+	IdentificationCreateRequestIDTypeIePps          IdentificationCreateRequestIDType = "ie_pps"
 	IdentificationCreateRequestIDTypeInLei          IdentificationCreateRequestIDType = "in_lei"
 	IdentificationCreateRequestIDTypeKrBrn          IdentificationCreateRequestIDType = "kr_brn"
 	IdentificationCreateRequestIDTypeKrCrn          IdentificationCreateRequestIDType = "kr_crn"
@@ -752,7 +753,7 @@ const (
 
 func (r IdentificationCreateRequestIDType) IsKnown() bool {
 	switch r {
-	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeVnTin:
+	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeVnTin:
 		return true
 	}
 	return false
