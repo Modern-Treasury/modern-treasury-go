@@ -1004,6 +1004,7 @@ const (
 	PaymentOrderSubtypeWeb                         PaymentOrderSubtype = "WEB"
 	PaymentOrderSubtypeAuBecs                      PaymentOrderSubtype = "au_becs"
 	PaymentOrderSubtypeBacs                        PaymentOrderSubtype = "bacs"
+	PaymentOrderSubtypeBase                        PaymentOrderSubtype = "base"
 	PaymentOrderSubtypeChats                       PaymentOrderSubtype = "chats"
 	PaymentOrderSubtypeDkNets                      PaymentOrderSubtype = "dk_nets"
 	PaymentOrderSubtypeEft                         PaymentOrderSubtype = "eft"
@@ -1015,6 +1016,7 @@ const (
 	PaymentOrderSubtypeNics                        PaymentOrderSubtype = "nics"
 	PaymentOrderSubtypeNzBecs                      PaymentOrderSubtype = "nz_becs"
 	PaymentOrderSubtypePlElixir                    PaymentOrderSubtype = "pl_elixir"
+	PaymentOrderSubtypePolygon                     PaymentOrderSubtype = "polygon"
 	PaymentOrderSubtypeRoSent                      PaymentOrderSubtype = "ro_sent"
 	PaymentOrderSubtypeSeBankgirot                 PaymentOrderSubtype = "se_bankgirot"
 	PaymentOrderSubtypeSepa                        PaymentOrderSubtype = "sepa"
@@ -1027,7 +1029,7 @@ const (
 
 func (r PaymentOrderSubtype) IsKnown() bool {
 	switch r {
-	case PaymentOrderSubtypeBacsNewInstruction, PaymentOrderSubtypeBacsCancellationInstruction, PaymentOrderSubtypeBacsConversionInstruction, PaymentOrderSubtypeCcd, PaymentOrderSubtypeCie, PaymentOrderSubtypeCtx, PaymentOrderSubtypeIat, PaymentOrderSubtypePpd, PaymentOrderSubtypeTel, PaymentOrderSubtypeWeb, PaymentOrderSubtypeAuBecs, PaymentOrderSubtypeBacs, PaymentOrderSubtypeChats, PaymentOrderSubtypeDkNets, PaymentOrderSubtypeEft, PaymentOrderSubtypeEthereum, PaymentOrderSubtypeHuIcs, PaymentOrderSubtypeMasav, PaymentOrderSubtypeMxCcen, PaymentOrderSubtypeNeft, PaymentOrderSubtypeNics, PaymentOrderSubtypeNzBecs, PaymentOrderSubtypePlElixir, PaymentOrderSubtypeRoSent, PaymentOrderSubtypeSeBankgirot, PaymentOrderSubtypeSepa, PaymentOrderSubtypeSgGiro, PaymentOrderSubtypeSic, PaymentOrderSubtypeSknbi, PaymentOrderSubtypeSolana, PaymentOrderSubtypeZengin:
+	case PaymentOrderSubtypeBacsNewInstruction, PaymentOrderSubtypeBacsCancellationInstruction, PaymentOrderSubtypeBacsConversionInstruction, PaymentOrderSubtypeCcd, PaymentOrderSubtypeCie, PaymentOrderSubtypeCtx, PaymentOrderSubtypeIat, PaymentOrderSubtypePpd, PaymentOrderSubtypeTel, PaymentOrderSubtypeWeb, PaymentOrderSubtypeAuBecs, PaymentOrderSubtypeBacs, PaymentOrderSubtypeBase, PaymentOrderSubtypeChats, PaymentOrderSubtypeDkNets, PaymentOrderSubtypeEft, PaymentOrderSubtypeEthereum, PaymentOrderSubtypeHuIcs, PaymentOrderSubtypeMasav, PaymentOrderSubtypeMxCcen, PaymentOrderSubtypeNeft, PaymentOrderSubtypeNics, PaymentOrderSubtypeNzBecs, PaymentOrderSubtypePlElixir, PaymentOrderSubtypePolygon, PaymentOrderSubtypeRoSent, PaymentOrderSubtypeSeBankgirot, PaymentOrderSubtypeSepa, PaymentOrderSubtypeSgGiro, PaymentOrderSubtypeSic, PaymentOrderSubtypeSknbi, PaymentOrderSubtypeSolana, PaymentOrderSubtypeZengin:
 		return true
 	}
 	return false
