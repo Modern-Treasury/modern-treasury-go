@@ -670,9 +670,9 @@ type CounterpartyNewParamsLegalEntity struct {
 	// Deprecated. Use `third_party_verifications` instead.
 	//
 	// Deprecated: deprecated
-	ThirdPartyVerification param.Field[CounterpartyNewParamsLegalEntityThirdPartyVerification] `json:"third_party_verification"`
+	ThirdPartyVerification param.Field[shared.ThirdPartyVerificationParam] `json:"third_party_verification"`
 	// A list of third-party verifications run by external vendors.
-	ThirdPartyVerifications param.Field[[]CounterpartyNewParamsLegalEntityThirdPartyVerification] `json:"third_party_verifications"`
+	ThirdPartyVerifications param.Field[[]shared.ThirdPartyVerificationParam] `json:"third_party_verifications"`
 	// Stock ticker symbol for publicly traded companies.
 	TickerSymbol               param.Field[string]                                        `json:"ticker_symbol"`
 	WealthAndEmploymentDetails param.Field[shared.LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
@@ -788,84 +788,6 @@ const (
 func (r CounterpartyNewParamsLegalEntityRiskRating) IsKnown() bool {
 	switch r {
 	case CounterpartyNewParamsLegalEntityRiskRatingLow, CounterpartyNewParamsLegalEntityRiskRatingMedium, CounterpartyNewParamsLegalEntityRiskRatingHigh:
-		return true
-	}
-	return false
-}
-
-// Deprecated. Use `third_party_verifications` instead.
-//
-// Deprecated: deprecated
-type CounterpartyNewParamsLegalEntityThirdPartyVerification struct {
-	// The outcome of the verification. One of `passed` or `failed`.
-	Outcome param.Field[CounterpartyNewParamsLegalEntityThirdPartyVerificationOutcome] `json:"outcome" api:"required"`
-	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor] `json:"vendor" api:"required"`
-	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
-	// The category of verification performed.
-	VerificationCategory param.Field[CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategory] `json:"verification_category" api:"required"`
-	// The method used to perform the verification.
-	VerificationMethod param.Field[string] `json:"verification_method" api:"required"`
-	// The timestamp when the verification was performed.
-	VerificationTime param.Field[time.Time] `json:"verification_time" api:"required" format:"date-time"`
-	// An optional comment about the verification.
-	Comment param.Field[string] `json:"comment"`
-}
-
-func (r CounterpartyNewParamsLegalEntityThirdPartyVerification) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The outcome of the verification. One of `passed` or `failed`.
-type CounterpartyNewParamsLegalEntityThirdPartyVerificationOutcome string
-
-const (
-	CounterpartyNewParamsLegalEntityThirdPartyVerificationOutcomePassed CounterpartyNewParamsLegalEntityThirdPartyVerificationOutcome = "passed"
-	CounterpartyNewParamsLegalEntityThirdPartyVerificationOutcomeFailed CounterpartyNewParamsLegalEntityThirdPartyVerificationOutcome = "failed"
-)
-
-func (r CounterpartyNewParamsLegalEntityThirdPartyVerificationOutcome) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsLegalEntityThirdPartyVerificationOutcomePassed, CounterpartyNewParamsLegalEntityThirdPartyVerificationOutcomeFailed:
-		return true
-	}
-	return false
-}
-
-// The vendor that performed the verification, e.g. `persona`.
-type CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor string
-
-const (
-	CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorPersona CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor = "persona"
-	CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorMiddesk CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor = "middesk"
-	CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorAlloy   CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor = "alloy"
-	CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorSumsub  CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor = "sumsub"
-	CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorVeriff  CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor = "veriff"
-)
-
-func (r CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorPersona, CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorMiddesk, CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorAlloy, CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorSumsub, CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorVeriff:
-		return true
-	}
-	return false
-}
-
-// The category of verification performed.
-type CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategory string
-
-const (
-	CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategoryLegalName          CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategory = "legal_name"
-	CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategoryDateOfBirth        CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategory = "date_of_birth"
-	CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategoryAddress            CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategory = "address"
-	CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategoryGovernmentIDNumber CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategory = "government_id_number"
-	CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategoryAdverseMedia       CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategory = "adverse_media"
-)
-
-func (r CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategory) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategoryLegalName, CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategoryDateOfBirth, CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategoryAddress, CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategoryGovernmentIDNumber, CounterpartyNewParamsLegalEntityThirdPartyVerificationVerificationCategoryAdverseMedia:
 		return true
 	}
 	return false
