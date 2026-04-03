@@ -14,6 +14,7 @@
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityBankSettingsParam">LegalEntityBankSettingsParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityIndustryClassificationParam">LegalEntityIndustryClassificationParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityWealthEmploymentDetailParam">LegalEntityWealthEmploymentDetailParam</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#ThirdPartyVerificationParam">ThirdPartyVerificationParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#TransactionDirection">TransactionDirection</a>
 
 # Shared Response Types
@@ -30,6 +31,7 @@
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityBankSettings">LegalEntityBankSettings</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityIndustryClassification">LegalEntityIndustryClassification</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityWealthEmploymentDetail">LegalEntityWealthEmploymentDetail</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#ThirdPartyVerification">ThirdPartyVerification</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#TransactionDirection">TransactionDirection</a>
 
 # moderntreasury

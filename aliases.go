@@ -115,62 +115,6 @@ const ChildLegalEntityCreateRiskRatingMedium = shared.ChildLegalEntityCreateRisk
 // This is an alias to an internal value.
 const ChildLegalEntityCreateRiskRatingHigh = shared.ChildLegalEntityCreateRiskRatingHigh
 
-// Deprecated. Use `third_party_verifications` instead.
-//
-// This is an alias to an internal type.
-type ChildLegalEntityCreateThirdPartyVerificationParam = shared.ChildLegalEntityCreateThirdPartyVerificationParam
-
-// The outcome of the verification. One of `passed` or `failed`.
-//
-// This is an alias to an internal type.
-type ChildLegalEntityCreateThirdPartyVerificationOutcome = shared.ChildLegalEntityCreateThirdPartyVerificationOutcome
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateThirdPartyVerificationOutcomePassed = shared.ChildLegalEntityCreateThirdPartyVerificationOutcomePassed
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateThirdPartyVerificationOutcomeFailed = shared.ChildLegalEntityCreateThirdPartyVerificationOutcomeFailed
-
-// The vendor that performed the verification, e.g. `persona`.
-//
-// This is an alias to an internal type.
-type ChildLegalEntityCreateThirdPartyVerificationVendor = shared.ChildLegalEntityCreateThirdPartyVerificationVendor
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateThirdPartyVerificationVendorPersona = shared.ChildLegalEntityCreateThirdPartyVerificationVendorPersona
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateThirdPartyVerificationVendorMiddesk = shared.ChildLegalEntityCreateThirdPartyVerificationVendorMiddesk
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateThirdPartyVerificationVendorAlloy = shared.ChildLegalEntityCreateThirdPartyVerificationVendorAlloy
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateThirdPartyVerificationVendorSumsub = shared.ChildLegalEntityCreateThirdPartyVerificationVendorSumsub
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateThirdPartyVerificationVendorVeriff = shared.ChildLegalEntityCreateThirdPartyVerificationVendorVeriff
-
-// The category of verification performed.
-//
-// This is an alias to an internal type.
-type ChildLegalEntityCreateThirdPartyVerificationVerificationCategory = shared.ChildLegalEntityCreateThirdPartyVerificationVerificationCategory
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryLegalName = shared.ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryLegalName
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryDateOfBirth = shared.ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryDateOfBirth
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryAddress = shared.ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryAddress
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryGovernmentIDNumber = shared.ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryGovernmentIDNumber
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryAdverseMedia = shared.ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryAdverseMedia
-
 // This is an alias to an internal type.
 type ContactDetail = shared.ContactDetail
 
@@ -1393,6 +1337,63 @@ const LegalEntityWealthEmploymentDetailWealthSourceSelfEmployed = shared.LegalEn
 
 // This is an alias to an internal type.
 type LegalEntityWealthEmploymentDetailParam = shared.LegalEntityWealthEmploymentDetailParam
+
+// This is an alias to an internal type.
+type ThirdPartyVerification = shared.ThirdPartyVerification
+
+// The outcome of the verification. One of `passed` or `failed`.
+//
+// This is an alias to an internal type.
+type ThirdPartyVerificationOutcome = shared.ThirdPartyVerificationOutcome
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationOutcomePassed = shared.ThirdPartyVerificationOutcomePassed
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationOutcomeFailed = shared.ThirdPartyVerificationOutcomeFailed
+
+// The vendor that performed the verification, e.g. `persona`.
+//
+// This is an alias to an internal type.
+type ThirdPartyVerificationVendor = shared.ThirdPartyVerificationVendor
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVendorPersona = shared.ThirdPartyVerificationVendorPersona
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVendorMiddesk = shared.ThirdPartyVerificationVendorMiddesk
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVendorAlloy = shared.ThirdPartyVerificationVendorAlloy
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVendorSumsub = shared.ThirdPartyVerificationVendorSumsub
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVendorVeriff = shared.ThirdPartyVerificationVendorVeriff
+
+// The category of verification performed.
+//
+// This is an alias to an internal type.
+type ThirdPartyVerificationVerificationCategory = shared.ThirdPartyVerificationVerificationCategory
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVerificationCategoryLegalName = shared.ThirdPartyVerificationVerificationCategoryLegalName
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVerificationCategoryDateOfBirth = shared.ThirdPartyVerificationVerificationCategoryDateOfBirth
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVerificationCategoryAddress = shared.ThirdPartyVerificationVerificationCategoryAddress
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVerificationCategoryGovernmentIDNumber = shared.ThirdPartyVerificationVerificationCategoryGovernmentIDNumber
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVerificationCategoryAdverseMedia = shared.ThirdPartyVerificationVerificationCategoryAdverseMedia
+
+// This is an alias to an internal type.
+type ThirdPartyVerificationParam = shared.ThirdPartyVerificationParam
 
 // This is an alias to an internal type.
 type TransactionDirection = shared.TransactionDirection

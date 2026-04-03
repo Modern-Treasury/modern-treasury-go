@@ -112,9 +112,9 @@ type ChildLegalEntity struct {
 	// Deprecated. Use `third_party_verifications` instead.
 	//
 	// Deprecated: deprecated
-	ThirdPartyVerification ChildLegalEntityThirdPartyVerification `json:"third_party_verification" api:"required,nullable"`
+	ThirdPartyVerification shared.ThirdPartyVerification `json:"third_party_verification" api:"required,nullable"`
 	// A list of third-party verifications run by external vendors.
-	ThirdPartyVerifications []ChildLegalEntityThirdPartyVerification `json:"third_party_verifications" api:"required"`
+	ThirdPartyVerifications []shared.ThirdPartyVerification `json:"third_party_verifications" api:"required"`
 	// Stock ticker symbol for publicly traded companies.
 	TickerSymbol               string                                   `json:"ticker_symbol" api:"required,nullable"`
 	UpdatedAt                  time.Time                                `json:"updated_at" api:"required" format:"date-time"`
@@ -462,103 +462,6 @@ const (
 func (r ChildLegalEntityStatus) IsKnown() bool {
 	switch r {
 	case ChildLegalEntityStatusActive, ChildLegalEntityStatusDenied, ChildLegalEntityStatusPending, ChildLegalEntityStatusSuspended:
-		return true
-	}
-	return false
-}
-
-// Deprecated. Use `third_party_verifications` instead.
-//
-// Deprecated: deprecated
-type ChildLegalEntityThirdPartyVerification struct {
-	// The outcome of the verification. One of `passed` or `failed`.
-	Outcome ChildLegalEntityThirdPartyVerificationOutcome `json:"outcome" api:"required"`
-	// The vendor that performed the verification, e.g. `persona`.
-	Vendor ChildLegalEntityThirdPartyVerificationVendor `json:"vendor" api:"required"`
-	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID string `json:"vendor_verification_id" api:"required"`
-	// The category of verification performed.
-	VerificationCategory ChildLegalEntityThirdPartyVerificationVerificationCategory `json:"verification_category" api:"required"`
-	// The method used to perform the verification.
-	VerificationMethod string `json:"verification_method" api:"required"`
-	// The timestamp when the verification was performed.
-	VerificationTime time.Time `json:"verification_time" api:"required" format:"date-time"`
-	// An optional comment about the verification.
-	Comment string                                     `json:"comment" api:"nullable"`
-	JSON    childLegalEntityThirdPartyVerificationJSON `json:"-"`
-}
-
-// childLegalEntityThirdPartyVerificationJSON contains the JSON metadata for the
-// struct [ChildLegalEntityThirdPartyVerification]
-type childLegalEntityThirdPartyVerificationJSON struct {
-	Outcome              apijson.Field
-	Vendor               apijson.Field
-	VendorVerificationID apijson.Field
-	VerificationCategory apijson.Field
-	VerificationMethod   apijson.Field
-	VerificationTime     apijson.Field
-	Comment              apijson.Field
-	raw                  string
-	ExtraFields          map[string]apijson.Field
-}
-
-func (r *ChildLegalEntityThirdPartyVerification) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r childLegalEntityThirdPartyVerificationJSON) RawJSON() string {
-	return r.raw
-}
-
-// The outcome of the verification. One of `passed` or `failed`.
-type ChildLegalEntityThirdPartyVerificationOutcome string
-
-const (
-	ChildLegalEntityThirdPartyVerificationOutcomePassed ChildLegalEntityThirdPartyVerificationOutcome = "passed"
-	ChildLegalEntityThirdPartyVerificationOutcomeFailed ChildLegalEntityThirdPartyVerificationOutcome = "failed"
-)
-
-func (r ChildLegalEntityThirdPartyVerificationOutcome) IsKnown() bool {
-	switch r {
-	case ChildLegalEntityThirdPartyVerificationOutcomePassed, ChildLegalEntityThirdPartyVerificationOutcomeFailed:
-		return true
-	}
-	return false
-}
-
-// The vendor that performed the verification, e.g. `persona`.
-type ChildLegalEntityThirdPartyVerificationVendor string
-
-const (
-	ChildLegalEntityThirdPartyVerificationVendorPersona ChildLegalEntityThirdPartyVerificationVendor = "persona"
-	ChildLegalEntityThirdPartyVerificationVendorMiddesk ChildLegalEntityThirdPartyVerificationVendor = "middesk"
-	ChildLegalEntityThirdPartyVerificationVendorAlloy   ChildLegalEntityThirdPartyVerificationVendor = "alloy"
-	ChildLegalEntityThirdPartyVerificationVendorSumsub  ChildLegalEntityThirdPartyVerificationVendor = "sumsub"
-	ChildLegalEntityThirdPartyVerificationVendorVeriff  ChildLegalEntityThirdPartyVerificationVendor = "veriff"
-)
-
-func (r ChildLegalEntityThirdPartyVerificationVendor) IsKnown() bool {
-	switch r {
-	case ChildLegalEntityThirdPartyVerificationVendorPersona, ChildLegalEntityThirdPartyVerificationVendorMiddesk, ChildLegalEntityThirdPartyVerificationVendorAlloy, ChildLegalEntityThirdPartyVerificationVendorSumsub, ChildLegalEntityThirdPartyVerificationVendorVeriff:
-		return true
-	}
-	return false
-}
-
-// The category of verification performed.
-type ChildLegalEntityThirdPartyVerificationVerificationCategory string
-
-const (
-	ChildLegalEntityThirdPartyVerificationVerificationCategoryLegalName          ChildLegalEntityThirdPartyVerificationVerificationCategory = "legal_name"
-	ChildLegalEntityThirdPartyVerificationVerificationCategoryDateOfBirth        ChildLegalEntityThirdPartyVerificationVerificationCategory = "date_of_birth"
-	ChildLegalEntityThirdPartyVerificationVerificationCategoryAddress            ChildLegalEntityThirdPartyVerificationVerificationCategory = "address"
-	ChildLegalEntityThirdPartyVerificationVerificationCategoryGovernmentIDNumber ChildLegalEntityThirdPartyVerificationVerificationCategory = "government_id_number"
-	ChildLegalEntityThirdPartyVerificationVerificationCategoryAdverseMedia       ChildLegalEntityThirdPartyVerificationVerificationCategory = "adverse_media"
-)
-
-func (r ChildLegalEntityThirdPartyVerificationVerificationCategory) IsKnown() bool {
-	switch r {
-	case ChildLegalEntityThirdPartyVerificationVerificationCategoryLegalName, ChildLegalEntityThirdPartyVerificationVerificationCategoryDateOfBirth, ChildLegalEntityThirdPartyVerificationVerificationCategoryAddress, ChildLegalEntityThirdPartyVerificationVerificationCategoryGovernmentIDNumber, ChildLegalEntityThirdPartyVerificationVerificationCategoryAdverseMedia:
 		return true
 	}
 	return false

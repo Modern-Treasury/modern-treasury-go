@@ -253,9 +253,9 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	// Deprecated. Use `third_party_verifications` instead.
 	//
 	// Deprecated: deprecated
-	ThirdPartyVerification param.Field[ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerification] `json:"third_party_verification"`
+	ThirdPartyVerification param.Field[shared.ThirdPartyVerificationParam] `json:"third_party_verification"`
 	// A list of third-party verifications run by external vendors.
-	ThirdPartyVerifications param.Field[[]ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerification] `json:"third_party_verifications"`
+	ThirdPartyVerifications param.Field[[]shared.ThirdPartyVerificationParam] `json:"third_party_verifications"`
 	// Stock ticker symbol for publicly traded companies.
 	TickerSymbol               param.Field[string]                                        `json:"ticker_symbol"`
 	WealthAndEmploymentDetails param.Field[shared.LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
@@ -371,84 +371,6 @@ const (
 func (r ConnectionLegalEntityNewParamsLegalEntityRiskRating) IsKnown() bool {
 	switch r {
 	case ConnectionLegalEntityNewParamsLegalEntityRiskRatingLow, ConnectionLegalEntityNewParamsLegalEntityRiskRatingMedium, ConnectionLegalEntityNewParamsLegalEntityRiskRatingHigh:
-		return true
-	}
-	return false
-}
-
-// Deprecated. Use `third_party_verifications` instead.
-//
-// Deprecated: deprecated
-type ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerification struct {
-	// The outcome of the verification. One of `passed` or `failed`.
-	Outcome param.Field[ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationOutcome] `json:"outcome" api:"required"`
-	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor] `json:"vendor" api:"required"`
-	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
-	// The category of verification performed.
-	VerificationCategory param.Field[ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategory] `json:"verification_category" api:"required"`
-	// The method used to perform the verification.
-	VerificationMethod param.Field[string] `json:"verification_method" api:"required"`
-	// The timestamp when the verification was performed.
-	VerificationTime param.Field[time.Time] `json:"verification_time" api:"required" format:"date-time"`
-	// An optional comment about the verification.
-	Comment param.Field[string] `json:"comment"`
-}
-
-func (r ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerification) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The outcome of the verification. One of `passed` or `failed`.
-type ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationOutcome string
-
-const (
-	ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationOutcomePassed ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationOutcome = "passed"
-	ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationOutcomeFailed ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationOutcome = "failed"
-)
-
-func (r ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationOutcome) IsKnown() bool {
-	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationOutcomePassed, ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationOutcomeFailed:
-		return true
-	}
-	return false
-}
-
-// The vendor that performed the verification, e.g. `persona`.
-type ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor string
-
-const (
-	ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorPersona ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor = "persona"
-	ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorMiddesk ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor = "middesk"
-	ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorAlloy   ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor = "alloy"
-	ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorSumsub  ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor = "sumsub"
-	ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorVeriff  ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor = "veriff"
-)
-
-func (r ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor) IsKnown() bool {
-	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorPersona, ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorMiddesk, ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorAlloy, ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorSumsub, ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorVeriff:
-		return true
-	}
-	return false
-}
-
-// The category of verification performed.
-type ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategory string
-
-const (
-	ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategoryLegalName          ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategory = "legal_name"
-	ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategoryDateOfBirth        ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategory = "date_of_birth"
-	ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategoryAddress            ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategory = "address"
-	ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategoryGovernmentIDNumber ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategory = "government_id_number"
-	ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategoryAdverseMedia       ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategory = "adverse_media"
-)
-
-func (r ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategory) IsKnown() bool {
-	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategoryLegalName, ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategoryDateOfBirth, ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategoryAddress, ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategoryGovernmentIDNumber, ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVerificationCategoryAdverseMedia:
 		return true
 	}
 	return false
