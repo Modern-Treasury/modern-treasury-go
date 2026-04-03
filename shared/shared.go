@@ -224,9 +224,9 @@ type ChildLegalEntityCreateParam struct {
 	// Deprecated. Use `third_party_verifications` instead.
 	//
 	// Deprecated: deprecated
-	ThirdPartyVerification param.Field[ChildLegalEntityCreateThirdPartyVerificationParam] `json:"third_party_verification"`
+	ThirdPartyVerification param.Field[ThirdPartyVerificationParam] `json:"third_party_verification"`
 	// A list of third-party verifications run by external vendors.
-	ThirdPartyVerifications param.Field[[]ChildLegalEntityCreateThirdPartyVerificationParam] `json:"third_party_verifications"`
+	ThirdPartyVerifications param.Field[[]ThirdPartyVerificationParam] `json:"third_party_verifications"`
 	// Stock ticker symbol for publicly traded companies.
 	TickerSymbol               param.Field[string]                                 `json:"ticker_symbol"`
 	WealthAndEmploymentDetails param.Field[LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
@@ -342,84 +342,6 @@ const (
 func (r ChildLegalEntityCreateRiskRating) IsKnown() bool {
 	switch r {
 	case ChildLegalEntityCreateRiskRatingLow, ChildLegalEntityCreateRiskRatingMedium, ChildLegalEntityCreateRiskRatingHigh:
-		return true
-	}
-	return false
-}
-
-// Deprecated. Use `third_party_verifications` instead.
-//
-// Deprecated: deprecated
-type ChildLegalEntityCreateThirdPartyVerificationParam struct {
-	// The outcome of the verification. One of `passed` or `failed`.
-	Outcome param.Field[ChildLegalEntityCreateThirdPartyVerificationOutcome] `json:"outcome" api:"required"`
-	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[ChildLegalEntityCreateThirdPartyVerificationVendor] `json:"vendor" api:"required"`
-	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
-	// The category of verification performed.
-	VerificationCategory param.Field[ChildLegalEntityCreateThirdPartyVerificationVerificationCategory] `json:"verification_category" api:"required"`
-	// The method used to perform the verification.
-	VerificationMethod param.Field[string] `json:"verification_method" api:"required"`
-	// The timestamp when the verification was performed.
-	VerificationTime param.Field[time.Time] `json:"verification_time" api:"required" format:"date-time"`
-	// An optional comment about the verification.
-	Comment param.Field[string] `json:"comment"`
-}
-
-func (r ChildLegalEntityCreateThirdPartyVerificationParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The outcome of the verification. One of `passed` or `failed`.
-type ChildLegalEntityCreateThirdPartyVerificationOutcome string
-
-const (
-	ChildLegalEntityCreateThirdPartyVerificationOutcomePassed ChildLegalEntityCreateThirdPartyVerificationOutcome = "passed"
-	ChildLegalEntityCreateThirdPartyVerificationOutcomeFailed ChildLegalEntityCreateThirdPartyVerificationOutcome = "failed"
-)
-
-func (r ChildLegalEntityCreateThirdPartyVerificationOutcome) IsKnown() bool {
-	switch r {
-	case ChildLegalEntityCreateThirdPartyVerificationOutcomePassed, ChildLegalEntityCreateThirdPartyVerificationOutcomeFailed:
-		return true
-	}
-	return false
-}
-
-// The vendor that performed the verification, e.g. `persona`.
-type ChildLegalEntityCreateThirdPartyVerificationVendor string
-
-const (
-	ChildLegalEntityCreateThirdPartyVerificationVendorPersona ChildLegalEntityCreateThirdPartyVerificationVendor = "persona"
-	ChildLegalEntityCreateThirdPartyVerificationVendorMiddesk ChildLegalEntityCreateThirdPartyVerificationVendor = "middesk"
-	ChildLegalEntityCreateThirdPartyVerificationVendorAlloy   ChildLegalEntityCreateThirdPartyVerificationVendor = "alloy"
-	ChildLegalEntityCreateThirdPartyVerificationVendorSumsub  ChildLegalEntityCreateThirdPartyVerificationVendor = "sumsub"
-	ChildLegalEntityCreateThirdPartyVerificationVendorVeriff  ChildLegalEntityCreateThirdPartyVerificationVendor = "veriff"
-)
-
-func (r ChildLegalEntityCreateThirdPartyVerificationVendor) IsKnown() bool {
-	switch r {
-	case ChildLegalEntityCreateThirdPartyVerificationVendorPersona, ChildLegalEntityCreateThirdPartyVerificationVendorMiddesk, ChildLegalEntityCreateThirdPartyVerificationVendorAlloy, ChildLegalEntityCreateThirdPartyVerificationVendorSumsub, ChildLegalEntityCreateThirdPartyVerificationVendorVeriff:
-		return true
-	}
-	return false
-}
-
-// The category of verification performed.
-type ChildLegalEntityCreateThirdPartyVerificationVerificationCategory string
-
-const (
-	ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryLegalName          ChildLegalEntityCreateThirdPartyVerificationVerificationCategory = "legal_name"
-	ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryDateOfBirth        ChildLegalEntityCreateThirdPartyVerificationVerificationCategory = "date_of_birth"
-	ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryAddress            ChildLegalEntityCreateThirdPartyVerificationVerificationCategory = "address"
-	ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryGovernmentIDNumber ChildLegalEntityCreateThirdPartyVerificationVerificationCategory = "government_id_number"
-	ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryAdverseMedia       ChildLegalEntityCreateThirdPartyVerificationVerificationCategory = "adverse_media"
-)
-
-func (r ChildLegalEntityCreateThirdPartyVerificationVerificationCategory) IsKnown() bool {
-	switch r {
-	case ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryLegalName, ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryDateOfBirth, ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryAddress, ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryGovernmentIDNumber, ChildLegalEntityCreateThirdPartyVerificationVerificationCategoryAdverseMedia:
 		return true
 	}
 	return false
@@ -1592,6 +1514,121 @@ type LegalEntityWealthEmploymentDetailParam struct {
 }
 
 func (r LegalEntityWealthEmploymentDetailParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type ThirdPartyVerification struct {
+	// The outcome of the verification. One of `passed` or `failed`.
+	Outcome ThirdPartyVerificationOutcome `json:"outcome" api:"required"`
+	// The vendor that performed the verification, e.g. `persona`.
+	Vendor ThirdPartyVerificationVendor `json:"vendor" api:"required"`
+	// The identification of the third party verification in `vendor`'s system.
+	VendorVerificationID string `json:"vendor_verification_id" api:"required"`
+	// The category of verification performed.
+	VerificationCategory ThirdPartyVerificationVerificationCategory `json:"verification_category" api:"required"`
+	// The method used to perform the verification.
+	VerificationMethod string `json:"verification_method" api:"required"`
+	// The timestamp when the verification was performed.
+	VerificationTime time.Time `json:"verification_time" api:"required" format:"date-time"`
+	// An optional comment about the verification.
+	Comment string                     `json:"comment" api:"nullable"`
+	JSON    thirdPartyVerificationJSON `json:"-"`
+}
+
+// thirdPartyVerificationJSON contains the JSON metadata for the struct
+// [ThirdPartyVerification]
+type thirdPartyVerificationJSON struct {
+	Outcome              apijson.Field
+	Vendor               apijson.Field
+	VendorVerificationID apijson.Field
+	VerificationCategory apijson.Field
+	VerificationMethod   apijson.Field
+	VerificationTime     apijson.Field
+	Comment              apijson.Field
+	raw                  string
+	ExtraFields          map[string]apijson.Field
+}
+
+func (r *ThirdPartyVerification) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r thirdPartyVerificationJSON) RawJSON() string {
+	return r.raw
+}
+
+// The outcome of the verification. One of `passed` or `failed`.
+type ThirdPartyVerificationOutcome string
+
+const (
+	ThirdPartyVerificationOutcomePassed ThirdPartyVerificationOutcome = "passed"
+	ThirdPartyVerificationOutcomeFailed ThirdPartyVerificationOutcome = "failed"
+)
+
+func (r ThirdPartyVerificationOutcome) IsKnown() bool {
+	switch r {
+	case ThirdPartyVerificationOutcomePassed, ThirdPartyVerificationOutcomeFailed:
+		return true
+	}
+	return false
+}
+
+// The vendor that performed the verification, e.g. `persona`.
+type ThirdPartyVerificationVendor string
+
+const (
+	ThirdPartyVerificationVendorPersona ThirdPartyVerificationVendor = "persona"
+	ThirdPartyVerificationVendorMiddesk ThirdPartyVerificationVendor = "middesk"
+	ThirdPartyVerificationVendorAlloy   ThirdPartyVerificationVendor = "alloy"
+	ThirdPartyVerificationVendorSumsub  ThirdPartyVerificationVendor = "sumsub"
+	ThirdPartyVerificationVendorVeriff  ThirdPartyVerificationVendor = "veriff"
+)
+
+func (r ThirdPartyVerificationVendor) IsKnown() bool {
+	switch r {
+	case ThirdPartyVerificationVendorPersona, ThirdPartyVerificationVendorMiddesk, ThirdPartyVerificationVendorAlloy, ThirdPartyVerificationVendorSumsub, ThirdPartyVerificationVendorVeriff:
+		return true
+	}
+	return false
+}
+
+// The category of verification performed.
+type ThirdPartyVerificationVerificationCategory string
+
+const (
+	ThirdPartyVerificationVerificationCategoryLegalName          ThirdPartyVerificationVerificationCategory = "legal_name"
+	ThirdPartyVerificationVerificationCategoryDateOfBirth        ThirdPartyVerificationVerificationCategory = "date_of_birth"
+	ThirdPartyVerificationVerificationCategoryAddress            ThirdPartyVerificationVerificationCategory = "address"
+	ThirdPartyVerificationVerificationCategoryGovernmentIDNumber ThirdPartyVerificationVerificationCategory = "government_id_number"
+	ThirdPartyVerificationVerificationCategoryAdverseMedia       ThirdPartyVerificationVerificationCategory = "adverse_media"
+)
+
+func (r ThirdPartyVerificationVerificationCategory) IsKnown() bool {
+	switch r {
+	case ThirdPartyVerificationVerificationCategoryLegalName, ThirdPartyVerificationVerificationCategoryDateOfBirth, ThirdPartyVerificationVerificationCategoryAddress, ThirdPartyVerificationVerificationCategoryGovernmentIDNumber, ThirdPartyVerificationVerificationCategoryAdverseMedia:
+		return true
+	}
+	return false
+}
+
+type ThirdPartyVerificationParam struct {
+	// The outcome of the verification. One of `passed` or `failed`.
+	Outcome param.Field[ThirdPartyVerificationOutcome] `json:"outcome" api:"required"`
+	// The vendor that performed the verification, e.g. `persona`.
+	Vendor param.Field[ThirdPartyVerificationVendor] `json:"vendor" api:"required"`
+	// The identification of the third party verification in `vendor`'s system.
+	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
+	// The category of verification performed.
+	VerificationCategory param.Field[ThirdPartyVerificationVerificationCategory] `json:"verification_category" api:"required"`
+	// The method used to perform the verification.
+	VerificationMethod param.Field[string] `json:"verification_method" api:"required"`
+	// The timestamp when the verification was performed.
+	VerificationTime param.Field[time.Time] `json:"verification_time" api:"required" format:"date-time"`
+	// An optional comment about the verification.
+	Comment param.Field[string] `json:"comment"`
+}
+
+func (r ThirdPartyVerificationParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

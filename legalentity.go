@@ -175,9 +175,9 @@ type LegalEntity struct {
 	// Deprecated. Use `third_party_verifications` instead.
 	//
 	// Deprecated: deprecated
-	ThirdPartyVerification LegalEntityThirdPartyVerification `json:"third_party_verification" api:"required,nullable"`
+	ThirdPartyVerification shared.ThirdPartyVerification `json:"third_party_verification" api:"required,nullable"`
 	// A list of third-party verifications run by external vendors.
-	ThirdPartyVerifications []LegalEntityThirdPartyVerification `json:"third_party_verifications" api:"required"`
+	ThirdPartyVerifications []shared.ThirdPartyVerification `json:"third_party_verifications" api:"required"`
 	// Stock ticker symbol for publicly traded companies.
 	TickerSymbol               string                                   `json:"ticker_symbol" api:"required,nullable"`
 	UpdatedAt                  time.Time                                `json:"updated_at" api:"required" format:"date-time"`
@@ -531,103 +531,6 @@ func (r LegalEntityStatus) IsKnown() bool {
 	return false
 }
 
-// Deprecated. Use `third_party_verifications` instead.
-//
-// Deprecated: deprecated
-type LegalEntityThirdPartyVerification struct {
-	// The outcome of the verification. One of `passed` or `failed`.
-	Outcome LegalEntityThirdPartyVerificationOutcome `json:"outcome" api:"required"`
-	// The vendor that performed the verification, e.g. `persona`.
-	Vendor LegalEntityThirdPartyVerificationVendor `json:"vendor" api:"required"`
-	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID string `json:"vendor_verification_id" api:"required"`
-	// The category of verification performed.
-	VerificationCategory LegalEntityThirdPartyVerificationVerificationCategory `json:"verification_category" api:"required"`
-	// The method used to perform the verification.
-	VerificationMethod string `json:"verification_method" api:"required"`
-	// The timestamp when the verification was performed.
-	VerificationTime time.Time `json:"verification_time" api:"required" format:"date-time"`
-	// An optional comment about the verification.
-	Comment string                                `json:"comment" api:"nullable"`
-	JSON    legalEntityThirdPartyVerificationJSON `json:"-"`
-}
-
-// legalEntityThirdPartyVerificationJSON contains the JSON metadata for the struct
-// [LegalEntityThirdPartyVerification]
-type legalEntityThirdPartyVerificationJSON struct {
-	Outcome              apijson.Field
-	Vendor               apijson.Field
-	VendorVerificationID apijson.Field
-	VerificationCategory apijson.Field
-	VerificationMethod   apijson.Field
-	VerificationTime     apijson.Field
-	Comment              apijson.Field
-	raw                  string
-	ExtraFields          map[string]apijson.Field
-}
-
-func (r *LegalEntityThirdPartyVerification) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r legalEntityThirdPartyVerificationJSON) RawJSON() string {
-	return r.raw
-}
-
-// The outcome of the verification. One of `passed` or `failed`.
-type LegalEntityThirdPartyVerificationOutcome string
-
-const (
-	LegalEntityThirdPartyVerificationOutcomePassed LegalEntityThirdPartyVerificationOutcome = "passed"
-	LegalEntityThirdPartyVerificationOutcomeFailed LegalEntityThirdPartyVerificationOutcome = "failed"
-)
-
-func (r LegalEntityThirdPartyVerificationOutcome) IsKnown() bool {
-	switch r {
-	case LegalEntityThirdPartyVerificationOutcomePassed, LegalEntityThirdPartyVerificationOutcomeFailed:
-		return true
-	}
-	return false
-}
-
-// The vendor that performed the verification, e.g. `persona`.
-type LegalEntityThirdPartyVerificationVendor string
-
-const (
-	LegalEntityThirdPartyVerificationVendorPersona LegalEntityThirdPartyVerificationVendor = "persona"
-	LegalEntityThirdPartyVerificationVendorMiddesk LegalEntityThirdPartyVerificationVendor = "middesk"
-	LegalEntityThirdPartyVerificationVendorAlloy   LegalEntityThirdPartyVerificationVendor = "alloy"
-	LegalEntityThirdPartyVerificationVendorSumsub  LegalEntityThirdPartyVerificationVendor = "sumsub"
-	LegalEntityThirdPartyVerificationVendorVeriff  LegalEntityThirdPartyVerificationVendor = "veriff"
-)
-
-func (r LegalEntityThirdPartyVerificationVendor) IsKnown() bool {
-	switch r {
-	case LegalEntityThirdPartyVerificationVendorPersona, LegalEntityThirdPartyVerificationVendorMiddesk, LegalEntityThirdPartyVerificationVendorAlloy, LegalEntityThirdPartyVerificationVendorSumsub, LegalEntityThirdPartyVerificationVendorVeriff:
-		return true
-	}
-	return false
-}
-
-// The category of verification performed.
-type LegalEntityThirdPartyVerificationVerificationCategory string
-
-const (
-	LegalEntityThirdPartyVerificationVerificationCategoryLegalName          LegalEntityThirdPartyVerificationVerificationCategory = "legal_name"
-	LegalEntityThirdPartyVerificationVerificationCategoryDateOfBirth        LegalEntityThirdPartyVerificationVerificationCategory = "date_of_birth"
-	LegalEntityThirdPartyVerificationVerificationCategoryAddress            LegalEntityThirdPartyVerificationVerificationCategory = "address"
-	LegalEntityThirdPartyVerificationVerificationCategoryGovernmentIDNumber LegalEntityThirdPartyVerificationVerificationCategory = "government_id_number"
-	LegalEntityThirdPartyVerificationVerificationCategoryAdverseMedia       LegalEntityThirdPartyVerificationVerificationCategory = "adverse_media"
-)
-
-func (r LegalEntityThirdPartyVerificationVerificationCategory) IsKnown() bool {
-	switch r {
-	case LegalEntityThirdPartyVerificationVerificationCategoryLegalName, LegalEntityThirdPartyVerificationVerificationCategoryDateOfBirth, LegalEntityThirdPartyVerificationVerificationCategoryAddress, LegalEntityThirdPartyVerificationVerificationCategoryGovernmentIDNumber, LegalEntityThirdPartyVerificationVerificationCategoryAdverseMedia:
-		return true
-	}
-	return false
-}
-
 type LegalEntityNewParams struct {
 	// The type of legal entity.
 	LegalEntityType param.Field[LegalEntityNewParamsLegalEntityType] `json:"legal_entity_type" api:"required"`
@@ -706,9 +609,9 @@ type LegalEntityNewParams struct {
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
 	// Deprecated. Use `third_party_verifications` instead.
-	ThirdPartyVerification param.Field[LegalEntityNewParamsThirdPartyVerification] `json:"third_party_verification"`
+	ThirdPartyVerification param.Field[shared.ThirdPartyVerificationParam] `json:"third_party_verification"`
 	// A list of third-party verifications run by external vendors.
-	ThirdPartyVerifications param.Field[[]LegalEntityNewParamsThirdPartyVerification] `json:"third_party_verifications"`
+	ThirdPartyVerifications param.Field[[]shared.ThirdPartyVerificationParam] `json:"third_party_verifications"`
 	// Stock ticker symbol for publicly traded companies.
 	TickerSymbol               param.Field[string]                                        `json:"ticker_symbol"`
 	WealthAndEmploymentDetails param.Field[shared.LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
@@ -829,84 +732,6 @@ func (r LegalEntityNewParamsRiskRating) IsKnown() bool {
 	return false
 }
 
-// Deprecated. Use `third_party_verifications` instead.
-//
-// Deprecated: deprecated
-type LegalEntityNewParamsThirdPartyVerification struct {
-	// The outcome of the verification. One of `passed` or `failed`.
-	Outcome param.Field[LegalEntityNewParamsThirdPartyVerificationOutcome] `json:"outcome" api:"required"`
-	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[LegalEntityNewParamsThirdPartyVerificationVendor] `json:"vendor" api:"required"`
-	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
-	// The category of verification performed.
-	VerificationCategory param.Field[LegalEntityNewParamsThirdPartyVerificationVerificationCategory] `json:"verification_category" api:"required"`
-	// The method used to perform the verification.
-	VerificationMethod param.Field[string] `json:"verification_method" api:"required"`
-	// The timestamp when the verification was performed.
-	VerificationTime param.Field[time.Time] `json:"verification_time" api:"required" format:"date-time"`
-	// An optional comment about the verification.
-	Comment param.Field[string] `json:"comment"`
-}
-
-func (r LegalEntityNewParamsThirdPartyVerification) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The outcome of the verification. One of `passed` or `failed`.
-type LegalEntityNewParamsThirdPartyVerificationOutcome string
-
-const (
-	LegalEntityNewParamsThirdPartyVerificationOutcomePassed LegalEntityNewParamsThirdPartyVerificationOutcome = "passed"
-	LegalEntityNewParamsThirdPartyVerificationOutcomeFailed LegalEntityNewParamsThirdPartyVerificationOutcome = "failed"
-)
-
-func (r LegalEntityNewParamsThirdPartyVerificationOutcome) IsKnown() bool {
-	switch r {
-	case LegalEntityNewParamsThirdPartyVerificationOutcomePassed, LegalEntityNewParamsThirdPartyVerificationOutcomeFailed:
-		return true
-	}
-	return false
-}
-
-// The vendor that performed the verification, e.g. `persona`.
-type LegalEntityNewParamsThirdPartyVerificationVendor string
-
-const (
-	LegalEntityNewParamsThirdPartyVerificationVendorPersona LegalEntityNewParamsThirdPartyVerificationVendor = "persona"
-	LegalEntityNewParamsThirdPartyVerificationVendorMiddesk LegalEntityNewParamsThirdPartyVerificationVendor = "middesk"
-	LegalEntityNewParamsThirdPartyVerificationVendorAlloy   LegalEntityNewParamsThirdPartyVerificationVendor = "alloy"
-	LegalEntityNewParamsThirdPartyVerificationVendorSumsub  LegalEntityNewParamsThirdPartyVerificationVendor = "sumsub"
-	LegalEntityNewParamsThirdPartyVerificationVendorVeriff  LegalEntityNewParamsThirdPartyVerificationVendor = "veriff"
-)
-
-func (r LegalEntityNewParamsThirdPartyVerificationVendor) IsKnown() bool {
-	switch r {
-	case LegalEntityNewParamsThirdPartyVerificationVendorPersona, LegalEntityNewParamsThirdPartyVerificationVendorMiddesk, LegalEntityNewParamsThirdPartyVerificationVendorAlloy, LegalEntityNewParamsThirdPartyVerificationVendorSumsub, LegalEntityNewParamsThirdPartyVerificationVendorVeriff:
-		return true
-	}
-	return false
-}
-
-// The category of verification performed.
-type LegalEntityNewParamsThirdPartyVerificationVerificationCategory string
-
-const (
-	LegalEntityNewParamsThirdPartyVerificationVerificationCategoryLegalName          LegalEntityNewParamsThirdPartyVerificationVerificationCategory = "legal_name"
-	LegalEntityNewParamsThirdPartyVerificationVerificationCategoryDateOfBirth        LegalEntityNewParamsThirdPartyVerificationVerificationCategory = "date_of_birth"
-	LegalEntityNewParamsThirdPartyVerificationVerificationCategoryAddress            LegalEntityNewParamsThirdPartyVerificationVerificationCategory = "address"
-	LegalEntityNewParamsThirdPartyVerificationVerificationCategoryGovernmentIDNumber LegalEntityNewParamsThirdPartyVerificationVerificationCategory = "government_id_number"
-	LegalEntityNewParamsThirdPartyVerificationVerificationCategoryAdverseMedia       LegalEntityNewParamsThirdPartyVerificationVerificationCategory = "adverse_media"
-)
-
-func (r LegalEntityNewParamsThirdPartyVerificationVerificationCategory) IsKnown() bool {
-	switch r {
-	case LegalEntityNewParamsThirdPartyVerificationVerificationCategoryLegalName, LegalEntityNewParamsThirdPartyVerificationVerificationCategoryDateOfBirth, LegalEntityNewParamsThirdPartyVerificationVerificationCategoryAddress, LegalEntityNewParamsThirdPartyVerificationVerificationCategoryGovernmentIDNumber, LegalEntityNewParamsThirdPartyVerificationVerificationCategoryAdverseMedia:
-		return true
-	}
-	return false
-}
-
 type LegalEntityUpdateParams struct {
 	// A list of addresses for the entity.
 	Addresses    param.Field[[]shared.LegalEntityAddressCreateRequestParam] `json:"addresses"`
@@ -971,9 +796,9 @@ type LegalEntityUpdateParams struct {
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
 	// Deprecated. Use `third_party_verifications` instead.
-	ThirdPartyVerification param.Field[LegalEntityUpdateParamsThirdPartyVerification] `json:"third_party_verification"`
+	ThirdPartyVerification param.Field[shared.ThirdPartyVerificationParam] `json:"third_party_verification"`
 	// A list of third-party verifications run by external vendors.
-	ThirdPartyVerifications param.Field[[]LegalEntityUpdateParamsThirdPartyVerification] `json:"third_party_verifications"`
+	ThirdPartyVerifications param.Field[[]shared.ThirdPartyVerificationParam] `json:"third_party_verifications"`
 	// Stock ticker symbol for publicly traded companies.
 	TickerSymbol               param.Field[string]                                        `json:"ticker_symbol"`
 	WealthAndEmploymentDetails param.Field[shared.LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
@@ -1040,84 +865,6 @@ const (
 func (r LegalEntityUpdateParamsRiskRating) IsKnown() bool {
 	switch r {
 	case LegalEntityUpdateParamsRiskRatingLow, LegalEntityUpdateParamsRiskRatingMedium, LegalEntityUpdateParamsRiskRatingHigh:
-		return true
-	}
-	return false
-}
-
-// Deprecated. Use `third_party_verifications` instead.
-//
-// Deprecated: deprecated
-type LegalEntityUpdateParamsThirdPartyVerification struct {
-	// The outcome of the verification. One of `passed` or `failed`.
-	Outcome param.Field[LegalEntityUpdateParamsThirdPartyVerificationOutcome] `json:"outcome" api:"required"`
-	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[LegalEntityUpdateParamsThirdPartyVerificationVendor] `json:"vendor" api:"required"`
-	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
-	// The category of verification performed.
-	VerificationCategory param.Field[LegalEntityUpdateParamsThirdPartyVerificationVerificationCategory] `json:"verification_category" api:"required"`
-	// The method used to perform the verification.
-	VerificationMethod param.Field[string] `json:"verification_method" api:"required"`
-	// The timestamp when the verification was performed.
-	VerificationTime param.Field[time.Time] `json:"verification_time" api:"required" format:"date-time"`
-	// An optional comment about the verification.
-	Comment param.Field[string] `json:"comment"`
-}
-
-func (r LegalEntityUpdateParamsThirdPartyVerification) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The outcome of the verification. One of `passed` or `failed`.
-type LegalEntityUpdateParamsThirdPartyVerificationOutcome string
-
-const (
-	LegalEntityUpdateParamsThirdPartyVerificationOutcomePassed LegalEntityUpdateParamsThirdPartyVerificationOutcome = "passed"
-	LegalEntityUpdateParamsThirdPartyVerificationOutcomeFailed LegalEntityUpdateParamsThirdPartyVerificationOutcome = "failed"
-)
-
-func (r LegalEntityUpdateParamsThirdPartyVerificationOutcome) IsKnown() bool {
-	switch r {
-	case LegalEntityUpdateParamsThirdPartyVerificationOutcomePassed, LegalEntityUpdateParamsThirdPartyVerificationOutcomeFailed:
-		return true
-	}
-	return false
-}
-
-// The vendor that performed the verification, e.g. `persona`.
-type LegalEntityUpdateParamsThirdPartyVerificationVendor string
-
-const (
-	LegalEntityUpdateParamsThirdPartyVerificationVendorPersona LegalEntityUpdateParamsThirdPartyVerificationVendor = "persona"
-	LegalEntityUpdateParamsThirdPartyVerificationVendorMiddesk LegalEntityUpdateParamsThirdPartyVerificationVendor = "middesk"
-	LegalEntityUpdateParamsThirdPartyVerificationVendorAlloy   LegalEntityUpdateParamsThirdPartyVerificationVendor = "alloy"
-	LegalEntityUpdateParamsThirdPartyVerificationVendorSumsub  LegalEntityUpdateParamsThirdPartyVerificationVendor = "sumsub"
-	LegalEntityUpdateParamsThirdPartyVerificationVendorVeriff  LegalEntityUpdateParamsThirdPartyVerificationVendor = "veriff"
-)
-
-func (r LegalEntityUpdateParamsThirdPartyVerificationVendor) IsKnown() bool {
-	switch r {
-	case LegalEntityUpdateParamsThirdPartyVerificationVendorPersona, LegalEntityUpdateParamsThirdPartyVerificationVendorMiddesk, LegalEntityUpdateParamsThirdPartyVerificationVendorAlloy, LegalEntityUpdateParamsThirdPartyVerificationVendorSumsub, LegalEntityUpdateParamsThirdPartyVerificationVendorVeriff:
-		return true
-	}
-	return false
-}
-
-// The category of verification performed.
-type LegalEntityUpdateParamsThirdPartyVerificationVerificationCategory string
-
-const (
-	LegalEntityUpdateParamsThirdPartyVerificationVerificationCategoryLegalName          LegalEntityUpdateParamsThirdPartyVerificationVerificationCategory = "legal_name"
-	LegalEntityUpdateParamsThirdPartyVerificationVerificationCategoryDateOfBirth        LegalEntityUpdateParamsThirdPartyVerificationVerificationCategory = "date_of_birth"
-	LegalEntityUpdateParamsThirdPartyVerificationVerificationCategoryAddress            LegalEntityUpdateParamsThirdPartyVerificationVerificationCategory = "address"
-	LegalEntityUpdateParamsThirdPartyVerificationVerificationCategoryGovernmentIDNumber LegalEntityUpdateParamsThirdPartyVerificationVerificationCategory = "government_id_number"
-	LegalEntityUpdateParamsThirdPartyVerificationVerificationCategoryAdverseMedia       LegalEntityUpdateParamsThirdPartyVerificationVerificationCategory = "adverse_media"
-)
-
-func (r LegalEntityUpdateParamsThirdPartyVerificationVerificationCategory) IsKnown() bool {
-	switch r {
-	case LegalEntityUpdateParamsThirdPartyVerificationVerificationCategoryLegalName, LegalEntityUpdateParamsThirdPartyVerificationVerificationCategoryDateOfBirth, LegalEntityUpdateParamsThirdPartyVerificationVerificationCategoryAddress, LegalEntityUpdateParamsThirdPartyVerificationVerificationCategoryGovernmentIDNumber, LegalEntityUpdateParamsThirdPartyVerificationVerificationCategoryAdverseMedia:
 		return true
 	}
 	return false
