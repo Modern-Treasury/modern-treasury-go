@@ -1022,16 +1022,17 @@ func (r LegalEntityAddressCreateRequestParam) MarshalJSON() (data []byte, err er
 type LegalEntityAddressCreateRequestAddressType string
 
 const (
-	LegalEntityAddressCreateRequestAddressTypeBusiness    LegalEntityAddressCreateRequestAddressType = "business"
-	LegalEntityAddressCreateRequestAddressTypeMailing     LegalEntityAddressCreateRequestAddressType = "mailing"
-	LegalEntityAddressCreateRequestAddressTypeOther       LegalEntityAddressCreateRequestAddressType = "other"
-	LegalEntityAddressCreateRequestAddressTypePoBox       LegalEntityAddressCreateRequestAddressType = "po_box"
-	LegalEntityAddressCreateRequestAddressTypeResidential LegalEntityAddressCreateRequestAddressType = "residential"
+	LegalEntityAddressCreateRequestAddressTypeBusiness           LegalEntityAddressCreateRequestAddressType = "business"
+	LegalEntityAddressCreateRequestAddressTypeBusinessRegistered LegalEntityAddressCreateRequestAddressType = "business_registered"
+	LegalEntityAddressCreateRequestAddressTypeMailing            LegalEntityAddressCreateRequestAddressType = "mailing"
+	LegalEntityAddressCreateRequestAddressTypeOther              LegalEntityAddressCreateRequestAddressType = "other"
+	LegalEntityAddressCreateRequestAddressTypePoBox              LegalEntityAddressCreateRequestAddressType = "po_box"
+	LegalEntityAddressCreateRequestAddressTypeResidential        LegalEntityAddressCreateRequestAddressType = "residential"
 )
 
 func (r LegalEntityAddressCreateRequestAddressType) IsKnown() bool {
 	switch r {
-	case LegalEntityAddressCreateRequestAddressTypeBusiness, LegalEntityAddressCreateRequestAddressTypeMailing, LegalEntityAddressCreateRequestAddressTypeOther, LegalEntityAddressCreateRequestAddressTypePoBox, LegalEntityAddressCreateRequestAddressTypeResidential:
+	case LegalEntityAddressCreateRequestAddressTypeBusiness, LegalEntityAddressCreateRequestAddressTypeBusinessRegistered, LegalEntityAddressCreateRequestAddressTypeMailing, LegalEntityAddressCreateRequestAddressTypeOther, LegalEntityAddressCreateRequestAddressTypePoBox, LegalEntityAddressCreateRequestAddressTypeResidential:
 		return true
 	}
 	return false
