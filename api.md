@@ -14,6 +14,7 @@
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityBankSettingsParam">LegalEntityBankSettingsParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityIndustryClassificationParam">LegalEntityIndustryClassificationParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityWealthEmploymentDetailParam">LegalEntityWealthEmploymentDetailParam</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#ThirdPartyVerificationParam">ThirdPartyVerificationParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#TransactionDirection">TransactionDirection</a>
 
 # Shared Response Types
@@ -30,6 +31,7 @@
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityBankSettings">LegalEntityBankSettings</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityIndustryClassification">LegalEntityIndustryClassification</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#LegalEntityWealthEmploymentDetail">LegalEntityWealthEmploymentDetail</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#ThirdPartyVerification">ThirdPartyVerification</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared">shared</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/shared#TransactionDirection">TransactionDirection</a>
 
 # moderntreasury
@@ -580,10 +582,6 @@ Response Types:
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ChildLegalEntity">ChildLegalEntity</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntityAssociation">LegalEntityAssociation</a>
 
-Methods:
-
-- <code title="post /api/legal_entity_associations">client.LegalEntityAssociations.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntityAssociationService.New">New</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntityAssociationNewParams">LegalEntityAssociationNewParams</a>) (\*<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#LegalEntityAssociation">LegalEntityAssociation</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-
 # PaymentActions
 
 Response Types:
@@ -613,7 +611,7 @@ Methods:
 
 - <code title="get /api/journal_reports/{id}">client.JournalReports.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#JournalReportService.Get">Get</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) <a href="https://pkg.go.dev/builtin#error">error</a></code>
 - <code title="patch /api/journal_reports/{id}">client.JournalReports.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#JournalReportService.Update">Update</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>, body <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#JournalReportUpdateParams">JournalReportUpdateParams</a>) <a href="https://pkg.go.dev/builtin#error">error</a></code>
-- <code title="get /api/journal_reports">client.JournalReports.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#JournalReportService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>) <a href="https://pkg.go.dev/builtin#error">error</a></code>
+- <code title="get /api/journal_reports">client.JournalReports.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#JournalReportService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#JournalReportListParams">JournalReportListParams</a>) <a href="https://pkg.go.dev/builtin#error">error</a></code>
 
 # Holds
 

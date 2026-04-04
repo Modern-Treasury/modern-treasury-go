@@ -217,10 +217,16 @@ type ChildLegalEntityCreateParam struct {
 	Regulators param.Field[[]ChildLegalEntityCreateRegulatorParam] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[ChildLegalEntityCreateRiskRating] `json:"risk_rating"`
+	// The UUID of the parent legal entity in the service provider tree.
+	ServiceProviderLegalEntityID param.Field[string] `json:"service_provider_legal_entity_id" format:"uuid"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
-	// Information describing a third-party verification run by an external vendor.
-	ThirdPartyVerification param.Field[ChildLegalEntityCreateThirdPartyVerificationParam] `json:"third_party_verification"`
+	// Deprecated. Use `third_party_verifications` instead.
+	//
+	// Deprecated: deprecated
+	ThirdPartyVerification param.Field[ThirdPartyVerificationParam] `json:"third_party_verification"`
+	// A list of third-party verifications run by external vendors.
+	ThirdPartyVerifications param.Field[[]ThirdPartyVerificationParam] `json:"third_party_verifications"`
 	// Stock ticker symbol for publicly traded companies.
 	TickerSymbol               param.Field[string]                                 `json:"ticker_symbol"`
 	WealthAndEmploymentDetails param.Field[LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
@@ -336,33 +342,6 @@ const (
 func (r ChildLegalEntityCreateRiskRating) IsKnown() bool {
 	switch r {
 	case ChildLegalEntityCreateRiskRatingLow, ChildLegalEntityCreateRiskRatingMedium, ChildLegalEntityCreateRiskRatingHigh:
-		return true
-	}
-	return false
-}
-
-// Information describing a third-party verification run by an external vendor.
-type ChildLegalEntityCreateThirdPartyVerificationParam struct {
-	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[ChildLegalEntityCreateThirdPartyVerificationVendor] `json:"vendor" api:"required"`
-	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
-}
-
-func (r ChildLegalEntityCreateThirdPartyVerificationParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The vendor that performed the verification, e.g. `persona`.
-type ChildLegalEntityCreateThirdPartyVerificationVendor string
-
-const (
-	ChildLegalEntityCreateThirdPartyVerificationVendorPersona ChildLegalEntityCreateThirdPartyVerificationVendor = "persona"
-)
-
-func (r ChildLegalEntityCreateThirdPartyVerificationVendor) IsKnown() bool {
-	switch r {
-	case ChildLegalEntityCreateThirdPartyVerificationVendorPersona:
 		return true
 	}
 	return false
@@ -735,6 +714,7 @@ const (
 	IdentificationCreateRequestIDTypeDriversLicense IdentificationCreateRequestIDType = "drivers_license"
 	IdentificationCreateRequestIDTypeHnID           IdentificationCreateRequestIDType = "hn_id"
 	IdentificationCreateRequestIDTypeHnRtn          IdentificationCreateRequestIDType = "hn_rtn"
+	IdentificationCreateRequestIDTypeIePps          IdentificationCreateRequestIDType = "ie_pps"
 	IdentificationCreateRequestIDTypeInLei          IdentificationCreateRequestIDType = "in_lei"
 	IdentificationCreateRequestIDTypeKrBrn          IdentificationCreateRequestIDType = "kr_brn"
 	IdentificationCreateRequestIDTypeKrCrn          IdentificationCreateRequestIDType = "kr_crn"
@@ -750,7 +730,7 @@ const (
 
 func (r IdentificationCreateRequestIDType) IsKnown() bool {
 	switch r {
-	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeVnTin:
+	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeVnTin:
 		return true
 	}
 	return false
@@ -1042,16 +1022,17 @@ func (r LegalEntityAddressCreateRequestParam) MarshalJSON() (data []byte, err er
 type LegalEntityAddressCreateRequestAddressType string
 
 const (
-	LegalEntityAddressCreateRequestAddressTypeBusiness    LegalEntityAddressCreateRequestAddressType = "business"
-	LegalEntityAddressCreateRequestAddressTypeMailing     LegalEntityAddressCreateRequestAddressType = "mailing"
-	LegalEntityAddressCreateRequestAddressTypeOther       LegalEntityAddressCreateRequestAddressType = "other"
-	LegalEntityAddressCreateRequestAddressTypePoBox       LegalEntityAddressCreateRequestAddressType = "po_box"
-	LegalEntityAddressCreateRequestAddressTypeResidential LegalEntityAddressCreateRequestAddressType = "residential"
+	LegalEntityAddressCreateRequestAddressTypeBusiness           LegalEntityAddressCreateRequestAddressType = "business"
+	LegalEntityAddressCreateRequestAddressTypeBusinessRegistered LegalEntityAddressCreateRequestAddressType = "business_registered"
+	LegalEntityAddressCreateRequestAddressTypeMailing            LegalEntityAddressCreateRequestAddressType = "mailing"
+	LegalEntityAddressCreateRequestAddressTypeOther              LegalEntityAddressCreateRequestAddressType = "other"
+	LegalEntityAddressCreateRequestAddressTypePoBox              LegalEntityAddressCreateRequestAddressType = "po_box"
+	LegalEntityAddressCreateRequestAddressTypeResidential        LegalEntityAddressCreateRequestAddressType = "residential"
 )
 
 func (r LegalEntityAddressCreateRequestAddressType) IsKnown() bool {
 	switch r {
-	case LegalEntityAddressCreateRequestAddressTypeBusiness, LegalEntityAddressCreateRequestAddressTypeMailing, LegalEntityAddressCreateRequestAddressTypeOther, LegalEntityAddressCreateRequestAddressTypePoBox, LegalEntityAddressCreateRequestAddressTypeResidential:
+	case LegalEntityAddressCreateRequestAddressTypeBusiness, LegalEntityAddressCreateRequestAddressTypeBusinessRegistered, LegalEntityAddressCreateRequestAddressTypeMailing, LegalEntityAddressCreateRequestAddressTypeOther, LegalEntityAddressCreateRequestAddressTypePoBox, LegalEntityAddressCreateRequestAddressTypeResidential:
 		return true
 	}
 	return false
@@ -1080,12 +1061,11 @@ const (
 	LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner LegalEntityAssociationInlineCreateRelationshipType = "authorized_signer"
 	LegalEntityAssociationInlineCreateRelationshipTypeBeneficialOwner  LegalEntityAssociationInlineCreateRelationshipType = "beneficial_owner"
 	LegalEntityAssociationInlineCreateRelationshipTypeControlPerson    LegalEntityAssociationInlineCreateRelationshipType = "control_person"
-	LegalEntityAssociationInlineCreateRelationshipTypeServiceCustomer  LegalEntityAssociationInlineCreateRelationshipType = "service_customer"
 )
 
 func (r LegalEntityAssociationInlineCreateRelationshipType) IsKnown() bool {
 	switch r {
-	case LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner, LegalEntityAssociationInlineCreateRelationshipTypeBeneficialOwner, LegalEntityAssociationInlineCreateRelationshipTypeControlPerson, LegalEntityAssociationInlineCreateRelationshipTypeServiceCustomer:
+	case LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner, LegalEntityAssociationInlineCreateRelationshipTypeBeneficialOwner, LegalEntityAssociationInlineCreateRelationshipTypeControlPerson:
 		return true
 	}
 	return false
@@ -1535,6 +1515,121 @@ type LegalEntityWealthEmploymentDetailParam struct {
 }
 
 func (r LegalEntityWealthEmploymentDetailParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type ThirdPartyVerification struct {
+	// The outcome of the verification. One of `passed` or `failed`.
+	Outcome ThirdPartyVerificationOutcome `json:"outcome" api:"required"`
+	// The vendor that performed the verification, e.g. `persona`.
+	Vendor ThirdPartyVerificationVendor `json:"vendor" api:"required"`
+	// The identification of the third party verification in `vendor`'s system.
+	VendorVerificationID string `json:"vendor_verification_id" api:"required"`
+	// The category of verification performed.
+	VerificationCategory ThirdPartyVerificationVerificationCategory `json:"verification_category" api:"required"`
+	// The method used to perform the verification.
+	VerificationMethod string `json:"verification_method" api:"required"`
+	// The timestamp when the verification was performed.
+	VerificationTime time.Time `json:"verification_time" api:"required" format:"date-time"`
+	// An optional comment about the verification.
+	Comment string                     `json:"comment" api:"nullable"`
+	JSON    thirdPartyVerificationJSON `json:"-"`
+}
+
+// thirdPartyVerificationJSON contains the JSON metadata for the struct
+// [ThirdPartyVerification]
+type thirdPartyVerificationJSON struct {
+	Outcome              apijson.Field
+	Vendor               apijson.Field
+	VendorVerificationID apijson.Field
+	VerificationCategory apijson.Field
+	VerificationMethod   apijson.Field
+	VerificationTime     apijson.Field
+	Comment              apijson.Field
+	raw                  string
+	ExtraFields          map[string]apijson.Field
+}
+
+func (r *ThirdPartyVerification) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r thirdPartyVerificationJSON) RawJSON() string {
+	return r.raw
+}
+
+// The outcome of the verification. One of `passed` or `failed`.
+type ThirdPartyVerificationOutcome string
+
+const (
+	ThirdPartyVerificationOutcomePassed ThirdPartyVerificationOutcome = "passed"
+	ThirdPartyVerificationOutcomeFailed ThirdPartyVerificationOutcome = "failed"
+)
+
+func (r ThirdPartyVerificationOutcome) IsKnown() bool {
+	switch r {
+	case ThirdPartyVerificationOutcomePassed, ThirdPartyVerificationOutcomeFailed:
+		return true
+	}
+	return false
+}
+
+// The vendor that performed the verification, e.g. `persona`.
+type ThirdPartyVerificationVendor string
+
+const (
+	ThirdPartyVerificationVendorPersona ThirdPartyVerificationVendor = "persona"
+	ThirdPartyVerificationVendorMiddesk ThirdPartyVerificationVendor = "middesk"
+	ThirdPartyVerificationVendorAlloy   ThirdPartyVerificationVendor = "alloy"
+	ThirdPartyVerificationVendorSumsub  ThirdPartyVerificationVendor = "sumsub"
+	ThirdPartyVerificationVendorVeriff  ThirdPartyVerificationVendor = "veriff"
+)
+
+func (r ThirdPartyVerificationVendor) IsKnown() bool {
+	switch r {
+	case ThirdPartyVerificationVendorPersona, ThirdPartyVerificationVendorMiddesk, ThirdPartyVerificationVendorAlloy, ThirdPartyVerificationVendorSumsub, ThirdPartyVerificationVendorVeriff:
+		return true
+	}
+	return false
+}
+
+// The category of verification performed.
+type ThirdPartyVerificationVerificationCategory string
+
+const (
+	ThirdPartyVerificationVerificationCategoryLegalName          ThirdPartyVerificationVerificationCategory = "legal_name"
+	ThirdPartyVerificationVerificationCategoryDateOfBirth        ThirdPartyVerificationVerificationCategory = "date_of_birth"
+	ThirdPartyVerificationVerificationCategoryAddress            ThirdPartyVerificationVerificationCategory = "address"
+	ThirdPartyVerificationVerificationCategoryGovernmentIDNumber ThirdPartyVerificationVerificationCategory = "government_id_number"
+	ThirdPartyVerificationVerificationCategoryAdverseMedia       ThirdPartyVerificationVerificationCategory = "adverse_media"
+)
+
+func (r ThirdPartyVerificationVerificationCategory) IsKnown() bool {
+	switch r {
+	case ThirdPartyVerificationVerificationCategoryLegalName, ThirdPartyVerificationVerificationCategoryDateOfBirth, ThirdPartyVerificationVerificationCategoryAddress, ThirdPartyVerificationVerificationCategoryGovernmentIDNumber, ThirdPartyVerificationVerificationCategoryAdverseMedia:
+		return true
+	}
+	return false
+}
+
+type ThirdPartyVerificationParam struct {
+	// The outcome of the verification. One of `passed` or `failed`.
+	Outcome param.Field[ThirdPartyVerificationOutcome] `json:"outcome" api:"required"`
+	// The vendor that performed the verification, e.g. `persona`.
+	Vendor param.Field[ThirdPartyVerificationVendor] `json:"vendor" api:"required"`
+	// The identification of the third party verification in `vendor`'s system.
+	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
+	// The category of verification performed.
+	VerificationCategory param.Field[ThirdPartyVerificationVerificationCategory] `json:"verification_category" api:"required"`
+	// The method used to perform the verification.
+	VerificationMethod param.Field[string] `json:"verification_method" api:"required"`
+	// The timestamp when the verification was performed.
+	VerificationTime param.Field[time.Time] `json:"verification_time" api:"required" format:"date-time"`
+	// An optional comment about the verification.
+	Comment param.Field[string] `json:"comment"`
+}
+
+func (r ThirdPartyVerificationParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

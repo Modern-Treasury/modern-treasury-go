@@ -559,13 +559,14 @@ const (
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSignet      CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "signet"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSknbi       CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "sknbi"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSolana      CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "solana"
+	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeStablecoin  CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "stablecoin"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeWire        CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "wire"
 	CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeZengin      CounterpartyNewParamsAccountsRoutingDetailsPaymentType = "zengin"
 )
 
 func (r CounterpartyNewParamsAccountsRoutingDetailsPaymentType) IsKnown() bool {
 	switch r {
-	case CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeAuBecs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeBacs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeBase, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeBook, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCard, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeChats, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCheck, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCrossBorder, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeDkNets, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeEft, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeEthereum, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeGBFps, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeHuIcs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeInterac, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeMasav, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeMxCcen, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNeft, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNics, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNzBecs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypePlElixir, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypePolygon, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeProvxchange, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeRoSent, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeRtp, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSeBankgirot, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSen, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSepa, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSgGiro, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSic, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSignet, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSknbi, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSolana, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeWire, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeZengin:
+	case CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeAuBecs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeBacs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeBase, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeBook, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCard, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeChats, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCheck, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCrossBorder, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeDkNets, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeEft, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeEthereum, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeGBFps, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeHuIcs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeInterac, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeMasav, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeMxCcen, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNeft, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNics, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNzBecs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypePlElixir, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypePolygon, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeProvxchange, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeRoSent, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeRtp, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSeBankgirot, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSen, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSepa, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSgGiro, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSic, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSignet, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSknbi, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSolana, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeStablecoin, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeWire, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeZengin:
 		return true
 	}
 	return false
@@ -662,10 +663,16 @@ type CounterpartyNewParamsLegalEntity struct {
 	Regulators param.Field[[]CounterpartyNewParamsLegalEntityRegulator] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[CounterpartyNewParamsLegalEntityRiskRating] `json:"risk_rating"`
+	// The UUID of the parent legal entity in the service provider tree.
+	ServiceProviderLegalEntityID param.Field[string] `json:"service_provider_legal_entity_id" format:"uuid"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
-	// Information describing a third-party verification run by an external vendor.
-	ThirdPartyVerification param.Field[CounterpartyNewParamsLegalEntityThirdPartyVerification] `json:"third_party_verification"`
+	// Deprecated. Use `third_party_verifications` instead.
+	//
+	// Deprecated: deprecated
+	ThirdPartyVerification param.Field[shared.ThirdPartyVerificationParam] `json:"third_party_verification"`
+	// A list of third-party verifications run by external vendors.
+	ThirdPartyVerifications param.Field[[]shared.ThirdPartyVerificationParam] `json:"third_party_verifications"`
 	// Stock ticker symbol for publicly traded companies.
 	TickerSymbol               param.Field[string]                                        `json:"ticker_symbol"`
 	WealthAndEmploymentDetails param.Field[shared.LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
@@ -781,33 +788,6 @@ const (
 func (r CounterpartyNewParamsLegalEntityRiskRating) IsKnown() bool {
 	switch r {
 	case CounterpartyNewParamsLegalEntityRiskRatingLow, CounterpartyNewParamsLegalEntityRiskRatingMedium, CounterpartyNewParamsLegalEntityRiskRatingHigh:
-		return true
-	}
-	return false
-}
-
-// Information describing a third-party verification run by an external vendor.
-type CounterpartyNewParamsLegalEntityThirdPartyVerification struct {
-	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor] `json:"vendor" api:"required"`
-	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
-}
-
-func (r CounterpartyNewParamsLegalEntityThirdPartyVerification) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The vendor that performed the verification, e.g. `persona`.
-type CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor string
-
-const (
-	CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorPersona CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor = "persona"
-)
-
-func (r CounterpartyNewParamsLegalEntityThirdPartyVerificationVendor) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsLegalEntityThirdPartyVerificationVendorPersona:
 		return true
 	}
 	return false

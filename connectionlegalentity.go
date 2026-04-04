@@ -246,10 +246,16 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	Regulators param.Field[[]ConnectionLegalEntityNewParamsLegalEntityRegulator] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[ConnectionLegalEntityNewParamsLegalEntityRiskRating] `json:"risk_rating"`
+	// The UUID of the parent legal entity in the service provider tree.
+	ServiceProviderLegalEntityID param.Field[string] `json:"service_provider_legal_entity_id" format:"uuid"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
-	// Information describing a third-party verification run by an external vendor.
-	ThirdPartyVerification param.Field[ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerification] `json:"third_party_verification"`
+	// Deprecated. Use `third_party_verifications` instead.
+	//
+	// Deprecated: deprecated
+	ThirdPartyVerification param.Field[shared.ThirdPartyVerificationParam] `json:"third_party_verification"`
+	// A list of third-party verifications run by external vendors.
+	ThirdPartyVerifications param.Field[[]shared.ThirdPartyVerificationParam] `json:"third_party_verifications"`
 	// Stock ticker symbol for publicly traded companies.
 	TickerSymbol               param.Field[string]                                        `json:"ticker_symbol"`
 	WealthAndEmploymentDetails param.Field[shared.LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
@@ -365,33 +371,6 @@ const (
 func (r ConnectionLegalEntityNewParamsLegalEntityRiskRating) IsKnown() bool {
 	switch r {
 	case ConnectionLegalEntityNewParamsLegalEntityRiskRatingLow, ConnectionLegalEntityNewParamsLegalEntityRiskRatingMedium, ConnectionLegalEntityNewParamsLegalEntityRiskRatingHigh:
-		return true
-	}
-	return false
-}
-
-// Information describing a third-party verification run by an external vendor.
-type ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerification struct {
-	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor] `json:"vendor" api:"required"`
-	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
-}
-
-func (r ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerification) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The vendor that performed the verification, e.g. `persona`.
-type ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor string
-
-const (
-	ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorPersona ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor = "persona"
-)
-
-func (r ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendor) IsKnown() bool {
-	switch r {
-	case ConnectionLegalEntityNewParamsLegalEntityThirdPartyVerificationVendorPersona:
 		return true
 	}
 	return false

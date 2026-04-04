@@ -115,19 +115,6 @@ const ChildLegalEntityCreateRiskRatingMedium = shared.ChildLegalEntityCreateRisk
 // This is an alias to an internal value.
 const ChildLegalEntityCreateRiskRatingHigh = shared.ChildLegalEntityCreateRiskRatingHigh
 
-// Information describing a third-party verification run by an external vendor.
-//
-// This is an alias to an internal type.
-type ChildLegalEntityCreateThirdPartyVerificationParam = shared.ChildLegalEntityCreateThirdPartyVerificationParam
-
-// The vendor that performed the verification, e.g. `persona`.
-//
-// This is an alias to an internal type.
-type ChildLegalEntityCreateThirdPartyVerificationVendor = shared.ChildLegalEntityCreateThirdPartyVerificationVendor
-
-// This is an alias to an internal value.
-const ChildLegalEntityCreateThirdPartyVerificationVendorPersona = shared.ChildLegalEntityCreateThirdPartyVerificationVendorPersona
-
 // This is an alias to an internal type.
 type ContactDetail = shared.ContactDetail
 
@@ -808,6 +795,9 @@ const IdentificationCreateRequestIDTypeHnID = shared.IdentificationCreateRequest
 const IdentificationCreateRequestIDTypeHnRtn = shared.IdentificationCreateRequestIDTypeHnRtn
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeIePps = shared.IdentificationCreateRequestIDTypeIePps
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeInLei = shared.IdentificationCreateRequestIDTypeInLei
 
 // This is an alias to an internal value.
@@ -946,6 +936,9 @@ type LegalEntityAddressCreateRequestAddressType = shared.LegalEntityAddressCreat
 const LegalEntityAddressCreateRequestAddressTypeBusiness = shared.LegalEntityAddressCreateRequestAddressTypeBusiness
 
 // This is an alias to an internal value.
+const LegalEntityAddressCreateRequestAddressTypeBusinessRegistered = shared.LegalEntityAddressCreateRequestAddressTypeBusinessRegistered
+
+// This is an alias to an internal value.
 const LegalEntityAddressCreateRequestAddressTypeMailing = shared.LegalEntityAddressCreateRequestAddressTypeMailing
 
 // This is an alias to an internal value.
@@ -973,9 +966,6 @@ const LegalEntityAssociationInlineCreateRelationshipTypeBeneficialOwner = shared
 
 // This is an alias to an internal value.
 const LegalEntityAssociationInlineCreateRelationshipTypeControlPerson = shared.LegalEntityAssociationInlineCreateRelationshipTypeControlPerson
-
-// This is an alias to an internal value.
-const LegalEntityAssociationInlineCreateRelationshipTypeServiceCustomer = shared.LegalEntityAssociationInlineCreateRelationshipTypeServiceCustomer
 
 // This is an alias to an internal type.
 type LegalEntityBankSettings = shared.LegalEntityBankSettings
@@ -1350,6 +1340,63 @@ const LegalEntityWealthEmploymentDetailWealthSourceSelfEmployed = shared.LegalEn
 
 // This is an alias to an internal type.
 type LegalEntityWealthEmploymentDetailParam = shared.LegalEntityWealthEmploymentDetailParam
+
+// This is an alias to an internal type.
+type ThirdPartyVerification = shared.ThirdPartyVerification
+
+// The outcome of the verification. One of `passed` or `failed`.
+//
+// This is an alias to an internal type.
+type ThirdPartyVerificationOutcome = shared.ThirdPartyVerificationOutcome
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationOutcomePassed = shared.ThirdPartyVerificationOutcomePassed
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationOutcomeFailed = shared.ThirdPartyVerificationOutcomeFailed
+
+// The vendor that performed the verification, e.g. `persona`.
+//
+// This is an alias to an internal type.
+type ThirdPartyVerificationVendor = shared.ThirdPartyVerificationVendor
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVendorPersona = shared.ThirdPartyVerificationVendorPersona
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVendorMiddesk = shared.ThirdPartyVerificationVendorMiddesk
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVendorAlloy = shared.ThirdPartyVerificationVendorAlloy
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVendorSumsub = shared.ThirdPartyVerificationVendorSumsub
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVendorVeriff = shared.ThirdPartyVerificationVendorVeriff
+
+// The category of verification performed.
+//
+// This is an alias to an internal type.
+type ThirdPartyVerificationVerificationCategory = shared.ThirdPartyVerificationVerificationCategory
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVerificationCategoryLegalName = shared.ThirdPartyVerificationVerificationCategoryLegalName
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVerificationCategoryDateOfBirth = shared.ThirdPartyVerificationVerificationCategoryDateOfBirth
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVerificationCategoryAddress = shared.ThirdPartyVerificationVerificationCategoryAddress
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVerificationCategoryGovernmentIDNumber = shared.ThirdPartyVerificationVerificationCategoryGovernmentIDNumber
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVerificationCategoryAdverseMedia = shared.ThirdPartyVerificationVerificationCategoryAdverseMedia
+
+// This is an alias to an internal type.
+type ThirdPartyVerificationParam = shared.ThirdPartyVerificationParam
 
 // This is an alias to an internal type.
 type TransactionDirection = shared.TransactionDirection

@@ -3,14 +3,9 @@
 package moderntreasury
 
 import (
-	"context"
-	"net/http"
-	"slices"
 	"time"
 
 	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
 	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
@@ -32,14 +27,6 @@ func NewLegalEntityAssociationService(opts ...option.RequestOption) (r *LegalEnt
 	r = &LegalEntityAssociationService{}
 	r.Options = opts
 	return
-}
-
-// create legal_entity_association
-func (r *LegalEntityAssociationService) New(ctx context.Context, body LegalEntityAssociationNewParams, opts ...option.RequestOption) (res *LegalEntityAssociation, err error) {
-	opts = slices.Concat(r.Options, opts)
-	path := "api/legal_entity_associations"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
 }
 
 type ChildLegalEntity struct {
@@ -115,13 +102,19 @@ type ChildLegalEntity struct {
 	Regulators []ChildLegalEntityRegulator `json:"regulators" api:"required,nullable"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating ChildLegalEntityRiskRating `json:"risk_rating" api:"required,nullable"`
+	// The UUID of the parent legal entity in the service provider tree.
+	ServiceProviderLegalEntityID string `json:"service_provider_legal_entity_id" api:"required,nullable" format:"uuid"`
 	// The activation status of the legal entity. One of pending, active, suspended, or
 	// denied.
 	Status ChildLegalEntityStatus `json:"status" api:"required,nullable"`
 	// An individual's suffix.
 	Suffix string `json:"suffix" api:"required,nullable"`
-	// Information describing a third-party verification run by an external vendor.
-	ThirdPartyVerification ChildLegalEntityThirdPartyVerification `json:"third_party_verification" api:"required,nullable"`
+	// Deprecated. Use `third_party_verifications` instead.
+	//
+	// Deprecated: deprecated
+	ThirdPartyVerification shared.ThirdPartyVerification `json:"third_party_verification" api:"required,nullable"`
+	// A list of third-party verifications run by external vendors.
+	ThirdPartyVerifications []shared.ThirdPartyVerification `json:"third_party_verifications" api:"required"`
 	// Stock ticker symbol for publicly traded companies.
 	TickerSymbol               string                                   `json:"ticker_symbol" api:"required,nullable"`
 	UpdatedAt                  time.Time                                `json:"updated_at" api:"required" format:"date-time"`
@@ -134,53 +127,55 @@ type ChildLegalEntity struct {
 // childLegalEntityJSON contains the JSON metadata for the struct
 // [ChildLegalEntity]
 type childLegalEntityJSON struct {
-	ID                         apijson.Field
-	Addresses                  apijson.Field
-	BankSettings               apijson.Field
-	BusinessDescription        apijson.Field
-	BusinessName               apijson.Field
-	CitizenshipCountry         apijson.Field
-	ComplianceDetails          apijson.Field
-	CountryOfIncorporation     apijson.Field
-	CreatedAt                  apijson.Field
-	DateFormed                 apijson.Field
-	DateOfBirth                apijson.Field
-	DiscardedAt                apijson.Field
-	Documents                  apijson.Field
-	DoingBusinessAsNames       apijson.Field
-	Email                      apijson.Field
-	ExpectedActivityVolume     apijson.Field
-	ExternalID                 apijson.Field
-	FirstName                  apijson.Field
-	Identifications            apijson.Field
-	IndustryClassifications    apijson.Field
-	IntendedUse                apijson.Field
-	LastName                   apijson.Field
-	LegalEntityAssociations    apijson.Field
-	LegalEntityType            apijson.Field
-	LegalStructure             apijson.Field
-	ListedExchange             apijson.Field
-	LiveMode                   apijson.Field
-	Metadata                   apijson.Field
-	MiddleName                 apijson.Field
-	Object                     apijson.Field
-	OperatingJurisdictions     apijson.Field
-	PhoneNumbers               apijson.Field
-	PoliticallyExposedPerson   apijson.Field
-	PreferredName              apijson.Field
-	Prefix                     apijson.Field
-	PrimarySocialMediaSites    apijson.Field
-	Regulators                 apijson.Field
-	RiskRating                 apijson.Field
-	Status                     apijson.Field
-	Suffix                     apijson.Field
-	ThirdPartyVerification     apijson.Field
-	TickerSymbol               apijson.Field
-	UpdatedAt                  apijson.Field
-	WealthAndEmploymentDetails apijson.Field
-	Website                    apijson.Field
-	raw                        string
-	ExtraFields                map[string]apijson.Field
+	ID                           apijson.Field
+	Addresses                    apijson.Field
+	BankSettings                 apijson.Field
+	BusinessDescription          apijson.Field
+	BusinessName                 apijson.Field
+	CitizenshipCountry           apijson.Field
+	ComplianceDetails            apijson.Field
+	CountryOfIncorporation       apijson.Field
+	CreatedAt                    apijson.Field
+	DateFormed                   apijson.Field
+	DateOfBirth                  apijson.Field
+	DiscardedAt                  apijson.Field
+	Documents                    apijson.Field
+	DoingBusinessAsNames         apijson.Field
+	Email                        apijson.Field
+	ExpectedActivityVolume       apijson.Field
+	ExternalID                   apijson.Field
+	FirstName                    apijson.Field
+	Identifications              apijson.Field
+	IndustryClassifications      apijson.Field
+	IntendedUse                  apijson.Field
+	LastName                     apijson.Field
+	LegalEntityAssociations      apijson.Field
+	LegalEntityType              apijson.Field
+	LegalStructure               apijson.Field
+	ListedExchange               apijson.Field
+	LiveMode                     apijson.Field
+	Metadata                     apijson.Field
+	MiddleName                   apijson.Field
+	Object                       apijson.Field
+	OperatingJurisdictions       apijson.Field
+	PhoneNumbers                 apijson.Field
+	PoliticallyExposedPerson     apijson.Field
+	PreferredName                apijson.Field
+	Prefix                       apijson.Field
+	PrimarySocialMediaSites      apijson.Field
+	Regulators                   apijson.Field
+	RiskRating                   apijson.Field
+	ServiceProviderLegalEntityID apijson.Field
+	Status                       apijson.Field
+	Suffix                       apijson.Field
+	ThirdPartyVerification       apijson.Field
+	ThirdPartyVerifications      apijson.Field
+	TickerSymbol                 apijson.Field
+	UpdatedAt                    apijson.Field
+	WealthAndEmploymentDetails   apijson.Field
+	Website                      apijson.Field
+	raw                          string
+	ExtraFields                  map[string]apijson.Field
 }
 
 func (r *ChildLegalEntity) UnmarshalJSON(data []byte) (err error) {
@@ -246,16 +241,17 @@ func (r childLegalEntityAddressJSON) RawJSON() string {
 type ChildLegalEntityAddressesAddressType string
 
 const (
-	ChildLegalEntityAddressesAddressTypeBusiness    ChildLegalEntityAddressesAddressType = "business"
-	ChildLegalEntityAddressesAddressTypeMailing     ChildLegalEntityAddressesAddressType = "mailing"
-	ChildLegalEntityAddressesAddressTypeOther       ChildLegalEntityAddressesAddressType = "other"
-	ChildLegalEntityAddressesAddressTypePoBox       ChildLegalEntityAddressesAddressType = "po_box"
-	ChildLegalEntityAddressesAddressTypeResidential ChildLegalEntityAddressesAddressType = "residential"
+	ChildLegalEntityAddressesAddressTypeBusiness           ChildLegalEntityAddressesAddressType = "business"
+	ChildLegalEntityAddressesAddressTypeBusinessRegistered ChildLegalEntityAddressesAddressType = "business_registered"
+	ChildLegalEntityAddressesAddressTypeMailing            ChildLegalEntityAddressesAddressType = "mailing"
+	ChildLegalEntityAddressesAddressTypeOther              ChildLegalEntityAddressesAddressType = "other"
+	ChildLegalEntityAddressesAddressTypePoBox              ChildLegalEntityAddressesAddressType = "po_box"
+	ChildLegalEntityAddressesAddressTypeResidential        ChildLegalEntityAddressesAddressType = "residential"
 )
 
 func (r ChildLegalEntityAddressesAddressType) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityAddressesAddressTypeBusiness, ChildLegalEntityAddressesAddressTypeMailing, ChildLegalEntityAddressesAddressTypeOther, ChildLegalEntityAddressesAddressTypePoBox, ChildLegalEntityAddressesAddressTypeResidential:
+	case ChildLegalEntityAddressesAddressTypeBusiness, ChildLegalEntityAddressesAddressTypeBusinessRegistered, ChildLegalEntityAddressesAddressTypeMailing, ChildLegalEntityAddressesAddressTypeOther, ChildLegalEntityAddressesAddressTypePoBox, ChildLegalEntityAddressesAddressTypeResidential:
 		return true
 	}
 	return false
@@ -326,6 +322,7 @@ const (
 	ChildLegalEntityIdentificationsIDTypeDriversLicense ChildLegalEntityIdentificationsIDType = "drivers_license"
 	ChildLegalEntityIdentificationsIDTypeHnID           ChildLegalEntityIdentificationsIDType = "hn_id"
 	ChildLegalEntityIdentificationsIDTypeHnRtn          ChildLegalEntityIdentificationsIDType = "hn_rtn"
+	ChildLegalEntityIdentificationsIDTypeIePps          ChildLegalEntityIdentificationsIDType = "ie_pps"
 	ChildLegalEntityIdentificationsIDTypeInLei          ChildLegalEntityIdentificationsIDType = "in_lei"
 	ChildLegalEntityIdentificationsIDTypeKrBrn          ChildLegalEntityIdentificationsIDType = "kr_brn"
 	ChildLegalEntityIdentificationsIDTypeKrCrn          ChildLegalEntityIdentificationsIDType = "kr_crn"
@@ -341,7 +338,7 @@ const (
 
 func (r ChildLegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityIdentificationsIDTypeArCuil, ChildLegalEntityIdentificationsIDTypeArCuit, ChildLegalEntityIdentificationsIDTypeBrCnpj, ChildLegalEntityIdentificationsIDTypeBrCpf, ChildLegalEntityIdentificationsIDTypeCaSin, ChildLegalEntityIdentificationsIDTypeClRun, ChildLegalEntityIdentificationsIDTypeClRut, ChildLegalEntityIdentificationsIDTypeCoCedulas, ChildLegalEntityIdentificationsIDTypeCoNit, ChildLegalEntityIdentificationsIDTypeDriversLicense, ChildLegalEntityIdentificationsIDTypeHnID, ChildLegalEntityIdentificationsIDTypeHnRtn, ChildLegalEntityIdentificationsIDTypeInLei, ChildLegalEntityIdentificationsIDTypeKrBrn, ChildLegalEntityIdentificationsIDTypeKrCrn, ChildLegalEntityIdentificationsIDTypeKrRrn, ChildLegalEntityIdentificationsIDTypePassport, ChildLegalEntityIdentificationsIDTypeSaTin, ChildLegalEntityIdentificationsIDTypeSaVat, ChildLegalEntityIdentificationsIDTypeUsEin, ChildLegalEntityIdentificationsIDTypeUsItin, ChildLegalEntityIdentificationsIDTypeUsSsn, ChildLegalEntityIdentificationsIDTypeVnTin:
+	case ChildLegalEntityIdentificationsIDTypeArCuil, ChildLegalEntityIdentificationsIDTypeArCuit, ChildLegalEntityIdentificationsIDTypeBrCnpj, ChildLegalEntityIdentificationsIDTypeBrCpf, ChildLegalEntityIdentificationsIDTypeCaSin, ChildLegalEntityIdentificationsIDTypeClRun, ChildLegalEntityIdentificationsIDTypeClRut, ChildLegalEntityIdentificationsIDTypeCoCedulas, ChildLegalEntityIdentificationsIDTypeCoNit, ChildLegalEntityIdentificationsIDTypeDriversLicense, ChildLegalEntityIdentificationsIDTypeHnID, ChildLegalEntityIdentificationsIDTypeHnRtn, ChildLegalEntityIdentificationsIDTypeIePps, ChildLegalEntityIdentificationsIDTypeInLei, ChildLegalEntityIdentificationsIDTypeKrBrn, ChildLegalEntityIdentificationsIDTypeKrCrn, ChildLegalEntityIdentificationsIDTypeKrRrn, ChildLegalEntityIdentificationsIDTypePassport, ChildLegalEntityIdentificationsIDTypeSaTin, ChildLegalEntityIdentificationsIDTypeSaVat, ChildLegalEntityIdentificationsIDTypeUsEin, ChildLegalEntityIdentificationsIDTypeUsItin, ChildLegalEntityIdentificationsIDTypeUsSsn, ChildLegalEntityIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false
@@ -471,47 +468,6 @@ func (r ChildLegalEntityStatus) IsKnown() bool {
 	return false
 }
 
-// Information describing a third-party verification run by an external vendor.
-type ChildLegalEntityThirdPartyVerification struct {
-	// The vendor that performed the verification, e.g. `persona`.
-	Vendor ChildLegalEntityThirdPartyVerificationVendor `json:"vendor" api:"required"`
-	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID string                                     `json:"vendor_verification_id" api:"required"`
-	JSON                 childLegalEntityThirdPartyVerificationJSON `json:"-"`
-}
-
-// childLegalEntityThirdPartyVerificationJSON contains the JSON metadata for the
-// struct [ChildLegalEntityThirdPartyVerification]
-type childLegalEntityThirdPartyVerificationJSON struct {
-	Vendor               apijson.Field
-	VendorVerificationID apijson.Field
-	raw                  string
-	ExtraFields          map[string]apijson.Field
-}
-
-func (r *ChildLegalEntityThirdPartyVerification) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r childLegalEntityThirdPartyVerificationJSON) RawJSON() string {
-	return r.raw
-}
-
-// The vendor that performed the verification, e.g. `persona`.
-type ChildLegalEntityThirdPartyVerificationVendor string
-
-const (
-	ChildLegalEntityThirdPartyVerificationVendorPersona ChildLegalEntityThirdPartyVerificationVendor = "persona"
-)
-
-func (r ChildLegalEntityThirdPartyVerificationVendor) IsKnown() bool {
-	switch r {
-	case ChildLegalEntityThirdPartyVerificationVendorPersona:
-		return true
-	}
-	return false
-}
-
 type LegalEntityAssociation struct {
 	ID string `json:"id" api:"required" format:"uuid"`
 	// The child legal entity.
@@ -567,49 +523,11 @@ const (
 	LegalEntityAssociationRelationshipTypeAuthorizedSigner LegalEntityAssociationRelationshipType = "authorized_signer"
 	LegalEntityAssociationRelationshipTypeBeneficialOwner  LegalEntityAssociationRelationshipType = "beneficial_owner"
 	LegalEntityAssociationRelationshipTypeControlPerson    LegalEntityAssociationRelationshipType = "control_person"
-	LegalEntityAssociationRelationshipTypeServiceCustomer  LegalEntityAssociationRelationshipType = "service_customer"
 )
 
 func (r LegalEntityAssociationRelationshipType) IsKnown() bool {
 	switch r {
-	case LegalEntityAssociationRelationshipTypeAuthorizedSigner, LegalEntityAssociationRelationshipTypeBeneficialOwner, LegalEntityAssociationRelationshipTypeControlPerson, LegalEntityAssociationRelationshipTypeServiceCustomer:
-		return true
-	}
-	return false
-}
-
-type LegalEntityAssociationNewParams struct {
-	// The ID of the parent legal entity. This must be a business or joint legal
-	// entity.
-	ParentLegalEntityID param.Field[string]                                            `json:"parent_legal_entity_id" api:"required"`
-	RelationshipTypes   param.Field[[]LegalEntityAssociationNewParamsRelationshipType] `json:"relationship_types" api:"required"`
-	// The child legal entity.
-	ChildLegalEntity param.Field[shared.ChildLegalEntityCreateParam] `json:"child_legal_entity"`
-	// The ID of the child legal entity.
-	ChildLegalEntityID param.Field[string] `json:"child_legal_entity_id"`
-	// The child entity's ownership percentage iff they are a beneficial owner.
-	OwnershipPercentage param.Field[int64] `json:"ownership_percentage"`
-	// The job title of the child entity at the parent entity.
-	Title param.Field[string] `json:"title"`
-}
-
-func (r LegalEntityAssociationNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// A list of relationship types for how the child entity relates to parent entity.
-type LegalEntityAssociationNewParamsRelationshipType string
-
-const (
-	LegalEntityAssociationNewParamsRelationshipTypeAuthorizedSigner LegalEntityAssociationNewParamsRelationshipType = "authorized_signer"
-	LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner  LegalEntityAssociationNewParamsRelationshipType = "beneficial_owner"
-	LegalEntityAssociationNewParamsRelationshipTypeControlPerson    LegalEntityAssociationNewParamsRelationshipType = "control_person"
-	LegalEntityAssociationNewParamsRelationshipTypeServiceCustomer  LegalEntityAssociationNewParamsRelationshipType = "service_customer"
-)
-
-func (r LegalEntityAssociationNewParamsRelationshipType) IsKnown() bool {
-	switch r {
-	case LegalEntityAssociationNewParamsRelationshipTypeAuthorizedSigner, LegalEntityAssociationNewParamsRelationshipTypeBeneficialOwner, LegalEntityAssociationNewParamsRelationshipTypeControlPerson, LegalEntityAssociationNewParamsRelationshipTypeServiceCustomer:
+	case LegalEntityAssociationRelationshipTypeAuthorizedSigner, LegalEntityAssociationRelationshipTypeBeneficialOwner, LegalEntityAssociationRelationshipTypeControlPerson:
 		return true
 	}
 	return false
