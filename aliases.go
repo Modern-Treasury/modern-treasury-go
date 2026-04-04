@@ -936,6 +936,9 @@ type LegalEntityAddressCreateRequestAddressType = shared.LegalEntityAddressCreat
 const LegalEntityAddressCreateRequestAddressTypeBusiness = shared.LegalEntityAddressCreateRequestAddressTypeBusiness
 
 // This is an alias to an internal value.
+const LegalEntityAddressCreateRequestAddressTypeBusinessRegistered = shared.LegalEntityAddressCreateRequestAddressTypeBusinessRegistered
+
+// This is an alias to an internal value.
 const LegalEntityAddressCreateRequestAddressTypeMailing = shared.LegalEntityAddressCreateRequestAddressTypeMailing
 
 // This is an alias to an internal value.

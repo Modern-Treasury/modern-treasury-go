@@ -305,16 +305,17 @@ func (r legalEntityAddressJSON) RawJSON() string {
 type LegalEntityAddressesAddressType string
 
 const (
-	LegalEntityAddressesAddressTypeBusiness    LegalEntityAddressesAddressType = "business"
-	LegalEntityAddressesAddressTypeMailing     LegalEntityAddressesAddressType = "mailing"
-	LegalEntityAddressesAddressTypeOther       LegalEntityAddressesAddressType = "other"
-	LegalEntityAddressesAddressTypePoBox       LegalEntityAddressesAddressType = "po_box"
-	LegalEntityAddressesAddressTypeResidential LegalEntityAddressesAddressType = "residential"
+	LegalEntityAddressesAddressTypeBusiness           LegalEntityAddressesAddressType = "business"
+	LegalEntityAddressesAddressTypeBusinessRegistered LegalEntityAddressesAddressType = "business_registered"
+	LegalEntityAddressesAddressTypeMailing            LegalEntityAddressesAddressType = "mailing"
+	LegalEntityAddressesAddressTypeOther              LegalEntityAddressesAddressType = "other"
+	LegalEntityAddressesAddressTypePoBox              LegalEntityAddressesAddressType = "po_box"
+	LegalEntityAddressesAddressTypeResidential        LegalEntityAddressesAddressType = "residential"
 )
 
 func (r LegalEntityAddressesAddressType) IsKnown() bool {
 	switch r {
-	case LegalEntityAddressesAddressTypeBusiness, LegalEntityAddressesAddressTypeMailing, LegalEntityAddressesAddressTypeOther, LegalEntityAddressesAddressTypePoBox, LegalEntityAddressesAddressTypeResidential:
+	case LegalEntityAddressesAddressTypeBusiness, LegalEntityAddressesAddressTypeBusinessRegistered, LegalEntityAddressesAddressTypeMailing, LegalEntityAddressesAddressTypeOther, LegalEntityAddressesAddressTypePoBox, LegalEntityAddressesAddressTypeResidential:
 		return true
 	}
 	return false

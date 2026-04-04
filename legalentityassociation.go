@@ -241,16 +241,17 @@ func (r childLegalEntityAddressJSON) RawJSON() string {
 type ChildLegalEntityAddressesAddressType string
 
 const (
-	ChildLegalEntityAddressesAddressTypeBusiness    ChildLegalEntityAddressesAddressType = "business"
-	ChildLegalEntityAddressesAddressTypeMailing     ChildLegalEntityAddressesAddressType = "mailing"
-	ChildLegalEntityAddressesAddressTypeOther       ChildLegalEntityAddressesAddressType = "other"
-	ChildLegalEntityAddressesAddressTypePoBox       ChildLegalEntityAddressesAddressType = "po_box"
-	ChildLegalEntityAddressesAddressTypeResidential ChildLegalEntityAddressesAddressType = "residential"
+	ChildLegalEntityAddressesAddressTypeBusiness           ChildLegalEntityAddressesAddressType = "business"
+	ChildLegalEntityAddressesAddressTypeBusinessRegistered ChildLegalEntityAddressesAddressType = "business_registered"
+	ChildLegalEntityAddressesAddressTypeMailing            ChildLegalEntityAddressesAddressType = "mailing"
+	ChildLegalEntityAddressesAddressTypeOther              ChildLegalEntityAddressesAddressType = "other"
+	ChildLegalEntityAddressesAddressTypePoBox              ChildLegalEntityAddressesAddressType = "po_box"
+	ChildLegalEntityAddressesAddressTypeResidential        ChildLegalEntityAddressesAddressType = "residential"
 )
 
 func (r ChildLegalEntityAddressesAddressType) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityAddressesAddressTypeBusiness, ChildLegalEntityAddressesAddressTypeMailing, ChildLegalEntityAddressesAddressTypeOther, ChildLegalEntityAddressesAddressTypePoBox, ChildLegalEntityAddressesAddressTypeResidential:
+	case ChildLegalEntityAddressesAddressTypeBusiness, ChildLegalEntityAddressesAddressTypeBusinessRegistered, ChildLegalEntityAddressesAddressTypeMailing, ChildLegalEntityAddressesAddressTypeOther, ChildLegalEntityAddressesAddressTypePoBox, ChildLegalEntityAddressesAddressTypeResidential:
 		return true
 	}
 	return false
