@@ -258,6 +258,7 @@ const (
 	ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation   ChildLegalEntityCreateDocumentsDocumentType = "articles_of_incorporation"
 	ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding ChildLegalEntityCreateDocumentsDocumentType = "certificate_of_good_standing"
 	ChildLegalEntityCreateDocumentsDocumentTypeEinLetter                 ChildLegalEntityCreateDocumentsDocumentType = "ein_letter"
+	ChildLegalEntityCreateDocumentsDocumentTypeGeneric                   ChildLegalEntityCreateDocumentsDocumentType = "generic"
 	ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack        ChildLegalEntityCreateDocumentsDocumentType = "identification_back"
 	ChildLegalEntityCreateDocumentsDocumentTypeIdentificationFront       ChildLegalEntityCreateDocumentsDocumentType = "identification_front"
 	ChildLegalEntityCreateDocumentsDocumentTypeProofOfAddress            ChildLegalEntityCreateDocumentsDocumentType = "proof_of_address"
@@ -265,7 +266,7 @@ const (
 
 func (r ChildLegalEntityCreateDocumentsDocumentType) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation, ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding, ChildLegalEntityCreateDocumentsDocumentTypeEinLetter, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationFront, ChildLegalEntityCreateDocumentsDocumentTypeProofOfAddress:
+	case ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation, ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding, ChildLegalEntityCreateDocumentsDocumentTypeEinLetter, ChildLegalEntityCreateDocumentsDocumentTypeGeneric, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationFront, ChildLegalEntityCreateDocumentsDocumentTypeProofOfAddress:
 		return true
 	}
 	return false
@@ -756,6 +757,7 @@ const (
 	IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation   IdentificationCreateRequestDocumentsDocumentType = "articles_of_incorporation"
 	IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding IdentificationCreateRequestDocumentsDocumentType = "certificate_of_good_standing"
 	IdentificationCreateRequestDocumentsDocumentTypeEinLetter                 IdentificationCreateRequestDocumentsDocumentType = "ein_letter"
+	IdentificationCreateRequestDocumentsDocumentTypeGeneric                   IdentificationCreateRequestDocumentsDocumentType = "generic"
 	IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack        IdentificationCreateRequestDocumentsDocumentType = "identification_back"
 	IdentificationCreateRequestDocumentsDocumentTypeIdentificationFront       IdentificationCreateRequestDocumentsDocumentType = "identification_front"
 	IdentificationCreateRequestDocumentsDocumentTypeProofOfAddress            IdentificationCreateRequestDocumentsDocumentType = "proof_of_address"
@@ -763,7 +765,7 @@ const (
 
 func (r IdentificationCreateRequestDocumentsDocumentType) IsKnown() bool {
 	switch r {
-	case IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation, IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding, IdentificationCreateRequestDocumentsDocumentTypeEinLetter, IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack, IdentificationCreateRequestDocumentsDocumentTypeIdentificationFront, IdentificationCreateRequestDocumentsDocumentTypeProofOfAddress:
+	case IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation, IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding, IdentificationCreateRequestDocumentsDocumentTypeEinLetter, IdentificationCreateRequestDocumentsDocumentTypeGeneric, IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack, IdentificationCreateRequestDocumentsDocumentTypeIdentificationFront, IdentificationCreateRequestDocumentsDocumentTypeProofOfAddress:
 		return true
 	}
 	return false
