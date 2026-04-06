@@ -51,6 +51,9 @@ const ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding = sha
 const ChildLegalEntityCreateDocumentsDocumentTypeEinLetter = shared.ChildLegalEntityCreateDocumentsDocumentTypeEinLetter
 
 // This is an alias to an internal value.
+const ChildLegalEntityCreateDocumentsDocumentTypeGeneric = shared.ChildLegalEntityCreateDocumentsDocumentTypeGeneric
+
+// This is an alias to an internal value.
 const ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack = shared.ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack
 
 // This is an alias to an internal value.
@@ -846,6 +849,9 @@ const IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding 
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestDocumentsDocumentTypeEinLetter = shared.IdentificationCreateRequestDocumentsDocumentTypeEinLetter
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestDocumentsDocumentTypeGeneric = shared.IdentificationCreateRequestDocumentsDocumentTypeGeneric
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack = shared.IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack

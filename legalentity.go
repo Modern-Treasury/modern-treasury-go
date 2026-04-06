@@ -660,6 +660,7 @@ const (
 	LegalEntityNewParamsDocumentsDocumentTypeArticlesOfIncorporation   LegalEntityNewParamsDocumentsDocumentType = "articles_of_incorporation"
 	LegalEntityNewParamsDocumentsDocumentTypeCertificateOfGoodStanding LegalEntityNewParamsDocumentsDocumentType = "certificate_of_good_standing"
 	LegalEntityNewParamsDocumentsDocumentTypeEinLetter                 LegalEntityNewParamsDocumentsDocumentType = "ein_letter"
+	LegalEntityNewParamsDocumentsDocumentTypeGeneric                   LegalEntityNewParamsDocumentsDocumentType = "generic"
 	LegalEntityNewParamsDocumentsDocumentTypeIdentificationBack        LegalEntityNewParamsDocumentsDocumentType = "identification_back"
 	LegalEntityNewParamsDocumentsDocumentTypeIdentificationFront       LegalEntityNewParamsDocumentsDocumentType = "identification_front"
 	LegalEntityNewParamsDocumentsDocumentTypeProofOfAddress            LegalEntityNewParamsDocumentsDocumentType = "proof_of_address"
@@ -667,7 +668,7 @@ const (
 
 func (r LegalEntityNewParamsDocumentsDocumentType) IsKnown() bool {
 	switch r {
-	case LegalEntityNewParamsDocumentsDocumentTypeArticlesOfIncorporation, LegalEntityNewParamsDocumentsDocumentTypeCertificateOfGoodStanding, LegalEntityNewParamsDocumentsDocumentTypeEinLetter, LegalEntityNewParamsDocumentsDocumentTypeIdentificationBack, LegalEntityNewParamsDocumentsDocumentTypeIdentificationFront, LegalEntityNewParamsDocumentsDocumentTypeProofOfAddress:
+	case LegalEntityNewParamsDocumentsDocumentTypeArticlesOfIncorporation, LegalEntityNewParamsDocumentsDocumentTypeCertificateOfGoodStanding, LegalEntityNewParamsDocumentsDocumentTypeEinLetter, LegalEntityNewParamsDocumentsDocumentTypeGeneric, LegalEntityNewParamsDocumentsDocumentTypeIdentificationBack, LegalEntityNewParamsDocumentsDocumentTypeIdentificationFront, LegalEntityNewParamsDocumentsDocumentTypeProofOfAddress:
 		return true
 	}
 	return false
