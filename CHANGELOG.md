@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.50.0 (2026-04-08)
+
+Full Changelog: [v2.49.0...v2.50.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.49.0...v2.50.0)
+
+### Features
+
+* **api:** api update ([a6249c7](https://github.com/Modern-Treasury/modern-treasury-go/commit/a6249c7436050ccc476454eb1330e043a01f71b2))
+
 ## 2.49.0 (2026-04-04)
 
 Full Changelog: [v2.48.0...v2.49.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.48.0...v2.49.0)
