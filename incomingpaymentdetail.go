@@ -135,6 +135,10 @@ type IncomingPaymentDetail struct {
 	// The current status of the incoming payment order. One of `pending`, `completed`,
 	// or `returned`.
 	Status IncomingPaymentDetailStatus `json:"status" api:"required"`
+	// An additional layer of classification for the type of incoming payment detail.
+	// For example, a `type` of `stablecoin` may have a `subtype` of `ethereum` or
+	// `solana`.
+	Subtype string `json:"subtype" api:"required,nullable"`
 	// The ID of the reconciled Transaction or `null`.
 	TransactionID string `json:"transaction_id" api:"required,nullable" format:"uuid"`
 	// The ID of the reconciled Transaction Line Item or `null`.
@@ -190,6 +194,7 @@ type incomingPaymentDetailJSON struct {
 	OriginatingRoutingNumberType     apijson.Field
 	ReconciliationStatus             apijson.Field
 	Status                           apijson.Field
+	Subtype                          apijson.Field
 	TransactionID                    apijson.Field
 	TransactionLineItemID            apijson.Field
 	Type                             apijson.Field
@@ -376,6 +381,10 @@ type IncomingPaymentDetailListParams struct {
 	// The current status of the incoming payment order. One of `pending`, `completed`,
 	// or `returned`.
 	Status param.Field[IncomingPaymentDetailListParamsStatus] `query:"status"`
+	// An additional layer of classification for the type of incoming payment detail.
+	// For example, a `type` of `stablecoin` may have a `subtype` of `ethereum` or
+	// `solana`.
+	Subtype param.Field[string] `query:"subtype"`
 	// One of: `ach`, `book`, `check`, `eft`, `interac`, `rtp`, `sepa`, `signet`, or
 	// `wire`.
 	Type param.Field[IncomingPaymentDetailListParamsType] `query:"type"`
@@ -461,6 +470,9 @@ type IncomingPaymentDetailNewAsyncParams struct {
 	Direction param.Field[IncomingPaymentDetailNewAsyncParamsDirection] `json:"direction"`
 	// The ID of one of your internal accounts.
 	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
+	// An additional layer of classification for the type of incoming payment detail,
+	// e.g. `ethereum` for a `stablecoin` type.
+	Subtype param.Field[string] `json:"subtype"`
 	// One of `ach`, `wire`, `check`.
 	Type param.Field[IncomingPaymentDetailNewAsyncParamsType] `json:"type"`
 	// An optional parameter to associate the incoming payment detail to a virtual
