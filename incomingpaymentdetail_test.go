@@ -92,6 +92,7 @@ func TestIncomingPaymentDetailListWithOptionalParams(t *testing.T) {
 		}),
 		PerPage:          moderntreasury.F(int64(0)),
 		Status:           moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsStatusCompleted),
+		Subtype:          moderntreasury.F("subtype"),
 		Type:             moderntreasury.F(moderntreasury.IncomingPaymentDetailListParamsTypeACH),
 		VirtualAccountID: moderntreasury.F("virtual_account_id"),
 	})
@@ -125,6 +126,7 @@ func TestIncomingPaymentDetailNewAsyncWithOptionalParams(t *testing.T) {
 		Description:       moderntreasury.F("description"),
 		Direction:         moderntreasury.F(moderntreasury.IncomingPaymentDetailNewAsyncParamsDirectionCredit),
 		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		Subtype:           moderntreasury.F("subtype"),
 		Type:              moderntreasury.F(moderntreasury.IncomingPaymentDetailNewAsyncParamsTypeACH),
 		VirtualAccountID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 	})
