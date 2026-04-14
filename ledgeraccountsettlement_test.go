@@ -96,7 +96,8 @@ func TestLedgerAccountSettlementUpdateWithOptionalParams(t *testing.T) {
 				"foo":    "bar",
 				"modern": "treasury",
 			}),
-			Status: moderntreasury.F(moderntreasury.LedgerAccountSettlementUpdateParamsStatusPosted),
+			SkipSettlementLedgerTransaction: moderntreasury.F(true),
+			Status:                          moderntreasury.F(moderntreasury.LedgerAccountSettlementUpdateParamsStatusPosted),
 		},
 	)
 	if err != nil {
