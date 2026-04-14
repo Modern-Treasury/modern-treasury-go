@@ -227,7 +227,6 @@ const (
 	TransactionTypeACH         TransactionType = "ach"
 	TransactionTypeAuBecs      TransactionType = "au_becs"
 	TransactionTypeBacs        TransactionType = "bacs"
-	TransactionTypeBase        TransactionType = "base"
 	TransactionTypeBook        TransactionType = "book"
 	TransactionTypeCard        TransactionType = "card"
 	TransactionTypeChats       TransactionType = "chats"
@@ -235,7 +234,6 @@ const (
 	TransactionTypeCrossBorder TransactionType = "cross_border"
 	TransactionTypeDkNets      TransactionType = "dk_nets"
 	TransactionTypeEft         TransactionType = "eft"
-	TransactionTypeEthereum    TransactionType = "ethereum"
 	TransactionTypeGBFps       TransactionType = "gb_fps"
 	TransactionTypeHuIcs       TransactionType = "hu_ics"
 	TransactionTypeInterac     TransactionType = "interac"
@@ -245,7 +243,6 @@ const (
 	TransactionTypeNics        TransactionType = "nics"
 	TransactionTypeNzBecs      TransactionType = "nz_becs"
 	TransactionTypePlElixir    TransactionType = "pl_elixir"
-	TransactionTypePolygon     TransactionType = "polygon"
 	TransactionTypeProvxchange TransactionType = "provxchange"
 	TransactionTypeRoSent      TransactionType = "ro_sent"
 	TransactionTypeRtp         TransactionType = "rtp"
@@ -256,7 +253,6 @@ const (
 	TransactionTypeSic         TransactionType = "sic"
 	TransactionTypeSignet      TransactionType = "signet"
 	TransactionTypeSknbi       TransactionType = "sknbi"
-	TransactionTypeSolana      TransactionType = "solana"
 	TransactionTypeStablecoin  TransactionType = "stablecoin"
 	TransactionTypeWire        TransactionType = "wire"
 	TransactionTypeZengin      TransactionType = "zengin"
@@ -265,7 +261,7 @@ const (
 
 func (r TransactionType) IsKnown() bool {
 	switch r {
-	case TransactionTypeACH, TransactionTypeAuBecs, TransactionTypeBacs, TransactionTypeBase, TransactionTypeBook, TransactionTypeCard, TransactionTypeChats, TransactionTypeCheck, TransactionTypeCrossBorder, TransactionTypeDkNets, TransactionTypeEft, TransactionTypeEthereum, TransactionTypeGBFps, TransactionTypeHuIcs, TransactionTypeInterac, TransactionTypeMasav, TransactionTypeMxCcen, TransactionTypeNeft, TransactionTypeNics, TransactionTypeNzBecs, TransactionTypePlElixir, TransactionTypePolygon, TransactionTypeProvxchange, TransactionTypeRoSent, TransactionTypeRtp, TransactionTypeSeBankgirot, TransactionTypeSen, TransactionTypeSepa, TransactionTypeSgGiro, TransactionTypeSic, TransactionTypeSignet, TransactionTypeSknbi, TransactionTypeSolana, TransactionTypeStablecoin, TransactionTypeWire, TransactionTypeZengin, TransactionTypeOther:
+	case TransactionTypeACH, TransactionTypeAuBecs, TransactionTypeBacs, TransactionTypeBook, TransactionTypeCard, TransactionTypeChats, TransactionTypeCheck, TransactionTypeCrossBorder, TransactionTypeDkNets, TransactionTypeEft, TransactionTypeGBFps, TransactionTypeHuIcs, TransactionTypeInterac, TransactionTypeMasav, TransactionTypeMxCcen, TransactionTypeNeft, TransactionTypeNics, TransactionTypeNzBecs, TransactionTypePlElixir, TransactionTypeProvxchange, TransactionTypeRoSent, TransactionTypeRtp, TransactionTypeSeBankgirot, TransactionTypeSen, TransactionTypeSepa, TransactionTypeSgGiro, TransactionTypeSic, TransactionTypeSignet, TransactionTypeSknbi, TransactionTypeStablecoin, TransactionTypeWire, TransactionTypeZengin, TransactionTypeOther:
 		return true
 	}
 	return false
@@ -360,7 +356,6 @@ const (
 	TransactionNewParamsTypeACH         TransactionNewParamsType = "ach"
 	TransactionNewParamsTypeAuBecs      TransactionNewParamsType = "au_becs"
 	TransactionNewParamsTypeBacs        TransactionNewParamsType = "bacs"
-	TransactionNewParamsTypeBase        TransactionNewParamsType = "base"
 	TransactionNewParamsTypeBook        TransactionNewParamsType = "book"
 	TransactionNewParamsTypeCard        TransactionNewParamsType = "card"
 	TransactionNewParamsTypeChats       TransactionNewParamsType = "chats"
@@ -368,7 +363,6 @@ const (
 	TransactionNewParamsTypeCrossBorder TransactionNewParamsType = "cross_border"
 	TransactionNewParamsTypeDkNets      TransactionNewParamsType = "dk_nets"
 	TransactionNewParamsTypeEft         TransactionNewParamsType = "eft"
-	TransactionNewParamsTypeEthereum    TransactionNewParamsType = "ethereum"
 	TransactionNewParamsTypeGBFps       TransactionNewParamsType = "gb_fps"
 	TransactionNewParamsTypeHuIcs       TransactionNewParamsType = "hu_ics"
 	TransactionNewParamsTypeInterac     TransactionNewParamsType = "interac"
@@ -378,7 +372,6 @@ const (
 	TransactionNewParamsTypeNics        TransactionNewParamsType = "nics"
 	TransactionNewParamsTypeNzBecs      TransactionNewParamsType = "nz_becs"
 	TransactionNewParamsTypePlElixir    TransactionNewParamsType = "pl_elixir"
-	TransactionNewParamsTypePolygon     TransactionNewParamsType = "polygon"
 	TransactionNewParamsTypeProvxchange TransactionNewParamsType = "provxchange"
 	TransactionNewParamsTypeRoSent      TransactionNewParamsType = "ro_sent"
 	TransactionNewParamsTypeRtp         TransactionNewParamsType = "rtp"
@@ -389,7 +382,6 @@ const (
 	TransactionNewParamsTypeSic         TransactionNewParamsType = "sic"
 	TransactionNewParamsTypeSignet      TransactionNewParamsType = "signet"
 	TransactionNewParamsTypeSknbi       TransactionNewParamsType = "sknbi"
-	TransactionNewParamsTypeSolana      TransactionNewParamsType = "solana"
 	TransactionNewParamsTypeStablecoin  TransactionNewParamsType = "stablecoin"
 	TransactionNewParamsTypeWire        TransactionNewParamsType = "wire"
 	TransactionNewParamsTypeZengin      TransactionNewParamsType = "zengin"
@@ -398,7 +390,7 @@ const (
 
 func (r TransactionNewParamsType) IsKnown() bool {
 	switch r {
-	case TransactionNewParamsTypeACH, TransactionNewParamsTypeAuBecs, TransactionNewParamsTypeBacs, TransactionNewParamsTypeBase, TransactionNewParamsTypeBook, TransactionNewParamsTypeCard, TransactionNewParamsTypeChats, TransactionNewParamsTypeCheck, TransactionNewParamsTypeCrossBorder, TransactionNewParamsTypeDkNets, TransactionNewParamsTypeEft, TransactionNewParamsTypeEthereum, TransactionNewParamsTypeGBFps, TransactionNewParamsTypeHuIcs, TransactionNewParamsTypeInterac, TransactionNewParamsTypeMasav, TransactionNewParamsTypeMxCcen, TransactionNewParamsTypeNeft, TransactionNewParamsTypeNics, TransactionNewParamsTypeNzBecs, TransactionNewParamsTypePlElixir, TransactionNewParamsTypePolygon, TransactionNewParamsTypeProvxchange, TransactionNewParamsTypeRoSent, TransactionNewParamsTypeRtp, TransactionNewParamsTypeSeBankgirot, TransactionNewParamsTypeSen, TransactionNewParamsTypeSepa, TransactionNewParamsTypeSgGiro, TransactionNewParamsTypeSic, TransactionNewParamsTypeSignet, TransactionNewParamsTypeSknbi, TransactionNewParamsTypeSolana, TransactionNewParamsTypeStablecoin, TransactionNewParamsTypeWire, TransactionNewParamsTypeZengin, TransactionNewParamsTypeOther:
+	case TransactionNewParamsTypeACH, TransactionNewParamsTypeAuBecs, TransactionNewParamsTypeBacs, TransactionNewParamsTypeBook, TransactionNewParamsTypeCard, TransactionNewParamsTypeChats, TransactionNewParamsTypeCheck, TransactionNewParamsTypeCrossBorder, TransactionNewParamsTypeDkNets, TransactionNewParamsTypeEft, TransactionNewParamsTypeGBFps, TransactionNewParamsTypeHuIcs, TransactionNewParamsTypeInterac, TransactionNewParamsTypeMasav, TransactionNewParamsTypeMxCcen, TransactionNewParamsTypeNeft, TransactionNewParamsTypeNics, TransactionNewParamsTypeNzBecs, TransactionNewParamsTypePlElixir, TransactionNewParamsTypeProvxchange, TransactionNewParamsTypeRoSent, TransactionNewParamsTypeRtp, TransactionNewParamsTypeSeBankgirot, TransactionNewParamsTypeSen, TransactionNewParamsTypeSepa, TransactionNewParamsTypeSgGiro, TransactionNewParamsTypeSic, TransactionNewParamsTypeSignet, TransactionNewParamsTypeSknbi, TransactionNewParamsTypeStablecoin, TransactionNewParamsTypeWire, TransactionNewParamsTypeZengin, TransactionNewParamsTypeOther:
 		return true
 	}
 	return false

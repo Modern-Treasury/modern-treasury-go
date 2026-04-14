@@ -328,19 +328,15 @@ const (
 	IncomingPaymentDetailTypeACH        IncomingPaymentDetailType = "ach"
 	IncomingPaymentDetailTypeAuBecs     IncomingPaymentDetailType = "au_becs"
 	IncomingPaymentDetailTypeBacs       IncomingPaymentDetailType = "bacs"
-	IncomingPaymentDetailTypeBase       IncomingPaymentDetailType = "base"
 	IncomingPaymentDetailTypeBook       IncomingPaymentDetailType = "book"
 	IncomingPaymentDetailTypeCheck      IncomingPaymentDetailType = "check"
 	IncomingPaymentDetailTypeEft        IncomingPaymentDetailType = "eft"
-	IncomingPaymentDetailTypeEthereum   IncomingPaymentDetailType = "ethereum"
 	IncomingPaymentDetailTypeInterac    IncomingPaymentDetailType = "interac"
 	IncomingPaymentDetailTypeNeft       IncomingPaymentDetailType = "neft"
 	IncomingPaymentDetailTypeNzBecs     IncomingPaymentDetailType = "nz_becs"
-	IncomingPaymentDetailTypePolygon    IncomingPaymentDetailType = "polygon"
 	IncomingPaymentDetailTypeRtp        IncomingPaymentDetailType = "rtp"
 	IncomingPaymentDetailTypeSepa       IncomingPaymentDetailType = "sepa"
 	IncomingPaymentDetailTypeSignet     IncomingPaymentDetailType = "signet"
-	IncomingPaymentDetailTypeSolana     IncomingPaymentDetailType = "solana"
 	IncomingPaymentDetailTypeStablecoin IncomingPaymentDetailType = "stablecoin"
 	IncomingPaymentDetailTypeWire       IncomingPaymentDetailType = "wire"
 	IncomingPaymentDetailTypeZengin     IncomingPaymentDetailType = "zengin"
@@ -348,7 +344,7 @@ const (
 
 func (r IncomingPaymentDetailType) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailTypeACH, IncomingPaymentDetailTypeAuBecs, IncomingPaymentDetailTypeBacs, IncomingPaymentDetailTypeBase, IncomingPaymentDetailTypeBook, IncomingPaymentDetailTypeCheck, IncomingPaymentDetailTypeEft, IncomingPaymentDetailTypeEthereum, IncomingPaymentDetailTypeInterac, IncomingPaymentDetailTypeNeft, IncomingPaymentDetailTypeNzBecs, IncomingPaymentDetailTypePolygon, IncomingPaymentDetailTypeRtp, IncomingPaymentDetailTypeSepa, IncomingPaymentDetailTypeSignet, IncomingPaymentDetailTypeSolana, IncomingPaymentDetailTypeStablecoin, IncomingPaymentDetailTypeWire, IncomingPaymentDetailTypeZengin:
+	case IncomingPaymentDetailTypeACH, IncomingPaymentDetailTypeAuBecs, IncomingPaymentDetailTypeBacs, IncomingPaymentDetailTypeBook, IncomingPaymentDetailTypeCheck, IncomingPaymentDetailTypeEft, IncomingPaymentDetailTypeInterac, IncomingPaymentDetailTypeNeft, IncomingPaymentDetailTypeNzBecs, IncomingPaymentDetailTypeRtp, IncomingPaymentDetailTypeSepa, IncomingPaymentDetailTypeSignet, IncomingPaymentDetailTypeStablecoin, IncomingPaymentDetailTypeWire, IncomingPaymentDetailTypeZengin:
 		return true
 	}
 	return false
@@ -429,19 +425,15 @@ const (
 	IncomingPaymentDetailListParamsTypeACH        IncomingPaymentDetailListParamsType = "ach"
 	IncomingPaymentDetailListParamsTypeAuBecs     IncomingPaymentDetailListParamsType = "au_becs"
 	IncomingPaymentDetailListParamsTypeBacs       IncomingPaymentDetailListParamsType = "bacs"
-	IncomingPaymentDetailListParamsTypeBase       IncomingPaymentDetailListParamsType = "base"
 	IncomingPaymentDetailListParamsTypeBook       IncomingPaymentDetailListParamsType = "book"
 	IncomingPaymentDetailListParamsTypeCheck      IncomingPaymentDetailListParamsType = "check"
 	IncomingPaymentDetailListParamsTypeEft        IncomingPaymentDetailListParamsType = "eft"
-	IncomingPaymentDetailListParamsTypeEthereum   IncomingPaymentDetailListParamsType = "ethereum"
 	IncomingPaymentDetailListParamsTypeInterac    IncomingPaymentDetailListParamsType = "interac"
 	IncomingPaymentDetailListParamsTypeNeft       IncomingPaymentDetailListParamsType = "neft"
 	IncomingPaymentDetailListParamsTypeNzBecs     IncomingPaymentDetailListParamsType = "nz_becs"
-	IncomingPaymentDetailListParamsTypePolygon    IncomingPaymentDetailListParamsType = "polygon"
 	IncomingPaymentDetailListParamsTypeRtp        IncomingPaymentDetailListParamsType = "rtp"
 	IncomingPaymentDetailListParamsTypeSepa       IncomingPaymentDetailListParamsType = "sepa"
 	IncomingPaymentDetailListParamsTypeSignet     IncomingPaymentDetailListParamsType = "signet"
-	IncomingPaymentDetailListParamsTypeSolana     IncomingPaymentDetailListParamsType = "solana"
 	IncomingPaymentDetailListParamsTypeStablecoin IncomingPaymentDetailListParamsType = "stablecoin"
 	IncomingPaymentDetailListParamsTypeWire       IncomingPaymentDetailListParamsType = "wire"
 	IncomingPaymentDetailListParamsTypeZengin     IncomingPaymentDetailListParamsType = "zengin"
@@ -449,7 +441,7 @@ const (
 
 func (r IncomingPaymentDetailListParamsType) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailListParamsTypeACH, IncomingPaymentDetailListParamsTypeAuBecs, IncomingPaymentDetailListParamsTypeBacs, IncomingPaymentDetailListParamsTypeBase, IncomingPaymentDetailListParamsTypeBook, IncomingPaymentDetailListParamsTypeCheck, IncomingPaymentDetailListParamsTypeEft, IncomingPaymentDetailListParamsTypeEthereum, IncomingPaymentDetailListParamsTypeInterac, IncomingPaymentDetailListParamsTypeNeft, IncomingPaymentDetailListParamsTypeNzBecs, IncomingPaymentDetailListParamsTypePolygon, IncomingPaymentDetailListParamsTypeRtp, IncomingPaymentDetailListParamsTypeSepa, IncomingPaymentDetailListParamsTypeSignet, IncomingPaymentDetailListParamsTypeSolana, IncomingPaymentDetailListParamsTypeStablecoin, IncomingPaymentDetailListParamsTypeWire, IncomingPaymentDetailListParamsTypeZengin:
+	case IncomingPaymentDetailListParamsTypeACH, IncomingPaymentDetailListParamsTypeAuBecs, IncomingPaymentDetailListParamsTypeBacs, IncomingPaymentDetailListParamsTypeBook, IncomingPaymentDetailListParamsTypeCheck, IncomingPaymentDetailListParamsTypeEft, IncomingPaymentDetailListParamsTypeInterac, IncomingPaymentDetailListParamsTypeNeft, IncomingPaymentDetailListParamsTypeNzBecs, IncomingPaymentDetailListParamsTypeRtp, IncomingPaymentDetailListParamsTypeSepa, IncomingPaymentDetailListParamsTypeSignet, IncomingPaymentDetailListParamsTypeStablecoin, IncomingPaymentDetailListParamsTypeWire, IncomingPaymentDetailListParamsTypeZengin:
 		return true
 	}
 	return false
@@ -509,19 +501,15 @@ const (
 	IncomingPaymentDetailNewAsyncParamsTypeACH        IncomingPaymentDetailNewAsyncParamsType = "ach"
 	IncomingPaymentDetailNewAsyncParamsTypeAuBecs     IncomingPaymentDetailNewAsyncParamsType = "au_becs"
 	IncomingPaymentDetailNewAsyncParamsTypeBacs       IncomingPaymentDetailNewAsyncParamsType = "bacs"
-	IncomingPaymentDetailNewAsyncParamsTypeBase       IncomingPaymentDetailNewAsyncParamsType = "base"
 	IncomingPaymentDetailNewAsyncParamsTypeBook       IncomingPaymentDetailNewAsyncParamsType = "book"
 	IncomingPaymentDetailNewAsyncParamsTypeCheck      IncomingPaymentDetailNewAsyncParamsType = "check"
 	IncomingPaymentDetailNewAsyncParamsTypeEft        IncomingPaymentDetailNewAsyncParamsType = "eft"
-	IncomingPaymentDetailNewAsyncParamsTypeEthereum   IncomingPaymentDetailNewAsyncParamsType = "ethereum"
 	IncomingPaymentDetailNewAsyncParamsTypeInterac    IncomingPaymentDetailNewAsyncParamsType = "interac"
 	IncomingPaymentDetailNewAsyncParamsTypeNeft       IncomingPaymentDetailNewAsyncParamsType = "neft"
 	IncomingPaymentDetailNewAsyncParamsTypeNzBecs     IncomingPaymentDetailNewAsyncParamsType = "nz_becs"
-	IncomingPaymentDetailNewAsyncParamsTypePolygon    IncomingPaymentDetailNewAsyncParamsType = "polygon"
 	IncomingPaymentDetailNewAsyncParamsTypeRtp        IncomingPaymentDetailNewAsyncParamsType = "rtp"
 	IncomingPaymentDetailNewAsyncParamsTypeSepa       IncomingPaymentDetailNewAsyncParamsType = "sepa"
 	IncomingPaymentDetailNewAsyncParamsTypeSignet     IncomingPaymentDetailNewAsyncParamsType = "signet"
-	IncomingPaymentDetailNewAsyncParamsTypeSolana     IncomingPaymentDetailNewAsyncParamsType = "solana"
 	IncomingPaymentDetailNewAsyncParamsTypeStablecoin IncomingPaymentDetailNewAsyncParamsType = "stablecoin"
 	IncomingPaymentDetailNewAsyncParamsTypeWire       IncomingPaymentDetailNewAsyncParamsType = "wire"
 	IncomingPaymentDetailNewAsyncParamsTypeZengin     IncomingPaymentDetailNewAsyncParamsType = "zengin"
@@ -529,7 +517,7 @@ const (
 
 func (r IncomingPaymentDetailNewAsyncParamsType) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailNewAsyncParamsTypeACH, IncomingPaymentDetailNewAsyncParamsTypeAuBecs, IncomingPaymentDetailNewAsyncParamsTypeBacs, IncomingPaymentDetailNewAsyncParamsTypeBase, IncomingPaymentDetailNewAsyncParamsTypeBook, IncomingPaymentDetailNewAsyncParamsTypeCheck, IncomingPaymentDetailNewAsyncParamsTypeEft, IncomingPaymentDetailNewAsyncParamsTypeEthereum, IncomingPaymentDetailNewAsyncParamsTypeInterac, IncomingPaymentDetailNewAsyncParamsTypeNeft, IncomingPaymentDetailNewAsyncParamsTypeNzBecs, IncomingPaymentDetailNewAsyncParamsTypePolygon, IncomingPaymentDetailNewAsyncParamsTypeRtp, IncomingPaymentDetailNewAsyncParamsTypeSepa, IncomingPaymentDetailNewAsyncParamsTypeSignet, IncomingPaymentDetailNewAsyncParamsTypeSolana, IncomingPaymentDetailNewAsyncParamsTypeStablecoin, IncomingPaymentDetailNewAsyncParamsTypeWire, IncomingPaymentDetailNewAsyncParamsTypeZengin:
+	case IncomingPaymentDetailNewAsyncParamsTypeACH, IncomingPaymentDetailNewAsyncParamsTypeAuBecs, IncomingPaymentDetailNewAsyncParamsTypeBacs, IncomingPaymentDetailNewAsyncParamsTypeBook, IncomingPaymentDetailNewAsyncParamsTypeCheck, IncomingPaymentDetailNewAsyncParamsTypeEft, IncomingPaymentDetailNewAsyncParamsTypeInterac, IncomingPaymentDetailNewAsyncParamsTypeNeft, IncomingPaymentDetailNewAsyncParamsTypeNzBecs, IncomingPaymentDetailNewAsyncParamsTypeRtp, IncomingPaymentDetailNewAsyncParamsTypeSepa, IncomingPaymentDetailNewAsyncParamsTypeSignet, IncomingPaymentDetailNewAsyncParamsTypeStablecoin, IncomingPaymentDetailNewAsyncParamsTypeWire, IncomingPaymentDetailNewAsyncParamsTypeZengin:
 		return true
 	}
 	return false

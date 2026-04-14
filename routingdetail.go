@@ -168,7 +168,6 @@ const (
 	RoutingDetailPaymentTypeACH         RoutingDetailPaymentType = "ach"
 	RoutingDetailPaymentTypeAuBecs      RoutingDetailPaymentType = "au_becs"
 	RoutingDetailPaymentTypeBacs        RoutingDetailPaymentType = "bacs"
-	RoutingDetailPaymentTypeBase        RoutingDetailPaymentType = "base"
 	RoutingDetailPaymentTypeBook        RoutingDetailPaymentType = "book"
 	RoutingDetailPaymentTypeCard        RoutingDetailPaymentType = "card"
 	RoutingDetailPaymentTypeChats       RoutingDetailPaymentType = "chats"
@@ -176,7 +175,6 @@ const (
 	RoutingDetailPaymentTypeCrossBorder RoutingDetailPaymentType = "cross_border"
 	RoutingDetailPaymentTypeDkNets      RoutingDetailPaymentType = "dk_nets"
 	RoutingDetailPaymentTypeEft         RoutingDetailPaymentType = "eft"
-	RoutingDetailPaymentTypeEthereum    RoutingDetailPaymentType = "ethereum"
 	RoutingDetailPaymentTypeGBFps       RoutingDetailPaymentType = "gb_fps"
 	RoutingDetailPaymentTypeHuIcs       RoutingDetailPaymentType = "hu_ics"
 	RoutingDetailPaymentTypeInterac     RoutingDetailPaymentType = "interac"
@@ -186,7 +184,6 @@ const (
 	RoutingDetailPaymentTypeNics        RoutingDetailPaymentType = "nics"
 	RoutingDetailPaymentTypeNzBecs      RoutingDetailPaymentType = "nz_becs"
 	RoutingDetailPaymentTypePlElixir    RoutingDetailPaymentType = "pl_elixir"
-	RoutingDetailPaymentTypePolygon     RoutingDetailPaymentType = "polygon"
 	RoutingDetailPaymentTypeProvxchange RoutingDetailPaymentType = "provxchange"
 	RoutingDetailPaymentTypeRoSent      RoutingDetailPaymentType = "ro_sent"
 	RoutingDetailPaymentTypeRtp         RoutingDetailPaymentType = "rtp"
@@ -197,7 +194,6 @@ const (
 	RoutingDetailPaymentTypeSic         RoutingDetailPaymentType = "sic"
 	RoutingDetailPaymentTypeSignet      RoutingDetailPaymentType = "signet"
 	RoutingDetailPaymentTypeSknbi       RoutingDetailPaymentType = "sknbi"
-	RoutingDetailPaymentTypeSolana      RoutingDetailPaymentType = "solana"
 	RoutingDetailPaymentTypeStablecoin  RoutingDetailPaymentType = "stablecoin"
 	RoutingDetailPaymentTypeWire        RoutingDetailPaymentType = "wire"
 	RoutingDetailPaymentTypeZengin      RoutingDetailPaymentType = "zengin"
@@ -205,7 +201,7 @@ const (
 
 func (r RoutingDetailPaymentType) IsKnown() bool {
 	switch r {
-	case RoutingDetailPaymentTypeACH, RoutingDetailPaymentTypeAuBecs, RoutingDetailPaymentTypeBacs, RoutingDetailPaymentTypeBase, RoutingDetailPaymentTypeBook, RoutingDetailPaymentTypeCard, RoutingDetailPaymentTypeChats, RoutingDetailPaymentTypeCheck, RoutingDetailPaymentTypeCrossBorder, RoutingDetailPaymentTypeDkNets, RoutingDetailPaymentTypeEft, RoutingDetailPaymentTypeEthereum, RoutingDetailPaymentTypeGBFps, RoutingDetailPaymentTypeHuIcs, RoutingDetailPaymentTypeInterac, RoutingDetailPaymentTypeMasav, RoutingDetailPaymentTypeMxCcen, RoutingDetailPaymentTypeNeft, RoutingDetailPaymentTypeNics, RoutingDetailPaymentTypeNzBecs, RoutingDetailPaymentTypePlElixir, RoutingDetailPaymentTypePolygon, RoutingDetailPaymentTypeProvxchange, RoutingDetailPaymentTypeRoSent, RoutingDetailPaymentTypeRtp, RoutingDetailPaymentTypeSeBankgirot, RoutingDetailPaymentTypeSen, RoutingDetailPaymentTypeSepa, RoutingDetailPaymentTypeSgGiro, RoutingDetailPaymentTypeSic, RoutingDetailPaymentTypeSignet, RoutingDetailPaymentTypeSknbi, RoutingDetailPaymentTypeSolana, RoutingDetailPaymentTypeStablecoin, RoutingDetailPaymentTypeWire, RoutingDetailPaymentTypeZengin:
+	case RoutingDetailPaymentTypeACH, RoutingDetailPaymentTypeAuBecs, RoutingDetailPaymentTypeBacs, RoutingDetailPaymentTypeBook, RoutingDetailPaymentTypeCard, RoutingDetailPaymentTypeChats, RoutingDetailPaymentTypeCheck, RoutingDetailPaymentTypeCrossBorder, RoutingDetailPaymentTypeDkNets, RoutingDetailPaymentTypeEft, RoutingDetailPaymentTypeGBFps, RoutingDetailPaymentTypeHuIcs, RoutingDetailPaymentTypeInterac, RoutingDetailPaymentTypeMasav, RoutingDetailPaymentTypeMxCcen, RoutingDetailPaymentTypeNeft, RoutingDetailPaymentTypeNics, RoutingDetailPaymentTypeNzBecs, RoutingDetailPaymentTypePlElixir, RoutingDetailPaymentTypeProvxchange, RoutingDetailPaymentTypeRoSent, RoutingDetailPaymentTypeRtp, RoutingDetailPaymentTypeSeBankgirot, RoutingDetailPaymentTypeSen, RoutingDetailPaymentTypeSepa, RoutingDetailPaymentTypeSgGiro, RoutingDetailPaymentTypeSic, RoutingDetailPaymentTypeSignet, RoutingDetailPaymentTypeSknbi, RoutingDetailPaymentTypeStablecoin, RoutingDetailPaymentTypeWire, RoutingDetailPaymentTypeZengin:
 		return true
 	}
 	return false
@@ -325,7 +321,6 @@ const (
 	RoutingDetailNewParamsPaymentTypeACH         RoutingDetailNewParamsPaymentType = "ach"
 	RoutingDetailNewParamsPaymentTypeAuBecs      RoutingDetailNewParamsPaymentType = "au_becs"
 	RoutingDetailNewParamsPaymentTypeBacs        RoutingDetailNewParamsPaymentType = "bacs"
-	RoutingDetailNewParamsPaymentTypeBase        RoutingDetailNewParamsPaymentType = "base"
 	RoutingDetailNewParamsPaymentTypeBook        RoutingDetailNewParamsPaymentType = "book"
 	RoutingDetailNewParamsPaymentTypeCard        RoutingDetailNewParamsPaymentType = "card"
 	RoutingDetailNewParamsPaymentTypeChats       RoutingDetailNewParamsPaymentType = "chats"
@@ -333,7 +328,6 @@ const (
 	RoutingDetailNewParamsPaymentTypeCrossBorder RoutingDetailNewParamsPaymentType = "cross_border"
 	RoutingDetailNewParamsPaymentTypeDkNets      RoutingDetailNewParamsPaymentType = "dk_nets"
 	RoutingDetailNewParamsPaymentTypeEft         RoutingDetailNewParamsPaymentType = "eft"
-	RoutingDetailNewParamsPaymentTypeEthereum    RoutingDetailNewParamsPaymentType = "ethereum"
 	RoutingDetailNewParamsPaymentTypeGBFps       RoutingDetailNewParamsPaymentType = "gb_fps"
 	RoutingDetailNewParamsPaymentTypeHuIcs       RoutingDetailNewParamsPaymentType = "hu_ics"
 	RoutingDetailNewParamsPaymentTypeInterac     RoutingDetailNewParamsPaymentType = "interac"
@@ -343,7 +337,6 @@ const (
 	RoutingDetailNewParamsPaymentTypeNics        RoutingDetailNewParamsPaymentType = "nics"
 	RoutingDetailNewParamsPaymentTypeNzBecs      RoutingDetailNewParamsPaymentType = "nz_becs"
 	RoutingDetailNewParamsPaymentTypePlElixir    RoutingDetailNewParamsPaymentType = "pl_elixir"
-	RoutingDetailNewParamsPaymentTypePolygon     RoutingDetailNewParamsPaymentType = "polygon"
 	RoutingDetailNewParamsPaymentTypeProvxchange RoutingDetailNewParamsPaymentType = "provxchange"
 	RoutingDetailNewParamsPaymentTypeRoSent      RoutingDetailNewParamsPaymentType = "ro_sent"
 	RoutingDetailNewParamsPaymentTypeRtp         RoutingDetailNewParamsPaymentType = "rtp"
@@ -354,7 +347,6 @@ const (
 	RoutingDetailNewParamsPaymentTypeSic         RoutingDetailNewParamsPaymentType = "sic"
 	RoutingDetailNewParamsPaymentTypeSignet      RoutingDetailNewParamsPaymentType = "signet"
 	RoutingDetailNewParamsPaymentTypeSknbi       RoutingDetailNewParamsPaymentType = "sknbi"
-	RoutingDetailNewParamsPaymentTypeSolana      RoutingDetailNewParamsPaymentType = "solana"
 	RoutingDetailNewParamsPaymentTypeStablecoin  RoutingDetailNewParamsPaymentType = "stablecoin"
 	RoutingDetailNewParamsPaymentTypeWire        RoutingDetailNewParamsPaymentType = "wire"
 	RoutingDetailNewParamsPaymentTypeZengin      RoutingDetailNewParamsPaymentType = "zengin"
@@ -362,7 +354,7 @@ const (
 
 func (r RoutingDetailNewParamsPaymentType) IsKnown() bool {
 	switch r {
-	case RoutingDetailNewParamsPaymentTypeACH, RoutingDetailNewParamsPaymentTypeAuBecs, RoutingDetailNewParamsPaymentTypeBacs, RoutingDetailNewParamsPaymentTypeBase, RoutingDetailNewParamsPaymentTypeBook, RoutingDetailNewParamsPaymentTypeCard, RoutingDetailNewParamsPaymentTypeChats, RoutingDetailNewParamsPaymentTypeCheck, RoutingDetailNewParamsPaymentTypeCrossBorder, RoutingDetailNewParamsPaymentTypeDkNets, RoutingDetailNewParamsPaymentTypeEft, RoutingDetailNewParamsPaymentTypeEthereum, RoutingDetailNewParamsPaymentTypeGBFps, RoutingDetailNewParamsPaymentTypeHuIcs, RoutingDetailNewParamsPaymentTypeInterac, RoutingDetailNewParamsPaymentTypeMasav, RoutingDetailNewParamsPaymentTypeMxCcen, RoutingDetailNewParamsPaymentTypeNeft, RoutingDetailNewParamsPaymentTypeNics, RoutingDetailNewParamsPaymentTypeNzBecs, RoutingDetailNewParamsPaymentTypePlElixir, RoutingDetailNewParamsPaymentTypePolygon, RoutingDetailNewParamsPaymentTypeProvxchange, RoutingDetailNewParamsPaymentTypeRoSent, RoutingDetailNewParamsPaymentTypeRtp, RoutingDetailNewParamsPaymentTypeSeBankgirot, RoutingDetailNewParamsPaymentTypeSen, RoutingDetailNewParamsPaymentTypeSepa, RoutingDetailNewParamsPaymentTypeSgGiro, RoutingDetailNewParamsPaymentTypeSic, RoutingDetailNewParamsPaymentTypeSignet, RoutingDetailNewParamsPaymentTypeSknbi, RoutingDetailNewParamsPaymentTypeSolana, RoutingDetailNewParamsPaymentTypeStablecoin, RoutingDetailNewParamsPaymentTypeWire, RoutingDetailNewParamsPaymentTypeZengin:
+	case RoutingDetailNewParamsPaymentTypeACH, RoutingDetailNewParamsPaymentTypeAuBecs, RoutingDetailNewParamsPaymentTypeBacs, RoutingDetailNewParamsPaymentTypeBook, RoutingDetailNewParamsPaymentTypeCard, RoutingDetailNewParamsPaymentTypeChats, RoutingDetailNewParamsPaymentTypeCheck, RoutingDetailNewParamsPaymentTypeCrossBorder, RoutingDetailNewParamsPaymentTypeDkNets, RoutingDetailNewParamsPaymentTypeEft, RoutingDetailNewParamsPaymentTypeGBFps, RoutingDetailNewParamsPaymentTypeHuIcs, RoutingDetailNewParamsPaymentTypeInterac, RoutingDetailNewParamsPaymentTypeMasav, RoutingDetailNewParamsPaymentTypeMxCcen, RoutingDetailNewParamsPaymentTypeNeft, RoutingDetailNewParamsPaymentTypeNics, RoutingDetailNewParamsPaymentTypeNzBecs, RoutingDetailNewParamsPaymentTypePlElixir, RoutingDetailNewParamsPaymentTypeProvxchange, RoutingDetailNewParamsPaymentTypeRoSent, RoutingDetailNewParamsPaymentTypeRtp, RoutingDetailNewParamsPaymentTypeSeBankgirot, RoutingDetailNewParamsPaymentTypeSen, RoutingDetailNewParamsPaymentTypeSepa, RoutingDetailNewParamsPaymentTypeSgGiro, RoutingDetailNewParamsPaymentTypeSic, RoutingDetailNewParamsPaymentTypeSignet, RoutingDetailNewParamsPaymentTypeSknbi, RoutingDetailNewParamsPaymentTypeStablecoin, RoutingDetailNewParamsPaymentTypeWire, RoutingDetailNewParamsPaymentTypeZengin:
 		return true
 	}
 	return false
