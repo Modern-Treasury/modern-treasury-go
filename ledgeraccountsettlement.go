@@ -245,6 +245,9 @@ type LedgerAccountSettlementUpdateParams struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// It is set to `false` by default. It should be set to `true` when migrating
+	// existing settlements.
+	SkipSettlementLedgerTransaction param.Field[bool] `json:"skip_settlement_ledger_transaction"`
 	// To post a pending ledger account settlement, use `posted`. To archive a pending
 	// ledger transaction, use `archived`.
 	Status param.Field[LedgerAccountSettlementUpdateParamsStatus] `json:"status"`
