@@ -148,6 +148,8 @@ type Invoice struct {
 	// The name of the issuer for the invoice. Defaults to the name of the
 	// Organization.
 	InvoicerName string `json:"invoicer_name" api:"required,nullable"`
+	// Translation missing: en.openapi.descriptions.invoice.schema.issued_at
+	IssuedAt time.Time `json:"issued_at" api:"required,nullable" format:"date-time"`
 	// The ledger account settlement object linked to the invoice.
 	//
 	// Deprecated: deprecated
@@ -170,6 +172,8 @@ type Invoice struct {
 	Object string `json:"object" api:"required"`
 	// The ID of the internal account the invoice should be paid to.
 	OriginatingAccountID string `json:"originating_account_id" api:"required"`
+	// Translation missing: en.openapi.descriptions.invoice.schema.paid_at
+	PaidAt time.Time `json:"paid_at" api:"required,nullable" format:"date-time"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.
@@ -204,8 +208,10 @@ type Invoice struct {
 	TransactionLineItemIDs []string  `json:"transaction_line_item_ids" api:"required" format:"uuid"`
 	UpdatedAt              time.Time `json:"updated_at" api:"required" format:"date-time"`
 	// The ID of the virtual account the invoice should be paid to.
-	VirtualAccountID string      `json:"virtual_account_id" api:"required,nullable" format:"uuid"`
-	JSON             invoiceJSON `json:"-"`
+	VirtualAccountID string `json:"virtual_account_id" api:"required,nullable" format:"uuid"`
+	// Translation missing: en.openapi.descriptions.invoice.schema.voided_at
+	VoidedAt time.Time   `json:"voided_at" api:"required,nullable" format:"date-time"`
+	JSON     invoiceJSON `json:"-"`
 }
 
 // invoiceJSON contains the JSON metadata for the struct [Invoice]
@@ -226,6 +232,7 @@ type invoiceJSON struct {
 	HostedURL                   apijson.Field
 	InvoicerAddress             apijson.Field
 	InvoicerName                apijson.Field
+	IssuedAt                    apijson.Field
 	LedgerAccountSettlementID   apijson.Field
 	LiveMode                    apijson.Field
 	Metadata                    apijson.Field
@@ -234,6 +241,7 @@ type invoiceJSON struct {
 	Number                      apijson.Field
 	Object                      apijson.Field
 	OriginatingAccountID        apijson.Field
+	PaidAt                      apijson.Field
 	PaymentEffectiveDate        apijson.Field
 	PaymentMethod               apijson.Field
 	PaymentOrders               apijson.Field
@@ -248,6 +256,7 @@ type invoiceJSON struct {
 	TransactionLineItemIDs      apijson.Field
 	UpdatedAt                   apijson.Field
 	VirtualAccountID            apijson.Field
+	VoidedAt                    apijson.Field
 	raw                         string
 	ExtraFields                 map[string]apijson.Field
 }
