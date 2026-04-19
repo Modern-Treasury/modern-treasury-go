@@ -547,9 +547,6 @@ const CurrencyRwf = shared.CurrencyRwf
 const CurrencySar = shared.CurrencySar
 
 // This is an alias to an internal value.
-const CurrencySbc = shared.CurrencySbc
-
-// This is an alias to an internal value.
 const CurrencySbd = shared.CurrencySbd
 
 // This is an alias to an internal value.
