@@ -828,6 +828,9 @@ const IdentificationCreateRequestIDTypeUsItin = shared.IdentificationCreateReque
 const IdentificationCreateRequestIDTypeUsSsn = shared.IdentificationCreateRequestIDTypeUsSsn
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeUyRut = shared.IdentificationCreateRequestIDTypeUyRut
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeVnTin = shared.IdentificationCreateRequestIDTypeVnTin
 
 // This is an alias to an internal type.
