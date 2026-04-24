@@ -810,6 +810,15 @@ const IdentificationCreateRequestIDTypeKrCrn = shared.IdentificationCreateReques
 const IdentificationCreateRequestIDTypeKrRrn = shared.IdentificationCreateRequestIDTypeKrRrn
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeMxCurp = shared.IdentificationCreateRequestIDTypeMxCurp
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeMxIne = shared.IdentificationCreateRequestIDTypeMxIne
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeMxRfc = shared.IdentificationCreateRequestIDTypeMxRfc
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypePassport = shared.IdentificationCreateRequestIDTypePassport
 
 // This is an alias to an internal value.
