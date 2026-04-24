@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.52.0 (2026-04-24)
+
+Full Changelog: [v2.51.0...v2.52.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.51.0...v2.52.0)
+
+### Features
+
+* **api:** api update ([b38515b](https://github.com/Modern-Treasury/modern-treasury-go/commit/b38515b2a13a70d88f80cc1724e77c35884844f2))
+* **api:** api update ([3ad36d3](https://github.com/Modern-Treasury/modern-treasury-go/commit/3ad36d3291513a807c5659a03ca0838d998c0ecf))
+* **go:** add default http client with timeout ([b05117e](https://github.com/Modern-Treasury/modern-treasury-go/commit/b05117e8b852664cb65c685f6bfa45e1a86692aa))
+
 ## 2.51.0 (2026-04-22)
 
 Full Changelog: [v2.50.0...v2.51.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.50.0...v2.51.0)
