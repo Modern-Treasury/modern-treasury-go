@@ -391,6 +391,9 @@ const (
 	LegalEntityIdentificationsIDTypeKrBrn          LegalEntityIdentificationsIDType = "kr_brn"
 	LegalEntityIdentificationsIDTypeKrCrn          LegalEntityIdentificationsIDType = "kr_crn"
 	LegalEntityIdentificationsIDTypeKrRrn          LegalEntityIdentificationsIDType = "kr_rrn"
+	LegalEntityIdentificationsIDTypeMxCurp         LegalEntityIdentificationsIDType = "mx_curp"
+	LegalEntityIdentificationsIDTypeMxIne          LegalEntityIdentificationsIDType = "mx_ine"
+	LegalEntityIdentificationsIDTypeMxRfc          LegalEntityIdentificationsIDType = "mx_rfc"
 	LegalEntityIdentificationsIDTypePassport       LegalEntityIdentificationsIDType = "passport"
 	LegalEntityIdentificationsIDTypeSaTin          LegalEntityIdentificationsIDType = "sa_tin"
 	LegalEntityIdentificationsIDTypeSaVat          LegalEntityIdentificationsIDType = "sa_vat"
@@ -403,7 +406,7 @@ const (
 
 func (r LegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeCaSin, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeDriversLicense, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeIePps, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeUyRut, LegalEntityIdentificationsIDTypeVnTin:
+	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeCaSin, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeDriversLicense, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeIePps, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypeMxCurp, LegalEntityIdentificationsIDTypeMxIne, LegalEntityIdentificationsIDTypeMxRfc, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeUyRut, LegalEntityIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false
