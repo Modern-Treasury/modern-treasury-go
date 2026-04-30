@@ -159,7 +159,7 @@ type BulkResultEntity struct {
 	// Deprecated: deprecated
 	AccountingLedgerClassID string `json:"accounting_ledger_class_id" api:"nullable" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $10,000,000.
 	Amount int64 `json:"amount"`
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.

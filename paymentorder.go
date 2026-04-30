@@ -150,7 +150,7 @@ type PaymentOrder struct {
 	// Deprecated: deprecated
 	AccountingLedgerClassID string `json:"accounting_ledger_class_id" api:"required,nullable" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $10,000,000.
 	Amount int64 `json:"amount" api:"required"`
 	// The ID of the batch in which the payment order is included. Only populated after
 	// the payment order begins processing.
@@ -1087,7 +1087,7 @@ func (r PaymentOrderType) IsKnown() bool {
 
 type PaymentOrderNewParams struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $10,000,000.
 	Amount param.Field[int64] `json:"amount" api:"required"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
@@ -1630,7 +1630,7 @@ type PaymentOrderUpdateParams struct {
 	// accessible if your accounting system has been connected.
 	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $10,000,000.
 	Amount param.Field[int64] `json:"amount"`
 	// The party that will pay the fees for the payment order. See
 	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
@@ -2244,7 +2244,7 @@ func (r PaymentOrderListParamsType) IsKnown() bool {
 
 type PaymentOrderNewAsyncParams struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $10,000,000.
 	Amount param.Field[int64] `json:"amount" api:"required"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
