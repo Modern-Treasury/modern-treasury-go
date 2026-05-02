@@ -1,5 +1,19 @@
 # Changelog
 
+## 2.53.0 (2026-04-30)
+
+Full Changelog: [v2.52.0...v2.53.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.52.0...v2.53.0)
+
+### Features
+
+* **api:** api update ([d65a949](https://github.com/Modern-Treasury/modern-treasury-go/commit/d65a9499f809cc38363080089c619d6ef3c272fb))
+* support setting headers via env ([9c2f11b](https://github.com/Modern-Treasury/modern-treasury-go/commit/9c2f11b3d7a75c2d13db8e0a2e342ca60ab90fb9))
+
+
+### Chores
+
+* avoid embedding reflect.Type for dead code elimination ([b742c1a](https://github.com/Modern-Treasury/modern-treasury-go/commit/b742c1aaeddd451c7698090cdceb8346c04863ea))
+
 ## 2.52.0 (2026-04-24)
 
 Full Changelog: [v2.51.0...v2.52.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.51.0...v2.52.0)
