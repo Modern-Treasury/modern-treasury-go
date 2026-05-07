@@ -90,8 +90,11 @@ type LedgerEntry struct {
 	ID string `json:"id" api:"required" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000. Can be any integer up to 36 digits.
-	Amount    int64     `json:"amount" api:"required"`
-	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
+	Amount int64 `json:"amount" api:"required"`
+	// The amount of the ledger entry as a string, preserving full precision for values
+	// that may exceed safe integer limits in some languages.
+	AmountString string    `json:"amount_string" api:"required"`
+	CreatedAt    time.Time `json:"created_at" api:"required" format:"date-time"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
@@ -140,6 +143,7 @@ type LedgerEntry struct {
 type ledgerEntryJSON struct {
 	ID                             apijson.Field
 	Amount                         apijson.Field
+	AmountString                   apijson.Field
 	CreatedAt                      apijson.Field
 	Direction                      apijson.Field
 	DiscardedAt                    apijson.Field
