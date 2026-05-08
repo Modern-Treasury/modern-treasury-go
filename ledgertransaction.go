@@ -523,9 +523,6 @@ func (r LedgerTransactionNewPartialPostParams) MarshalJSON() (data []byte, err e
 }
 
 type LedgerTransactionNewPartialPostParamsPostedLedgerEntry struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount" api:"required"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
@@ -533,6 +530,12 @@ type LedgerTransactionNewPartialPostParamsPostedLedgerEntry struct {
 	Direction param.Field[LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirection] `json:"direction" api:"required"`
 	// The ledger account that this ledger entry is associated with.
 	LedgerAccountID param.Field[string] `json:"ledger_account_id" api:"required" format:"uuid"`
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000. Can be any integer up to 36 digits.
+	Amount param.Field[int64] `json:"amount"`
+	// The amount of the ledger entry as a string, preserving full precision for values
+	// that may exceed safe integer limits in some languages.
+	AmountString param.Field[string] `json:"amount_string"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
 	// account’s available balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.

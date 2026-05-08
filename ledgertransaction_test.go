@@ -31,9 +31,10 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 	_, err := client.LedgerTransactions.New(context.TODO(), moderntreasury.LedgerTransactionNewParams{
 		LedgerTransactionCreateRequest: shared.LedgerTransactionCreateRequestParam{
 			LedgerEntries: moderntreasury.F([]shared.LedgerEntryCreateRequestParam{{
-				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				Amount:          moderntreasury.F(int64(0)),
+				AmountString:    moderntreasury.F("amount_string"),
 				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
 					"foo": int64(0),
 				}),
@@ -119,9 +120,10 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 			EffectiveAt: moderntreasury.F(time.Now()),
 			ExternalID:  moderntreasury.F("external_id"),
 			LedgerEntries: moderntreasury.F([]shared.LedgerEntryCreateRequestParam{{
-				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				Amount:          moderntreasury.F(int64(0)),
+				AmountString:    moderntreasury.F("amount_string"),
 				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
 					"foo": int64(0),
 				}),
@@ -240,9 +242,10 @@ func TestLedgerTransactionNewPartialPostWithOptionalParams(t *testing.T) {
 		"id",
 		moderntreasury.LedgerTransactionNewPartialPostParams{
 			PostedLedgerEntries: moderntreasury.F([]moderntreasury.LedgerTransactionNewPartialPostParamsPostedLedgerEntry{{
-				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(moderntreasury.LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				Amount:          moderntreasury.F(int64(0)),
+				AmountString:    moderntreasury.F("amount_string"),
 				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
 					"foo": int64(0),
 				}),
