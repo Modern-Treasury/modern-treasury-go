@@ -58,9 +58,10 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 		ForeignExchangeIndicator: moderntreasury.F(moderntreasury.PaymentOrderNewParamsForeignExchangeIndicatorFixedToVariable),
 		LedgerTransaction: moderntreasury.F(shared.LedgerTransactionCreateRequestParam{
 			LedgerEntries: moderntreasury.F([]shared.LedgerEntryCreateRequestParam{{
-				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				Amount:          moderntreasury.F(int64(0)),
+				AmountString:    moderntreasury.F("amount_string"),
 				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
 					"foo": int64(0),
 				}),
@@ -429,9 +430,10 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 		ForeignExchangeIndicator: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsForeignExchangeIndicatorFixedToVariable),
 		LedgerTransaction: moderntreasury.F(shared.LedgerTransactionCreateRequestParam{
 			LedgerEntries: moderntreasury.F([]shared.LedgerEntryCreateRequestParam{{
-				Amount:          moderntreasury.F(int64(0)),
 				Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
 				LedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+				Amount:          moderntreasury.F(int64(0)),
+				AmountString:    moderntreasury.F("amount_string"),
 				AvailableBalanceAmount: moderntreasury.F(map[string]int64{
 					"foo": int64(0),
 				}),
