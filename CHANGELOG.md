@@ -1,5 +1,29 @@
 # Changelog
 
+## 2.53.0 (2026-05-12)
+
+Full Changelog: [v2.52.0...v2.53.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.52.0...v2.53.0)
+
+### Features
+
+* **api:** api update ([436be46](https://github.com/Modern-Treasury/modern-treasury-go/commit/436be46f265b81562c234ec00dc4eab7880004e4))
+* **api:** api update ([96017a7](https://github.com/Modern-Treasury/modern-treasury-go/commit/96017a7b3835a84975b9ea40deafc216e920e60c))
+* **api:** api update ([16c963b](https://github.com/Modern-Treasury/modern-treasury-go/commit/16c963b31f82e9bd30509b898bb98452bf5e9a4a))
+* **api:** api update ([1267fd9](https://github.com/Modern-Treasury/modern-treasury-go/commit/1267fd9e339be21861a4950394565f569ed1015a))
+* **api:** api update ([d65a949](https://github.com/Modern-Treasury/modern-treasury-go/commit/d65a9499f809cc38363080089c619d6ef3c272fb))
+* support setting headers via env ([9c2f11b](https://github.com/Modern-Treasury/modern-treasury-go/commit/9c2f11b3d7a75c2d13db8e0a2e342ca60ab90fb9))
+
+
+### Bug Fixes
+
+* **go:** avoid panic when http.DefaultTransport is wrapped ([bb2c99d](https://github.com/Modern-Treasury/modern-treasury-go/commit/bb2c99df08d917153aed35ca6f5f8ee063a4ff6b))
+
+
+### Chores
+
+* avoid embedding reflect.Type for dead code elimination ([b742c1a](https://github.com/Modern-Treasury/modern-treasury-go/commit/b742c1aaeddd451c7698090cdceb8346c04863ea))
+* redact api-key headers in debug logs ([26f721e](https://github.com/Modern-Treasury/modern-treasury-go/commit/26f721e945e5e0729935fbbca69e868066e59e15))
+
 ## 2.52.0 (2026-04-24)
 
 Full Changelog: [v2.51.0...v2.52.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.51.0...v2.52.0)
