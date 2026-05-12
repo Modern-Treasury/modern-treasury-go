@@ -533,9 +533,29 @@ type LedgerTransactionNewPartialPostParamsPostedLedgerEntry struct {
 	Direction param.Field[LedgerTransactionNewPartialPostParamsPostedLedgerEntriesDirection] `json:"direction" api:"required"`
 	// The ledger account that this ledger entry is associated with.
 	LedgerAccountID param.Field[string] `json:"ledger_account_id" api:"required" format:"uuid"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
+	// account’s available balance. If any of these conditions would be false after the
+	// transaction is created, the entire call will fail with error code 422.
+	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
+	// Lock version of the ledger account. This can be passed when creating a ledger
+	// transaction to only succeed if no ledger transactions have posted since the
+	// given version. See our post about Designing the Ledgers API with Optimistic
+	// Locking for more details.
+	LockVersion param.Field[int64] `json:"lock_version"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
+	// account’s pending balance. If any of these conditions would be false after the
+	// transaction is created, the entire call will fail with error code 422.
+	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
+	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
+	// account’s posted balance. If any of these conditions would be false after the
+	// transaction is created, the entire call will fail with error code 422.
+	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
+	// If true, response will include the balance of the associated ledger account for
+	// the entry.
+	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
 }
 
 func (r LedgerTransactionNewPartialPostParamsPostedLedgerEntry) MarshalJSON() (data []byte, err error) {
