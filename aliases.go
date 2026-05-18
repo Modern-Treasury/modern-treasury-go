@@ -786,6 +786,12 @@ const IdentificationCreateRequestIDTypeDriversLicense = shared.IdentificationCre
 const IdentificationCreateRequestIDTypeEsNif = shared.IdentificationCreateRequestIDTypeEsNif
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGBNino = shared.IdentificationCreateRequestIDTypeGBNino
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGBUtr = shared.IdentificationCreateRequestIDTypeGBUtr
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeHnID = shared.IdentificationCreateRequestIDTypeHnID
 
 // This is an alias to an internal value.
