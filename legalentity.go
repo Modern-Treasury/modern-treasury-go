@@ -268,6 +268,8 @@ type LegalEntityAddress struct {
 	Object   string `json:"object" api:"required"`
 	// The postal code of the address.
 	PostalCode string `json:"postal_code" api:"required,nullable"`
+	// Whether this address is the primary address for the legal entity.
+	Primary bool `json:"primary" api:"required,nullable"`
 	// Region or State.
 	Region    string                 `json:"region" api:"required,nullable"`
 	UpdatedAt time.Time              `json:"updated_at" api:"required" format:"date-time"`
@@ -288,6 +290,7 @@ type legalEntityAddressJSON struct {
 	Locality     apijson.Field
 	Object       apijson.Field
 	PostalCode   apijson.Field
+	Primary      apijson.Field
 	Region       apijson.Field
 	UpdatedAt    apijson.Field
 	raw          string

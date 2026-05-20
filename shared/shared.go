@@ -1028,6 +1028,8 @@ type LegalEntityAddressCreateRequestParam struct {
 	// The types of this address.
 	AddressTypes param.Field[[]LegalEntityAddressCreateRequestAddressType] `json:"address_types"`
 	Line2        param.Field[string]                                       `json:"line2"`
+	// Whether this address is the primary address for the legal entity.
+	Primary param.Field[bool] `json:"primary"`
 }
 
 func (r LegalEntityAddressCreateRequestParam) MarshalJSON() (data []byte, err error) {
