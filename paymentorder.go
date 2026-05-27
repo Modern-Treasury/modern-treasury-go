@@ -805,6 +805,12 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	// this ledger account will be debited. Must be accompanied by a
 	// credit_ledger_account_id if present.
 	DebitLedgerAccountID string `json:"debit_ledger_account_id" api:"nullable" format:"uuid"`
+	// Whether this account can receive ACH debits. Only applicable to accounts created
+	// under a Modern Treasury PSP connection, or `null` for Bring Your Own Bank
+	// accounts. Defaults to `false`. Configurable on create only. Please reach out to
+	// support@moderntreasury.com or your customer success manager to enable this
+	// capability for your connection.
+	Debitable bool `json:"debitable" api:"nullable"`
 	// An optional free-form description for internal use.
 	Description string    `json:"description" api:"nullable"`
 	DiscardedAt time.Time `json:"discarded_at" api:"nullable" format:"date-time"`
@@ -851,6 +857,7 @@ type paymentOrderUltimateOriginatingAccountJSON struct {
 	CreditLedgerAccountID apijson.Field
 	Currency              apijson.Field
 	DebitLedgerAccountID  apijson.Field
+	Debitable             apijson.Field
 	Description           apijson.Field
 	DiscardedAt           apijson.Field
 	ExternalID            apijson.Field
