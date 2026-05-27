@@ -143,6 +143,12 @@ type InternalAccount struct {
 	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The currency of the account.
 	Currency shared.Currency `json:"currency" api:"required"`
+	// Whether this account can receive ACH debits. Only applicable to accounts created
+	// under a Modern Treasury PSP connection, or `null` for Bring Your Own Bank
+	// accounts. Defaults to `false`. Configurable on create only. Please reach out to
+	// support@moderntreasury.com or your customer success manager to enable this
+	// capability for your connection.
+	Debitable bool `json:"debitable" api:"required,nullable"`
 	// An optional user-defined 180 character unique identifier.
 	ExternalID string `json:"external_id" api:"required,nullable"`
 	// If the internal account links to a ledger account in Modern Treasury, the id of
@@ -188,6 +194,7 @@ type internalAccountJSON struct {
 	CounterpartyID        apijson.Field
 	CreatedAt             apijson.Field
 	Currency              apijson.Field
+	Debitable             apijson.Field
 	ExternalID            apijson.Field
 	LedgerAccountID       apijson.Field
 	LegalEntityID         apijson.Field
@@ -482,6 +489,12 @@ type InternalAccountNewParams struct {
 	AccountType param.Field[InternalAccountNewParamsAccountType] `json:"account_type"`
 	// The Counterparty associated to this account.
 	CounterpartyID param.Field[string] `json:"counterparty_id"`
+	// Whether this account can receive ACH debits. Only applicable to accounts created
+	// under a Modern Treasury PSP connection, or `null` for Bring Your Own Bank
+	// accounts. Defaults to `false`. Configurable on create only. Please reach out to
+	// support@moderntreasury.com or your customer success manager to enable this
+	// capability for your connection.
+	Debitable param.Field[bool] `json:"debitable"`
 	// An optional user-defined 180 character unique identifier.
 	ExternalID param.Field[string] `json:"external_id"`
 	// The LegalEntity associated to this account.
