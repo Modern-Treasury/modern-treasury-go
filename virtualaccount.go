@@ -214,8 +214,8 @@ func (r VirtualAccountNewParams) MarshalJSON() (data []byte, err error) {
 type VirtualAccountNewParamsAccountDetail struct {
 	// The account number for the bank account.
 	AccountNumber param.Field[string] `json:"account_number" api:"required"`
-	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
-	// account number is in a generic format.
+	// One of `iban`, `clabe`, or `other`. Use `other` if the bank account number is in
+	// a generic format.
 	AccountNumberType param.Field[VirtualAccountNewParamsAccountDetailsAccountNumberType] `json:"account_number_type"`
 }
 
@@ -223,8 +223,8 @@ func (r VirtualAccountNewParamsAccountDetail) MarshalJSON() (data []byte, err er
 	return apijson.MarshalRoot(r)
 }
 
-// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
-// account number is in a generic format.
+// One of `iban`, `clabe`, or `other`. Use `other` if the bank account number is in
+// a generic format.
 type VirtualAccountNewParamsAccountDetailsAccountNumberType string
 
 const (
@@ -242,12 +242,11 @@ const (
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypePolygonAddress  VirtualAccountNewParamsAccountDetailsAccountNumberType = "polygon_address"
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypeSgNumber        VirtualAccountNewParamsAccountDetailsAccountNumberType = "sg_number"
 	VirtualAccountNewParamsAccountDetailsAccountNumberTypeSolanaAddress   VirtualAccountNewParamsAccountDetailsAccountNumberType = "solana_address"
-	VirtualAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress   VirtualAccountNewParamsAccountDetailsAccountNumberType = "wallet_address"
 )
 
 func (r VirtualAccountNewParamsAccountDetailsAccountNumberType) IsKnown() bool {
 	switch r {
-	case VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeBaseAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeCardToken, VirtualAccountNewParamsAccountDetailsAccountNumberTypeClabe, VirtualAccountNewParamsAccountDetailsAccountNumberTypeEthereumAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeHkNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeIban, VirtualAccountNewParamsAccountDetailsAccountNumberTypeIDNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeNzNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeOther, VirtualAccountNewParamsAccountDetailsAccountNumberTypePan, VirtualAccountNewParamsAccountDetailsAccountNumberTypePolygonAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeSgNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeSolanaAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeWalletAddress:
+	case VirtualAccountNewParamsAccountDetailsAccountNumberTypeAuNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeBaseAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeCardToken, VirtualAccountNewParamsAccountDetailsAccountNumberTypeClabe, VirtualAccountNewParamsAccountDetailsAccountNumberTypeEthereumAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeHkNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeIban, VirtualAccountNewParamsAccountDetailsAccountNumberTypeIDNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeNzNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeOther, VirtualAccountNewParamsAccountDetailsAccountNumberTypePan, VirtualAccountNewParamsAccountDetailsAccountNumberTypePolygonAddress, VirtualAccountNewParamsAccountDetailsAccountNumberTypeSgNumber, VirtualAccountNewParamsAccountDetailsAccountNumberTypeSolanaAddress:
 		return true
 	}
 	return false
