@@ -134,7 +134,7 @@ type ReturnObject struct {
 	// The ID of the relevant Transaction Line Item or `null`.
 	TransactionLineItemID string `json:"transaction_line_item_id" api:"required,nullable" format:"uuid"`
 	// The type of return. Can be one of: `ach`, `ach_noc`, `au_becs`, `bacs`, `eft`,
-	// `interac`, `manual`, `paper_item`, `wire`.
+	// `manual`, `paper_item`, `wire`.
 	Type      ReturnObjectType `json:"type" api:"required"`
 	UpdatedAt time.Time        `json:"updated_at" api:"required" format:"date-time"`
 	// Some returns may include additional information from the bank. In these cases,
@@ -554,7 +554,7 @@ func (r ReturnObjectStatus) IsKnown() bool {
 }
 
 // The type of return. Can be one of: `ach`, `ach_noc`, `au_becs`, `bacs`, `eft`,
-// `interac`, `manual`, `paper_item`, `wire`.
+// `manual`, `paper_item`, `wire`.
 type ReturnObjectType string
 
 const (
@@ -567,13 +567,11 @@ const (
 	ReturnObjectTypeCrossBorder ReturnObjectType = "cross_border"
 	ReturnObjectTypeEft         ReturnObjectType = "eft"
 	ReturnObjectTypeGBFps       ReturnObjectType = "gb_fps"
-	ReturnObjectTypeInterac     ReturnObjectType = "interac"
 	ReturnObjectTypeManual      ReturnObjectType = "manual"
 	ReturnObjectTypeNeft        ReturnObjectType = "neft"
 	ReturnObjectTypeNzBecs      ReturnObjectType = "nz_becs"
 	ReturnObjectTypeRtp         ReturnObjectType = "rtp"
 	ReturnObjectTypeSepa        ReturnObjectType = "sepa"
-	ReturnObjectTypeSignet      ReturnObjectType = "signet"
 	ReturnObjectTypeStablecoin  ReturnObjectType = "stablecoin"
 	ReturnObjectTypeWire        ReturnObjectType = "wire"
 	ReturnObjectTypeZengin      ReturnObjectType = "zengin"
@@ -581,7 +579,7 @@ const (
 
 func (r ReturnObjectType) IsKnown() bool {
 	switch r {
-	case ReturnObjectTypeACH, ReturnObjectTypeACHNoc, ReturnObjectTypeAuBecs, ReturnObjectTypeBacs, ReturnObjectTypeBook, ReturnObjectTypeCheck, ReturnObjectTypeCrossBorder, ReturnObjectTypeEft, ReturnObjectTypeGBFps, ReturnObjectTypeInterac, ReturnObjectTypeManual, ReturnObjectTypeNeft, ReturnObjectTypeNzBecs, ReturnObjectTypeRtp, ReturnObjectTypeSepa, ReturnObjectTypeSignet, ReturnObjectTypeStablecoin, ReturnObjectTypeWire, ReturnObjectTypeZengin:
+	case ReturnObjectTypeACH, ReturnObjectTypeACHNoc, ReturnObjectTypeAuBecs, ReturnObjectTypeBacs, ReturnObjectTypeBook, ReturnObjectTypeCheck, ReturnObjectTypeCrossBorder, ReturnObjectTypeEft, ReturnObjectTypeGBFps, ReturnObjectTypeManual, ReturnObjectTypeNeft, ReturnObjectTypeNzBecs, ReturnObjectTypeRtp, ReturnObjectTypeSepa, ReturnObjectTypeStablecoin, ReturnObjectTypeWire, ReturnObjectTypeZengin:
 		return true
 	}
 	return false
