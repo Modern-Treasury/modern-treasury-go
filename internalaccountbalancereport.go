@@ -199,8 +199,8 @@ type BalanceReportBalance struct {
 	VendorCode string `json:"vendor_code" api:"required"`
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
-	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
-	// `swift`, or `us_bank`.
+	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`, or
+	// `us_bank`.
 	VendorCodeType string                   `json:"vendor_code_type" api:"required,nullable"`
 	JSON           balanceReportBalanceJSON `json:"-"`
 }
@@ -306,8 +306,8 @@ type BalanceReportNewParamsBalance struct {
 	VendorCode param.Field[string] `json:"vendor_code" api:"required"`
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
-	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
-	// `swift`, or `us_bank`.
+	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`, or
+	// `us_bank`.
 	VendorCodeType param.Field[string] `json:"vendor_code_type" api:"required"`
 }
 
