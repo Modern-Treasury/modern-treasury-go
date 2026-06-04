@@ -464,6 +464,7 @@ func (r BulkRequestNewParamsResource) ImplementsBulkRequestNewParamsResourceUnio
 // [BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID],
 // [BulkRequestNewParamsResourcesTransactionUpdateRequestWithID],
 // [BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID],
+// [BulkRequestNewParamsResourcesLedgerAccountUpdateRequestWithID],
 // [BulkRequestNewParamsResource].
 type BulkRequestNewParamsResourceUnion interface {
 	ImplementsBulkRequestNewParamsResourceUnion()
@@ -1926,6 +1927,26 @@ func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatus)
 		return true
 	}
 	return false
+}
+
+type BulkRequestNewParamsResourcesLedgerAccountUpdateRequestWithID struct {
+	ID param.Field[string] `json:"id" format:"uuid"`
+	// The description of the ledger account.
+	Description param.Field[string] `json:"description"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The name of the ledger account.
+	Name param.Field[string] `json:"name"`
+}
+
+func (r BulkRequestNewParamsResourcesLedgerAccountUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+func (r BulkRequestNewParamsResourcesLedgerAccountUpdateRequestWithID) ImplementsBulkRequestNewParamsResourceUnion() {
 }
 
 // One of credit or debit. Indicates whether amount_reconciled is a credit or debit
