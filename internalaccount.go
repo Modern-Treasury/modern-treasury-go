@@ -143,11 +143,6 @@ type InternalAccount struct {
 	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
 	// The currency of the account.
 	Currency shared.Currency `json:"currency" api:"required"`
-	// Whether this account can receive ACH debits. Only applicable to accounts created
-	// under a Modern Treasury PSP connection, or `null` for Bring Your Own Bank
-	// accounts. Defaults to `false`. Configurable only on creation. Please reach out
-	// to your customer success manager to enable this capability for your connection.
-	Debitable bool `json:"debitable" api:"required,nullable"`
 	// An optional user-defined 180 character unique identifier.
 	ExternalID string `json:"external_id" api:"required,nullable"`
 	// If the internal account links to a ledger account in Modern Treasury, the id of
@@ -193,7 +188,6 @@ type internalAccountJSON struct {
 	CounterpartyID        apijson.Field
 	CreatedAt             apijson.Field
 	Currency              apijson.Field
-	Debitable             apijson.Field
 	ExternalID            apijson.Field
 	LedgerAccountID       apijson.Field
 	LegalEntityID         apijson.Field
@@ -474,7 +468,8 @@ func (r InternalAccountUpdateAccountCapabilityResponsePaymentType) IsKnown() boo
 type InternalAccountNewParams struct {
 	// The identifier of the financial institution the account belongs to.
 	ConnectionID param.Field[string] `json:"connection_id" api:"required"`
-	// The currency of the internal account. Supports fiat and stablecoin currencies.
+	// The currency of the internal account. Supports "USD" and "CAD" for fiat, and
+	// "USDC", "USDG", and "PYUSD" for stablecoin accounts.
 	Currency param.Field[InternalAccountNewParamsCurrency] `json:"currency" api:"required"`
 	// The nickname of the account.
 	Name param.Field[string] `json:"name" api:"required"`
@@ -488,11 +483,6 @@ type InternalAccountNewParams struct {
 	AccountType param.Field[InternalAccountNewParamsAccountType] `json:"account_type"`
 	// The Counterparty associated to this account.
 	CounterpartyID param.Field[string] `json:"counterparty_id"`
-	// Whether this account can receive ACH debits. Only applicable to accounts created
-	// under a Modern Treasury PSP connection, or `null` for Bring Your Own Bank
-	// accounts. Defaults to `false`. Configurable only on creation. Please reach out
-	// to your customer success manager to enable this capability for your connection.
-	Debitable param.Field[bool] `json:"debitable"`
 	// An optional user-defined 180 character unique identifier.
 	ExternalID param.Field[string] `json:"external_id"`
 	// The LegalEntity associated to this account.
@@ -513,7 +503,8 @@ func (r InternalAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// The currency of the internal account. Supports fiat and stablecoin currencies.
+// The currency of the internal account. Supports "USD" and "CAD" for fiat, and
+// "USDC", "USDG", and "PYUSD" for stablecoin accounts.
 type InternalAccountNewParamsCurrency string
 
 const (
@@ -521,13 +512,12 @@ const (
 	InternalAccountNewParamsCurrencyCad   InternalAccountNewParamsCurrency = "CAD"
 	InternalAccountNewParamsCurrencyUsdc  InternalAccountNewParamsCurrency = "USDC"
 	InternalAccountNewParamsCurrencyUsdg  InternalAccountNewParamsCurrency = "USDG"
-	InternalAccountNewParamsCurrencyUsdt  InternalAccountNewParamsCurrency = "USDT"
 	InternalAccountNewParamsCurrencyPyusd InternalAccountNewParamsCurrency = "PYUSD"
 )
 
 func (r InternalAccountNewParamsCurrency) IsKnown() bool {
 	switch r {
-	case InternalAccountNewParamsCurrencyUsd, InternalAccountNewParamsCurrencyCad, InternalAccountNewParamsCurrencyUsdc, InternalAccountNewParamsCurrencyUsdg, InternalAccountNewParamsCurrencyUsdt, InternalAccountNewParamsCurrencyPyusd:
+	case InternalAccountNewParamsCurrencyUsd, InternalAccountNewParamsCurrencyCad, InternalAccountNewParamsCurrencyUsdc, InternalAccountNewParamsCurrencyUsdg, InternalAccountNewParamsCurrencyPyusd:
 		return true
 	}
 	return false

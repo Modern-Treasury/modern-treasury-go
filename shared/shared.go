@@ -586,8 +586,10 @@ const (
 	CurrencyUah   Currency = "UAH"
 	CurrencyUgx   Currency = "UGX"
 	CurrencyUsd   Currency = "USD"
+	CurrencyUsdb  Currency = "USDB"
 	CurrencyUsdc  Currency = "USDC"
 	CurrencyUsdg  Currency = "USDG"
+	CurrencyUsdp  Currency = "USDP"
 	CurrencyUsdt  Currency = "USDT"
 	CurrencyUyu   Currency = "UYU"
 	CurrencyUzs   Currency = "UZS"
@@ -625,7 +627,7 @@ const (
 
 func (r Currency) IsKnown() bool {
 	switch r {
-	case CurrencyAed, CurrencyAfn, CurrencyAll, CurrencyAmd, CurrencyAng, CurrencyAoa, CurrencyArs, CurrencyAud, CurrencyAwg, CurrencyAzn, CurrencyBam, CurrencyBbd, CurrencyBch, CurrencyBdt, CurrencyBgn, CurrencyBhd, CurrencyBif, CurrencyBmd, CurrencyBnd, CurrencyBob, CurrencyBrl, CurrencyBsd, CurrencyBtc, CurrencyBtn, CurrencyBwp, CurrencyByn, CurrencyByr, CurrencyBzd, CurrencyCad, CurrencyCdf, CurrencyChf, CurrencyClf, CurrencyClp, CurrencyCnh, CurrencyCny, CurrencyCop, CurrencyCrc, CurrencyCuc, CurrencyCup, CurrencyCve, CurrencyCzk, CurrencyDjf, CurrencyDkk, CurrencyDop, CurrencyDzd, CurrencyEek, CurrencyEgp, CurrencyErn, CurrencyEtb, CurrencyEth, CurrencyEur, CurrencyEurc, CurrencyFjd, CurrencyFkp, CurrencyGbp, CurrencyGbx, CurrencyGel, CurrencyGgp, CurrencyGhs, CurrencyGip, CurrencyGmd, CurrencyGnf, CurrencyGtq, CurrencyGyd, CurrencyHkd, CurrencyHnl, CurrencyHrk, CurrencyHtg, CurrencyHuf, CurrencyIdr, CurrencyIls, CurrencyImp, CurrencyInr, CurrencyIqd, CurrencyIrr, CurrencyIsk, CurrencyJep, CurrencyJmd, CurrencyJod, CurrencyJpy, CurrencyKes, CurrencyKgs, CurrencyKhr, CurrencyKmf, CurrencyKpw, CurrencyKrw, CurrencyKwd, CurrencyKyd, CurrencyKzt, CurrencyLak, CurrencyLbp, CurrencyLkr, CurrencyLrd, CurrencyLsl, CurrencyLtl, CurrencyLvl, CurrencyLyd, CurrencyMad, CurrencyMdl, CurrencyMga, CurrencyMkd, CurrencyMmk, CurrencyMnt, CurrencyMop, CurrencyMro, CurrencyMru, CurrencyMtl, CurrencyMur, CurrencyMvr, CurrencyMwk, CurrencyMxn, CurrencyMyr, CurrencyMzn, CurrencyNad, CurrencyNgn, CurrencyNio, CurrencyNok, CurrencyNpr, CurrencyNzd, CurrencyOmr, CurrencyOp, CurrencyPab, CurrencyPen, CurrencyPgk, CurrencyPhp, CurrencyPkr, CurrencyPln, CurrencyPyg, CurrencyPyusd, CurrencyQar, CurrencyRon, CurrencyRsd, CurrencyRub, CurrencyRwf, CurrencySar, CurrencySbd, CurrencyScr, CurrencySdg, CurrencySek, CurrencySgd, CurrencyShp, CurrencySkk, CurrencySle, CurrencySll, CurrencySos, CurrencySrd, CurrencySsp, CurrencyStd, CurrencyStn, CurrencySvc, CurrencySyp, CurrencySzl, CurrencyThb, CurrencyTjs, CurrencyTmm, CurrencyTmt, CurrencyTnd, CurrencyTop, CurrencyTry, CurrencyTtd, CurrencyTwd, CurrencyTzs, CurrencyUah, CurrencyUgx, CurrencyUsd, CurrencyUsdc, CurrencyUsdg, CurrencyUsdt, CurrencyUyu, CurrencyUzs, CurrencyVef, CurrencyVes, CurrencyVnd, CurrencyVuv, CurrencyWst, CurrencyXaf, CurrencyXag, CurrencyXau, CurrencyXba, CurrencyXbb, CurrencyXbc, CurrencyXbd, CurrencyXcd, CurrencyXcg, CurrencyXdr, CurrencyXfu, CurrencyXof, CurrencyXpd, CurrencyXpf, CurrencyXpt, CurrencyXts, CurrencyYer, CurrencyZar, CurrencyZmk, CurrencyZmw, CurrencyZwd, CurrencyZwg, CurrencyZwl, CurrencyZwn, CurrencyZwr:
+	case CurrencyAed, CurrencyAfn, CurrencyAll, CurrencyAmd, CurrencyAng, CurrencyAoa, CurrencyArs, CurrencyAud, CurrencyAwg, CurrencyAzn, CurrencyBam, CurrencyBbd, CurrencyBch, CurrencyBdt, CurrencyBgn, CurrencyBhd, CurrencyBif, CurrencyBmd, CurrencyBnd, CurrencyBob, CurrencyBrl, CurrencyBsd, CurrencyBtc, CurrencyBtn, CurrencyBwp, CurrencyByn, CurrencyByr, CurrencyBzd, CurrencyCad, CurrencyCdf, CurrencyChf, CurrencyClf, CurrencyClp, CurrencyCnh, CurrencyCny, CurrencyCop, CurrencyCrc, CurrencyCuc, CurrencyCup, CurrencyCve, CurrencyCzk, CurrencyDjf, CurrencyDkk, CurrencyDop, CurrencyDzd, CurrencyEek, CurrencyEgp, CurrencyErn, CurrencyEtb, CurrencyEth, CurrencyEur, CurrencyEurc, CurrencyFjd, CurrencyFkp, CurrencyGbp, CurrencyGbx, CurrencyGel, CurrencyGgp, CurrencyGhs, CurrencyGip, CurrencyGmd, CurrencyGnf, CurrencyGtq, CurrencyGyd, CurrencyHkd, CurrencyHnl, CurrencyHrk, CurrencyHtg, CurrencyHuf, CurrencyIdr, CurrencyIls, CurrencyImp, CurrencyInr, CurrencyIqd, CurrencyIrr, CurrencyIsk, CurrencyJep, CurrencyJmd, CurrencyJod, CurrencyJpy, CurrencyKes, CurrencyKgs, CurrencyKhr, CurrencyKmf, CurrencyKpw, CurrencyKrw, CurrencyKwd, CurrencyKyd, CurrencyKzt, CurrencyLak, CurrencyLbp, CurrencyLkr, CurrencyLrd, CurrencyLsl, CurrencyLtl, CurrencyLvl, CurrencyLyd, CurrencyMad, CurrencyMdl, CurrencyMga, CurrencyMkd, CurrencyMmk, CurrencyMnt, CurrencyMop, CurrencyMro, CurrencyMru, CurrencyMtl, CurrencyMur, CurrencyMvr, CurrencyMwk, CurrencyMxn, CurrencyMyr, CurrencyMzn, CurrencyNad, CurrencyNgn, CurrencyNio, CurrencyNok, CurrencyNpr, CurrencyNzd, CurrencyOmr, CurrencyOp, CurrencyPab, CurrencyPen, CurrencyPgk, CurrencyPhp, CurrencyPkr, CurrencyPln, CurrencyPyg, CurrencyPyusd, CurrencyQar, CurrencyRon, CurrencyRsd, CurrencyRub, CurrencyRwf, CurrencySar, CurrencySbd, CurrencyScr, CurrencySdg, CurrencySek, CurrencySgd, CurrencyShp, CurrencySkk, CurrencySle, CurrencySll, CurrencySos, CurrencySrd, CurrencySsp, CurrencyStd, CurrencyStn, CurrencySvc, CurrencySyp, CurrencySzl, CurrencyThb, CurrencyTjs, CurrencyTmm, CurrencyTmt, CurrencyTnd, CurrencyTop, CurrencyTry, CurrencyTtd, CurrencyTwd, CurrencyTzs, CurrencyUah, CurrencyUgx, CurrencyUsd, CurrencyUsdb, CurrencyUsdc, CurrencyUsdg, CurrencyUsdp, CurrencyUsdt, CurrencyUyu, CurrencyUzs, CurrencyVef, CurrencyVes, CurrencyVnd, CurrencyVuv, CurrencyWst, CurrencyXaf, CurrencyXag, CurrencyXau, CurrencyXba, CurrencyXbb, CurrencyXbc, CurrencyXbd, CurrencyXcd, CurrencyXcg, CurrencyXdr, CurrencyXfu, CurrencyXof, CurrencyXpd, CurrencyXpf, CurrencyXpt, CurrencyXts, CurrencyYer, CurrencyZar, CurrencyZmk, CurrencyZmw, CurrencyZwd, CurrencyZwg, CurrencyZwl, CurrencyZwn, CurrencyZwr:
 		return true
 	}
 	return false
@@ -702,106 +704,33 @@ type IdentificationCreateRequestIDType string
 const (
 	IdentificationCreateRequestIDTypeArCuil         IdentificationCreateRequestIDType = "ar_cuil"
 	IdentificationCreateRequestIDTypeArCuit         IdentificationCreateRequestIDType = "ar_cuit"
-	IdentificationCreateRequestIDTypeAtAtin         IdentificationCreateRequestIDType = "at_atin"
-	IdentificationCreateRequestIDTypeAtVat          IdentificationCreateRequestIDType = "at_vat"
-	IdentificationCreateRequestIDTypeAuAbn          IdentificationCreateRequestIDType = "au_abn"
-	IdentificationCreateRequestIDTypeAuTfn          IdentificationCreateRequestIDType = "au_tfn"
-	IdentificationCreateRequestIDTypeBeEnt          IdentificationCreateRequestIDType = "be_ent"
-	IdentificationCreateRequestIDTypeBeNrn          IdentificationCreateRequestIDType = "be_nrn"
 	IdentificationCreateRequestIDTypeBrCnpj         IdentificationCreateRequestIDType = "br_cnpj"
 	IdentificationCreateRequestIDTypeBrCpf          IdentificationCreateRequestIDType = "br_cpf"
-	IdentificationCreateRequestIDTypeCaBn           IdentificationCreateRequestIDType = "ca_bn"
 	IdentificationCreateRequestIDTypeCaSin          IdentificationCreateRequestIDType = "ca_sin"
-	IdentificationCreateRequestIDTypeChAhv          IdentificationCreateRequestIDType = "ch_ahv"
-	IdentificationCreateRequestIDTypeChUid          IdentificationCreateRequestIDType = "ch_uid"
 	IdentificationCreateRequestIDTypeClRun          IdentificationCreateRequestIDType = "cl_run"
 	IdentificationCreateRequestIDTypeClRut          IdentificationCreateRequestIDType = "cl_rut"
 	IdentificationCreateRequestIDTypeCoCedulas      IdentificationCreateRequestIDType = "co_cedulas"
 	IdentificationCreateRequestIDTypeCoNit          IdentificationCreateRequestIDType = "co_nit"
-	IdentificationCreateRequestIDTypeCyTin          IdentificationCreateRequestIDType = "cy_tin"
-	IdentificationCreateRequestIDTypeCzIco          IdentificationCreateRequestIDType = "cz_ico"
-	IdentificationCreateRequestIDTypeCzRc           IdentificationCreateRequestIDType = "cz_rc"
-	IdentificationCreateRequestIDTypeDeStid         IdentificationCreateRequestIDType = "de_stid"
-	IdentificationCreateRequestIDTypeDeStnr         IdentificationCreateRequestIDType = "de_stnr"
-	IdentificationCreateRequestIDTypeDeVat          IdentificationCreateRequestIDType = "de_vat"
-	IdentificationCreateRequestIDTypeDkCpr          IdentificationCreateRequestIDType = "dk_cpr"
-	IdentificationCreateRequestIDTypeDkCvr          IdentificationCreateRequestIDType = "dk_cvr"
 	IdentificationCreateRequestIDTypeDriversLicense IdentificationCreateRequestIDType = "drivers_license"
-	IdentificationCreateRequestIDTypeEeIk           IdentificationCreateRequestIDType = "ee_ik"
-	IdentificationCreateRequestIDTypeEeRk           IdentificationCreateRequestIDType = "ee_rk"
-	IdentificationCreateRequestIDTypeEsNie          IdentificationCreateRequestIDType = "es_nie"
-	IdentificationCreateRequestIDTypeEsNif          IdentificationCreateRequestIDType = "es_nif"
-	IdentificationCreateRequestIDTypeFiHetu         IdentificationCreateRequestIDType = "fi_hetu"
-	IdentificationCreateRequestIDTypeFiYtj          IdentificationCreateRequestIDType = "fi_ytj"
-	IdentificationCreateRequestIDTypeFrNif          IdentificationCreateRequestIDType = "fr_nif"
-	IdentificationCreateRequestIDTypeFrSiren        IdentificationCreateRequestIDType = "fr_siren"
-	IdentificationCreateRequestIDTypeFrVat          IdentificationCreateRequestIDType = "fr_vat"
-	IdentificationCreateRequestIDTypeGBNino         IdentificationCreateRequestIDType = "gb_nino"
-	IdentificationCreateRequestIDTypeGBUtr          IdentificationCreateRequestIDType = "gb_utr"
-	IdentificationCreateRequestIDTypeGBVat          IdentificationCreateRequestIDType = "gb_vat"
-	IdentificationCreateRequestIDTypeGrVat          IdentificationCreateRequestIDType = "gr_vat"
 	IdentificationCreateRequestIDTypeHnID           IdentificationCreateRequestIDType = "hn_id"
 	IdentificationCreateRequestIDTypeHnRtn          IdentificationCreateRequestIDType = "hn_rtn"
-	IdentificationCreateRequestIDTypeHrOib          IdentificationCreateRequestIDType = "hr_oib"
-	IdentificationCreateRequestIDTypeHuAdj          IdentificationCreateRequestIDType = "hu_adj"
-	IdentificationCreateRequestIDTypeHuAnum         IdentificationCreateRequestIDType = "hu_anum"
 	IdentificationCreateRequestIDTypeIePps          IdentificationCreateRequestIDType = "ie_pps"
-	IdentificationCreateRequestIDTypeIeTrn          IdentificationCreateRequestIDType = "ie_trn"
 	IdentificationCreateRequestIDTypeInLei          IdentificationCreateRequestIDType = "in_lei"
-	IdentificationCreateRequestIDTypeIsKnt          IdentificationCreateRequestIDType = "is_knt"
-	IdentificationCreateRequestIDTypeItCf           IdentificationCreateRequestIDType = "it_cf"
-	IdentificationCreateRequestIDTypeItPiva         IdentificationCreateRequestIDType = "it_piva"
-	IdentificationCreateRequestIDTypeJpHb           IdentificationCreateRequestIDType = "jp_hb"
-	IdentificationCreateRequestIDTypeJpMn           IdentificationCreateRequestIDType = "jp_mn"
 	IdentificationCreateRequestIDTypeKrBrn          IdentificationCreateRequestIDType = "kr_brn"
 	IdentificationCreateRequestIDTypeKrCrn          IdentificationCreateRequestIDType = "kr_crn"
 	IdentificationCreateRequestIDTypeKrRrn          IdentificationCreateRequestIDType = "kr_rrn"
-	IdentificationCreateRequestIDTypeLiPeid         IdentificationCreateRequestIDType = "li_peid"
-	IdentificationCreateRequestIDTypeLtAk           IdentificationCreateRequestIDType = "lt_ak"
-	IdentificationCreateRequestIDTypeLtJak          IdentificationCreateRequestIDType = "lt_jak"
-	IdentificationCreateRequestIDTypeLuMtc          IdentificationCreateRequestIDType = "lu_mtc"
-	IdentificationCreateRequestIDTypeLuVat          IdentificationCreateRequestIDType = "lu_vat"
-	IdentificationCreateRequestIDTypeLvPk           IdentificationCreateRequestIDType = "lv_pk"
-	IdentificationCreateRequestIDTypeLvRn           IdentificationCreateRequestIDType = "lv_rn"
-	IdentificationCreateRequestIDTypeMtTin          IdentificationCreateRequestIDType = "mt_tin"
-	IdentificationCreateRequestIDTypeMtVat          IdentificationCreateRequestIDType = "mt_vat"
-	IdentificationCreateRequestIDTypeMxCurp         IdentificationCreateRequestIDType = "mx_curp"
-	IdentificationCreateRequestIDTypeMxIne          IdentificationCreateRequestIDType = "mx_ine"
-	IdentificationCreateRequestIDTypeMxRfc          IdentificationCreateRequestIDType = "mx_rfc"
-	IdentificationCreateRequestIDTypeNlBsn          IdentificationCreateRequestIDType = "nl_bsn"
-	IdentificationCreateRequestIDTypeNlBtw          IdentificationCreateRequestIDType = "nl_btw"
-	IdentificationCreateRequestIDTypeNlRsin         IdentificationCreateRequestIDType = "nl_rsin"
-	IdentificationCreateRequestIDTypeNoFdn          IdentificationCreateRequestIDType = "no_fdn"
-	IdentificationCreateRequestIDTypeNoMva          IdentificationCreateRequestIDType = "no_mva"
-	IdentificationCreateRequestIDTypeNoOrgnr        IdentificationCreateRequestIDType = "no_orgnr"
-	IdentificationCreateRequestIDTypeNzIrd          IdentificationCreateRequestIDType = "nz_ird"
 	IdentificationCreateRequestIDTypePassport       IdentificationCreateRequestIDType = "passport"
-	IdentificationCreateRequestIDTypePlNip          IdentificationCreateRequestIDType = "pl_nip"
-	IdentificationCreateRequestIDTypePlPesel        IdentificationCreateRequestIDType = "pl_pesel"
-	IdentificationCreateRequestIDTypePtNif          IdentificationCreateRequestIDType = "pt_nif"
-	IdentificationCreateRequestIDTypeRoCnp          IdentificationCreateRequestIDType = "ro_cnp"
-	IdentificationCreateRequestIDTypeRoCui          IdentificationCreateRequestIDType = "ro_cui"
 	IdentificationCreateRequestIDTypeSaTin          IdentificationCreateRequestIDType = "sa_tin"
 	IdentificationCreateRequestIDTypeSaVat          IdentificationCreateRequestIDType = "sa_vat"
-	IdentificationCreateRequestIDTypeSeOrgnr        IdentificationCreateRequestIDType = "se_orgnr"
-	IdentificationCreateRequestIDTypeSePnmr         IdentificationCreateRequestIDType = "se_pnmr"
-	IdentificationCreateRequestIDTypeSgFin          IdentificationCreateRequestIDType = "sg_fin"
-	IdentificationCreateRequestIDTypeSgNric         IdentificationCreateRequestIDType = "sg_nric"
-	IdentificationCreateRequestIDTypeSgUen          IdentificationCreateRequestIDType = "sg_uen"
-	IdentificationCreateRequestIDTypeSiDav          IdentificationCreateRequestIDType = "si_dav"
-	IdentificationCreateRequestIDTypeSiTin          IdentificationCreateRequestIDType = "si_tin"
-	IdentificationCreateRequestIDTypeSkIco          IdentificationCreateRequestIDType = "sk_ico"
-	IdentificationCreateRequestIDTypeSkRc           IdentificationCreateRequestIDType = "sk_rc"
 	IdentificationCreateRequestIDTypeUsEin          IdentificationCreateRequestIDType = "us_ein"
 	IdentificationCreateRequestIDTypeUsItin         IdentificationCreateRequestIDType = "us_itin"
 	IdentificationCreateRequestIDTypeUsSsn          IdentificationCreateRequestIDType = "us_ssn"
-	IdentificationCreateRequestIDTypeUyRut          IdentificationCreateRequestIDType = "uy_rut"
 	IdentificationCreateRequestIDTypeVnTin          IdentificationCreateRequestIDType = "vn_tin"
 )
 
 func (r IdentificationCreateRequestIDType) IsKnown() bool {
 	switch r {
-	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeAtAtin, IdentificationCreateRequestIDTypeAtVat, IdentificationCreateRequestIDTypeAuAbn, IdentificationCreateRequestIDTypeAuTfn, IdentificationCreateRequestIDTypeBeEnt, IdentificationCreateRequestIDTypeBeNrn, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaBn, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeChAhv, IdentificationCreateRequestIDTypeChUid, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeCyTin, IdentificationCreateRequestIDTypeCzIco, IdentificationCreateRequestIDTypeCzRc, IdentificationCreateRequestIDTypeDeStid, IdentificationCreateRequestIDTypeDeStnr, IdentificationCreateRequestIDTypeDeVat, IdentificationCreateRequestIDTypeDkCpr, IdentificationCreateRequestIDTypeDkCvr, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeEeIk, IdentificationCreateRequestIDTypeEeRk, IdentificationCreateRequestIDTypeEsNie, IdentificationCreateRequestIDTypeEsNif, IdentificationCreateRequestIDTypeFiHetu, IdentificationCreateRequestIDTypeFiYtj, IdentificationCreateRequestIDTypeFrNif, IdentificationCreateRequestIDTypeFrSiren, IdentificationCreateRequestIDTypeFrVat, IdentificationCreateRequestIDTypeGBNino, IdentificationCreateRequestIDTypeGBUtr, IdentificationCreateRequestIDTypeGBVat, IdentificationCreateRequestIDTypeGrVat, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeHrOib, IdentificationCreateRequestIDTypeHuAdj, IdentificationCreateRequestIDTypeHuAnum, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeIeTrn, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeIsKnt, IdentificationCreateRequestIDTypeItCf, IdentificationCreateRequestIDTypeItPiva, IdentificationCreateRequestIDTypeJpHb, IdentificationCreateRequestIDTypeJpMn, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypeLiPeid, IdentificationCreateRequestIDTypeLtAk, IdentificationCreateRequestIDTypeLtJak, IdentificationCreateRequestIDTypeLuMtc, IdentificationCreateRequestIDTypeLuVat, IdentificationCreateRequestIDTypeLvPk, IdentificationCreateRequestIDTypeLvRn, IdentificationCreateRequestIDTypeMtTin, IdentificationCreateRequestIDTypeMtVat, IdentificationCreateRequestIDTypeMxCurp, IdentificationCreateRequestIDTypeMxIne, IdentificationCreateRequestIDTypeMxRfc, IdentificationCreateRequestIDTypeNlBsn, IdentificationCreateRequestIDTypeNlBtw, IdentificationCreateRequestIDTypeNlRsin, IdentificationCreateRequestIDTypeNoFdn, IdentificationCreateRequestIDTypeNoMva, IdentificationCreateRequestIDTypeNoOrgnr, IdentificationCreateRequestIDTypeNzIrd, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypePlNip, IdentificationCreateRequestIDTypePlPesel, IdentificationCreateRequestIDTypePtNif, IdentificationCreateRequestIDTypeRoCnp, IdentificationCreateRequestIDTypeRoCui, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeSeOrgnr, IdentificationCreateRequestIDTypeSePnmr, IdentificationCreateRequestIDTypeSgFin, IdentificationCreateRequestIDTypeSgNric, IdentificationCreateRequestIDTypeSgUen, IdentificationCreateRequestIDTypeSiDav, IdentificationCreateRequestIDTypeSiTin, IdentificationCreateRequestIDTypeSkIco, IdentificationCreateRequestIDTypeSkRc, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeUyRut, IdentificationCreateRequestIDTypeVnTin:
+	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeVnTin:
 		return true
 	}
 	return false
@@ -898,29 +827,23 @@ func (r LedgerAccountCreateRequestLedgerableType) IsKnown() bool {
 }
 
 type LedgerBalance struct {
-	Amount        int64  `json:"amount" api:"required"`
-	AmountString  string `json:"amount_string" api:"required"`
-	Credits       int64  `json:"credits" api:"required"`
-	CreditsString string `json:"credits_string" api:"required"`
+	Amount  int64 `json:"amount" api:"required"`
+	Credits int64 `json:"credits" api:"required"`
 	// The currency of the ledger account.
 	Currency string `json:"currency" api:"required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64             `json:"currency_exponent" api:"required"`
 	Debits           int64             `json:"debits" api:"required"`
-	DebitsString     string            `json:"debits_string" api:"required"`
 	JSON             ledgerBalanceJSON `json:"-"`
 }
 
 // ledgerBalanceJSON contains the JSON metadata for the struct [LedgerBalance]
 type ledgerBalanceJSON struct {
 	Amount           apijson.Field
-	AmountString     apijson.Field
 	Credits          apijson.Field
-	CreditsString    apijson.Field
 	Currency         apijson.Field
 	CurrencyExponent apijson.Field
 	Debits           apijson.Field
-	DebitsString     apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
@@ -964,6 +887,9 @@ func (r ledgerBalancesJSON) RawJSON() string {
 }
 
 type LedgerEntryCreateRequestParam struct {
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000. Can be any integer up to 36 digits.
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
@@ -971,12 +897,6 @@ type LedgerEntryCreateRequestParam struct {
 	Direction param.Field[TransactionDirection] `json:"direction" api:"required"`
 	// The ledger account that this ledger entry is associated with.
 	LedgerAccountID param.Field[string] `json:"ledger_account_id" api:"required" format:"uuid"`
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount"`
-	// The amount of the ledger entry as a string, preserving full precision for values
-	// that may exceed safe integer limits in some languages.
-	AmountString param.Field[string] `json:"amount_string"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
 	// account’s available balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
@@ -1094,8 +1014,6 @@ type LegalEntityAddressCreateRequestParam struct {
 	// The types of this address.
 	AddressTypes param.Field[[]LegalEntityAddressCreateRequestAddressType] `json:"address_types"`
 	Line2        param.Field[string]                                       `json:"line2"`
-	// Whether this address is the primary address for the legal entity.
-	Primary param.Field[bool] `json:"primary"`
 }
 
 func (r LegalEntityAddressCreateRequestParam) MarshalJSON() (data []byte, err error) {

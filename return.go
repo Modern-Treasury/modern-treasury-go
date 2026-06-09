@@ -569,19 +569,14 @@ const (
 	ReturnObjectTypeGBFps       ReturnObjectType = "gb_fps"
 	ReturnObjectTypeInterac     ReturnObjectType = "interac"
 	ReturnObjectTypeManual      ReturnObjectType = "manual"
-	ReturnObjectTypeNeft        ReturnObjectType = "neft"
-	ReturnObjectTypeNzBecs      ReturnObjectType = "nz_becs"
-	ReturnObjectTypeRtp         ReturnObjectType = "rtp"
 	ReturnObjectTypeSepa        ReturnObjectType = "sepa"
-	ReturnObjectTypeSignet      ReturnObjectType = "signet"
-	ReturnObjectTypeStablecoin  ReturnObjectType = "stablecoin"
 	ReturnObjectTypeWire        ReturnObjectType = "wire"
 	ReturnObjectTypeZengin      ReturnObjectType = "zengin"
 )
 
 func (r ReturnObjectType) IsKnown() bool {
 	switch r {
-	case ReturnObjectTypeACH, ReturnObjectTypeACHNoc, ReturnObjectTypeAuBecs, ReturnObjectTypeBacs, ReturnObjectTypeBook, ReturnObjectTypeCheck, ReturnObjectTypeCrossBorder, ReturnObjectTypeEft, ReturnObjectTypeGBFps, ReturnObjectTypeInterac, ReturnObjectTypeManual, ReturnObjectTypeNeft, ReturnObjectTypeNzBecs, ReturnObjectTypeRtp, ReturnObjectTypeSepa, ReturnObjectTypeSignet, ReturnObjectTypeStablecoin, ReturnObjectTypeWire, ReturnObjectTypeZengin:
+	case ReturnObjectTypeACH, ReturnObjectTypeACHNoc, ReturnObjectTypeAuBecs, ReturnObjectTypeBacs, ReturnObjectTypeBook, ReturnObjectTypeCheck, ReturnObjectTypeCrossBorder, ReturnObjectTypeEft, ReturnObjectTypeGBFps, ReturnObjectTypeInterac, ReturnObjectTypeManual, ReturnObjectTypeSepa, ReturnObjectTypeWire, ReturnObjectTypeZengin:
 		return true
 	}
 	return false

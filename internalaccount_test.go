@@ -46,7 +46,6 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 		}}),
 		AccountType:    moderntreasury.F(moderntreasury.InternalAccountNewParamsAccountTypeChecking),
 		CounterpartyID: moderntreasury.F("counterparty_id"),
-		Debitable:      moderntreasury.F(true),
 		ExternalID:     moderntreasury.F("external_id"),
 		LegalEntityID:  moderntreasury.F("legal_entity_id"),
 		Metadata: moderntreasury.F(map[string]string{

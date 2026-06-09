@@ -260,7 +260,7 @@ type BulkRequestNewParamsResource struct {
 	// Deprecated: deprecated
 	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $10,000,000.
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount"`
 	// The lowest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
@@ -464,7 +464,6 @@ func (r BulkRequestNewParamsResource) ImplementsBulkRequestNewParamsResourceUnio
 // [BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID],
 // [BulkRequestNewParamsResourcesTransactionUpdateRequestWithID],
 // [BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID],
-// [BulkRequestNewParamsResourcesLedgerAccountUpdateRequestWithID],
 // [BulkRequestNewParamsResource].
 type BulkRequestNewParamsResourceUnion interface {
 	ImplementsBulkRequestNewParamsResourceUnion()
@@ -472,7 +471,7 @@ type BulkRequestNewParamsResourceUnion interface {
 
 type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $10,000,000.
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount" api:"required"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
@@ -1224,7 +1223,7 @@ type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
 	// Deprecated: deprecated
 	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $10,000,000.
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount"`
 	// The party that will pay the fees for the payment order. See
 	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
@@ -1927,26 +1926,6 @@ func (r BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithIDStatus)
 		return true
 	}
 	return false
-}
-
-type BulkRequestNewParamsResourcesLedgerAccountUpdateRequestWithID struct {
-	ID param.Field[string] `json:"id" format:"uuid"`
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `json:"external_id"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name"`
-}
-
-func (r BulkRequestNewParamsResourcesLedgerAccountUpdateRequestWithID) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r BulkRequestNewParamsResourcesLedgerAccountUpdateRequestWithID) ImplementsBulkRequestNewParamsResourceUnion() {
 }
 
 // One of credit or debit. Indicates whether amount_reconciled is a credit or debit

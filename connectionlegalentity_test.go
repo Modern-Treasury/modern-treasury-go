@@ -39,7 +39,6 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 				Region:       moderntreasury.F("region"),
 				AddressTypes: moderntreasury.F([]shared.LegalEntityAddressCreateRequestAddressType{shared.LegalEntityAddressCreateRequestAddressTypeBusiness}),
 				Line2:        moderntreasury.F("line2"),
-				Primary:      moderntreasury.F(true),
 			}}),
 			BankSettings: moderntreasury.F(shared.LegalEntityBankSettingsParam{
 				ID:                          moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -106,7 +105,6 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 						Region:       moderntreasury.F("region"),
 						AddressTypes: moderntreasury.F([]shared.LegalEntityAddressCreateRequestAddressType{shared.LegalEntityAddressCreateRequestAddressTypeBusiness}),
 						Line2:        moderntreasury.F("line2"),
-						Primary:      moderntreasury.F(true),
 					}}),
 					BankSettings: moderntreasury.F(shared.LegalEntityBankSettingsParam{
 						ID:                          moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),

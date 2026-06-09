@@ -150,7 +150,7 @@ type PaymentOrder struct {
 	// Deprecated: deprecated
 	AccountingLedgerClassID string `json:"accounting_ledger_class_id" api:"required,nullable" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $10,000,000.
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount int64 `json:"amount" api:"required"`
 	// The ID of the batch in which the payment order is included. Only populated after
 	// the payment order begins processing.
@@ -805,11 +805,6 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	// this ledger account will be debited. Must be accompanied by a
 	// credit_ledger_account_id if present.
 	DebitLedgerAccountID string `json:"debit_ledger_account_id" api:"nullable" format:"uuid"`
-	// Whether this account can receive ACH debits. Only applicable to accounts created
-	// under a Modern Treasury PSP connection, or `null` for Bring Your Own Bank
-	// accounts. Defaults to `false`. Configurable only on creation. Please reach out
-	// to your customer success manager to enable this capability for your connection.
-	Debitable bool `json:"debitable" api:"nullable"`
 	// An optional free-form description for internal use.
 	Description string    `json:"description" api:"nullable"`
 	DiscardedAt time.Time `json:"discarded_at" api:"nullable" format:"date-time"`
@@ -856,7 +851,6 @@ type paymentOrderUltimateOriginatingAccountJSON struct {
 	CreditLedgerAccountID apijson.Field
 	Currency              apijson.Field
 	DebitLedgerAccountID  apijson.Field
-	Debitable             apijson.Field
 	Description           apijson.Field
 	DiscardedAt           apijson.Field
 	ExternalID            apijson.Field
@@ -1093,7 +1087,7 @@ func (r PaymentOrderType) IsKnown() bool {
 
 type PaymentOrderNewParams struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $10,000,000.
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount" api:"required"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
@@ -1227,7 +1221,7 @@ type PaymentOrderNewParams struct {
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
 	// Additional vendor specific fields for this payment. Data must be represented as
 	// key-value pairs.
-	VendorAttributes param.Field[interface{}] `json:"vendor_attributes"`
+	VendorAttributes param.Field[VendorAttributesParam] `json:"vendor_attributes"`
 }
 
 func (r PaymentOrderNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
@@ -1636,7 +1630,7 @@ type PaymentOrderUpdateParams struct {
 	// accessible if your accounting system has been connected.
 	AccountingLedgerClassID param.Field[string] `json:"accounting_ledger_class_id" format:"uuid"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $10,000,000.
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount"`
 	// The party that will pay the fees for the payment order. See
 	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
@@ -2250,7 +2244,7 @@ func (r PaymentOrderListParamsType) IsKnown() bool {
 
 type PaymentOrderNewAsyncParams struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented as
-	// 1000 (cents). For RTP, the maximum amount allowed by the network is $10,000,000.
+	// 1000 (cents). For RTP, the maximum amount allowed by the network is $100,000.
 	Amount param.Field[int64] `json:"amount" api:"required"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
