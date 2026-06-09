@@ -268,8 +268,6 @@ type LegalEntityAddress struct {
 	Object   string `json:"object" api:"required"`
 	// The postal code of the address.
 	PostalCode string `json:"postal_code" api:"required,nullable"`
-	// Whether this address is the primary address for the legal entity.
-	Primary bool `json:"primary" api:"required,nullable"`
 	// Region or State.
 	Region    string                 `json:"region" api:"required,nullable"`
 	UpdatedAt time.Time              `json:"updated_at" api:"required" format:"date-time"`
@@ -290,7 +288,6 @@ type legalEntityAddressJSON struct {
 	Locality     apijson.Field
 	Object       apijson.Field
 	PostalCode   apijson.Field
-	Primary      apijson.Field
 	Region       apijson.Field
 	UpdatedAt    apijson.Field
 	raw          string
@@ -387,9 +384,6 @@ const (
 	LegalEntityIdentificationsIDTypeCoCedulas      LegalEntityIdentificationsIDType = "co_cedulas"
 	LegalEntityIdentificationsIDTypeCoNit          LegalEntityIdentificationsIDType = "co_nit"
 	LegalEntityIdentificationsIDTypeDriversLicense LegalEntityIdentificationsIDType = "drivers_license"
-	LegalEntityIdentificationsIDTypeEsNif          LegalEntityIdentificationsIDType = "es_nif"
-	LegalEntityIdentificationsIDTypeGBNino         LegalEntityIdentificationsIDType = "gb_nino"
-	LegalEntityIdentificationsIDTypeGBUtr          LegalEntityIdentificationsIDType = "gb_utr"
 	LegalEntityIdentificationsIDTypeHnID           LegalEntityIdentificationsIDType = "hn_id"
 	LegalEntityIdentificationsIDTypeHnRtn          LegalEntityIdentificationsIDType = "hn_rtn"
 	LegalEntityIdentificationsIDTypeIePps          LegalEntityIdentificationsIDType = "ie_pps"
@@ -397,22 +391,18 @@ const (
 	LegalEntityIdentificationsIDTypeKrBrn          LegalEntityIdentificationsIDType = "kr_brn"
 	LegalEntityIdentificationsIDTypeKrCrn          LegalEntityIdentificationsIDType = "kr_crn"
 	LegalEntityIdentificationsIDTypeKrRrn          LegalEntityIdentificationsIDType = "kr_rrn"
-	LegalEntityIdentificationsIDTypeMxCurp         LegalEntityIdentificationsIDType = "mx_curp"
-	LegalEntityIdentificationsIDTypeMxIne          LegalEntityIdentificationsIDType = "mx_ine"
-	LegalEntityIdentificationsIDTypeMxRfc          LegalEntityIdentificationsIDType = "mx_rfc"
 	LegalEntityIdentificationsIDTypePassport       LegalEntityIdentificationsIDType = "passport"
 	LegalEntityIdentificationsIDTypeSaTin          LegalEntityIdentificationsIDType = "sa_tin"
 	LegalEntityIdentificationsIDTypeSaVat          LegalEntityIdentificationsIDType = "sa_vat"
 	LegalEntityIdentificationsIDTypeUsEin          LegalEntityIdentificationsIDType = "us_ein"
 	LegalEntityIdentificationsIDTypeUsItin         LegalEntityIdentificationsIDType = "us_itin"
 	LegalEntityIdentificationsIDTypeUsSsn          LegalEntityIdentificationsIDType = "us_ssn"
-	LegalEntityIdentificationsIDTypeUyRut          LegalEntityIdentificationsIDType = "uy_rut"
 	LegalEntityIdentificationsIDTypeVnTin          LegalEntityIdentificationsIDType = "vn_tin"
 )
 
 func (r LegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeCaSin, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeDriversLicense, LegalEntityIdentificationsIDTypeEsNif, LegalEntityIdentificationsIDTypeGBNino, LegalEntityIdentificationsIDTypeGBUtr, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeIePps, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypeMxCurp, LegalEntityIdentificationsIDTypeMxIne, LegalEntityIdentificationsIDTypeMxRfc, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeUyRut, LegalEntityIdentificationsIDTypeVnTin:
+	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeCaSin, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeDriversLicense, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeIePps, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false

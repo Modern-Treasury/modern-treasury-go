@@ -637,10 +637,16 @@ const CurrencyUgx = shared.CurrencyUgx
 const CurrencyUsd = shared.CurrencyUsd
 
 // This is an alias to an internal value.
+const CurrencyUsdb = shared.CurrencyUsdb
+
+// This is an alias to an internal value.
 const CurrencyUsdc = shared.CurrencyUsdc
 
 // This is an alias to an internal value.
 const CurrencyUsdg = shared.CurrencyUsdg
+
+// This is an alias to an internal value.
+const CurrencyUsdp = shared.CurrencyUsdp
 
 // This is an alias to an internal value.
 const CurrencyUsdt = shared.CurrencyUsdt
@@ -783,15 +789,6 @@ const IdentificationCreateRequestIDTypeCoNit = shared.IdentificationCreateReques
 const IdentificationCreateRequestIDTypeDriversLicense = shared.IdentificationCreateRequestIDTypeDriversLicense
 
 // This is an alias to an internal value.
-const IdentificationCreateRequestIDTypeEsNif = shared.IdentificationCreateRequestIDTypeEsNif
-
-// This is an alias to an internal value.
-const IdentificationCreateRequestIDTypeGBNino = shared.IdentificationCreateRequestIDTypeGBNino
-
-// This is an alias to an internal value.
-const IdentificationCreateRequestIDTypeGBUtr = shared.IdentificationCreateRequestIDTypeGBUtr
-
-// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeHnID = shared.IdentificationCreateRequestIDTypeHnID
 
 // This is an alias to an internal value.
@@ -813,15 +810,6 @@ const IdentificationCreateRequestIDTypeKrCrn = shared.IdentificationCreateReques
 const IdentificationCreateRequestIDTypeKrRrn = shared.IdentificationCreateRequestIDTypeKrRrn
 
 // This is an alias to an internal value.
-const IdentificationCreateRequestIDTypeMxCurp = shared.IdentificationCreateRequestIDTypeMxCurp
-
-// This is an alias to an internal value.
-const IdentificationCreateRequestIDTypeMxIne = shared.IdentificationCreateRequestIDTypeMxIne
-
-// This is an alias to an internal value.
-const IdentificationCreateRequestIDTypeMxRfc = shared.IdentificationCreateRequestIDTypeMxRfc
-
-// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypePassport = shared.IdentificationCreateRequestIDTypePassport
 
 // This is an alias to an internal value.
@@ -838,9 +826,6 @@ const IdentificationCreateRequestIDTypeUsItin = shared.IdentificationCreateReque
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeUsSsn = shared.IdentificationCreateRequestIDTypeUsSsn
-
-// This is an alias to an internal value.
-const IdentificationCreateRequestIDTypeUyRut = shared.IdentificationCreateRequestIDTypeUyRut
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeVnTin = shared.IdentificationCreateRequestIDTypeVnTin

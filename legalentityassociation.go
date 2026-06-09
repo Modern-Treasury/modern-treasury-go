@@ -204,8 +204,6 @@ type ChildLegalEntityAddress struct {
 	Object   string `json:"object" api:"required"`
 	// The postal code of the address.
 	PostalCode string `json:"postal_code" api:"required,nullable"`
-	// Whether this address is the primary address for the legal entity.
-	Primary bool `json:"primary" api:"required,nullable"`
 	// Region or State.
 	Region    string                      `json:"region" api:"required,nullable"`
 	UpdatedAt time.Time                   `json:"updated_at" api:"required" format:"date-time"`
@@ -226,7 +224,6 @@ type childLegalEntityAddressJSON struct {
 	Locality     apijson.Field
 	Object       apijson.Field
 	PostalCode   apijson.Field
-	Primary      apijson.Field
 	Region       apijson.Field
 	UpdatedAt    apijson.Field
 	raw          string
@@ -323,9 +320,6 @@ const (
 	ChildLegalEntityIdentificationsIDTypeCoCedulas      ChildLegalEntityIdentificationsIDType = "co_cedulas"
 	ChildLegalEntityIdentificationsIDTypeCoNit          ChildLegalEntityIdentificationsIDType = "co_nit"
 	ChildLegalEntityIdentificationsIDTypeDriversLicense ChildLegalEntityIdentificationsIDType = "drivers_license"
-	ChildLegalEntityIdentificationsIDTypeEsNif          ChildLegalEntityIdentificationsIDType = "es_nif"
-	ChildLegalEntityIdentificationsIDTypeGBNino         ChildLegalEntityIdentificationsIDType = "gb_nino"
-	ChildLegalEntityIdentificationsIDTypeGBUtr          ChildLegalEntityIdentificationsIDType = "gb_utr"
 	ChildLegalEntityIdentificationsIDTypeHnID           ChildLegalEntityIdentificationsIDType = "hn_id"
 	ChildLegalEntityIdentificationsIDTypeHnRtn          ChildLegalEntityIdentificationsIDType = "hn_rtn"
 	ChildLegalEntityIdentificationsIDTypeIePps          ChildLegalEntityIdentificationsIDType = "ie_pps"
@@ -333,22 +327,18 @@ const (
 	ChildLegalEntityIdentificationsIDTypeKrBrn          ChildLegalEntityIdentificationsIDType = "kr_brn"
 	ChildLegalEntityIdentificationsIDTypeKrCrn          ChildLegalEntityIdentificationsIDType = "kr_crn"
 	ChildLegalEntityIdentificationsIDTypeKrRrn          ChildLegalEntityIdentificationsIDType = "kr_rrn"
-	ChildLegalEntityIdentificationsIDTypeMxCurp         ChildLegalEntityIdentificationsIDType = "mx_curp"
-	ChildLegalEntityIdentificationsIDTypeMxIne          ChildLegalEntityIdentificationsIDType = "mx_ine"
-	ChildLegalEntityIdentificationsIDTypeMxRfc          ChildLegalEntityIdentificationsIDType = "mx_rfc"
 	ChildLegalEntityIdentificationsIDTypePassport       ChildLegalEntityIdentificationsIDType = "passport"
 	ChildLegalEntityIdentificationsIDTypeSaTin          ChildLegalEntityIdentificationsIDType = "sa_tin"
 	ChildLegalEntityIdentificationsIDTypeSaVat          ChildLegalEntityIdentificationsIDType = "sa_vat"
 	ChildLegalEntityIdentificationsIDTypeUsEin          ChildLegalEntityIdentificationsIDType = "us_ein"
 	ChildLegalEntityIdentificationsIDTypeUsItin         ChildLegalEntityIdentificationsIDType = "us_itin"
 	ChildLegalEntityIdentificationsIDTypeUsSsn          ChildLegalEntityIdentificationsIDType = "us_ssn"
-	ChildLegalEntityIdentificationsIDTypeUyRut          ChildLegalEntityIdentificationsIDType = "uy_rut"
 	ChildLegalEntityIdentificationsIDTypeVnTin          ChildLegalEntityIdentificationsIDType = "vn_tin"
 )
 
 func (r ChildLegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityIdentificationsIDTypeArCuil, ChildLegalEntityIdentificationsIDTypeArCuit, ChildLegalEntityIdentificationsIDTypeBrCnpj, ChildLegalEntityIdentificationsIDTypeBrCpf, ChildLegalEntityIdentificationsIDTypeCaSin, ChildLegalEntityIdentificationsIDTypeClRun, ChildLegalEntityIdentificationsIDTypeClRut, ChildLegalEntityIdentificationsIDTypeCoCedulas, ChildLegalEntityIdentificationsIDTypeCoNit, ChildLegalEntityIdentificationsIDTypeDriversLicense, ChildLegalEntityIdentificationsIDTypeEsNif, ChildLegalEntityIdentificationsIDTypeGBNino, ChildLegalEntityIdentificationsIDTypeGBUtr, ChildLegalEntityIdentificationsIDTypeHnID, ChildLegalEntityIdentificationsIDTypeHnRtn, ChildLegalEntityIdentificationsIDTypeIePps, ChildLegalEntityIdentificationsIDTypeInLei, ChildLegalEntityIdentificationsIDTypeKrBrn, ChildLegalEntityIdentificationsIDTypeKrCrn, ChildLegalEntityIdentificationsIDTypeKrRrn, ChildLegalEntityIdentificationsIDTypeMxCurp, ChildLegalEntityIdentificationsIDTypeMxIne, ChildLegalEntityIdentificationsIDTypeMxRfc, ChildLegalEntityIdentificationsIDTypePassport, ChildLegalEntityIdentificationsIDTypeSaTin, ChildLegalEntityIdentificationsIDTypeSaVat, ChildLegalEntityIdentificationsIDTypeUsEin, ChildLegalEntityIdentificationsIDTypeUsItin, ChildLegalEntityIdentificationsIDTypeUsSsn, ChildLegalEntityIdentificationsIDTypeUyRut, ChildLegalEntityIdentificationsIDTypeVnTin:
+	case ChildLegalEntityIdentificationsIDTypeArCuil, ChildLegalEntityIdentificationsIDTypeArCuit, ChildLegalEntityIdentificationsIDTypeBrCnpj, ChildLegalEntityIdentificationsIDTypeBrCpf, ChildLegalEntityIdentificationsIDTypeCaSin, ChildLegalEntityIdentificationsIDTypeClRun, ChildLegalEntityIdentificationsIDTypeClRut, ChildLegalEntityIdentificationsIDTypeCoCedulas, ChildLegalEntityIdentificationsIDTypeCoNit, ChildLegalEntityIdentificationsIDTypeDriversLicense, ChildLegalEntityIdentificationsIDTypeHnID, ChildLegalEntityIdentificationsIDTypeHnRtn, ChildLegalEntityIdentificationsIDTypeIePps, ChildLegalEntityIdentificationsIDTypeInLei, ChildLegalEntityIdentificationsIDTypeKrBrn, ChildLegalEntityIdentificationsIDTypeKrCrn, ChildLegalEntityIdentificationsIDTypeKrRrn, ChildLegalEntityIdentificationsIDTypePassport, ChildLegalEntityIdentificationsIDTypeSaTin, ChildLegalEntityIdentificationsIDTypeSaVat, ChildLegalEntityIdentificationsIDTypeUsEin, ChildLegalEntityIdentificationsIDTypeUsItin, ChildLegalEntityIdentificationsIDTypeUsSsn, ChildLegalEntityIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false

@@ -468,7 +468,8 @@ func (r InternalAccountUpdateAccountCapabilityResponsePaymentType) IsKnown() boo
 type InternalAccountNewParams struct {
 	// The identifier of the financial institution the account belongs to.
 	ConnectionID param.Field[string] `json:"connection_id" api:"required"`
-	// The currency of the internal account. Supports fiat and stablecoin currencies.
+	// The currency of the internal account. Supports "USD" and "CAD" for fiat, and
+	// "USDC", "USDG", and "PYUSD" for stablecoin accounts.
 	Currency param.Field[InternalAccountNewParamsCurrency] `json:"currency" api:"required"`
 	// The nickname of the account.
 	Name param.Field[string] `json:"name" api:"required"`
@@ -502,7 +503,8 @@ func (r InternalAccountNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-// The currency of the internal account. Supports fiat and stablecoin currencies.
+// The currency of the internal account. Supports "USD" and "CAD" for fiat, and
+// "USDC", "USDG", and "PYUSD" for stablecoin accounts.
 type InternalAccountNewParamsCurrency string
 
 const (
@@ -510,13 +512,12 @@ const (
 	InternalAccountNewParamsCurrencyCad   InternalAccountNewParamsCurrency = "CAD"
 	InternalAccountNewParamsCurrencyUsdc  InternalAccountNewParamsCurrency = "USDC"
 	InternalAccountNewParamsCurrencyUsdg  InternalAccountNewParamsCurrency = "USDG"
-	InternalAccountNewParamsCurrencyUsdt  InternalAccountNewParamsCurrency = "USDT"
 	InternalAccountNewParamsCurrencyPyusd InternalAccountNewParamsCurrency = "PYUSD"
 )
 
 func (r InternalAccountNewParamsCurrency) IsKnown() bool {
 	switch r {
-	case InternalAccountNewParamsCurrencyUsd, InternalAccountNewParamsCurrencyCad, InternalAccountNewParamsCurrencyUsdc, InternalAccountNewParamsCurrencyUsdg, InternalAccountNewParamsCurrencyUsdt, InternalAccountNewParamsCurrencyPyusd:
+	case InternalAccountNewParamsCurrencyUsd, InternalAccountNewParamsCurrencyCad, InternalAccountNewParamsCurrencyUsdc, InternalAccountNewParamsCurrencyUsdg, InternalAccountNewParamsCurrencyPyusd:
 		return true
 	}
 	return false

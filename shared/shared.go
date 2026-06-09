@@ -586,8 +586,10 @@ const (
 	CurrencyUah   Currency = "UAH"
 	CurrencyUgx   Currency = "UGX"
 	CurrencyUsd   Currency = "USD"
+	CurrencyUsdb  Currency = "USDB"
 	CurrencyUsdc  Currency = "USDC"
 	CurrencyUsdg  Currency = "USDG"
+	CurrencyUsdp  Currency = "USDP"
 	CurrencyUsdt  Currency = "USDT"
 	CurrencyUyu   Currency = "UYU"
 	CurrencyUzs   Currency = "UZS"
@@ -625,7 +627,7 @@ const (
 
 func (r Currency) IsKnown() bool {
 	switch r {
-	case CurrencyAed, CurrencyAfn, CurrencyAll, CurrencyAmd, CurrencyAng, CurrencyAoa, CurrencyArs, CurrencyAud, CurrencyAwg, CurrencyAzn, CurrencyBam, CurrencyBbd, CurrencyBch, CurrencyBdt, CurrencyBgn, CurrencyBhd, CurrencyBif, CurrencyBmd, CurrencyBnd, CurrencyBob, CurrencyBrl, CurrencyBsd, CurrencyBtc, CurrencyBtn, CurrencyBwp, CurrencyByn, CurrencyByr, CurrencyBzd, CurrencyCad, CurrencyCdf, CurrencyChf, CurrencyClf, CurrencyClp, CurrencyCnh, CurrencyCny, CurrencyCop, CurrencyCrc, CurrencyCuc, CurrencyCup, CurrencyCve, CurrencyCzk, CurrencyDjf, CurrencyDkk, CurrencyDop, CurrencyDzd, CurrencyEek, CurrencyEgp, CurrencyErn, CurrencyEtb, CurrencyEth, CurrencyEur, CurrencyEurc, CurrencyFjd, CurrencyFkp, CurrencyGbp, CurrencyGbx, CurrencyGel, CurrencyGgp, CurrencyGhs, CurrencyGip, CurrencyGmd, CurrencyGnf, CurrencyGtq, CurrencyGyd, CurrencyHkd, CurrencyHnl, CurrencyHrk, CurrencyHtg, CurrencyHuf, CurrencyIdr, CurrencyIls, CurrencyImp, CurrencyInr, CurrencyIqd, CurrencyIrr, CurrencyIsk, CurrencyJep, CurrencyJmd, CurrencyJod, CurrencyJpy, CurrencyKes, CurrencyKgs, CurrencyKhr, CurrencyKmf, CurrencyKpw, CurrencyKrw, CurrencyKwd, CurrencyKyd, CurrencyKzt, CurrencyLak, CurrencyLbp, CurrencyLkr, CurrencyLrd, CurrencyLsl, CurrencyLtl, CurrencyLvl, CurrencyLyd, CurrencyMad, CurrencyMdl, CurrencyMga, CurrencyMkd, CurrencyMmk, CurrencyMnt, CurrencyMop, CurrencyMro, CurrencyMru, CurrencyMtl, CurrencyMur, CurrencyMvr, CurrencyMwk, CurrencyMxn, CurrencyMyr, CurrencyMzn, CurrencyNad, CurrencyNgn, CurrencyNio, CurrencyNok, CurrencyNpr, CurrencyNzd, CurrencyOmr, CurrencyOp, CurrencyPab, CurrencyPen, CurrencyPgk, CurrencyPhp, CurrencyPkr, CurrencyPln, CurrencyPyg, CurrencyPyusd, CurrencyQar, CurrencyRon, CurrencyRsd, CurrencyRub, CurrencyRwf, CurrencySar, CurrencySbd, CurrencyScr, CurrencySdg, CurrencySek, CurrencySgd, CurrencyShp, CurrencySkk, CurrencySle, CurrencySll, CurrencySos, CurrencySrd, CurrencySsp, CurrencyStd, CurrencyStn, CurrencySvc, CurrencySyp, CurrencySzl, CurrencyThb, CurrencyTjs, CurrencyTmm, CurrencyTmt, CurrencyTnd, CurrencyTop, CurrencyTry, CurrencyTtd, CurrencyTwd, CurrencyTzs, CurrencyUah, CurrencyUgx, CurrencyUsd, CurrencyUsdc, CurrencyUsdg, CurrencyUsdt, CurrencyUyu, CurrencyUzs, CurrencyVef, CurrencyVes, CurrencyVnd, CurrencyVuv, CurrencyWst, CurrencyXaf, CurrencyXag, CurrencyXau, CurrencyXba, CurrencyXbb, CurrencyXbc, CurrencyXbd, CurrencyXcd, CurrencyXcg, CurrencyXdr, CurrencyXfu, CurrencyXof, CurrencyXpd, CurrencyXpf, CurrencyXpt, CurrencyXts, CurrencyYer, CurrencyZar, CurrencyZmk, CurrencyZmw, CurrencyZwd, CurrencyZwg, CurrencyZwl, CurrencyZwn, CurrencyZwr:
+	case CurrencyAed, CurrencyAfn, CurrencyAll, CurrencyAmd, CurrencyAng, CurrencyAoa, CurrencyArs, CurrencyAud, CurrencyAwg, CurrencyAzn, CurrencyBam, CurrencyBbd, CurrencyBch, CurrencyBdt, CurrencyBgn, CurrencyBhd, CurrencyBif, CurrencyBmd, CurrencyBnd, CurrencyBob, CurrencyBrl, CurrencyBsd, CurrencyBtc, CurrencyBtn, CurrencyBwp, CurrencyByn, CurrencyByr, CurrencyBzd, CurrencyCad, CurrencyCdf, CurrencyChf, CurrencyClf, CurrencyClp, CurrencyCnh, CurrencyCny, CurrencyCop, CurrencyCrc, CurrencyCuc, CurrencyCup, CurrencyCve, CurrencyCzk, CurrencyDjf, CurrencyDkk, CurrencyDop, CurrencyDzd, CurrencyEek, CurrencyEgp, CurrencyErn, CurrencyEtb, CurrencyEth, CurrencyEur, CurrencyEurc, CurrencyFjd, CurrencyFkp, CurrencyGbp, CurrencyGbx, CurrencyGel, CurrencyGgp, CurrencyGhs, CurrencyGip, CurrencyGmd, CurrencyGnf, CurrencyGtq, CurrencyGyd, CurrencyHkd, CurrencyHnl, CurrencyHrk, CurrencyHtg, CurrencyHuf, CurrencyIdr, CurrencyIls, CurrencyImp, CurrencyInr, CurrencyIqd, CurrencyIrr, CurrencyIsk, CurrencyJep, CurrencyJmd, CurrencyJod, CurrencyJpy, CurrencyKes, CurrencyKgs, CurrencyKhr, CurrencyKmf, CurrencyKpw, CurrencyKrw, CurrencyKwd, CurrencyKyd, CurrencyKzt, CurrencyLak, CurrencyLbp, CurrencyLkr, CurrencyLrd, CurrencyLsl, CurrencyLtl, CurrencyLvl, CurrencyLyd, CurrencyMad, CurrencyMdl, CurrencyMga, CurrencyMkd, CurrencyMmk, CurrencyMnt, CurrencyMop, CurrencyMro, CurrencyMru, CurrencyMtl, CurrencyMur, CurrencyMvr, CurrencyMwk, CurrencyMxn, CurrencyMyr, CurrencyMzn, CurrencyNad, CurrencyNgn, CurrencyNio, CurrencyNok, CurrencyNpr, CurrencyNzd, CurrencyOmr, CurrencyOp, CurrencyPab, CurrencyPen, CurrencyPgk, CurrencyPhp, CurrencyPkr, CurrencyPln, CurrencyPyg, CurrencyPyusd, CurrencyQar, CurrencyRon, CurrencyRsd, CurrencyRub, CurrencyRwf, CurrencySar, CurrencySbd, CurrencyScr, CurrencySdg, CurrencySek, CurrencySgd, CurrencyShp, CurrencySkk, CurrencySle, CurrencySll, CurrencySos, CurrencySrd, CurrencySsp, CurrencyStd, CurrencyStn, CurrencySvc, CurrencySyp, CurrencySzl, CurrencyThb, CurrencyTjs, CurrencyTmm, CurrencyTmt, CurrencyTnd, CurrencyTop, CurrencyTry, CurrencyTtd, CurrencyTwd, CurrencyTzs, CurrencyUah, CurrencyUgx, CurrencyUsd, CurrencyUsdb, CurrencyUsdc, CurrencyUsdg, CurrencyUsdp, CurrencyUsdt, CurrencyUyu, CurrencyUzs, CurrencyVef, CurrencyVes, CurrencyVnd, CurrencyVuv, CurrencyWst, CurrencyXaf, CurrencyXag, CurrencyXau, CurrencyXba, CurrencyXbb, CurrencyXbc, CurrencyXbd, CurrencyXcd, CurrencyXcg, CurrencyXdr, CurrencyXfu, CurrencyXof, CurrencyXpd, CurrencyXpf, CurrencyXpt, CurrencyXts, CurrencyYer, CurrencyZar, CurrencyZmk, CurrencyZmw, CurrencyZwd, CurrencyZwg, CurrencyZwl, CurrencyZwn, CurrencyZwr:
 		return true
 	}
 	return false
@@ -710,9 +712,6 @@ const (
 	IdentificationCreateRequestIDTypeCoCedulas      IdentificationCreateRequestIDType = "co_cedulas"
 	IdentificationCreateRequestIDTypeCoNit          IdentificationCreateRequestIDType = "co_nit"
 	IdentificationCreateRequestIDTypeDriversLicense IdentificationCreateRequestIDType = "drivers_license"
-	IdentificationCreateRequestIDTypeEsNif          IdentificationCreateRequestIDType = "es_nif"
-	IdentificationCreateRequestIDTypeGBNino         IdentificationCreateRequestIDType = "gb_nino"
-	IdentificationCreateRequestIDTypeGBUtr          IdentificationCreateRequestIDType = "gb_utr"
 	IdentificationCreateRequestIDTypeHnID           IdentificationCreateRequestIDType = "hn_id"
 	IdentificationCreateRequestIDTypeHnRtn          IdentificationCreateRequestIDType = "hn_rtn"
 	IdentificationCreateRequestIDTypeIePps          IdentificationCreateRequestIDType = "ie_pps"
@@ -720,22 +719,18 @@ const (
 	IdentificationCreateRequestIDTypeKrBrn          IdentificationCreateRequestIDType = "kr_brn"
 	IdentificationCreateRequestIDTypeKrCrn          IdentificationCreateRequestIDType = "kr_crn"
 	IdentificationCreateRequestIDTypeKrRrn          IdentificationCreateRequestIDType = "kr_rrn"
-	IdentificationCreateRequestIDTypeMxCurp         IdentificationCreateRequestIDType = "mx_curp"
-	IdentificationCreateRequestIDTypeMxIne          IdentificationCreateRequestIDType = "mx_ine"
-	IdentificationCreateRequestIDTypeMxRfc          IdentificationCreateRequestIDType = "mx_rfc"
 	IdentificationCreateRequestIDTypePassport       IdentificationCreateRequestIDType = "passport"
 	IdentificationCreateRequestIDTypeSaTin          IdentificationCreateRequestIDType = "sa_tin"
 	IdentificationCreateRequestIDTypeSaVat          IdentificationCreateRequestIDType = "sa_vat"
 	IdentificationCreateRequestIDTypeUsEin          IdentificationCreateRequestIDType = "us_ein"
 	IdentificationCreateRequestIDTypeUsItin         IdentificationCreateRequestIDType = "us_itin"
 	IdentificationCreateRequestIDTypeUsSsn          IdentificationCreateRequestIDType = "us_ssn"
-	IdentificationCreateRequestIDTypeUyRut          IdentificationCreateRequestIDType = "uy_rut"
 	IdentificationCreateRequestIDTypeVnTin          IdentificationCreateRequestIDType = "vn_tin"
 )
 
 func (r IdentificationCreateRequestIDType) IsKnown() bool {
 	switch r {
-	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeEsNif, IdentificationCreateRequestIDTypeGBNino, IdentificationCreateRequestIDTypeGBUtr, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypeMxCurp, IdentificationCreateRequestIDTypeMxIne, IdentificationCreateRequestIDTypeMxRfc, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeUyRut, IdentificationCreateRequestIDTypeVnTin:
+	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeVnTin:
 		return true
 	}
 	return false
@@ -832,29 +827,23 @@ func (r LedgerAccountCreateRequestLedgerableType) IsKnown() bool {
 }
 
 type LedgerBalance struct {
-	Amount        int64  `json:"amount" api:"required"`
-	AmountString  string `json:"amount_string" api:"required"`
-	Credits       int64  `json:"credits" api:"required"`
-	CreditsString string `json:"credits_string" api:"required"`
+	Amount  int64 `json:"amount" api:"required"`
+	Credits int64 `json:"credits" api:"required"`
 	// The currency of the ledger account.
 	Currency string `json:"currency" api:"required"`
 	// The currency exponent of the ledger account.
 	CurrencyExponent int64             `json:"currency_exponent" api:"required"`
 	Debits           int64             `json:"debits" api:"required"`
-	DebitsString     string            `json:"debits_string" api:"required"`
 	JSON             ledgerBalanceJSON `json:"-"`
 }
 
 // ledgerBalanceJSON contains the JSON metadata for the struct [LedgerBalance]
 type ledgerBalanceJSON struct {
 	Amount           apijson.Field
-	AmountString     apijson.Field
 	Credits          apijson.Field
-	CreditsString    apijson.Field
 	Currency         apijson.Field
 	CurrencyExponent apijson.Field
 	Debits           apijson.Field
-	DebitsString     apijson.Field
 	raw              string
 	ExtraFields      map[string]apijson.Field
 }
@@ -898,6 +887,9 @@ func (r ledgerBalancesJSON) RawJSON() string {
 }
 
 type LedgerEntryCreateRequestParam struct {
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000. Can be any integer up to 36 digits.
+	Amount param.Field[int64] `json:"amount" api:"required"`
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
@@ -905,12 +897,6 @@ type LedgerEntryCreateRequestParam struct {
 	Direction param.Field[TransactionDirection] `json:"direction" api:"required"`
 	// The ledger account that this ledger entry is associated with.
 	LedgerAccountID param.Field[string] `json:"ledger_account_id" api:"required" format:"uuid"`
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount"`
-	// The amount of the ledger entry as a string, preserving full precision for values
-	// that may exceed safe integer limits in some languages.
-	AmountString param.Field[string] `json:"amount_string"`
 	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
 	// account’s available balance. If any of these conditions would be false after the
 	// transaction is created, the entire call will fail with error code 422.
@@ -1028,8 +1014,6 @@ type LegalEntityAddressCreateRequestParam struct {
 	// The types of this address.
 	AddressTypes param.Field[[]LegalEntityAddressCreateRequestAddressType] `json:"address_types"`
 	Line2        param.Field[string]                                       `json:"line2"`
-	// Whether this address is the primary address for the legal entity.
-	Primary param.Field[bool] `json:"primary"`
 }
 
 func (r LegalEntityAddressCreateRequestParam) MarshalJSON() (data []byte, err error) {

@@ -386,6 +386,7 @@ Params Types:
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ContactDetailCreateRequestParam">ContactDetailCreateRequestParam</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentOrderSubtype">PaymentOrderSubtype</a>
 - <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#PaymentOrderType">PaymentOrderType</a>
+- <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#VendorAttributesParam">VendorAttributesParam</a>
 
 Response Types:
 
