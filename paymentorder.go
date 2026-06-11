@@ -1301,22 +1301,22 @@ func (r PaymentOrderNewParamsDocument) MarshalJSON() (data []byte, err error) {
 type PaymentOrderNewParamsDocumentsDocumentableType string
 
 const (
-	PaymentOrderNewParamsDocumentsDocumentableTypeConnections            PaymentOrderNewParamsDocumentsDocumentableType = "connections"
-	PaymentOrderNewParamsDocumentsDocumentableTypeCounterparties         PaymentOrderNewParamsDocumentsDocumentableType = "counterparties"
-	PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayments       PaymentOrderNewParamsDocumentsDocumentableType = "expected_payments"
-	PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccounts       PaymentOrderNewParamsDocumentsDocumentableType = "external_accounts"
-	PaymentOrderNewParamsDocumentsDocumentableTypeIdentifications        PaymentOrderNewParamsDocumentsDocumentableType = "identifications"
-	PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetails PaymentOrderNewParamsDocumentsDocumentableType = "incoming_payment_details"
-	PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccounts       PaymentOrderNewParamsDocumentsDocumentableType = "internal_accounts"
-	PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntities          PaymentOrderNewParamsDocumentsDocumentableType = "legal_entities"
-	PaymentOrderNewParamsDocumentsDocumentableTypeOrganizations          PaymentOrderNewParamsDocumentsDocumentableType = "organizations"
-	PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrders          PaymentOrderNewParamsDocumentsDocumentableType = "payment_orders"
-	PaymentOrderNewParamsDocumentsDocumentableTypeTransactions           PaymentOrderNewParamsDocumentsDocumentableType = "transactions"
+	PaymentOrderNewParamsDocumentsDocumentableTypeConnection            PaymentOrderNewParamsDocumentsDocumentableType = "connection"
+	PaymentOrderNewParamsDocumentsDocumentableTypeCounterparty          PaymentOrderNewParamsDocumentsDocumentableType = "counterparty"
+	PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayment       PaymentOrderNewParamsDocumentsDocumentableType = "expected_payment"
+	PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccount       PaymentOrderNewParamsDocumentsDocumentableType = "external_account"
+	PaymentOrderNewParamsDocumentsDocumentableTypeIdentification        PaymentOrderNewParamsDocumentsDocumentableType = "identification"
+	PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetail PaymentOrderNewParamsDocumentsDocumentableType = "incoming_payment_detail"
+	PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccount       PaymentOrderNewParamsDocumentsDocumentableType = "internal_account"
+	PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntity           PaymentOrderNewParamsDocumentsDocumentableType = "legal_entity"
+	PaymentOrderNewParamsDocumentsDocumentableTypeOrganization          PaymentOrderNewParamsDocumentsDocumentableType = "organization"
+	PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrder          PaymentOrderNewParamsDocumentsDocumentableType = "payment_order"
+	PaymentOrderNewParamsDocumentsDocumentableTypeTransaction           PaymentOrderNewParamsDocumentsDocumentableType = "transaction"
 )
 
 func (r PaymentOrderNewParamsDocumentsDocumentableType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewParamsDocumentsDocumentableTypeConnections, PaymentOrderNewParamsDocumentsDocumentableTypeCounterparties, PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayments, PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccounts, PaymentOrderNewParamsDocumentsDocumentableTypeIdentifications, PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetails, PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccounts, PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntities, PaymentOrderNewParamsDocumentsDocumentableTypeOrganizations, PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrders, PaymentOrderNewParamsDocumentsDocumentableTypeTransactions:
+	case PaymentOrderNewParamsDocumentsDocumentableTypeConnection, PaymentOrderNewParamsDocumentsDocumentableTypeCounterparty, PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayment, PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccount, PaymentOrderNewParamsDocumentsDocumentableTypeIdentification, PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetail, PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccount, PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntity, PaymentOrderNewParamsDocumentsDocumentableTypeOrganization, PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrder, PaymentOrderNewParamsDocumentsDocumentableTypeTransaction:
 		return true
 	}
 	return false
