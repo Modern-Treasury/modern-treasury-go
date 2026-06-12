@@ -464,8 +464,6 @@ type InternalAccountNewParams struct {
 	Currency param.Field[InternalAccountNewParamsCurrency] `json:"currency" api:"required"`
 	// The nickname of the account.
 	Name param.Field[string] `json:"name" api:"required"`
-	// The legal name of the entity which owns the account.
-	PartyName param.Field[string] `json:"party_name" api:"required"`
 	// An array of AccountCapability objects that list the originating abilities of the
 	// internal account and any relevant information for them.
 	AccountCapabilities param.Field[[]InternalAccountNewParamsAccountCapability] `json:"account_capabilities"`
@@ -490,6 +488,8 @@ type InternalAccountNewParams struct {
 	ParentAccountID param.Field[string] `json:"parent_account_id"`
 	// The address associated with the owner or null.
 	PartyAddress param.Field[InternalAccountNewParamsPartyAddress] `json:"party_address"`
+	// The legal name of the entity which owns the account.
+	PartyName param.Field[string] `json:"party_name"`
 	// A hash of vendor specific attributes that will be used when creating the account
 	// at the vendor specified by the given connection.
 	VendorAttributes param.Field[map[string]string] `json:"vendor_attributes"`
