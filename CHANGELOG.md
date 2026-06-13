@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.58.0 (2026-06-13)
+
+Full Changelog: [v2.57.0...v2.58.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.57.0...v2.58.0)
+
+### Features
+
+* **api:** add legal entity simulation endpoint ([f606536](https://github.com/Modern-Treasury/modern-treasury-go/commit/f6065362cc2e5ed162cb60a8cd132c2168aaf44e))
+* **api:** api update ([c154d39](https://github.com/Modern-Treasury/modern-treasury-go/commit/c154d3971dc04868bf354f3c14b40c54ba4e5768))
+
 ## 2.57.0 (2026-06-12)
 
 Full Changelog: [v2.56.0...v2.57.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.56.0...v2.57.0)
