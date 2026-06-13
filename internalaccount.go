@@ -506,14 +506,14 @@ const (
 	InternalAccountNewParamsCurrencyUsd   InternalAccountNewParamsCurrency = "USD"
 	InternalAccountNewParamsCurrencyCad   InternalAccountNewParamsCurrency = "CAD"
 	InternalAccountNewParamsCurrencyUsdc  InternalAccountNewParamsCurrency = "USDC"
-	InternalAccountNewParamsCurrencyUsdg  InternalAccountNewParamsCurrency = "USDG"
 	InternalAccountNewParamsCurrencyUsdt  InternalAccountNewParamsCurrency = "USDT"
 	InternalAccountNewParamsCurrencyPyusd InternalAccountNewParamsCurrency = "PYUSD"
+	InternalAccountNewParamsCurrencyUsdg  InternalAccountNewParamsCurrency = "USDG"
 )
 
 func (r InternalAccountNewParamsCurrency) IsKnown() bool {
 	switch r {
-	case InternalAccountNewParamsCurrencyUsd, InternalAccountNewParamsCurrencyCad, InternalAccountNewParamsCurrencyUsdc, InternalAccountNewParamsCurrencyUsdg, InternalAccountNewParamsCurrencyUsdt, InternalAccountNewParamsCurrencyPyusd:
+	case InternalAccountNewParamsCurrencyUsd, InternalAccountNewParamsCurrencyCad, InternalAccountNewParamsCurrencyUsdc, InternalAccountNewParamsCurrencyUsdt, InternalAccountNewParamsCurrencyPyusd, InternalAccountNewParamsCurrencyUsdg:
 		return true
 	}
 	return false
