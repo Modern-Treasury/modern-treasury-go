@@ -112,7 +112,7 @@ type BalanceReport struct {
 	// The date of the balance report in local time.
 	AsOfDate time.Time `json:"as_of_date" api:"required" format:"date"`
 	// The time (24-hour clock) of the balance report in local time.
-	AsOfTime string `json:"as_of_time" api:"required,nullable" format:"time"`
+	AsOfTime string `json:"as_of_time" api:"required" format:"time"`
 	// The specific type of balance report. One of `intraday`, `previous_day`,
 	// `real_time`, or `other`.
 	BalanceReportType BalanceReportBalanceReportType `json:"balance_report_type" api:"required"`
@@ -176,6 +176,9 @@ type BalanceReportBalance struct {
 	ID string `json:"id" api:"required" format:"uuid"`
 	// The balance amount.
 	Amount int64 `json:"amount" api:"required"`
+	// The amount of the balance as a string, preserving full precision for values that
+	// may exceed safe integer limits in some languages.
+	AmountString string `json:"amount_string" api:"required"`
 	// The date on which the balance became true for the account.
 	AsOfDate time.Time `json:"as_of_date" api:"required,nullable" format:"date"`
 	// The time on which the balance became true for the account.
@@ -210,6 +213,7 @@ type BalanceReportBalance struct {
 type balanceReportBalanceJSON struct {
 	ID             apijson.Field
 	Amount         apijson.Field
+	AmountString   apijson.Field
 	AsOfDate       apijson.Field
 	AsOfTime       apijson.Field
 	BalanceType    apijson.Field
@@ -295,8 +299,6 @@ func (r BalanceReportNewParamsBalanceReportType) IsKnown() bool {
 }
 
 type BalanceReportNewParamsBalance struct {
-	// The balance amount.
-	Amount param.Field[int64] `json:"amount" api:"required"`
 	// The specific type of balance reported. One of `opening_ledger`,
 	// `closing_ledger`, `current_ledger`, `opening_available`,
 	// `opening_available_next_business_day`, `closing_available`, `current_available`,
@@ -309,6 +311,11 @@ type BalanceReportNewParamsBalance struct {
 	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`, or
 	// `us_bank`.
 	VendorCodeType param.Field[string] `json:"vendor_code_type" api:"required"`
+	// The balance amount.
+	Amount param.Field[int64] `json:"amount"`
+	// The amount of the balance as a string, preserving full precision for values that
+	// may exceed safe integer limits in some languages.
+	AmountString param.Field[string] `json:"amount_string"`
 }
 
 func (r BalanceReportNewParamsBalance) MarshalJSON() (data []byte, err error) {

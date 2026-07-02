@@ -654,6 +654,8 @@ type CounterpartyNewParamsLegalEntity struct {
 	ServiceProviderLegalEntityID param.Field[string] `json:"service_provider_legal_entity_id" format:"uuid"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
+	// Acceptance of terms of use by the legal entity.
+	TermsOfUse param.Field[CounterpartyNewParamsLegalEntityTermsOfUse] `json:"terms_of_use"`
 	// Deprecated. Use `third_party_verifications` instead.
 	//
 	// Deprecated: deprecated
@@ -779,6 +781,19 @@ func (r CounterpartyNewParamsLegalEntityRiskRating) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+// Acceptance of terms of use by the legal entity.
+type CounterpartyNewParamsLegalEntityTermsOfUse struct {
+	// The ISO 8601 timestamp indicating when the terms of use were accepted.
+	AcceptedAt param.Field[time.Time] `json:"accepted_at" format:"date-time"`
+	// The IP address from which the terms of use were accepted. Supports both IPv4 and
+	// IPv6 formats.
+	IPAddress param.Field[string] `json:"ip_address"`
+}
+
+func (r CounterpartyNewParamsLegalEntityTermsOfUse) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type CounterpartyUpdateParams struct {

@@ -114,6 +114,9 @@ type Transaction struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
 	Amount int64 `json:"amount" api:"required"`
+	// The amount of the transaction as a string, preserving full precision for values
+	// that may exceed safe integer limits in some languages.
+	AmountString string `json:"amount_string" api:"required"`
 	// The date on which the transaction occurred.
 	AsOfDate time.Time `json:"as_of_date" api:"required,nullable" format:"date"`
 	// The time on which the transaction occurred. Depending on the granularity of the
@@ -182,6 +185,7 @@ type Transaction struct {
 type transactionJSON struct {
 	ID                  apijson.Field
 	Amount              apijson.Field
+	AmountString        apijson.Field
 	AsOfDate            apijson.Field
 	AsOfTime            apijson.Field
 	AsOfTimezone        apijson.Field
@@ -290,6 +294,7 @@ const (
 	TransactionVendorCodeTypePnc             TransactionVendorCodeType = "pnc"
 	TransactionVendorCodeTypeSilvergate      TransactionVendorCodeType = "silvergate"
 	TransactionVendorCodeTypeSwift           TransactionVendorCodeType = "swift"
+	TransactionVendorCodeTypeTurnkey         TransactionVendorCodeType = "turnkey"
 	TransactionVendorCodeTypeUsBank          TransactionVendorCodeType = "us_bank"
 	TransactionVendorCodeTypeUser            TransactionVendorCodeType = "user"
 	TransactionVendorCodeTypeWesternAlliance TransactionVendorCodeType = "western_alliance"
@@ -297,16 +302,13 @@ const (
 
 func (r TransactionVendorCodeType) IsKnown() bool {
 	switch r {
-	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankingCircle, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeCoinbasePrime, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeFakeVendor, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeModernTreasury, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePaxos, TransactionVendorCodeTypePaypal, TransactionVendorCodeTypePnc, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser, TransactionVendorCodeTypeWesternAlliance:
+	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankingCircle, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeCoinbasePrime, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeFakeVendor, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeModernTreasury, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePaxos, TransactionVendorCodeTypePaypal, TransactionVendorCodeTypePnc, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeTurnkey, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser, TransactionVendorCodeTypeWesternAlliance:
 		return true
 	}
 	return false
 }
 
 type TransactionNewParams struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount param.Field[int64] `json:"amount" api:"required"`
 	// The date on which the transaction occurred.
 	AsOfDate param.Field[time.Time] `json:"as_of_date" api:"required" format:"date"`
 	// Either `credit` or `debit`.
@@ -321,6 +323,12 @@ type TransactionNewParams struct {
 	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`,
 	// `us_bank`, or others.
 	VendorCodeType param.Field[string] `json:"vendor_code_type" api:"required"`
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000.
+	Amount param.Field[int64] `json:"amount"`
+	// The transaction amount as a string, preserving full precision for values that
+	// may exceed safe integer limits in some languages.
+	AmountString param.Field[string] `json:"amount_string"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`

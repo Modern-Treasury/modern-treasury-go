@@ -280,8 +280,6 @@ type BulkRequestNewParamsResource struct {
 	// The highest amount this expected payment may be equal to. Value in specified
 	// currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
-	// The date on which the transaction occurred.
-	AsOfDate param.Field[time.Time] `json:"as_of_date" format:"date"`
 	// The party that will pay the fees for the payment order. See
 	// https://docs.moderntreasury.com/payments/docs/charge-bearer to understand the
 	// differences between the options.
@@ -302,7 +300,7 @@ type BulkRequestNewParamsResource struct {
 	// transaction. A `credit` moves money from your account to someone else's. A
 	// `debit` pulls money from someone else's account to your own. Note that wire,
 	// rtp, and check payments will always be `credit`.
-	Direction param.Field[string] `json:"direction"`
+	Direction param.Field[BulkRequestNewParamsResourcesDirection] `json:"direction"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
 	// reporting purposes.
 	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
@@ -364,8 +362,6 @@ type BulkRequestNewParamsResource struct {
 	// the first 16 characters of this string will be used. Any additional characters
 	// will be truncated.
 	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
-	// This field will be `true` if the transaction has posted to the account.
-	Posted param.Field[bool] `json:"posted"`
 	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
@@ -432,19 +428,6 @@ type BulkRequestNewParamsResource struct {
 	// Name of the ultimate funds recipient.
 	UltimateReceivingPartyName param.Field[string]      `json:"ultimate_receiving_party_name"`
 	VendorAttributes           param.Field[interface{}] `json:"vendor_attributes"`
-	// When applicable, the bank-given code that determines the transaction's category.
-	// For most banks this is the BAI2/BTRS transaction code.
-	VendorCode param.Field[string] `json:"vendor_code"`
-	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
-	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
-	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`,
-	// `us_bank`, or others.
-	VendorCodeType param.Field[string] `json:"vendor_code_type"`
-	// An identifier given to this transaction by the bank, often `null`.
-	VendorCustomerID param.Field[string] `json:"vendor_customer_id"`
-	// The transaction detail text that often appears in on your bank statement and in
-	// your banking portal.
-	VendorDescription param.Field[string] `json:"vendor_description"`
 }
 
 func (r BulkRequestNewParamsResource) MarshalJSON() (data []byte, err error) {
@@ -456,15 +439,15 @@ func (r BulkRequestNewParamsResource) ImplementsBulkRequestNewParamsResourceUnio
 // Satisfied by [BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest],
 // [BulkRequestNewParamsResourcesExpectedPaymentCreateRequest],
 // [shared.LedgerTransactionCreateRequestParam],
-// [shared.LedgerAccountCreateRequestParam],
-// [BulkRequestNewParamsResourcesTransactionCreateRequest],
-// [BulkRequestNewParamsResourcesID],
+// [shared.LedgerAccountCreateRequestParam], [BulkRequestNewParamsResourcesID],
 // [BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID],
 // [BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID],
 // [BulkRequestNewParamsResourcesTransactionUpdateRequestWithID],
 // [BulkRequestNewParamsResourcesLedgerTransactionUpdateRequestWithID],
 // [BulkRequestNewParamsResourcesLedgerAccountUpdateRequestWithID],
 // [BulkRequestNewParamsResource].
+//
+// Use [Raw()] to specify an arbitrary value for this param
 type BulkRequestNewParamsResourceUnion interface {
 	ImplementsBulkRequestNewParamsResourceUnion()
 }
@@ -1097,87 +1080,6 @@ type BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLineItem struct {
 
 func (r BulkRequestNewParamsResourcesExpectedPaymentCreateRequestLineItem) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-type BulkRequestNewParamsResourcesTransactionCreateRequest struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount param.Field[int64] `json:"amount" api:"required"`
-	// The date on which the transaction occurred.
-	AsOfDate param.Field[time.Time] `json:"as_of_date" api:"required" format:"date"`
-	// Either `credit` or `debit`.
-	Direction param.Field[string] `json:"direction" api:"required"`
-	// The ID of the relevant Internal Account.
-	InternalAccountID param.Field[string] `json:"internal_account_id" api:"required" format:"uuid"`
-	// When applicable, the bank-given code that determines the transaction's category.
-	// For most banks this is the BAI2/BTRS transaction code.
-	VendorCode param.Field[string] `json:"vendor_code" api:"required"`
-	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
-	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
-	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`,
-	// `us_bank`, or others.
-	VendorCodeType param.Field[string] `json:"vendor_code_type" api:"required"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// This field will be `true` if the transaction has posted to the account.
-	Posted param.Field[bool] `json:"posted"`
-	// The type of the transaction. Examples could be
-	// `card, `ach`, `wire`, `check`, `rtp`, or `book`.
-	Type param.Field[BulkRequestNewParamsResourcesTransactionCreateRequestType] `json:"type"`
-	// An identifier given to this transaction by the bank, often `null`.
-	VendorCustomerID param.Field[string] `json:"vendor_customer_id"`
-	// The transaction detail text that often appears in on your bank statement and in
-	// your banking portal.
-	VendorDescription param.Field[string] `json:"vendor_description"`
-}
-
-func (r BulkRequestNewParamsResourcesTransactionCreateRequest) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r BulkRequestNewParamsResourcesTransactionCreateRequest) ImplementsBulkRequestNewParamsResourceUnion() {
-}
-
-// The type of the transaction. Examples could be
-// `card, `ach`, `wire`, `check`, `rtp`, or `book`.
-type BulkRequestNewParamsResourcesTransactionCreateRequestType string
-
-const (
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeACH         BulkRequestNewParamsResourcesTransactionCreateRequestType = "ach"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeAuBecs      BulkRequestNewParamsResourcesTransactionCreateRequestType = "au_becs"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeBacs        BulkRequestNewParamsResourcesTransactionCreateRequestType = "bacs"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeBook        BulkRequestNewParamsResourcesTransactionCreateRequestType = "book"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeCard        BulkRequestNewParamsResourcesTransactionCreateRequestType = "card"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeChats       BulkRequestNewParamsResourcesTransactionCreateRequestType = "chats"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeCheck       BulkRequestNewParamsResourcesTransactionCreateRequestType = "check"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeCrossBorder BulkRequestNewParamsResourcesTransactionCreateRequestType = "cross_border"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeDkNets      BulkRequestNewParamsResourcesTransactionCreateRequestType = "dk_nets"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeEft         BulkRequestNewParamsResourcesTransactionCreateRequestType = "eft"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeGBFps       BulkRequestNewParamsResourcesTransactionCreateRequestType = "gb_fps"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeMasav       BulkRequestNewParamsResourcesTransactionCreateRequestType = "masav"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeMxCcen      BulkRequestNewParamsResourcesTransactionCreateRequestType = "mx_ccen"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeNeft        BulkRequestNewParamsResourcesTransactionCreateRequestType = "neft"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeNics        BulkRequestNewParamsResourcesTransactionCreateRequestType = "nics"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeNzBecs      BulkRequestNewParamsResourcesTransactionCreateRequestType = "nz_becs"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypePlElixir    BulkRequestNewParamsResourcesTransactionCreateRequestType = "pl_elixir"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeRtp         BulkRequestNewParamsResourcesTransactionCreateRequestType = "rtp"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeSeBankgirot BulkRequestNewParamsResourcesTransactionCreateRequestType = "se_bankgirot"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeSepa        BulkRequestNewParamsResourcesTransactionCreateRequestType = "sepa"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeSgGiro      BulkRequestNewParamsResourcesTransactionCreateRequestType = "sg_giro"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeSic         BulkRequestNewParamsResourcesTransactionCreateRequestType = "sic"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeStablecoin  BulkRequestNewParamsResourcesTransactionCreateRequestType = "stablecoin"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeWire        BulkRequestNewParamsResourcesTransactionCreateRequestType = "wire"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeZengin      BulkRequestNewParamsResourcesTransactionCreateRequestType = "zengin"
-	BulkRequestNewParamsResourcesTransactionCreateRequestTypeOther       BulkRequestNewParamsResourcesTransactionCreateRequestType = "other"
-)
-
-func (r BulkRequestNewParamsResourcesTransactionCreateRequestType) IsKnown() bool {
-	switch r {
-	case BulkRequestNewParamsResourcesTransactionCreateRequestTypeACH, BulkRequestNewParamsResourcesTransactionCreateRequestTypeAuBecs, BulkRequestNewParamsResourcesTransactionCreateRequestTypeBacs, BulkRequestNewParamsResourcesTransactionCreateRequestTypeBook, BulkRequestNewParamsResourcesTransactionCreateRequestTypeCard, BulkRequestNewParamsResourcesTransactionCreateRequestTypeChats, BulkRequestNewParamsResourcesTransactionCreateRequestTypeCheck, BulkRequestNewParamsResourcesTransactionCreateRequestTypeCrossBorder, BulkRequestNewParamsResourcesTransactionCreateRequestTypeDkNets, BulkRequestNewParamsResourcesTransactionCreateRequestTypeEft, BulkRequestNewParamsResourcesTransactionCreateRequestTypeGBFps, BulkRequestNewParamsResourcesTransactionCreateRequestTypeMasav, BulkRequestNewParamsResourcesTransactionCreateRequestTypeMxCcen, BulkRequestNewParamsResourcesTransactionCreateRequestTypeNeft, BulkRequestNewParamsResourcesTransactionCreateRequestTypeNics, BulkRequestNewParamsResourcesTransactionCreateRequestTypeNzBecs, BulkRequestNewParamsResourcesTransactionCreateRequestTypePlElixir, BulkRequestNewParamsResourcesTransactionCreateRequestTypeRtp, BulkRequestNewParamsResourcesTransactionCreateRequestTypeSeBankgirot, BulkRequestNewParamsResourcesTransactionCreateRequestTypeSepa, BulkRequestNewParamsResourcesTransactionCreateRequestTypeSgGiro, BulkRequestNewParamsResourcesTransactionCreateRequestTypeSic, BulkRequestNewParamsResourcesTransactionCreateRequestTypeStablecoin, BulkRequestNewParamsResourcesTransactionCreateRequestTypeWire, BulkRequestNewParamsResourcesTransactionCreateRequestTypeZengin, BulkRequestNewParamsResourcesTransactionCreateRequestTypeOther:
-		return true
-	}
-	return false
 }
 
 type BulkRequestNewParamsResourcesID struct {
@@ -1967,6 +1869,25 @@ const (
 func (r BulkRequestNewParamsResourcesChargeBearer) IsKnown() bool {
 	switch r {
 	case BulkRequestNewParamsResourcesChargeBearerShared, BulkRequestNewParamsResourcesChargeBearerSender, BulkRequestNewParamsResourcesChargeBearerReceiver:
+		return true
+	}
+	return false
+}
+
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
+type BulkRequestNewParamsResourcesDirection string
+
+const (
+	BulkRequestNewParamsResourcesDirectionCredit BulkRequestNewParamsResourcesDirection = "credit"
+	BulkRequestNewParamsResourcesDirectionDebit  BulkRequestNewParamsResourcesDirection = "debit"
+)
+
+func (r BulkRequestNewParamsResourcesDirection) IsKnown() bool {
+	switch r {
+	case BulkRequestNewParamsResourcesDirectionCredit, BulkRequestNewParamsResourcesDirectionDebit:
 		return true
 	}
 	return false
