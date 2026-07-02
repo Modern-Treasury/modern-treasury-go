@@ -170,6 +170,9 @@ type BulkResultEntity struct {
 	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
 	// amount.
 	AmountReconciledDirection BulkResultEntityAmountReconciledDirection `json:"amount_reconciled_direction" api:"nullable"`
+	// The amount of the transaction as a string, preserving full precision for values
+	// that may exceed safe integer limits in some languages.
+	AmountString string `json:"amount_string"`
 	// The amount that remains unreconciled for this expected payment. Value in
 	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUnreconciled int64 `json:"amount_unreconciled" api:"nullable"`
@@ -411,6 +414,7 @@ type bulkResultEntityJSON struct {
 	AmountLowerBound                   apijson.Field
 	AmountReconciled                   apijson.Field
 	AmountReconciledDirection          apijson.Field
+	AmountString                       apijson.Field
 	AmountUnreconciled                 apijson.Field
 	AmountUnreconciledDirection        apijson.Field
 	AmountUpperBound                   apijson.Field
@@ -862,6 +866,7 @@ const (
 	BulkResultEntityVendorCodeTypePnc             BulkResultEntityVendorCodeType = "pnc"
 	BulkResultEntityVendorCodeTypeSilvergate      BulkResultEntityVendorCodeType = "silvergate"
 	BulkResultEntityVendorCodeTypeSwift           BulkResultEntityVendorCodeType = "swift"
+	BulkResultEntityVendorCodeTypeTurnkey         BulkResultEntityVendorCodeType = "turnkey"
 	BulkResultEntityVendorCodeTypeUsBank          BulkResultEntityVendorCodeType = "us_bank"
 	BulkResultEntityVendorCodeTypeUser            BulkResultEntityVendorCodeType = "user"
 	BulkResultEntityVendorCodeTypeWesternAlliance BulkResultEntityVendorCodeType = "western_alliance"
@@ -869,7 +874,7 @@ const (
 
 func (r BulkResultEntityVendorCodeType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankingCircle, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeCoinbasePrime, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeFakeVendor, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeModernTreasury, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePaxos, BulkResultEntityVendorCodeTypePaypal, BulkResultEntityVendorCodeTypePnc, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser, BulkResultEntityVendorCodeTypeWesternAlliance:
+	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankingCircle, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeCoinbasePrime, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeFakeVendor, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeModernTreasury, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePaxos, BulkResultEntityVendorCodeTypePaypal, BulkResultEntityVendorCodeTypePnc, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeTurnkey, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser, BulkResultEntityVendorCodeTypeWesternAlliance:
 		return true
 	}
 	return false
