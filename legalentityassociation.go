@@ -207,7 +207,8 @@ type ChildLegalEntityAddress struct {
 	Object   string `json:"object" api:"required"`
 	// The postal code of the address.
 	PostalCode string `json:"postal_code" api:"required,nullable"`
-	// Whether this address is the primary address for the legal entity.
+	// Whether this address is the primary address for the legal entity. Optional; when
+	// omitted it is inferred from the address types.
 	Primary bool `json:"primary" api:"required,nullable"`
 	// Region or State.
 	Region    string                      `json:"region" api:"required,nullable"`
@@ -248,6 +249,7 @@ type ChildLegalEntityAddressesAddressType string
 
 const (
 	ChildLegalEntityAddressesAddressTypeBusiness           ChildLegalEntityAddressesAddressType = "business"
+	ChildLegalEntityAddressesAddressTypeBusinessPhysical   ChildLegalEntityAddressesAddressType = "business_physical"
 	ChildLegalEntityAddressesAddressTypeBusinessRegistered ChildLegalEntityAddressesAddressType = "business_registered"
 	ChildLegalEntityAddressesAddressTypeMailing            ChildLegalEntityAddressesAddressType = "mailing"
 	ChildLegalEntityAddressesAddressTypeOther              ChildLegalEntityAddressesAddressType = "other"
@@ -257,7 +259,7 @@ const (
 
 func (r ChildLegalEntityAddressesAddressType) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityAddressesAddressTypeBusiness, ChildLegalEntityAddressesAddressTypeBusinessRegistered, ChildLegalEntityAddressesAddressTypeMailing, ChildLegalEntityAddressesAddressTypeOther, ChildLegalEntityAddressesAddressTypePoBox, ChildLegalEntityAddressesAddressTypeResidential:
+	case ChildLegalEntityAddressesAddressTypeBusiness, ChildLegalEntityAddressesAddressTypeBusinessPhysical, ChildLegalEntityAddressesAddressTypeBusinessRegistered, ChildLegalEntityAddressesAddressTypeMailing, ChildLegalEntityAddressesAddressTypeOther, ChildLegalEntityAddressesAddressTypePoBox, ChildLegalEntityAddressesAddressTypeResidential:
 		return true
 	}
 	return false

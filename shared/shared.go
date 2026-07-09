@@ -1111,7 +1111,8 @@ type LegalEntityAddressCreateRequestParam struct {
 	// The types of this address.
 	AddressTypes param.Field[[]LegalEntityAddressCreateRequestAddressType] `json:"address_types"`
 	Line2        param.Field[string]                                       `json:"line2"`
-	// Whether this address is the primary address for the legal entity.
+	// Whether this address is the primary address for the legal entity. Optional; when
+	// omitted it is inferred from the address types.
 	Primary param.Field[bool] `json:"primary"`
 }
 
@@ -1123,6 +1124,7 @@ type LegalEntityAddressCreateRequestAddressType string
 
 const (
 	LegalEntityAddressCreateRequestAddressTypeBusiness           LegalEntityAddressCreateRequestAddressType = "business"
+	LegalEntityAddressCreateRequestAddressTypeBusinessPhysical   LegalEntityAddressCreateRequestAddressType = "business_physical"
 	LegalEntityAddressCreateRequestAddressTypeBusinessRegistered LegalEntityAddressCreateRequestAddressType = "business_registered"
 	LegalEntityAddressCreateRequestAddressTypeMailing            LegalEntityAddressCreateRequestAddressType = "mailing"
 	LegalEntityAddressCreateRequestAddressTypeOther              LegalEntityAddressCreateRequestAddressType = "other"
@@ -1132,7 +1134,7 @@ const (
 
 func (r LegalEntityAddressCreateRequestAddressType) IsKnown() bool {
 	switch r {
-	case LegalEntityAddressCreateRequestAddressTypeBusiness, LegalEntityAddressCreateRequestAddressTypeBusinessRegistered, LegalEntityAddressCreateRequestAddressTypeMailing, LegalEntityAddressCreateRequestAddressTypeOther, LegalEntityAddressCreateRequestAddressTypePoBox, LegalEntityAddressCreateRequestAddressTypeResidential:
+	case LegalEntityAddressCreateRequestAddressTypeBusiness, LegalEntityAddressCreateRequestAddressTypeBusinessPhysical, LegalEntityAddressCreateRequestAddressTypeBusinessRegistered, LegalEntityAddressCreateRequestAddressTypeMailing, LegalEntityAddressCreateRequestAddressTypeOther, LegalEntityAddressCreateRequestAddressTypePoBox, LegalEntityAddressCreateRequestAddressTypeResidential:
 		return true
 	}
 	return false
