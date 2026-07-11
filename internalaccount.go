@@ -458,8 +458,6 @@ func (r InternalAccountUpdateAccountCapabilityResponsePaymentType) IsKnown() boo
 }
 
 type InternalAccountNewParams struct {
-	// The identifier of the financial institution the account belongs to.
-	ConnectionID param.Field[string] `json:"connection_id" api:"required"`
 	// The currency of the internal account. Supports fiat and stablecoin currencies.
 	Currency param.Field[InternalAccountNewParamsCurrency] `json:"currency" api:"required"`
 	// The nickname of the account.
@@ -470,6 +468,10 @@ type InternalAccountNewParams struct {
 	// The account type, used to provision the appropriate account at the financial
 	// institution.
 	AccountType param.Field[InternalAccountNewParamsAccountType] `json:"account_type"`
+	// The identifier of the financial institution the account belongs to. If not
+	// provided, defaults to the default connection, or the sole connection if only one
+	// exists.
+	ConnectionID param.Field[string] `json:"connection_id"`
 	// The Counterparty associated to this account.
 	CounterpartyID param.Field[string] `json:"counterparty_id"`
 	// Whether this account can receive ACH debits. Only applicable to accounts created
