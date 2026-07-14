@@ -94,18 +94,6 @@ func (r *LegalEntityService) ListAutoPaging(ctx context.Context, query LegalEnti
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
-// Update Legal Entity Status (sandbox only)
-func (r *LegalEntityService) UpdateStatus(ctx context.Context, id string, body LegalEntityUpdateStatusParams, opts ...option.RequestOption) (res *LegalEntity, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/simulations/legal_entities/%s/update_status", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return res, err
-}
-
 type LegalEntity struct {
 	ID string `json:"id" api:"required" format:"uuid"`
 	// A list of addresses for the entity.
@@ -457,7 +445,6 @@ const (
 	LegalEntityIdentificationsIDTypeMxCurp         LegalEntityIdentificationsIDType = "mx_curp"
 	LegalEntityIdentificationsIDTypeMxIne          LegalEntityIdentificationsIDType = "mx_ine"
 	LegalEntityIdentificationsIDTypeMxRfc          LegalEntityIdentificationsIDType = "mx_rfc"
-	LegalEntityIdentificationsIDTypeNationalID     LegalEntityIdentificationsIDType = "national_id"
 	LegalEntityIdentificationsIDTypeNlBsn          LegalEntityIdentificationsIDType = "nl_bsn"
 	LegalEntityIdentificationsIDTypeNlBtw          LegalEntityIdentificationsIDType = "nl_btw"
 	LegalEntityIdentificationsIDTypeNlRsin         LegalEntityIdentificationsIDType = "nl_rsin"
@@ -491,7 +478,7 @@ const (
 
 func (r LegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeAtAtin, LegalEntityIdentificationsIDTypeAtVat, LegalEntityIdentificationsIDTypeAuAbn, LegalEntityIdentificationsIDTypeAuTfn, LegalEntityIdentificationsIDTypeBeEnt, LegalEntityIdentificationsIDTypeBeNrn, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeCaBn, LegalEntityIdentificationsIDTypeCaSin, LegalEntityIdentificationsIDTypeChAhv, LegalEntityIdentificationsIDTypeChUid, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeCyTin, LegalEntityIdentificationsIDTypeCzIco, LegalEntityIdentificationsIDTypeCzRc, LegalEntityIdentificationsIDTypeDeStid, LegalEntityIdentificationsIDTypeDeStnr, LegalEntityIdentificationsIDTypeDeVat, LegalEntityIdentificationsIDTypeDkCpr, LegalEntityIdentificationsIDTypeDkCvr, LegalEntityIdentificationsIDTypeDriversLicense, LegalEntityIdentificationsIDTypeEeIk, LegalEntityIdentificationsIDTypeEeRk, LegalEntityIdentificationsIDTypeEsNie, LegalEntityIdentificationsIDTypeEsNif, LegalEntityIdentificationsIDTypeFiHetu, LegalEntityIdentificationsIDTypeFiYtj, LegalEntityIdentificationsIDTypeFrNif, LegalEntityIdentificationsIDTypeFrSiren, LegalEntityIdentificationsIDTypeFrVat, LegalEntityIdentificationsIDTypeGBNino, LegalEntityIdentificationsIDTypeGBUtr, LegalEntityIdentificationsIDTypeGBVat, LegalEntityIdentificationsIDTypeGrVat, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeHrOib, LegalEntityIdentificationsIDTypeHuAdj, LegalEntityIdentificationsIDTypeHuAnum, LegalEntityIdentificationsIDTypeIePps, LegalEntityIdentificationsIDTypeIeTrn, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeIsKnt, LegalEntityIdentificationsIDTypeItCf, LegalEntityIdentificationsIDTypeItPiva, LegalEntityIdentificationsIDTypeJpHb, LegalEntityIdentificationsIDTypeJpMn, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypeLiPeid, LegalEntityIdentificationsIDTypeLtAk, LegalEntityIdentificationsIDTypeLtJak, LegalEntityIdentificationsIDTypeLuMtc, LegalEntityIdentificationsIDTypeLuVat, LegalEntityIdentificationsIDTypeLvPk, LegalEntityIdentificationsIDTypeLvRn, LegalEntityIdentificationsIDTypeMtTin, LegalEntityIdentificationsIDTypeMtVat, LegalEntityIdentificationsIDTypeMxCurp, LegalEntityIdentificationsIDTypeMxIne, LegalEntityIdentificationsIDTypeMxRfc, LegalEntityIdentificationsIDTypeNationalID, LegalEntityIdentificationsIDTypeNlBsn, LegalEntityIdentificationsIDTypeNlBtw, LegalEntityIdentificationsIDTypeNlRsin, LegalEntityIdentificationsIDTypeNoFdn, LegalEntityIdentificationsIDTypeNoMva, LegalEntityIdentificationsIDTypeNoOrgnr, LegalEntityIdentificationsIDTypeNzIrd, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypePlNip, LegalEntityIdentificationsIDTypePlPesel, LegalEntityIdentificationsIDTypePtNif, LegalEntityIdentificationsIDTypeRoCnp, LegalEntityIdentificationsIDTypeRoCui, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeSeOrgnr, LegalEntityIdentificationsIDTypeSePnmr, LegalEntityIdentificationsIDTypeSgFin, LegalEntityIdentificationsIDTypeSgNric, LegalEntityIdentificationsIDTypeSgUen, LegalEntityIdentificationsIDTypeSiDav, LegalEntityIdentificationsIDTypeSiTin, LegalEntityIdentificationsIDTypeSkIco, LegalEntityIdentificationsIDTypeSkRc, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeUyRut, LegalEntityIdentificationsIDTypeVnTin:
+	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeAtAtin, LegalEntityIdentificationsIDTypeAtVat, LegalEntityIdentificationsIDTypeAuAbn, LegalEntityIdentificationsIDTypeAuTfn, LegalEntityIdentificationsIDTypeBeEnt, LegalEntityIdentificationsIDTypeBeNrn, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeCaBn, LegalEntityIdentificationsIDTypeCaSin, LegalEntityIdentificationsIDTypeChAhv, LegalEntityIdentificationsIDTypeChUid, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeCyTin, LegalEntityIdentificationsIDTypeCzIco, LegalEntityIdentificationsIDTypeCzRc, LegalEntityIdentificationsIDTypeDeStid, LegalEntityIdentificationsIDTypeDeStnr, LegalEntityIdentificationsIDTypeDeVat, LegalEntityIdentificationsIDTypeDkCpr, LegalEntityIdentificationsIDTypeDkCvr, LegalEntityIdentificationsIDTypeDriversLicense, LegalEntityIdentificationsIDTypeEeIk, LegalEntityIdentificationsIDTypeEeRk, LegalEntityIdentificationsIDTypeEsNie, LegalEntityIdentificationsIDTypeEsNif, LegalEntityIdentificationsIDTypeFiHetu, LegalEntityIdentificationsIDTypeFiYtj, LegalEntityIdentificationsIDTypeFrNif, LegalEntityIdentificationsIDTypeFrSiren, LegalEntityIdentificationsIDTypeFrVat, LegalEntityIdentificationsIDTypeGBNino, LegalEntityIdentificationsIDTypeGBUtr, LegalEntityIdentificationsIDTypeGBVat, LegalEntityIdentificationsIDTypeGrVat, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeHrOib, LegalEntityIdentificationsIDTypeHuAdj, LegalEntityIdentificationsIDTypeHuAnum, LegalEntityIdentificationsIDTypeIePps, LegalEntityIdentificationsIDTypeIeTrn, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeIsKnt, LegalEntityIdentificationsIDTypeItCf, LegalEntityIdentificationsIDTypeItPiva, LegalEntityIdentificationsIDTypeJpHb, LegalEntityIdentificationsIDTypeJpMn, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypeLiPeid, LegalEntityIdentificationsIDTypeLtAk, LegalEntityIdentificationsIDTypeLtJak, LegalEntityIdentificationsIDTypeLuMtc, LegalEntityIdentificationsIDTypeLuVat, LegalEntityIdentificationsIDTypeLvPk, LegalEntityIdentificationsIDTypeLvRn, LegalEntityIdentificationsIDTypeMtTin, LegalEntityIdentificationsIDTypeMtVat, LegalEntityIdentificationsIDTypeMxCurp, LegalEntityIdentificationsIDTypeMxIne, LegalEntityIdentificationsIDTypeMxRfc, LegalEntityIdentificationsIDTypeNlBsn, LegalEntityIdentificationsIDTypeNlBtw, LegalEntityIdentificationsIDTypeNlRsin, LegalEntityIdentificationsIDTypeNoFdn, LegalEntityIdentificationsIDTypeNoMva, LegalEntityIdentificationsIDTypeNoOrgnr, LegalEntityIdentificationsIDTypeNzIrd, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypePlNip, LegalEntityIdentificationsIDTypePlPesel, LegalEntityIdentificationsIDTypePtNif, LegalEntityIdentificationsIDTypeRoCnp, LegalEntityIdentificationsIDTypeRoCui, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeSeOrgnr, LegalEntityIdentificationsIDTypeSePnmr, LegalEntityIdentificationsIDTypeSgFin, LegalEntityIdentificationsIDTypeSgNric, LegalEntityIdentificationsIDTypeSgUen, LegalEntityIdentificationsIDTypeSiDav, LegalEntityIdentificationsIDTypeSiTin, LegalEntityIdentificationsIDTypeSkIco, LegalEntityIdentificationsIDTypeSkRc, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeUyRut, LegalEntityIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false
@@ -1010,34 +997,6 @@ const (
 func (r LegalEntityListParamsStatus) IsKnown() bool {
 	switch r {
 	case LegalEntityListParamsStatusPending, LegalEntityListParamsStatusActive, LegalEntityListParamsStatusSuspended, LegalEntityListParamsStatusDenied:
-		return true
-	}
-	return false
-}
-
-type LegalEntityUpdateStatusParams struct {
-	// The target status for the legal entity. One of `active`, `suspended`, or
-	// `denied`. Valid transitions depend on the current status.
-	Status param.Field[LegalEntityUpdateStatusParamsStatus] `json:"status" api:"required"`
-}
-
-func (r LegalEntityUpdateStatusParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The target status for the legal entity. One of `active`, `suspended`, or
-// `denied`. Valid transitions depend on the current status.
-type LegalEntityUpdateStatusParamsStatus string
-
-const (
-	LegalEntityUpdateStatusParamsStatusActive    LegalEntityUpdateStatusParamsStatus = "active"
-	LegalEntityUpdateStatusParamsStatusSuspended LegalEntityUpdateStatusParamsStatus = "suspended"
-	LegalEntityUpdateStatusParamsStatusDenied    LegalEntityUpdateStatusParamsStatus = "denied"
-)
-
-func (r LegalEntityUpdateStatusParamsStatus) IsKnown() bool {
-	switch r {
-	case LegalEntityUpdateStatusParamsStatusActive, LegalEntityUpdateStatusParamsStatusSuspended, LegalEntityUpdateStatusParamsStatusDenied:
 		return true
 	}
 	return false
