@@ -957,9 +957,6 @@ const IdentificationCreateRequestIDTypeMxIne = shared.IdentificationCreateReques
 const IdentificationCreateRequestIDTypeMxRfc = shared.IdentificationCreateRequestIDTypeMxRfc
 
 // This is an alias to an internal value.
-const IdentificationCreateRequestIDTypeNationalID = shared.IdentificationCreateRequestIDTypeNationalID
-
-// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeNlBsn = shared.IdentificationCreateRequestIDTypeNlBsn
 
 // This is an alias to an internal value.

@@ -48,7 +48,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 			File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("Example data")))),
 			DocumentType:     moderntreasury.F("document_type"),
 			DocumentableID:   moderntreasury.F("documentable_id"),
-			DocumentableType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsDocumentsDocumentableTypeConnection),
+			DocumentableType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsDocumentsDocumentableTypeConnections),
 		}}),
 		EffectiveDate:            moderntreasury.F(time.Now()),
 		ExpiresAt:                moderntreasury.F(time.Now()),
