@@ -221,6 +221,8 @@ type ChildLegalEntityCreateParam struct {
 	ServiceProviderLegalEntityID param.Field[string] `json:"service_provider_legal_entity_id" format:"uuid"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
+	// Acceptance of terms of use by the legal entity.
+	TermsOfUse param.Field[ChildLegalEntityCreateTermsOfUseParam] `json:"terms_of_use"`
 	// Deprecated. Use `third_party_verifications` instead.
 	//
 	// Deprecated: deprecated
@@ -346,6 +348,19 @@ func (r ChildLegalEntityCreateRiskRating) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+// Acceptance of terms of use by the legal entity.
+type ChildLegalEntityCreateTermsOfUseParam struct {
+	// The ISO 8601 timestamp indicating when the terms of use were accepted.
+	AcceptedAt param.Field[time.Time] `json:"accepted_at" format:"date-time"`
+	// The IP address from which the terms of use were accepted. Supports both IPv4 and
+	// IPv6 formats.
+	IPAddress param.Field[string] `json:"ip_address"`
+}
+
+func (r ChildLegalEntityCreateTermsOfUseParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type ContactDetail struct {
@@ -700,109 +715,110 @@ func (r IdentificationCreateRequestParam) MarshalJSON() (data []byte, err error)
 type IdentificationCreateRequestIDType string
 
 const (
-	IdentificationCreateRequestIDTypeArCuil         IdentificationCreateRequestIDType = "ar_cuil"
-	IdentificationCreateRequestIDTypeArCuit         IdentificationCreateRequestIDType = "ar_cuit"
-	IdentificationCreateRequestIDTypeAtAtin         IdentificationCreateRequestIDType = "at_atin"
-	IdentificationCreateRequestIDTypeAtVat          IdentificationCreateRequestIDType = "at_vat"
-	IdentificationCreateRequestIDTypeAuAbn          IdentificationCreateRequestIDType = "au_abn"
-	IdentificationCreateRequestIDTypeAuTfn          IdentificationCreateRequestIDType = "au_tfn"
-	IdentificationCreateRequestIDTypeBeEnt          IdentificationCreateRequestIDType = "be_ent"
-	IdentificationCreateRequestIDTypeBeNrn          IdentificationCreateRequestIDType = "be_nrn"
-	IdentificationCreateRequestIDTypeBrCnpj         IdentificationCreateRequestIDType = "br_cnpj"
-	IdentificationCreateRequestIDTypeBrCpf          IdentificationCreateRequestIDType = "br_cpf"
-	IdentificationCreateRequestIDTypeCaBn           IdentificationCreateRequestIDType = "ca_bn"
-	IdentificationCreateRequestIDTypeCaSin          IdentificationCreateRequestIDType = "ca_sin"
-	IdentificationCreateRequestIDTypeChAhv          IdentificationCreateRequestIDType = "ch_ahv"
-	IdentificationCreateRequestIDTypeChUid          IdentificationCreateRequestIDType = "ch_uid"
-	IdentificationCreateRequestIDTypeClRun          IdentificationCreateRequestIDType = "cl_run"
-	IdentificationCreateRequestIDTypeClRut          IdentificationCreateRequestIDType = "cl_rut"
-	IdentificationCreateRequestIDTypeCoCedulas      IdentificationCreateRequestIDType = "co_cedulas"
-	IdentificationCreateRequestIDTypeCoNit          IdentificationCreateRequestIDType = "co_nit"
-	IdentificationCreateRequestIDTypeCyTin          IdentificationCreateRequestIDType = "cy_tin"
-	IdentificationCreateRequestIDTypeCzIco          IdentificationCreateRequestIDType = "cz_ico"
-	IdentificationCreateRequestIDTypeCzRc           IdentificationCreateRequestIDType = "cz_rc"
-	IdentificationCreateRequestIDTypeDeStid         IdentificationCreateRequestIDType = "de_stid"
-	IdentificationCreateRequestIDTypeDeStnr         IdentificationCreateRequestIDType = "de_stnr"
-	IdentificationCreateRequestIDTypeDeVat          IdentificationCreateRequestIDType = "de_vat"
-	IdentificationCreateRequestIDTypeDkCpr          IdentificationCreateRequestIDType = "dk_cpr"
-	IdentificationCreateRequestIDTypeDkCvr          IdentificationCreateRequestIDType = "dk_cvr"
-	IdentificationCreateRequestIDTypeDriversLicense IdentificationCreateRequestIDType = "drivers_license"
-	IdentificationCreateRequestIDTypeEeIk           IdentificationCreateRequestIDType = "ee_ik"
-	IdentificationCreateRequestIDTypeEeRk           IdentificationCreateRequestIDType = "ee_rk"
-	IdentificationCreateRequestIDTypeEsNie          IdentificationCreateRequestIDType = "es_nie"
-	IdentificationCreateRequestIDTypeEsNif          IdentificationCreateRequestIDType = "es_nif"
-	IdentificationCreateRequestIDTypeFiHetu         IdentificationCreateRequestIDType = "fi_hetu"
-	IdentificationCreateRequestIDTypeFiYtj          IdentificationCreateRequestIDType = "fi_ytj"
-	IdentificationCreateRequestIDTypeFrNif          IdentificationCreateRequestIDType = "fr_nif"
-	IdentificationCreateRequestIDTypeFrSiren        IdentificationCreateRequestIDType = "fr_siren"
-	IdentificationCreateRequestIDTypeFrVat          IdentificationCreateRequestIDType = "fr_vat"
-	IdentificationCreateRequestIDTypeGBNino         IdentificationCreateRequestIDType = "gb_nino"
-	IdentificationCreateRequestIDTypeGBUtr          IdentificationCreateRequestIDType = "gb_utr"
-	IdentificationCreateRequestIDTypeGBVat          IdentificationCreateRequestIDType = "gb_vat"
-	IdentificationCreateRequestIDTypeGrVat          IdentificationCreateRequestIDType = "gr_vat"
-	IdentificationCreateRequestIDTypeHnID           IdentificationCreateRequestIDType = "hn_id"
-	IdentificationCreateRequestIDTypeHnRtn          IdentificationCreateRequestIDType = "hn_rtn"
-	IdentificationCreateRequestIDTypeHrOib          IdentificationCreateRequestIDType = "hr_oib"
-	IdentificationCreateRequestIDTypeHuAdj          IdentificationCreateRequestIDType = "hu_adj"
-	IdentificationCreateRequestIDTypeHuAnum         IdentificationCreateRequestIDType = "hu_anum"
-	IdentificationCreateRequestIDTypeIePps          IdentificationCreateRequestIDType = "ie_pps"
-	IdentificationCreateRequestIDTypeIeTrn          IdentificationCreateRequestIDType = "ie_trn"
-	IdentificationCreateRequestIDTypeInLei          IdentificationCreateRequestIDType = "in_lei"
-	IdentificationCreateRequestIDTypeIsKnt          IdentificationCreateRequestIDType = "is_knt"
-	IdentificationCreateRequestIDTypeItCf           IdentificationCreateRequestIDType = "it_cf"
-	IdentificationCreateRequestIDTypeItPiva         IdentificationCreateRequestIDType = "it_piva"
-	IdentificationCreateRequestIDTypeJpHb           IdentificationCreateRequestIDType = "jp_hb"
-	IdentificationCreateRequestIDTypeJpMn           IdentificationCreateRequestIDType = "jp_mn"
-	IdentificationCreateRequestIDTypeKrBrn          IdentificationCreateRequestIDType = "kr_brn"
-	IdentificationCreateRequestIDTypeKrCrn          IdentificationCreateRequestIDType = "kr_crn"
-	IdentificationCreateRequestIDTypeKrRrn          IdentificationCreateRequestIDType = "kr_rrn"
-	IdentificationCreateRequestIDTypeLiPeid         IdentificationCreateRequestIDType = "li_peid"
-	IdentificationCreateRequestIDTypeLtAk           IdentificationCreateRequestIDType = "lt_ak"
-	IdentificationCreateRequestIDTypeLtJak          IdentificationCreateRequestIDType = "lt_jak"
-	IdentificationCreateRequestIDTypeLuMtc          IdentificationCreateRequestIDType = "lu_mtc"
-	IdentificationCreateRequestIDTypeLuVat          IdentificationCreateRequestIDType = "lu_vat"
-	IdentificationCreateRequestIDTypeLvPk           IdentificationCreateRequestIDType = "lv_pk"
-	IdentificationCreateRequestIDTypeLvRn           IdentificationCreateRequestIDType = "lv_rn"
-	IdentificationCreateRequestIDTypeMtTin          IdentificationCreateRequestIDType = "mt_tin"
-	IdentificationCreateRequestIDTypeMtVat          IdentificationCreateRequestIDType = "mt_vat"
-	IdentificationCreateRequestIDTypeMxCurp         IdentificationCreateRequestIDType = "mx_curp"
-	IdentificationCreateRequestIDTypeMxIne          IdentificationCreateRequestIDType = "mx_ine"
-	IdentificationCreateRequestIDTypeMxRfc          IdentificationCreateRequestIDType = "mx_rfc"
-	IdentificationCreateRequestIDTypeNationalID     IdentificationCreateRequestIDType = "national_id"
-	IdentificationCreateRequestIDTypeNlBsn          IdentificationCreateRequestIDType = "nl_bsn"
-	IdentificationCreateRequestIDTypeNlBtw          IdentificationCreateRequestIDType = "nl_btw"
-	IdentificationCreateRequestIDTypeNlRsin         IdentificationCreateRequestIDType = "nl_rsin"
-	IdentificationCreateRequestIDTypeNoFdn          IdentificationCreateRequestIDType = "no_fdn"
-	IdentificationCreateRequestIDTypeNoMva          IdentificationCreateRequestIDType = "no_mva"
-	IdentificationCreateRequestIDTypeNoOrgnr        IdentificationCreateRequestIDType = "no_orgnr"
-	IdentificationCreateRequestIDTypeNzIrd          IdentificationCreateRequestIDType = "nz_ird"
-	IdentificationCreateRequestIDTypePassport       IdentificationCreateRequestIDType = "passport"
-	IdentificationCreateRequestIDTypePlNip          IdentificationCreateRequestIDType = "pl_nip"
-	IdentificationCreateRequestIDTypePlPesel        IdentificationCreateRequestIDType = "pl_pesel"
-	IdentificationCreateRequestIDTypePtNif          IdentificationCreateRequestIDType = "pt_nif"
-	IdentificationCreateRequestIDTypeRoCnp          IdentificationCreateRequestIDType = "ro_cnp"
-	IdentificationCreateRequestIDTypeRoCui          IdentificationCreateRequestIDType = "ro_cui"
-	IdentificationCreateRequestIDTypeSaTin          IdentificationCreateRequestIDType = "sa_tin"
-	IdentificationCreateRequestIDTypeSaVat          IdentificationCreateRequestIDType = "sa_vat"
-	IdentificationCreateRequestIDTypeSeOrgnr        IdentificationCreateRequestIDType = "se_orgnr"
-	IdentificationCreateRequestIDTypeSePnmr         IdentificationCreateRequestIDType = "se_pnmr"
-	IdentificationCreateRequestIDTypeSgFin          IdentificationCreateRequestIDType = "sg_fin"
-	IdentificationCreateRequestIDTypeSgNric         IdentificationCreateRequestIDType = "sg_nric"
-	IdentificationCreateRequestIDTypeSgUen          IdentificationCreateRequestIDType = "sg_uen"
-	IdentificationCreateRequestIDTypeSiDav          IdentificationCreateRequestIDType = "si_dav"
-	IdentificationCreateRequestIDTypeSiTin          IdentificationCreateRequestIDType = "si_tin"
-	IdentificationCreateRequestIDTypeSkIco          IdentificationCreateRequestIDType = "sk_ico"
-	IdentificationCreateRequestIDTypeSkRc           IdentificationCreateRequestIDType = "sk_rc"
-	IdentificationCreateRequestIDTypeUsEin          IdentificationCreateRequestIDType = "us_ein"
-	IdentificationCreateRequestIDTypeUsItin         IdentificationCreateRequestIDType = "us_itin"
-	IdentificationCreateRequestIDTypeUsSsn          IdentificationCreateRequestIDType = "us_ssn"
-	IdentificationCreateRequestIDTypeUyRut          IdentificationCreateRequestIDType = "uy_rut"
-	IdentificationCreateRequestIDTypeVnTin          IdentificationCreateRequestIDType = "vn_tin"
+	IdentificationCreateRequestIDTypeArCuil               IdentificationCreateRequestIDType = "ar_cuil"
+	IdentificationCreateRequestIDTypeArCuit               IdentificationCreateRequestIDType = "ar_cuit"
+	IdentificationCreateRequestIDTypeAtAtin               IdentificationCreateRequestIDType = "at_atin"
+	IdentificationCreateRequestIDTypeAtVat                IdentificationCreateRequestIDType = "at_vat"
+	IdentificationCreateRequestIDTypeAuAbn                IdentificationCreateRequestIDType = "au_abn"
+	IdentificationCreateRequestIDTypeAuTfn                IdentificationCreateRequestIDType = "au_tfn"
+	IdentificationCreateRequestIDTypeBeEnt                IdentificationCreateRequestIDType = "be_ent"
+	IdentificationCreateRequestIDTypeBeNrn                IdentificationCreateRequestIDType = "be_nrn"
+	IdentificationCreateRequestIDTypeBrCnpj               IdentificationCreateRequestIDType = "br_cnpj"
+	IdentificationCreateRequestIDTypeBrCpf                IdentificationCreateRequestIDType = "br_cpf"
+	IdentificationCreateRequestIDTypeCaBn                 IdentificationCreateRequestIDType = "ca_bn"
+	IdentificationCreateRequestIDTypeCaSin                IdentificationCreateRequestIDType = "ca_sin"
+	IdentificationCreateRequestIDTypeChAhv                IdentificationCreateRequestIDType = "ch_ahv"
+	IdentificationCreateRequestIDTypeChUid                IdentificationCreateRequestIDType = "ch_uid"
+	IdentificationCreateRequestIDTypeClRun                IdentificationCreateRequestIDType = "cl_run"
+	IdentificationCreateRequestIDTypeClRut                IdentificationCreateRequestIDType = "cl_rut"
+	IdentificationCreateRequestIDTypeCoCedulas            IdentificationCreateRequestIDType = "co_cedulas"
+	IdentificationCreateRequestIDTypeCoNit                IdentificationCreateRequestIDType = "co_nit"
+	IdentificationCreateRequestIDTypeCyTin                IdentificationCreateRequestIDType = "cy_tin"
+	IdentificationCreateRequestIDTypeCzIco                IdentificationCreateRequestIDType = "cz_ico"
+	IdentificationCreateRequestIDTypeCzRc                 IdentificationCreateRequestIDType = "cz_rc"
+	IdentificationCreateRequestIDTypeDeStid               IdentificationCreateRequestIDType = "de_stid"
+	IdentificationCreateRequestIDTypeDeStnr               IdentificationCreateRequestIDType = "de_stnr"
+	IdentificationCreateRequestIDTypeDeVat                IdentificationCreateRequestIDType = "de_vat"
+	IdentificationCreateRequestIDTypeDkCpr                IdentificationCreateRequestIDType = "dk_cpr"
+	IdentificationCreateRequestIDTypeDkCvr                IdentificationCreateRequestIDType = "dk_cvr"
+	IdentificationCreateRequestIDTypeDriversLicense       IdentificationCreateRequestIDType = "drivers_license"
+	IdentificationCreateRequestIDTypeEeIk                 IdentificationCreateRequestIDType = "ee_ik"
+	IdentificationCreateRequestIDTypeEeRk                 IdentificationCreateRequestIDType = "ee_rk"
+	IdentificationCreateRequestIDTypeEsNie                IdentificationCreateRequestIDType = "es_nie"
+	IdentificationCreateRequestIDTypeEsNif                IdentificationCreateRequestIDType = "es_nif"
+	IdentificationCreateRequestIDTypeFiHetu               IdentificationCreateRequestIDType = "fi_hetu"
+	IdentificationCreateRequestIDTypeFiYtj                IdentificationCreateRequestIDType = "fi_ytj"
+	IdentificationCreateRequestIDTypeFrNif                IdentificationCreateRequestIDType = "fr_nif"
+	IdentificationCreateRequestIDTypeFrSiren              IdentificationCreateRequestIDType = "fr_siren"
+	IdentificationCreateRequestIDTypeFrVat                IdentificationCreateRequestIDType = "fr_vat"
+	IdentificationCreateRequestIDTypeGBNino               IdentificationCreateRequestIDType = "gb_nino"
+	IdentificationCreateRequestIDTypeGBUtr                IdentificationCreateRequestIDType = "gb_utr"
+	IdentificationCreateRequestIDTypeGBVat                IdentificationCreateRequestIDType = "gb_vat"
+	IdentificationCreateRequestIDTypeGenericInternational IdentificationCreateRequestIDType = "generic_international"
+	IdentificationCreateRequestIDTypeGrVat                IdentificationCreateRequestIDType = "gr_vat"
+	IdentificationCreateRequestIDTypeHnID                 IdentificationCreateRequestIDType = "hn_id"
+	IdentificationCreateRequestIDTypeHnRtn                IdentificationCreateRequestIDType = "hn_rtn"
+	IdentificationCreateRequestIDTypeHrOib                IdentificationCreateRequestIDType = "hr_oib"
+	IdentificationCreateRequestIDTypeHuAdj                IdentificationCreateRequestIDType = "hu_adj"
+	IdentificationCreateRequestIDTypeHuAnum               IdentificationCreateRequestIDType = "hu_anum"
+	IdentificationCreateRequestIDTypeIePps                IdentificationCreateRequestIDType = "ie_pps"
+	IdentificationCreateRequestIDTypeIeTrn                IdentificationCreateRequestIDType = "ie_trn"
+	IdentificationCreateRequestIDTypeInLei                IdentificationCreateRequestIDType = "in_lei"
+	IdentificationCreateRequestIDTypeIsKnt                IdentificationCreateRequestIDType = "is_knt"
+	IdentificationCreateRequestIDTypeItCf                 IdentificationCreateRequestIDType = "it_cf"
+	IdentificationCreateRequestIDTypeItPiva               IdentificationCreateRequestIDType = "it_piva"
+	IdentificationCreateRequestIDTypeJpHb                 IdentificationCreateRequestIDType = "jp_hb"
+	IdentificationCreateRequestIDTypeJpMn                 IdentificationCreateRequestIDType = "jp_mn"
+	IdentificationCreateRequestIDTypeKrBrn                IdentificationCreateRequestIDType = "kr_brn"
+	IdentificationCreateRequestIDTypeKrCrn                IdentificationCreateRequestIDType = "kr_crn"
+	IdentificationCreateRequestIDTypeKrRrn                IdentificationCreateRequestIDType = "kr_rrn"
+	IdentificationCreateRequestIDTypeLiPeid               IdentificationCreateRequestIDType = "li_peid"
+	IdentificationCreateRequestIDTypeLtAk                 IdentificationCreateRequestIDType = "lt_ak"
+	IdentificationCreateRequestIDTypeLtJak                IdentificationCreateRequestIDType = "lt_jak"
+	IdentificationCreateRequestIDTypeLuMtc                IdentificationCreateRequestIDType = "lu_mtc"
+	IdentificationCreateRequestIDTypeLuVat                IdentificationCreateRequestIDType = "lu_vat"
+	IdentificationCreateRequestIDTypeLvPk                 IdentificationCreateRequestIDType = "lv_pk"
+	IdentificationCreateRequestIDTypeLvRn                 IdentificationCreateRequestIDType = "lv_rn"
+	IdentificationCreateRequestIDTypeMtTin                IdentificationCreateRequestIDType = "mt_tin"
+	IdentificationCreateRequestIDTypeMtVat                IdentificationCreateRequestIDType = "mt_vat"
+	IdentificationCreateRequestIDTypeMxCurp               IdentificationCreateRequestIDType = "mx_curp"
+	IdentificationCreateRequestIDTypeMxIne                IdentificationCreateRequestIDType = "mx_ine"
+	IdentificationCreateRequestIDTypeMxRfc                IdentificationCreateRequestIDType = "mx_rfc"
+	IdentificationCreateRequestIDTypeNationalID           IdentificationCreateRequestIDType = "national_id"
+	IdentificationCreateRequestIDTypeNlBsn                IdentificationCreateRequestIDType = "nl_bsn"
+	IdentificationCreateRequestIDTypeNlBtw                IdentificationCreateRequestIDType = "nl_btw"
+	IdentificationCreateRequestIDTypeNlRsin               IdentificationCreateRequestIDType = "nl_rsin"
+	IdentificationCreateRequestIDTypeNoFdn                IdentificationCreateRequestIDType = "no_fdn"
+	IdentificationCreateRequestIDTypeNoMva                IdentificationCreateRequestIDType = "no_mva"
+	IdentificationCreateRequestIDTypeNoOrgnr              IdentificationCreateRequestIDType = "no_orgnr"
+	IdentificationCreateRequestIDTypeNzIrd                IdentificationCreateRequestIDType = "nz_ird"
+	IdentificationCreateRequestIDTypePassport             IdentificationCreateRequestIDType = "passport"
+	IdentificationCreateRequestIDTypePlNip                IdentificationCreateRequestIDType = "pl_nip"
+	IdentificationCreateRequestIDTypePlPesel              IdentificationCreateRequestIDType = "pl_pesel"
+	IdentificationCreateRequestIDTypePtNif                IdentificationCreateRequestIDType = "pt_nif"
+	IdentificationCreateRequestIDTypeRoCnp                IdentificationCreateRequestIDType = "ro_cnp"
+	IdentificationCreateRequestIDTypeRoCui                IdentificationCreateRequestIDType = "ro_cui"
+	IdentificationCreateRequestIDTypeSaTin                IdentificationCreateRequestIDType = "sa_tin"
+	IdentificationCreateRequestIDTypeSaVat                IdentificationCreateRequestIDType = "sa_vat"
+	IdentificationCreateRequestIDTypeSeOrgnr              IdentificationCreateRequestIDType = "se_orgnr"
+	IdentificationCreateRequestIDTypeSePnmr               IdentificationCreateRequestIDType = "se_pnmr"
+	IdentificationCreateRequestIDTypeSgFin                IdentificationCreateRequestIDType = "sg_fin"
+	IdentificationCreateRequestIDTypeSgNric               IdentificationCreateRequestIDType = "sg_nric"
+	IdentificationCreateRequestIDTypeSgUen                IdentificationCreateRequestIDType = "sg_uen"
+	IdentificationCreateRequestIDTypeSiDav                IdentificationCreateRequestIDType = "si_dav"
+	IdentificationCreateRequestIDTypeSiTin                IdentificationCreateRequestIDType = "si_tin"
+	IdentificationCreateRequestIDTypeSkIco                IdentificationCreateRequestIDType = "sk_ico"
+	IdentificationCreateRequestIDTypeSkRc                 IdentificationCreateRequestIDType = "sk_rc"
+	IdentificationCreateRequestIDTypeUsEin                IdentificationCreateRequestIDType = "us_ein"
+	IdentificationCreateRequestIDTypeUsItin               IdentificationCreateRequestIDType = "us_itin"
+	IdentificationCreateRequestIDTypeUsSsn                IdentificationCreateRequestIDType = "us_ssn"
+	IdentificationCreateRequestIDTypeUyRut                IdentificationCreateRequestIDType = "uy_rut"
+	IdentificationCreateRequestIDTypeVnTin                IdentificationCreateRequestIDType = "vn_tin"
 )
 
 func (r IdentificationCreateRequestIDType) IsKnown() bool {
 	switch r {
-	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeAtAtin, IdentificationCreateRequestIDTypeAtVat, IdentificationCreateRequestIDTypeAuAbn, IdentificationCreateRequestIDTypeAuTfn, IdentificationCreateRequestIDTypeBeEnt, IdentificationCreateRequestIDTypeBeNrn, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaBn, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeChAhv, IdentificationCreateRequestIDTypeChUid, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeCyTin, IdentificationCreateRequestIDTypeCzIco, IdentificationCreateRequestIDTypeCzRc, IdentificationCreateRequestIDTypeDeStid, IdentificationCreateRequestIDTypeDeStnr, IdentificationCreateRequestIDTypeDeVat, IdentificationCreateRequestIDTypeDkCpr, IdentificationCreateRequestIDTypeDkCvr, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeEeIk, IdentificationCreateRequestIDTypeEeRk, IdentificationCreateRequestIDTypeEsNie, IdentificationCreateRequestIDTypeEsNif, IdentificationCreateRequestIDTypeFiHetu, IdentificationCreateRequestIDTypeFiYtj, IdentificationCreateRequestIDTypeFrNif, IdentificationCreateRequestIDTypeFrSiren, IdentificationCreateRequestIDTypeFrVat, IdentificationCreateRequestIDTypeGBNino, IdentificationCreateRequestIDTypeGBUtr, IdentificationCreateRequestIDTypeGBVat, IdentificationCreateRequestIDTypeGrVat, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeHrOib, IdentificationCreateRequestIDTypeHuAdj, IdentificationCreateRequestIDTypeHuAnum, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeIeTrn, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeIsKnt, IdentificationCreateRequestIDTypeItCf, IdentificationCreateRequestIDTypeItPiva, IdentificationCreateRequestIDTypeJpHb, IdentificationCreateRequestIDTypeJpMn, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypeLiPeid, IdentificationCreateRequestIDTypeLtAk, IdentificationCreateRequestIDTypeLtJak, IdentificationCreateRequestIDTypeLuMtc, IdentificationCreateRequestIDTypeLuVat, IdentificationCreateRequestIDTypeLvPk, IdentificationCreateRequestIDTypeLvRn, IdentificationCreateRequestIDTypeMtTin, IdentificationCreateRequestIDTypeMtVat, IdentificationCreateRequestIDTypeMxCurp, IdentificationCreateRequestIDTypeMxIne, IdentificationCreateRequestIDTypeMxRfc, IdentificationCreateRequestIDTypeNationalID, IdentificationCreateRequestIDTypeNlBsn, IdentificationCreateRequestIDTypeNlBtw, IdentificationCreateRequestIDTypeNlRsin, IdentificationCreateRequestIDTypeNoFdn, IdentificationCreateRequestIDTypeNoMva, IdentificationCreateRequestIDTypeNoOrgnr, IdentificationCreateRequestIDTypeNzIrd, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypePlNip, IdentificationCreateRequestIDTypePlPesel, IdentificationCreateRequestIDTypePtNif, IdentificationCreateRequestIDTypeRoCnp, IdentificationCreateRequestIDTypeRoCui, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeSeOrgnr, IdentificationCreateRequestIDTypeSePnmr, IdentificationCreateRequestIDTypeSgFin, IdentificationCreateRequestIDTypeSgNric, IdentificationCreateRequestIDTypeSgUen, IdentificationCreateRequestIDTypeSiDav, IdentificationCreateRequestIDTypeSiTin, IdentificationCreateRequestIDTypeSkIco, IdentificationCreateRequestIDTypeSkRc, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeUyRut, IdentificationCreateRequestIDTypeVnTin:
+	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeAtAtin, IdentificationCreateRequestIDTypeAtVat, IdentificationCreateRequestIDTypeAuAbn, IdentificationCreateRequestIDTypeAuTfn, IdentificationCreateRequestIDTypeBeEnt, IdentificationCreateRequestIDTypeBeNrn, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaBn, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeChAhv, IdentificationCreateRequestIDTypeChUid, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeCyTin, IdentificationCreateRequestIDTypeCzIco, IdentificationCreateRequestIDTypeCzRc, IdentificationCreateRequestIDTypeDeStid, IdentificationCreateRequestIDTypeDeStnr, IdentificationCreateRequestIDTypeDeVat, IdentificationCreateRequestIDTypeDkCpr, IdentificationCreateRequestIDTypeDkCvr, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeEeIk, IdentificationCreateRequestIDTypeEeRk, IdentificationCreateRequestIDTypeEsNie, IdentificationCreateRequestIDTypeEsNif, IdentificationCreateRequestIDTypeFiHetu, IdentificationCreateRequestIDTypeFiYtj, IdentificationCreateRequestIDTypeFrNif, IdentificationCreateRequestIDTypeFrSiren, IdentificationCreateRequestIDTypeFrVat, IdentificationCreateRequestIDTypeGBNino, IdentificationCreateRequestIDTypeGBUtr, IdentificationCreateRequestIDTypeGBVat, IdentificationCreateRequestIDTypeGenericInternational, IdentificationCreateRequestIDTypeGrVat, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeHrOib, IdentificationCreateRequestIDTypeHuAdj, IdentificationCreateRequestIDTypeHuAnum, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeIeTrn, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeIsKnt, IdentificationCreateRequestIDTypeItCf, IdentificationCreateRequestIDTypeItPiva, IdentificationCreateRequestIDTypeJpHb, IdentificationCreateRequestIDTypeJpMn, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypeLiPeid, IdentificationCreateRequestIDTypeLtAk, IdentificationCreateRequestIDTypeLtJak, IdentificationCreateRequestIDTypeLuMtc, IdentificationCreateRequestIDTypeLuVat, IdentificationCreateRequestIDTypeLvPk, IdentificationCreateRequestIDTypeLvRn, IdentificationCreateRequestIDTypeMtTin, IdentificationCreateRequestIDTypeMtVat, IdentificationCreateRequestIDTypeMxCurp, IdentificationCreateRequestIDTypeMxIne, IdentificationCreateRequestIDTypeMxRfc, IdentificationCreateRequestIDTypeNationalID, IdentificationCreateRequestIDTypeNlBsn, IdentificationCreateRequestIDTypeNlBtw, IdentificationCreateRequestIDTypeNlRsin, IdentificationCreateRequestIDTypeNoFdn, IdentificationCreateRequestIDTypeNoMva, IdentificationCreateRequestIDTypeNoOrgnr, IdentificationCreateRequestIDTypeNzIrd, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypePlNip, IdentificationCreateRequestIDTypePlPesel, IdentificationCreateRequestIDTypePtNif, IdentificationCreateRequestIDTypeRoCnp, IdentificationCreateRequestIDTypeRoCui, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeSeOrgnr, IdentificationCreateRequestIDTypeSePnmr, IdentificationCreateRequestIDTypeSgFin, IdentificationCreateRequestIDTypeSgNric, IdentificationCreateRequestIDTypeSgUen, IdentificationCreateRequestIDTypeSiDav, IdentificationCreateRequestIDTypeSiTin, IdentificationCreateRequestIDTypeSkIco, IdentificationCreateRequestIDTypeSkRc, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeUyRut, IdentificationCreateRequestIDTypeVnTin:
 		return true
 	}
 	return false
@@ -1095,7 +1111,8 @@ type LegalEntityAddressCreateRequestParam struct {
 	// The types of this address.
 	AddressTypes param.Field[[]LegalEntityAddressCreateRequestAddressType] `json:"address_types"`
 	Line2        param.Field[string]                                       `json:"line2"`
-	// Whether this address is the primary address for the legal entity.
+	// Whether this address is the primary address for the legal entity. Optional; when
+	// omitted it is inferred from the address types.
 	Primary param.Field[bool] `json:"primary"`
 }
 
@@ -1107,6 +1124,7 @@ type LegalEntityAddressCreateRequestAddressType string
 
 const (
 	LegalEntityAddressCreateRequestAddressTypeBusiness           LegalEntityAddressCreateRequestAddressType = "business"
+	LegalEntityAddressCreateRequestAddressTypeBusinessPhysical   LegalEntityAddressCreateRequestAddressType = "business_physical"
 	LegalEntityAddressCreateRequestAddressTypeBusinessRegistered LegalEntityAddressCreateRequestAddressType = "business_registered"
 	LegalEntityAddressCreateRequestAddressTypeMailing            LegalEntityAddressCreateRequestAddressType = "mailing"
 	LegalEntityAddressCreateRequestAddressTypeOther              LegalEntityAddressCreateRequestAddressType = "other"
@@ -1116,7 +1134,7 @@ const (
 
 func (r LegalEntityAddressCreateRequestAddressType) IsKnown() bool {
 	switch r {
-	case LegalEntityAddressCreateRequestAddressTypeBusiness, LegalEntityAddressCreateRequestAddressTypeBusinessRegistered, LegalEntityAddressCreateRequestAddressTypeMailing, LegalEntityAddressCreateRequestAddressTypeOther, LegalEntityAddressCreateRequestAddressTypePoBox, LegalEntityAddressCreateRequestAddressTypeResidential:
+	case LegalEntityAddressCreateRequestAddressTypeBusiness, LegalEntityAddressCreateRequestAddressTypeBusinessPhysical, LegalEntityAddressCreateRequestAddressTypeBusinessRegistered, LegalEntityAddressCreateRequestAddressTypeMailing, LegalEntityAddressCreateRequestAddressTypeOther, LegalEntityAddressCreateRequestAddressTypePoBox, LegalEntityAddressCreateRequestAddressTypeResidential:
 		return true
 	}
 	return false
@@ -1665,13 +1683,15 @@ const (
 	ThirdPartyVerificationVendorPersona ThirdPartyVerificationVendor = "persona"
 	ThirdPartyVerificationVendorMiddesk ThirdPartyVerificationVendor = "middesk"
 	ThirdPartyVerificationVendorAlloy   ThirdPartyVerificationVendor = "alloy"
+	ThirdPartyVerificationVendorIdology ThirdPartyVerificationVendor = "idology"
+	ThirdPartyVerificationVendorSocure  ThirdPartyVerificationVendor = "socure"
 	ThirdPartyVerificationVendorSumsub  ThirdPartyVerificationVendor = "sumsub"
 	ThirdPartyVerificationVendorVeriff  ThirdPartyVerificationVendor = "veriff"
 )
 
 func (r ThirdPartyVerificationVendor) IsKnown() bool {
 	switch r {
-	case ThirdPartyVerificationVendorPersona, ThirdPartyVerificationVendorMiddesk, ThirdPartyVerificationVendorAlloy, ThirdPartyVerificationVendorSumsub, ThirdPartyVerificationVendorVeriff:
+	case ThirdPartyVerificationVendorPersona, ThirdPartyVerificationVendorMiddesk, ThirdPartyVerificationVendorAlloy, ThirdPartyVerificationVendorIdology, ThirdPartyVerificationVendorSocure, ThirdPartyVerificationVendorSumsub, ThirdPartyVerificationVendorVeriff:
 		return true
 	}
 	return false

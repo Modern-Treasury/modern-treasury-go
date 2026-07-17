@@ -148,7 +148,7 @@ type Invoice struct {
 	// The name of the issuer for the invoice. Defaults to the name of the
 	// Organization.
 	InvoicerName string `json:"invoicer_name" api:"required,nullable"`
-	// Translation missing: en.openapi.descriptions.invoice.schema.issued_at
+	// The time at which the invoice was issued.
 	IssuedAt time.Time `json:"issued_at" api:"required,nullable" format:"date-time"`
 	// The ledger account settlement object linked to the invoice.
 	//
@@ -172,7 +172,7 @@ type Invoice struct {
 	Object string `json:"object" api:"required"`
 	// The ID of the internal account the invoice should be paid to.
 	OriginatingAccountID string `json:"originating_account_id" api:"required"`
-	// Translation missing: en.openapi.descriptions.invoice.schema.paid_at
+	// The time at which the invoice was paid.
 	PaidAt time.Time `json:"paid_at" api:"required,nullable" format:"date-time"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
 	// current business day or the next business day if the current day is a bank
@@ -209,7 +209,7 @@ type Invoice struct {
 	UpdatedAt              time.Time `json:"updated_at" api:"required" format:"date-time"`
 	// The ID of the virtual account the invoice should be paid to.
 	VirtualAccountID string `json:"virtual_account_id" api:"required,nullable" format:"uuid"`
-	// Translation missing: en.openapi.descriptions.invoice.schema.voided_at
+	// The time at which the invoice was voided.
 	VoidedAt time.Time   `json:"voided_at" api:"required,nullable" format:"date-time"`
 	JSON     invoiceJSON `json:"-"`
 }

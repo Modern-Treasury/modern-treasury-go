@@ -86,10 +86,9 @@ func (r *DocumentService) ListAutoPaging(ctx context.Context, query DocumentList
 }
 
 type Document struct {
-	ID              string                   `json:"id" api:"required" format:"uuid"`
-	CreatedAt       time.Time                `json:"created_at" api:"required" format:"date-time"`
-	DiscardedAt     time.Time                `json:"discarded_at" api:"required,nullable" format:"date-time"`
-	DocumentDetails []DocumentDocumentDetail `json:"document_details" api:"required"`
+	ID          string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt   time.Time `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
 	// A category given to the document, can be `null`.
 	DocumentType string `json:"document_type" api:"required,nullable"`
 	// The unique identifier for the associated object.
@@ -114,7 +113,6 @@ type documentJSON struct {
 	ID               apijson.Field
 	CreatedAt        apijson.Field
 	DiscardedAt      apijson.Field
-	DocumentDetails  apijson.Field
 	DocumentType     apijson.Field
 	DocumentableID   apijson.Field
 	DocumentableType apijson.Field
@@ -132,43 +130,6 @@ func (r *Document) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r documentJSON) RawJSON() string {
-	return r.raw
-}
-
-type DocumentDocumentDetail struct {
-	ID                     string    `json:"id" api:"required" format:"uuid"`
-	CreatedAt              time.Time `json:"created_at" api:"required" format:"date-time"`
-	DiscardedAt            time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
-	DocumentIdentifier     string    `json:"document_identifier" api:"required"`
-	DocumentIdentifierType string    `json:"document_identifier_type" api:"required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool                       `json:"live_mode" api:"required"`
-	Object    string                     `json:"object" api:"required"`
-	UpdatedAt time.Time                  `json:"updated_at" api:"required" format:"date-time"`
-	JSON      documentDocumentDetailJSON `json:"-"`
-}
-
-// documentDocumentDetailJSON contains the JSON metadata for the struct
-// [DocumentDocumentDetail]
-type documentDocumentDetailJSON struct {
-	ID                     apijson.Field
-	CreatedAt              apijson.Field
-	DiscardedAt            apijson.Field
-	DocumentIdentifier     apijson.Field
-	DocumentIdentifierType apijson.Field
-	LiveMode               apijson.Field
-	Object                 apijson.Field
-	UpdatedAt              apijson.Field
-	raw                    string
-	ExtraFields            map[string]apijson.Field
-}
-
-func (r *DocumentDocumentDetail) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r documentDocumentDetailJSON) RawJSON() string {
 	return r.raw
 }
 

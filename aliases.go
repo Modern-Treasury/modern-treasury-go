@@ -118,6 +118,11 @@ const ChildLegalEntityCreateRiskRatingMedium = shared.ChildLegalEntityCreateRisk
 // This is an alias to an internal value.
 const ChildLegalEntityCreateRiskRatingHigh = shared.ChildLegalEntityCreateRiskRatingHigh
 
+// Acceptance of terms of use by the legal entity.
+//
+// This is an alias to an internal type.
+type ChildLegalEntityCreateTermsOfUseParam = shared.ChildLegalEntityCreateTermsOfUseParam
+
 // This is an alias to an internal type.
 type ContactDetail = shared.ContactDetail
 
@@ -870,6 +875,9 @@ const IdentificationCreateRequestIDTypeGBUtr = shared.IdentificationCreateReques
 const IdentificationCreateRequestIDTypeGBVat = shared.IdentificationCreateRequestIDTypeGBVat
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGenericInternational = shared.IdentificationCreateRequestIDTypeGenericInternational
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeGrVat = shared.IdentificationCreateRequestIDTypeGrVat
 
 // This is an alias to an internal value.
@@ -1153,6 +1161,9 @@ type LegalEntityAddressCreateRequestAddressType = shared.LegalEntityAddressCreat
 
 // This is an alias to an internal value.
 const LegalEntityAddressCreateRequestAddressTypeBusiness = shared.LegalEntityAddressCreateRequestAddressTypeBusiness
+
+// This is an alias to an internal value.
+const LegalEntityAddressCreateRequestAddressTypeBusinessPhysical = shared.LegalEntityAddressCreateRequestAddressTypeBusinessPhysical
 
 // This is an alias to an internal value.
 const LegalEntityAddressCreateRequestAddressTypeBusinessRegistered = shared.LegalEntityAddressCreateRequestAddressTypeBusinessRegistered
@@ -1587,6 +1598,12 @@ const ThirdPartyVerificationVendorMiddesk = shared.ThirdPartyVerificationVendorM
 
 // This is an alias to an internal value.
 const ThirdPartyVerificationVendorAlloy = shared.ThirdPartyVerificationVendorAlloy
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVendorIdology = shared.ThirdPartyVerificationVendorIdology
+
+// This is an alias to an internal value.
+const ThirdPartyVerificationVendorSocure = shared.ThirdPartyVerificationVendorSocure
 
 // This is an alias to an internal value.
 const ThirdPartyVerificationVendorSumsub = shared.ThirdPartyVerificationVendorSumsub

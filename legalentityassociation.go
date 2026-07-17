@@ -109,6 +109,8 @@ type ChildLegalEntity struct {
 	Status ChildLegalEntityStatus `json:"status" api:"required,nullable"`
 	// An individual's suffix.
 	Suffix string `json:"suffix" api:"required,nullable"`
+	// Acceptance of terms of use by the legal entity.
+	TermsOfUse ChildLegalEntityTermsOfUse `json:"terms_of_use" api:"required,nullable"`
 	// Deprecated. Use `third_party_verifications` instead.
 	//
 	// Deprecated: deprecated
@@ -168,6 +170,7 @@ type childLegalEntityJSON struct {
 	ServiceProviderLegalEntityID apijson.Field
 	Status                       apijson.Field
 	Suffix                       apijson.Field
+	TermsOfUse                   apijson.Field
 	ThirdPartyVerification       apijson.Field
 	ThirdPartyVerifications      apijson.Field
 	TickerSymbol                 apijson.Field
@@ -204,7 +207,8 @@ type ChildLegalEntityAddress struct {
 	Object   string `json:"object" api:"required"`
 	// The postal code of the address.
 	PostalCode string `json:"postal_code" api:"required,nullable"`
-	// Whether this address is the primary address for the legal entity.
+	// Whether this address is the primary address for the legal entity. Optional; when
+	// omitted it is inferred from the address types.
 	Primary bool `json:"primary" api:"required,nullable"`
 	// Region or State.
 	Region    string                      `json:"region" api:"required,nullable"`
@@ -245,6 +249,7 @@ type ChildLegalEntityAddressesAddressType string
 
 const (
 	ChildLegalEntityAddressesAddressTypeBusiness           ChildLegalEntityAddressesAddressType = "business"
+	ChildLegalEntityAddressesAddressTypeBusinessPhysical   ChildLegalEntityAddressesAddressType = "business_physical"
 	ChildLegalEntityAddressesAddressTypeBusinessRegistered ChildLegalEntityAddressesAddressType = "business_registered"
 	ChildLegalEntityAddressesAddressTypeMailing            ChildLegalEntityAddressesAddressType = "mailing"
 	ChildLegalEntityAddressesAddressTypeOther              ChildLegalEntityAddressesAddressType = "other"
@@ -254,7 +259,7 @@ const (
 
 func (r ChildLegalEntityAddressesAddressType) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityAddressesAddressTypeBusiness, ChildLegalEntityAddressesAddressTypeBusinessRegistered, ChildLegalEntityAddressesAddressTypeMailing, ChildLegalEntityAddressesAddressTypeOther, ChildLegalEntityAddressesAddressTypePoBox, ChildLegalEntityAddressesAddressTypeResidential:
+	case ChildLegalEntityAddressesAddressTypeBusiness, ChildLegalEntityAddressesAddressTypeBusinessPhysical, ChildLegalEntityAddressesAddressTypeBusinessRegistered, ChildLegalEntityAddressesAddressTypeMailing, ChildLegalEntityAddressesAddressTypeOther, ChildLegalEntityAddressesAddressTypePoBox, ChildLegalEntityAddressesAddressTypeResidential:
 		return true
 	}
 	return false
@@ -313,109 +318,110 @@ func (r childLegalEntityIdentificationJSON) RawJSON() string {
 type ChildLegalEntityIdentificationsIDType string
 
 const (
-	ChildLegalEntityIdentificationsIDTypeArCuil         ChildLegalEntityIdentificationsIDType = "ar_cuil"
-	ChildLegalEntityIdentificationsIDTypeArCuit         ChildLegalEntityIdentificationsIDType = "ar_cuit"
-	ChildLegalEntityIdentificationsIDTypeAtAtin         ChildLegalEntityIdentificationsIDType = "at_atin"
-	ChildLegalEntityIdentificationsIDTypeAtVat          ChildLegalEntityIdentificationsIDType = "at_vat"
-	ChildLegalEntityIdentificationsIDTypeAuAbn          ChildLegalEntityIdentificationsIDType = "au_abn"
-	ChildLegalEntityIdentificationsIDTypeAuTfn          ChildLegalEntityIdentificationsIDType = "au_tfn"
-	ChildLegalEntityIdentificationsIDTypeBeEnt          ChildLegalEntityIdentificationsIDType = "be_ent"
-	ChildLegalEntityIdentificationsIDTypeBeNrn          ChildLegalEntityIdentificationsIDType = "be_nrn"
-	ChildLegalEntityIdentificationsIDTypeBrCnpj         ChildLegalEntityIdentificationsIDType = "br_cnpj"
-	ChildLegalEntityIdentificationsIDTypeBrCpf          ChildLegalEntityIdentificationsIDType = "br_cpf"
-	ChildLegalEntityIdentificationsIDTypeCaBn           ChildLegalEntityIdentificationsIDType = "ca_bn"
-	ChildLegalEntityIdentificationsIDTypeCaSin          ChildLegalEntityIdentificationsIDType = "ca_sin"
-	ChildLegalEntityIdentificationsIDTypeChAhv          ChildLegalEntityIdentificationsIDType = "ch_ahv"
-	ChildLegalEntityIdentificationsIDTypeChUid          ChildLegalEntityIdentificationsIDType = "ch_uid"
-	ChildLegalEntityIdentificationsIDTypeClRun          ChildLegalEntityIdentificationsIDType = "cl_run"
-	ChildLegalEntityIdentificationsIDTypeClRut          ChildLegalEntityIdentificationsIDType = "cl_rut"
-	ChildLegalEntityIdentificationsIDTypeCoCedulas      ChildLegalEntityIdentificationsIDType = "co_cedulas"
-	ChildLegalEntityIdentificationsIDTypeCoNit          ChildLegalEntityIdentificationsIDType = "co_nit"
-	ChildLegalEntityIdentificationsIDTypeCyTin          ChildLegalEntityIdentificationsIDType = "cy_tin"
-	ChildLegalEntityIdentificationsIDTypeCzIco          ChildLegalEntityIdentificationsIDType = "cz_ico"
-	ChildLegalEntityIdentificationsIDTypeCzRc           ChildLegalEntityIdentificationsIDType = "cz_rc"
-	ChildLegalEntityIdentificationsIDTypeDeStid         ChildLegalEntityIdentificationsIDType = "de_stid"
-	ChildLegalEntityIdentificationsIDTypeDeStnr         ChildLegalEntityIdentificationsIDType = "de_stnr"
-	ChildLegalEntityIdentificationsIDTypeDeVat          ChildLegalEntityIdentificationsIDType = "de_vat"
-	ChildLegalEntityIdentificationsIDTypeDkCpr          ChildLegalEntityIdentificationsIDType = "dk_cpr"
-	ChildLegalEntityIdentificationsIDTypeDkCvr          ChildLegalEntityIdentificationsIDType = "dk_cvr"
-	ChildLegalEntityIdentificationsIDTypeDriversLicense ChildLegalEntityIdentificationsIDType = "drivers_license"
-	ChildLegalEntityIdentificationsIDTypeEeIk           ChildLegalEntityIdentificationsIDType = "ee_ik"
-	ChildLegalEntityIdentificationsIDTypeEeRk           ChildLegalEntityIdentificationsIDType = "ee_rk"
-	ChildLegalEntityIdentificationsIDTypeEsNie          ChildLegalEntityIdentificationsIDType = "es_nie"
-	ChildLegalEntityIdentificationsIDTypeEsNif          ChildLegalEntityIdentificationsIDType = "es_nif"
-	ChildLegalEntityIdentificationsIDTypeFiHetu         ChildLegalEntityIdentificationsIDType = "fi_hetu"
-	ChildLegalEntityIdentificationsIDTypeFiYtj          ChildLegalEntityIdentificationsIDType = "fi_ytj"
-	ChildLegalEntityIdentificationsIDTypeFrNif          ChildLegalEntityIdentificationsIDType = "fr_nif"
-	ChildLegalEntityIdentificationsIDTypeFrSiren        ChildLegalEntityIdentificationsIDType = "fr_siren"
-	ChildLegalEntityIdentificationsIDTypeFrVat          ChildLegalEntityIdentificationsIDType = "fr_vat"
-	ChildLegalEntityIdentificationsIDTypeGBNino         ChildLegalEntityIdentificationsIDType = "gb_nino"
-	ChildLegalEntityIdentificationsIDTypeGBUtr          ChildLegalEntityIdentificationsIDType = "gb_utr"
-	ChildLegalEntityIdentificationsIDTypeGBVat          ChildLegalEntityIdentificationsIDType = "gb_vat"
-	ChildLegalEntityIdentificationsIDTypeGrVat          ChildLegalEntityIdentificationsIDType = "gr_vat"
-	ChildLegalEntityIdentificationsIDTypeHnID           ChildLegalEntityIdentificationsIDType = "hn_id"
-	ChildLegalEntityIdentificationsIDTypeHnRtn          ChildLegalEntityIdentificationsIDType = "hn_rtn"
-	ChildLegalEntityIdentificationsIDTypeHrOib          ChildLegalEntityIdentificationsIDType = "hr_oib"
-	ChildLegalEntityIdentificationsIDTypeHuAdj          ChildLegalEntityIdentificationsIDType = "hu_adj"
-	ChildLegalEntityIdentificationsIDTypeHuAnum         ChildLegalEntityIdentificationsIDType = "hu_anum"
-	ChildLegalEntityIdentificationsIDTypeIePps          ChildLegalEntityIdentificationsIDType = "ie_pps"
-	ChildLegalEntityIdentificationsIDTypeIeTrn          ChildLegalEntityIdentificationsIDType = "ie_trn"
-	ChildLegalEntityIdentificationsIDTypeInLei          ChildLegalEntityIdentificationsIDType = "in_lei"
-	ChildLegalEntityIdentificationsIDTypeIsKnt          ChildLegalEntityIdentificationsIDType = "is_knt"
-	ChildLegalEntityIdentificationsIDTypeItCf           ChildLegalEntityIdentificationsIDType = "it_cf"
-	ChildLegalEntityIdentificationsIDTypeItPiva         ChildLegalEntityIdentificationsIDType = "it_piva"
-	ChildLegalEntityIdentificationsIDTypeJpHb           ChildLegalEntityIdentificationsIDType = "jp_hb"
-	ChildLegalEntityIdentificationsIDTypeJpMn           ChildLegalEntityIdentificationsIDType = "jp_mn"
-	ChildLegalEntityIdentificationsIDTypeKrBrn          ChildLegalEntityIdentificationsIDType = "kr_brn"
-	ChildLegalEntityIdentificationsIDTypeKrCrn          ChildLegalEntityIdentificationsIDType = "kr_crn"
-	ChildLegalEntityIdentificationsIDTypeKrRrn          ChildLegalEntityIdentificationsIDType = "kr_rrn"
-	ChildLegalEntityIdentificationsIDTypeLiPeid         ChildLegalEntityIdentificationsIDType = "li_peid"
-	ChildLegalEntityIdentificationsIDTypeLtAk           ChildLegalEntityIdentificationsIDType = "lt_ak"
-	ChildLegalEntityIdentificationsIDTypeLtJak          ChildLegalEntityIdentificationsIDType = "lt_jak"
-	ChildLegalEntityIdentificationsIDTypeLuMtc          ChildLegalEntityIdentificationsIDType = "lu_mtc"
-	ChildLegalEntityIdentificationsIDTypeLuVat          ChildLegalEntityIdentificationsIDType = "lu_vat"
-	ChildLegalEntityIdentificationsIDTypeLvPk           ChildLegalEntityIdentificationsIDType = "lv_pk"
-	ChildLegalEntityIdentificationsIDTypeLvRn           ChildLegalEntityIdentificationsIDType = "lv_rn"
-	ChildLegalEntityIdentificationsIDTypeMtTin          ChildLegalEntityIdentificationsIDType = "mt_tin"
-	ChildLegalEntityIdentificationsIDTypeMtVat          ChildLegalEntityIdentificationsIDType = "mt_vat"
-	ChildLegalEntityIdentificationsIDTypeMxCurp         ChildLegalEntityIdentificationsIDType = "mx_curp"
-	ChildLegalEntityIdentificationsIDTypeMxIne          ChildLegalEntityIdentificationsIDType = "mx_ine"
-	ChildLegalEntityIdentificationsIDTypeMxRfc          ChildLegalEntityIdentificationsIDType = "mx_rfc"
-	ChildLegalEntityIdentificationsIDTypeNationalID     ChildLegalEntityIdentificationsIDType = "national_id"
-	ChildLegalEntityIdentificationsIDTypeNlBsn          ChildLegalEntityIdentificationsIDType = "nl_bsn"
-	ChildLegalEntityIdentificationsIDTypeNlBtw          ChildLegalEntityIdentificationsIDType = "nl_btw"
-	ChildLegalEntityIdentificationsIDTypeNlRsin         ChildLegalEntityIdentificationsIDType = "nl_rsin"
-	ChildLegalEntityIdentificationsIDTypeNoFdn          ChildLegalEntityIdentificationsIDType = "no_fdn"
-	ChildLegalEntityIdentificationsIDTypeNoMva          ChildLegalEntityIdentificationsIDType = "no_mva"
-	ChildLegalEntityIdentificationsIDTypeNoOrgnr        ChildLegalEntityIdentificationsIDType = "no_orgnr"
-	ChildLegalEntityIdentificationsIDTypeNzIrd          ChildLegalEntityIdentificationsIDType = "nz_ird"
-	ChildLegalEntityIdentificationsIDTypePassport       ChildLegalEntityIdentificationsIDType = "passport"
-	ChildLegalEntityIdentificationsIDTypePlNip          ChildLegalEntityIdentificationsIDType = "pl_nip"
-	ChildLegalEntityIdentificationsIDTypePlPesel        ChildLegalEntityIdentificationsIDType = "pl_pesel"
-	ChildLegalEntityIdentificationsIDTypePtNif          ChildLegalEntityIdentificationsIDType = "pt_nif"
-	ChildLegalEntityIdentificationsIDTypeRoCnp          ChildLegalEntityIdentificationsIDType = "ro_cnp"
-	ChildLegalEntityIdentificationsIDTypeRoCui          ChildLegalEntityIdentificationsIDType = "ro_cui"
-	ChildLegalEntityIdentificationsIDTypeSaTin          ChildLegalEntityIdentificationsIDType = "sa_tin"
-	ChildLegalEntityIdentificationsIDTypeSaVat          ChildLegalEntityIdentificationsIDType = "sa_vat"
-	ChildLegalEntityIdentificationsIDTypeSeOrgnr        ChildLegalEntityIdentificationsIDType = "se_orgnr"
-	ChildLegalEntityIdentificationsIDTypeSePnmr         ChildLegalEntityIdentificationsIDType = "se_pnmr"
-	ChildLegalEntityIdentificationsIDTypeSgFin          ChildLegalEntityIdentificationsIDType = "sg_fin"
-	ChildLegalEntityIdentificationsIDTypeSgNric         ChildLegalEntityIdentificationsIDType = "sg_nric"
-	ChildLegalEntityIdentificationsIDTypeSgUen          ChildLegalEntityIdentificationsIDType = "sg_uen"
-	ChildLegalEntityIdentificationsIDTypeSiDav          ChildLegalEntityIdentificationsIDType = "si_dav"
-	ChildLegalEntityIdentificationsIDTypeSiTin          ChildLegalEntityIdentificationsIDType = "si_tin"
-	ChildLegalEntityIdentificationsIDTypeSkIco          ChildLegalEntityIdentificationsIDType = "sk_ico"
-	ChildLegalEntityIdentificationsIDTypeSkRc           ChildLegalEntityIdentificationsIDType = "sk_rc"
-	ChildLegalEntityIdentificationsIDTypeUsEin          ChildLegalEntityIdentificationsIDType = "us_ein"
-	ChildLegalEntityIdentificationsIDTypeUsItin         ChildLegalEntityIdentificationsIDType = "us_itin"
-	ChildLegalEntityIdentificationsIDTypeUsSsn          ChildLegalEntityIdentificationsIDType = "us_ssn"
-	ChildLegalEntityIdentificationsIDTypeUyRut          ChildLegalEntityIdentificationsIDType = "uy_rut"
-	ChildLegalEntityIdentificationsIDTypeVnTin          ChildLegalEntityIdentificationsIDType = "vn_tin"
+	ChildLegalEntityIdentificationsIDTypeArCuil               ChildLegalEntityIdentificationsIDType = "ar_cuil"
+	ChildLegalEntityIdentificationsIDTypeArCuit               ChildLegalEntityIdentificationsIDType = "ar_cuit"
+	ChildLegalEntityIdentificationsIDTypeAtAtin               ChildLegalEntityIdentificationsIDType = "at_atin"
+	ChildLegalEntityIdentificationsIDTypeAtVat                ChildLegalEntityIdentificationsIDType = "at_vat"
+	ChildLegalEntityIdentificationsIDTypeAuAbn                ChildLegalEntityIdentificationsIDType = "au_abn"
+	ChildLegalEntityIdentificationsIDTypeAuTfn                ChildLegalEntityIdentificationsIDType = "au_tfn"
+	ChildLegalEntityIdentificationsIDTypeBeEnt                ChildLegalEntityIdentificationsIDType = "be_ent"
+	ChildLegalEntityIdentificationsIDTypeBeNrn                ChildLegalEntityIdentificationsIDType = "be_nrn"
+	ChildLegalEntityIdentificationsIDTypeBrCnpj               ChildLegalEntityIdentificationsIDType = "br_cnpj"
+	ChildLegalEntityIdentificationsIDTypeBrCpf                ChildLegalEntityIdentificationsIDType = "br_cpf"
+	ChildLegalEntityIdentificationsIDTypeCaBn                 ChildLegalEntityIdentificationsIDType = "ca_bn"
+	ChildLegalEntityIdentificationsIDTypeCaSin                ChildLegalEntityIdentificationsIDType = "ca_sin"
+	ChildLegalEntityIdentificationsIDTypeChAhv                ChildLegalEntityIdentificationsIDType = "ch_ahv"
+	ChildLegalEntityIdentificationsIDTypeChUid                ChildLegalEntityIdentificationsIDType = "ch_uid"
+	ChildLegalEntityIdentificationsIDTypeClRun                ChildLegalEntityIdentificationsIDType = "cl_run"
+	ChildLegalEntityIdentificationsIDTypeClRut                ChildLegalEntityIdentificationsIDType = "cl_rut"
+	ChildLegalEntityIdentificationsIDTypeCoCedulas            ChildLegalEntityIdentificationsIDType = "co_cedulas"
+	ChildLegalEntityIdentificationsIDTypeCoNit                ChildLegalEntityIdentificationsIDType = "co_nit"
+	ChildLegalEntityIdentificationsIDTypeCyTin                ChildLegalEntityIdentificationsIDType = "cy_tin"
+	ChildLegalEntityIdentificationsIDTypeCzIco                ChildLegalEntityIdentificationsIDType = "cz_ico"
+	ChildLegalEntityIdentificationsIDTypeCzRc                 ChildLegalEntityIdentificationsIDType = "cz_rc"
+	ChildLegalEntityIdentificationsIDTypeDeStid               ChildLegalEntityIdentificationsIDType = "de_stid"
+	ChildLegalEntityIdentificationsIDTypeDeStnr               ChildLegalEntityIdentificationsIDType = "de_stnr"
+	ChildLegalEntityIdentificationsIDTypeDeVat                ChildLegalEntityIdentificationsIDType = "de_vat"
+	ChildLegalEntityIdentificationsIDTypeDkCpr                ChildLegalEntityIdentificationsIDType = "dk_cpr"
+	ChildLegalEntityIdentificationsIDTypeDkCvr                ChildLegalEntityIdentificationsIDType = "dk_cvr"
+	ChildLegalEntityIdentificationsIDTypeDriversLicense       ChildLegalEntityIdentificationsIDType = "drivers_license"
+	ChildLegalEntityIdentificationsIDTypeEeIk                 ChildLegalEntityIdentificationsIDType = "ee_ik"
+	ChildLegalEntityIdentificationsIDTypeEeRk                 ChildLegalEntityIdentificationsIDType = "ee_rk"
+	ChildLegalEntityIdentificationsIDTypeEsNie                ChildLegalEntityIdentificationsIDType = "es_nie"
+	ChildLegalEntityIdentificationsIDTypeEsNif                ChildLegalEntityIdentificationsIDType = "es_nif"
+	ChildLegalEntityIdentificationsIDTypeFiHetu               ChildLegalEntityIdentificationsIDType = "fi_hetu"
+	ChildLegalEntityIdentificationsIDTypeFiYtj                ChildLegalEntityIdentificationsIDType = "fi_ytj"
+	ChildLegalEntityIdentificationsIDTypeFrNif                ChildLegalEntityIdentificationsIDType = "fr_nif"
+	ChildLegalEntityIdentificationsIDTypeFrSiren              ChildLegalEntityIdentificationsIDType = "fr_siren"
+	ChildLegalEntityIdentificationsIDTypeFrVat                ChildLegalEntityIdentificationsIDType = "fr_vat"
+	ChildLegalEntityIdentificationsIDTypeGBNino               ChildLegalEntityIdentificationsIDType = "gb_nino"
+	ChildLegalEntityIdentificationsIDTypeGBUtr                ChildLegalEntityIdentificationsIDType = "gb_utr"
+	ChildLegalEntityIdentificationsIDTypeGBVat                ChildLegalEntityIdentificationsIDType = "gb_vat"
+	ChildLegalEntityIdentificationsIDTypeGenericInternational ChildLegalEntityIdentificationsIDType = "generic_international"
+	ChildLegalEntityIdentificationsIDTypeGrVat                ChildLegalEntityIdentificationsIDType = "gr_vat"
+	ChildLegalEntityIdentificationsIDTypeHnID                 ChildLegalEntityIdentificationsIDType = "hn_id"
+	ChildLegalEntityIdentificationsIDTypeHnRtn                ChildLegalEntityIdentificationsIDType = "hn_rtn"
+	ChildLegalEntityIdentificationsIDTypeHrOib                ChildLegalEntityIdentificationsIDType = "hr_oib"
+	ChildLegalEntityIdentificationsIDTypeHuAdj                ChildLegalEntityIdentificationsIDType = "hu_adj"
+	ChildLegalEntityIdentificationsIDTypeHuAnum               ChildLegalEntityIdentificationsIDType = "hu_anum"
+	ChildLegalEntityIdentificationsIDTypeIePps                ChildLegalEntityIdentificationsIDType = "ie_pps"
+	ChildLegalEntityIdentificationsIDTypeIeTrn                ChildLegalEntityIdentificationsIDType = "ie_trn"
+	ChildLegalEntityIdentificationsIDTypeInLei                ChildLegalEntityIdentificationsIDType = "in_lei"
+	ChildLegalEntityIdentificationsIDTypeIsKnt                ChildLegalEntityIdentificationsIDType = "is_knt"
+	ChildLegalEntityIdentificationsIDTypeItCf                 ChildLegalEntityIdentificationsIDType = "it_cf"
+	ChildLegalEntityIdentificationsIDTypeItPiva               ChildLegalEntityIdentificationsIDType = "it_piva"
+	ChildLegalEntityIdentificationsIDTypeJpHb                 ChildLegalEntityIdentificationsIDType = "jp_hb"
+	ChildLegalEntityIdentificationsIDTypeJpMn                 ChildLegalEntityIdentificationsIDType = "jp_mn"
+	ChildLegalEntityIdentificationsIDTypeKrBrn                ChildLegalEntityIdentificationsIDType = "kr_brn"
+	ChildLegalEntityIdentificationsIDTypeKrCrn                ChildLegalEntityIdentificationsIDType = "kr_crn"
+	ChildLegalEntityIdentificationsIDTypeKrRrn                ChildLegalEntityIdentificationsIDType = "kr_rrn"
+	ChildLegalEntityIdentificationsIDTypeLiPeid               ChildLegalEntityIdentificationsIDType = "li_peid"
+	ChildLegalEntityIdentificationsIDTypeLtAk                 ChildLegalEntityIdentificationsIDType = "lt_ak"
+	ChildLegalEntityIdentificationsIDTypeLtJak                ChildLegalEntityIdentificationsIDType = "lt_jak"
+	ChildLegalEntityIdentificationsIDTypeLuMtc                ChildLegalEntityIdentificationsIDType = "lu_mtc"
+	ChildLegalEntityIdentificationsIDTypeLuVat                ChildLegalEntityIdentificationsIDType = "lu_vat"
+	ChildLegalEntityIdentificationsIDTypeLvPk                 ChildLegalEntityIdentificationsIDType = "lv_pk"
+	ChildLegalEntityIdentificationsIDTypeLvRn                 ChildLegalEntityIdentificationsIDType = "lv_rn"
+	ChildLegalEntityIdentificationsIDTypeMtTin                ChildLegalEntityIdentificationsIDType = "mt_tin"
+	ChildLegalEntityIdentificationsIDTypeMtVat                ChildLegalEntityIdentificationsIDType = "mt_vat"
+	ChildLegalEntityIdentificationsIDTypeMxCurp               ChildLegalEntityIdentificationsIDType = "mx_curp"
+	ChildLegalEntityIdentificationsIDTypeMxIne                ChildLegalEntityIdentificationsIDType = "mx_ine"
+	ChildLegalEntityIdentificationsIDTypeMxRfc                ChildLegalEntityIdentificationsIDType = "mx_rfc"
+	ChildLegalEntityIdentificationsIDTypeNationalID           ChildLegalEntityIdentificationsIDType = "national_id"
+	ChildLegalEntityIdentificationsIDTypeNlBsn                ChildLegalEntityIdentificationsIDType = "nl_bsn"
+	ChildLegalEntityIdentificationsIDTypeNlBtw                ChildLegalEntityIdentificationsIDType = "nl_btw"
+	ChildLegalEntityIdentificationsIDTypeNlRsin               ChildLegalEntityIdentificationsIDType = "nl_rsin"
+	ChildLegalEntityIdentificationsIDTypeNoFdn                ChildLegalEntityIdentificationsIDType = "no_fdn"
+	ChildLegalEntityIdentificationsIDTypeNoMva                ChildLegalEntityIdentificationsIDType = "no_mva"
+	ChildLegalEntityIdentificationsIDTypeNoOrgnr              ChildLegalEntityIdentificationsIDType = "no_orgnr"
+	ChildLegalEntityIdentificationsIDTypeNzIrd                ChildLegalEntityIdentificationsIDType = "nz_ird"
+	ChildLegalEntityIdentificationsIDTypePassport             ChildLegalEntityIdentificationsIDType = "passport"
+	ChildLegalEntityIdentificationsIDTypePlNip                ChildLegalEntityIdentificationsIDType = "pl_nip"
+	ChildLegalEntityIdentificationsIDTypePlPesel              ChildLegalEntityIdentificationsIDType = "pl_pesel"
+	ChildLegalEntityIdentificationsIDTypePtNif                ChildLegalEntityIdentificationsIDType = "pt_nif"
+	ChildLegalEntityIdentificationsIDTypeRoCnp                ChildLegalEntityIdentificationsIDType = "ro_cnp"
+	ChildLegalEntityIdentificationsIDTypeRoCui                ChildLegalEntityIdentificationsIDType = "ro_cui"
+	ChildLegalEntityIdentificationsIDTypeSaTin                ChildLegalEntityIdentificationsIDType = "sa_tin"
+	ChildLegalEntityIdentificationsIDTypeSaVat                ChildLegalEntityIdentificationsIDType = "sa_vat"
+	ChildLegalEntityIdentificationsIDTypeSeOrgnr              ChildLegalEntityIdentificationsIDType = "se_orgnr"
+	ChildLegalEntityIdentificationsIDTypeSePnmr               ChildLegalEntityIdentificationsIDType = "se_pnmr"
+	ChildLegalEntityIdentificationsIDTypeSgFin                ChildLegalEntityIdentificationsIDType = "sg_fin"
+	ChildLegalEntityIdentificationsIDTypeSgNric               ChildLegalEntityIdentificationsIDType = "sg_nric"
+	ChildLegalEntityIdentificationsIDTypeSgUen                ChildLegalEntityIdentificationsIDType = "sg_uen"
+	ChildLegalEntityIdentificationsIDTypeSiDav                ChildLegalEntityIdentificationsIDType = "si_dav"
+	ChildLegalEntityIdentificationsIDTypeSiTin                ChildLegalEntityIdentificationsIDType = "si_tin"
+	ChildLegalEntityIdentificationsIDTypeSkIco                ChildLegalEntityIdentificationsIDType = "sk_ico"
+	ChildLegalEntityIdentificationsIDTypeSkRc                 ChildLegalEntityIdentificationsIDType = "sk_rc"
+	ChildLegalEntityIdentificationsIDTypeUsEin                ChildLegalEntityIdentificationsIDType = "us_ein"
+	ChildLegalEntityIdentificationsIDTypeUsItin               ChildLegalEntityIdentificationsIDType = "us_itin"
+	ChildLegalEntityIdentificationsIDTypeUsSsn                ChildLegalEntityIdentificationsIDType = "us_ssn"
+	ChildLegalEntityIdentificationsIDTypeUyRut                ChildLegalEntityIdentificationsIDType = "uy_rut"
+	ChildLegalEntityIdentificationsIDTypeVnTin                ChildLegalEntityIdentificationsIDType = "vn_tin"
 )
 
 func (r ChildLegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityIdentificationsIDTypeArCuil, ChildLegalEntityIdentificationsIDTypeArCuit, ChildLegalEntityIdentificationsIDTypeAtAtin, ChildLegalEntityIdentificationsIDTypeAtVat, ChildLegalEntityIdentificationsIDTypeAuAbn, ChildLegalEntityIdentificationsIDTypeAuTfn, ChildLegalEntityIdentificationsIDTypeBeEnt, ChildLegalEntityIdentificationsIDTypeBeNrn, ChildLegalEntityIdentificationsIDTypeBrCnpj, ChildLegalEntityIdentificationsIDTypeBrCpf, ChildLegalEntityIdentificationsIDTypeCaBn, ChildLegalEntityIdentificationsIDTypeCaSin, ChildLegalEntityIdentificationsIDTypeChAhv, ChildLegalEntityIdentificationsIDTypeChUid, ChildLegalEntityIdentificationsIDTypeClRun, ChildLegalEntityIdentificationsIDTypeClRut, ChildLegalEntityIdentificationsIDTypeCoCedulas, ChildLegalEntityIdentificationsIDTypeCoNit, ChildLegalEntityIdentificationsIDTypeCyTin, ChildLegalEntityIdentificationsIDTypeCzIco, ChildLegalEntityIdentificationsIDTypeCzRc, ChildLegalEntityIdentificationsIDTypeDeStid, ChildLegalEntityIdentificationsIDTypeDeStnr, ChildLegalEntityIdentificationsIDTypeDeVat, ChildLegalEntityIdentificationsIDTypeDkCpr, ChildLegalEntityIdentificationsIDTypeDkCvr, ChildLegalEntityIdentificationsIDTypeDriversLicense, ChildLegalEntityIdentificationsIDTypeEeIk, ChildLegalEntityIdentificationsIDTypeEeRk, ChildLegalEntityIdentificationsIDTypeEsNie, ChildLegalEntityIdentificationsIDTypeEsNif, ChildLegalEntityIdentificationsIDTypeFiHetu, ChildLegalEntityIdentificationsIDTypeFiYtj, ChildLegalEntityIdentificationsIDTypeFrNif, ChildLegalEntityIdentificationsIDTypeFrSiren, ChildLegalEntityIdentificationsIDTypeFrVat, ChildLegalEntityIdentificationsIDTypeGBNino, ChildLegalEntityIdentificationsIDTypeGBUtr, ChildLegalEntityIdentificationsIDTypeGBVat, ChildLegalEntityIdentificationsIDTypeGrVat, ChildLegalEntityIdentificationsIDTypeHnID, ChildLegalEntityIdentificationsIDTypeHnRtn, ChildLegalEntityIdentificationsIDTypeHrOib, ChildLegalEntityIdentificationsIDTypeHuAdj, ChildLegalEntityIdentificationsIDTypeHuAnum, ChildLegalEntityIdentificationsIDTypeIePps, ChildLegalEntityIdentificationsIDTypeIeTrn, ChildLegalEntityIdentificationsIDTypeInLei, ChildLegalEntityIdentificationsIDTypeIsKnt, ChildLegalEntityIdentificationsIDTypeItCf, ChildLegalEntityIdentificationsIDTypeItPiva, ChildLegalEntityIdentificationsIDTypeJpHb, ChildLegalEntityIdentificationsIDTypeJpMn, ChildLegalEntityIdentificationsIDTypeKrBrn, ChildLegalEntityIdentificationsIDTypeKrCrn, ChildLegalEntityIdentificationsIDTypeKrRrn, ChildLegalEntityIdentificationsIDTypeLiPeid, ChildLegalEntityIdentificationsIDTypeLtAk, ChildLegalEntityIdentificationsIDTypeLtJak, ChildLegalEntityIdentificationsIDTypeLuMtc, ChildLegalEntityIdentificationsIDTypeLuVat, ChildLegalEntityIdentificationsIDTypeLvPk, ChildLegalEntityIdentificationsIDTypeLvRn, ChildLegalEntityIdentificationsIDTypeMtTin, ChildLegalEntityIdentificationsIDTypeMtVat, ChildLegalEntityIdentificationsIDTypeMxCurp, ChildLegalEntityIdentificationsIDTypeMxIne, ChildLegalEntityIdentificationsIDTypeMxRfc, ChildLegalEntityIdentificationsIDTypeNationalID, ChildLegalEntityIdentificationsIDTypeNlBsn, ChildLegalEntityIdentificationsIDTypeNlBtw, ChildLegalEntityIdentificationsIDTypeNlRsin, ChildLegalEntityIdentificationsIDTypeNoFdn, ChildLegalEntityIdentificationsIDTypeNoMva, ChildLegalEntityIdentificationsIDTypeNoOrgnr, ChildLegalEntityIdentificationsIDTypeNzIrd, ChildLegalEntityIdentificationsIDTypePassport, ChildLegalEntityIdentificationsIDTypePlNip, ChildLegalEntityIdentificationsIDTypePlPesel, ChildLegalEntityIdentificationsIDTypePtNif, ChildLegalEntityIdentificationsIDTypeRoCnp, ChildLegalEntityIdentificationsIDTypeRoCui, ChildLegalEntityIdentificationsIDTypeSaTin, ChildLegalEntityIdentificationsIDTypeSaVat, ChildLegalEntityIdentificationsIDTypeSeOrgnr, ChildLegalEntityIdentificationsIDTypeSePnmr, ChildLegalEntityIdentificationsIDTypeSgFin, ChildLegalEntityIdentificationsIDTypeSgNric, ChildLegalEntityIdentificationsIDTypeSgUen, ChildLegalEntityIdentificationsIDTypeSiDav, ChildLegalEntityIdentificationsIDTypeSiTin, ChildLegalEntityIdentificationsIDTypeSkIco, ChildLegalEntityIdentificationsIDTypeSkRc, ChildLegalEntityIdentificationsIDTypeUsEin, ChildLegalEntityIdentificationsIDTypeUsItin, ChildLegalEntityIdentificationsIDTypeUsSsn, ChildLegalEntityIdentificationsIDTypeUyRut, ChildLegalEntityIdentificationsIDTypeVnTin:
+	case ChildLegalEntityIdentificationsIDTypeArCuil, ChildLegalEntityIdentificationsIDTypeArCuit, ChildLegalEntityIdentificationsIDTypeAtAtin, ChildLegalEntityIdentificationsIDTypeAtVat, ChildLegalEntityIdentificationsIDTypeAuAbn, ChildLegalEntityIdentificationsIDTypeAuTfn, ChildLegalEntityIdentificationsIDTypeBeEnt, ChildLegalEntityIdentificationsIDTypeBeNrn, ChildLegalEntityIdentificationsIDTypeBrCnpj, ChildLegalEntityIdentificationsIDTypeBrCpf, ChildLegalEntityIdentificationsIDTypeCaBn, ChildLegalEntityIdentificationsIDTypeCaSin, ChildLegalEntityIdentificationsIDTypeChAhv, ChildLegalEntityIdentificationsIDTypeChUid, ChildLegalEntityIdentificationsIDTypeClRun, ChildLegalEntityIdentificationsIDTypeClRut, ChildLegalEntityIdentificationsIDTypeCoCedulas, ChildLegalEntityIdentificationsIDTypeCoNit, ChildLegalEntityIdentificationsIDTypeCyTin, ChildLegalEntityIdentificationsIDTypeCzIco, ChildLegalEntityIdentificationsIDTypeCzRc, ChildLegalEntityIdentificationsIDTypeDeStid, ChildLegalEntityIdentificationsIDTypeDeStnr, ChildLegalEntityIdentificationsIDTypeDeVat, ChildLegalEntityIdentificationsIDTypeDkCpr, ChildLegalEntityIdentificationsIDTypeDkCvr, ChildLegalEntityIdentificationsIDTypeDriversLicense, ChildLegalEntityIdentificationsIDTypeEeIk, ChildLegalEntityIdentificationsIDTypeEeRk, ChildLegalEntityIdentificationsIDTypeEsNie, ChildLegalEntityIdentificationsIDTypeEsNif, ChildLegalEntityIdentificationsIDTypeFiHetu, ChildLegalEntityIdentificationsIDTypeFiYtj, ChildLegalEntityIdentificationsIDTypeFrNif, ChildLegalEntityIdentificationsIDTypeFrSiren, ChildLegalEntityIdentificationsIDTypeFrVat, ChildLegalEntityIdentificationsIDTypeGBNino, ChildLegalEntityIdentificationsIDTypeGBUtr, ChildLegalEntityIdentificationsIDTypeGBVat, ChildLegalEntityIdentificationsIDTypeGenericInternational, ChildLegalEntityIdentificationsIDTypeGrVat, ChildLegalEntityIdentificationsIDTypeHnID, ChildLegalEntityIdentificationsIDTypeHnRtn, ChildLegalEntityIdentificationsIDTypeHrOib, ChildLegalEntityIdentificationsIDTypeHuAdj, ChildLegalEntityIdentificationsIDTypeHuAnum, ChildLegalEntityIdentificationsIDTypeIePps, ChildLegalEntityIdentificationsIDTypeIeTrn, ChildLegalEntityIdentificationsIDTypeInLei, ChildLegalEntityIdentificationsIDTypeIsKnt, ChildLegalEntityIdentificationsIDTypeItCf, ChildLegalEntityIdentificationsIDTypeItPiva, ChildLegalEntityIdentificationsIDTypeJpHb, ChildLegalEntityIdentificationsIDTypeJpMn, ChildLegalEntityIdentificationsIDTypeKrBrn, ChildLegalEntityIdentificationsIDTypeKrCrn, ChildLegalEntityIdentificationsIDTypeKrRrn, ChildLegalEntityIdentificationsIDTypeLiPeid, ChildLegalEntityIdentificationsIDTypeLtAk, ChildLegalEntityIdentificationsIDTypeLtJak, ChildLegalEntityIdentificationsIDTypeLuMtc, ChildLegalEntityIdentificationsIDTypeLuVat, ChildLegalEntityIdentificationsIDTypeLvPk, ChildLegalEntityIdentificationsIDTypeLvRn, ChildLegalEntityIdentificationsIDTypeMtTin, ChildLegalEntityIdentificationsIDTypeMtVat, ChildLegalEntityIdentificationsIDTypeMxCurp, ChildLegalEntityIdentificationsIDTypeMxIne, ChildLegalEntityIdentificationsIDTypeMxRfc, ChildLegalEntityIdentificationsIDTypeNationalID, ChildLegalEntityIdentificationsIDTypeNlBsn, ChildLegalEntityIdentificationsIDTypeNlBtw, ChildLegalEntityIdentificationsIDTypeNlRsin, ChildLegalEntityIdentificationsIDTypeNoFdn, ChildLegalEntityIdentificationsIDTypeNoMva, ChildLegalEntityIdentificationsIDTypeNoOrgnr, ChildLegalEntityIdentificationsIDTypeNzIrd, ChildLegalEntityIdentificationsIDTypePassport, ChildLegalEntityIdentificationsIDTypePlNip, ChildLegalEntityIdentificationsIDTypePlPesel, ChildLegalEntityIdentificationsIDTypePtNif, ChildLegalEntityIdentificationsIDTypeRoCnp, ChildLegalEntityIdentificationsIDTypeRoCui, ChildLegalEntityIdentificationsIDTypeSaTin, ChildLegalEntityIdentificationsIDTypeSaVat, ChildLegalEntityIdentificationsIDTypeSeOrgnr, ChildLegalEntityIdentificationsIDTypeSePnmr, ChildLegalEntityIdentificationsIDTypeSgFin, ChildLegalEntityIdentificationsIDTypeSgNric, ChildLegalEntityIdentificationsIDTypeSgUen, ChildLegalEntityIdentificationsIDTypeSiDav, ChildLegalEntityIdentificationsIDTypeSiTin, ChildLegalEntityIdentificationsIDTypeSkIco, ChildLegalEntityIdentificationsIDTypeSkRc, ChildLegalEntityIdentificationsIDTypeUsEin, ChildLegalEntityIdentificationsIDTypeUsItin, ChildLegalEntityIdentificationsIDTypeUsSsn, ChildLegalEntityIdentificationsIDTypeUyRut, ChildLegalEntityIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false
@@ -427,12 +433,11 @@ type ChildLegalEntityLegalEntityType string
 const (
 	ChildLegalEntityLegalEntityTypeBusiness   ChildLegalEntityLegalEntityType = "business"
 	ChildLegalEntityLegalEntityTypeIndividual ChildLegalEntityLegalEntityType = "individual"
-	ChildLegalEntityLegalEntityTypeJoint      ChildLegalEntityLegalEntityType = "joint"
 )
 
 func (r ChildLegalEntityLegalEntityType) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityLegalEntityTypeBusiness, ChildLegalEntityLegalEntityTypeIndividual, ChildLegalEntityLegalEntityTypeJoint:
+	case ChildLegalEntityLegalEntityTypeBusiness, ChildLegalEntityLegalEntityTypeIndividual:
 		return true
 	}
 	return false
@@ -545,6 +550,33 @@ func (r ChildLegalEntityStatus) IsKnown() bool {
 	return false
 }
 
+// Acceptance of terms of use by the legal entity.
+type ChildLegalEntityTermsOfUse struct {
+	// The ISO 8601 timestamp indicating when the terms of use were accepted.
+	AcceptedAt time.Time `json:"accepted_at" format:"date-time"`
+	// The IP address from which the terms of use were accepted. Supports both IPv4 and
+	// IPv6 formats.
+	IPAddress string                         `json:"ip_address"`
+	JSON      childLegalEntityTermsOfUseJSON `json:"-"`
+}
+
+// childLegalEntityTermsOfUseJSON contains the JSON metadata for the struct
+// [ChildLegalEntityTermsOfUse]
+type childLegalEntityTermsOfUseJSON struct {
+	AcceptedAt  apijson.Field
+	IPAddress   apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *ChildLegalEntityTermsOfUse) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r childLegalEntityTermsOfUseJSON) RawJSON() string {
+	return r.raw
+}
+
 type LegalEntityAssociation struct {
 	ID string `json:"id" api:"required" format:"uuid"`
 	// The child legal entity.
@@ -557,8 +589,7 @@ type LegalEntityAssociation struct {
 	Object   string `json:"object" api:"required"`
 	// The child entity's ownership percentage iff they are a beneficial owner.
 	OwnershipPercentage int64 `json:"ownership_percentage" api:"required,nullable"`
-	// The ID of the parent legal entity. This must be a business or joint legal
-	// entity.
+	// The ID of the parent legal entity. This must be a business legal entity.
 	ParentLegalEntityID string                                   `json:"parent_legal_entity_id" api:"required"`
 	RelationshipTypes   []LegalEntityAssociationRelationshipType `json:"relationship_types" api:"required"`
 	// The job title of the child entity at the parent entity.
