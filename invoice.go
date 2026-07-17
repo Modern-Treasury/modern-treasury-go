@@ -148,7 +148,7 @@ type Invoice struct {
 	// The name of the issuer for the invoice. Defaults to the name of the
 	// Organization.
 	InvoicerName string `json:"invoicer_name" api:"required,nullable"`
-	// The time at which the invoice was issued.
+	// Translation missing: en.openapi.descriptions.invoice.schema.issued_at
 	IssuedAt time.Time `json:"issued_at" api:"required,nullable" format:"date-time"`
 	// The ledger account settlement object linked to the invoice.
 	//
@@ -172,7 +172,7 @@ type Invoice struct {
 	Object string `json:"object" api:"required"`
 	// The ID of the internal account the invoice should be paid to.
 	OriginatingAccountID string `json:"originating_account_id" api:"required"`
-	// The time at which the invoice was paid.
+	// Translation missing: en.openapi.descriptions.invoice.schema.paid_at
 	PaidAt time.Time `json:"paid_at" api:"required,nullable" format:"date-time"`
 	// Date transactions are to be posted to the participants' account. Defaults to the
 	// current business day or the next business day if the current day is a bank
@@ -209,7 +209,7 @@ type Invoice struct {
 	UpdatedAt              time.Time `json:"updated_at" api:"required" format:"date-time"`
 	// The ID of the virtual account the invoice should be paid to.
 	VirtualAccountID string `json:"virtual_account_id" api:"required,nullable" format:"uuid"`
-	// The time at which the invoice was voided.
+	// Translation missing: en.openapi.descriptions.invoice.schema.voided_at
 	VoidedAt time.Time   `json:"voided_at" api:"required,nullable" format:"date-time"`
 	JSON     invoiceJSON `json:"-"`
 }
@@ -485,8 +485,9 @@ type InvoiceNewParams struct {
 	// invoice amount is negative, the automatically initiated payment order's
 	// direction will be credit. One of `manual`, `ui`, or `automatic`.
 	PaymentMethod param.Field[InvoiceNewParamsPaymentMethod] `json:"payment_method"`
-	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `neft`, `nics`, `nz_national_clearing_code`, `sic`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	PaymentType param.Field[PaymentOrderType] `json:"payment_type"`
 	// The receiving account ID. Can be an `external_account`.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`
@@ -661,8 +662,9 @@ type InvoiceUpdateParams struct {
 	// invoice amount is negative, the automatically initiated payment order's
 	// direction will be credit. One of `manual`, `ui`, or `automatic`.
 	PaymentMethod param.Field[InvoiceUpdateParamsPaymentMethod] `json:"payment_method"`
-	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `neft`, `nics`, `nz_national_clearing_code`, `sic`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	PaymentType param.Field[PaymentOrderType] `json:"payment_type"`
 	// The receiving account ID. Can be an `external_account`.
 	ReceivingAccountID param.Field[string] `json:"receiving_account_id" format:"uuid"`

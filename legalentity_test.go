@@ -187,10 +187,6 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 				RiskRating:                   moderntreasury.F(shared.ChildLegalEntityCreateRiskRatingLow),
 				ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				Suffix:                       moderntreasury.F("suffix"),
-				TermsOfUse: moderntreasury.F(shared.ChildLegalEntityCreateTermsOfUseParam{
-					AcceptedAt: moderntreasury.F(time.Now()),
-					IPAddress:  moderntreasury.F("ip_address"),
-				}),
 				ThirdPartyVerification: moderntreasury.F(shared.ThirdPartyVerificationParam{
 					Outcome:              moderntreasury.F(shared.ThirdPartyVerificationOutcomePassed),
 					Vendor:               moderntreasury.F(shared.ThirdPartyVerificationVendorPersona),
@@ -260,10 +256,6 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 		RiskRating:                   moderntreasury.F(moderntreasury.LegalEntityNewParamsRiskRatingLow),
 		ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Suffix:                       moderntreasury.F("suffix"),
-		TermsOfUse: moderntreasury.F(moderntreasury.LegalEntityNewParamsTermsOfUse{
-			AcceptedAt: moderntreasury.F(time.Now()),
-			IPAddress:  moderntreasury.F("ip_address"),
-		}),
 		ThirdPartyVerification: moderntreasury.F(shared.ThirdPartyVerificationParam{
 			Outcome:              moderntreasury.F(shared.ThirdPartyVerificationOutcomePassed),
 			Vendor:               moderntreasury.F(shared.ThirdPartyVerificationVendorPersona),
@@ -435,10 +427,6 @@ func TestLegalEntityUpdateWithOptionalParams(t *testing.T) {
 			RiskRating:                   moderntreasury.F(moderntreasury.LegalEntityUpdateParamsRiskRatingLow),
 			ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Suffix:                       moderntreasury.F("suffix"),
-			TermsOfUse: moderntreasury.F(moderntreasury.LegalEntityUpdateParamsTermsOfUse{
-				AcceptedAt: moderntreasury.F(time.Now()),
-				IPAddress:  moderntreasury.F("ip_address"),
-			}),
 			ThirdPartyVerification: moderntreasury.F(shared.ThirdPartyVerificationParam{
 				Outcome:              moderntreasury.F(shared.ThirdPartyVerificationOutcomePassed),
 				Vendor:               moderntreasury.F(shared.ThirdPartyVerificationVendorPersona),
@@ -514,35 +502,6 @@ func TestLegalEntityListWithOptionalParams(t *testing.T) {
 		ShowDeleted: moderntreasury.F("show_deleted"),
 		Status:      moderntreasury.F(moderntreasury.LegalEntityListParamsStatusPending),
 	})
-	if err != nil {
-		var apierr *moderntreasury.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
-}
-
-func TestLegalEntityUpdateStatus(t *testing.T) {
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := moderntreasury.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
-		option.WithOrganizationID("my-organization-ID"),
-	)
-	_, err := client.LegalEntities.UpdateStatus(
-		context.TODO(),
-		"id",
-		moderntreasury.LegalEntityUpdateStatusParams{
-			Status: moderntreasury.F(moderntreasury.LegalEntityUpdateStatusParamsStatusActive),
-		},
-	)
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {

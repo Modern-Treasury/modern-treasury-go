@@ -170,9 +170,6 @@ type BulkResultEntity struct {
 	// One of credit or debit. Indicates whether amount_reconciled is a credit or debit
 	// amount.
 	AmountReconciledDirection BulkResultEntityAmountReconciledDirection `json:"amount_reconciled_direction" api:"nullable"`
-	// The amount of the transaction as a string, preserving full precision for values
-	// that may exceed safe integer limits in some languages.
-	AmountString string `json:"amount_string"`
 	// The amount that remains unreconciled for this expected payment. Value in
 	// specified currency's smallest unit. e.g. $10 would be represented as 1000.
 	AmountUnreconciled int64 `json:"amount_unreconciled" api:"nullable"`
@@ -359,8 +356,9 @@ type BulkResultEntity struct {
 	TransactionIDs interface{} `json:"transaction_ids"`
 	// The ID of the Transaction Line Item this expected payment has been matched to.
 	TransactionLineItemID string `json:"transaction_line_item_id" api:"nullable" format:"uuid"`
-	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `neft`, `nics`, `nz_national_clearing_code`, `sic`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	Type PaymentOrderType `json:"type" api:"nullable"`
 	// This field can have the runtime type of
 	// [PaymentOrderUltimateOriginatingAccount].
@@ -382,8 +380,8 @@ type BulkResultEntity struct {
 	VendorCode string `json:"vendor_code" api:"nullable"`
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
-	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`,
-	// `us_bank`, or others.
+	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
+	// `swift`, `us_bank`, or others.
 	VendorCodeType BulkResultEntityVendorCodeType `json:"vendor_code_type" api:"nullable"`
 	// An identifier given to this transaction by the bank, often `null`.
 	VendorCustomerID string `json:"vendor_customer_id" api:"nullable"`
@@ -414,7 +412,6 @@ type bulkResultEntityJSON struct {
 	AmountLowerBound                   apijson.Field
 	AmountReconciled                   apijson.Field
 	AmountReconciledDirection          apijson.Field
-	AmountString                       apijson.Field
 	AmountUnreconciled                 apijson.Field
 	AmountUnreconciledDirection        apijson.Field
 	AmountUpperBound                   apijson.Field
@@ -838,8 +835,8 @@ func (r BulkResultEntityUltimateOriginatingAccountType) IsKnown() bool {
 
 // The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 // `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
-// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`,
-// `us_bank`, or others.
+// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
+// `swift`, `us_bank`, or others.
 type BulkResultEntityVendorCodeType string
 
 const (
@@ -864,9 +861,9 @@ const (
 	BulkResultEntityVendorCodeTypePaxos           BulkResultEntityVendorCodeType = "paxos"
 	BulkResultEntityVendorCodeTypePaypal          BulkResultEntityVendorCodeType = "paypal"
 	BulkResultEntityVendorCodeTypePnc             BulkResultEntityVendorCodeType = "pnc"
+	BulkResultEntityVendorCodeTypeSignet          BulkResultEntityVendorCodeType = "signet"
 	BulkResultEntityVendorCodeTypeSilvergate      BulkResultEntityVendorCodeType = "silvergate"
 	BulkResultEntityVendorCodeTypeSwift           BulkResultEntityVendorCodeType = "swift"
-	BulkResultEntityVendorCodeTypeTurnkey         BulkResultEntityVendorCodeType = "turnkey"
 	BulkResultEntityVendorCodeTypeUsBank          BulkResultEntityVendorCodeType = "us_bank"
 	BulkResultEntityVendorCodeTypeUser            BulkResultEntityVendorCodeType = "user"
 	BulkResultEntityVendorCodeTypeWesternAlliance BulkResultEntityVendorCodeType = "western_alliance"
@@ -874,7 +871,7 @@ const (
 
 func (r BulkResultEntityVendorCodeType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankingCircle, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeCoinbasePrime, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeFakeVendor, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeModernTreasury, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePaxos, BulkResultEntityVendorCodeTypePaypal, BulkResultEntityVendorCodeTypePnc, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeTurnkey, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser, BulkResultEntityVendorCodeTypeWesternAlliance:
+	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankingCircle, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeCoinbasePrime, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDcBank, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeFakeVendor, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeModernTreasury, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePaxos, BulkResultEntityVendorCodeTypePaypal, BulkResultEntityVendorCodeTypePnc, BulkResultEntityVendorCodeTypeSignet, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser, BulkResultEntityVendorCodeTypeWesternAlliance:
 		return true
 	}
 	return false

@@ -32,7 +32,7 @@ func TestDocumentNewWithOptionalParams(t *testing.T) {
 		File:             moderntreasury.F(io.Reader(bytes.NewBuffer([]byte("Example data")))),
 		DocumentType:     moderntreasury.F("document_type"),
 		DocumentableID:   moderntreasury.F("documentable_id"),
-		DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeConnection),
+		DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeConnections),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -82,7 +82,7 @@ func TestDocumentListWithOptionalParams(t *testing.T) {
 	_, err := client.Documents.List(context.TODO(), moderntreasury.DocumentListParams{
 		AfterCursor:      moderntreasury.F("after_cursor"),
 		DocumentableID:   moderntreasury.F("documentable_id"),
-		DocumentableType: moderntreasury.F(moderntreasury.DocumentListParamsDocumentableTypeConnection),
+		DocumentableType: moderntreasury.F(moderntreasury.DocumentListParamsDocumentableTypeConnections),
 		PerPage:          moderntreasury.F(int64(0)),
 	})
 	if err != nil {

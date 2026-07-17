@@ -567,11 +567,13 @@ type HoldListParams struct {
 	// parameters.
 	Metadata param.Field[map[string]string] `query:"metadata"`
 	PerPage  param.Field[int64]             `query:"per_page"`
-	// Only return holds for a specific status.
+	// Translation missing: en.openapi.descriptions.payment_order.query_params.status
 	Status param.Field[HoldListParamsStatus] `query:"status"`
-	// Only return holds for a specific target ID.
+	// Translation missing:
+	// en.openapi.descriptions.payment_order.query_params.target_id
 	TargetID param.Field[string] `query:"target_id"`
-	// Only return holds for a specific target type.
+	// Translation missing:
+	// en.openapi.descriptions.payment_order.query_params.target_type
 	TargetType param.Field[HoldListParamsTargetType] `query:"target_type"`
 }
 
@@ -583,7 +585,7 @@ func (r HoldListParams) URLQuery() (v url.Values) {
 	})
 }
 
-// Only return holds for a specific status.
+// Translation missing: en.openapi.descriptions.payment_order.query_params.status
 type HoldListParamsStatus string
 
 const (
@@ -599,7 +601,8 @@ func (r HoldListParamsStatus) IsKnown() bool {
 	return false
 }
 
-// Only return holds for a specific target type.
+// Translation missing:
+// en.openapi.descriptions.payment_order.query_params.target_type
 type HoldListParamsTargetType string
 
 const (
