@@ -260,8 +260,9 @@ type PaymentOrder struct {
 	// results in a Return, but gets redrafted and is later successfully completed, it
 	// can have many transactions.
 	TransactionIDs []string `json:"transaction_ids" api:"required" format:"uuid"`
-	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `neft`, `nics`, `nz_national_clearing_code`, `sic`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	Type PaymentOrderType `json:"type" api:"required"`
 	// The account to which the originating of this payment should be attributed to.
 	// Can be a `virtual_account` or `internal_account`.
@@ -677,6 +678,7 @@ const (
 	PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsPaymentRequestID                   PaymentOrderReferenceNumbersReferenceNumberType = "goldman_sachs_payment_request_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsRequestID                          PaymentOrderReferenceNumbersReferenceNumberType = "goldman_sachs_request_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsUniquePaymentID                    PaymentOrderReferenceNumbersReferenceNumberType = "goldman_sachs_unique_payment_id"
+	PaymentOrderReferenceNumbersReferenceNumberTypeInteracMessageID                               PaymentOrderReferenceNumbersReferenceNumberType = "interac_message_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeJpmcCcn                                        PaymentOrderReferenceNumbersReferenceNumberType = "jpmc_ccn"
 	PaymentOrderReferenceNumbersReferenceNumberTypeJpmcClearingSystemReference                    PaymentOrderReferenceNumbersReferenceNumberType = "jpmc_clearing_system_reference"
 	PaymentOrderReferenceNumbersReferenceNumberTypeJpmcCustomerReferenceID                        PaymentOrderReferenceNumbersReferenceNumberType = "jpmc_customer_reference_id"
@@ -704,13 +706,14 @@ const (
 	PaymentOrderReferenceNumbersReferenceNumberTypePncTransactionReferenceNumber                  PaymentOrderReferenceNumbersReferenceNumberType = "pnc_transaction_reference_number"
 	PaymentOrderReferenceNumbersReferenceNumberTypeRbcWireReferenceID                             PaymentOrderReferenceNumbersReferenceNumberType = "rbc_wire_reference_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeRtpInstructionID                               PaymentOrderReferenceNumbersReferenceNumberType = "rtp_instruction_id"
+	PaymentOrderReferenceNumbersReferenceNumberTypeSignetAPIReferenceID                           PaymentOrderReferenceNumbersReferenceNumberType = "signet_api_reference_id"
+	PaymentOrderReferenceNumbersReferenceNumberTypeSignetConfirmationID                           PaymentOrderReferenceNumbersReferenceNumberType = "signet_confirmation_id"
+	PaymentOrderReferenceNumbersReferenceNumberTypeSignetRequestID                                PaymentOrderReferenceNumbersReferenceNumberType = "signet_request_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeSilvergatePaymentID                            PaymentOrderReferenceNumbersReferenceNumberType = "silvergate_payment_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeSvbEndToEndID                                  PaymentOrderReferenceNumbersReferenceNumberType = "svb_end_to_end_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeSvbPaymentID                                   PaymentOrderReferenceNumbersReferenceNumberType = "svb_payment_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeSwiftMir                                       PaymentOrderReferenceNumbersReferenceNumberType = "swift_mir"
 	PaymentOrderReferenceNumbersReferenceNumberTypeSwiftUetr                                      PaymentOrderReferenceNumbersReferenceNumberType = "swift_uetr"
-	PaymentOrderReferenceNumbersReferenceNumberTypeTurnkeyActivityID                              PaymentOrderReferenceNumbersReferenceNumberType = "turnkey_activity_id"
-	PaymentOrderReferenceNumbersReferenceNumberTypeTurnkeySendTransactionStatusID                 PaymentOrderReferenceNumbersReferenceNumberType = "turnkey_send_transaction_status_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeUmbProductPartnerAccountNumber                 PaymentOrderReferenceNumbersReferenceNumberType = "umb_product_partner_account_number"
 	PaymentOrderReferenceNumbersReferenceNumberTypeUsbankPaymentApplicationReferenceID            PaymentOrderReferenceNumbersReferenceNumberType = "usbank_payment_application_reference_id"
 	PaymentOrderReferenceNumbersReferenceNumberTypeUsbankPaymentID                                PaymentOrderReferenceNumbersReferenceNumberType = "usbank_payment_id"
@@ -727,7 +730,7 @@ const (
 
 func (r PaymentOrderReferenceNumbersReferenceNumberType) IsKnown() bool {
 	switch r {
-	case PaymentOrderReferenceNumbersReferenceNumberTypeACHOriginalTraceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeACHTraceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeBankprovPaymentActivityDate, PaymentOrderReferenceNumbersReferenceNumberTypeBankprovPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeBlockchainTransactionHash, PaymentOrderReferenceNumbersReferenceNumberTypeBlockchainTransactionIndex, PaymentOrderReferenceNumbersReferenceNumberTypeBnkDevPrenotificationID, PaymentOrderReferenceNumbersReferenceNumberTypeBnkDevTransferID, PaymentOrderReferenceNumbersReferenceNumberTypeBnyMellonTransactionReferenceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeBofaEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeBofaNeftClearingReferenceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeBofaTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeCheckNumber, PaymentOrderReferenceNumbersReferenceNumberTypeChipsUid, PaymentOrderReferenceNumbersReferenceNumberTypeCitibankReferenceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeCitibankWorldlinkClearingSystemReferenceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeColumnFxQuoteID, PaymentOrderReferenceNumbersReferenceNumberTypeColumnReversalPairTransferID, PaymentOrderReferenceNumbersReferenceNumberTypeColumnTransferID, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverCardTraceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverCoreTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverFedBatchID, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverRetrievalReferenceID, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverServiceMessage, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeCurrencycloudConversionID, PaymentOrderReferenceNumbersReferenceNumberTypeCurrencycloudPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeDcBankTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeEftTraceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeEvolveCoreBatch, PaymentOrderReferenceNumbersReferenceNumberTypeEvolveCoreFileKey, PaymentOrderReferenceNumbersReferenceNumberTypeEvolveCoreSeq, PaymentOrderReferenceNumbersReferenceNumberTypeEvolveTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeFakeVendorPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeFedwireImad, PaymentOrderReferenceNumbersReferenceNumberTypeFedwireOmad, PaymentOrderReferenceNumbersReferenceNumberTypeFirstRepublicInternalID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsCollectionRequestID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsPaymentRequestID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsRequestID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsUniquePaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcCcn, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcClearingSystemReference, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcCustomerReferenceID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcFirmRootID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcFxTrnID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcP3ID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcPaymentBatchID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcPaymentInformationID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcPaymentReturnedDatetime, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcTransactionReferenceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeLobCheckID, PaymentOrderReferenceNumbersReferenceNumberTypeOther, PaymentOrderReferenceNumbersReferenceNumberTypePartialSwiftMir, PaymentOrderReferenceNumbersReferenceNumberTypePaxosCryptoWithdrawalID, PaymentOrderReferenceNumbersReferenceNumberTypePaxosFiatWithdrawalID, PaymentOrderReferenceNumbersReferenceNumberTypePaxosGroupID, PaymentOrderReferenceNumbersReferenceNumberTypePaxosOrchestrationID, PaymentOrderReferenceNumbersReferenceNumberTypePaxosTransferID, PaymentOrderReferenceNumbersReferenceNumberTypePncClearingReference, PaymentOrderReferenceNumbersReferenceNumberTypePncInstructionID, PaymentOrderReferenceNumbersReferenceNumberTypePncMultipaymentID, PaymentOrderReferenceNumbersReferenceNumberTypePncPaymentTraceID, PaymentOrderReferenceNumbersReferenceNumberTypePncRequestForPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypePncTransactionReferenceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeRbcWireReferenceID, PaymentOrderReferenceNumbersReferenceNumberTypeRtpInstructionID, PaymentOrderReferenceNumbersReferenceNumberTypeSilvergatePaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeSvbEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeSvbPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeSwiftMir, PaymentOrderReferenceNumbersReferenceNumberTypeSwiftUetr, PaymentOrderReferenceNumbersReferenceNumberTypeTurnkeyActivityID, PaymentOrderReferenceNumbersReferenceNumberTypeTurnkeySendTransactionStatusID, PaymentOrderReferenceNumbersReferenceNumberTypeUmbProductPartnerAccountNumber, PaymentOrderReferenceNumbersReferenceNumberTypeUsbankPaymentApplicationReferenceID, PaymentOrderReferenceNumbersReferenceNumberTypeUsbankPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeUsbankPendingRtpPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeUsbankPostedRtpPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeWellsFargoEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeWellsFargoPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeWellsFargoTraceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeWellsFargoUetr, PaymentOrderReferenceNumbersReferenceNumberTypeWesternAlliancePaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeWesternAllianceTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeWesternAllianceWireConfirmationNumber:
+	case PaymentOrderReferenceNumbersReferenceNumberTypeACHOriginalTraceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeACHTraceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeBankprovPaymentActivityDate, PaymentOrderReferenceNumbersReferenceNumberTypeBankprovPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeBlockchainTransactionHash, PaymentOrderReferenceNumbersReferenceNumberTypeBlockchainTransactionIndex, PaymentOrderReferenceNumbersReferenceNumberTypeBnkDevPrenotificationID, PaymentOrderReferenceNumbersReferenceNumberTypeBnkDevTransferID, PaymentOrderReferenceNumbersReferenceNumberTypeBnyMellonTransactionReferenceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeBofaEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeBofaNeftClearingReferenceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeBofaTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeCheckNumber, PaymentOrderReferenceNumbersReferenceNumberTypeChipsUid, PaymentOrderReferenceNumbersReferenceNumberTypeCitibankReferenceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeCitibankWorldlinkClearingSystemReferenceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeColumnFxQuoteID, PaymentOrderReferenceNumbersReferenceNumberTypeColumnReversalPairTransferID, PaymentOrderReferenceNumbersReferenceNumberTypeColumnTransferID, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverCardTraceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverCoreTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverFedBatchID, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverRetrievalReferenceID, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverServiceMessage, PaymentOrderReferenceNumbersReferenceNumberTypeCrossRiverTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeCurrencycloudConversionID, PaymentOrderReferenceNumbersReferenceNumberTypeCurrencycloudPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeDcBankTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeEftTraceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeEvolveCoreBatch, PaymentOrderReferenceNumbersReferenceNumberTypeEvolveCoreFileKey, PaymentOrderReferenceNumbersReferenceNumberTypeEvolveCoreSeq, PaymentOrderReferenceNumbersReferenceNumberTypeEvolveTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeFakeVendorPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeFedwireImad, PaymentOrderReferenceNumbersReferenceNumberTypeFedwireOmad, PaymentOrderReferenceNumbersReferenceNumberTypeFirstRepublicInternalID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsCollectionRequestID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsPaymentRequestID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsRequestID, PaymentOrderReferenceNumbersReferenceNumberTypeGoldmanSachsUniquePaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeInteracMessageID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcCcn, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcClearingSystemReference, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcCustomerReferenceID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcFirmRootID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcFxTrnID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcP3ID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcPaymentBatchID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcPaymentInformationID, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcPaymentReturnedDatetime, PaymentOrderReferenceNumbersReferenceNumberTypeJpmcTransactionReferenceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeLobCheckID, PaymentOrderReferenceNumbersReferenceNumberTypeOther, PaymentOrderReferenceNumbersReferenceNumberTypePartialSwiftMir, PaymentOrderReferenceNumbersReferenceNumberTypePaxosCryptoWithdrawalID, PaymentOrderReferenceNumbersReferenceNumberTypePaxosFiatWithdrawalID, PaymentOrderReferenceNumbersReferenceNumberTypePaxosGroupID, PaymentOrderReferenceNumbersReferenceNumberTypePaxosOrchestrationID, PaymentOrderReferenceNumbersReferenceNumberTypePaxosTransferID, PaymentOrderReferenceNumbersReferenceNumberTypePncClearingReference, PaymentOrderReferenceNumbersReferenceNumberTypePncInstructionID, PaymentOrderReferenceNumbersReferenceNumberTypePncMultipaymentID, PaymentOrderReferenceNumbersReferenceNumberTypePncPaymentTraceID, PaymentOrderReferenceNumbersReferenceNumberTypePncRequestForPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypePncTransactionReferenceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeRbcWireReferenceID, PaymentOrderReferenceNumbersReferenceNumberTypeRtpInstructionID, PaymentOrderReferenceNumbersReferenceNumberTypeSignetAPIReferenceID, PaymentOrderReferenceNumbersReferenceNumberTypeSignetConfirmationID, PaymentOrderReferenceNumbersReferenceNumberTypeSignetRequestID, PaymentOrderReferenceNumbersReferenceNumberTypeSilvergatePaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeSvbEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeSvbPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeSwiftMir, PaymentOrderReferenceNumbersReferenceNumberTypeSwiftUetr, PaymentOrderReferenceNumbersReferenceNumberTypeUmbProductPartnerAccountNumber, PaymentOrderReferenceNumbersReferenceNumberTypeUsbankPaymentApplicationReferenceID, PaymentOrderReferenceNumbersReferenceNumberTypeUsbankPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeUsbankPendingRtpPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeUsbankPostedRtpPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeWellsFargoEndToEndID, PaymentOrderReferenceNumbersReferenceNumberTypeWellsFargoPaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeWellsFargoTraceNumber, PaymentOrderReferenceNumbersReferenceNumberTypeWellsFargoUetr, PaymentOrderReferenceNumbersReferenceNumberTypeWesternAlliancePaymentID, PaymentOrderReferenceNumbersReferenceNumberTypeWesternAllianceTransactionID, PaymentOrderReferenceNumbersReferenceNumberTypeWesternAllianceWireConfirmationNumber:
 		return true
 	}
 	return false
@@ -1011,10 +1014,10 @@ const (
 	PaymentOrderSubtypeBacs                        PaymentOrderSubtype = "bacs"
 	PaymentOrderSubtypeBase                        PaymentOrderSubtype = "base"
 	PaymentOrderSubtypeChats                       PaymentOrderSubtype = "chats"
-	PaymentOrderSubtypeDigital                     PaymentOrderSubtype = "digital"
 	PaymentOrderSubtypeDkNets                      PaymentOrderSubtype = "dk_nets"
 	PaymentOrderSubtypeEft                         PaymentOrderSubtype = "eft"
 	PaymentOrderSubtypeEthereum                    PaymentOrderSubtype = "ethereum"
+	PaymentOrderSubtypeHuIcs                       PaymentOrderSubtype = "hu_ics"
 	PaymentOrderSubtypeMasav                       PaymentOrderSubtype = "masav"
 	PaymentOrderSubtypeMxCcen                      PaymentOrderSubtype = "mx_ccen"
 	PaymentOrderSubtypeNeft                        PaymentOrderSubtype = "neft"
@@ -1022,25 +1025,27 @@ const (
 	PaymentOrderSubtypeNzBecs                      PaymentOrderSubtype = "nz_becs"
 	PaymentOrderSubtypePlElixir                    PaymentOrderSubtype = "pl_elixir"
 	PaymentOrderSubtypePolygon                     PaymentOrderSubtype = "polygon"
-	PaymentOrderSubtypePrint                       PaymentOrderSubtype = "print"
+	PaymentOrderSubtypeRoSent                      PaymentOrderSubtype = "ro_sent"
 	PaymentOrderSubtypeSeBankgirot                 PaymentOrderSubtype = "se_bankgirot"
 	PaymentOrderSubtypeSepa                        PaymentOrderSubtype = "sepa"
 	PaymentOrderSubtypeSgGiro                      PaymentOrderSubtype = "sg_giro"
 	PaymentOrderSubtypeSic                         PaymentOrderSubtype = "sic"
+	PaymentOrderSubtypeSknbi                       PaymentOrderSubtype = "sknbi"
 	PaymentOrderSubtypeSolana                      PaymentOrderSubtype = "solana"
 	PaymentOrderSubtypeZengin                      PaymentOrderSubtype = "zengin"
 )
 
 func (r PaymentOrderSubtype) IsKnown() bool {
 	switch r {
-	case PaymentOrderSubtypeBacsNewInstruction, PaymentOrderSubtypeBacsCancellationInstruction, PaymentOrderSubtypeBacsConversionInstruction, PaymentOrderSubtypeCcd, PaymentOrderSubtypeCie, PaymentOrderSubtypeCtx, PaymentOrderSubtypeIat, PaymentOrderSubtypePpd, PaymentOrderSubtypeTel, PaymentOrderSubtypeWeb, PaymentOrderSubtypeAuBecs, PaymentOrderSubtypeBacs, PaymentOrderSubtypeBase, PaymentOrderSubtypeChats, PaymentOrderSubtypeDigital, PaymentOrderSubtypeDkNets, PaymentOrderSubtypeEft, PaymentOrderSubtypeEthereum, PaymentOrderSubtypeMasav, PaymentOrderSubtypeMxCcen, PaymentOrderSubtypeNeft, PaymentOrderSubtypeNics, PaymentOrderSubtypeNzBecs, PaymentOrderSubtypePlElixir, PaymentOrderSubtypePolygon, PaymentOrderSubtypePrint, PaymentOrderSubtypeSeBankgirot, PaymentOrderSubtypeSepa, PaymentOrderSubtypeSgGiro, PaymentOrderSubtypeSic, PaymentOrderSubtypeSolana, PaymentOrderSubtypeZengin:
+	case PaymentOrderSubtypeBacsNewInstruction, PaymentOrderSubtypeBacsCancellationInstruction, PaymentOrderSubtypeBacsConversionInstruction, PaymentOrderSubtypeCcd, PaymentOrderSubtypeCie, PaymentOrderSubtypeCtx, PaymentOrderSubtypeIat, PaymentOrderSubtypePpd, PaymentOrderSubtypeTel, PaymentOrderSubtypeWeb, PaymentOrderSubtypeAuBecs, PaymentOrderSubtypeBacs, PaymentOrderSubtypeBase, PaymentOrderSubtypeChats, PaymentOrderSubtypeDkNets, PaymentOrderSubtypeEft, PaymentOrderSubtypeEthereum, PaymentOrderSubtypeHuIcs, PaymentOrderSubtypeMasav, PaymentOrderSubtypeMxCcen, PaymentOrderSubtypeNeft, PaymentOrderSubtypeNics, PaymentOrderSubtypeNzBecs, PaymentOrderSubtypePlElixir, PaymentOrderSubtypePolygon, PaymentOrderSubtypeRoSent, PaymentOrderSubtypeSeBankgirot, PaymentOrderSubtypeSepa, PaymentOrderSubtypeSgGiro, PaymentOrderSubtypeSic, PaymentOrderSubtypeSknbi, PaymentOrderSubtypeSolana, PaymentOrderSubtypeZengin:
 		return true
 	}
 	return false
 }
 
-// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `book`, `rtp`, `sepa`,
-// `bacs`, `au_becs`, `neft`, `nics`, `nz_national_clearing_code`, `sic`, `zengin`.
+// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 type PaymentOrderType string
 
 const (
@@ -1055,17 +1060,24 @@ const (
 	PaymentOrderTypeDkNets      PaymentOrderType = "dk_nets"
 	PaymentOrderTypeEft         PaymentOrderType = "eft"
 	PaymentOrderTypeGBFps       PaymentOrderType = "gb_fps"
+	PaymentOrderTypeHuIcs       PaymentOrderType = "hu_ics"
+	PaymentOrderTypeInterac     PaymentOrderType = "interac"
 	PaymentOrderTypeMasav       PaymentOrderType = "masav"
 	PaymentOrderTypeMxCcen      PaymentOrderType = "mx_ccen"
 	PaymentOrderTypeNeft        PaymentOrderType = "neft"
 	PaymentOrderTypeNics        PaymentOrderType = "nics"
 	PaymentOrderTypeNzBecs      PaymentOrderType = "nz_becs"
 	PaymentOrderTypePlElixir    PaymentOrderType = "pl_elixir"
+	PaymentOrderTypeProvxchange PaymentOrderType = "provxchange"
+	PaymentOrderTypeRoSent      PaymentOrderType = "ro_sent"
 	PaymentOrderTypeRtp         PaymentOrderType = "rtp"
 	PaymentOrderTypeSeBankgirot PaymentOrderType = "se_bankgirot"
+	PaymentOrderTypeSen         PaymentOrderType = "sen"
 	PaymentOrderTypeSepa        PaymentOrderType = "sepa"
 	PaymentOrderTypeSgGiro      PaymentOrderType = "sg_giro"
 	PaymentOrderTypeSic         PaymentOrderType = "sic"
+	PaymentOrderTypeSignet      PaymentOrderType = "signet"
+	PaymentOrderTypeSknbi       PaymentOrderType = "sknbi"
 	PaymentOrderTypeStablecoin  PaymentOrderType = "stablecoin"
 	PaymentOrderTypeWire        PaymentOrderType = "wire"
 	PaymentOrderTypeZengin      PaymentOrderType = "zengin"
@@ -1073,7 +1085,7 @@ const (
 
 func (r PaymentOrderType) IsKnown() bool {
 	switch r {
-	case PaymentOrderTypeACH, PaymentOrderTypeAuBecs, PaymentOrderTypeBacs, PaymentOrderTypeBook, PaymentOrderTypeCard, PaymentOrderTypeChats, PaymentOrderTypeCheck, PaymentOrderTypeCrossBorder, PaymentOrderTypeDkNets, PaymentOrderTypeEft, PaymentOrderTypeGBFps, PaymentOrderTypeMasav, PaymentOrderTypeMxCcen, PaymentOrderTypeNeft, PaymentOrderTypeNics, PaymentOrderTypeNzBecs, PaymentOrderTypePlElixir, PaymentOrderTypeRtp, PaymentOrderTypeSeBankgirot, PaymentOrderTypeSepa, PaymentOrderTypeSgGiro, PaymentOrderTypeSic, PaymentOrderTypeStablecoin, PaymentOrderTypeWire, PaymentOrderTypeZengin:
+	case PaymentOrderTypeACH, PaymentOrderTypeAuBecs, PaymentOrderTypeBacs, PaymentOrderTypeBook, PaymentOrderTypeCard, PaymentOrderTypeChats, PaymentOrderTypeCheck, PaymentOrderTypeCrossBorder, PaymentOrderTypeDkNets, PaymentOrderTypeEft, PaymentOrderTypeGBFps, PaymentOrderTypeHuIcs, PaymentOrderTypeInterac, PaymentOrderTypeMasav, PaymentOrderTypeMxCcen, PaymentOrderTypeNeft, PaymentOrderTypeNics, PaymentOrderTypeNzBecs, PaymentOrderTypePlElixir, PaymentOrderTypeProvxchange, PaymentOrderTypeRoSent, PaymentOrderTypeRtp, PaymentOrderTypeSeBankgirot, PaymentOrderTypeSen, PaymentOrderTypeSepa, PaymentOrderTypeSgGiro, PaymentOrderTypeSic, PaymentOrderTypeSignet, PaymentOrderTypeSknbi, PaymentOrderTypeStablecoin, PaymentOrderTypeWire, PaymentOrderTypeZengin:
 		return true
 	}
 	return false
@@ -1090,8 +1102,9 @@ type PaymentOrderNewParams struct {
 	Direction param.Field[PaymentOrderNewParamsDirection] `json:"direction" api:"required"`
 	// The ID of one of your organization's internal accounts.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id" api:"required" format:"uuid"`
-	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `neft`, `nics`, `nz_national_clearing_code`, `sic`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	Type       param.Field[PaymentOrderType]                `json:"type" api:"required"`
 	Accounting param.Field[PaymentOrderNewParamsAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
@@ -1305,22 +1318,22 @@ func (r PaymentOrderNewParamsDocument) MarshalJSON() (data []byte, err error) {
 type PaymentOrderNewParamsDocumentsDocumentableType string
 
 const (
-	PaymentOrderNewParamsDocumentsDocumentableTypeConnection            PaymentOrderNewParamsDocumentsDocumentableType = "connection"
-	PaymentOrderNewParamsDocumentsDocumentableTypeCounterparty          PaymentOrderNewParamsDocumentsDocumentableType = "counterparty"
-	PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayment       PaymentOrderNewParamsDocumentsDocumentableType = "expected_payment"
-	PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccount       PaymentOrderNewParamsDocumentsDocumentableType = "external_account"
-	PaymentOrderNewParamsDocumentsDocumentableTypeIdentification        PaymentOrderNewParamsDocumentsDocumentableType = "identification"
-	PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetail PaymentOrderNewParamsDocumentsDocumentableType = "incoming_payment_detail"
-	PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccount       PaymentOrderNewParamsDocumentsDocumentableType = "internal_account"
-	PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntity           PaymentOrderNewParamsDocumentsDocumentableType = "legal_entity"
-	PaymentOrderNewParamsDocumentsDocumentableTypeOrganization          PaymentOrderNewParamsDocumentsDocumentableType = "organization"
-	PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrder          PaymentOrderNewParamsDocumentsDocumentableType = "payment_order"
-	PaymentOrderNewParamsDocumentsDocumentableTypeTransaction           PaymentOrderNewParamsDocumentsDocumentableType = "transaction"
+	PaymentOrderNewParamsDocumentsDocumentableTypeConnections            PaymentOrderNewParamsDocumentsDocumentableType = "connections"
+	PaymentOrderNewParamsDocumentsDocumentableTypeCounterparties         PaymentOrderNewParamsDocumentsDocumentableType = "counterparties"
+	PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayments       PaymentOrderNewParamsDocumentsDocumentableType = "expected_payments"
+	PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccounts       PaymentOrderNewParamsDocumentsDocumentableType = "external_accounts"
+	PaymentOrderNewParamsDocumentsDocumentableTypeIdentifications        PaymentOrderNewParamsDocumentsDocumentableType = "identifications"
+	PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetails PaymentOrderNewParamsDocumentsDocumentableType = "incoming_payment_details"
+	PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccounts       PaymentOrderNewParamsDocumentsDocumentableType = "internal_accounts"
+	PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntities          PaymentOrderNewParamsDocumentsDocumentableType = "legal_entities"
+	PaymentOrderNewParamsDocumentsDocumentableTypeOrganizations          PaymentOrderNewParamsDocumentsDocumentableType = "organizations"
+	PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrders          PaymentOrderNewParamsDocumentsDocumentableType = "payment_orders"
+	PaymentOrderNewParamsDocumentsDocumentableTypeTransactions           PaymentOrderNewParamsDocumentsDocumentableType = "transactions"
 )
 
 func (r PaymentOrderNewParamsDocumentsDocumentableType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewParamsDocumentsDocumentableTypeConnection, PaymentOrderNewParamsDocumentsDocumentableTypeCounterparty, PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayment, PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccount, PaymentOrderNewParamsDocumentsDocumentableTypeIdentification, PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetail, PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccount, PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntity, PaymentOrderNewParamsDocumentsDocumentableTypeOrganization, PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrder, PaymentOrderNewParamsDocumentsDocumentableTypeTransaction:
+	case PaymentOrderNewParamsDocumentsDocumentableTypeConnections, PaymentOrderNewParamsDocumentsDocumentableTypeCounterparties, PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayments, PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccounts, PaymentOrderNewParamsDocumentsDocumentableTypeIdentifications, PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetails, PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccounts, PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntities, PaymentOrderNewParamsDocumentsDocumentableTypeOrganizations, PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrders, PaymentOrderNewParamsDocumentsDocumentableTypeTransactions:
 		return true
 	}
 	return false
@@ -1511,6 +1524,8 @@ const (
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "dk_interbank_clearing_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode              PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode              PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "il_bank_code"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
@@ -1526,7 +1541,7 @@ const (
 
 func (r PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
+	case PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderNewParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
 		return true
 	}
 	return false
@@ -1546,17 +1561,24 @@ const (
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeDkNets      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "dk_nets"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeEft         PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "eft"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeGBFps       PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "gb_fps"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs       PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "hu_ics"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeInterac     PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "interac"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeMasav       PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "masav"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "mx_ccen"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNeft        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "neft"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNics        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "nics"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "nz_becs"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypePlElixir    PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "pl_elixir"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeRoSent      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "ro_sent"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSen         PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sen"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sg_giro"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSic         PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sic"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "signet"
+	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSknbi       PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "sknbi"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeStablecoin  PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "stablecoin"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "wire"
 	PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
@@ -1564,7 +1586,7 @@ const (
 
 func (r PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeGBFps, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeStablecoin, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeZengin:
+	case PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeGBFps, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeInterac, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeRoSent, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSen, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSignet, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeSknbi, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeStablecoin, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderNewParamsReceivingAccountRoutingDetailsPaymentTypeZengin:
 		return true
 	}
 	return false
@@ -1712,8 +1734,9 @@ type PaymentOrderUpdateParams struct {
 	// payment orders, the `subtype` represents the SEC code. We currently support
 	// `CCD`, `PPD`, `IAT`, `CTX`, `WEB`, `CIE`, and `TEL`.
 	Subtype param.Field[PaymentOrderSubtype] `json:"subtype"`
-	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `neft`, `nics`, `nz_national_clearing_code`, `sic`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	Type param.Field[PaymentOrderType] `json:"type"`
 	// This represents the identifier by which the person is known to the receiver when
 	// using the CIE subtype for ACH payments. Only the first 22 characters of this
@@ -1979,6 +2002,8 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "dk_interbank_clearing_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode              PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode              PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "il_bank_code"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
@@ -1994,7 +2019,7 @@ const (
 
 func (r PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
 	switch r {
-	case PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
+	case PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
 		return true
 	}
 	return false
@@ -2014,17 +2039,24 @@ const (
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeDkNets      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "dk_nets"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeEft         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "eft"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeGBFps       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "gb_fps"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "hu_ics"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeInterac     PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "interac"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMasav       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "masav"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "mx_ccen"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNeft        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "neft"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNics        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "nics"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "nz_becs"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypePlElixir    PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "pl_elixir"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRoSent      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "ro_sent"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSen         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sen"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sg_giro"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSic         PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sic"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "signet"
+	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSknbi       PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "sknbi"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeStablecoin  PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "stablecoin"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "wire"
 	PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
@@ -2032,7 +2064,7 @@ const (
 
 func (r PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
 	switch r {
-	case PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeGBFps, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeStablecoin, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeZengin:
+	case PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeGBFps, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeInterac, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRoSent, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSen, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSignet, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeSknbi, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeStablecoin, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderUpdateParamsReceivingAccountRoutingDetailsPaymentTypeZengin:
 		return true
 	}
 	return false
@@ -2185,17 +2217,24 @@ const (
 	PaymentOrderListParamsTypeDkNets      PaymentOrderListParamsType = "dk_nets"
 	PaymentOrderListParamsTypeEft         PaymentOrderListParamsType = "eft"
 	PaymentOrderListParamsTypeGBFps       PaymentOrderListParamsType = "gb_fps"
+	PaymentOrderListParamsTypeHuIcs       PaymentOrderListParamsType = "hu_ics"
+	PaymentOrderListParamsTypeInterac     PaymentOrderListParamsType = "interac"
 	PaymentOrderListParamsTypeMasav       PaymentOrderListParamsType = "masav"
 	PaymentOrderListParamsTypeMxCcen      PaymentOrderListParamsType = "mx_ccen"
 	PaymentOrderListParamsTypeNeft        PaymentOrderListParamsType = "neft"
 	PaymentOrderListParamsTypeNics        PaymentOrderListParamsType = "nics"
 	PaymentOrderListParamsTypeNzBecs      PaymentOrderListParamsType = "nz_becs"
 	PaymentOrderListParamsTypePlElixir    PaymentOrderListParamsType = "pl_elixir"
+	PaymentOrderListParamsTypeProvxchange PaymentOrderListParamsType = "provxchange"
+	PaymentOrderListParamsTypeRoSent      PaymentOrderListParamsType = "ro_sent"
 	PaymentOrderListParamsTypeRtp         PaymentOrderListParamsType = "rtp"
 	PaymentOrderListParamsTypeSeBankgirot PaymentOrderListParamsType = "se_bankgirot"
+	PaymentOrderListParamsTypeSen         PaymentOrderListParamsType = "sen"
 	PaymentOrderListParamsTypeSepa        PaymentOrderListParamsType = "sepa"
 	PaymentOrderListParamsTypeSgGiro      PaymentOrderListParamsType = "sg_giro"
 	PaymentOrderListParamsTypeSic         PaymentOrderListParamsType = "sic"
+	PaymentOrderListParamsTypeSignet      PaymentOrderListParamsType = "signet"
+	PaymentOrderListParamsTypeSknbi       PaymentOrderListParamsType = "sknbi"
 	PaymentOrderListParamsTypeStablecoin  PaymentOrderListParamsType = "stablecoin"
 	PaymentOrderListParamsTypeWire        PaymentOrderListParamsType = "wire"
 	PaymentOrderListParamsTypeZengin      PaymentOrderListParamsType = "zengin"
@@ -2203,7 +2242,7 @@ const (
 
 func (r PaymentOrderListParamsType) IsKnown() bool {
 	switch r {
-	case PaymentOrderListParamsTypeACH, PaymentOrderListParamsTypeAuBecs, PaymentOrderListParamsTypeBacs, PaymentOrderListParamsTypeBook, PaymentOrderListParamsTypeCard, PaymentOrderListParamsTypeChats, PaymentOrderListParamsTypeCheck, PaymentOrderListParamsTypeCrossBorder, PaymentOrderListParamsTypeDkNets, PaymentOrderListParamsTypeEft, PaymentOrderListParamsTypeGBFps, PaymentOrderListParamsTypeMasav, PaymentOrderListParamsTypeMxCcen, PaymentOrderListParamsTypeNeft, PaymentOrderListParamsTypeNics, PaymentOrderListParamsTypeNzBecs, PaymentOrderListParamsTypePlElixir, PaymentOrderListParamsTypeRtp, PaymentOrderListParamsTypeSeBankgirot, PaymentOrderListParamsTypeSepa, PaymentOrderListParamsTypeSgGiro, PaymentOrderListParamsTypeSic, PaymentOrderListParamsTypeStablecoin, PaymentOrderListParamsTypeWire, PaymentOrderListParamsTypeZengin:
+	case PaymentOrderListParamsTypeACH, PaymentOrderListParamsTypeAuBecs, PaymentOrderListParamsTypeBacs, PaymentOrderListParamsTypeBook, PaymentOrderListParamsTypeCard, PaymentOrderListParamsTypeChats, PaymentOrderListParamsTypeCheck, PaymentOrderListParamsTypeCrossBorder, PaymentOrderListParamsTypeDkNets, PaymentOrderListParamsTypeEft, PaymentOrderListParamsTypeGBFps, PaymentOrderListParamsTypeHuIcs, PaymentOrderListParamsTypeInterac, PaymentOrderListParamsTypeMasav, PaymentOrderListParamsTypeMxCcen, PaymentOrderListParamsTypeNeft, PaymentOrderListParamsTypeNics, PaymentOrderListParamsTypeNzBecs, PaymentOrderListParamsTypePlElixir, PaymentOrderListParamsTypeProvxchange, PaymentOrderListParamsTypeRoSent, PaymentOrderListParamsTypeRtp, PaymentOrderListParamsTypeSeBankgirot, PaymentOrderListParamsTypeSen, PaymentOrderListParamsTypeSepa, PaymentOrderListParamsTypeSgGiro, PaymentOrderListParamsTypeSic, PaymentOrderListParamsTypeSignet, PaymentOrderListParamsTypeSknbi, PaymentOrderListParamsTypeStablecoin, PaymentOrderListParamsTypeWire, PaymentOrderListParamsTypeZengin:
 		return true
 	}
 	return false
@@ -2220,8 +2259,9 @@ type PaymentOrderNewAsyncParams struct {
 	Direction param.Field[PaymentOrderNewAsyncParamsDirection] `json:"direction" api:"required"`
 	// The ID of one of your organization's internal accounts.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id" api:"required" format:"uuid"`
-	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `book`, `rtp`, `sepa`,
-	// `bacs`, `au_becs`, `neft`, `nics`, `nz_national_clearing_code`, `sic`, `zengin`.
+	// One of `ach`, `se_bankgirot`, `eft`, `wire`, `check`, `sen`, `book`, `rtp`,
+	// `sepa`, `bacs`, `au_becs`, `interac`, `neft`, `nics`,
+	// `nz_national_clearing_code`, `sic`, `signet`, `provexchange`, `zengin`.
 	Type       param.Field[PaymentOrderType]                     `json:"type" api:"required"`
 	Accounting param.Field[PaymentOrderNewAsyncParamsAccounting] `json:"accounting"`
 	// The ID of one of your accounting categories. Note that these will only be
@@ -2590,6 +2630,8 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "dk_interbank_clearing_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode              PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "gb_sort_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "hk_interbank_clearing_code"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "hu_interbank_clearing_code"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode             PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "id_sknbi_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode              PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "il_bank_code"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc                  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "in_ifsc"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode            PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType = "jp_zengin_code"
@@ -2605,7 +2647,7 @@ const (
 
 func (r PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
+	case PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAba, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeAuBsb, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeBrCodigo, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCaCpa, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeChips, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeCnaps, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeDkInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeGBSortCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHkInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeHuInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIDSknbiCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeIlBankCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeInIfsc, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeJpZenginCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMyBranchCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeMxBankIdentifier, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeNzNationalClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypePlNationalClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSeBankgiroClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSgInterbankClearingCode, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeSwift, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsRoutingNumberTypeZaNationalClearingCode:
 		return true
 	}
 	return false
@@ -2625,17 +2667,24 @@ const (
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeDkNets      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "dk_nets"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeEft         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "eft"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeGBFps       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "gb_fps"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "hu_ics"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeInterac     PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "interac"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMasav       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "masav"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "mx_ccen"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNeft        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "neft"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNics        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "nics"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "nz_becs"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypePlElixir    PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "pl_elixir"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "provxchange"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRoSent      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "ro_sent"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRtp         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "rtp"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "se_bankgirot"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSen         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sen"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSepa        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sepa"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sg_giro"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSic         PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sic"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSignet      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "signet"
+	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSknbi       PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "sknbi"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeStablecoin  PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "stablecoin"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeWire        PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "wire"
 	PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeZengin      PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType = "zengin"
@@ -2643,7 +2692,7 @@ const (
 
 func (r PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeGBFps, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeStablecoin, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeZengin:
+	case PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeACH, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeAuBecs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBacs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeBook, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCard, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeChats, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCheck, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeCrossBorder, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeDkNets, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeEft, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeGBFps, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeHuIcs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeInterac, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMasav, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeMxCcen, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNeft, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNics, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeNzBecs, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypePlElixir, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeProvxchange, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRoSent, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeRtp, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSeBankgirot, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSen, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSepa, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSgGiro, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSic, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSignet, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeSknbi, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeStablecoin, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeWire, PaymentOrderNewAsyncParamsReceivingAccountRoutingDetailsPaymentTypeZengin:
 		return true
 	}
 	return false

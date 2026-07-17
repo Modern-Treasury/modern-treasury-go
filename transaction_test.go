@@ -28,13 +28,12 @@ func TestTransactionNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Transactions.New(context.TODO(), moderntreasury.TransactionNewParams{
+		Amount:            moderntreasury.F(int64(0)),
 		AsOfDate:          moderntreasury.F(time.Now()),
 		Direction:         moderntreasury.F("direction"),
 		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		VendorCode:        moderntreasury.F("vendor_code"),
 		VendorCodeType:    moderntreasury.F("vendor_code_type"),
-		Amount:            moderntreasury.F(int64(0)),
-		AmountString:      moderntreasury.F("amount_string"),
 		Metadata: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",
