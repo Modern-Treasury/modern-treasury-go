@@ -86,9 +86,10 @@ func (r *DocumentService) ListAutoPaging(ctx context.Context, query DocumentList
 }
 
 type Document struct {
-	ID          string    `json:"id" api:"required" format:"uuid"`
-	CreatedAt   time.Time `json:"created_at" api:"required" format:"date-time"`
-	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+	ID              string                   `json:"id" api:"required" format:"uuid"`
+	CreatedAt       time.Time                `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt     time.Time                `json:"discarded_at" api:"required,nullable" format:"date-time"`
+	DocumentDetails []DocumentDocumentDetail `json:"document_details" api:"required"`
 	// A category given to the document, can be `null`.
 	DocumentType string `json:"document_type" api:"required,nullable"`
 	// The unique identifier for the associated object.
@@ -113,6 +114,7 @@ type documentJSON struct {
 	ID               apijson.Field
 	CreatedAt        apijson.Field
 	DiscardedAt      apijson.Field
+	DocumentDetails  apijson.Field
 	DocumentType     apijson.Field
 	DocumentableID   apijson.Field
 	DocumentableType apijson.Field
@@ -130,6 +132,43 @@ func (r *Document) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r documentJSON) RawJSON() string {
+	return r.raw
+}
+
+type DocumentDocumentDetail struct {
+	ID                     string    `json:"id" api:"required" format:"uuid"`
+	CreatedAt              time.Time `json:"created_at" api:"required" format:"date-time"`
+	DiscardedAt            time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+	DocumentIdentifier     string    `json:"document_identifier" api:"required"`
+	DocumentIdentifierType string    `json:"document_identifier_type" api:"required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode  bool                       `json:"live_mode" api:"required"`
+	Object    string                     `json:"object" api:"required"`
+	UpdatedAt time.Time                  `json:"updated_at" api:"required" format:"date-time"`
+	JSON      documentDocumentDetailJSON `json:"-"`
+}
+
+// documentDocumentDetailJSON contains the JSON metadata for the struct
+// [DocumentDocumentDetail]
+type documentDocumentDetailJSON struct {
+	ID                     apijson.Field
+	CreatedAt              apijson.Field
+	DiscardedAt            apijson.Field
+	DocumentIdentifier     apijson.Field
+	DocumentIdentifierType apijson.Field
+	LiveMode               apijson.Field
+	Object                 apijson.Field
+	UpdatedAt              apijson.Field
+	raw                    string
+	ExtraFields            map[string]apijson.Field
+}
+
+func (r *DocumentDocumentDetail) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r documentDocumentDetailJSON) RawJSON() string {
 	return r.raw
 }
 
@@ -214,22 +253,22 @@ func (r DocumentNewParams) MarshalMultipart() (data []byte, contentType string, 
 type DocumentNewParamsDocumentableType string
 
 const (
-	DocumentNewParamsDocumentableTypeConnection            DocumentNewParamsDocumentableType = "connection"
-	DocumentNewParamsDocumentableTypeCounterparty          DocumentNewParamsDocumentableType = "counterparty"
-	DocumentNewParamsDocumentableTypeExpectedPayment       DocumentNewParamsDocumentableType = "expected_payment"
-	DocumentNewParamsDocumentableTypeExternalAccount       DocumentNewParamsDocumentableType = "external_account"
-	DocumentNewParamsDocumentableTypeIdentification        DocumentNewParamsDocumentableType = "identification"
-	DocumentNewParamsDocumentableTypeIncomingPaymentDetail DocumentNewParamsDocumentableType = "incoming_payment_detail"
-	DocumentNewParamsDocumentableTypeInternalAccount       DocumentNewParamsDocumentableType = "internal_account"
-	DocumentNewParamsDocumentableTypeLegalEntity           DocumentNewParamsDocumentableType = "legal_entity"
-	DocumentNewParamsDocumentableTypeOrganization          DocumentNewParamsDocumentableType = "organization"
-	DocumentNewParamsDocumentableTypePaymentOrder          DocumentNewParamsDocumentableType = "payment_order"
-	DocumentNewParamsDocumentableTypeTransaction           DocumentNewParamsDocumentableType = "transaction"
+	DocumentNewParamsDocumentableTypeConnections            DocumentNewParamsDocumentableType = "connections"
+	DocumentNewParamsDocumentableTypeCounterparties         DocumentNewParamsDocumentableType = "counterparties"
+	DocumentNewParamsDocumentableTypeExpectedPayments       DocumentNewParamsDocumentableType = "expected_payments"
+	DocumentNewParamsDocumentableTypeExternalAccounts       DocumentNewParamsDocumentableType = "external_accounts"
+	DocumentNewParamsDocumentableTypeIdentifications        DocumentNewParamsDocumentableType = "identifications"
+	DocumentNewParamsDocumentableTypeIncomingPaymentDetails DocumentNewParamsDocumentableType = "incoming_payment_details"
+	DocumentNewParamsDocumentableTypeInternalAccounts       DocumentNewParamsDocumentableType = "internal_accounts"
+	DocumentNewParamsDocumentableTypeLegalEntities          DocumentNewParamsDocumentableType = "legal_entities"
+	DocumentNewParamsDocumentableTypeOrganizations          DocumentNewParamsDocumentableType = "organizations"
+	DocumentNewParamsDocumentableTypePaymentOrders          DocumentNewParamsDocumentableType = "payment_orders"
+	DocumentNewParamsDocumentableTypeTransactions           DocumentNewParamsDocumentableType = "transactions"
 )
 
 func (r DocumentNewParamsDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentNewParamsDocumentableTypeConnection, DocumentNewParamsDocumentableTypeCounterparty, DocumentNewParamsDocumentableTypeExpectedPayment, DocumentNewParamsDocumentableTypeExternalAccount, DocumentNewParamsDocumentableTypeIdentification, DocumentNewParamsDocumentableTypeIncomingPaymentDetail, DocumentNewParamsDocumentableTypeInternalAccount, DocumentNewParamsDocumentableTypeLegalEntity, DocumentNewParamsDocumentableTypeOrganization, DocumentNewParamsDocumentableTypePaymentOrder, DocumentNewParamsDocumentableTypeTransaction:
+	case DocumentNewParamsDocumentableTypeConnections, DocumentNewParamsDocumentableTypeCounterparties, DocumentNewParamsDocumentableTypeExpectedPayments, DocumentNewParamsDocumentableTypeExternalAccounts, DocumentNewParamsDocumentableTypeIdentifications, DocumentNewParamsDocumentableTypeIncomingPaymentDetails, DocumentNewParamsDocumentableTypeInternalAccounts, DocumentNewParamsDocumentableTypeLegalEntities, DocumentNewParamsDocumentableTypeOrganizations, DocumentNewParamsDocumentableTypePaymentOrders, DocumentNewParamsDocumentableTypeTransactions:
 		return true
 	}
 	return false
@@ -260,22 +299,22 @@ func (r DocumentListParams) URLQuery() (v url.Values) {
 type DocumentListParamsDocumentableType string
 
 const (
-	DocumentListParamsDocumentableTypeConnection            DocumentListParamsDocumentableType = "connection"
-	DocumentListParamsDocumentableTypeCounterparty          DocumentListParamsDocumentableType = "counterparty"
-	DocumentListParamsDocumentableTypeExpectedPayment       DocumentListParamsDocumentableType = "expected_payment"
-	DocumentListParamsDocumentableTypeExternalAccount       DocumentListParamsDocumentableType = "external_account"
-	DocumentListParamsDocumentableTypeIdentification        DocumentListParamsDocumentableType = "identification"
-	DocumentListParamsDocumentableTypeIncomingPaymentDetail DocumentListParamsDocumentableType = "incoming_payment_detail"
-	DocumentListParamsDocumentableTypeInternalAccount       DocumentListParamsDocumentableType = "internal_account"
-	DocumentListParamsDocumentableTypeLegalEntity           DocumentListParamsDocumentableType = "legal_entity"
-	DocumentListParamsDocumentableTypeOrganization          DocumentListParamsDocumentableType = "organization"
-	DocumentListParamsDocumentableTypePaymentOrder          DocumentListParamsDocumentableType = "payment_order"
-	DocumentListParamsDocumentableTypeTransaction           DocumentListParamsDocumentableType = "transaction"
+	DocumentListParamsDocumentableTypeConnections            DocumentListParamsDocumentableType = "connections"
+	DocumentListParamsDocumentableTypeCounterparties         DocumentListParamsDocumentableType = "counterparties"
+	DocumentListParamsDocumentableTypeExpectedPayments       DocumentListParamsDocumentableType = "expected_payments"
+	DocumentListParamsDocumentableTypeExternalAccounts       DocumentListParamsDocumentableType = "external_accounts"
+	DocumentListParamsDocumentableTypeIdentifications        DocumentListParamsDocumentableType = "identifications"
+	DocumentListParamsDocumentableTypeIncomingPaymentDetails DocumentListParamsDocumentableType = "incoming_payment_details"
+	DocumentListParamsDocumentableTypeInternalAccounts       DocumentListParamsDocumentableType = "internal_accounts"
+	DocumentListParamsDocumentableTypeLegalEntities          DocumentListParamsDocumentableType = "legal_entities"
+	DocumentListParamsDocumentableTypeOrganizations          DocumentListParamsDocumentableType = "organizations"
+	DocumentListParamsDocumentableTypePaymentOrders          DocumentListParamsDocumentableType = "payment_orders"
+	DocumentListParamsDocumentableTypeTransactions           DocumentListParamsDocumentableType = "transactions"
 )
 
 func (r DocumentListParamsDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentListParamsDocumentableTypeConnection, DocumentListParamsDocumentableTypeCounterparty, DocumentListParamsDocumentableTypeExpectedPayment, DocumentListParamsDocumentableTypeExternalAccount, DocumentListParamsDocumentableTypeIdentification, DocumentListParamsDocumentableTypeIncomingPaymentDetail, DocumentListParamsDocumentableTypeInternalAccount, DocumentListParamsDocumentableTypeLegalEntity, DocumentListParamsDocumentableTypeOrganization, DocumentListParamsDocumentableTypePaymentOrder, DocumentListParamsDocumentableTypeTransaction:
+	case DocumentListParamsDocumentableTypeConnections, DocumentListParamsDocumentableTypeCounterparties, DocumentListParamsDocumentableTypeExpectedPayments, DocumentListParamsDocumentableTypeExternalAccounts, DocumentListParamsDocumentableTypeIdentifications, DocumentListParamsDocumentableTypeIncomingPaymentDetails, DocumentListParamsDocumentableTypeInternalAccounts, DocumentListParamsDocumentableTypeLegalEntities, DocumentListParamsDocumentableTypeOrganizations, DocumentListParamsDocumentableTypePaymentOrders, DocumentListParamsDocumentableTypeTransactions:
 		return true
 	}
 	return false

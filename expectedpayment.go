@@ -178,7 +178,8 @@ type ExpectedPayment struct {
 	TransactionID string `json:"transaction_id" api:"required,nullable" format:"uuid"`
 	// The ID of the Transaction Line Item this expected payment has been matched to.
 	TransactionLineItemID string `json:"transaction_line_item_id" api:"required,nullable" format:"uuid"`
-	// One of: ach, au_becs, bacs, book, check, eft, rtp, sepa, wire.
+	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
+	// sepa, signet, wire.
 	Type      ExpectedPaymentType `json:"type" api:"required,nullable"`
 	UpdatedAt time.Time           `json:"updated_at" api:"required" format:"date-time"`
 	JSON      expectedPaymentJSON `json:"-"`
@@ -318,7 +319,8 @@ func (r ExpectedPaymentStatus) IsKnown() bool {
 	return false
 }
 
-// One of: ach, au_becs, bacs, book, check, eft, rtp, sepa, wire.
+// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
+// sepa, signet, wire.
 type ExpectedPaymentType string
 
 const (
@@ -333,17 +335,24 @@ const (
 	ExpectedPaymentTypeDkNets      ExpectedPaymentType = "dk_nets"
 	ExpectedPaymentTypeEft         ExpectedPaymentType = "eft"
 	ExpectedPaymentTypeGBFps       ExpectedPaymentType = "gb_fps"
+	ExpectedPaymentTypeHuIcs       ExpectedPaymentType = "hu_ics"
+	ExpectedPaymentTypeInterac     ExpectedPaymentType = "interac"
 	ExpectedPaymentTypeMasav       ExpectedPaymentType = "masav"
 	ExpectedPaymentTypeMxCcen      ExpectedPaymentType = "mx_ccen"
 	ExpectedPaymentTypeNeft        ExpectedPaymentType = "neft"
 	ExpectedPaymentTypeNics        ExpectedPaymentType = "nics"
 	ExpectedPaymentTypeNzBecs      ExpectedPaymentType = "nz_becs"
 	ExpectedPaymentTypePlElixir    ExpectedPaymentType = "pl_elixir"
+	ExpectedPaymentTypeProvxchange ExpectedPaymentType = "provxchange"
+	ExpectedPaymentTypeRoSent      ExpectedPaymentType = "ro_sent"
 	ExpectedPaymentTypeRtp         ExpectedPaymentType = "rtp"
 	ExpectedPaymentTypeSeBankgirot ExpectedPaymentType = "se_bankgirot"
+	ExpectedPaymentTypeSen         ExpectedPaymentType = "sen"
 	ExpectedPaymentTypeSepa        ExpectedPaymentType = "sepa"
 	ExpectedPaymentTypeSgGiro      ExpectedPaymentType = "sg_giro"
 	ExpectedPaymentTypeSic         ExpectedPaymentType = "sic"
+	ExpectedPaymentTypeSignet      ExpectedPaymentType = "signet"
+	ExpectedPaymentTypeSknbi       ExpectedPaymentType = "sknbi"
 	ExpectedPaymentTypeStablecoin  ExpectedPaymentType = "stablecoin"
 	ExpectedPaymentTypeWire        ExpectedPaymentType = "wire"
 	ExpectedPaymentTypeZengin      ExpectedPaymentType = "zengin"
@@ -351,7 +360,7 @@ const (
 
 func (r ExpectedPaymentType) IsKnown() bool {
 	switch r {
-	case ExpectedPaymentTypeACH, ExpectedPaymentTypeAuBecs, ExpectedPaymentTypeBacs, ExpectedPaymentTypeBook, ExpectedPaymentTypeCard, ExpectedPaymentTypeChats, ExpectedPaymentTypeCheck, ExpectedPaymentTypeCrossBorder, ExpectedPaymentTypeDkNets, ExpectedPaymentTypeEft, ExpectedPaymentTypeGBFps, ExpectedPaymentTypeMasav, ExpectedPaymentTypeMxCcen, ExpectedPaymentTypeNeft, ExpectedPaymentTypeNics, ExpectedPaymentTypeNzBecs, ExpectedPaymentTypePlElixir, ExpectedPaymentTypeRtp, ExpectedPaymentTypeSeBankgirot, ExpectedPaymentTypeSepa, ExpectedPaymentTypeSgGiro, ExpectedPaymentTypeSic, ExpectedPaymentTypeStablecoin, ExpectedPaymentTypeWire, ExpectedPaymentTypeZengin:
+	case ExpectedPaymentTypeACH, ExpectedPaymentTypeAuBecs, ExpectedPaymentTypeBacs, ExpectedPaymentTypeBook, ExpectedPaymentTypeCard, ExpectedPaymentTypeChats, ExpectedPaymentTypeCheck, ExpectedPaymentTypeCrossBorder, ExpectedPaymentTypeDkNets, ExpectedPaymentTypeEft, ExpectedPaymentTypeGBFps, ExpectedPaymentTypeHuIcs, ExpectedPaymentTypeInterac, ExpectedPaymentTypeMasav, ExpectedPaymentTypeMxCcen, ExpectedPaymentTypeNeft, ExpectedPaymentTypeNics, ExpectedPaymentTypeNzBecs, ExpectedPaymentTypePlElixir, ExpectedPaymentTypeProvxchange, ExpectedPaymentTypeRoSent, ExpectedPaymentTypeRtp, ExpectedPaymentTypeSeBankgirot, ExpectedPaymentTypeSen, ExpectedPaymentTypeSepa, ExpectedPaymentTypeSgGiro, ExpectedPaymentTypeSic, ExpectedPaymentTypeSignet, ExpectedPaymentTypeSknbi, ExpectedPaymentTypeStablecoin, ExpectedPaymentTypeWire, ExpectedPaymentTypeZengin:
 		return true
 	}
 	return false
@@ -379,7 +388,8 @@ type ReconciliationRule struct {
 	DateLowerBound time.Time `json:"date_lower_bound" api:"nullable" format:"date"`
 	// The latest date the payment may come in. Format is yyyy-mm-dd
 	DateUpperBound time.Time `json:"date_upper_bound" api:"nullable" format:"date"`
-	// One of ach, au_becs, bacs, book, check, eft, rtp, sepa, wire
+	// One of ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
+	// sepa, signet wire
 	Type ReconciliationRuleType `json:"type" api:"nullable"`
 	JSON reconciliationRuleJSON `json:"-"`
 }
@@ -426,7 +436,8 @@ func (r ReconciliationRuleDirection) IsKnown() bool {
 	return false
 }
 
-// One of ach, au_becs, bacs, book, check, eft, rtp, sepa, wire
+// One of ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
+// sepa, signet wire
 type ReconciliationRuleType string
 
 const (
@@ -441,17 +452,24 @@ const (
 	ReconciliationRuleTypeDkNets      ReconciliationRuleType = "dk_nets"
 	ReconciliationRuleTypeEft         ReconciliationRuleType = "eft"
 	ReconciliationRuleTypeGBFps       ReconciliationRuleType = "gb_fps"
+	ReconciliationRuleTypeHuIcs       ReconciliationRuleType = "hu_ics"
+	ReconciliationRuleTypeInterac     ReconciliationRuleType = "interac"
 	ReconciliationRuleTypeMasav       ReconciliationRuleType = "masav"
 	ReconciliationRuleTypeMxCcen      ReconciliationRuleType = "mx_ccen"
 	ReconciliationRuleTypeNeft        ReconciliationRuleType = "neft"
 	ReconciliationRuleTypeNics        ReconciliationRuleType = "nics"
 	ReconciliationRuleTypeNzBecs      ReconciliationRuleType = "nz_becs"
 	ReconciliationRuleTypePlElixir    ReconciliationRuleType = "pl_elixir"
+	ReconciliationRuleTypeProvxchange ReconciliationRuleType = "provxchange"
+	ReconciliationRuleTypeRoSent      ReconciliationRuleType = "ro_sent"
 	ReconciliationRuleTypeRtp         ReconciliationRuleType = "rtp"
 	ReconciliationRuleTypeSeBankgirot ReconciliationRuleType = "se_bankgirot"
+	ReconciliationRuleTypeSen         ReconciliationRuleType = "sen"
 	ReconciliationRuleTypeSepa        ReconciliationRuleType = "sepa"
 	ReconciliationRuleTypeSgGiro      ReconciliationRuleType = "sg_giro"
 	ReconciliationRuleTypeSic         ReconciliationRuleType = "sic"
+	ReconciliationRuleTypeSignet      ReconciliationRuleType = "signet"
+	ReconciliationRuleTypeSknbi       ReconciliationRuleType = "sknbi"
 	ReconciliationRuleTypeStablecoin  ReconciliationRuleType = "stablecoin"
 	ReconciliationRuleTypeWire        ReconciliationRuleType = "wire"
 	ReconciliationRuleTypeZengin      ReconciliationRuleType = "zengin"
@@ -459,7 +477,7 @@ const (
 
 func (r ReconciliationRuleType) IsKnown() bool {
 	switch r {
-	case ReconciliationRuleTypeACH, ReconciliationRuleTypeAuBecs, ReconciliationRuleTypeBacs, ReconciliationRuleTypeBook, ReconciliationRuleTypeCard, ReconciliationRuleTypeChats, ReconciliationRuleTypeCheck, ReconciliationRuleTypeCrossBorder, ReconciliationRuleTypeDkNets, ReconciliationRuleTypeEft, ReconciliationRuleTypeGBFps, ReconciliationRuleTypeMasav, ReconciliationRuleTypeMxCcen, ReconciliationRuleTypeNeft, ReconciliationRuleTypeNics, ReconciliationRuleTypeNzBecs, ReconciliationRuleTypePlElixir, ReconciliationRuleTypeRtp, ReconciliationRuleTypeSeBankgirot, ReconciliationRuleTypeSepa, ReconciliationRuleTypeSgGiro, ReconciliationRuleTypeSic, ReconciliationRuleTypeStablecoin, ReconciliationRuleTypeWire, ReconciliationRuleTypeZengin:
+	case ReconciliationRuleTypeACH, ReconciliationRuleTypeAuBecs, ReconciliationRuleTypeBacs, ReconciliationRuleTypeBook, ReconciliationRuleTypeCard, ReconciliationRuleTypeChats, ReconciliationRuleTypeCheck, ReconciliationRuleTypeCrossBorder, ReconciliationRuleTypeDkNets, ReconciliationRuleTypeEft, ReconciliationRuleTypeGBFps, ReconciliationRuleTypeHuIcs, ReconciliationRuleTypeInterac, ReconciliationRuleTypeMasav, ReconciliationRuleTypeMxCcen, ReconciliationRuleTypeNeft, ReconciliationRuleTypeNics, ReconciliationRuleTypeNzBecs, ReconciliationRuleTypePlElixir, ReconciliationRuleTypeProvxchange, ReconciliationRuleTypeRoSent, ReconciliationRuleTypeRtp, ReconciliationRuleTypeSeBankgirot, ReconciliationRuleTypeSen, ReconciliationRuleTypeSepa, ReconciliationRuleTypeSgGiro, ReconciliationRuleTypeSic, ReconciliationRuleTypeSignet, ReconciliationRuleTypeSknbi, ReconciliationRuleTypeStablecoin, ReconciliationRuleTypeWire, ReconciliationRuleTypeZengin:
 		return true
 	}
 	return false
@@ -487,7 +505,8 @@ type ReconciliationRuleParam struct {
 	DateLowerBound param.Field[time.Time] `json:"date_lower_bound" format:"date"`
 	// The latest date the payment may come in. Format is yyyy-mm-dd
 	DateUpperBound param.Field[time.Time] `json:"date_upper_bound" format:"date"`
-	// One of ach, au_becs, bacs, book, check, eft, rtp, sepa, wire
+	// One of ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
+	// sepa, signet wire
 	Type param.Field[ReconciliationRuleType] `json:"type"`
 }
 
@@ -560,7 +579,8 @@ type ExpectedPaymentNewParams struct {
 	// payments, this will be the OBI field on the wire. For check payments, this will
 	// be the memo field.
 	StatementDescriptor param.Field[string] `json:"statement_descriptor"`
-	// One of: ach, au_becs, bacs, book, check, eft, rtp, sepa, wire.
+	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
+	// sepa, signet, wire.
 	Type param.Field[ExpectedPaymentType] `json:"type"`
 }
 
@@ -694,7 +714,8 @@ type ExpectedPaymentUpdateParams struct {
 	// The Expected Payment's status can be updated from partially_reconciled to
 	// reconciled.
 	Status param.Field[ExpectedPaymentUpdateParamsStatus] `json:"status"`
-	// One of: ach, au_becs, bacs, book, check, eft, rtp, sepa, wire.
+	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp, sen,
+	// sepa, signet, wire.
 	Type param.Field[ExpectedPaymentType] `json:"type"`
 }
 
@@ -789,7 +810,8 @@ type ExpectedPaymentListParams struct {
 	PerPage  param.Field[int64]             `query:"per_page"`
 	// One of unreconciled, reconciled, or archived.
 	Status param.Field[ExpectedPaymentListParamsStatus] `query:"status"`
-	// One of: ach, au_becs, bacs, book, check, eft, rtp, sepa, wire
+	// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp,sen,
+	// sepa, signet, wire
 	Type param.Field[ExpectedPaymentListParamsType] `query:"type"`
 	// Used to return expected payments updated after some datetime
 	UpdatedAtLowerBound param.Field[time.Time] `query:"updated_at_lower_bound" format:"date-time"`
@@ -824,7 +846,8 @@ func (r ExpectedPaymentListParamsStatus) IsKnown() bool {
 	return false
 }
 
-// One of: ach, au_becs, bacs, book, check, eft, rtp, sepa, wire
+// One of: ach, au_becs, bacs, book, check, eft, interac, provxchange, rtp,sen,
+// sepa, signet, wire
 type ExpectedPaymentListParamsType string
 
 const (
@@ -839,17 +862,24 @@ const (
 	ExpectedPaymentListParamsTypeDkNets      ExpectedPaymentListParamsType = "dk_nets"
 	ExpectedPaymentListParamsTypeEft         ExpectedPaymentListParamsType = "eft"
 	ExpectedPaymentListParamsTypeGBFps       ExpectedPaymentListParamsType = "gb_fps"
+	ExpectedPaymentListParamsTypeHuIcs       ExpectedPaymentListParamsType = "hu_ics"
+	ExpectedPaymentListParamsTypeInterac     ExpectedPaymentListParamsType = "interac"
 	ExpectedPaymentListParamsTypeMasav       ExpectedPaymentListParamsType = "masav"
 	ExpectedPaymentListParamsTypeMxCcen      ExpectedPaymentListParamsType = "mx_ccen"
 	ExpectedPaymentListParamsTypeNeft        ExpectedPaymentListParamsType = "neft"
 	ExpectedPaymentListParamsTypeNics        ExpectedPaymentListParamsType = "nics"
 	ExpectedPaymentListParamsTypeNzBecs      ExpectedPaymentListParamsType = "nz_becs"
 	ExpectedPaymentListParamsTypePlElixir    ExpectedPaymentListParamsType = "pl_elixir"
+	ExpectedPaymentListParamsTypeProvxchange ExpectedPaymentListParamsType = "provxchange"
+	ExpectedPaymentListParamsTypeRoSent      ExpectedPaymentListParamsType = "ro_sent"
 	ExpectedPaymentListParamsTypeRtp         ExpectedPaymentListParamsType = "rtp"
 	ExpectedPaymentListParamsTypeSeBankgirot ExpectedPaymentListParamsType = "se_bankgirot"
+	ExpectedPaymentListParamsTypeSen         ExpectedPaymentListParamsType = "sen"
 	ExpectedPaymentListParamsTypeSepa        ExpectedPaymentListParamsType = "sepa"
 	ExpectedPaymentListParamsTypeSgGiro      ExpectedPaymentListParamsType = "sg_giro"
 	ExpectedPaymentListParamsTypeSic         ExpectedPaymentListParamsType = "sic"
+	ExpectedPaymentListParamsTypeSignet      ExpectedPaymentListParamsType = "signet"
+	ExpectedPaymentListParamsTypeSknbi       ExpectedPaymentListParamsType = "sknbi"
 	ExpectedPaymentListParamsTypeStablecoin  ExpectedPaymentListParamsType = "stablecoin"
 	ExpectedPaymentListParamsTypeWire        ExpectedPaymentListParamsType = "wire"
 	ExpectedPaymentListParamsTypeZengin      ExpectedPaymentListParamsType = "zengin"
@@ -857,7 +887,7 @@ const (
 
 func (r ExpectedPaymentListParamsType) IsKnown() bool {
 	switch r {
-	case ExpectedPaymentListParamsTypeACH, ExpectedPaymentListParamsTypeAuBecs, ExpectedPaymentListParamsTypeBacs, ExpectedPaymentListParamsTypeBook, ExpectedPaymentListParamsTypeCard, ExpectedPaymentListParamsTypeChats, ExpectedPaymentListParamsTypeCheck, ExpectedPaymentListParamsTypeCrossBorder, ExpectedPaymentListParamsTypeDkNets, ExpectedPaymentListParamsTypeEft, ExpectedPaymentListParamsTypeGBFps, ExpectedPaymentListParamsTypeMasav, ExpectedPaymentListParamsTypeMxCcen, ExpectedPaymentListParamsTypeNeft, ExpectedPaymentListParamsTypeNics, ExpectedPaymentListParamsTypeNzBecs, ExpectedPaymentListParamsTypePlElixir, ExpectedPaymentListParamsTypeRtp, ExpectedPaymentListParamsTypeSeBankgirot, ExpectedPaymentListParamsTypeSepa, ExpectedPaymentListParamsTypeSgGiro, ExpectedPaymentListParamsTypeSic, ExpectedPaymentListParamsTypeStablecoin, ExpectedPaymentListParamsTypeWire, ExpectedPaymentListParamsTypeZengin:
+	case ExpectedPaymentListParamsTypeACH, ExpectedPaymentListParamsTypeAuBecs, ExpectedPaymentListParamsTypeBacs, ExpectedPaymentListParamsTypeBook, ExpectedPaymentListParamsTypeCard, ExpectedPaymentListParamsTypeChats, ExpectedPaymentListParamsTypeCheck, ExpectedPaymentListParamsTypeCrossBorder, ExpectedPaymentListParamsTypeDkNets, ExpectedPaymentListParamsTypeEft, ExpectedPaymentListParamsTypeGBFps, ExpectedPaymentListParamsTypeHuIcs, ExpectedPaymentListParamsTypeInterac, ExpectedPaymentListParamsTypeMasav, ExpectedPaymentListParamsTypeMxCcen, ExpectedPaymentListParamsTypeNeft, ExpectedPaymentListParamsTypeNics, ExpectedPaymentListParamsTypeNzBecs, ExpectedPaymentListParamsTypePlElixir, ExpectedPaymentListParamsTypeProvxchange, ExpectedPaymentListParamsTypeRoSent, ExpectedPaymentListParamsTypeRtp, ExpectedPaymentListParamsTypeSeBankgirot, ExpectedPaymentListParamsTypeSen, ExpectedPaymentListParamsTypeSepa, ExpectedPaymentListParamsTypeSgGiro, ExpectedPaymentListParamsTypeSic, ExpectedPaymentListParamsTypeSignet, ExpectedPaymentListParamsTypeSknbi, ExpectedPaymentListParamsTypeStablecoin, ExpectedPaymentListParamsTypeWire, ExpectedPaymentListParamsTypeZengin:
 		return true
 	}
 	return false
