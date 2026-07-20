@@ -172,6 +172,8 @@ type LegalEntity struct {
 	Status LegalEntityStatus `json:"status" api:"required,nullable"`
 	// An individual's suffix.
 	Suffix string `json:"suffix" api:"required,nullable"`
+	// Acceptance of terms of use by the legal entity.
+	TermsOfUse LegalEntityTermsOfUse `json:"terms_of_use" api:"required,nullable"`
 	// Deprecated. Use `third_party_verifications` instead.
 	//
 	// Deprecated: deprecated
@@ -231,6 +233,7 @@ type legalEntityJSON struct {
 	ServiceProviderLegalEntityID apijson.Field
 	Status                       apijson.Field
 	Suffix                       apijson.Field
+	TermsOfUse                   apijson.Field
 	ThirdPartyVerification       apijson.Field
 	ThirdPartyVerifications      apijson.Field
 	TickerSymbol                 apijson.Field
@@ -268,7 +271,8 @@ type LegalEntityAddress struct {
 	Object   string `json:"object" api:"required"`
 	// The postal code of the address.
 	PostalCode string `json:"postal_code" api:"required,nullable"`
-	// Whether this address is the primary address for the legal entity.
+	// Whether this address is the primary address for the legal entity. Optional; when
+	// omitted it is inferred from the address types.
 	Primary bool `json:"primary" api:"required,nullable"`
 	// Region or State.
 	Region    string                 `json:"region" api:"required,nullable"`
@@ -309,6 +313,7 @@ type LegalEntityAddressesAddressType string
 
 const (
 	LegalEntityAddressesAddressTypeBusiness           LegalEntityAddressesAddressType = "business"
+	LegalEntityAddressesAddressTypeBusinessPhysical   LegalEntityAddressesAddressType = "business_physical"
 	LegalEntityAddressesAddressTypeBusinessRegistered LegalEntityAddressesAddressType = "business_registered"
 	LegalEntityAddressesAddressTypeMailing            LegalEntityAddressesAddressType = "mailing"
 	LegalEntityAddressesAddressTypeOther              LegalEntityAddressesAddressType = "other"
@@ -318,7 +323,7 @@ const (
 
 func (r LegalEntityAddressesAddressType) IsKnown() bool {
 	switch r {
-	case LegalEntityAddressesAddressTypeBusiness, LegalEntityAddressesAddressTypeBusinessRegistered, LegalEntityAddressesAddressTypeMailing, LegalEntityAddressesAddressTypeOther, LegalEntityAddressesAddressTypePoBox, LegalEntityAddressesAddressTypeResidential:
+	case LegalEntityAddressesAddressTypeBusiness, LegalEntityAddressesAddressTypeBusinessPhysical, LegalEntityAddressesAddressTypeBusinessRegistered, LegalEntityAddressesAddressTypeMailing, LegalEntityAddressesAddressTypeOther, LegalEntityAddressesAddressTypePoBox, LegalEntityAddressesAddressTypeResidential:
 		return true
 	}
 	return false
@@ -377,108 +382,110 @@ func (r legalEntityIdentificationJSON) RawJSON() string {
 type LegalEntityIdentificationsIDType string
 
 const (
-	LegalEntityIdentificationsIDTypeArCuil         LegalEntityIdentificationsIDType = "ar_cuil"
-	LegalEntityIdentificationsIDTypeArCuit         LegalEntityIdentificationsIDType = "ar_cuit"
-	LegalEntityIdentificationsIDTypeAtAtin         LegalEntityIdentificationsIDType = "at_atin"
-	LegalEntityIdentificationsIDTypeAtVat          LegalEntityIdentificationsIDType = "at_vat"
-	LegalEntityIdentificationsIDTypeAuAbn          LegalEntityIdentificationsIDType = "au_abn"
-	LegalEntityIdentificationsIDTypeAuTfn          LegalEntityIdentificationsIDType = "au_tfn"
-	LegalEntityIdentificationsIDTypeBeEnt          LegalEntityIdentificationsIDType = "be_ent"
-	LegalEntityIdentificationsIDTypeBeNrn          LegalEntityIdentificationsIDType = "be_nrn"
-	LegalEntityIdentificationsIDTypeBrCnpj         LegalEntityIdentificationsIDType = "br_cnpj"
-	LegalEntityIdentificationsIDTypeBrCpf          LegalEntityIdentificationsIDType = "br_cpf"
-	LegalEntityIdentificationsIDTypeCaBn           LegalEntityIdentificationsIDType = "ca_bn"
-	LegalEntityIdentificationsIDTypeCaSin          LegalEntityIdentificationsIDType = "ca_sin"
-	LegalEntityIdentificationsIDTypeChAhv          LegalEntityIdentificationsIDType = "ch_ahv"
-	LegalEntityIdentificationsIDTypeChUid          LegalEntityIdentificationsIDType = "ch_uid"
-	LegalEntityIdentificationsIDTypeClRun          LegalEntityIdentificationsIDType = "cl_run"
-	LegalEntityIdentificationsIDTypeClRut          LegalEntityIdentificationsIDType = "cl_rut"
-	LegalEntityIdentificationsIDTypeCoCedulas      LegalEntityIdentificationsIDType = "co_cedulas"
-	LegalEntityIdentificationsIDTypeCoNit          LegalEntityIdentificationsIDType = "co_nit"
-	LegalEntityIdentificationsIDTypeCyTin          LegalEntityIdentificationsIDType = "cy_tin"
-	LegalEntityIdentificationsIDTypeCzIco          LegalEntityIdentificationsIDType = "cz_ico"
-	LegalEntityIdentificationsIDTypeCzRc           LegalEntityIdentificationsIDType = "cz_rc"
-	LegalEntityIdentificationsIDTypeDeStid         LegalEntityIdentificationsIDType = "de_stid"
-	LegalEntityIdentificationsIDTypeDeStnr         LegalEntityIdentificationsIDType = "de_stnr"
-	LegalEntityIdentificationsIDTypeDeVat          LegalEntityIdentificationsIDType = "de_vat"
-	LegalEntityIdentificationsIDTypeDkCpr          LegalEntityIdentificationsIDType = "dk_cpr"
-	LegalEntityIdentificationsIDTypeDkCvr          LegalEntityIdentificationsIDType = "dk_cvr"
-	LegalEntityIdentificationsIDTypeDriversLicense LegalEntityIdentificationsIDType = "drivers_license"
-	LegalEntityIdentificationsIDTypeEeIk           LegalEntityIdentificationsIDType = "ee_ik"
-	LegalEntityIdentificationsIDTypeEeRk           LegalEntityIdentificationsIDType = "ee_rk"
-	LegalEntityIdentificationsIDTypeEsNie          LegalEntityIdentificationsIDType = "es_nie"
-	LegalEntityIdentificationsIDTypeEsNif          LegalEntityIdentificationsIDType = "es_nif"
-	LegalEntityIdentificationsIDTypeFiHetu         LegalEntityIdentificationsIDType = "fi_hetu"
-	LegalEntityIdentificationsIDTypeFiYtj          LegalEntityIdentificationsIDType = "fi_ytj"
-	LegalEntityIdentificationsIDTypeFrNif          LegalEntityIdentificationsIDType = "fr_nif"
-	LegalEntityIdentificationsIDTypeFrSiren        LegalEntityIdentificationsIDType = "fr_siren"
-	LegalEntityIdentificationsIDTypeFrVat          LegalEntityIdentificationsIDType = "fr_vat"
-	LegalEntityIdentificationsIDTypeGBNino         LegalEntityIdentificationsIDType = "gb_nino"
-	LegalEntityIdentificationsIDTypeGBUtr          LegalEntityIdentificationsIDType = "gb_utr"
-	LegalEntityIdentificationsIDTypeGBVat          LegalEntityIdentificationsIDType = "gb_vat"
-	LegalEntityIdentificationsIDTypeGrVat          LegalEntityIdentificationsIDType = "gr_vat"
-	LegalEntityIdentificationsIDTypeHnID           LegalEntityIdentificationsIDType = "hn_id"
-	LegalEntityIdentificationsIDTypeHnRtn          LegalEntityIdentificationsIDType = "hn_rtn"
-	LegalEntityIdentificationsIDTypeHrOib          LegalEntityIdentificationsIDType = "hr_oib"
-	LegalEntityIdentificationsIDTypeHuAdj          LegalEntityIdentificationsIDType = "hu_adj"
-	LegalEntityIdentificationsIDTypeHuAnum         LegalEntityIdentificationsIDType = "hu_anum"
-	LegalEntityIdentificationsIDTypeIePps          LegalEntityIdentificationsIDType = "ie_pps"
-	LegalEntityIdentificationsIDTypeIeTrn          LegalEntityIdentificationsIDType = "ie_trn"
-	LegalEntityIdentificationsIDTypeInLei          LegalEntityIdentificationsIDType = "in_lei"
-	LegalEntityIdentificationsIDTypeIsKnt          LegalEntityIdentificationsIDType = "is_knt"
-	LegalEntityIdentificationsIDTypeItCf           LegalEntityIdentificationsIDType = "it_cf"
-	LegalEntityIdentificationsIDTypeItPiva         LegalEntityIdentificationsIDType = "it_piva"
-	LegalEntityIdentificationsIDTypeJpHb           LegalEntityIdentificationsIDType = "jp_hb"
-	LegalEntityIdentificationsIDTypeJpMn           LegalEntityIdentificationsIDType = "jp_mn"
-	LegalEntityIdentificationsIDTypeKrBrn          LegalEntityIdentificationsIDType = "kr_brn"
-	LegalEntityIdentificationsIDTypeKrCrn          LegalEntityIdentificationsIDType = "kr_crn"
-	LegalEntityIdentificationsIDTypeKrRrn          LegalEntityIdentificationsIDType = "kr_rrn"
-	LegalEntityIdentificationsIDTypeLiPeid         LegalEntityIdentificationsIDType = "li_peid"
-	LegalEntityIdentificationsIDTypeLtAk           LegalEntityIdentificationsIDType = "lt_ak"
-	LegalEntityIdentificationsIDTypeLtJak          LegalEntityIdentificationsIDType = "lt_jak"
-	LegalEntityIdentificationsIDTypeLuMtc          LegalEntityIdentificationsIDType = "lu_mtc"
-	LegalEntityIdentificationsIDTypeLuVat          LegalEntityIdentificationsIDType = "lu_vat"
-	LegalEntityIdentificationsIDTypeLvPk           LegalEntityIdentificationsIDType = "lv_pk"
-	LegalEntityIdentificationsIDTypeLvRn           LegalEntityIdentificationsIDType = "lv_rn"
-	LegalEntityIdentificationsIDTypeMtTin          LegalEntityIdentificationsIDType = "mt_tin"
-	LegalEntityIdentificationsIDTypeMtVat          LegalEntityIdentificationsIDType = "mt_vat"
-	LegalEntityIdentificationsIDTypeMxCurp         LegalEntityIdentificationsIDType = "mx_curp"
-	LegalEntityIdentificationsIDTypeMxIne          LegalEntityIdentificationsIDType = "mx_ine"
-	LegalEntityIdentificationsIDTypeMxRfc          LegalEntityIdentificationsIDType = "mx_rfc"
-	LegalEntityIdentificationsIDTypeNlBsn          LegalEntityIdentificationsIDType = "nl_bsn"
-	LegalEntityIdentificationsIDTypeNlBtw          LegalEntityIdentificationsIDType = "nl_btw"
-	LegalEntityIdentificationsIDTypeNlRsin         LegalEntityIdentificationsIDType = "nl_rsin"
-	LegalEntityIdentificationsIDTypeNoFdn          LegalEntityIdentificationsIDType = "no_fdn"
-	LegalEntityIdentificationsIDTypeNoMva          LegalEntityIdentificationsIDType = "no_mva"
-	LegalEntityIdentificationsIDTypeNoOrgnr        LegalEntityIdentificationsIDType = "no_orgnr"
-	LegalEntityIdentificationsIDTypeNzIrd          LegalEntityIdentificationsIDType = "nz_ird"
-	LegalEntityIdentificationsIDTypePassport       LegalEntityIdentificationsIDType = "passport"
-	LegalEntityIdentificationsIDTypePlNip          LegalEntityIdentificationsIDType = "pl_nip"
-	LegalEntityIdentificationsIDTypePlPesel        LegalEntityIdentificationsIDType = "pl_pesel"
-	LegalEntityIdentificationsIDTypePtNif          LegalEntityIdentificationsIDType = "pt_nif"
-	LegalEntityIdentificationsIDTypeRoCnp          LegalEntityIdentificationsIDType = "ro_cnp"
-	LegalEntityIdentificationsIDTypeRoCui          LegalEntityIdentificationsIDType = "ro_cui"
-	LegalEntityIdentificationsIDTypeSaTin          LegalEntityIdentificationsIDType = "sa_tin"
-	LegalEntityIdentificationsIDTypeSaVat          LegalEntityIdentificationsIDType = "sa_vat"
-	LegalEntityIdentificationsIDTypeSeOrgnr        LegalEntityIdentificationsIDType = "se_orgnr"
-	LegalEntityIdentificationsIDTypeSePnmr         LegalEntityIdentificationsIDType = "se_pnmr"
-	LegalEntityIdentificationsIDTypeSgFin          LegalEntityIdentificationsIDType = "sg_fin"
-	LegalEntityIdentificationsIDTypeSgNric         LegalEntityIdentificationsIDType = "sg_nric"
-	LegalEntityIdentificationsIDTypeSgUen          LegalEntityIdentificationsIDType = "sg_uen"
-	LegalEntityIdentificationsIDTypeSiDav          LegalEntityIdentificationsIDType = "si_dav"
-	LegalEntityIdentificationsIDTypeSiTin          LegalEntityIdentificationsIDType = "si_tin"
-	LegalEntityIdentificationsIDTypeSkIco          LegalEntityIdentificationsIDType = "sk_ico"
-	LegalEntityIdentificationsIDTypeSkRc           LegalEntityIdentificationsIDType = "sk_rc"
-	LegalEntityIdentificationsIDTypeUsEin          LegalEntityIdentificationsIDType = "us_ein"
-	LegalEntityIdentificationsIDTypeUsItin         LegalEntityIdentificationsIDType = "us_itin"
-	LegalEntityIdentificationsIDTypeUsSsn          LegalEntityIdentificationsIDType = "us_ssn"
-	LegalEntityIdentificationsIDTypeUyRut          LegalEntityIdentificationsIDType = "uy_rut"
-	LegalEntityIdentificationsIDTypeVnTin          LegalEntityIdentificationsIDType = "vn_tin"
+	LegalEntityIdentificationsIDTypeArCuil               LegalEntityIdentificationsIDType = "ar_cuil"
+	LegalEntityIdentificationsIDTypeArCuit               LegalEntityIdentificationsIDType = "ar_cuit"
+	LegalEntityIdentificationsIDTypeAtAtin               LegalEntityIdentificationsIDType = "at_atin"
+	LegalEntityIdentificationsIDTypeAtVat                LegalEntityIdentificationsIDType = "at_vat"
+	LegalEntityIdentificationsIDTypeAuAbn                LegalEntityIdentificationsIDType = "au_abn"
+	LegalEntityIdentificationsIDTypeAuTfn                LegalEntityIdentificationsIDType = "au_tfn"
+	LegalEntityIdentificationsIDTypeBeEnt                LegalEntityIdentificationsIDType = "be_ent"
+	LegalEntityIdentificationsIDTypeBeNrn                LegalEntityIdentificationsIDType = "be_nrn"
+	LegalEntityIdentificationsIDTypeBrCnpj               LegalEntityIdentificationsIDType = "br_cnpj"
+	LegalEntityIdentificationsIDTypeBrCpf                LegalEntityIdentificationsIDType = "br_cpf"
+	LegalEntityIdentificationsIDTypeCaBn                 LegalEntityIdentificationsIDType = "ca_bn"
+	LegalEntityIdentificationsIDTypeCaSin                LegalEntityIdentificationsIDType = "ca_sin"
+	LegalEntityIdentificationsIDTypeChAhv                LegalEntityIdentificationsIDType = "ch_ahv"
+	LegalEntityIdentificationsIDTypeChUid                LegalEntityIdentificationsIDType = "ch_uid"
+	LegalEntityIdentificationsIDTypeClRun                LegalEntityIdentificationsIDType = "cl_run"
+	LegalEntityIdentificationsIDTypeClRut                LegalEntityIdentificationsIDType = "cl_rut"
+	LegalEntityIdentificationsIDTypeCoCedulas            LegalEntityIdentificationsIDType = "co_cedulas"
+	LegalEntityIdentificationsIDTypeCoNit                LegalEntityIdentificationsIDType = "co_nit"
+	LegalEntityIdentificationsIDTypeCyTin                LegalEntityIdentificationsIDType = "cy_tin"
+	LegalEntityIdentificationsIDTypeCzIco                LegalEntityIdentificationsIDType = "cz_ico"
+	LegalEntityIdentificationsIDTypeCzRc                 LegalEntityIdentificationsIDType = "cz_rc"
+	LegalEntityIdentificationsIDTypeDeStid               LegalEntityIdentificationsIDType = "de_stid"
+	LegalEntityIdentificationsIDTypeDeStnr               LegalEntityIdentificationsIDType = "de_stnr"
+	LegalEntityIdentificationsIDTypeDeVat                LegalEntityIdentificationsIDType = "de_vat"
+	LegalEntityIdentificationsIDTypeDkCpr                LegalEntityIdentificationsIDType = "dk_cpr"
+	LegalEntityIdentificationsIDTypeDkCvr                LegalEntityIdentificationsIDType = "dk_cvr"
+	LegalEntityIdentificationsIDTypeDriversLicense       LegalEntityIdentificationsIDType = "drivers_license"
+	LegalEntityIdentificationsIDTypeEeIk                 LegalEntityIdentificationsIDType = "ee_ik"
+	LegalEntityIdentificationsIDTypeEeRk                 LegalEntityIdentificationsIDType = "ee_rk"
+	LegalEntityIdentificationsIDTypeEsNie                LegalEntityIdentificationsIDType = "es_nie"
+	LegalEntityIdentificationsIDTypeEsNif                LegalEntityIdentificationsIDType = "es_nif"
+	LegalEntityIdentificationsIDTypeFiHetu               LegalEntityIdentificationsIDType = "fi_hetu"
+	LegalEntityIdentificationsIDTypeFiYtj                LegalEntityIdentificationsIDType = "fi_ytj"
+	LegalEntityIdentificationsIDTypeFrNif                LegalEntityIdentificationsIDType = "fr_nif"
+	LegalEntityIdentificationsIDTypeFrSiren              LegalEntityIdentificationsIDType = "fr_siren"
+	LegalEntityIdentificationsIDTypeFrVat                LegalEntityIdentificationsIDType = "fr_vat"
+	LegalEntityIdentificationsIDTypeGBNino               LegalEntityIdentificationsIDType = "gb_nino"
+	LegalEntityIdentificationsIDTypeGBUtr                LegalEntityIdentificationsIDType = "gb_utr"
+	LegalEntityIdentificationsIDTypeGBVat                LegalEntityIdentificationsIDType = "gb_vat"
+	LegalEntityIdentificationsIDTypeGenericInternational LegalEntityIdentificationsIDType = "generic_international"
+	LegalEntityIdentificationsIDTypeGrVat                LegalEntityIdentificationsIDType = "gr_vat"
+	LegalEntityIdentificationsIDTypeHnID                 LegalEntityIdentificationsIDType = "hn_id"
+	LegalEntityIdentificationsIDTypeHnRtn                LegalEntityIdentificationsIDType = "hn_rtn"
+	LegalEntityIdentificationsIDTypeHrOib                LegalEntityIdentificationsIDType = "hr_oib"
+	LegalEntityIdentificationsIDTypeHuAdj                LegalEntityIdentificationsIDType = "hu_adj"
+	LegalEntityIdentificationsIDTypeHuAnum               LegalEntityIdentificationsIDType = "hu_anum"
+	LegalEntityIdentificationsIDTypeIePps                LegalEntityIdentificationsIDType = "ie_pps"
+	LegalEntityIdentificationsIDTypeIeTrn                LegalEntityIdentificationsIDType = "ie_trn"
+	LegalEntityIdentificationsIDTypeInLei                LegalEntityIdentificationsIDType = "in_lei"
+	LegalEntityIdentificationsIDTypeIsKnt                LegalEntityIdentificationsIDType = "is_knt"
+	LegalEntityIdentificationsIDTypeItCf                 LegalEntityIdentificationsIDType = "it_cf"
+	LegalEntityIdentificationsIDTypeItPiva               LegalEntityIdentificationsIDType = "it_piva"
+	LegalEntityIdentificationsIDTypeJpHb                 LegalEntityIdentificationsIDType = "jp_hb"
+	LegalEntityIdentificationsIDTypeJpMn                 LegalEntityIdentificationsIDType = "jp_mn"
+	LegalEntityIdentificationsIDTypeKrBrn                LegalEntityIdentificationsIDType = "kr_brn"
+	LegalEntityIdentificationsIDTypeKrCrn                LegalEntityIdentificationsIDType = "kr_crn"
+	LegalEntityIdentificationsIDTypeKrRrn                LegalEntityIdentificationsIDType = "kr_rrn"
+	LegalEntityIdentificationsIDTypeLiPeid               LegalEntityIdentificationsIDType = "li_peid"
+	LegalEntityIdentificationsIDTypeLtAk                 LegalEntityIdentificationsIDType = "lt_ak"
+	LegalEntityIdentificationsIDTypeLtJak                LegalEntityIdentificationsIDType = "lt_jak"
+	LegalEntityIdentificationsIDTypeLuMtc                LegalEntityIdentificationsIDType = "lu_mtc"
+	LegalEntityIdentificationsIDTypeLuVat                LegalEntityIdentificationsIDType = "lu_vat"
+	LegalEntityIdentificationsIDTypeLvPk                 LegalEntityIdentificationsIDType = "lv_pk"
+	LegalEntityIdentificationsIDTypeLvRn                 LegalEntityIdentificationsIDType = "lv_rn"
+	LegalEntityIdentificationsIDTypeMtTin                LegalEntityIdentificationsIDType = "mt_tin"
+	LegalEntityIdentificationsIDTypeMtVat                LegalEntityIdentificationsIDType = "mt_vat"
+	LegalEntityIdentificationsIDTypeMxCurp               LegalEntityIdentificationsIDType = "mx_curp"
+	LegalEntityIdentificationsIDTypeMxIne                LegalEntityIdentificationsIDType = "mx_ine"
+	LegalEntityIdentificationsIDTypeMxRfc                LegalEntityIdentificationsIDType = "mx_rfc"
+	LegalEntityIdentificationsIDTypeNationalID           LegalEntityIdentificationsIDType = "national_id"
+	LegalEntityIdentificationsIDTypeNlBsn                LegalEntityIdentificationsIDType = "nl_bsn"
+	LegalEntityIdentificationsIDTypeNlBtw                LegalEntityIdentificationsIDType = "nl_btw"
+	LegalEntityIdentificationsIDTypeNlRsin               LegalEntityIdentificationsIDType = "nl_rsin"
+	LegalEntityIdentificationsIDTypeNoFdn                LegalEntityIdentificationsIDType = "no_fdn"
+	LegalEntityIdentificationsIDTypeNoMva                LegalEntityIdentificationsIDType = "no_mva"
+	LegalEntityIdentificationsIDTypeNoOrgnr              LegalEntityIdentificationsIDType = "no_orgnr"
+	LegalEntityIdentificationsIDTypeNzIrd                LegalEntityIdentificationsIDType = "nz_ird"
+	LegalEntityIdentificationsIDTypePassport             LegalEntityIdentificationsIDType = "passport"
+	LegalEntityIdentificationsIDTypePlNip                LegalEntityIdentificationsIDType = "pl_nip"
+	LegalEntityIdentificationsIDTypePlPesel              LegalEntityIdentificationsIDType = "pl_pesel"
+	LegalEntityIdentificationsIDTypePtNif                LegalEntityIdentificationsIDType = "pt_nif"
+	LegalEntityIdentificationsIDTypeRoCnp                LegalEntityIdentificationsIDType = "ro_cnp"
+	LegalEntityIdentificationsIDTypeRoCui                LegalEntityIdentificationsIDType = "ro_cui"
+	LegalEntityIdentificationsIDTypeSaTin                LegalEntityIdentificationsIDType = "sa_tin"
+	LegalEntityIdentificationsIDTypeSaVat                LegalEntityIdentificationsIDType = "sa_vat"
+	LegalEntityIdentificationsIDTypeSeOrgnr              LegalEntityIdentificationsIDType = "se_orgnr"
+	LegalEntityIdentificationsIDTypeSePnmr               LegalEntityIdentificationsIDType = "se_pnmr"
+	LegalEntityIdentificationsIDTypeSgFin                LegalEntityIdentificationsIDType = "sg_fin"
+	LegalEntityIdentificationsIDTypeSgNric               LegalEntityIdentificationsIDType = "sg_nric"
+	LegalEntityIdentificationsIDTypeSgUen                LegalEntityIdentificationsIDType = "sg_uen"
+	LegalEntityIdentificationsIDTypeSiDav                LegalEntityIdentificationsIDType = "si_dav"
+	LegalEntityIdentificationsIDTypeSiTin                LegalEntityIdentificationsIDType = "si_tin"
+	LegalEntityIdentificationsIDTypeSkIco                LegalEntityIdentificationsIDType = "sk_ico"
+	LegalEntityIdentificationsIDTypeSkRc                 LegalEntityIdentificationsIDType = "sk_rc"
+	LegalEntityIdentificationsIDTypeUsEin                LegalEntityIdentificationsIDType = "us_ein"
+	LegalEntityIdentificationsIDTypeUsItin               LegalEntityIdentificationsIDType = "us_itin"
+	LegalEntityIdentificationsIDTypeUsSsn                LegalEntityIdentificationsIDType = "us_ssn"
+	LegalEntityIdentificationsIDTypeUyRut                LegalEntityIdentificationsIDType = "uy_rut"
+	LegalEntityIdentificationsIDTypeVnTin                LegalEntityIdentificationsIDType = "vn_tin"
 )
 
 func (r LegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeAtAtin, LegalEntityIdentificationsIDTypeAtVat, LegalEntityIdentificationsIDTypeAuAbn, LegalEntityIdentificationsIDTypeAuTfn, LegalEntityIdentificationsIDTypeBeEnt, LegalEntityIdentificationsIDTypeBeNrn, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeCaBn, LegalEntityIdentificationsIDTypeCaSin, LegalEntityIdentificationsIDTypeChAhv, LegalEntityIdentificationsIDTypeChUid, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeCyTin, LegalEntityIdentificationsIDTypeCzIco, LegalEntityIdentificationsIDTypeCzRc, LegalEntityIdentificationsIDTypeDeStid, LegalEntityIdentificationsIDTypeDeStnr, LegalEntityIdentificationsIDTypeDeVat, LegalEntityIdentificationsIDTypeDkCpr, LegalEntityIdentificationsIDTypeDkCvr, LegalEntityIdentificationsIDTypeDriversLicense, LegalEntityIdentificationsIDTypeEeIk, LegalEntityIdentificationsIDTypeEeRk, LegalEntityIdentificationsIDTypeEsNie, LegalEntityIdentificationsIDTypeEsNif, LegalEntityIdentificationsIDTypeFiHetu, LegalEntityIdentificationsIDTypeFiYtj, LegalEntityIdentificationsIDTypeFrNif, LegalEntityIdentificationsIDTypeFrSiren, LegalEntityIdentificationsIDTypeFrVat, LegalEntityIdentificationsIDTypeGBNino, LegalEntityIdentificationsIDTypeGBUtr, LegalEntityIdentificationsIDTypeGBVat, LegalEntityIdentificationsIDTypeGrVat, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeHrOib, LegalEntityIdentificationsIDTypeHuAdj, LegalEntityIdentificationsIDTypeHuAnum, LegalEntityIdentificationsIDTypeIePps, LegalEntityIdentificationsIDTypeIeTrn, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeIsKnt, LegalEntityIdentificationsIDTypeItCf, LegalEntityIdentificationsIDTypeItPiva, LegalEntityIdentificationsIDTypeJpHb, LegalEntityIdentificationsIDTypeJpMn, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypeLiPeid, LegalEntityIdentificationsIDTypeLtAk, LegalEntityIdentificationsIDTypeLtJak, LegalEntityIdentificationsIDTypeLuMtc, LegalEntityIdentificationsIDTypeLuVat, LegalEntityIdentificationsIDTypeLvPk, LegalEntityIdentificationsIDTypeLvRn, LegalEntityIdentificationsIDTypeMtTin, LegalEntityIdentificationsIDTypeMtVat, LegalEntityIdentificationsIDTypeMxCurp, LegalEntityIdentificationsIDTypeMxIne, LegalEntityIdentificationsIDTypeMxRfc, LegalEntityIdentificationsIDTypeNlBsn, LegalEntityIdentificationsIDTypeNlBtw, LegalEntityIdentificationsIDTypeNlRsin, LegalEntityIdentificationsIDTypeNoFdn, LegalEntityIdentificationsIDTypeNoMva, LegalEntityIdentificationsIDTypeNoOrgnr, LegalEntityIdentificationsIDTypeNzIrd, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypePlNip, LegalEntityIdentificationsIDTypePlPesel, LegalEntityIdentificationsIDTypePtNif, LegalEntityIdentificationsIDTypeRoCnp, LegalEntityIdentificationsIDTypeRoCui, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeSeOrgnr, LegalEntityIdentificationsIDTypeSePnmr, LegalEntityIdentificationsIDTypeSgFin, LegalEntityIdentificationsIDTypeSgNric, LegalEntityIdentificationsIDTypeSgUen, LegalEntityIdentificationsIDTypeSiDav, LegalEntityIdentificationsIDTypeSiTin, LegalEntityIdentificationsIDTypeSkIco, LegalEntityIdentificationsIDTypeSkRc, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeUyRut, LegalEntityIdentificationsIDTypeVnTin:
+	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeAtAtin, LegalEntityIdentificationsIDTypeAtVat, LegalEntityIdentificationsIDTypeAuAbn, LegalEntityIdentificationsIDTypeAuTfn, LegalEntityIdentificationsIDTypeBeEnt, LegalEntityIdentificationsIDTypeBeNrn, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeCaBn, LegalEntityIdentificationsIDTypeCaSin, LegalEntityIdentificationsIDTypeChAhv, LegalEntityIdentificationsIDTypeChUid, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeCyTin, LegalEntityIdentificationsIDTypeCzIco, LegalEntityIdentificationsIDTypeCzRc, LegalEntityIdentificationsIDTypeDeStid, LegalEntityIdentificationsIDTypeDeStnr, LegalEntityIdentificationsIDTypeDeVat, LegalEntityIdentificationsIDTypeDkCpr, LegalEntityIdentificationsIDTypeDkCvr, LegalEntityIdentificationsIDTypeDriversLicense, LegalEntityIdentificationsIDTypeEeIk, LegalEntityIdentificationsIDTypeEeRk, LegalEntityIdentificationsIDTypeEsNie, LegalEntityIdentificationsIDTypeEsNif, LegalEntityIdentificationsIDTypeFiHetu, LegalEntityIdentificationsIDTypeFiYtj, LegalEntityIdentificationsIDTypeFrNif, LegalEntityIdentificationsIDTypeFrSiren, LegalEntityIdentificationsIDTypeFrVat, LegalEntityIdentificationsIDTypeGBNino, LegalEntityIdentificationsIDTypeGBUtr, LegalEntityIdentificationsIDTypeGBVat, LegalEntityIdentificationsIDTypeGenericInternational, LegalEntityIdentificationsIDTypeGrVat, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeHrOib, LegalEntityIdentificationsIDTypeHuAdj, LegalEntityIdentificationsIDTypeHuAnum, LegalEntityIdentificationsIDTypeIePps, LegalEntityIdentificationsIDTypeIeTrn, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeIsKnt, LegalEntityIdentificationsIDTypeItCf, LegalEntityIdentificationsIDTypeItPiva, LegalEntityIdentificationsIDTypeJpHb, LegalEntityIdentificationsIDTypeJpMn, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypeLiPeid, LegalEntityIdentificationsIDTypeLtAk, LegalEntityIdentificationsIDTypeLtJak, LegalEntityIdentificationsIDTypeLuMtc, LegalEntityIdentificationsIDTypeLuVat, LegalEntityIdentificationsIDTypeLvPk, LegalEntityIdentificationsIDTypeLvRn, LegalEntityIdentificationsIDTypeMtTin, LegalEntityIdentificationsIDTypeMtVat, LegalEntityIdentificationsIDTypeMxCurp, LegalEntityIdentificationsIDTypeMxIne, LegalEntityIdentificationsIDTypeMxRfc, LegalEntityIdentificationsIDTypeNationalID, LegalEntityIdentificationsIDTypeNlBsn, LegalEntityIdentificationsIDTypeNlBtw, LegalEntityIdentificationsIDTypeNlRsin, LegalEntityIdentificationsIDTypeNoFdn, LegalEntityIdentificationsIDTypeNoMva, LegalEntityIdentificationsIDTypeNoOrgnr, LegalEntityIdentificationsIDTypeNzIrd, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypePlNip, LegalEntityIdentificationsIDTypePlPesel, LegalEntityIdentificationsIDTypePtNif, LegalEntityIdentificationsIDTypeRoCnp, LegalEntityIdentificationsIDTypeRoCui, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeSeOrgnr, LegalEntityIdentificationsIDTypeSePnmr, LegalEntityIdentificationsIDTypeSgFin, LegalEntityIdentificationsIDTypeSgNric, LegalEntityIdentificationsIDTypeSgUen, LegalEntityIdentificationsIDTypeSiDav, LegalEntityIdentificationsIDTypeSiTin, LegalEntityIdentificationsIDTypeSkIco, LegalEntityIdentificationsIDTypeSkRc, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeUyRut, LegalEntityIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false
@@ -490,12 +497,11 @@ type LegalEntityLegalEntityType string
 const (
 	LegalEntityLegalEntityTypeBusiness   LegalEntityLegalEntityType = "business"
 	LegalEntityLegalEntityTypeIndividual LegalEntityLegalEntityType = "individual"
-	LegalEntityLegalEntityTypeJoint      LegalEntityLegalEntityType = "joint"
 )
 
 func (r LegalEntityLegalEntityType) IsKnown() bool {
 	switch r {
-	case LegalEntityLegalEntityTypeBusiness, LegalEntityLegalEntityTypeIndividual, LegalEntityLegalEntityTypeJoint:
+	case LegalEntityLegalEntityTypeBusiness, LegalEntityLegalEntityTypeIndividual:
 		return true
 	}
 	return false
@@ -608,6 +614,33 @@ func (r LegalEntityStatus) IsKnown() bool {
 	return false
 }
 
+// Acceptance of terms of use by the legal entity.
+type LegalEntityTermsOfUse struct {
+	// The ISO 8601 timestamp indicating when the terms of use were accepted.
+	AcceptedAt time.Time `json:"accepted_at" format:"date-time"`
+	// The IP address from which the terms of use were accepted. Supports both IPv4 and
+	// IPv6 formats.
+	IPAddress string                    `json:"ip_address"`
+	JSON      legalEntityTermsOfUseJSON `json:"-"`
+}
+
+// legalEntityTermsOfUseJSON contains the JSON metadata for the struct
+// [LegalEntityTermsOfUse]
+type legalEntityTermsOfUseJSON struct {
+	AcceptedAt  apijson.Field
+	IPAddress   apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *LegalEntityTermsOfUse) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r legalEntityTermsOfUseJSON) RawJSON() string {
+	return r.raw
+}
+
 type LegalEntityNewParams struct {
 	// The type of legal entity.
 	LegalEntityType param.Field[LegalEntityNewParamsLegalEntityType] `json:"legal_entity_type" api:"required"`
@@ -685,6 +718,8 @@ type LegalEntityNewParams struct {
 	ServiceProviderLegalEntityID param.Field[string] `json:"service_provider_legal_entity_id" format:"uuid"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
+	// Acceptance of terms of use by the legal entity.
+	TermsOfUse param.Field[LegalEntityNewParamsTermsOfUse] `json:"terms_of_use"`
 	// Deprecated. Use `third_party_verifications` instead.
 	ThirdPartyVerification param.Field[shared.ThirdPartyVerificationParam] `json:"third_party_verification"`
 	// A list of third-party verifications run by external vendors.
@@ -810,6 +845,19 @@ func (r LegalEntityNewParamsRiskRating) IsKnown() bool {
 	return false
 }
 
+// Acceptance of terms of use by the legal entity.
+type LegalEntityNewParamsTermsOfUse struct {
+	// The ISO 8601 timestamp indicating when the terms of use were accepted.
+	AcceptedAt param.Field[time.Time] `json:"accepted_at" format:"date-time"`
+	// The IP address from which the terms of use were accepted. Supports both IPv4 and
+	// IPv6 formats.
+	IPAddress param.Field[string] `json:"ip_address"`
+}
+
+func (r LegalEntityNewParamsTermsOfUse) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type LegalEntityUpdateParams struct {
 	// A list of addresses for the entity.
 	Addresses    param.Field[[]shared.LegalEntityAddressCreateRequestParam] `json:"addresses"`
@@ -873,6 +921,8 @@ type LegalEntityUpdateParams struct {
 	ServiceProviderLegalEntityID param.Field[string] `json:"service_provider_legal_entity_id" format:"uuid"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
+	// Acceptance of terms of use by the legal entity.
+	TermsOfUse param.Field[LegalEntityUpdateParamsTermsOfUse] `json:"terms_of_use"`
 	// Deprecated. Use `third_party_verifications` instead.
 	ThirdPartyVerification param.Field[shared.ThirdPartyVerificationParam] `json:"third_party_verification"`
 	// A list of third-party verifications run by external vendors.
@@ -946,6 +996,19 @@ func (r LegalEntityUpdateParamsRiskRating) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+// Acceptance of terms of use by the legal entity.
+type LegalEntityUpdateParamsTermsOfUse struct {
+	// The ISO 8601 timestamp indicating when the terms of use were accepted.
+	AcceptedAt param.Field[time.Time] `json:"accepted_at" format:"date-time"`
+	// The IP address from which the terms of use were accepted. Supports both IPv4 and
+	// IPv6 formats.
+	IPAddress param.Field[string] `json:"ip_address"`
+}
+
+func (r LegalEntityUpdateParamsTermsOfUse) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
 }
 
 type LegalEntityListParams struct {
