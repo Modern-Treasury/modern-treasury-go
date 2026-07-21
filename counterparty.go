@@ -745,6 +745,9 @@ func (r CounterpartyNewParamsLegalEntityLegalStructure) IsKnown() bool {
 
 // A list of phone numbers in E.164 format.
 type CounterpartyNewParamsLegalEntityPhoneNumber struct {
+	// A phone number in E.164 format. This format is strictly validated: include a
+	// leading + and country code, followed by digits only (no spaces or dashes), e.g.
+	// +12025551234.
 	PhoneNumber param.Field[string] `json:"phone_number"`
 }
 
