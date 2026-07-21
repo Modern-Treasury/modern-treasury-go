@@ -119,8 +119,8 @@ type LegalEntity struct {
 	CitizenshipCountry string `json:"citizenship_country" api:"required,nullable"`
 	// Deprecated: deprecated
 	ComplianceDetails interface{} `json:"compliance_details" api:"required,nullable"`
-	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
-	// alpha-3 formats.
+	// The country where the business is incorporated, as an ISO 3166-1 alpha-2 country
+	// code (e.g. US).
 	CountryOfIncorporation string    `json:"country_of_incorporation" api:"required,nullable"`
 	CreatedAt              time.Time `json:"created_at" api:"required" format:"date-time"`
 	// A business's formation date (YYYY-MM-DD).
@@ -161,8 +161,8 @@ type LegalEntity struct {
 	// An individual's middle name.
 	MiddleName string `json:"middle_name" api:"required,nullable"`
 	Object     string `json:"object" api:"required"`
-	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
-	// codes).
+	// A list of countries where the business operates, as ISO 3166-1 alpha-2 country
+	// codes (e.g. ["US", "CA"]).
 	OperatingJurisdictions []string                 `json:"operating_jurisdictions" api:"required"`
 	PhoneNumbers           []LegalEntityPhoneNumber `json:"phone_numbers" api:"required"`
 	// Whether the individual is a politically exposed person.
@@ -672,8 +672,8 @@ type LegalEntityNewParams struct {
 	// in a value of null to prevent the connection from being associated with the
 	// legal entity.
 	ConnectionID param.Field[string] `json:"connection_id"`
-	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
-	// alpha-3 formats.
+	// The country where the business is incorporated, as an ISO 3166-1 alpha-2 country
+	// code (e.g. US).
 	CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
@@ -710,8 +710,8 @@ type LegalEntityNewParams struct {
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// An individual's middle name.
 	MiddleName param.Field[string] `json:"middle_name"`
-	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
-	// codes).
+	// A list of countries where the business operates, as ISO 3166-1 alpha-2 country
+	// codes (e.g. ["US", "CA"]).
 	OperatingJurisdictions param.Field[[]string]                          `json:"operating_jurisdictions"`
 	PhoneNumbers           param.Field[[]LegalEntityNewParamsPhoneNumber] `json:"phone_numbers"`
 	// Whether the individual is a politically exposed person.
@@ -880,8 +880,8 @@ type LegalEntityUpdateParams struct {
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
 	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
-	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
-	// alpha-3 formats.
+	// The country where the business is incorporated, as an ISO 3166-1 alpha-2 country
+	// code (e.g. US).
 	CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
@@ -913,8 +913,8 @@ type LegalEntityUpdateParams struct {
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// An individual's middle name.
 	MiddleName param.Field[string] `json:"middle_name"`
-	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
-	// codes).
+	// A list of countries where the business operates, as ISO 3166-1 alpha-2 country
+	// codes (e.g. ["US", "CA"]).
 	OperatingJurisdictions param.Field[[]string]                             `json:"operating_jurisdictions"`
 	PhoneNumbers           param.Field[[]LegalEntityUpdateParamsPhoneNumber] `json:"phone_numbers"`
 	// Whether the individual is a politically exposed person.
