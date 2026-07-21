@@ -42,8 +42,8 @@ type ChildLegalEntity struct {
 	CitizenshipCountry string `json:"citizenship_country" api:"required,nullable"`
 	// Deprecated: deprecated
 	ComplianceDetails interface{} `json:"compliance_details" api:"required,nullable"`
-	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
-	// alpha-3 formats.
+	// The country where the business is incorporated, as an ISO 3166-1 alpha-2 country
+	// code (e.g. US).
 	CountryOfIncorporation string    `json:"country_of_incorporation" api:"required,nullable"`
 	CreatedAt              time.Time `json:"created_at" api:"required" format:"date-time"`
 	// A business's formation date (YYYY-MM-DD).
@@ -86,8 +86,8 @@ type ChildLegalEntity struct {
 	// An individual's middle name.
 	MiddleName string `json:"middle_name" api:"required,nullable"`
 	Object     string `json:"object" api:"required"`
-	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
-	// codes).
+	// A list of countries where the business operates, as ISO 3166-1 alpha-2 country
+	// codes (e.g. ["US", "CA"]).
 	OperatingJurisdictions []string                      `json:"operating_jurisdictions" api:"required"`
 	PhoneNumbers           []ChildLegalEntityPhoneNumber `json:"phone_numbers" api:"required"`
 	// Whether the individual is a politically exposed person.
