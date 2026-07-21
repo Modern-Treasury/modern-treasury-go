@@ -176,24 +176,17 @@ const (
 	RoutingDetailPaymentTypeDkNets      RoutingDetailPaymentType = "dk_nets"
 	RoutingDetailPaymentTypeEft         RoutingDetailPaymentType = "eft"
 	RoutingDetailPaymentTypeGBFps       RoutingDetailPaymentType = "gb_fps"
-	RoutingDetailPaymentTypeHuIcs       RoutingDetailPaymentType = "hu_ics"
-	RoutingDetailPaymentTypeInterac     RoutingDetailPaymentType = "interac"
 	RoutingDetailPaymentTypeMasav       RoutingDetailPaymentType = "masav"
 	RoutingDetailPaymentTypeMxCcen      RoutingDetailPaymentType = "mx_ccen"
 	RoutingDetailPaymentTypeNeft        RoutingDetailPaymentType = "neft"
 	RoutingDetailPaymentTypeNics        RoutingDetailPaymentType = "nics"
 	RoutingDetailPaymentTypeNzBecs      RoutingDetailPaymentType = "nz_becs"
 	RoutingDetailPaymentTypePlElixir    RoutingDetailPaymentType = "pl_elixir"
-	RoutingDetailPaymentTypeProvxchange RoutingDetailPaymentType = "provxchange"
-	RoutingDetailPaymentTypeRoSent      RoutingDetailPaymentType = "ro_sent"
 	RoutingDetailPaymentTypeRtp         RoutingDetailPaymentType = "rtp"
 	RoutingDetailPaymentTypeSeBankgirot RoutingDetailPaymentType = "se_bankgirot"
-	RoutingDetailPaymentTypeSen         RoutingDetailPaymentType = "sen"
 	RoutingDetailPaymentTypeSepa        RoutingDetailPaymentType = "sepa"
 	RoutingDetailPaymentTypeSgGiro      RoutingDetailPaymentType = "sg_giro"
 	RoutingDetailPaymentTypeSic         RoutingDetailPaymentType = "sic"
-	RoutingDetailPaymentTypeSignet      RoutingDetailPaymentType = "signet"
-	RoutingDetailPaymentTypeSknbi       RoutingDetailPaymentType = "sknbi"
 	RoutingDetailPaymentTypeStablecoin  RoutingDetailPaymentType = "stablecoin"
 	RoutingDetailPaymentTypeWire        RoutingDetailPaymentType = "wire"
 	RoutingDetailPaymentTypeZengin      RoutingDetailPaymentType = "zengin"
@@ -201,7 +194,7 @@ const (
 
 func (r RoutingDetailPaymentType) IsKnown() bool {
 	switch r {
-	case RoutingDetailPaymentTypeACH, RoutingDetailPaymentTypeAuBecs, RoutingDetailPaymentTypeBacs, RoutingDetailPaymentTypeBook, RoutingDetailPaymentTypeCard, RoutingDetailPaymentTypeChats, RoutingDetailPaymentTypeCheck, RoutingDetailPaymentTypeCrossBorder, RoutingDetailPaymentTypeDkNets, RoutingDetailPaymentTypeEft, RoutingDetailPaymentTypeGBFps, RoutingDetailPaymentTypeHuIcs, RoutingDetailPaymentTypeInterac, RoutingDetailPaymentTypeMasav, RoutingDetailPaymentTypeMxCcen, RoutingDetailPaymentTypeNeft, RoutingDetailPaymentTypeNics, RoutingDetailPaymentTypeNzBecs, RoutingDetailPaymentTypePlElixir, RoutingDetailPaymentTypeProvxchange, RoutingDetailPaymentTypeRoSent, RoutingDetailPaymentTypeRtp, RoutingDetailPaymentTypeSeBankgirot, RoutingDetailPaymentTypeSen, RoutingDetailPaymentTypeSepa, RoutingDetailPaymentTypeSgGiro, RoutingDetailPaymentTypeSic, RoutingDetailPaymentTypeSignet, RoutingDetailPaymentTypeSknbi, RoutingDetailPaymentTypeStablecoin, RoutingDetailPaymentTypeWire, RoutingDetailPaymentTypeZengin:
+	case RoutingDetailPaymentTypeACH, RoutingDetailPaymentTypeAuBecs, RoutingDetailPaymentTypeBacs, RoutingDetailPaymentTypeBook, RoutingDetailPaymentTypeCard, RoutingDetailPaymentTypeChats, RoutingDetailPaymentTypeCheck, RoutingDetailPaymentTypeCrossBorder, RoutingDetailPaymentTypeDkNets, RoutingDetailPaymentTypeEft, RoutingDetailPaymentTypeGBFps, RoutingDetailPaymentTypeMasav, RoutingDetailPaymentTypeMxCcen, RoutingDetailPaymentTypeNeft, RoutingDetailPaymentTypeNics, RoutingDetailPaymentTypeNzBecs, RoutingDetailPaymentTypePlElixir, RoutingDetailPaymentTypeRtp, RoutingDetailPaymentTypeSeBankgirot, RoutingDetailPaymentTypeSepa, RoutingDetailPaymentTypeSgGiro, RoutingDetailPaymentTypeSic, RoutingDetailPaymentTypeStablecoin, RoutingDetailPaymentTypeWire, RoutingDetailPaymentTypeZengin:
 		return true
 	}
 	return false
@@ -222,8 +215,6 @@ const (
 	RoutingDetailRoutingNumberTypeDkInterbankClearingCode RoutingDetailRoutingNumberType = "dk_interbank_clearing_code"
 	RoutingDetailRoutingNumberTypeGBSortCode              RoutingDetailRoutingNumberType = "gb_sort_code"
 	RoutingDetailRoutingNumberTypeHkInterbankClearingCode RoutingDetailRoutingNumberType = "hk_interbank_clearing_code"
-	RoutingDetailRoutingNumberTypeHuInterbankClearingCode RoutingDetailRoutingNumberType = "hu_interbank_clearing_code"
-	RoutingDetailRoutingNumberTypeIDSknbiCode             RoutingDetailRoutingNumberType = "id_sknbi_code"
 	RoutingDetailRoutingNumberTypeIlBankCode              RoutingDetailRoutingNumberType = "il_bank_code"
 	RoutingDetailRoutingNumberTypeInIfsc                  RoutingDetailRoutingNumberType = "in_ifsc"
 	RoutingDetailRoutingNumberTypeJpZenginCode            RoutingDetailRoutingNumberType = "jp_zengin_code"
@@ -239,7 +230,7 @@ const (
 
 func (r RoutingDetailRoutingNumberType) IsKnown() bool {
 	switch r {
-	case RoutingDetailRoutingNumberTypeAba, RoutingDetailRoutingNumberTypeAuBsb, RoutingDetailRoutingNumberTypeBrCodigo, RoutingDetailRoutingNumberTypeCaCpa, RoutingDetailRoutingNumberTypeChips, RoutingDetailRoutingNumberTypeCnaps, RoutingDetailRoutingNumberTypeDkInterbankClearingCode, RoutingDetailRoutingNumberTypeGBSortCode, RoutingDetailRoutingNumberTypeHkInterbankClearingCode, RoutingDetailRoutingNumberTypeHuInterbankClearingCode, RoutingDetailRoutingNumberTypeIDSknbiCode, RoutingDetailRoutingNumberTypeIlBankCode, RoutingDetailRoutingNumberTypeInIfsc, RoutingDetailRoutingNumberTypeJpZenginCode, RoutingDetailRoutingNumberTypeMxBankIdentifier, RoutingDetailRoutingNumberTypeMyBranchCode, RoutingDetailRoutingNumberTypeNzNationalClearingCode, RoutingDetailRoutingNumberTypePlNationalClearingCode, RoutingDetailRoutingNumberTypeSeBankgiroClearingCode, RoutingDetailRoutingNumberTypeSgInterbankClearingCode, RoutingDetailRoutingNumberTypeSwift, RoutingDetailRoutingNumberTypeZaNationalClearingCode:
+	case RoutingDetailRoutingNumberTypeAba, RoutingDetailRoutingNumberTypeAuBsb, RoutingDetailRoutingNumberTypeBrCodigo, RoutingDetailRoutingNumberTypeCaCpa, RoutingDetailRoutingNumberTypeChips, RoutingDetailRoutingNumberTypeCnaps, RoutingDetailRoutingNumberTypeDkInterbankClearingCode, RoutingDetailRoutingNumberTypeGBSortCode, RoutingDetailRoutingNumberTypeHkInterbankClearingCode, RoutingDetailRoutingNumberTypeIlBankCode, RoutingDetailRoutingNumberTypeInIfsc, RoutingDetailRoutingNumberTypeJpZenginCode, RoutingDetailRoutingNumberTypeMxBankIdentifier, RoutingDetailRoutingNumberTypeMyBranchCode, RoutingDetailRoutingNumberTypeNzNationalClearingCode, RoutingDetailRoutingNumberTypePlNationalClearingCode, RoutingDetailRoutingNumberTypeSeBankgiroClearingCode, RoutingDetailRoutingNumberTypeSgInterbankClearingCode, RoutingDetailRoutingNumberTypeSwift, RoutingDetailRoutingNumberTypeZaNationalClearingCode:
 		return true
 	}
 	return false
@@ -290,8 +281,6 @@ const (
 	RoutingDetailNewParamsRoutingNumberTypeDkInterbankClearingCode RoutingDetailNewParamsRoutingNumberType = "dk_interbank_clearing_code"
 	RoutingDetailNewParamsRoutingNumberTypeGBSortCode              RoutingDetailNewParamsRoutingNumberType = "gb_sort_code"
 	RoutingDetailNewParamsRoutingNumberTypeHkInterbankClearingCode RoutingDetailNewParamsRoutingNumberType = "hk_interbank_clearing_code"
-	RoutingDetailNewParamsRoutingNumberTypeHuInterbankClearingCode RoutingDetailNewParamsRoutingNumberType = "hu_interbank_clearing_code"
-	RoutingDetailNewParamsRoutingNumberTypeIDSknbiCode             RoutingDetailNewParamsRoutingNumberType = "id_sknbi_code"
 	RoutingDetailNewParamsRoutingNumberTypeIlBankCode              RoutingDetailNewParamsRoutingNumberType = "il_bank_code"
 	RoutingDetailNewParamsRoutingNumberTypeInIfsc                  RoutingDetailNewParamsRoutingNumberType = "in_ifsc"
 	RoutingDetailNewParamsRoutingNumberTypeJpZenginCode            RoutingDetailNewParamsRoutingNumberType = "jp_zengin_code"
@@ -307,7 +296,7 @@ const (
 
 func (r RoutingDetailNewParamsRoutingNumberType) IsKnown() bool {
 	switch r {
-	case RoutingDetailNewParamsRoutingNumberTypeAba, RoutingDetailNewParamsRoutingNumberTypeAuBsb, RoutingDetailNewParamsRoutingNumberTypeBrCodigo, RoutingDetailNewParamsRoutingNumberTypeCaCpa, RoutingDetailNewParamsRoutingNumberTypeChips, RoutingDetailNewParamsRoutingNumberTypeCnaps, RoutingDetailNewParamsRoutingNumberTypeDkInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeGBSortCode, RoutingDetailNewParamsRoutingNumberTypeHkInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeHuInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeIDSknbiCode, RoutingDetailNewParamsRoutingNumberTypeIlBankCode, RoutingDetailNewParamsRoutingNumberTypeInIfsc, RoutingDetailNewParamsRoutingNumberTypeJpZenginCode, RoutingDetailNewParamsRoutingNumberTypeMxBankIdentifier, RoutingDetailNewParamsRoutingNumberTypeMyBranchCode, RoutingDetailNewParamsRoutingNumberTypeNzNationalClearingCode, RoutingDetailNewParamsRoutingNumberTypePlNationalClearingCode, RoutingDetailNewParamsRoutingNumberTypeSeBankgiroClearingCode, RoutingDetailNewParamsRoutingNumberTypeSgInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeSwift, RoutingDetailNewParamsRoutingNumberTypeZaNationalClearingCode:
+	case RoutingDetailNewParamsRoutingNumberTypeAba, RoutingDetailNewParamsRoutingNumberTypeAuBsb, RoutingDetailNewParamsRoutingNumberTypeBrCodigo, RoutingDetailNewParamsRoutingNumberTypeCaCpa, RoutingDetailNewParamsRoutingNumberTypeChips, RoutingDetailNewParamsRoutingNumberTypeCnaps, RoutingDetailNewParamsRoutingNumberTypeDkInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeGBSortCode, RoutingDetailNewParamsRoutingNumberTypeHkInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeIlBankCode, RoutingDetailNewParamsRoutingNumberTypeInIfsc, RoutingDetailNewParamsRoutingNumberTypeJpZenginCode, RoutingDetailNewParamsRoutingNumberTypeMxBankIdentifier, RoutingDetailNewParamsRoutingNumberTypeMyBranchCode, RoutingDetailNewParamsRoutingNumberTypeNzNationalClearingCode, RoutingDetailNewParamsRoutingNumberTypePlNationalClearingCode, RoutingDetailNewParamsRoutingNumberTypeSeBankgiroClearingCode, RoutingDetailNewParamsRoutingNumberTypeSgInterbankClearingCode, RoutingDetailNewParamsRoutingNumberTypeSwift, RoutingDetailNewParamsRoutingNumberTypeZaNationalClearingCode:
 		return true
 	}
 	return false
@@ -329,24 +318,17 @@ const (
 	RoutingDetailNewParamsPaymentTypeDkNets      RoutingDetailNewParamsPaymentType = "dk_nets"
 	RoutingDetailNewParamsPaymentTypeEft         RoutingDetailNewParamsPaymentType = "eft"
 	RoutingDetailNewParamsPaymentTypeGBFps       RoutingDetailNewParamsPaymentType = "gb_fps"
-	RoutingDetailNewParamsPaymentTypeHuIcs       RoutingDetailNewParamsPaymentType = "hu_ics"
-	RoutingDetailNewParamsPaymentTypeInterac     RoutingDetailNewParamsPaymentType = "interac"
 	RoutingDetailNewParamsPaymentTypeMasav       RoutingDetailNewParamsPaymentType = "masav"
 	RoutingDetailNewParamsPaymentTypeMxCcen      RoutingDetailNewParamsPaymentType = "mx_ccen"
 	RoutingDetailNewParamsPaymentTypeNeft        RoutingDetailNewParamsPaymentType = "neft"
 	RoutingDetailNewParamsPaymentTypeNics        RoutingDetailNewParamsPaymentType = "nics"
 	RoutingDetailNewParamsPaymentTypeNzBecs      RoutingDetailNewParamsPaymentType = "nz_becs"
 	RoutingDetailNewParamsPaymentTypePlElixir    RoutingDetailNewParamsPaymentType = "pl_elixir"
-	RoutingDetailNewParamsPaymentTypeProvxchange RoutingDetailNewParamsPaymentType = "provxchange"
-	RoutingDetailNewParamsPaymentTypeRoSent      RoutingDetailNewParamsPaymentType = "ro_sent"
 	RoutingDetailNewParamsPaymentTypeRtp         RoutingDetailNewParamsPaymentType = "rtp"
 	RoutingDetailNewParamsPaymentTypeSeBankgirot RoutingDetailNewParamsPaymentType = "se_bankgirot"
-	RoutingDetailNewParamsPaymentTypeSen         RoutingDetailNewParamsPaymentType = "sen"
 	RoutingDetailNewParamsPaymentTypeSepa        RoutingDetailNewParamsPaymentType = "sepa"
 	RoutingDetailNewParamsPaymentTypeSgGiro      RoutingDetailNewParamsPaymentType = "sg_giro"
 	RoutingDetailNewParamsPaymentTypeSic         RoutingDetailNewParamsPaymentType = "sic"
-	RoutingDetailNewParamsPaymentTypeSignet      RoutingDetailNewParamsPaymentType = "signet"
-	RoutingDetailNewParamsPaymentTypeSknbi       RoutingDetailNewParamsPaymentType = "sknbi"
 	RoutingDetailNewParamsPaymentTypeStablecoin  RoutingDetailNewParamsPaymentType = "stablecoin"
 	RoutingDetailNewParamsPaymentTypeWire        RoutingDetailNewParamsPaymentType = "wire"
 	RoutingDetailNewParamsPaymentTypeZengin      RoutingDetailNewParamsPaymentType = "zengin"
@@ -354,7 +336,7 @@ const (
 
 func (r RoutingDetailNewParamsPaymentType) IsKnown() bool {
 	switch r {
-	case RoutingDetailNewParamsPaymentTypeACH, RoutingDetailNewParamsPaymentTypeAuBecs, RoutingDetailNewParamsPaymentTypeBacs, RoutingDetailNewParamsPaymentTypeBook, RoutingDetailNewParamsPaymentTypeCard, RoutingDetailNewParamsPaymentTypeChats, RoutingDetailNewParamsPaymentTypeCheck, RoutingDetailNewParamsPaymentTypeCrossBorder, RoutingDetailNewParamsPaymentTypeDkNets, RoutingDetailNewParamsPaymentTypeEft, RoutingDetailNewParamsPaymentTypeGBFps, RoutingDetailNewParamsPaymentTypeHuIcs, RoutingDetailNewParamsPaymentTypeInterac, RoutingDetailNewParamsPaymentTypeMasav, RoutingDetailNewParamsPaymentTypeMxCcen, RoutingDetailNewParamsPaymentTypeNeft, RoutingDetailNewParamsPaymentTypeNics, RoutingDetailNewParamsPaymentTypeNzBecs, RoutingDetailNewParamsPaymentTypePlElixir, RoutingDetailNewParamsPaymentTypeProvxchange, RoutingDetailNewParamsPaymentTypeRoSent, RoutingDetailNewParamsPaymentTypeRtp, RoutingDetailNewParamsPaymentTypeSeBankgirot, RoutingDetailNewParamsPaymentTypeSen, RoutingDetailNewParamsPaymentTypeSepa, RoutingDetailNewParamsPaymentTypeSgGiro, RoutingDetailNewParamsPaymentTypeSic, RoutingDetailNewParamsPaymentTypeSignet, RoutingDetailNewParamsPaymentTypeSknbi, RoutingDetailNewParamsPaymentTypeStablecoin, RoutingDetailNewParamsPaymentTypeWire, RoutingDetailNewParamsPaymentTypeZengin:
+	case RoutingDetailNewParamsPaymentTypeACH, RoutingDetailNewParamsPaymentTypeAuBecs, RoutingDetailNewParamsPaymentTypeBacs, RoutingDetailNewParamsPaymentTypeBook, RoutingDetailNewParamsPaymentTypeCard, RoutingDetailNewParamsPaymentTypeChats, RoutingDetailNewParamsPaymentTypeCheck, RoutingDetailNewParamsPaymentTypeCrossBorder, RoutingDetailNewParamsPaymentTypeDkNets, RoutingDetailNewParamsPaymentTypeEft, RoutingDetailNewParamsPaymentTypeGBFps, RoutingDetailNewParamsPaymentTypeMasav, RoutingDetailNewParamsPaymentTypeMxCcen, RoutingDetailNewParamsPaymentTypeNeft, RoutingDetailNewParamsPaymentTypeNics, RoutingDetailNewParamsPaymentTypeNzBecs, RoutingDetailNewParamsPaymentTypePlElixir, RoutingDetailNewParamsPaymentTypeRtp, RoutingDetailNewParamsPaymentTypeSeBankgirot, RoutingDetailNewParamsPaymentTypeSepa, RoutingDetailNewParamsPaymentTypeSgGiro, RoutingDetailNewParamsPaymentTypeSic, RoutingDetailNewParamsPaymentTypeStablecoin, RoutingDetailNewParamsPaymentTypeWire, RoutingDetailNewParamsPaymentTypeZengin:
 		return true
 	}
 	return false
