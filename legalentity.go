@@ -39,7 +39,7 @@ func NewLegalEntityService(opts ...option.RequestOption) (r *LegalEntityService)
 	return
 }
 
-// create legal_entity
+// Create a legal entity. All country fields use ISO 3166-1 alpha-2 (e.g. US).
 func (r *LegalEntityService) New(ctx context.Context, body LegalEntityNewParams, opts ...option.RequestOption) (res *LegalEntity, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "api/legal_entities"
@@ -278,7 +278,8 @@ type LegalEntityAddress struct {
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality string `json:"locality" api:"required,nullable"`
 	Object   string `json:"object" api:"required"`
 	// The postal code of the address.
@@ -286,7 +287,8 @@ type LegalEntityAddress struct {
 	// Whether this address is the primary address for the legal entity. Optional; when
 	// omitted it is inferred from the address types.
 	Primary bool `json:"primary" api:"required,nullable"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region    string                 `json:"region" api:"required,nullable"`
 	UpdatedAt time.Time              `json:"updated_at" api:"required" format:"date-time"`
 	JSON      legalEntityAddressJSON `json:"-"`
@@ -541,6 +543,9 @@ func (r LegalEntityLegalStructure) IsKnown() bool {
 
 // A list of phone numbers in E.164 format.
 type LegalEntityPhoneNumber struct {
+	// A phone number in E.164 format. This format is strictly validated: include a
+	// leading + and country code, followed by digits only (no spaces or dashes), e.g.
+	// +12025551234.
 	PhoneNumber string                     `json:"phone_number"`
 	JSON        legalEntityPhoneNumberJSON `json:"-"`
 }
@@ -819,6 +824,9 @@ func (r LegalEntityNewParamsLegalStructure) IsKnown() bool {
 
 // A list of phone numbers in E.164 format.
 type LegalEntityNewParamsPhoneNumber struct {
+	// A phone number in E.164 format. This format is strictly validated: include a
+	// leading + and country code, followed by digits only (no spaces or dashes), e.g.
+	// +12025551234.
 	PhoneNumber param.Field[string] `json:"phone_number"`
 }
 
@@ -972,6 +980,9 @@ func (r LegalEntityUpdateParamsLegalStructure) IsKnown() bool {
 
 // A list of phone numbers in E.164 format.
 type LegalEntityUpdateParamsPhoneNumber struct {
+	// A phone number in E.164 format. This format is strictly validated: include a
+	// leading + and country code, followed by digits only (no spaces or dashes), e.g.
+	// +12025551234.
 	PhoneNumber param.Field[string] `json:"phone_number"`
 }
 

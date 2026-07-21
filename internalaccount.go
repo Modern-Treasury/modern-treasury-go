@@ -621,11 +621,13 @@ type InternalAccountNewParamsPartyAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country" api:"required"`
 	Line1   param.Field[string] `json:"line1" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code" api:"required"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }

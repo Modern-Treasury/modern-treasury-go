@@ -1593,11 +1593,13 @@ type PaymentOrderNewParamsUltimateOriginatingPartyAddress struct {
 	Country param.Field[string] `json:"country"`
 	Line1   param.Field[string] `json:"line1"`
 	Line2   param.Field[string] `json:"line2"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality param.Field[string] `json:"locality"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region param.Field[string] `json:"region"`
 }
 
@@ -2672,11 +2674,13 @@ type PaymentOrderNewAsyncParamsUltimateOriginatingPartyAddress struct {
 	Country param.Field[string] `json:"country"`
 	Line1   param.Field[string] `json:"line1"`
 	Line2   param.Field[string] `json:"line2"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality param.Field[string] `json:"locality"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region param.Field[string] `json:"region"`
 }
 

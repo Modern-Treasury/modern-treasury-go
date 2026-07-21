@@ -202,7 +202,8 @@ type ChildLegalEntityAddress struct {
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality string `json:"locality" api:"required,nullable"`
 	Object   string `json:"object" api:"required"`
 	// The postal code of the address.
@@ -210,7 +211,8 @@ type ChildLegalEntityAddress struct {
 	// Whether this address is the primary address for the legal entity. Optional; when
 	// omitted it is inferred from the address types.
 	Primary bool `json:"primary" api:"required,nullable"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region    string                      `json:"region" api:"required,nullable"`
 	UpdatedAt time.Time                   `json:"updated_at" api:"required" format:"date-time"`
 	JSON      childLegalEntityAddressJSON `json:"-"`
@@ -465,6 +467,9 @@ func (r ChildLegalEntityLegalStructure) IsKnown() bool {
 
 // A list of phone numbers in E.164 format.
 type ChildLegalEntityPhoneNumber struct {
+	// A phone number in E.164 format. This format is strictly validated: include a
+	// leading + and country code, followed by digits only (no spaces or dashes), e.g.
+	// +12025551234.
 	PhoneNumber string                          `json:"phone_number"`
 	JSON        childLegalEntityPhoneNumberJSON `json:"-"`
 }
