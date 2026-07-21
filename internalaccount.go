@@ -492,6 +492,8 @@ type InternalAccountNewParams struct {
 	PartyAddress param.Field[InternalAccountNewParamsPartyAddress] `json:"party_address"`
 	// The legal name of the entity which owns the account.
 	PartyName param.Field[string] `json:"party_name"`
+	// An array of account number types requested for provisioning.
+	RequestedAccountNumberTypes param.Field[[]InternalAccountNewParamsRequestedAccountNumberType] `json:"requested_account_number_types"`
 	// A hash of vendor specific attributes that will be used when creating the account
 	// at the vendor specified by the given connection.
 	VendorAttributes param.Field[map[string]string] `json:"vendor_attributes"`
@@ -630,6 +632,23 @@ type InternalAccountNewParamsPartyAddress struct {
 
 func (r InternalAccountNewParamsPartyAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type InternalAccountNewParamsRequestedAccountNumberType string
+
+const (
+	InternalAccountNewParamsRequestedAccountNumberTypeEthereumAddress InternalAccountNewParamsRequestedAccountNumberType = "ethereum_address"
+	InternalAccountNewParamsRequestedAccountNumberTypeSolanaAddress   InternalAccountNewParamsRequestedAccountNumberType = "solana_address"
+	InternalAccountNewParamsRequestedAccountNumberTypePolygonAddress  InternalAccountNewParamsRequestedAccountNumberType = "polygon_address"
+	InternalAccountNewParamsRequestedAccountNumberTypeBaseAddress     InternalAccountNewParamsRequestedAccountNumberType = "base_address"
+)
+
+func (r InternalAccountNewParamsRequestedAccountNumberType) IsKnown() bool {
+	switch r {
+	case InternalAccountNewParamsRequestedAccountNumberTypeEthereumAddress, InternalAccountNewParamsRequestedAccountNumberTypeSolanaAddress, InternalAccountNewParamsRequestedAccountNumberTypePolygonAddress, InternalAccountNewParamsRequestedAccountNumberTypeBaseAddress:
+		return true
+	}
+	return false
 }
 
 type InternalAccountUpdateParams struct {
