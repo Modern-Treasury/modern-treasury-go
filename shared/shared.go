@@ -34,12 +34,14 @@ type Address struct {
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality string `json:"locality" api:"required,nullable"`
 	Object   string `json:"object" api:"required"`
 	// The postal code of the address.
 	PostalCode string `json:"postal_code" api:"required,nullable"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region    string      `json:"region" api:"required,nullable"`
 	UpdatedAt time.Time   `json:"updated_at" api:"required" format:"date-time"`
 	JSON      addressJSON `json:"-"`
@@ -75,11 +77,13 @@ type AddressRequest struct {
 	Country string `json:"country" api:"nullable"`
 	Line1   string `json:"line1" api:"nullable"`
 	Line2   string `json:"line2" api:"nullable"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality string `json:"locality" api:"nullable"`
 	// The postal code of the address.
 	PostalCode string `json:"postal_code" api:"nullable"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region string             `json:"region" api:"nullable"`
 	JSON   addressRequestJSON `json:"-"`
 }
@@ -109,11 +113,13 @@ type AddressRequestParam struct {
 	Country param.Field[string] `json:"country"`
 	Line1   param.Field[string] `json:"line1"`
 	Line2   param.Field[string] `json:"line2"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality param.Field[string] `json:"locality"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region param.Field[string] `json:"region"`
 }
 
@@ -161,8 +167,8 @@ type ChildLegalEntityCreateParam struct {
 	// in a value of null to prevent the connection from being associated with the
 	// legal entity.
 	ConnectionID param.Field[string] `json:"connection_id"`
-	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
-	// alpha-3 formats.
+	// The country where the business is incorporated, as an ISO 3166-1 alpha-2 country
+	// code (e.g. US).
 	CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
@@ -201,8 +207,8 @@ type ChildLegalEntityCreateParam struct {
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// An individual's middle name.
 	MiddleName param.Field[string] `json:"middle_name"`
-	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
-	// codes).
+	// A list of countries where the business operates, as ISO 3166-1 alpha-2 country
+	// codes (e.g. ["US", "CA"]).
 	OperatingJurisdictions param.Field[[]string]                                 `json:"operating_jurisdictions"`
 	PhoneNumbers           param.Field[[]ChildLegalEntityCreatePhoneNumberParam] `json:"phone_numbers"`
 	// Whether the individual is a politically exposed person.
@@ -312,6 +318,9 @@ func (r ChildLegalEntityCreateLegalStructure) IsKnown() bool {
 
 // A list of phone numbers in E.164 format.
 type ChildLegalEntityCreatePhoneNumberParam struct {
+	// A phone number in E.164 format. This format is strictly validated: include a
+	// leading + and country code, followed by digits only (no spaces or dashes), e.g.
+	// +12025551234.
 	PhoneNumber param.Field[string] `json:"phone_number"`
 }
 
@@ -756,6 +765,8 @@ const (
 	IdentificationCreateRequestIDTypeGBVat                IdentificationCreateRequestIDType = "gb_vat"
 	IdentificationCreateRequestIDTypeGenericInternational IdentificationCreateRequestIDType = "generic_international"
 	IdentificationCreateRequestIDTypeGrVat                IdentificationCreateRequestIDType = "gr_vat"
+	IdentificationCreateRequestIDTypeHkBrn                IdentificationCreateRequestIDType = "hk_brn"
+	IdentificationCreateRequestIDTypeHkHkid               IdentificationCreateRequestIDType = "hk_hkid"
 	IdentificationCreateRequestIDTypeHnID                 IdentificationCreateRequestIDType = "hn_id"
 	IdentificationCreateRequestIDTypeHnRtn                IdentificationCreateRequestIDType = "hn_rtn"
 	IdentificationCreateRequestIDTypeHrOib                IdentificationCreateRequestIDType = "hr_oib"
@@ -818,7 +829,7 @@ const (
 
 func (r IdentificationCreateRequestIDType) IsKnown() bool {
 	switch r {
-	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeAtAtin, IdentificationCreateRequestIDTypeAtVat, IdentificationCreateRequestIDTypeAuAbn, IdentificationCreateRequestIDTypeAuTfn, IdentificationCreateRequestIDTypeBeEnt, IdentificationCreateRequestIDTypeBeNrn, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaBn, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeChAhv, IdentificationCreateRequestIDTypeChUid, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeCyTin, IdentificationCreateRequestIDTypeCzIco, IdentificationCreateRequestIDTypeCzRc, IdentificationCreateRequestIDTypeDeStid, IdentificationCreateRequestIDTypeDeStnr, IdentificationCreateRequestIDTypeDeVat, IdentificationCreateRequestIDTypeDkCpr, IdentificationCreateRequestIDTypeDkCvr, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeEeIk, IdentificationCreateRequestIDTypeEeRk, IdentificationCreateRequestIDTypeEsNie, IdentificationCreateRequestIDTypeEsNif, IdentificationCreateRequestIDTypeFiHetu, IdentificationCreateRequestIDTypeFiYtj, IdentificationCreateRequestIDTypeFrNif, IdentificationCreateRequestIDTypeFrSiren, IdentificationCreateRequestIDTypeFrVat, IdentificationCreateRequestIDTypeGBNino, IdentificationCreateRequestIDTypeGBUtr, IdentificationCreateRequestIDTypeGBVat, IdentificationCreateRequestIDTypeGenericInternational, IdentificationCreateRequestIDTypeGrVat, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeHrOib, IdentificationCreateRequestIDTypeHuAdj, IdentificationCreateRequestIDTypeHuAnum, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeIeTrn, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeIsKnt, IdentificationCreateRequestIDTypeItCf, IdentificationCreateRequestIDTypeItPiva, IdentificationCreateRequestIDTypeJpHb, IdentificationCreateRequestIDTypeJpMn, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypeLiPeid, IdentificationCreateRequestIDTypeLtAk, IdentificationCreateRequestIDTypeLtJak, IdentificationCreateRequestIDTypeLuMtc, IdentificationCreateRequestIDTypeLuVat, IdentificationCreateRequestIDTypeLvPk, IdentificationCreateRequestIDTypeLvRn, IdentificationCreateRequestIDTypeMtTin, IdentificationCreateRequestIDTypeMtVat, IdentificationCreateRequestIDTypeMxCurp, IdentificationCreateRequestIDTypeMxIne, IdentificationCreateRequestIDTypeMxRfc, IdentificationCreateRequestIDTypeNationalID, IdentificationCreateRequestIDTypeNlBsn, IdentificationCreateRequestIDTypeNlBtw, IdentificationCreateRequestIDTypeNlRsin, IdentificationCreateRequestIDTypeNoFdn, IdentificationCreateRequestIDTypeNoMva, IdentificationCreateRequestIDTypeNoOrgnr, IdentificationCreateRequestIDTypeNzIrd, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypePlNip, IdentificationCreateRequestIDTypePlPesel, IdentificationCreateRequestIDTypePtNif, IdentificationCreateRequestIDTypeRoCnp, IdentificationCreateRequestIDTypeRoCui, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeSeOrgnr, IdentificationCreateRequestIDTypeSePnmr, IdentificationCreateRequestIDTypeSgFin, IdentificationCreateRequestIDTypeSgNric, IdentificationCreateRequestIDTypeSgUen, IdentificationCreateRequestIDTypeSiDav, IdentificationCreateRequestIDTypeSiTin, IdentificationCreateRequestIDTypeSkIco, IdentificationCreateRequestIDTypeSkRc, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeUyRut, IdentificationCreateRequestIDTypeVnTin:
+	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeAtAtin, IdentificationCreateRequestIDTypeAtVat, IdentificationCreateRequestIDTypeAuAbn, IdentificationCreateRequestIDTypeAuTfn, IdentificationCreateRequestIDTypeBeEnt, IdentificationCreateRequestIDTypeBeNrn, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaBn, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeChAhv, IdentificationCreateRequestIDTypeChUid, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeCyTin, IdentificationCreateRequestIDTypeCzIco, IdentificationCreateRequestIDTypeCzRc, IdentificationCreateRequestIDTypeDeStid, IdentificationCreateRequestIDTypeDeStnr, IdentificationCreateRequestIDTypeDeVat, IdentificationCreateRequestIDTypeDkCpr, IdentificationCreateRequestIDTypeDkCvr, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeEeIk, IdentificationCreateRequestIDTypeEeRk, IdentificationCreateRequestIDTypeEsNie, IdentificationCreateRequestIDTypeEsNif, IdentificationCreateRequestIDTypeFiHetu, IdentificationCreateRequestIDTypeFiYtj, IdentificationCreateRequestIDTypeFrNif, IdentificationCreateRequestIDTypeFrSiren, IdentificationCreateRequestIDTypeFrVat, IdentificationCreateRequestIDTypeGBNino, IdentificationCreateRequestIDTypeGBUtr, IdentificationCreateRequestIDTypeGBVat, IdentificationCreateRequestIDTypeGenericInternational, IdentificationCreateRequestIDTypeGrVat, IdentificationCreateRequestIDTypeHkBrn, IdentificationCreateRequestIDTypeHkHkid, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeHrOib, IdentificationCreateRequestIDTypeHuAdj, IdentificationCreateRequestIDTypeHuAnum, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeIeTrn, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeIsKnt, IdentificationCreateRequestIDTypeItCf, IdentificationCreateRequestIDTypeItPiva, IdentificationCreateRequestIDTypeJpHb, IdentificationCreateRequestIDTypeJpMn, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypeLiPeid, IdentificationCreateRequestIDTypeLtAk, IdentificationCreateRequestIDTypeLtJak, IdentificationCreateRequestIDTypeLuMtc, IdentificationCreateRequestIDTypeLuVat, IdentificationCreateRequestIDTypeLvPk, IdentificationCreateRequestIDTypeLvRn, IdentificationCreateRequestIDTypeMtTin, IdentificationCreateRequestIDTypeMtVat, IdentificationCreateRequestIDTypeMxCurp, IdentificationCreateRequestIDTypeMxIne, IdentificationCreateRequestIDTypeMxRfc, IdentificationCreateRequestIDTypeNationalID, IdentificationCreateRequestIDTypeNlBsn, IdentificationCreateRequestIDTypeNlBtw, IdentificationCreateRequestIDTypeNlRsin, IdentificationCreateRequestIDTypeNoFdn, IdentificationCreateRequestIDTypeNoMva, IdentificationCreateRequestIDTypeNoOrgnr, IdentificationCreateRequestIDTypeNzIrd, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypePlNip, IdentificationCreateRequestIDTypePlPesel, IdentificationCreateRequestIDTypePtNif, IdentificationCreateRequestIDTypeRoCnp, IdentificationCreateRequestIDTypeRoCui, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeSeOrgnr, IdentificationCreateRequestIDTypeSePnmr, IdentificationCreateRequestIDTypeSgFin, IdentificationCreateRequestIDTypeSgNric, IdentificationCreateRequestIDTypeSgUen, IdentificationCreateRequestIDTypeSiDav, IdentificationCreateRequestIDTypeSiTin, IdentificationCreateRequestIDTypeSkIco, IdentificationCreateRequestIDTypeSkRc, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeUyRut, IdentificationCreateRequestIDTypeVnTin:
 		return true
 	}
 	return false
@@ -980,6 +991,7 @@ func (r ledgerBalancesJSON) RawJSON() string {
 	return r.raw
 }
 
+// At least one of "amount" or "amount_string" is required.
 type LedgerEntryCreateRequestParam struct {
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
@@ -1102,11 +1114,13 @@ type LegalEntityAddressCreateRequestParam struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country" api:"required"`
 	Line1   param.Field[string] `json:"line1" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code" api:"required"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region param.Field[string] `json:"region" api:"required"`
 	// The types of this address.
 	AddressTypes param.Field[[]LegalEntityAddressCreateRequestAddressType] `json:"address_types"`
@@ -1346,7 +1360,8 @@ type LegalEntityWealthEmploymentDetail struct {
 	EmployerCountry string `json:"employer_country" api:"required,nullable"`
 	// The name of the employer.
 	EmployerName string `json:"employer_name" api:"required,nullable"`
-	// The state in which the employer is located.
+	// The state in which the employer is located. This field is free-form text; for US
+	// states, we recommend a two-letter abbreviation (e.g. CA).
 	EmployerState string `json:"employer_state" api:"required,nullable"`
 	// The employment status of the individual.
 	EmploymentStatus LegalEntityWealthEmploymentDetailEmploymentStatus `json:"employment_status" api:"required,nullable"`
@@ -1591,7 +1606,8 @@ type LegalEntityWealthEmploymentDetailParam struct {
 	EmployerCountry param.Field[string] `json:"employer_country" api:"required"`
 	// The name of the employer.
 	EmployerName param.Field[string] `json:"employer_name" api:"required"`
-	// The state in which the employer is located.
+	// The state in which the employer is located. This field is free-form text; for US
+	// states, we recommend a two-letter abbreviation (e.g. CA).
 	EmployerState param.Field[string] `json:"employer_state" api:"required"`
 	// The employment status of the individual.
 	EmploymentStatus param.Field[LegalEntityWealthEmploymentDetailEmploymentStatus] `json:"employment_status" api:"required"`
