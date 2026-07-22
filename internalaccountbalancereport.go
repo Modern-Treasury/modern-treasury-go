@@ -298,6 +298,7 @@ func (r BalanceReportNewParamsBalanceReportType) IsKnown() bool {
 	return false
 }
 
+// At least one of "amount" or "amount_string" is required.
 type BalanceReportNewParamsBalance struct {
 	// The specific type of balance reported. One of `opening_ledger`,
 	// `closing_ledger`, `current_ledger`, `opening_available`,
