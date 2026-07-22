@@ -58,7 +58,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 			CitizenshipCountry:     moderntreasury.F("citizenship_country"),
 			ComplianceDetails:      moderntreasury.F[any](map[string]interface{}{}),
 			ConnectionID:           moderntreasury.F("connection_id"),
-			CountryOfIncorporation: moderntreasury.F("country_of_incorporation"),
+			CountryOfIncorporation: moderntreasury.F("US"),
 			DateFormed:             moderntreasury.F(time.Now()),
 			DateOfBirth:            moderntreasury.F(time.Now()),
 			Documents: moderntreasury.F([]moderntreasury.ConnectionLegalEntityNewParamsLegalEntityDocument{{
@@ -125,7 +125,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 					CitizenshipCountry:     moderntreasury.F("citizenship_country"),
 					ComplianceDetails:      moderntreasury.F[any](map[string]interface{}{}),
 					ConnectionID:           moderntreasury.F("connection_id"),
-					CountryOfIncorporation: moderntreasury.F("country_of_incorporation"),
+					CountryOfIncorporation: moderntreasury.F("US"),
 					DateFormed:             moderntreasury.F(time.Now()),
 					DateOfBirth:            moderntreasury.F(time.Now()),
 					Documents: moderntreasury.F([]shared.ChildLegalEntityCreateDocumentParam{{
@@ -172,7 +172,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 						"modern": "treasury",
 					}),
 					MiddleName:             moderntreasury.F("middle_name"),
-					OperatingJurisdictions: moderntreasury.F([]string{"string"}),
+					OperatingJurisdictions: moderntreasury.F([]string{"US", "CA"}),
 					PhoneNumbers: moderntreasury.F([]shared.ChildLegalEntityCreatePhoneNumberParam{{
 						PhoneNumber: moderntreasury.F("phone_number"),
 					}}),
@@ -246,7 +246,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 				"modern": "treasury",
 			}),
 			MiddleName:             moderntreasury.F("middle_name"),
-			OperatingJurisdictions: moderntreasury.F([]string{"string"}),
+			OperatingJurisdictions: moderntreasury.F([]string{"US", "CA"}),
 			PhoneNumbers: moderntreasury.F([]moderntreasury.ConnectionLegalEntityNewParamsLegalEntityPhoneNumber{{
 				PhoneNumber: moderntreasury.F("phone_number"),
 			}}),
