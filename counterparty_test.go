@@ -117,7 +117,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			CitizenshipCountry:     moderntreasury.F("citizenship_country"),
 			ComplianceDetails:      moderntreasury.F[any](map[string]interface{}{}),
 			ConnectionID:           moderntreasury.F("connection_id"),
-			CountryOfIncorporation: moderntreasury.F("country_of_incorporation"),
+			CountryOfIncorporation: moderntreasury.F("US"),
 			DateFormed:             moderntreasury.F(time.Now()),
 			DateOfBirth:            moderntreasury.F(time.Now()),
 			Documents: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityDocument{{
@@ -184,7 +184,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 					CitizenshipCountry:     moderntreasury.F("citizenship_country"),
 					ComplianceDetails:      moderntreasury.F[any](map[string]interface{}{}),
 					ConnectionID:           moderntreasury.F("connection_id"),
-					CountryOfIncorporation: moderntreasury.F("country_of_incorporation"),
+					CountryOfIncorporation: moderntreasury.F("US"),
 					DateFormed:             moderntreasury.F(time.Now()),
 					DateOfBirth:            moderntreasury.F(time.Now()),
 					Documents: moderntreasury.F([]shared.ChildLegalEntityCreateDocumentParam{{
@@ -231,7 +231,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 						"modern": "treasury",
 					}),
 					MiddleName:             moderntreasury.F("middle_name"),
-					OperatingJurisdictions: moderntreasury.F([]string{"string"}),
+					OperatingJurisdictions: moderntreasury.F([]string{"US", "CA"}),
 					PhoneNumbers: moderntreasury.F([]shared.ChildLegalEntityCreatePhoneNumberParam{{
 						PhoneNumber: moderntreasury.F("phone_number"),
 					}}),
@@ -247,6 +247,10 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 					RiskRating:                   moderntreasury.F(shared.ChildLegalEntityCreateRiskRatingLow),
 					ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 					Suffix:                       moderntreasury.F("suffix"),
+					TermsOfUse: moderntreasury.F(shared.ChildLegalEntityCreateTermsOfUseParam{
+						AcceptedAt: moderntreasury.F(time.Now()),
+						IPAddress:  moderntreasury.F("ip_address"),
+					}),
 					ThirdPartyVerification: moderntreasury.F(shared.ThirdPartyVerificationParam{
 						Outcome:              moderntreasury.F(shared.ThirdPartyVerificationOutcomePassed),
 						Vendor:               moderntreasury.F(shared.ThirdPartyVerificationVendorPersona),
@@ -300,7 +304,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				"modern": "treasury",
 			}),
 			MiddleName:             moderntreasury.F("middle_name"),
-			OperatingJurisdictions: moderntreasury.F([]string{"string"}),
+			OperatingJurisdictions: moderntreasury.F([]string{"US", "CA"}),
 			PhoneNumbers: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityPhoneNumber{{
 				PhoneNumber: moderntreasury.F("phone_number"),
 			}}),
@@ -316,6 +320,10 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			RiskRating:                   moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityRiskRatingLow),
 			ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Suffix:                       moderntreasury.F("suffix"),
+			TermsOfUse: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityTermsOfUse{
+				AcceptedAt: moderntreasury.F(time.Now()),
+				IPAddress:  moderntreasury.F("ip_address"),
+			}),
 			ThirdPartyVerification: moderntreasury.F(shared.ThirdPartyVerificationParam{
 				Outcome:              moderntreasury.F(shared.ThirdPartyVerificationOutcomePassed),
 				Vendor:               moderntreasury.F(shared.ThirdPartyVerificationVendorPersona),

@@ -285,24 +285,17 @@ const (
 	InternalAccountAccountCapabilitiesPaymentTypeDkNets      InternalAccountAccountCapabilitiesPaymentType = "dk_nets"
 	InternalAccountAccountCapabilitiesPaymentTypeEft         InternalAccountAccountCapabilitiesPaymentType = "eft"
 	InternalAccountAccountCapabilitiesPaymentTypeGBFps       InternalAccountAccountCapabilitiesPaymentType = "gb_fps"
-	InternalAccountAccountCapabilitiesPaymentTypeHuIcs       InternalAccountAccountCapabilitiesPaymentType = "hu_ics"
-	InternalAccountAccountCapabilitiesPaymentTypeInterac     InternalAccountAccountCapabilitiesPaymentType = "interac"
 	InternalAccountAccountCapabilitiesPaymentTypeMasav       InternalAccountAccountCapabilitiesPaymentType = "masav"
 	InternalAccountAccountCapabilitiesPaymentTypeMxCcen      InternalAccountAccountCapabilitiesPaymentType = "mx_ccen"
 	InternalAccountAccountCapabilitiesPaymentTypeNeft        InternalAccountAccountCapabilitiesPaymentType = "neft"
 	InternalAccountAccountCapabilitiesPaymentTypeNics        InternalAccountAccountCapabilitiesPaymentType = "nics"
 	InternalAccountAccountCapabilitiesPaymentTypeNzBecs      InternalAccountAccountCapabilitiesPaymentType = "nz_becs"
 	InternalAccountAccountCapabilitiesPaymentTypePlElixir    InternalAccountAccountCapabilitiesPaymentType = "pl_elixir"
-	InternalAccountAccountCapabilitiesPaymentTypeProvxchange InternalAccountAccountCapabilitiesPaymentType = "provxchange"
-	InternalAccountAccountCapabilitiesPaymentTypeRoSent      InternalAccountAccountCapabilitiesPaymentType = "ro_sent"
 	InternalAccountAccountCapabilitiesPaymentTypeRtp         InternalAccountAccountCapabilitiesPaymentType = "rtp"
 	InternalAccountAccountCapabilitiesPaymentTypeSeBankgirot InternalAccountAccountCapabilitiesPaymentType = "se_bankgirot"
-	InternalAccountAccountCapabilitiesPaymentTypeSen         InternalAccountAccountCapabilitiesPaymentType = "sen"
 	InternalAccountAccountCapabilitiesPaymentTypeSepa        InternalAccountAccountCapabilitiesPaymentType = "sepa"
 	InternalAccountAccountCapabilitiesPaymentTypeSgGiro      InternalAccountAccountCapabilitiesPaymentType = "sg_giro"
 	InternalAccountAccountCapabilitiesPaymentTypeSic         InternalAccountAccountCapabilitiesPaymentType = "sic"
-	InternalAccountAccountCapabilitiesPaymentTypeSignet      InternalAccountAccountCapabilitiesPaymentType = "signet"
-	InternalAccountAccountCapabilitiesPaymentTypeSknbi       InternalAccountAccountCapabilitiesPaymentType = "sknbi"
 	InternalAccountAccountCapabilitiesPaymentTypeStablecoin  InternalAccountAccountCapabilitiesPaymentType = "stablecoin"
 	InternalAccountAccountCapabilitiesPaymentTypeWire        InternalAccountAccountCapabilitiesPaymentType = "wire"
 	InternalAccountAccountCapabilitiesPaymentTypeZengin      InternalAccountAccountCapabilitiesPaymentType = "zengin"
@@ -310,7 +303,7 @@ const (
 
 func (r InternalAccountAccountCapabilitiesPaymentType) IsKnown() bool {
 	switch r {
-	case InternalAccountAccountCapabilitiesPaymentTypeACH, InternalAccountAccountCapabilitiesPaymentTypeAuBecs, InternalAccountAccountCapabilitiesPaymentTypeBacs, InternalAccountAccountCapabilitiesPaymentTypeBook, InternalAccountAccountCapabilitiesPaymentTypeCard, InternalAccountAccountCapabilitiesPaymentTypeChats, InternalAccountAccountCapabilitiesPaymentTypeCheck, InternalAccountAccountCapabilitiesPaymentTypeCrossBorder, InternalAccountAccountCapabilitiesPaymentTypeDkNets, InternalAccountAccountCapabilitiesPaymentTypeEft, InternalAccountAccountCapabilitiesPaymentTypeGBFps, InternalAccountAccountCapabilitiesPaymentTypeHuIcs, InternalAccountAccountCapabilitiesPaymentTypeInterac, InternalAccountAccountCapabilitiesPaymentTypeMasav, InternalAccountAccountCapabilitiesPaymentTypeMxCcen, InternalAccountAccountCapabilitiesPaymentTypeNeft, InternalAccountAccountCapabilitiesPaymentTypeNics, InternalAccountAccountCapabilitiesPaymentTypeNzBecs, InternalAccountAccountCapabilitiesPaymentTypePlElixir, InternalAccountAccountCapabilitiesPaymentTypeProvxchange, InternalAccountAccountCapabilitiesPaymentTypeRoSent, InternalAccountAccountCapabilitiesPaymentTypeRtp, InternalAccountAccountCapabilitiesPaymentTypeSeBankgirot, InternalAccountAccountCapabilitiesPaymentTypeSen, InternalAccountAccountCapabilitiesPaymentTypeSepa, InternalAccountAccountCapabilitiesPaymentTypeSgGiro, InternalAccountAccountCapabilitiesPaymentTypeSic, InternalAccountAccountCapabilitiesPaymentTypeSignet, InternalAccountAccountCapabilitiesPaymentTypeSknbi, InternalAccountAccountCapabilitiesPaymentTypeStablecoin, InternalAccountAccountCapabilitiesPaymentTypeWire, InternalAccountAccountCapabilitiesPaymentTypeZengin:
+	case InternalAccountAccountCapabilitiesPaymentTypeACH, InternalAccountAccountCapabilitiesPaymentTypeAuBecs, InternalAccountAccountCapabilitiesPaymentTypeBacs, InternalAccountAccountCapabilitiesPaymentTypeBook, InternalAccountAccountCapabilitiesPaymentTypeCard, InternalAccountAccountCapabilitiesPaymentTypeChats, InternalAccountAccountCapabilitiesPaymentTypeCheck, InternalAccountAccountCapabilitiesPaymentTypeCrossBorder, InternalAccountAccountCapabilitiesPaymentTypeDkNets, InternalAccountAccountCapabilitiesPaymentTypeEft, InternalAccountAccountCapabilitiesPaymentTypeGBFps, InternalAccountAccountCapabilitiesPaymentTypeMasav, InternalAccountAccountCapabilitiesPaymentTypeMxCcen, InternalAccountAccountCapabilitiesPaymentTypeNeft, InternalAccountAccountCapabilitiesPaymentTypeNics, InternalAccountAccountCapabilitiesPaymentTypeNzBecs, InternalAccountAccountCapabilitiesPaymentTypePlElixir, InternalAccountAccountCapabilitiesPaymentTypeRtp, InternalAccountAccountCapabilitiesPaymentTypeSeBankgirot, InternalAccountAccountCapabilitiesPaymentTypeSepa, InternalAccountAccountCapabilitiesPaymentTypeSgGiro, InternalAccountAccountCapabilitiesPaymentTypeSic, InternalAccountAccountCapabilitiesPaymentTypeStablecoin, InternalAccountAccountCapabilitiesPaymentTypeWire, InternalAccountAccountCapabilitiesPaymentTypeZengin:
 		return true
 	}
 	return false
@@ -440,24 +433,17 @@ const (
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeDkNets      InternalAccountUpdateAccountCapabilityResponsePaymentType = "dk_nets"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeEft         InternalAccountUpdateAccountCapabilityResponsePaymentType = "eft"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeGBFps       InternalAccountUpdateAccountCapabilityResponsePaymentType = "gb_fps"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeHuIcs       InternalAccountUpdateAccountCapabilityResponsePaymentType = "hu_ics"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeInterac     InternalAccountUpdateAccountCapabilityResponsePaymentType = "interac"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeMasav       InternalAccountUpdateAccountCapabilityResponsePaymentType = "masav"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeMxCcen      InternalAccountUpdateAccountCapabilityResponsePaymentType = "mx_ccen"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeNeft        InternalAccountUpdateAccountCapabilityResponsePaymentType = "neft"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeNics        InternalAccountUpdateAccountCapabilityResponsePaymentType = "nics"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeNzBecs      InternalAccountUpdateAccountCapabilityResponsePaymentType = "nz_becs"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypePlElixir    InternalAccountUpdateAccountCapabilityResponsePaymentType = "pl_elixir"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeProvxchange InternalAccountUpdateAccountCapabilityResponsePaymentType = "provxchange"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeRoSent      InternalAccountUpdateAccountCapabilityResponsePaymentType = "ro_sent"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeRtp         InternalAccountUpdateAccountCapabilityResponsePaymentType = "rtp"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeSeBankgirot InternalAccountUpdateAccountCapabilityResponsePaymentType = "se_bankgirot"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeSen         InternalAccountUpdateAccountCapabilityResponsePaymentType = "sen"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeSepa        InternalAccountUpdateAccountCapabilityResponsePaymentType = "sepa"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeSgGiro      InternalAccountUpdateAccountCapabilityResponsePaymentType = "sg_giro"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeSic         InternalAccountUpdateAccountCapabilityResponsePaymentType = "sic"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeSignet      InternalAccountUpdateAccountCapabilityResponsePaymentType = "signet"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeSknbi       InternalAccountUpdateAccountCapabilityResponsePaymentType = "sknbi"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeStablecoin  InternalAccountUpdateAccountCapabilityResponsePaymentType = "stablecoin"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeWire        InternalAccountUpdateAccountCapabilityResponsePaymentType = "wire"
 	InternalAccountUpdateAccountCapabilityResponsePaymentTypeZengin      InternalAccountUpdateAccountCapabilityResponsePaymentType = "zengin"
@@ -465,27 +451,27 @@ const (
 
 func (r InternalAccountUpdateAccountCapabilityResponsePaymentType) IsKnown() bool {
 	switch r {
-	case InternalAccountUpdateAccountCapabilityResponsePaymentTypeACH, InternalAccountUpdateAccountCapabilityResponsePaymentTypeAuBecs, InternalAccountUpdateAccountCapabilityResponsePaymentTypeBacs, InternalAccountUpdateAccountCapabilityResponsePaymentTypeBook, InternalAccountUpdateAccountCapabilityResponsePaymentTypeCard, InternalAccountUpdateAccountCapabilityResponsePaymentTypeChats, InternalAccountUpdateAccountCapabilityResponsePaymentTypeCheck, InternalAccountUpdateAccountCapabilityResponsePaymentTypeCrossBorder, InternalAccountUpdateAccountCapabilityResponsePaymentTypeDkNets, InternalAccountUpdateAccountCapabilityResponsePaymentTypeEft, InternalAccountUpdateAccountCapabilityResponsePaymentTypeGBFps, InternalAccountUpdateAccountCapabilityResponsePaymentTypeHuIcs, InternalAccountUpdateAccountCapabilityResponsePaymentTypeInterac, InternalAccountUpdateAccountCapabilityResponsePaymentTypeMasav, InternalAccountUpdateAccountCapabilityResponsePaymentTypeMxCcen, InternalAccountUpdateAccountCapabilityResponsePaymentTypeNeft, InternalAccountUpdateAccountCapabilityResponsePaymentTypeNics, InternalAccountUpdateAccountCapabilityResponsePaymentTypeNzBecs, InternalAccountUpdateAccountCapabilityResponsePaymentTypePlElixir, InternalAccountUpdateAccountCapabilityResponsePaymentTypeProvxchange, InternalAccountUpdateAccountCapabilityResponsePaymentTypeRoSent, InternalAccountUpdateAccountCapabilityResponsePaymentTypeRtp, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSeBankgirot, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSen, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSepa, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSgGiro, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSic, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSignet, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSknbi, InternalAccountUpdateAccountCapabilityResponsePaymentTypeStablecoin, InternalAccountUpdateAccountCapabilityResponsePaymentTypeWire, InternalAccountUpdateAccountCapabilityResponsePaymentTypeZengin:
+	case InternalAccountUpdateAccountCapabilityResponsePaymentTypeACH, InternalAccountUpdateAccountCapabilityResponsePaymentTypeAuBecs, InternalAccountUpdateAccountCapabilityResponsePaymentTypeBacs, InternalAccountUpdateAccountCapabilityResponsePaymentTypeBook, InternalAccountUpdateAccountCapabilityResponsePaymentTypeCard, InternalAccountUpdateAccountCapabilityResponsePaymentTypeChats, InternalAccountUpdateAccountCapabilityResponsePaymentTypeCheck, InternalAccountUpdateAccountCapabilityResponsePaymentTypeCrossBorder, InternalAccountUpdateAccountCapabilityResponsePaymentTypeDkNets, InternalAccountUpdateAccountCapabilityResponsePaymentTypeEft, InternalAccountUpdateAccountCapabilityResponsePaymentTypeGBFps, InternalAccountUpdateAccountCapabilityResponsePaymentTypeMasav, InternalAccountUpdateAccountCapabilityResponsePaymentTypeMxCcen, InternalAccountUpdateAccountCapabilityResponsePaymentTypeNeft, InternalAccountUpdateAccountCapabilityResponsePaymentTypeNics, InternalAccountUpdateAccountCapabilityResponsePaymentTypeNzBecs, InternalAccountUpdateAccountCapabilityResponsePaymentTypePlElixir, InternalAccountUpdateAccountCapabilityResponsePaymentTypeRtp, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSeBankgirot, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSepa, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSgGiro, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSic, InternalAccountUpdateAccountCapabilityResponsePaymentTypeStablecoin, InternalAccountUpdateAccountCapabilityResponsePaymentTypeWire, InternalAccountUpdateAccountCapabilityResponsePaymentTypeZengin:
 		return true
 	}
 	return false
 }
 
 type InternalAccountNewParams struct {
-	// The identifier of the financial institution the account belongs to.
-	ConnectionID param.Field[string] `json:"connection_id" api:"required"`
 	// The currency of the internal account. Supports fiat and stablecoin currencies.
 	Currency param.Field[InternalAccountNewParamsCurrency] `json:"currency" api:"required"`
 	// The nickname of the account.
 	Name param.Field[string] `json:"name" api:"required"`
-	// The legal name of the entity which owns the account.
-	PartyName param.Field[string] `json:"party_name" api:"required"`
 	// An array of AccountCapability objects that list the originating abilities of the
 	// internal account and any relevant information for them.
 	AccountCapabilities param.Field[[]InternalAccountNewParamsAccountCapability] `json:"account_capabilities"`
 	// The account type, used to provision the appropriate account at the financial
 	// institution.
 	AccountType param.Field[InternalAccountNewParamsAccountType] `json:"account_type"`
+	// The identifier of the financial institution the account belongs to. If not
+	// provided, defaults to the default connection, or the sole connection if only one
+	// exists.
+	ConnectionID param.Field[string] `json:"connection_id"`
 	// The Counterparty associated to this account.
 	CounterpartyID param.Field[string] `json:"counterparty_id"`
 	// Whether this account can receive ACH debits. Only applicable to accounts created
@@ -504,6 +490,10 @@ type InternalAccountNewParams struct {
 	ParentAccountID param.Field[string] `json:"parent_account_id"`
 	// The address associated with the owner or null.
 	PartyAddress param.Field[InternalAccountNewParamsPartyAddress] `json:"party_address"`
+	// The legal name of the entity which owns the account.
+	PartyName param.Field[string] `json:"party_name"`
+	// An array of account number types requested for provisioning.
+	RequestedAccountNumberTypes param.Field[[]InternalAccountNewParamsRequestedAccountNumberType] `json:"requested_account_number_types"`
 	// A hash of vendor specific attributes that will be used when creating the account
 	// at the vendor specified by the given connection.
 	VendorAttributes param.Field[map[string]string] `json:"vendor_attributes"`
@@ -520,14 +510,14 @@ const (
 	InternalAccountNewParamsCurrencyUsd   InternalAccountNewParamsCurrency = "USD"
 	InternalAccountNewParamsCurrencyCad   InternalAccountNewParamsCurrency = "CAD"
 	InternalAccountNewParamsCurrencyUsdc  InternalAccountNewParamsCurrency = "USDC"
-	InternalAccountNewParamsCurrencyUsdg  InternalAccountNewParamsCurrency = "USDG"
 	InternalAccountNewParamsCurrencyUsdt  InternalAccountNewParamsCurrency = "USDT"
 	InternalAccountNewParamsCurrencyPyusd InternalAccountNewParamsCurrency = "PYUSD"
+	InternalAccountNewParamsCurrencyUsdg  InternalAccountNewParamsCurrency = "USDG"
 )
 
 func (r InternalAccountNewParamsCurrency) IsKnown() bool {
 	switch r {
-	case InternalAccountNewParamsCurrencyUsd, InternalAccountNewParamsCurrencyCad, InternalAccountNewParamsCurrencyUsdc, InternalAccountNewParamsCurrencyUsdg, InternalAccountNewParamsCurrencyUsdt, InternalAccountNewParamsCurrencyPyusd:
+	case InternalAccountNewParamsCurrencyUsd, InternalAccountNewParamsCurrencyCad, InternalAccountNewParamsCurrencyUsdc, InternalAccountNewParamsCurrencyUsdt, InternalAccountNewParamsCurrencyPyusd, InternalAccountNewParamsCurrencyUsdg:
 		return true
 	}
 	return false
@@ -574,24 +564,17 @@ const (
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeDkNets      InternalAccountNewParamsAccountCapabilitiesPaymentType = "dk_nets"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeEft         InternalAccountNewParamsAccountCapabilitiesPaymentType = "eft"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeGBFps       InternalAccountNewParamsAccountCapabilitiesPaymentType = "gb_fps"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeHuIcs       InternalAccountNewParamsAccountCapabilitiesPaymentType = "hu_ics"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeInterac     InternalAccountNewParamsAccountCapabilitiesPaymentType = "interac"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeMasav       InternalAccountNewParamsAccountCapabilitiesPaymentType = "masav"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeMxCcen      InternalAccountNewParamsAccountCapabilitiesPaymentType = "mx_ccen"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeNeft        InternalAccountNewParamsAccountCapabilitiesPaymentType = "neft"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeNics        InternalAccountNewParamsAccountCapabilitiesPaymentType = "nics"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeNzBecs      InternalAccountNewParamsAccountCapabilitiesPaymentType = "nz_becs"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypePlElixir    InternalAccountNewParamsAccountCapabilitiesPaymentType = "pl_elixir"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeProvxchange InternalAccountNewParamsAccountCapabilitiesPaymentType = "provxchange"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeRoSent      InternalAccountNewParamsAccountCapabilitiesPaymentType = "ro_sent"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeRtp         InternalAccountNewParamsAccountCapabilitiesPaymentType = "rtp"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeSeBankgirot InternalAccountNewParamsAccountCapabilitiesPaymentType = "se_bankgirot"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeSen         InternalAccountNewParamsAccountCapabilitiesPaymentType = "sen"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeSepa        InternalAccountNewParamsAccountCapabilitiesPaymentType = "sepa"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeSgGiro      InternalAccountNewParamsAccountCapabilitiesPaymentType = "sg_giro"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeSic         InternalAccountNewParamsAccountCapabilitiesPaymentType = "sic"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeSignet      InternalAccountNewParamsAccountCapabilitiesPaymentType = "signet"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeSknbi       InternalAccountNewParamsAccountCapabilitiesPaymentType = "sknbi"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeStablecoin  InternalAccountNewParamsAccountCapabilitiesPaymentType = "stablecoin"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeWire        InternalAccountNewParamsAccountCapabilitiesPaymentType = "wire"
 	InternalAccountNewParamsAccountCapabilitiesPaymentTypeZengin      InternalAccountNewParamsAccountCapabilitiesPaymentType = "zengin"
@@ -599,7 +582,7 @@ const (
 
 func (r InternalAccountNewParamsAccountCapabilitiesPaymentType) IsKnown() bool {
 	switch r {
-	case InternalAccountNewParamsAccountCapabilitiesPaymentTypeACH, InternalAccountNewParamsAccountCapabilitiesPaymentTypeAuBecs, InternalAccountNewParamsAccountCapabilitiesPaymentTypeBacs, InternalAccountNewParamsAccountCapabilitiesPaymentTypeBook, InternalAccountNewParamsAccountCapabilitiesPaymentTypeCard, InternalAccountNewParamsAccountCapabilitiesPaymentTypeChats, InternalAccountNewParamsAccountCapabilitiesPaymentTypeCheck, InternalAccountNewParamsAccountCapabilitiesPaymentTypeCrossBorder, InternalAccountNewParamsAccountCapabilitiesPaymentTypeDkNets, InternalAccountNewParamsAccountCapabilitiesPaymentTypeEft, InternalAccountNewParamsAccountCapabilitiesPaymentTypeGBFps, InternalAccountNewParamsAccountCapabilitiesPaymentTypeHuIcs, InternalAccountNewParamsAccountCapabilitiesPaymentTypeInterac, InternalAccountNewParamsAccountCapabilitiesPaymentTypeMasav, InternalAccountNewParamsAccountCapabilitiesPaymentTypeMxCcen, InternalAccountNewParamsAccountCapabilitiesPaymentTypeNeft, InternalAccountNewParamsAccountCapabilitiesPaymentTypeNics, InternalAccountNewParamsAccountCapabilitiesPaymentTypeNzBecs, InternalAccountNewParamsAccountCapabilitiesPaymentTypePlElixir, InternalAccountNewParamsAccountCapabilitiesPaymentTypeProvxchange, InternalAccountNewParamsAccountCapabilitiesPaymentTypeRoSent, InternalAccountNewParamsAccountCapabilitiesPaymentTypeRtp, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSeBankgirot, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSen, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSepa, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSgGiro, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSic, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSignet, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSknbi, InternalAccountNewParamsAccountCapabilitiesPaymentTypeStablecoin, InternalAccountNewParamsAccountCapabilitiesPaymentTypeWire, InternalAccountNewParamsAccountCapabilitiesPaymentTypeZengin:
+	case InternalAccountNewParamsAccountCapabilitiesPaymentTypeACH, InternalAccountNewParamsAccountCapabilitiesPaymentTypeAuBecs, InternalAccountNewParamsAccountCapabilitiesPaymentTypeBacs, InternalAccountNewParamsAccountCapabilitiesPaymentTypeBook, InternalAccountNewParamsAccountCapabilitiesPaymentTypeCard, InternalAccountNewParamsAccountCapabilitiesPaymentTypeChats, InternalAccountNewParamsAccountCapabilitiesPaymentTypeCheck, InternalAccountNewParamsAccountCapabilitiesPaymentTypeCrossBorder, InternalAccountNewParamsAccountCapabilitiesPaymentTypeDkNets, InternalAccountNewParamsAccountCapabilitiesPaymentTypeEft, InternalAccountNewParamsAccountCapabilitiesPaymentTypeGBFps, InternalAccountNewParamsAccountCapabilitiesPaymentTypeMasav, InternalAccountNewParamsAccountCapabilitiesPaymentTypeMxCcen, InternalAccountNewParamsAccountCapabilitiesPaymentTypeNeft, InternalAccountNewParamsAccountCapabilitiesPaymentTypeNics, InternalAccountNewParamsAccountCapabilitiesPaymentTypeNzBecs, InternalAccountNewParamsAccountCapabilitiesPaymentTypePlElixir, InternalAccountNewParamsAccountCapabilitiesPaymentTypeRtp, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSeBankgirot, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSepa, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSgGiro, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSic, InternalAccountNewParamsAccountCapabilitiesPaymentTypeStablecoin, InternalAccountNewParamsAccountCapabilitiesPaymentTypeWire, InternalAccountNewParamsAccountCapabilitiesPaymentTypeZengin:
 		return true
 	}
 	return false
@@ -638,17 +621,36 @@ type InternalAccountNewParamsPartyAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country" api:"required"`
 	Line1   param.Field[string] `json:"line1" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code" api:"required"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
 
 func (r InternalAccountNewParamsPartyAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type InternalAccountNewParamsRequestedAccountNumberType string
+
+const (
+	InternalAccountNewParamsRequestedAccountNumberTypeEthereumAddress InternalAccountNewParamsRequestedAccountNumberType = "ethereum_address"
+	InternalAccountNewParamsRequestedAccountNumberTypeSolanaAddress   InternalAccountNewParamsRequestedAccountNumberType = "solana_address"
+	InternalAccountNewParamsRequestedAccountNumberTypePolygonAddress  InternalAccountNewParamsRequestedAccountNumberType = "polygon_address"
+	InternalAccountNewParamsRequestedAccountNumberTypeBaseAddress     InternalAccountNewParamsRequestedAccountNumberType = "base_address"
+)
+
+func (r InternalAccountNewParamsRequestedAccountNumberType) IsKnown() bool {
+	switch r {
+	case InternalAccountNewParamsRequestedAccountNumberTypeEthereumAddress, InternalAccountNewParamsRequestedAccountNumberTypeSolanaAddress, InternalAccountNewParamsRequestedAccountNumberTypePolygonAddress, InternalAccountNewParamsRequestedAccountNumberTypeBaseAddress:
+		return true
+	}
+	return false
 }
 
 type InternalAccountUpdateParams struct {
@@ -720,24 +722,17 @@ const (
 	InternalAccountListParamsPaymentTypeDkNets      InternalAccountListParamsPaymentType = "dk_nets"
 	InternalAccountListParamsPaymentTypeEft         InternalAccountListParamsPaymentType = "eft"
 	InternalAccountListParamsPaymentTypeGBFps       InternalAccountListParamsPaymentType = "gb_fps"
-	InternalAccountListParamsPaymentTypeHuIcs       InternalAccountListParamsPaymentType = "hu_ics"
-	InternalAccountListParamsPaymentTypeInterac     InternalAccountListParamsPaymentType = "interac"
 	InternalAccountListParamsPaymentTypeMasav       InternalAccountListParamsPaymentType = "masav"
 	InternalAccountListParamsPaymentTypeMxCcen      InternalAccountListParamsPaymentType = "mx_ccen"
 	InternalAccountListParamsPaymentTypeNeft        InternalAccountListParamsPaymentType = "neft"
 	InternalAccountListParamsPaymentTypeNics        InternalAccountListParamsPaymentType = "nics"
 	InternalAccountListParamsPaymentTypeNzBecs      InternalAccountListParamsPaymentType = "nz_becs"
 	InternalAccountListParamsPaymentTypePlElixir    InternalAccountListParamsPaymentType = "pl_elixir"
-	InternalAccountListParamsPaymentTypeProvxchange InternalAccountListParamsPaymentType = "provxchange"
-	InternalAccountListParamsPaymentTypeRoSent      InternalAccountListParamsPaymentType = "ro_sent"
 	InternalAccountListParamsPaymentTypeRtp         InternalAccountListParamsPaymentType = "rtp"
 	InternalAccountListParamsPaymentTypeSeBankgirot InternalAccountListParamsPaymentType = "se_bankgirot"
-	InternalAccountListParamsPaymentTypeSen         InternalAccountListParamsPaymentType = "sen"
 	InternalAccountListParamsPaymentTypeSepa        InternalAccountListParamsPaymentType = "sepa"
 	InternalAccountListParamsPaymentTypeSgGiro      InternalAccountListParamsPaymentType = "sg_giro"
 	InternalAccountListParamsPaymentTypeSic         InternalAccountListParamsPaymentType = "sic"
-	InternalAccountListParamsPaymentTypeSignet      InternalAccountListParamsPaymentType = "signet"
-	InternalAccountListParamsPaymentTypeSknbi       InternalAccountListParamsPaymentType = "sknbi"
 	InternalAccountListParamsPaymentTypeStablecoin  InternalAccountListParamsPaymentType = "stablecoin"
 	InternalAccountListParamsPaymentTypeWire        InternalAccountListParamsPaymentType = "wire"
 	InternalAccountListParamsPaymentTypeZengin      InternalAccountListParamsPaymentType = "zengin"
@@ -745,7 +740,7 @@ const (
 
 func (r InternalAccountListParamsPaymentType) IsKnown() bool {
 	switch r {
-	case InternalAccountListParamsPaymentTypeACH, InternalAccountListParamsPaymentTypeAuBecs, InternalAccountListParamsPaymentTypeBacs, InternalAccountListParamsPaymentTypeBook, InternalAccountListParamsPaymentTypeCard, InternalAccountListParamsPaymentTypeChats, InternalAccountListParamsPaymentTypeCheck, InternalAccountListParamsPaymentTypeCrossBorder, InternalAccountListParamsPaymentTypeDkNets, InternalAccountListParamsPaymentTypeEft, InternalAccountListParamsPaymentTypeGBFps, InternalAccountListParamsPaymentTypeHuIcs, InternalAccountListParamsPaymentTypeInterac, InternalAccountListParamsPaymentTypeMasav, InternalAccountListParamsPaymentTypeMxCcen, InternalAccountListParamsPaymentTypeNeft, InternalAccountListParamsPaymentTypeNics, InternalAccountListParamsPaymentTypeNzBecs, InternalAccountListParamsPaymentTypePlElixir, InternalAccountListParamsPaymentTypeProvxchange, InternalAccountListParamsPaymentTypeRoSent, InternalAccountListParamsPaymentTypeRtp, InternalAccountListParamsPaymentTypeSeBankgirot, InternalAccountListParamsPaymentTypeSen, InternalAccountListParamsPaymentTypeSepa, InternalAccountListParamsPaymentTypeSgGiro, InternalAccountListParamsPaymentTypeSic, InternalAccountListParamsPaymentTypeSignet, InternalAccountListParamsPaymentTypeSknbi, InternalAccountListParamsPaymentTypeStablecoin, InternalAccountListParamsPaymentTypeWire, InternalAccountListParamsPaymentTypeZengin:
+	case InternalAccountListParamsPaymentTypeACH, InternalAccountListParamsPaymentTypeAuBecs, InternalAccountListParamsPaymentTypeBacs, InternalAccountListParamsPaymentTypeBook, InternalAccountListParamsPaymentTypeCard, InternalAccountListParamsPaymentTypeChats, InternalAccountListParamsPaymentTypeCheck, InternalAccountListParamsPaymentTypeCrossBorder, InternalAccountListParamsPaymentTypeDkNets, InternalAccountListParamsPaymentTypeEft, InternalAccountListParamsPaymentTypeGBFps, InternalAccountListParamsPaymentTypeMasav, InternalAccountListParamsPaymentTypeMxCcen, InternalAccountListParamsPaymentTypeNeft, InternalAccountListParamsPaymentTypeNics, InternalAccountListParamsPaymentTypeNzBecs, InternalAccountListParamsPaymentTypePlElixir, InternalAccountListParamsPaymentTypeRtp, InternalAccountListParamsPaymentTypeSeBankgirot, InternalAccountListParamsPaymentTypeSepa, InternalAccountListParamsPaymentTypeSgGiro, InternalAccountListParamsPaymentTypeSic, InternalAccountListParamsPaymentTypeStablecoin, InternalAccountListParamsPaymentTypeWire, InternalAccountListParamsPaymentTypeZengin:
 		return true
 	}
 	return false
