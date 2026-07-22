@@ -492,8 +492,6 @@ type InternalAccountNewParams struct {
 	PartyAddress param.Field[InternalAccountNewParamsPartyAddress] `json:"party_address"`
 	// The legal name of the entity which owns the account.
 	PartyName param.Field[string] `json:"party_name"`
-	// An array of account number types requested for provisioning.
-	RequestedAccountNumberTypes param.Field[[]InternalAccountNewParamsRequestedAccountNumberType] `json:"requested_account_number_types"`
 	// A hash of vendor specific attributes that will be used when creating the account
 	// at the vendor specified by the given connection.
 	VendorAttributes param.Field[map[string]string] `json:"vendor_attributes"`
@@ -621,36 +619,17 @@ type InternalAccountNewParamsPartyAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country" api:"required"`
 	Line1   param.Field[string] `json:"line1" api:"required"`
-	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
-	// Francisco).
+	// Locality or City.
 	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code" api:"required"`
-	// Region or State. This field is free-form; for US states, we recommend a
-	// two-letter code (e.g. CA). Full state names are also accepted.
+	// Region or State.
 	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
 
 func (r InternalAccountNewParamsPartyAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-type InternalAccountNewParamsRequestedAccountNumberType string
-
-const (
-	InternalAccountNewParamsRequestedAccountNumberTypeEthereumAddress InternalAccountNewParamsRequestedAccountNumberType = "ethereum_address"
-	InternalAccountNewParamsRequestedAccountNumberTypeSolanaAddress   InternalAccountNewParamsRequestedAccountNumberType = "solana_address"
-	InternalAccountNewParamsRequestedAccountNumberTypePolygonAddress  InternalAccountNewParamsRequestedAccountNumberType = "polygon_address"
-	InternalAccountNewParamsRequestedAccountNumberTypeBaseAddress     InternalAccountNewParamsRequestedAccountNumberType = "base_address"
-)
-
-func (r InternalAccountNewParamsRequestedAccountNumberType) IsKnown() bool {
-	switch r {
-	case InternalAccountNewParamsRequestedAccountNumberTypeEthereumAddress, InternalAccountNewParamsRequestedAccountNumberTypeSolanaAddress, InternalAccountNewParamsRequestedAccountNumberTypePolygonAddress, InternalAccountNewParamsRequestedAccountNumberTypeBaseAddress:
-		return true
-	}
-	return false
 }
 
 type InternalAccountUpdateParams struct {
