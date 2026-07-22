@@ -980,6 +980,7 @@ func (r ledgerBalancesJSON) RawJSON() string {
 	return r.raw
 }
 
+// At least one of "amount" or "amount_string" is required.
 type LedgerEntryCreateRequestParam struct {
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A

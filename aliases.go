@@ -1111,6 +1111,8 @@ type LedgerBalance = shared.LedgerBalance
 // This is an alias to an internal type.
 type LedgerBalances = shared.LedgerBalances
 
+// At least one of "amount" or "amount_string" is required.
+//
 // This is an alias to an internal type.
 type LedgerEntryCreateRequestParam = shared.LedgerEntryCreateRequestParam
 
