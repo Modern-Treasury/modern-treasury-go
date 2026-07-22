@@ -3,21 +3,21 @@
 package moderntreasury
 
 import (
-	"context"
-	"errors"
-	"fmt"
-	"net/http"
-	"net/url"
-	"slices"
-	"time"
+  "context"
+  "errors"
+  "fmt"
+  "net/http"
+  "net/url"
+  "slices"
+  "time"
 
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/option"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
 
 // InternalAccountService contains methods and other services that help with
@@ -27,246 +27,246 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewInternalAccountService] method instead.
 type InternalAccountService struct {
-	Options        []option.RequestOption
-	BalanceReports *InternalAccountBalanceReportService
+Options []option.RequestOption
+BalanceReports *InternalAccountBalanceReportService
 }
 
 // NewInternalAccountService generates a new service that applies the given options
 // to each request. These options are applied after the parent client's options (if
 // there is one), and before any request-specific options.
 func NewInternalAccountService(opts ...option.RequestOption) (r *InternalAccountService) {
-	r = &InternalAccountService{}
-	r.Options = opts
-	r.BalanceReports = NewInternalAccountBalanceReportService(opts...)
-	return
+  r = &InternalAccountService{}
+  r.Options = opts
+  r.BalanceReports = NewInternalAccountBalanceReportService(opts...)
+  return
 }
 
 // create internal account
 func (r *InternalAccountService) New(ctx context.Context, body InternalAccountNewParams, opts ...option.RequestOption) (res *InternalAccount, err error) {
-	opts = slices.Concat(r.Options, opts)
-	path := "api/internal_accounts"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  path := "api/internal_accounts"
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+  return res, err
 }
 
 // get internal account
 func (r *InternalAccountService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *InternalAccount, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/internal_accounts/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return nil, err
+  }
+  path := fmt.Sprintf("api/internal_accounts/%s", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+  return res, err
 }
 
 // update internal account
 func (r *InternalAccountService) Update(ctx context.Context, id string, body InternalAccountUpdateParams, opts ...option.RequestOption) (res *InternalAccount, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/internal_accounts/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return nil, err
+  }
+  path := fmt.Sprintf("api/internal_accounts/%s", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+  return res, err
 }
 
 // list internal accounts
 func (r *InternalAccountService) List(ctx context.Context, query InternalAccountListParams, opts ...option.RequestOption) (res *pagination.Page[InternalAccount], err error) {
-	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := "api/internal_accounts"
-	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
-	if err != nil {
-		return nil, err
-	}
-	err = cfg.Execute()
-	if err != nil {
-		return nil, err
-	}
-	res.SetPageConfig(cfg, raw)
-	return res, nil
+  var raw *http.Response
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
+  path := "api/internal_accounts"
+  cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+  if err != nil {
+    return nil, err
+  }
+  err = cfg.Execute()
+  if err != nil {
+    return nil, err
+  }
+  res.SetPageConfig(cfg, raw)
+  return res, nil
 }
 
 // list internal accounts
-func (r *InternalAccountService) ListAutoPaging(ctx context.Context, query InternalAccountListParams, opts ...option.RequestOption) *pagination.PageAutoPager[InternalAccount] {
-	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *InternalAccountService) ListAutoPaging(ctx context.Context, query InternalAccountListParams, opts ...option.RequestOption) (*pagination.PageAutoPager[InternalAccount]) {
+  return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // request closure of internal account
 func (r *InternalAccountService) RequestClosure(ctx context.Context, id string, opts ...option.RequestOption) (res *InternalAccount, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/internal_accounts/%s/request_closure", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return nil, err
+  }
+  path := fmt.Sprintf("api/internal_accounts/%s/request_closure", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
+  return res, err
 }
 
 // update account_capability
 func (r *InternalAccountService) UpdateAccountCapability(ctx context.Context, internalAccountID string, id string, body InternalAccountUpdateAccountCapabilityParams, opts ...option.RequestOption) (res *InternalAccountUpdateAccountCapabilityResponse, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if internalAccountID == "" {
-		err = errors.New("missing required internal_account_id parameter")
-		return nil, err
-	}
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/internal_accounts/%s/account_capabilities/%s", internalAccountID, id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  if internalAccountID == "" {
+    err = errors.New("missing required internal_account_id parameter")
+    return nil, err
+  }
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return nil, err
+  }
+  path := fmt.Sprintf("api/internal_accounts/%s/account_capabilities/%s", internalAccountID, id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+  return res, err
 }
 
 type InternalAccount struct {
-	ID string `json:"id" api:"required" format:"uuid"`
-	// An array of AccountCapability objects that list the originating abilities of the
-	// internal account and any relevant information for them.
-	AccountCapabilities []InternalAccountAccountCapability `json:"account_capabilities" api:"required"`
-	// An array of account detail objects.
-	AccountDetails []AccountDetail `json:"account_details" api:"required"`
-	// Can be checking, savings or other.
-	AccountType InternalAccountAccountType `json:"account_type" api:"required,nullable"`
-	// Specifies which financial institution the accounts belong to.
-	Connection Connection `json:"connection" api:"required"`
-	// If the internal account links to a contra ledger account in Modern Treasury, the
-	// id of the contra ledger account will be populated here.
-	ContraLedgerAccountID string `json:"contra_ledger_account_id" api:"required,nullable" format:"uuid"`
-	// The Counterparty associated to this account.
-	CounterpartyID string    `json:"counterparty_id" api:"required,nullable" format:"uuid"`
-	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
-	// The currency of the account.
-	Currency shared.Currency `json:"currency" api:"required"`
-	// Whether this account can receive ACH debits. Only applicable to accounts created
-	// under a Modern Treasury PSP connection, or `null` for Bring Your Own Bank
-	// accounts. Defaults to `false`. Configurable only on creation. Please reach out
-	// to your customer success manager to enable this capability for your connection.
-	Debitable bool `json:"debitable" api:"required,nullable"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID string `json:"external_id" api:"required,nullable"`
-	// If the internal account links to a ledger account in Modern Treasury, the id of
-	// the ledger account will be populated here.
-	LedgerAccountID string `json:"ledger_account_id" api:"required,nullable" format:"uuid"`
-	// The Legal Entity associated to this account.
-	LegalEntityID string `json:"legal_entity_id" api:"required,nullable" format:"uuid"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode" api:"required"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata map[string]string `json:"metadata" api:"required"`
-	// A nickname for the account.
-	Name   string `json:"name" api:"required,nullable"`
-	Object string `json:"object" api:"required"`
-	// The parent InternalAccount of this account.
-	ParentAccountID string `json:"parent_account_id" api:"required,nullable" format:"uuid"`
-	// The address associated with the owner or null.
-	PartyAddress shared.Address `json:"party_address" api:"required,nullable"`
-	// The legal name of the entity which owns the account.
-	PartyName string `json:"party_name" api:"required"`
-	// Either individual or business.
-	PartyType InternalAccountPartyType `json:"party_type" api:"required,nullable"`
-	// An array of routing detail objects.
-	RoutingDetails []RoutingDetail `json:"routing_details" api:"required"`
-	// The internal account status.
-	Status    InternalAccountStatus `json:"status" api:"required,nullable"`
-	UpdatedAt time.Time             `json:"updated_at" api:"required" format:"date-time"`
-	// The vendor ID associated with this account.
-	VendorID string              `json:"vendor_id" api:"required,nullable" format:"string"`
-	JSON     internalAccountJSON `json:"-"`
+ID string `json:"id" api:"required" format:"uuid"`
+// An array of AccountCapability objects that list the originating abilities of the
+// internal account and any relevant information for them.
+AccountCapabilities []InternalAccountAccountCapability `json:"account_capabilities" api:"required"`
+// An array of account detail objects.
+AccountDetails []AccountDetail `json:"account_details" api:"required"`
+// Can be checking, savings or other.
+AccountType InternalAccountAccountType `json:"account_type" api:"required,nullable"`
+// Specifies which financial institution the accounts belong to.
+Connection Connection `json:"connection" api:"required"`
+// If the internal account links to a contra ledger account in Modern Treasury, the
+// id of the contra ledger account will be populated here.
+ContraLedgerAccountID string `json:"contra_ledger_account_id" api:"required,nullable" format:"uuid"`
+// The Counterparty associated to this account.
+CounterpartyID string `json:"counterparty_id" api:"required,nullable" format:"uuid"`
+CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
+// The currency of the account.
+Currency shared.Currency `json:"currency" api:"required"`
+// Whether this account can receive ACH debits. Only applicable to accounts created
+// under a Modern Treasury PSP connection, or `null` for Bring Your Own Bank
+// accounts. Defaults to `false`. Configurable only on creation. Please reach out
+// to your customer success manager to enable this capability for your connection.
+Debitable bool `json:"debitable" api:"required,nullable"`
+// An optional user-defined 180 character unique identifier.
+ExternalID string `json:"external_id" api:"required,nullable"`
+// If the internal account links to a ledger account in Modern Treasury, the id of
+// the ledger account will be populated here.
+LedgerAccountID string `json:"ledger_account_id" api:"required,nullable" format:"uuid"`
+// The Legal Entity associated to this account.
+LegalEntityID string `json:"legal_entity_id" api:"required,nullable" format:"uuid"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode bool `json:"live_mode" api:"required"`
+// Additional data represented as key-value pairs. Both the key and value must be
+// strings.
+Metadata map[string]string `json:"metadata" api:"required"`
+// A nickname for the account.
+Name string `json:"name" api:"required,nullable"`
+Object string `json:"object" api:"required"`
+// The parent InternalAccount of this account.
+ParentAccountID string `json:"parent_account_id" api:"required,nullable" format:"uuid"`
+// The address associated with the owner or null.
+PartyAddress shared.Address `json:"party_address" api:"required,nullable"`
+// The legal name of the entity which owns the account.
+PartyName string `json:"party_name" api:"required"`
+// Either individual or business.
+PartyType InternalAccountPartyType `json:"party_type" api:"required,nullable"`
+// An array of routing detail objects.
+RoutingDetails []RoutingDetail `json:"routing_details" api:"required"`
+// The internal account status.
+Status InternalAccountStatus `json:"status" api:"required,nullable"`
+UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
+// The vendor ID associated with this account.
+VendorID string `json:"vendor_id" api:"required,nullable" format:"string"`
+JSON internalAccountJSON `json:"-"`
 }
 
 // internalAccountJSON contains the JSON metadata for the struct [InternalAccount]
 type internalAccountJSON struct {
-	ID                    apijson.Field
-	AccountCapabilities   apijson.Field
-	AccountDetails        apijson.Field
-	AccountType           apijson.Field
-	Connection            apijson.Field
-	ContraLedgerAccountID apijson.Field
-	CounterpartyID        apijson.Field
-	CreatedAt             apijson.Field
-	Currency              apijson.Field
-	Debitable             apijson.Field
-	ExternalID            apijson.Field
-	LedgerAccountID       apijson.Field
-	LegalEntityID         apijson.Field
-	LiveMode              apijson.Field
-	Metadata              apijson.Field
-	Name                  apijson.Field
-	Object                apijson.Field
-	ParentAccountID       apijson.Field
-	PartyAddress          apijson.Field
-	PartyName             apijson.Field
-	PartyType             apijson.Field
-	RoutingDetails        apijson.Field
-	Status                apijson.Field
-	UpdatedAt             apijson.Field
-	VendorID              apijson.Field
-	raw                   string
-	ExtraFields           map[string]apijson.Field
+ID apijson.Field
+AccountCapabilities apijson.Field
+AccountDetails apijson.Field
+AccountType apijson.Field
+Connection apijson.Field
+ContraLedgerAccountID apijson.Field
+CounterpartyID apijson.Field
+CreatedAt apijson.Field
+Currency apijson.Field
+Debitable apijson.Field
+ExternalID apijson.Field
+LedgerAccountID apijson.Field
+LegalEntityID apijson.Field
+LiveMode apijson.Field
+Metadata apijson.Field
+Name apijson.Field
+Object apijson.Field
+ParentAccountID apijson.Field
+PartyAddress apijson.Field
+PartyName apijson.Field
+PartyType apijson.Field
+RoutingDetails apijson.Field
+Status apijson.Field
+UpdatedAt apijson.Field
+VendorID apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *InternalAccount) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r internalAccountJSON) RawJSON() string {
-	return r.raw
+func (r internalAccountJSON) RawJSON() (string) {
+  return r.raw
 }
 
 func (r InternalAccount) implementsPaymentOrderUltimateOriginatingAccount() {}
 
 type InternalAccountAccountCapability struct {
-	ID        string    `json:"id" api:"required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
-	// One of `debit` or `credit`. Indicates the direction of money movement this
-	// capability is responsible for.
-	Direction   shared.TransactionDirection `json:"direction" api:"required"`
-	DiscardedAt time.Time                   `json:"discarded_at" api:"required,nullable" format:"date-time"`
-	// A unique reference assigned by your bank for tracking and recognizing payment
-	// files. It is important this is formatted exactly how the bank assigned it.
-	Identifier string `json:"identifier" api:"required,nullable"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode" api:"required"`
-	Object   string `json:"object" api:"required"`
-	// Indicates the the type of payment this capability is responsible for
-	// originating.
-	PaymentType InternalAccountAccountCapabilitiesPaymentType `json:"payment_type" api:"required"`
-	UpdatedAt   time.Time                                     `json:"updated_at" api:"required" format:"date-time"`
-	ExtraFields map[string]interface{}                        `json:"-" api:"extrafields"`
-	JSON        internalAccountAccountCapabilityJSON          `json:"-"`
+ID string `json:"id" api:"required" format:"uuid"`
+CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
+// One of `debit` or `credit`. Indicates the direction of money movement this
+// capability is responsible for.
+Direction shared.TransactionDirection `json:"direction" api:"required"`
+DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+// A unique reference assigned by your bank for tracking and recognizing payment
+// files. It is important this is formatted exactly how the bank assigned it.
+Identifier string `json:"identifier" api:"required,nullable"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode bool `json:"live_mode" api:"required"`
+Object string `json:"object" api:"required"`
+// Indicates the the type of payment this capability is responsible for
+// originating.
+PaymentType InternalAccountAccountCapabilitiesPaymentType `json:"payment_type" api:"required"`
+UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
+ExtraFields map[string]interface{} `json:"-" api:"extrafields"`
+JSON internalAccountAccountCapabilityJSON `json:"-"`
 }
 
 // internalAccountAccountCapabilityJSON contains the JSON metadata for the struct
 // [InternalAccountAccountCapability]
 type internalAccountAccountCapabilityJSON struct {
-	ID          apijson.Field
-	CreatedAt   apijson.Field
-	Direction   apijson.Field
-	DiscardedAt apijson.Field
-	Identifier  apijson.Field
-	LiveMode    apijson.Field
-	Object      apijson.Field
-	PaymentType apijson.Field
-	UpdatedAt   apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+ID apijson.Field
+CreatedAt apijson.Field
+Direction apijson.Field
+DiscardedAt apijson.Field
+Identifier apijson.Field
+LiveMode apijson.Field
+Object apijson.Field
+PaymentType apijson.Field
+UpdatedAt apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *InternalAccountAccountCapability) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r internalAccountAccountCapabilityJSON) RawJSON() string {
-	return r.raw
+func (r internalAccountAccountCapabilityJSON) RawJSON() (string) {
+  return r.raw
 }
 
 // Indicates the the type of payment this capability is responsible for
@@ -274,147 +274,147 @@ func (r internalAccountAccountCapabilityJSON) RawJSON() string {
 type InternalAccountAccountCapabilitiesPaymentType string
 
 const (
-	InternalAccountAccountCapabilitiesPaymentTypeACH         InternalAccountAccountCapabilitiesPaymentType = "ach"
-	InternalAccountAccountCapabilitiesPaymentTypeAuBecs      InternalAccountAccountCapabilitiesPaymentType = "au_becs"
-	InternalAccountAccountCapabilitiesPaymentTypeBacs        InternalAccountAccountCapabilitiesPaymentType = "bacs"
-	InternalAccountAccountCapabilitiesPaymentTypeBook        InternalAccountAccountCapabilitiesPaymentType = "book"
-	InternalAccountAccountCapabilitiesPaymentTypeCard        InternalAccountAccountCapabilitiesPaymentType = "card"
-	InternalAccountAccountCapabilitiesPaymentTypeChats       InternalAccountAccountCapabilitiesPaymentType = "chats"
-	InternalAccountAccountCapabilitiesPaymentTypeCheck       InternalAccountAccountCapabilitiesPaymentType = "check"
-	InternalAccountAccountCapabilitiesPaymentTypeCrossBorder InternalAccountAccountCapabilitiesPaymentType = "cross_border"
-	InternalAccountAccountCapabilitiesPaymentTypeDkNets      InternalAccountAccountCapabilitiesPaymentType = "dk_nets"
-	InternalAccountAccountCapabilitiesPaymentTypeEft         InternalAccountAccountCapabilitiesPaymentType = "eft"
-	InternalAccountAccountCapabilitiesPaymentTypeGBFps       InternalAccountAccountCapabilitiesPaymentType = "gb_fps"
-	InternalAccountAccountCapabilitiesPaymentTypeMasav       InternalAccountAccountCapabilitiesPaymentType = "masav"
-	InternalAccountAccountCapabilitiesPaymentTypeMxCcen      InternalAccountAccountCapabilitiesPaymentType = "mx_ccen"
-	InternalAccountAccountCapabilitiesPaymentTypeNeft        InternalAccountAccountCapabilitiesPaymentType = "neft"
-	InternalAccountAccountCapabilitiesPaymentTypeNics        InternalAccountAccountCapabilitiesPaymentType = "nics"
-	InternalAccountAccountCapabilitiesPaymentTypeNzBecs      InternalAccountAccountCapabilitiesPaymentType = "nz_becs"
-	InternalAccountAccountCapabilitiesPaymentTypePlElixir    InternalAccountAccountCapabilitiesPaymentType = "pl_elixir"
-	InternalAccountAccountCapabilitiesPaymentTypeRtp         InternalAccountAccountCapabilitiesPaymentType = "rtp"
-	InternalAccountAccountCapabilitiesPaymentTypeSeBankgirot InternalAccountAccountCapabilitiesPaymentType = "se_bankgirot"
-	InternalAccountAccountCapabilitiesPaymentTypeSepa        InternalAccountAccountCapabilitiesPaymentType = "sepa"
-	InternalAccountAccountCapabilitiesPaymentTypeSgGiro      InternalAccountAccountCapabilitiesPaymentType = "sg_giro"
-	InternalAccountAccountCapabilitiesPaymentTypeSic         InternalAccountAccountCapabilitiesPaymentType = "sic"
-	InternalAccountAccountCapabilitiesPaymentTypeStablecoin  InternalAccountAccountCapabilitiesPaymentType = "stablecoin"
-	InternalAccountAccountCapabilitiesPaymentTypeWire        InternalAccountAccountCapabilitiesPaymentType = "wire"
-	InternalAccountAccountCapabilitiesPaymentTypeZengin      InternalAccountAccountCapabilitiesPaymentType = "zengin"
-)
+    InternalAccountAccountCapabilitiesPaymentTypeACH InternalAccountAccountCapabilitiesPaymentType = "ach"
+    InternalAccountAccountCapabilitiesPaymentTypeAuBecs InternalAccountAccountCapabilitiesPaymentType = "au_becs"
+    InternalAccountAccountCapabilitiesPaymentTypeBacs InternalAccountAccountCapabilitiesPaymentType = "bacs"
+    InternalAccountAccountCapabilitiesPaymentTypeBook InternalAccountAccountCapabilitiesPaymentType = "book"
+    InternalAccountAccountCapabilitiesPaymentTypeCard InternalAccountAccountCapabilitiesPaymentType = "card"
+    InternalAccountAccountCapabilitiesPaymentTypeChats InternalAccountAccountCapabilitiesPaymentType = "chats"
+    InternalAccountAccountCapabilitiesPaymentTypeCheck InternalAccountAccountCapabilitiesPaymentType = "check"
+    InternalAccountAccountCapabilitiesPaymentTypeCrossBorder InternalAccountAccountCapabilitiesPaymentType = "cross_border"
+    InternalAccountAccountCapabilitiesPaymentTypeDkNets InternalAccountAccountCapabilitiesPaymentType = "dk_nets"
+    InternalAccountAccountCapabilitiesPaymentTypeEft InternalAccountAccountCapabilitiesPaymentType = "eft"
+    InternalAccountAccountCapabilitiesPaymentTypeGBFps InternalAccountAccountCapabilitiesPaymentType = "gb_fps"
+    InternalAccountAccountCapabilitiesPaymentTypeMasav InternalAccountAccountCapabilitiesPaymentType = "masav"
+    InternalAccountAccountCapabilitiesPaymentTypeMxCcen InternalAccountAccountCapabilitiesPaymentType = "mx_ccen"
+    InternalAccountAccountCapabilitiesPaymentTypeNeft InternalAccountAccountCapabilitiesPaymentType = "neft"
+    InternalAccountAccountCapabilitiesPaymentTypeNics InternalAccountAccountCapabilitiesPaymentType = "nics"
+    InternalAccountAccountCapabilitiesPaymentTypeNzBecs InternalAccountAccountCapabilitiesPaymentType = "nz_becs"
+    InternalAccountAccountCapabilitiesPaymentTypePlElixir InternalAccountAccountCapabilitiesPaymentType = "pl_elixir"
+    InternalAccountAccountCapabilitiesPaymentTypeRtp InternalAccountAccountCapabilitiesPaymentType = "rtp"
+    InternalAccountAccountCapabilitiesPaymentTypeSeBankgirot InternalAccountAccountCapabilitiesPaymentType = "se_bankgirot"
+    InternalAccountAccountCapabilitiesPaymentTypeSepa InternalAccountAccountCapabilitiesPaymentType = "sepa"
+    InternalAccountAccountCapabilitiesPaymentTypeSgGiro InternalAccountAccountCapabilitiesPaymentType = "sg_giro"
+    InternalAccountAccountCapabilitiesPaymentTypeSic InternalAccountAccountCapabilitiesPaymentType = "sic"
+    InternalAccountAccountCapabilitiesPaymentTypeStablecoin InternalAccountAccountCapabilitiesPaymentType = "stablecoin"
+    InternalAccountAccountCapabilitiesPaymentTypeWire InternalAccountAccountCapabilitiesPaymentType = "wire"
+    InternalAccountAccountCapabilitiesPaymentTypeZengin InternalAccountAccountCapabilitiesPaymentType = "zengin"
+  )
 
-func (r InternalAccountAccountCapabilitiesPaymentType) IsKnown() bool {
-	switch r {
-	case InternalAccountAccountCapabilitiesPaymentTypeACH, InternalAccountAccountCapabilitiesPaymentTypeAuBecs, InternalAccountAccountCapabilitiesPaymentTypeBacs, InternalAccountAccountCapabilitiesPaymentTypeBook, InternalAccountAccountCapabilitiesPaymentTypeCard, InternalAccountAccountCapabilitiesPaymentTypeChats, InternalAccountAccountCapabilitiesPaymentTypeCheck, InternalAccountAccountCapabilitiesPaymentTypeCrossBorder, InternalAccountAccountCapabilitiesPaymentTypeDkNets, InternalAccountAccountCapabilitiesPaymentTypeEft, InternalAccountAccountCapabilitiesPaymentTypeGBFps, InternalAccountAccountCapabilitiesPaymentTypeMasav, InternalAccountAccountCapabilitiesPaymentTypeMxCcen, InternalAccountAccountCapabilitiesPaymentTypeNeft, InternalAccountAccountCapabilitiesPaymentTypeNics, InternalAccountAccountCapabilitiesPaymentTypeNzBecs, InternalAccountAccountCapabilitiesPaymentTypePlElixir, InternalAccountAccountCapabilitiesPaymentTypeRtp, InternalAccountAccountCapabilitiesPaymentTypeSeBankgirot, InternalAccountAccountCapabilitiesPaymentTypeSepa, InternalAccountAccountCapabilitiesPaymentTypeSgGiro, InternalAccountAccountCapabilitiesPaymentTypeSic, InternalAccountAccountCapabilitiesPaymentTypeStablecoin, InternalAccountAccountCapabilitiesPaymentTypeWire, InternalAccountAccountCapabilitiesPaymentTypeZengin:
-		return true
-	}
-	return false
+func (r InternalAccountAccountCapabilitiesPaymentType) IsKnown() (bool) {
+  switch r {
+  case InternalAccountAccountCapabilitiesPaymentTypeACH, InternalAccountAccountCapabilitiesPaymentTypeAuBecs, InternalAccountAccountCapabilitiesPaymentTypeBacs, InternalAccountAccountCapabilitiesPaymentTypeBook, InternalAccountAccountCapabilitiesPaymentTypeCard, InternalAccountAccountCapabilitiesPaymentTypeChats, InternalAccountAccountCapabilitiesPaymentTypeCheck, InternalAccountAccountCapabilitiesPaymentTypeCrossBorder, InternalAccountAccountCapabilitiesPaymentTypeDkNets, InternalAccountAccountCapabilitiesPaymentTypeEft, InternalAccountAccountCapabilitiesPaymentTypeGBFps, InternalAccountAccountCapabilitiesPaymentTypeMasav, InternalAccountAccountCapabilitiesPaymentTypeMxCcen, InternalAccountAccountCapabilitiesPaymentTypeNeft, InternalAccountAccountCapabilitiesPaymentTypeNics, InternalAccountAccountCapabilitiesPaymentTypeNzBecs, InternalAccountAccountCapabilitiesPaymentTypePlElixir, InternalAccountAccountCapabilitiesPaymentTypeRtp, InternalAccountAccountCapabilitiesPaymentTypeSeBankgirot, InternalAccountAccountCapabilitiesPaymentTypeSepa, InternalAccountAccountCapabilitiesPaymentTypeSgGiro, InternalAccountAccountCapabilitiesPaymentTypeSic, InternalAccountAccountCapabilitiesPaymentTypeStablecoin, InternalAccountAccountCapabilitiesPaymentTypeWire, InternalAccountAccountCapabilitiesPaymentTypeZengin:
+      return true
+  }
+  return false
 }
 
 // Can be checking, savings or other.
 type InternalAccountAccountType string
 
 const (
-	InternalAccountAccountTypeBaseWallet     InternalAccountAccountType = "base_wallet"
-	InternalAccountAccountTypeCash           InternalAccountAccountType = "cash"
-	InternalAccountAccountTypeChecking       InternalAccountAccountType = "checking"
-	InternalAccountAccountTypeCryptoWallet   InternalAccountAccountType = "crypto_wallet"
-	InternalAccountAccountTypeEthereumWallet InternalAccountAccountType = "ethereum_wallet"
-	InternalAccountAccountTypeGeneralLedger  InternalAccountAccountType = "general_ledger"
-	InternalAccountAccountTypeLoan           InternalAccountAccountType = "loan"
-	InternalAccountAccountTypeNonResident    InternalAccountAccountType = "non_resident"
-	InternalAccountAccountTypeOther          InternalAccountAccountType = "other"
-	InternalAccountAccountTypeOverdraft      InternalAccountAccountType = "overdraft"
-	InternalAccountAccountTypePolygonWallet  InternalAccountAccountType = "polygon_wallet"
-	InternalAccountAccountTypeSavings        InternalAccountAccountType = "savings"
-	InternalAccountAccountTypeSolanaWallet   InternalAccountAccountType = "solana_wallet"
-)
+    InternalAccountAccountTypeBaseWallet InternalAccountAccountType = "base_wallet"
+    InternalAccountAccountTypeCash InternalAccountAccountType = "cash"
+    InternalAccountAccountTypeChecking InternalAccountAccountType = "checking"
+    InternalAccountAccountTypeCryptoWallet InternalAccountAccountType = "crypto_wallet"
+    InternalAccountAccountTypeEthereumWallet InternalAccountAccountType = "ethereum_wallet"
+    InternalAccountAccountTypeGeneralLedger InternalAccountAccountType = "general_ledger"
+    InternalAccountAccountTypeLoan InternalAccountAccountType = "loan"
+    InternalAccountAccountTypeNonResident InternalAccountAccountType = "non_resident"
+    InternalAccountAccountTypeOther InternalAccountAccountType = "other"
+    InternalAccountAccountTypeOverdraft InternalAccountAccountType = "overdraft"
+    InternalAccountAccountTypePolygonWallet InternalAccountAccountType = "polygon_wallet"
+    InternalAccountAccountTypeSavings InternalAccountAccountType = "savings"
+    InternalAccountAccountTypeSolanaWallet InternalAccountAccountType = "solana_wallet"
+  )
 
-func (r InternalAccountAccountType) IsKnown() bool {
-	switch r {
-	case InternalAccountAccountTypeBaseWallet, InternalAccountAccountTypeCash, InternalAccountAccountTypeChecking, InternalAccountAccountTypeCryptoWallet, InternalAccountAccountTypeEthereumWallet, InternalAccountAccountTypeGeneralLedger, InternalAccountAccountTypeLoan, InternalAccountAccountTypeNonResident, InternalAccountAccountTypeOther, InternalAccountAccountTypeOverdraft, InternalAccountAccountTypePolygonWallet, InternalAccountAccountTypeSavings, InternalAccountAccountTypeSolanaWallet:
-		return true
-	}
-	return false
+func (r InternalAccountAccountType) IsKnown() (bool) {
+  switch r {
+  case InternalAccountAccountTypeBaseWallet, InternalAccountAccountTypeCash, InternalAccountAccountTypeChecking, InternalAccountAccountTypeCryptoWallet, InternalAccountAccountTypeEthereumWallet, InternalAccountAccountTypeGeneralLedger, InternalAccountAccountTypeLoan, InternalAccountAccountTypeNonResident, InternalAccountAccountTypeOther, InternalAccountAccountTypeOverdraft, InternalAccountAccountTypePolygonWallet, InternalAccountAccountTypeSavings, InternalAccountAccountTypeSolanaWallet:
+      return true
+  }
+  return false
 }
 
 // Either individual or business.
 type InternalAccountPartyType string
 
 const (
-	InternalAccountPartyTypeBusiness   InternalAccountPartyType = "business"
-	InternalAccountPartyTypeIndividual InternalAccountPartyType = "individual"
-)
+    InternalAccountPartyTypeBusiness InternalAccountPartyType = "business"
+    InternalAccountPartyTypeIndividual InternalAccountPartyType = "individual"
+  )
 
-func (r InternalAccountPartyType) IsKnown() bool {
-	switch r {
-	case InternalAccountPartyTypeBusiness, InternalAccountPartyTypeIndividual:
-		return true
-	}
-	return false
+func (r InternalAccountPartyType) IsKnown() (bool) {
+  switch r {
+  case InternalAccountPartyTypeBusiness, InternalAccountPartyTypeIndividual:
+      return true
+  }
+  return false
 }
 
 // The internal account status.
 type InternalAccountStatus string
 
 const (
-	InternalAccountStatusActive            InternalAccountStatus = "active"
-	InternalAccountStatusClosed            InternalAccountStatus = "closed"
-	InternalAccountStatusPendingActivation InternalAccountStatus = "pending_activation"
-	InternalAccountStatusPendingClosure    InternalAccountStatus = "pending_closure"
-	InternalAccountStatusSuspended         InternalAccountStatus = "suspended"
-)
+    InternalAccountStatusActive InternalAccountStatus = "active"
+    InternalAccountStatusClosed InternalAccountStatus = "closed"
+    InternalAccountStatusPendingActivation InternalAccountStatus = "pending_activation"
+    InternalAccountStatusPendingClosure InternalAccountStatus = "pending_closure"
+    InternalAccountStatusSuspended InternalAccountStatus = "suspended"
+  )
 
-func (r InternalAccountStatus) IsKnown() bool {
-	switch r {
-	case InternalAccountStatusActive, InternalAccountStatusClosed, InternalAccountStatusPendingActivation, InternalAccountStatusPendingClosure, InternalAccountStatusSuspended:
-		return true
-	}
-	return false
+func (r InternalAccountStatus) IsKnown() (bool) {
+  switch r {
+  case InternalAccountStatusActive, InternalAccountStatusClosed, InternalAccountStatusPendingActivation, InternalAccountStatusPendingClosure, InternalAccountStatusSuspended:
+      return true
+  }
+  return false
 }
 
 type InternalAccountUpdateAccountCapabilityResponse struct {
-	ID        string    `json:"id" api:"required" format:"uuid"`
-	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
-	// One of `debit` or `credit`. Indicates the direction of money movement this
-	// capability is responsible for.
-	Direction   shared.TransactionDirection `json:"direction" api:"required"`
-	DiscardedAt time.Time                   `json:"discarded_at" api:"required,nullable" format:"date-time"`
-	// A unique reference assigned by your bank for tracking and recognizing payment
-	// files. It is important this is formatted exactly how the bank assigned it.
-	Identifier string `json:"identifier" api:"required,nullable"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode" api:"required"`
-	Object   string `json:"object" api:"required"`
-	// Indicates the the type of payment this capability is responsible for
-	// originating.
-	PaymentType InternalAccountUpdateAccountCapabilityResponsePaymentType `json:"payment_type" api:"required"`
-	UpdatedAt   time.Time                                                 `json:"updated_at" api:"required" format:"date-time"`
-	ExtraFields map[string]interface{}                                    `json:"-" api:"extrafields"`
-	JSON        internalAccountUpdateAccountCapabilityResponseJSON        `json:"-"`
+ID string `json:"id" api:"required" format:"uuid"`
+CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
+// One of `debit` or `credit`. Indicates the direction of money movement this
+// capability is responsible for.
+Direction shared.TransactionDirection `json:"direction" api:"required"`
+DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+// A unique reference assigned by your bank for tracking and recognizing payment
+// files. It is important this is formatted exactly how the bank assigned it.
+Identifier string `json:"identifier" api:"required,nullable"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode bool `json:"live_mode" api:"required"`
+Object string `json:"object" api:"required"`
+// Indicates the the type of payment this capability is responsible for
+// originating.
+PaymentType InternalAccountUpdateAccountCapabilityResponsePaymentType `json:"payment_type" api:"required"`
+UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
+ExtraFields map[string]interface{} `json:"-" api:"extrafields"`
+JSON internalAccountUpdateAccountCapabilityResponseJSON `json:"-"`
 }
 
 // internalAccountUpdateAccountCapabilityResponseJSON contains the JSON metadata
 // for the struct [InternalAccountUpdateAccountCapabilityResponse]
 type internalAccountUpdateAccountCapabilityResponseJSON struct {
-	ID          apijson.Field
-	CreatedAt   apijson.Field
-	Direction   apijson.Field
-	DiscardedAt apijson.Field
-	Identifier  apijson.Field
-	LiveMode    apijson.Field
-	Object      apijson.Field
-	PaymentType apijson.Field
-	UpdatedAt   apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+ID apijson.Field
+CreatedAt apijson.Field
+Direction apijson.Field
+DiscardedAt apijson.Field
+Identifier apijson.Field
+LiveMode apijson.Field
+Object apijson.Field
+PaymentType apijson.Field
+UpdatedAt apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *InternalAccountUpdateAccountCapabilityResponse) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r internalAccountUpdateAccountCapabilityResponseJSON) RawJSON() string {
-	return r.raw
+func (r internalAccountUpdateAccountCapabilityResponseJSON) RawJSON() (string) {
+  return r.raw
 }
 
 // Indicates the the type of payment this capability is responsible for
@@ -422,126 +422,128 @@ func (r internalAccountUpdateAccountCapabilityResponseJSON) RawJSON() string {
 type InternalAccountUpdateAccountCapabilityResponsePaymentType string
 
 const (
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeACH         InternalAccountUpdateAccountCapabilityResponsePaymentType = "ach"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeAuBecs      InternalAccountUpdateAccountCapabilityResponsePaymentType = "au_becs"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeBacs        InternalAccountUpdateAccountCapabilityResponsePaymentType = "bacs"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeBook        InternalAccountUpdateAccountCapabilityResponsePaymentType = "book"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeCard        InternalAccountUpdateAccountCapabilityResponsePaymentType = "card"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeChats       InternalAccountUpdateAccountCapabilityResponsePaymentType = "chats"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeCheck       InternalAccountUpdateAccountCapabilityResponsePaymentType = "check"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeCrossBorder InternalAccountUpdateAccountCapabilityResponsePaymentType = "cross_border"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeDkNets      InternalAccountUpdateAccountCapabilityResponsePaymentType = "dk_nets"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeEft         InternalAccountUpdateAccountCapabilityResponsePaymentType = "eft"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeGBFps       InternalAccountUpdateAccountCapabilityResponsePaymentType = "gb_fps"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeMasav       InternalAccountUpdateAccountCapabilityResponsePaymentType = "masav"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeMxCcen      InternalAccountUpdateAccountCapabilityResponsePaymentType = "mx_ccen"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeNeft        InternalAccountUpdateAccountCapabilityResponsePaymentType = "neft"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeNics        InternalAccountUpdateAccountCapabilityResponsePaymentType = "nics"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeNzBecs      InternalAccountUpdateAccountCapabilityResponsePaymentType = "nz_becs"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypePlElixir    InternalAccountUpdateAccountCapabilityResponsePaymentType = "pl_elixir"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeRtp         InternalAccountUpdateAccountCapabilityResponsePaymentType = "rtp"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeSeBankgirot InternalAccountUpdateAccountCapabilityResponsePaymentType = "se_bankgirot"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeSepa        InternalAccountUpdateAccountCapabilityResponsePaymentType = "sepa"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeSgGiro      InternalAccountUpdateAccountCapabilityResponsePaymentType = "sg_giro"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeSic         InternalAccountUpdateAccountCapabilityResponsePaymentType = "sic"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeStablecoin  InternalAccountUpdateAccountCapabilityResponsePaymentType = "stablecoin"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeWire        InternalAccountUpdateAccountCapabilityResponsePaymentType = "wire"
-	InternalAccountUpdateAccountCapabilityResponsePaymentTypeZengin      InternalAccountUpdateAccountCapabilityResponsePaymentType = "zengin"
-)
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeACH InternalAccountUpdateAccountCapabilityResponsePaymentType = "ach"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeAuBecs InternalAccountUpdateAccountCapabilityResponsePaymentType = "au_becs"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeBacs InternalAccountUpdateAccountCapabilityResponsePaymentType = "bacs"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeBook InternalAccountUpdateAccountCapabilityResponsePaymentType = "book"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeCard InternalAccountUpdateAccountCapabilityResponsePaymentType = "card"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeChats InternalAccountUpdateAccountCapabilityResponsePaymentType = "chats"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeCheck InternalAccountUpdateAccountCapabilityResponsePaymentType = "check"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeCrossBorder InternalAccountUpdateAccountCapabilityResponsePaymentType = "cross_border"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeDkNets InternalAccountUpdateAccountCapabilityResponsePaymentType = "dk_nets"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeEft InternalAccountUpdateAccountCapabilityResponsePaymentType = "eft"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeGBFps InternalAccountUpdateAccountCapabilityResponsePaymentType = "gb_fps"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeMasav InternalAccountUpdateAccountCapabilityResponsePaymentType = "masav"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeMxCcen InternalAccountUpdateAccountCapabilityResponsePaymentType = "mx_ccen"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeNeft InternalAccountUpdateAccountCapabilityResponsePaymentType = "neft"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeNics InternalAccountUpdateAccountCapabilityResponsePaymentType = "nics"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeNzBecs InternalAccountUpdateAccountCapabilityResponsePaymentType = "nz_becs"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypePlElixir InternalAccountUpdateAccountCapabilityResponsePaymentType = "pl_elixir"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeRtp InternalAccountUpdateAccountCapabilityResponsePaymentType = "rtp"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeSeBankgirot InternalAccountUpdateAccountCapabilityResponsePaymentType = "se_bankgirot"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeSepa InternalAccountUpdateAccountCapabilityResponsePaymentType = "sepa"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeSgGiro InternalAccountUpdateAccountCapabilityResponsePaymentType = "sg_giro"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeSic InternalAccountUpdateAccountCapabilityResponsePaymentType = "sic"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeStablecoin InternalAccountUpdateAccountCapabilityResponsePaymentType = "stablecoin"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeWire InternalAccountUpdateAccountCapabilityResponsePaymentType = "wire"
+    InternalAccountUpdateAccountCapabilityResponsePaymentTypeZengin InternalAccountUpdateAccountCapabilityResponsePaymentType = "zengin"
+  )
 
-func (r InternalAccountUpdateAccountCapabilityResponsePaymentType) IsKnown() bool {
-	switch r {
-	case InternalAccountUpdateAccountCapabilityResponsePaymentTypeACH, InternalAccountUpdateAccountCapabilityResponsePaymentTypeAuBecs, InternalAccountUpdateAccountCapabilityResponsePaymentTypeBacs, InternalAccountUpdateAccountCapabilityResponsePaymentTypeBook, InternalAccountUpdateAccountCapabilityResponsePaymentTypeCard, InternalAccountUpdateAccountCapabilityResponsePaymentTypeChats, InternalAccountUpdateAccountCapabilityResponsePaymentTypeCheck, InternalAccountUpdateAccountCapabilityResponsePaymentTypeCrossBorder, InternalAccountUpdateAccountCapabilityResponsePaymentTypeDkNets, InternalAccountUpdateAccountCapabilityResponsePaymentTypeEft, InternalAccountUpdateAccountCapabilityResponsePaymentTypeGBFps, InternalAccountUpdateAccountCapabilityResponsePaymentTypeMasav, InternalAccountUpdateAccountCapabilityResponsePaymentTypeMxCcen, InternalAccountUpdateAccountCapabilityResponsePaymentTypeNeft, InternalAccountUpdateAccountCapabilityResponsePaymentTypeNics, InternalAccountUpdateAccountCapabilityResponsePaymentTypeNzBecs, InternalAccountUpdateAccountCapabilityResponsePaymentTypePlElixir, InternalAccountUpdateAccountCapabilityResponsePaymentTypeRtp, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSeBankgirot, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSepa, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSgGiro, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSic, InternalAccountUpdateAccountCapabilityResponsePaymentTypeStablecoin, InternalAccountUpdateAccountCapabilityResponsePaymentTypeWire, InternalAccountUpdateAccountCapabilityResponsePaymentTypeZengin:
-		return true
-	}
-	return false
+func (r InternalAccountUpdateAccountCapabilityResponsePaymentType) IsKnown() (bool) {
+  switch r {
+  case InternalAccountUpdateAccountCapabilityResponsePaymentTypeACH, InternalAccountUpdateAccountCapabilityResponsePaymentTypeAuBecs, InternalAccountUpdateAccountCapabilityResponsePaymentTypeBacs, InternalAccountUpdateAccountCapabilityResponsePaymentTypeBook, InternalAccountUpdateAccountCapabilityResponsePaymentTypeCard, InternalAccountUpdateAccountCapabilityResponsePaymentTypeChats, InternalAccountUpdateAccountCapabilityResponsePaymentTypeCheck, InternalAccountUpdateAccountCapabilityResponsePaymentTypeCrossBorder, InternalAccountUpdateAccountCapabilityResponsePaymentTypeDkNets, InternalAccountUpdateAccountCapabilityResponsePaymentTypeEft, InternalAccountUpdateAccountCapabilityResponsePaymentTypeGBFps, InternalAccountUpdateAccountCapabilityResponsePaymentTypeMasav, InternalAccountUpdateAccountCapabilityResponsePaymentTypeMxCcen, InternalAccountUpdateAccountCapabilityResponsePaymentTypeNeft, InternalAccountUpdateAccountCapabilityResponsePaymentTypeNics, InternalAccountUpdateAccountCapabilityResponsePaymentTypeNzBecs, InternalAccountUpdateAccountCapabilityResponsePaymentTypePlElixir, InternalAccountUpdateAccountCapabilityResponsePaymentTypeRtp, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSeBankgirot, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSepa, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSgGiro, InternalAccountUpdateAccountCapabilityResponsePaymentTypeSic, InternalAccountUpdateAccountCapabilityResponsePaymentTypeStablecoin, InternalAccountUpdateAccountCapabilityResponsePaymentTypeWire, InternalAccountUpdateAccountCapabilityResponsePaymentTypeZengin:
+      return true
+  }
+  return false
 }
 
 type InternalAccountNewParams struct {
-	// The identifier of the financial institution the account belongs to.
-	ConnectionID param.Field[string] `json:"connection_id" api:"required"`
-	// The currency of the internal account. Supports fiat and stablecoin currencies.
-	Currency param.Field[InternalAccountNewParamsCurrency] `json:"currency" api:"required"`
-	// The nickname of the account.
-	Name param.Field[string] `json:"name" api:"required"`
-	// An array of AccountCapability objects that list the originating abilities of the
-	// internal account and any relevant information for them.
-	AccountCapabilities param.Field[[]InternalAccountNewParamsAccountCapability] `json:"account_capabilities"`
-	// The account type, used to provision the appropriate account at the financial
-	// institution.
-	AccountType param.Field[InternalAccountNewParamsAccountType] `json:"account_type"`
-	// The Counterparty associated to this account.
-	CounterpartyID param.Field[string] `json:"counterparty_id"`
-	// Whether this account can receive ACH debits. Only applicable to accounts created
-	// under a Modern Treasury PSP connection, or `null` for Bring Your Own Bank
-	// accounts. Defaults to `false`. Configurable only on creation. Please reach out
-	// to your customer success manager to enable this capability for your connection.
-	Debitable param.Field[bool] `json:"debitable"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `json:"external_id"`
-	// The LegalEntity associated to this account.
-	LegalEntityID param.Field[string] `json:"legal_entity_id"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The parent internal account of this new account.
-	ParentAccountID param.Field[string] `json:"parent_account_id"`
-	// The address associated with the owner or null.
-	PartyAddress param.Field[InternalAccountNewParamsPartyAddress] `json:"party_address"`
-	// The legal name of the entity which owns the account.
-	PartyName param.Field[string] `json:"party_name"`
-	// A hash of vendor specific attributes that will be used when creating the account
-	// at the vendor specified by the given connection.
-	VendorAttributes param.Field[map[string]string] `json:"vendor_attributes"`
+// The currency of the internal account. Supports fiat and stablecoin currencies.
+Currency param.Field[InternalAccountNewParamsCurrency] `json:"currency" api:"required"`
+// The nickname of the account.
+Name param.Field[string] `json:"name" api:"required"`
+// An array of AccountCapability objects that list the originating abilities of the
+// internal account and any relevant information for them.
+AccountCapabilities param.Field[[]InternalAccountNewParamsAccountCapability] `json:"account_capabilities"`
+// The account type, used to provision the appropriate account at the financial
+// institution.
+AccountType param.Field[InternalAccountNewParamsAccountType] `json:"account_type"`
+// The identifier of the financial institution the account belongs to. If not
+// provided, defaults to the default connection, or the sole connection if only one
+// exists.
+ConnectionID param.Field[string] `json:"connection_id"`
+// The Counterparty associated to this account.
+CounterpartyID param.Field[string] `json:"counterparty_id"`
+// Whether this account can receive ACH debits. Only applicable to accounts created
+// under a Modern Treasury PSP connection, or `null` for Bring Your Own Bank
+// accounts. Defaults to `false`. Configurable only on creation. Please reach out
+// to your customer success manager to enable this capability for your connection.
+Debitable param.Field[bool] `json:"debitable"`
+// An optional user-defined 180 character unique identifier.
+ExternalID param.Field[string] `json:"external_id"`
+// The LegalEntity associated to this account.
+LegalEntityID param.Field[string] `json:"legal_entity_id"`
+// Additional data represented as key-value pairs. Both the key and value must be
+// strings.
+Metadata param.Field[map[string]string] `json:"metadata"`
+// The parent internal account of this new account.
+ParentAccountID param.Field[string] `json:"parent_account_id"`
+// The address associated with the owner or null.
+PartyAddress param.Field[InternalAccountNewParamsPartyAddress] `json:"party_address"`
+// The legal name of the entity which owns the account.
+PartyName param.Field[string] `json:"party_name"`
+// A hash of vendor specific attributes that will be used when creating the account
+// at the vendor specified by the given connection.
+VendorAttributes param.Field[map[string]string] `json:"vendor_attributes"`
 }
 
 func (r InternalAccountNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 // The currency of the internal account. Supports fiat and stablecoin currencies.
 type InternalAccountNewParamsCurrency string
 
 const (
-	InternalAccountNewParamsCurrencyUsd   InternalAccountNewParamsCurrency = "USD"
-	InternalAccountNewParamsCurrencyCad   InternalAccountNewParamsCurrency = "CAD"
-	InternalAccountNewParamsCurrencyUsdc  InternalAccountNewParamsCurrency = "USDC"
-	InternalAccountNewParamsCurrencyUsdt  InternalAccountNewParamsCurrency = "USDT"
-	InternalAccountNewParamsCurrencyPyusd InternalAccountNewParamsCurrency = "PYUSD"
-	InternalAccountNewParamsCurrencyUsdg  InternalAccountNewParamsCurrency = "USDG"
-)
+    InternalAccountNewParamsCurrencyUsd InternalAccountNewParamsCurrency = "USD"
+    InternalAccountNewParamsCurrencyCad InternalAccountNewParamsCurrency = "CAD"
+    InternalAccountNewParamsCurrencyUsdc InternalAccountNewParamsCurrency = "USDC"
+    InternalAccountNewParamsCurrencyUsdt InternalAccountNewParamsCurrency = "USDT"
+    InternalAccountNewParamsCurrencyPyusd InternalAccountNewParamsCurrency = "PYUSD"
+    InternalAccountNewParamsCurrencyUsdg InternalAccountNewParamsCurrency = "USDG"
+  )
 
-func (r InternalAccountNewParamsCurrency) IsKnown() bool {
-	switch r {
-	case InternalAccountNewParamsCurrencyUsd, InternalAccountNewParamsCurrencyCad, InternalAccountNewParamsCurrencyUsdc, InternalAccountNewParamsCurrencyUsdt, InternalAccountNewParamsCurrencyPyusd, InternalAccountNewParamsCurrencyUsdg:
-		return true
-	}
-	return false
+func (r InternalAccountNewParamsCurrency) IsKnown() (bool) {
+  switch r {
+  case InternalAccountNewParamsCurrencyUsd, InternalAccountNewParamsCurrencyCad, InternalAccountNewParamsCurrencyUsdc, InternalAccountNewParamsCurrencyUsdt, InternalAccountNewParamsCurrencyPyusd, InternalAccountNewParamsCurrencyUsdg:
+      return true
+  }
+  return false
 }
 
 type InternalAccountNewParamsAccountCapability struct {
-	ID        param.Field[string]    `json:"id" api:"required" format:"uuid"`
-	CreatedAt param.Field[time.Time] `json:"created_at" api:"required" format:"date-time"`
-	// One of `debit` or `credit`. Indicates the direction of money movement this
-	// capability is responsible for.
-	Direction   param.Field[shared.TransactionDirection] `json:"direction" api:"required"`
-	DiscardedAt param.Field[time.Time]                   `json:"discarded_at" api:"required" format:"date-time"`
-	// A unique reference assigned by your bank for tracking and recognizing payment
-	// files. It is important this is formatted exactly how the bank assigned it.
-	Identifier param.Field[string] `json:"identifier" api:"required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode param.Field[bool]   `json:"live_mode" api:"required"`
-	Object   param.Field[string] `json:"object" api:"required"`
-	// Indicates the the type of payment this capability is responsible for
-	// originating.
-	PaymentType param.Field[InternalAccountNewParamsAccountCapabilitiesPaymentType] `json:"payment_type" api:"required"`
-	UpdatedAt   param.Field[time.Time]                                              `json:"updated_at" api:"required" format:"date-time"`
-	ExtraFields map[string]interface{}                                              `json:"-,extras"`
+ID param.Field[string] `json:"id" api:"required" format:"uuid"`
+CreatedAt param.Field[time.Time] `json:"created_at" api:"required" format:"date-time"`
+// One of `debit` or `credit`. Indicates the direction of money movement this
+// capability is responsible for.
+Direction param.Field[shared.TransactionDirection] `json:"direction" api:"required"`
+DiscardedAt param.Field[time.Time] `json:"discarded_at" api:"required" format:"date-time"`
+// A unique reference assigned by your bank for tracking and recognizing payment
+// files. It is important this is formatted exactly how the bank assigned it.
+Identifier param.Field[string] `json:"identifier" api:"required"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode param.Field[bool] `json:"live_mode" api:"required"`
+Object param.Field[string] `json:"object" api:"required"`
+// Indicates the the type of payment this capability is responsible for
+// originating.
+PaymentType param.Field[InternalAccountNewParamsAccountCapabilitiesPaymentType] `json:"payment_type" api:"required"`
+UpdatedAt param.Field[time.Time] `json:"updated_at" api:"required" format:"date-time"`
+ExtraFields map[string]interface{} `json:"-,extras"`
 }
 
 func (r InternalAccountNewParamsAccountCapability) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 // Indicates the the type of payment this capability is responsible for
@@ -549,39 +551,39 @@ func (r InternalAccountNewParamsAccountCapability) MarshalJSON() (data []byte, e
 type InternalAccountNewParamsAccountCapabilitiesPaymentType string
 
 const (
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeACH         InternalAccountNewParamsAccountCapabilitiesPaymentType = "ach"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeAuBecs      InternalAccountNewParamsAccountCapabilitiesPaymentType = "au_becs"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeBacs        InternalAccountNewParamsAccountCapabilitiesPaymentType = "bacs"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeBook        InternalAccountNewParamsAccountCapabilitiesPaymentType = "book"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeCard        InternalAccountNewParamsAccountCapabilitiesPaymentType = "card"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeChats       InternalAccountNewParamsAccountCapabilitiesPaymentType = "chats"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeCheck       InternalAccountNewParamsAccountCapabilitiesPaymentType = "check"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeCrossBorder InternalAccountNewParamsAccountCapabilitiesPaymentType = "cross_border"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeDkNets      InternalAccountNewParamsAccountCapabilitiesPaymentType = "dk_nets"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeEft         InternalAccountNewParamsAccountCapabilitiesPaymentType = "eft"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeGBFps       InternalAccountNewParamsAccountCapabilitiesPaymentType = "gb_fps"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeMasav       InternalAccountNewParamsAccountCapabilitiesPaymentType = "masav"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeMxCcen      InternalAccountNewParamsAccountCapabilitiesPaymentType = "mx_ccen"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeNeft        InternalAccountNewParamsAccountCapabilitiesPaymentType = "neft"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeNics        InternalAccountNewParamsAccountCapabilitiesPaymentType = "nics"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeNzBecs      InternalAccountNewParamsAccountCapabilitiesPaymentType = "nz_becs"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypePlElixir    InternalAccountNewParamsAccountCapabilitiesPaymentType = "pl_elixir"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeRtp         InternalAccountNewParamsAccountCapabilitiesPaymentType = "rtp"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeSeBankgirot InternalAccountNewParamsAccountCapabilitiesPaymentType = "se_bankgirot"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeSepa        InternalAccountNewParamsAccountCapabilitiesPaymentType = "sepa"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeSgGiro      InternalAccountNewParamsAccountCapabilitiesPaymentType = "sg_giro"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeSic         InternalAccountNewParamsAccountCapabilitiesPaymentType = "sic"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeStablecoin  InternalAccountNewParamsAccountCapabilitiesPaymentType = "stablecoin"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeWire        InternalAccountNewParamsAccountCapabilitiesPaymentType = "wire"
-	InternalAccountNewParamsAccountCapabilitiesPaymentTypeZengin      InternalAccountNewParamsAccountCapabilitiesPaymentType = "zengin"
-)
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeACH InternalAccountNewParamsAccountCapabilitiesPaymentType = "ach"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeAuBecs InternalAccountNewParamsAccountCapabilitiesPaymentType = "au_becs"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeBacs InternalAccountNewParamsAccountCapabilitiesPaymentType = "bacs"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeBook InternalAccountNewParamsAccountCapabilitiesPaymentType = "book"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeCard InternalAccountNewParamsAccountCapabilitiesPaymentType = "card"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeChats InternalAccountNewParamsAccountCapabilitiesPaymentType = "chats"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeCheck InternalAccountNewParamsAccountCapabilitiesPaymentType = "check"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeCrossBorder InternalAccountNewParamsAccountCapabilitiesPaymentType = "cross_border"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeDkNets InternalAccountNewParamsAccountCapabilitiesPaymentType = "dk_nets"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeEft InternalAccountNewParamsAccountCapabilitiesPaymentType = "eft"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeGBFps InternalAccountNewParamsAccountCapabilitiesPaymentType = "gb_fps"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeMasav InternalAccountNewParamsAccountCapabilitiesPaymentType = "masav"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeMxCcen InternalAccountNewParamsAccountCapabilitiesPaymentType = "mx_ccen"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeNeft InternalAccountNewParamsAccountCapabilitiesPaymentType = "neft"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeNics InternalAccountNewParamsAccountCapabilitiesPaymentType = "nics"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeNzBecs InternalAccountNewParamsAccountCapabilitiesPaymentType = "nz_becs"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypePlElixir InternalAccountNewParamsAccountCapabilitiesPaymentType = "pl_elixir"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeRtp InternalAccountNewParamsAccountCapabilitiesPaymentType = "rtp"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeSeBankgirot InternalAccountNewParamsAccountCapabilitiesPaymentType = "se_bankgirot"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeSepa InternalAccountNewParamsAccountCapabilitiesPaymentType = "sepa"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeSgGiro InternalAccountNewParamsAccountCapabilitiesPaymentType = "sg_giro"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeSic InternalAccountNewParamsAccountCapabilitiesPaymentType = "sic"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeStablecoin InternalAccountNewParamsAccountCapabilitiesPaymentType = "stablecoin"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeWire InternalAccountNewParamsAccountCapabilitiesPaymentType = "wire"
+    InternalAccountNewParamsAccountCapabilitiesPaymentTypeZengin InternalAccountNewParamsAccountCapabilitiesPaymentType = "zengin"
+  )
 
-func (r InternalAccountNewParamsAccountCapabilitiesPaymentType) IsKnown() bool {
-	switch r {
-	case InternalAccountNewParamsAccountCapabilitiesPaymentTypeACH, InternalAccountNewParamsAccountCapabilitiesPaymentTypeAuBecs, InternalAccountNewParamsAccountCapabilitiesPaymentTypeBacs, InternalAccountNewParamsAccountCapabilitiesPaymentTypeBook, InternalAccountNewParamsAccountCapabilitiesPaymentTypeCard, InternalAccountNewParamsAccountCapabilitiesPaymentTypeChats, InternalAccountNewParamsAccountCapabilitiesPaymentTypeCheck, InternalAccountNewParamsAccountCapabilitiesPaymentTypeCrossBorder, InternalAccountNewParamsAccountCapabilitiesPaymentTypeDkNets, InternalAccountNewParamsAccountCapabilitiesPaymentTypeEft, InternalAccountNewParamsAccountCapabilitiesPaymentTypeGBFps, InternalAccountNewParamsAccountCapabilitiesPaymentTypeMasav, InternalAccountNewParamsAccountCapabilitiesPaymentTypeMxCcen, InternalAccountNewParamsAccountCapabilitiesPaymentTypeNeft, InternalAccountNewParamsAccountCapabilitiesPaymentTypeNics, InternalAccountNewParamsAccountCapabilitiesPaymentTypeNzBecs, InternalAccountNewParamsAccountCapabilitiesPaymentTypePlElixir, InternalAccountNewParamsAccountCapabilitiesPaymentTypeRtp, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSeBankgirot, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSepa, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSgGiro, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSic, InternalAccountNewParamsAccountCapabilitiesPaymentTypeStablecoin, InternalAccountNewParamsAccountCapabilitiesPaymentTypeWire, InternalAccountNewParamsAccountCapabilitiesPaymentTypeZengin:
-		return true
-	}
-	return false
+func (r InternalAccountNewParamsAccountCapabilitiesPaymentType) IsKnown() (bool) {
+  switch r {
+  case InternalAccountNewParamsAccountCapabilitiesPaymentTypeACH, InternalAccountNewParamsAccountCapabilitiesPaymentTypeAuBecs, InternalAccountNewParamsAccountCapabilitiesPaymentTypeBacs, InternalAccountNewParamsAccountCapabilitiesPaymentTypeBook, InternalAccountNewParamsAccountCapabilitiesPaymentTypeCard, InternalAccountNewParamsAccountCapabilitiesPaymentTypeChats, InternalAccountNewParamsAccountCapabilitiesPaymentTypeCheck, InternalAccountNewParamsAccountCapabilitiesPaymentTypeCrossBorder, InternalAccountNewParamsAccountCapabilitiesPaymentTypeDkNets, InternalAccountNewParamsAccountCapabilitiesPaymentTypeEft, InternalAccountNewParamsAccountCapabilitiesPaymentTypeGBFps, InternalAccountNewParamsAccountCapabilitiesPaymentTypeMasav, InternalAccountNewParamsAccountCapabilitiesPaymentTypeMxCcen, InternalAccountNewParamsAccountCapabilitiesPaymentTypeNeft, InternalAccountNewParamsAccountCapabilitiesPaymentTypeNics, InternalAccountNewParamsAccountCapabilitiesPaymentTypeNzBecs, InternalAccountNewParamsAccountCapabilitiesPaymentTypePlElixir, InternalAccountNewParamsAccountCapabilitiesPaymentTypeRtp, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSeBankgirot, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSepa, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSgGiro, InternalAccountNewParamsAccountCapabilitiesPaymentTypeSic, InternalAccountNewParamsAccountCapabilitiesPaymentTypeStablecoin, InternalAccountNewParamsAccountCapabilitiesPaymentTypeWire, InternalAccountNewParamsAccountCapabilitiesPaymentTypeZengin:
+      return true
+  }
+  return false
 }
 
 // The account type, used to provision the appropriate account at the financial
@@ -589,165 +591,165 @@ func (r InternalAccountNewParamsAccountCapabilitiesPaymentType) IsKnown() bool {
 type InternalAccountNewParamsAccountType string
 
 const (
-	InternalAccountNewParamsAccountTypeBaseWallet     InternalAccountNewParamsAccountType = "base_wallet"
-	InternalAccountNewParamsAccountTypeCash           InternalAccountNewParamsAccountType = "cash"
-	InternalAccountNewParamsAccountTypeChecking       InternalAccountNewParamsAccountType = "checking"
-	InternalAccountNewParamsAccountTypeCryptoWallet   InternalAccountNewParamsAccountType = "crypto_wallet"
-	InternalAccountNewParamsAccountTypeEthereumWallet InternalAccountNewParamsAccountType = "ethereum_wallet"
-	InternalAccountNewParamsAccountTypeGeneralLedger  InternalAccountNewParamsAccountType = "general_ledger"
-	InternalAccountNewParamsAccountTypeLoan           InternalAccountNewParamsAccountType = "loan"
-	InternalAccountNewParamsAccountTypeNonResident    InternalAccountNewParamsAccountType = "non_resident"
-	InternalAccountNewParamsAccountTypeOther          InternalAccountNewParamsAccountType = "other"
-	InternalAccountNewParamsAccountTypeOverdraft      InternalAccountNewParamsAccountType = "overdraft"
-	InternalAccountNewParamsAccountTypePolygonWallet  InternalAccountNewParamsAccountType = "polygon_wallet"
-	InternalAccountNewParamsAccountTypeSavings        InternalAccountNewParamsAccountType = "savings"
-	InternalAccountNewParamsAccountTypeSolanaWallet   InternalAccountNewParamsAccountType = "solana_wallet"
-)
+    InternalAccountNewParamsAccountTypeBaseWallet InternalAccountNewParamsAccountType = "base_wallet"
+    InternalAccountNewParamsAccountTypeCash InternalAccountNewParamsAccountType = "cash"
+    InternalAccountNewParamsAccountTypeChecking InternalAccountNewParamsAccountType = "checking"
+    InternalAccountNewParamsAccountTypeCryptoWallet InternalAccountNewParamsAccountType = "crypto_wallet"
+    InternalAccountNewParamsAccountTypeEthereumWallet InternalAccountNewParamsAccountType = "ethereum_wallet"
+    InternalAccountNewParamsAccountTypeGeneralLedger InternalAccountNewParamsAccountType = "general_ledger"
+    InternalAccountNewParamsAccountTypeLoan InternalAccountNewParamsAccountType = "loan"
+    InternalAccountNewParamsAccountTypeNonResident InternalAccountNewParamsAccountType = "non_resident"
+    InternalAccountNewParamsAccountTypeOther InternalAccountNewParamsAccountType = "other"
+    InternalAccountNewParamsAccountTypeOverdraft InternalAccountNewParamsAccountType = "overdraft"
+    InternalAccountNewParamsAccountTypePolygonWallet InternalAccountNewParamsAccountType = "polygon_wallet"
+    InternalAccountNewParamsAccountTypeSavings InternalAccountNewParamsAccountType = "savings"
+    InternalAccountNewParamsAccountTypeSolanaWallet InternalAccountNewParamsAccountType = "solana_wallet"
+  )
 
-func (r InternalAccountNewParamsAccountType) IsKnown() bool {
-	switch r {
-	case InternalAccountNewParamsAccountTypeBaseWallet, InternalAccountNewParamsAccountTypeCash, InternalAccountNewParamsAccountTypeChecking, InternalAccountNewParamsAccountTypeCryptoWallet, InternalAccountNewParamsAccountTypeEthereumWallet, InternalAccountNewParamsAccountTypeGeneralLedger, InternalAccountNewParamsAccountTypeLoan, InternalAccountNewParamsAccountTypeNonResident, InternalAccountNewParamsAccountTypeOther, InternalAccountNewParamsAccountTypeOverdraft, InternalAccountNewParamsAccountTypePolygonWallet, InternalAccountNewParamsAccountTypeSavings, InternalAccountNewParamsAccountTypeSolanaWallet:
-		return true
-	}
-	return false
+func (r InternalAccountNewParamsAccountType) IsKnown() (bool) {
+  switch r {
+  case InternalAccountNewParamsAccountTypeBaseWallet, InternalAccountNewParamsAccountTypeCash, InternalAccountNewParamsAccountTypeChecking, InternalAccountNewParamsAccountTypeCryptoWallet, InternalAccountNewParamsAccountTypeEthereumWallet, InternalAccountNewParamsAccountTypeGeneralLedger, InternalAccountNewParamsAccountTypeLoan, InternalAccountNewParamsAccountTypeNonResident, InternalAccountNewParamsAccountTypeOther, InternalAccountNewParamsAccountTypeOverdraft, InternalAccountNewParamsAccountTypePolygonWallet, InternalAccountNewParamsAccountTypeSavings, InternalAccountNewParamsAccountTypeSolanaWallet:
+      return true
+  }
+  return false
 }
 
 // The address associated with the owner or null.
 type InternalAccountNewParamsPartyAddress struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country" api:"required"`
-	Line1   param.Field[string] `json:"line1" api:"required"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality" api:"required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code" api:"required"`
-	// Region or State.
-	Region param.Field[string] `json:"region" api:"required"`
-	Line2  param.Field[string] `json:"line2"`
+// Country code conforms to [ISO 3166-1 alpha-2]
+Country param.Field[string] `json:"country" api:"required"`
+Line1 param.Field[string] `json:"line1" api:"required"`
+// Locality or City.
+Locality param.Field[string] `json:"locality" api:"required"`
+// The postal code of the address.
+PostalCode param.Field[string] `json:"postal_code" api:"required"`
+// Region or State.
+Region param.Field[string] `json:"region" api:"required"`
+Line2 param.Field[string] `json:"line2"`
 }
 
 func (r InternalAccountNewParamsPartyAddress) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type InternalAccountUpdateParams struct {
-	// The Contra Ledger Account associated to this account.
-	ContraLedgerAccountID param.Field[string] `json:"contra_ledger_account_id"`
-	// The Counterparty associated to this account.
-	CounterpartyID param.Field[string] `json:"counterparty_id"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `json:"external_id"`
-	// The Ledger Account associated to this account.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id"`
-	// Additional data in the form of key-value pairs. Pairs can be removed by passing
-	// an empty string or `null` as the value.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The nickname for the internal account.
-	Name param.Field[string] `json:"name"`
-	// The parent internal account for this account.
-	ParentAccountID param.Field[string] `json:"parent_account_id"`
+// The Contra Ledger Account associated to this account.
+ContraLedgerAccountID param.Field[string] `json:"contra_ledger_account_id"`
+// The Counterparty associated to this account.
+CounterpartyID param.Field[string] `json:"counterparty_id"`
+// An optional user-defined 180 character unique identifier.
+ExternalID param.Field[string] `json:"external_id"`
+// The Ledger Account associated to this account.
+LedgerAccountID param.Field[string] `json:"ledger_account_id"`
+// Additional data in the form of key-value pairs. Pairs can be removed by passing
+// an empty string or `null` as the value.
+Metadata param.Field[map[string]string] `json:"metadata"`
+// The nickname for the internal account.
+Name param.Field[string] `json:"name"`
+// The parent internal account for this account.
+ParentAccountID param.Field[string] `json:"parent_account_id"`
 }
 
 func (r InternalAccountUpdateParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type InternalAccountListParams struct {
-	AfterCursor param.Field[string] `query:"after_cursor"`
-	// Only return internal accounts associated with this counterparty.
-	CounterpartyID param.Field[string] `query:"counterparty_id"`
-	// Only return internal accounts with this currency.
-	Currency param.Field[shared.Currency] `query:"currency"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `query:"external_id"`
-	// Only return internal accounts associated with this legal entity.
-	LegalEntityID param.Field[string] `query:"legal_entity_id"`
-	// For example, if you want to query for records with metadata key `Type` and value
-	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
-	// parameters.
-	Metadata param.Field[map[string]string] `query:"metadata"`
-	// Only return internal accounts that can originate payments with this direction.
-	PaymentDirection param.Field[shared.TransactionDirection] `query:"payment_direction"`
-	// Only return internal accounts that can make this type of payment.
-	PaymentType param.Field[InternalAccountListParamsPaymentType] `query:"payment_type"`
-	PerPage     param.Field[int64]                                `query:"per_page"`
-	// Only return internal accounts with this status.
-	Status param.Field[InternalAccountListParamsStatus] `query:"status"`
+AfterCursor param.Field[string] `query:"after_cursor"`
+// Only return internal accounts associated with this counterparty.
+CounterpartyID param.Field[string] `query:"counterparty_id"`
+// Only return internal accounts with this currency.
+Currency param.Field[shared.Currency] `query:"currency"`
+// An optional user-defined 180 character unique identifier.
+ExternalID param.Field[string] `query:"external_id"`
+// Only return internal accounts associated with this legal entity.
+LegalEntityID param.Field[string] `query:"legal_entity_id"`
+// For example, if you want to query for records with metadata key `Type` and value
+// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
+// parameters.
+Metadata param.Field[map[string]string] `query:"metadata"`
+// Only return internal accounts that can originate payments with this direction.
+PaymentDirection param.Field[shared.TransactionDirection] `query:"payment_direction"`
+// Only return internal accounts that can make this type of payment.
+PaymentType param.Field[InternalAccountListParamsPaymentType] `query:"payment_type"`
+PerPage param.Field[int64] `query:"per_page"`
+// Only return internal accounts with this status.
+Status param.Field[InternalAccountListParamsStatus] `query:"status"`
 }
 
 // URLQuery serializes [InternalAccountListParams]'s query parameters as
 // `url.Values`.
 func (r InternalAccountListParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
+  return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+    ArrayFormat: apiquery.ArrayQueryFormatBrackets,
+    NestedFormat: apiquery.NestedQueryFormatBrackets,
+  })
 }
 
 // Only return internal accounts that can make this type of payment.
 type InternalAccountListParamsPaymentType string
 
 const (
-	InternalAccountListParamsPaymentTypeACH         InternalAccountListParamsPaymentType = "ach"
-	InternalAccountListParamsPaymentTypeAuBecs      InternalAccountListParamsPaymentType = "au_becs"
-	InternalAccountListParamsPaymentTypeBacs        InternalAccountListParamsPaymentType = "bacs"
-	InternalAccountListParamsPaymentTypeBook        InternalAccountListParamsPaymentType = "book"
-	InternalAccountListParamsPaymentTypeCard        InternalAccountListParamsPaymentType = "card"
-	InternalAccountListParamsPaymentTypeChats       InternalAccountListParamsPaymentType = "chats"
-	InternalAccountListParamsPaymentTypeCheck       InternalAccountListParamsPaymentType = "check"
-	InternalAccountListParamsPaymentTypeCrossBorder InternalAccountListParamsPaymentType = "cross_border"
-	InternalAccountListParamsPaymentTypeDkNets      InternalAccountListParamsPaymentType = "dk_nets"
-	InternalAccountListParamsPaymentTypeEft         InternalAccountListParamsPaymentType = "eft"
-	InternalAccountListParamsPaymentTypeGBFps       InternalAccountListParamsPaymentType = "gb_fps"
-	InternalAccountListParamsPaymentTypeMasav       InternalAccountListParamsPaymentType = "masav"
-	InternalAccountListParamsPaymentTypeMxCcen      InternalAccountListParamsPaymentType = "mx_ccen"
-	InternalAccountListParamsPaymentTypeNeft        InternalAccountListParamsPaymentType = "neft"
-	InternalAccountListParamsPaymentTypeNics        InternalAccountListParamsPaymentType = "nics"
-	InternalAccountListParamsPaymentTypeNzBecs      InternalAccountListParamsPaymentType = "nz_becs"
-	InternalAccountListParamsPaymentTypePlElixir    InternalAccountListParamsPaymentType = "pl_elixir"
-	InternalAccountListParamsPaymentTypeRtp         InternalAccountListParamsPaymentType = "rtp"
-	InternalAccountListParamsPaymentTypeSeBankgirot InternalAccountListParamsPaymentType = "se_bankgirot"
-	InternalAccountListParamsPaymentTypeSepa        InternalAccountListParamsPaymentType = "sepa"
-	InternalAccountListParamsPaymentTypeSgGiro      InternalAccountListParamsPaymentType = "sg_giro"
-	InternalAccountListParamsPaymentTypeSic         InternalAccountListParamsPaymentType = "sic"
-	InternalAccountListParamsPaymentTypeStablecoin  InternalAccountListParamsPaymentType = "stablecoin"
-	InternalAccountListParamsPaymentTypeWire        InternalAccountListParamsPaymentType = "wire"
-	InternalAccountListParamsPaymentTypeZengin      InternalAccountListParamsPaymentType = "zengin"
-)
+    InternalAccountListParamsPaymentTypeACH InternalAccountListParamsPaymentType = "ach"
+    InternalAccountListParamsPaymentTypeAuBecs InternalAccountListParamsPaymentType = "au_becs"
+    InternalAccountListParamsPaymentTypeBacs InternalAccountListParamsPaymentType = "bacs"
+    InternalAccountListParamsPaymentTypeBook InternalAccountListParamsPaymentType = "book"
+    InternalAccountListParamsPaymentTypeCard InternalAccountListParamsPaymentType = "card"
+    InternalAccountListParamsPaymentTypeChats InternalAccountListParamsPaymentType = "chats"
+    InternalAccountListParamsPaymentTypeCheck InternalAccountListParamsPaymentType = "check"
+    InternalAccountListParamsPaymentTypeCrossBorder InternalAccountListParamsPaymentType = "cross_border"
+    InternalAccountListParamsPaymentTypeDkNets InternalAccountListParamsPaymentType = "dk_nets"
+    InternalAccountListParamsPaymentTypeEft InternalAccountListParamsPaymentType = "eft"
+    InternalAccountListParamsPaymentTypeGBFps InternalAccountListParamsPaymentType = "gb_fps"
+    InternalAccountListParamsPaymentTypeMasav InternalAccountListParamsPaymentType = "masav"
+    InternalAccountListParamsPaymentTypeMxCcen InternalAccountListParamsPaymentType = "mx_ccen"
+    InternalAccountListParamsPaymentTypeNeft InternalAccountListParamsPaymentType = "neft"
+    InternalAccountListParamsPaymentTypeNics InternalAccountListParamsPaymentType = "nics"
+    InternalAccountListParamsPaymentTypeNzBecs InternalAccountListParamsPaymentType = "nz_becs"
+    InternalAccountListParamsPaymentTypePlElixir InternalAccountListParamsPaymentType = "pl_elixir"
+    InternalAccountListParamsPaymentTypeRtp InternalAccountListParamsPaymentType = "rtp"
+    InternalAccountListParamsPaymentTypeSeBankgirot InternalAccountListParamsPaymentType = "se_bankgirot"
+    InternalAccountListParamsPaymentTypeSepa InternalAccountListParamsPaymentType = "sepa"
+    InternalAccountListParamsPaymentTypeSgGiro InternalAccountListParamsPaymentType = "sg_giro"
+    InternalAccountListParamsPaymentTypeSic InternalAccountListParamsPaymentType = "sic"
+    InternalAccountListParamsPaymentTypeStablecoin InternalAccountListParamsPaymentType = "stablecoin"
+    InternalAccountListParamsPaymentTypeWire InternalAccountListParamsPaymentType = "wire"
+    InternalAccountListParamsPaymentTypeZengin InternalAccountListParamsPaymentType = "zengin"
+  )
 
-func (r InternalAccountListParamsPaymentType) IsKnown() bool {
-	switch r {
-	case InternalAccountListParamsPaymentTypeACH, InternalAccountListParamsPaymentTypeAuBecs, InternalAccountListParamsPaymentTypeBacs, InternalAccountListParamsPaymentTypeBook, InternalAccountListParamsPaymentTypeCard, InternalAccountListParamsPaymentTypeChats, InternalAccountListParamsPaymentTypeCheck, InternalAccountListParamsPaymentTypeCrossBorder, InternalAccountListParamsPaymentTypeDkNets, InternalAccountListParamsPaymentTypeEft, InternalAccountListParamsPaymentTypeGBFps, InternalAccountListParamsPaymentTypeMasav, InternalAccountListParamsPaymentTypeMxCcen, InternalAccountListParamsPaymentTypeNeft, InternalAccountListParamsPaymentTypeNics, InternalAccountListParamsPaymentTypeNzBecs, InternalAccountListParamsPaymentTypePlElixir, InternalAccountListParamsPaymentTypeRtp, InternalAccountListParamsPaymentTypeSeBankgirot, InternalAccountListParamsPaymentTypeSepa, InternalAccountListParamsPaymentTypeSgGiro, InternalAccountListParamsPaymentTypeSic, InternalAccountListParamsPaymentTypeStablecoin, InternalAccountListParamsPaymentTypeWire, InternalAccountListParamsPaymentTypeZengin:
-		return true
-	}
-	return false
+func (r InternalAccountListParamsPaymentType) IsKnown() (bool) {
+  switch r {
+  case InternalAccountListParamsPaymentTypeACH, InternalAccountListParamsPaymentTypeAuBecs, InternalAccountListParamsPaymentTypeBacs, InternalAccountListParamsPaymentTypeBook, InternalAccountListParamsPaymentTypeCard, InternalAccountListParamsPaymentTypeChats, InternalAccountListParamsPaymentTypeCheck, InternalAccountListParamsPaymentTypeCrossBorder, InternalAccountListParamsPaymentTypeDkNets, InternalAccountListParamsPaymentTypeEft, InternalAccountListParamsPaymentTypeGBFps, InternalAccountListParamsPaymentTypeMasav, InternalAccountListParamsPaymentTypeMxCcen, InternalAccountListParamsPaymentTypeNeft, InternalAccountListParamsPaymentTypeNics, InternalAccountListParamsPaymentTypeNzBecs, InternalAccountListParamsPaymentTypePlElixir, InternalAccountListParamsPaymentTypeRtp, InternalAccountListParamsPaymentTypeSeBankgirot, InternalAccountListParamsPaymentTypeSepa, InternalAccountListParamsPaymentTypeSgGiro, InternalAccountListParamsPaymentTypeSic, InternalAccountListParamsPaymentTypeStablecoin, InternalAccountListParamsPaymentTypeWire, InternalAccountListParamsPaymentTypeZengin:
+      return true
+  }
+  return false
 }
 
 // Only return internal accounts with this status.
 type InternalAccountListParamsStatus string
 
 const (
-	InternalAccountListParamsStatusActive            InternalAccountListParamsStatus = "active"
-	InternalAccountListParamsStatusPendingActivation InternalAccountListParamsStatus = "pending_activation"
-	InternalAccountListParamsStatusSuspended         InternalAccountListParamsStatus = "suspended"
-	InternalAccountListParamsStatusPendingClosure    InternalAccountListParamsStatus = "pending_closure"
-	InternalAccountListParamsStatusClosed            InternalAccountListParamsStatus = "closed"
-)
+    InternalAccountListParamsStatusActive InternalAccountListParamsStatus = "active"
+    InternalAccountListParamsStatusPendingActivation InternalAccountListParamsStatus = "pending_activation"
+    InternalAccountListParamsStatusSuspended InternalAccountListParamsStatus = "suspended"
+    InternalAccountListParamsStatusPendingClosure InternalAccountListParamsStatus = "pending_closure"
+    InternalAccountListParamsStatusClosed InternalAccountListParamsStatus = "closed"
+  )
 
-func (r InternalAccountListParamsStatus) IsKnown() bool {
-	switch r {
-	case InternalAccountListParamsStatusActive, InternalAccountListParamsStatusPendingActivation, InternalAccountListParamsStatusSuspended, InternalAccountListParamsStatusPendingClosure, InternalAccountListParamsStatusClosed:
-		return true
-	}
-	return false
+func (r InternalAccountListParamsStatus) IsKnown() (bool) {
+  switch r {
+  case InternalAccountListParamsStatusActive, InternalAccountListParamsStatusPendingActivation, InternalAccountListParamsStatusSuspended, InternalAccountListParamsStatusPendingClosure, InternalAccountListParamsStatusClosed:
+      return true
+  }
+  return false
 }
 
 type InternalAccountUpdateAccountCapabilityParams struct {
-	// A unique reference assigned by your bank for tracking and recognizing payment
-	// files. It is important this is formatted exactly how the bank assigned it.
-	Identifier param.Field[string] `json:"identifier" api:"required"`
+// A unique reference assigned by your bank for tracking and recognizing payment
+// files. It is important this is formatted exactly how the bank assigned it.
+Identifier param.Field[string] `json:"identifier" api:"required"`
 }
 
 func (r InternalAccountUpdateAccountCapabilityParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }

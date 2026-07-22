@@ -3,17 +3,17 @@
 package moderntreasury
 
 import (
-	"context"
-	"errors"
-	"fmt"
-	"net/http"
-	"net/url"
-	"slices"
+  "context"
+  "errors"
+  "fmt"
+  "net/http"
+  "net/url"
+  "slices"
 
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
 // JournalEntryService contains methods and other services that help with
@@ -23,53 +23,53 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewJournalEntryService] method instead.
 type JournalEntryService struct {
-	Options []option.RequestOption
+Options []option.RequestOption
 }
 
 // NewJournalEntryService generates a new service that applies the given options to
 // each request. These options are applied after the parent client's options (if
 // there is one), and before any request-specific options.
 func NewJournalEntryService(opts ...option.RequestOption) (r *JournalEntryService) {
-	r = &JournalEntryService{}
-	r.Options = opts
-	return
+  r = &JournalEntryService{}
+  r.Options = opts
+  return
 }
 
 // Retrieve a specific journal entry
 func (r *JournalEntryService) Get(ctx context.Context, id string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return err
-	}
-	path := fmt.Sprintf("api/journal_entries/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, nil, opts...)
-	return err
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return err
+  }
+  path := fmt.Sprintf("api/journal_entries/%s", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, nil, opts...)
+  return err
 }
 
 // Retrieve a list of journal entries
 func (r *JournalEntryService) List(ctx context.Context, query JournalEntryListParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	path := "api/journal_entries"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, nil, opts...)
-	return err
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+  path := "api/journal_entries"
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, nil, opts...)
+  return err
 }
 
 type JournalEntryListParams struct {
-	// The ID of the journal report
-	JournalReportID param.Field[string] `query:"journal_report_id" api:"required"`
-	// Page number for pagination
-	Page param.Field[int64] `query:"page"`
-	// Number of items per page
-	PerPage param.Field[int64] `query:"per_page"`
+// The ID of the journal report
+JournalReportID param.Field[string] `query:"journal_report_id" api:"required"`
+// Page number for pagination
+Page param.Field[int64] `query:"page"`
+// Number of items per page
+PerPage param.Field[int64] `query:"per_page"`
 }
 
 // URLQuery serializes [JournalEntryListParams]'s query parameters as `url.Values`.
 func (r JournalEntryListParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
+  return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+    ArrayFormat: apiquery.ArrayQueryFormatBrackets,
+    NestedFormat: apiquery.NestedQueryFormatBrackets,
+  })
 }

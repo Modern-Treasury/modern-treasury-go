@@ -3,20 +3,20 @@
 package moderntreasury
 
 import (
-	"context"
-	"errors"
-	"fmt"
-	"net/http"
-	"net/url"
-	"slices"
-	"time"
+  "context"
+  "errors"
+  "fmt"
+  "net/http"
+  "net/url"
+  "slices"
+  "time"
 
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/option"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination"
 )
 
 // TransactionLineItemService contains methods and other services that help with
@@ -26,144 +26,144 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewTransactionLineItemService] method instead.
 type TransactionLineItemService struct {
-	Options []option.RequestOption
+Options []option.RequestOption
 }
 
 // NewTransactionLineItemService generates a new service that applies the given
 // options to each request. These options are applied after the parent client's
 // options (if there is one), and before any request-specific options.
 func NewTransactionLineItemService(opts ...option.RequestOption) (r *TransactionLineItemService) {
-	r = &TransactionLineItemService{}
-	r.Options = opts
-	return
+  r = &TransactionLineItemService{}
+  r.Options = opts
+  return
 }
 
 // create transaction line items
 func (r *TransactionLineItemService) New(ctx context.Context, body TransactionLineItemNewParams, opts ...option.RequestOption) (res *TransactionLineItem, err error) {
-	opts = slices.Concat(r.Options, opts)
-	path := "api/transaction_line_items"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  path := "api/transaction_line_items"
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+  return res, err
 }
 
 // get transaction line item
 func (r *TransactionLineItemService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *TransactionLineItem, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/transaction_line_items/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return nil, err
+  }
+  path := fmt.Sprintf("api/transaction_line_items/%s", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+  return res, err
 }
 
 // list transaction_line_items
 func (r *TransactionLineItemService) List(ctx context.Context, query TransactionLineItemListParams, opts ...option.RequestOption) (res *pagination.Page[TransactionLineItem], err error) {
-	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := "api/transaction_line_items"
-	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
-	if err != nil {
-		return nil, err
-	}
-	err = cfg.Execute()
-	if err != nil {
-		return nil, err
-	}
-	res.SetPageConfig(cfg, raw)
-	return res, nil
+  var raw *http.Response
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
+  path := "api/transaction_line_items"
+  cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+  if err != nil {
+    return nil, err
+  }
+  err = cfg.Execute()
+  if err != nil {
+    return nil, err
+  }
+  res.SetPageConfig(cfg, raw)
+  return res, nil
 }
 
 // list transaction_line_items
-func (r *TransactionLineItemService) ListAutoPaging(ctx context.Context, query TransactionLineItemListParams, opts ...option.RequestOption) *pagination.PageAutoPager[TransactionLineItem] {
-	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *TransactionLineItemService) ListAutoPaging(ctx context.Context, query TransactionLineItemListParams, opts ...option.RequestOption) (*pagination.PageAutoPager[TransactionLineItem]) {
+  return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // delete transaction line item
 func (r *TransactionLineItemService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return err
-	}
-	path := fmt.Sprintf("api/transaction_line_items/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return err
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return err
+  }
+  path := fmt.Sprintf("api/transaction_line_items/%s", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
+  return err
 }
 
 type TransactionLineItem struct {
-	ID string `json:"id" api:"required" format:"uuid"`
-	// If a matching object exists in Modern Treasury, `amount` will be populated.
-	// Value in specified currency's smallest unit (taken from parent Transaction).
-	Amount int64 `json:"amount" api:"required"`
-	// The ID for the counterparty for this transaction line item.
-	CounterpartyID string    `json:"counterparty_id" api:"required,nullable"`
-	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
-	// If no matching object is found, `description` will be a free-form text field
-	// describing the line item. This field may contain personally identifiable
-	// information (PII) and is not included in API responses by default. Learn more
-	// about changing your settings at
-	// https://docs.moderntreasury.com/reference/personally-identifiable-information.
-	Description string    `json:"description" api:"required"`
-	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
-	// The ID of the reconciled Expected Payment, otherwise `null`.
-	ExpectedPaymentID string `json:"expected_payment_id" api:"required,nullable"`
-	// This field will be true if this object exists in the live environment, or false
-	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode" api:"required"`
-	Object   string `json:"object" api:"required"`
-	// Describes whether this line item should be counted towards the corresponding
-	// transaction’s reconciliation.
-	Reconcilable bool `json:"reconcilable" api:"required"`
-	// The ID of the reconciliation group this line item belongs to, otherwise `null`.
-	ReconciliationGroupID string `json:"reconciliation_group_id" api:"required,nullable"`
-	// If a matching object exists in Modern Treasury, the ID will be populated here,
-	// otherwise `null`.
-	TransactableID string `json:"transactable_id" api:"required,nullable"`
-	// If a matching object exists in Modern Treasury, the type will be populated here,
-	// otherwise `null`.
-	TransactableType TransactionLineItemTransactableType `json:"transactable_type" api:"required,nullable"`
-	// The ID of the parent transaction.
-	TransactionID string `json:"transaction_id" api:"required"`
-	// Indicates whether the line item is `originating` or `receiving` (see
-	// https://www.moderntreasury.com/journal/beginners-guide-to-ach for more).
-	Type      TransactionLineItemType `json:"type" api:"required"`
-	UpdatedAt time.Time               `json:"updated_at" api:"required" format:"date-time"`
-	JSON      transactionLineItemJSON `json:"-"`
+ID string `json:"id" api:"required" format:"uuid"`
+// If a matching object exists in Modern Treasury, `amount` will be populated.
+// Value in specified currency's smallest unit (taken from parent Transaction).
+Amount int64 `json:"amount" api:"required"`
+// The ID for the counterparty for this transaction line item.
+CounterpartyID string `json:"counterparty_id" api:"required,nullable"`
+CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
+// If no matching object is found, `description` will be a free-form text field
+// describing the line item. This field may contain personally identifiable
+// information (PII) and is not included in API responses by default. Learn more
+// about changing your settings at
+// https://docs.moderntreasury.com/reference/personally-identifiable-information.
+Description string `json:"description" api:"required"`
+DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+// The ID of the reconciled Expected Payment, otherwise `null`.
+ExpectedPaymentID string `json:"expected_payment_id" api:"required,nullable"`
+// This field will be true if this object exists in the live environment, or false
+// if it exists in the test environment.
+LiveMode bool `json:"live_mode" api:"required"`
+Object string `json:"object" api:"required"`
+// Describes whether this line item should be counted towards the corresponding
+// transaction’s reconciliation.
+Reconcilable bool `json:"reconcilable" api:"required"`
+// The ID of the reconciliation group this line item belongs to, otherwise `null`.
+ReconciliationGroupID string `json:"reconciliation_group_id" api:"required,nullable"`
+// If a matching object exists in Modern Treasury, the ID will be populated here,
+// otherwise `null`.
+TransactableID string `json:"transactable_id" api:"required,nullable"`
+// If a matching object exists in Modern Treasury, the type will be populated here,
+// otherwise `null`.
+TransactableType TransactionLineItemTransactableType `json:"transactable_type" api:"required,nullable"`
+// The ID of the parent transaction.
+TransactionID string `json:"transaction_id" api:"required"`
+// Indicates whether the line item is `originating` or `receiving` (see
+// https://www.moderntreasury.com/journal/beginners-guide-to-ach for more).
+Type TransactionLineItemType `json:"type" api:"required"`
+UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
+JSON transactionLineItemJSON `json:"-"`
 }
 
 // transactionLineItemJSON contains the JSON metadata for the struct
 // [TransactionLineItem]
 type transactionLineItemJSON struct {
-	ID                    apijson.Field
-	Amount                apijson.Field
-	CounterpartyID        apijson.Field
-	CreatedAt             apijson.Field
-	Description           apijson.Field
-	DiscardedAt           apijson.Field
-	ExpectedPaymentID     apijson.Field
-	LiveMode              apijson.Field
-	Object                apijson.Field
-	Reconcilable          apijson.Field
-	ReconciliationGroupID apijson.Field
-	TransactableID        apijson.Field
-	TransactableType      apijson.Field
-	TransactionID         apijson.Field
-	Type                  apijson.Field
-	UpdatedAt             apijson.Field
-	raw                   string
-	ExtraFields           map[string]apijson.Field
+ID apijson.Field
+Amount apijson.Field
+CounterpartyID apijson.Field
+CreatedAt apijson.Field
+Description apijson.Field
+DiscardedAt apijson.Field
+ExpectedPaymentID apijson.Field
+LiveMode apijson.Field
+Object apijson.Field
+Reconcilable apijson.Field
+ReconciliationGroupID apijson.Field
+TransactableID apijson.Field
+TransactableType apijson.Field
+TransactionID apijson.Field
+Type apijson.Field
+UpdatedAt apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *TransactionLineItem) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r transactionLineItemJSON) RawJSON() string {
-	return r.raw
+func (r transactionLineItemJSON) RawJSON() (string) {
+  return r.raw
 }
 
 // If a matching object exists in Modern Treasury, the type will be populated here,
@@ -171,19 +171,19 @@ func (r transactionLineItemJSON) RawJSON() string {
 type TransactionLineItemTransactableType string
 
 const (
-	TransactionLineItemTransactableTypeIncomingPaymentDetail TransactionLineItemTransactableType = "incoming_payment_detail"
-	TransactionLineItemTransactableTypePaymentOrder          TransactionLineItemTransactableType = "payment_order"
-	TransactionLineItemTransactableTypePaymentOrderAttempt   TransactionLineItemTransactableType = "payment_order_attempt"
-	TransactionLineItemTransactableTypeReturn                TransactionLineItemTransactableType = "return"
-	TransactionLineItemTransactableTypeReversal              TransactionLineItemTransactableType = "reversal"
-)
+    TransactionLineItemTransactableTypeIncomingPaymentDetail TransactionLineItemTransactableType = "incoming_payment_detail"
+    TransactionLineItemTransactableTypePaymentOrder TransactionLineItemTransactableType = "payment_order"
+    TransactionLineItemTransactableTypePaymentOrderAttempt TransactionLineItemTransactableType = "payment_order_attempt"
+    TransactionLineItemTransactableTypeReturn TransactionLineItemTransactableType = "return"
+    TransactionLineItemTransactableTypeReversal TransactionLineItemTransactableType = "reversal"
+  )
 
-func (r TransactionLineItemTransactableType) IsKnown() bool {
-	switch r {
-	case TransactionLineItemTransactableTypeIncomingPaymentDetail, TransactionLineItemTransactableTypePaymentOrder, TransactionLineItemTransactableTypePaymentOrderAttempt, TransactionLineItemTransactableTypeReturn, TransactionLineItemTransactableTypeReversal:
-		return true
-	}
-	return false
+func (r TransactionLineItemTransactableType) IsKnown() (bool) {
+  switch r {
+  case TransactionLineItemTransactableTypeIncomingPaymentDetail, TransactionLineItemTransactableTypePaymentOrder, TransactionLineItemTransactableTypePaymentOrderAttempt, TransactionLineItemTransactableTypeReturn, TransactionLineItemTransactableTypeReversal:
+      return true
+  }
+  return false
 }
 
 // Indicates whether the line item is `originating` or `receiving` (see
@@ -191,60 +191,60 @@ func (r TransactionLineItemTransactableType) IsKnown() bool {
 type TransactionLineItemType string
 
 const (
-	TransactionLineItemTypeOriginating TransactionLineItemType = "originating"
-	TransactionLineItemTypeReceiving   TransactionLineItemType = "receiving"
-)
+    TransactionLineItemTypeOriginating TransactionLineItemType = "originating"
+    TransactionLineItemTypeReceiving TransactionLineItemType = "receiving"
+  )
 
-func (r TransactionLineItemType) IsKnown() bool {
-	switch r {
-	case TransactionLineItemTypeOriginating, TransactionLineItemTypeReceiving:
-		return true
-	}
-	return false
+func (r TransactionLineItemType) IsKnown() (bool) {
+  switch r {
+  case TransactionLineItemTypeOriginating, TransactionLineItemTypeReceiving:
+      return true
+  }
+  return false
 }
 
 type TransactionLineItemNewParams struct {
-	// If a matching object exists in Modern Treasury, `amount` will be populated.
-	// Value in specified currency's smallest unit (taken from parent Transaction).
-	Amount param.Field[int64] `json:"amount" api:"required"`
-	// The ID of the reconciled Expected Payment, otherwise `null`.
-	ExpectedPaymentID param.Field[string] `json:"expected_payment_id" api:"required" format:"uuid"`
-	// The ID of the parent transaction.
-	TransactionID param.Field[string] `json:"transaction_id" api:"required" format:"uuid"`
+// If a matching object exists in Modern Treasury, `amount` will be populated.
+// Value in specified currency's smallest unit (taken from parent Transaction).
+Amount param.Field[int64] `json:"amount" api:"required"`
+// The ID of the reconciled Expected Payment, otherwise `null`.
+ExpectedPaymentID param.Field[string] `json:"expected_payment_id" api:"required" format:"uuid"`
+// The ID of the parent transaction.
+TransactionID param.Field[string] `json:"transaction_id" api:"required" format:"uuid"`
 }
 
 func (r TransactionLineItemNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type TransactionLineItemListParams struct {
-	ID            param.Field[map[string]string]                 `query:"id"`
-	AfterCursor   param.Field[string]                            `query:"after_cursor"`
-	PerPage       param.Field[int64]                             `query:"per_page"`
-	TransactionID param.Field[string]                            `query:"transaction_id"`
-	Type          param.Field[TransactionLineItemListParamsType] `query:"type"`
+ID param.Field[map[string]string] `query:"id"`
+AfterCursor param.Field[string] `query:"after_cursor"`
+PerPage param.Field[int64] `query:"per_page"`
+TransactionID param.Field[string] `query:"transaction_id"`
+Type param.Field[TransactionLineItemListParamsType] `query:"type"`
 }
 
 // URLQuery serializes [TransactionLineItemListParams]'s query parameters as
 // `url.Values`.
 func (r TransactionLineItemListParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
+  return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+    ArrayFormat: apiquery.ArrayQueryFormatBrackets,
+    NestedFormat: apiquery.NestedQueryFormatBrackets,
+  })
 }
 
 type TransactionLineItemListParamsType string
 
 const (
-	TransactionLineItemListParamsTypeOriginating TransactionLineItemListParamsType = "originating"
-	TransactionLineItemListParamsTypeReceiving   TransactionLineItemListParamsType = "receiving"
-)
+    TransactionLineItemListParamsTypeOriginating TransactionLineItemListParamsType = "originating"
+    TransactionLineItemListParamsTypeReceiving TransactionLineItemListParamsType = "receiving"
+  )
 
-func (r TransactionLineItemListParamsType) IsKnown() bool {
-	switch r {
-	case TransactionLineItemListParamsTypeOriginating, TransactionLineItemListParamsTypeReceiving:
-		return true
-	}
-	return false
+func (r TransactionLineItemListParamsType) IsKnown() (bool) {
+  switch r {
+  case TransactionLineItemListParamsTypeOriginating, TransactionLineItemListParamsTypeReceiving:
+      return true
+  }
+  return false
 }

@@ -166,8 +166,11 @@ func (e *encoder) newArrayTypeEncoder(t reflect.Type) encoderFunc {
 	itemEncoder := e.typeEncoder(t.Elem())
 
 	return func(key string, v reflect.Value, writer *multipart.Writer) error {
+		if key != "" {
+			key = key + "."
+		}
 		for i := 0; i < v.Len(); i++ {
-			err := itemEncoder(renderKeyPath(key, strconv.Itoa(i)), v.Index(i), writer)
+			err := itemEncoder(key+strconv.Itoa(i), v.Index(i), writer)
 			if err != nil {
 				return err
 			}
@@ -240,9 +243,13 @@ func (e *encoder) newStructTypeEncoder(t reflect.Type) encoderFunc {
 	})
 
 	return func(key string, value reflect.Value, writer *multipart.Writer) error {
+		if key != "" {
+			key = key + "."
+		}
+
 		for _, ef := range encoderFields {
 			field := value.FieldByIndex(ef.idx)
-			err := ef.fn(renderKeyPath(key, ef.tag.name), field, writer)
+			err := ef.fn(key+ef.tag.name, field, writer)
 			if err != nil {
 				return err
 			}
@@ -338,6 +345,10 @@ func (e *encoder) encodeMapEntries(key string, v reflect.Value, writer *multipar
 		value reflect.Value
 	}
 
+	if key != "" {
+		key = key + "."
+	}
+
 	pairs := []mapPair{}
 
 	iter := v.MapRange()
@@ -356,7 +367,7 @@ func (e *encoder) encodeMapEntries(key string, v reflect.Value, writer *multipar
 
 	elementEncoder := e.typeEncoder(v.Type().Elem())
 	for _, p := range pairs {
-		err := elementEncoder(renderKeyPath(key, p.key), p.value, writer)
+		err := elementEncoder(key+string(p.key), p.value, writer)
 		if err != nil {
 			return err
 		}
@@ -369,14 +380,4 @@ func (e *encoder) newMapEncoder(t reflect.Type) encoderFunc {
 	return func(key string, value reflect.Value, writer *multipart.Writer) error {
 		return e.encodeMapEntries(key, value, writer)
 	}
-}
-
-// renderKeyPath produces bracket-notation key paths for multipart form encoding.
-// For example, renderKeyPath("metadata", "allocation_id") returns "metadata[allocation_id]".
-// This matches the format expected by servers for nested multipart form data.
-func renderKeyPath(key string, subkey string) string {
-	if key == "" {
-		return subkey
-	}
-	return fmt.Sprintf("%s[%s]", key, subkey)
 }

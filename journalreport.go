@@ -3,18 +3,18 @@
 package moderntreasury
 
 import (
-	"context"
-	"errors"
-	"fmt"
-	"net/http"
-	"net/url"
-	"slices"
+  "context"
+  "errors"
+  "fmt"
+  "net/http"
+  "net/url"
+  "slices"
 
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
 // JournalReportService contains methods and other services that help with
@@ -24,87 +24,87 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewJournalReportService] method instead.
 type JournalReportService struct {
-	Options []option.RequestOption
+Options []option.RequestOption
 }
 
 // NewJournalReportService generates a new service that applies the given options
 // to each request. These options are applied after the parent client's options (if
 // there is one), and before any request-specific options.
 func NewJournalReportService(opts ...option.RequestOption) (r *JournalReportService) {
-	r = &JournalReportService{}
-	r.Options = opts
-	return
+  r = &JournalReportService{}
+  r.Options = opts
+  return
 }
 
 // Retrieve a specific journal report
 func (r *JournalReportService) Get(ctx context.Context, id string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return err
-	}
-	path := fmt.Sprintf("api/journal_reports/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, nil, opts...)
-	return err
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return err
+  }
+  path := fmt.Sprintf("api/journal_reports/%s", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, nil, opts...)
+  return err
 }
 
 // Update a journal report
 func (r *JournalReportService) Update(ctx context.Context, id string, body JournalReportUpdateParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return err
-	}
-	path := fmt.Sprintf("api/journal_reports/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, nil, opts...)
-	return err
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return err
+  }
+  path := fmt.Sprintf("api/journal_reports/%s", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, nil, opts...)
+  return err
 }
 
 // Retrieve a list of journal reports
 func (r *JournalReportService) List(ctx context.Context, query JournalReportListParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	path := "api/journal_reports"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, nil, opts...)
-	return err
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+  path := "api/journal_reports"
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, nil, opts...)
+  return err
 }
 
 type JournalReportUpdateParams struct {
-	Metadata param.Field[interface{}] `json:"metadata"`
-	Status   param.Field[string]      `json:"status"`
+Metadata param.Field[interface{}] `json:"metadata"`
+Status param.Field[string] `json:"status"`
 }
 
 func (r JournalReportUpdateParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type JournalReportListParams struct {
-	Status param.Field[JournalReportListParamsStatus] `query:"status"`
+Status param.Field[JournalReportListParamsStatus] `query:"status"`
 }
 
 // URLQuery serializes [JournalReportListParams]'s query parameters as
 // `url.Values`.
 func (r JournalReportListParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
+  return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+    ArrayFormat: apiquery.ArrayQueryFormatBrackets,
+    NestedFormat: apiquery.NestedQueryFormatBrackets,
+  })
 }
 
 type JournalReportListParamsStatus string
 
 const (
-	JournalReportListParamsStatusDraft     JournalReportListParamsStatus = "draft"
-	JournalReportListParamsStatusPublished JournalReportListParamsStatus = "published"
-	JournalReportListParamsStatusReady     JournalReportListParamsStatus = "ready"
-)
+    JournalReportListParamsStatusDraft JournalReportListParamsStatus = "draft"
+    JournalReportListParamsStatusPublished JournalReportListParamsStatus = "published"
+    JournalReportListParamsStatusReady JournalReportListParamsStatus = "ready"
+  )
 
-func (r JournalReportListParamsStatus) IsKnown() bool {
-	switch r {
-	case JournalReportListParamsStatusDraft, JournalReportListParamsStatusPublished, JournalReportListParamsStatusReady:
-		return true
-	}
-	return false
+func (r JournalReportListParamsStatus) IsKnown() (bool) {
+  switch r {
+  case JournalReportListParamsStatusDraft, JournalReportListParamsStatusPublished, JournalReportListParamsStatusReady:
+      return true
+  }
+  return false
 }

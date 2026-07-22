@@ -3,8 +3,8 @@
 package moderntreasury
 
 import (
-	"net/http"
-	"time"
+  "net/http"
+  "time"
 )
 
 // defaultResponseHeaderTimeout bounds the time between a fully written request
@@ -21,10 +21,10 @@ const defaultResponseHeaderTimeout = 10 * time.Minute
 // distributed tracing), the wrapping is preserved and the header timeout is
 // skipped.
 func defaultHTTPClient() *http.Client {
-	if t, ok := http.DefaultTransport.(*http.Transport); ok {
-		t = t.Clone()
-		t.ResponseHeaderTimeout = defaultResponseHeaderTimeout
-		return &http.Client{Transport: t}
-	}
-	return &http.Client{Transport: http.DefaultTransport}
+  if t, ok := http.DefaultTransport.(*http.Transport); ok {
+    t = t.Clone()
+    t.ResponseHeaderTimeout = defaultResponseHeaderTimeout
+    return &http.Client{Transport: t}
+  }
+  return &http.Client{Transport: http.DefaultTransport}
 }

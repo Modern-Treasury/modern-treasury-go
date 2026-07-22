@@ -3,525 +3,535 @@
 package moderntreasury_test
 
 import (
-	"context"
-	"errors"
-	"os"
-	"testing"
-	"time"
+  "context"
+  "errors"
+  "os"
+  "testing"
+  "time"
 
-	"github.com/Modern-Treasury/modern-treasury-go/v2"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/testutil"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
+  "github.com/Modern-Treasury/modern-treasury-go/v2"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/testutil"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/option"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
 
 func TestCounterpartyNewWithOptionalParams(t *testing.T) {
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := moderntreasury.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
-		option.WithOrganizationID("my-organization-ID"),
-	)
-	_, err := client.Counterparties.New(context.TODO(), moderntreasury.CounterpartyNewParams{
-		Name: moderntreasury.F("name"),
-		Accounting: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccounting{
-			Type: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountingTypeCustomer),
-		}),
-		Accounts: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccount{{
-			AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetail{{
-				AccountNumber:     moderntreasury.F("account_number"),
-				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber),
-			}}),
-			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
-			ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{
-				ContactIdentifier:     moderntreasury.F("contact_identifier"),
-				ContactIdentifierType: moderntreasury.F(moderntreasury.ContactDetailCreateRequestContactIdentifierTypeEmail),
-			}}),
-			ExternalID: moderntreasury.F("external_id"),
-			LedgerAccount: moderntreasury.F(shared.LedgerAccountCreateRequestParam{
-				Currency:                 moderntreasury.F("currency"),
-				LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				Name:                     moderntreasury.F("name"),
-				NormalBalance:            moderntreasury.F(shared.TransactionDirectionCredit),
-				CurrencyExponent:         moderntreasury.F(int64(0)),
-				Description:              moderntreasury.F("description"),
-				ExternalID:               moderntreasury.F("external_id"),
-				LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
-				LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				LedgerableType:           moderntreasury.F(shared.LedgerAccountCreateRequestLedgerableTypeCounterparty),
-				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
-					"foo":    "bar",
-					"modern": "treasury",
-				}),
-			}),
-			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
-				"foo":    "bar",
-				"modern": "treasury",
-			}),
-			Name: moderntreasury.F("name"),
-			PartyAddress: moderntreasury.F(shared.AddressRequestParam{
-				Country:    moderntreasury.F("country"),
-				Line1:      moderntreasury.F("line1"),
-				Line2:      moderntreasury.F("line2"),
-				Locality:   moderntreasury.F("locality"),
-				PostalCode: moderntreasury.F("postal_code"),
-				Region:     moderntreasury.F("region"),
-			}),
-			PartyIdentifier:     moderntreasury.F("party_identifier"),
-			PartyName:           moderntreasury.F("party_name"),
-			PartyType:           moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyTypeBusiness),
-			PlaidProcessorToken: moderntreasury.F("plaid_processor_token"),
-			RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetail{{
-				RoutingNumber:     moderntreasury.F("routing_number"),
-				RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
-				PaymentType:       moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
-			}}),
-		}}),
-		Email:      moderntreasury.F("dev@stainless.com"),
-		ExternalID: moderntreasury.F("external_id"),
-		LedgerType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
-		LegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntity{
-			LegalEntityType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness),
-			Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{{
-				Country:      moderntreasury.F("country"),
-				Line1:        moderntreasury.F("line1"),
-				Locality:     moderntreasury.F("locality"),
-				PostalCode:   moderntreasury.F("postal_code"),
-				Region:       moderntreasury.F("region"),
-				AddressTypes: moderntreasury.F([]shared.LegalEntityAddressCreateRequestAddressType{shared.LegalEntityAddressCreateRequestAddressTypeBusiness}),
-				Line2:        moderntreasury.F("line2"),
-				Primary:      moderntreasury.F(true),
-			}}),
-			BankSettings: moderntreasury.F(shared.LegalEntityBankSettingsParam{
-				ID:                          moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				BackupWithholdingPercentage: moderntreasury.F(int64(0)),
-				CreatedAt:                   moderntreasury.F(time.Now()),
-				DiscardedAt:                 moderntreasury.F(time.Now()),
-				EnableBackupWithholding:     moderntreasury.F(true),
-				LiveMode:                    moderntreasury.F(true),
-				Object:                      moderntreasury.F("object"),
-				PrivacyOptOut:               moderntreasury.F(true),
-				RegulationO:                 moderntreasury.F(true),
-				UpdatedAt:                   moderntreasury.F(time.Now()),
-			}),
-			BusinessDescription:    moderntreasury.F("business_description"),
-			BusinessName:           moderntreasury.F("business_name"),
-			CitizenshipCountry:     moderntreasury.F("citizenship_country"),
-			ComplianceDetails:      moderntreasury.F[any](map[string]interface{}{}),
-			ConnectionID:           moderntreasury.F("connection_id"),
-			CountryOfIncorporation: moderntreasury.F("country_of_incorporation"),
-			DateFormed:             moderntreasury.F(time.Now()),
-			DateOfBirth:            moderntreasury.F(time.Now()),
-			Documents: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityDocument{{
-				DocumentType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityDocumentsDocumentTypeArticlesOfIncorporation),
-				FileData:     moderntreasury.F("file_data"),
-				Filename:     moderntreasury.F("filename"),
-			}}),
-			DoingBusinessAsNames:   moderntreasury.F([]string{"string"}),
-			Email:                  moderntreasury.F("email"),
-			ExpectedActivityVolume: moderntreasury.F(int64(0)),
-			ExternalID:             moderntreasury.F("external_id"),
-			FirstName:              moderntreasury.F("first_name"),
-			Identifications: moderntreasury.F([]shared.IdentificationCreateRequestParam{{
-				IDNumber: moderntreasury.F("id_number"),
-				IDType:   moderntreasury.F(shared.IdentificationCreateRequestIDTypeArCuil),
-				Documents: moderntreasury.F([]shared.IdentificationCreateRequestDocumentParam{{
-					DocumentType: moderntreasury.F(shared.IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation),
-					FileData:     moderntreasury.F("file_data"),
-					Filename:     moderntreasury.F("filename"),
-				}}),
-				ExpirationDate: moderntreasury.F(time.Now()),
-				IssuingCountry: moderntreasury.F("issuing_country"),
-				IssuingRegion:  moderntreasury.F("issuing_region"),
-			}}),
-			IndustryClassifications: moderntreasury.F([]shared.LegalEntityIndustryClassificationParam{{
-				ID:                  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				ClassificationCodes: moderntreasury.F([]string{"string"}),
-				ClassificationType:  moderntreasury.F(shared.LegalEntityIndustryClassificationClassificationTypeAnzsic),
-				CreatedAt:           moderntreasury.F(time.Now()),
-				DiscardedAt:         moderntreasury.F(time.Now()),
-				LiveMode:            moderntreasury.F(true),
-				Object:              moderntreasury.F("object"),
-				UpdatedAt:           moderntreasury.F(time.Now()),
-			}}),
-			IntendedUse: moderntreasury.F("intended_use"),
-			LastName:    moderntreasury.F("last_name"),
-			LegalEntityAssociations: moderntreasury.F([]shared.LegalEntityAssociationInlineCreateParam{{
-				RelationshipTypes: moderntreasury.F([]shared.LegalEntityAssociationInlineCreateRelationshipType{shared.LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner}),
-				ChildLegalEntity: moderntreasury.F(shared.ChildLegalEntityCreateParam{
-					Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{{
-						Country:      moderntreasury.F("country"),
-						Line1:        moderntreasury.F("line1"),
-						Locality:     moderntreasury.F("locality"),
-						PostalCode:   moderntreasury.F("postal_code"),
-						Region:       moderntreasury.F("region"),
-						AddressTypes: moderntreasury.F([]shared.LegalEntityAddressCreateRequestAddressType{shared.LegalEntityAddressCreateRequestAddressTypeBusiness}),
-						Line2:        moderntreasury.F("line2"),
-						Primary:      moderntreasury.F(true),
-					}}),
-					BankSettings: moderntreasury.F(shared.LegalEntityBankSettingsParam{
-						ID:                          moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-						BackupWithholdingPercentage: moderntreasury.F(int64(0)),
-						CreatedAt:                   moderntreasury.F(time.Now()),
-						DiscardedAt:                 moderntreasury.F(time.Now()),
-						EnableBackupWithholding:     moderntreasury.F(true),
-						LiveMode:                    moderntreasury.F(true),
-						Object:                      moderntreasury.F("object"),
-						PrivacyOptOut:               moderntreasury.F(true),
-						RegulationO:                 moderntreasury.F(true),
-						UpdatedAt:                   moderntreasury.F(time.Now()),
-					}),
-					BusinessDescription:    moderntreasury.F("business_description"),
-					BusinessName:           moderntreasury.F("business_name"),
-					CitizenshipCountry:     moderntreasury.F("citizenship_country"),
-					ComplianceDetails:      moderntreasury.F[any](map[string]interface{}{}),
-					ConnectionID:           moderntreasury.F("connection_id"),
-					CountryOfIncorporation: moderntreasury.F("country_of_incorporation"),
-					DateFormed:             moderntreasury.F(time.Now()),
-					DateOfBirth:            moderntreasury.F(time.Now()),
-					Documents: moderntreasury.F([]shared.ChildLegalEntityCreateDocumentParam{{
-						DocumentType: moderntreasury.F(shared.ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation),
-						FileData:     moderntreasury.F("file_data"),
-						Filename:     moderntreasury.F("filename"),
-					}}),
-					DoingBusinessAsNames:   moderntreasury.F([]string{"string"}),
-					Email:                  moderntreasury.F("email"),
-					ExpectedActivityVolume: moderntreasury.F(int64(0)),
-					ExternalID:             moderntreasury.F("external_id"),
-					FirstName:              moderntreasury.F("first_name"),
-					Identifications: moderntreasury.F([]shared.IdentificationCreateRequestParam{{
-						IDNumber: moderntreasury.F("id_number"),
-						IDType:   moderntreasury.F(shared.IdentificationCreateRequestIDTypeArCuil),
-						Documents: moderntreasury.F([]shared.IdentificationCreateRequestDocumentParam{{
-							DocumentType: moderntreasury.F(shared.IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation),
-							FileData:     moderntreasury.F("file_data"),
-							Filename:     moderntreasury.F("filename"),
-						}}),
-						ExpirationDate: moderntreasury.F(time.Now()),
-						IssuingCountry: moderntreasury.F("issuing_country"),
-						IssuingRegion:  moderntreasury.F("issuing_region"),
-					}}),
-					IndustryClassifications: moderntreasury.F([]shared.LegalEntityIndustryClassificationParam{{
-						ID:                  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-						ClassificationCodes: moderntreasury.F([]string{"string"}),
-						ClassificationType:  moderntreasury.F(shared.LegalEntityIndustryClassificationClassificationTypeAnzsic),
-						CreatedAt:           moderntreasury.F(time.Now()),
-						DiscardedAt:         moderntreasury.F(time.Now()),
-						LiveMode:            moderntreasury.F(true),
-						Object:              moderntreasury.F("object"),
-						UpdatedAt:           moderntreasury.F(time.Now()),
-					}}),
-					IntendedUse:             moderntreasury.F("intended_use"),
-					LastName:                moderntreasury.F("last_name"),
-					LegalEntityAssociations: moderntreasury.F([]shared.LegalEntityAssociationInlineCreateParam{}),
-					LegalEntityType:         moderntreasury.F(shared.ChildLegalEntityCreateLegalEntityTypeBusiness),
-					LegalStructure:          moderntreasury.F(shared.ChildLegalEntityCreateLegalStructureCorporation),
-					ListedExchange:          moderntreasury.F("listed_exchange"),
-					Metadata: moderntreasury.F(map[string]string{
-						"key":    "value",
-						"foo":    "bar",
-						"modern": "treasury",
-					}),
-					MiddleName:             moderntreasury.F("middle_name"),
-					OperatingJurisdictions: moderntreasury.F([]string{"string"}),
-					PhoneNumbers: moderntreasury.F([]shared.ChildLegalEntityCreatePhoneNumberParam{{
-						PhoneNumber: moderntreasury.F("phone_number"),
-					}}),
-					PoliticallyExposedPerson: moderntreasury.F(true),
-					PreferredName:            moderntreasury.F("preferred_name"),
-					Prefix:                   moderntreasury.F("prefix"),
-					PrimarySocialMediaSites:  moderntreasury.F([]string{"string"}),
-					Regulators: moderntreasury.F([]shared.ChildLegalEntityCreateRegulatorParam{{
-						Jurisdiction:       moderntreasury.F("jurisdiction"),
-						Name:               moderntreasury.F("name"),
-						RegistrationNumber: moderntreasury.F("registration_number"),
-					}}),
-					RiskRating:                   moderntreasury.F(shared.ChildLegalEntityCreateRiskRatingLow),
-					ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-					Suffix:                       moderntreasury.F("suffix"),
-					ThirdPartyVerification: moderntreasury.F(shared.ThirdPartyVerificationParam{
-						Outcome:              moderntreasury.F(shared.ThirdPartyVerificationOutcomePassed),
-						Vendor:               moderntreasury.F(shared.ThirdPartyVerificationVendorPersona),
-						VendorVerificationID: moderntreasury.F("vendor_verification_id"),
-						VerificationCategory: moderntreasury.F(shared.ThirdPartyVerificationVerificationCategoryLegalName),
-						VerificationMethod:   moderntreasury.F("verification_method"),
-						VerificationTime:     moderntreasury.F(time.Now()),
-						Comment:              moderntreasury.F("comment"),
-					}),
-					ThirdPartyVerifications: moderntreasury.F([]shared.ThirdPartyVerificationParam{{
-						Outcome:              moderntreasury.F(shared.ThirdPartyVerificationOutcomePassed),
-						Vendor:               moderntreasury.F(shared.ThirdPartyVerificationVendorPersona),
-						VendorVerificationID: moderntreasury.F("vendor_verification_id"),
-						VerificationCategory: moderntreasury.F(shared.ThirdPartyVerificationVerificationCategoryLegalName),
-						VerificationMethod:   moderntreasury.F("verification_method"),
-						VerificationTime:     moderntreasury.F(time.Now()),
-						Comment:              moderntreasury.F("comment"),
-					}}),
-					TickerSymbol: moderntreasury.F("ticker_symbol"),
-					WealthAndEmploymentDetails: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailParam{
-						ID:               moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-						AnnualIncome:     moderntreasury.F(int64(0)),
-						CreatedAt:        moderntreasury.F(time.Now()),
-						DiscardedAt:      moderntreasury.F(time.Now()),
-						EmployerCountry:  moderntreasury.F("employer_country"),
-						EmployerName:     moderntreasury.F("employer_name"),
-						EmployerState:    moderntreasury.F("employer_state"),
-						EmploymentStatus: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailEmploymentStatusEmployed),
-						IncomeCountry:    moderntreasury.F("income_country"),
-						IncomeSource:     moderntreasury.F(shared.LegalEntityWealthEmploymentDetailIncomeSourceFamilySupport),
-						IncomeState:      moderntreasury.F("income_state"),
-						Industry:         moderntreasury.F(shared.LegalEntityWealthEmploymentDetailIndustryAccounting),
-						LiveMode:         moderntreasury.F(true),
-						Object:           moderntreasury.F("object"),
-						Occupation:       moderntreasury.F(shared.LegalEntityWealthEmploymentDetailOccupationConsulting),
-						SourceOfFunds:    moderntreasury.F(shared.LegalEntityWealthEmploymentDetailSourceOfFundsAlimony),
-						UpdatedAt:        moderntreasury.F(time.Now()),
-						WealthSource:     moderntreasury.F(shared.LegalEntityWealthEmploymentDetailWealthSourceBusinessSale),
-					}),
-					Website: moderntreasury.F("website"),
-				}),
-				ChildLegalEntityID:  moderntreasury.F("child_legal_entity_id"),
-				OwnershipPercentage: moderntreasury.F(int64(0)),
-				Title:               moderntreasury.F("title"),
-			}}),
-			LegalStructure: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalStructureCorporation),
-			ListedExchange: moderntreasury.F("listed_exchange"),
-			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
-				"foo":    "bar",
-				"modern": "treasury",
-			}),
-			MiddleName:             moderntreasury.F("middle_name"),
-			OperatingJurisdictions: moderntreasury.F([]string{"string"}),
-			PhoneNumbers: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityPhoneNumber{{
-				PhoneNumber: moderntreasury.F("phone_number"),
-			}}),
-			PoliticallyExposedPerson: moderntreasury.F(true),
-			PreferredName:            moderntreasury.F("preferred_name"),
-			Prefix:                   moderntreasury.F("prefix"),
-			PrimarySocialMediaSites:  moderntreasury.F([]string{"string"}),
-			Regulators: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityRegulator{{
-				Jurisdiction:       moderntreasury.F("jurisdiction"),
-				Name:               moderntreasury.F("name"),
-				RegistrationNumber: moderntreasury.F("registration_number"),
-			}}),
-			RiskRating:                   moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityRiskRatingLow),
-			ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			Suffix:                       moderntreasury.F("suffix"),
-			ThirdPartyVerification: moderntreasury.F(shared.ThirdPartyVerificationParam{
-				Outcome:              moderntreasury.F(shared.ThirdPartyVerificationOutcomePassed),
-				Vendor:               moderntreasury.F(shared.ThirdPartyVerificationVendorPersona),
-				VendorVerificationID: moderntreasury.F("vendor_verification_id"),
-				VerificationCategory: moderntreasury.F(shared.ThirdPartyVerificationVerificationCategoryLegalName),
-				VerificationMethod:   moderntreasury.F("verification_method"),
-				VerificationTime:     moderntreasury.F(time.Now()),
-				Comment:              moderntreasury.F("comment"),
-			}),
-			ThirdPartyVerifications: moderntreasury.F([]shared.ThirdPartyVerificationParam{{
-				Outcome:              moderntreasury.F(shared.ThirdPartyVerificationOutcomePassed),
-				Vendor:               moderntreasury.F(shared.ThirdPartyVerificationVendorPersona),
-				VendorVerificationID: moderntreasury.F("vendor_verification_id"),
-				VerificationCategory: moderntreasury.F(shared.ThirdPartyVerificationVerificationCategoryLegalName),
-				VerificationMethod:   moderntreasury.F("verification_method"),
-				VerificationTime:     moderntreasury.F(time.Now()),
-				Comment:              moderntreasury.F("comment"),
-			}}),
-			TickerSymbol: moderntreasury.F("ticker_symbol"),
-			WealthAndEmploymentDetails: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailParam{
-				ID:               moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				AnnualIncome:     moderntreasury.F(int64(0)),
-				CreatedAt:        moderntreasury.F(time.Now()),
-				DiscardedAt:      moderntreasury.F(time.Now()),
-				EmployerCountry:  moderntreasury.F("employer_country"),
-				EmployerName:     moderntreasury.F("employer_name"),
-				EmployerState:    moderntreasury.F("employer_state"),
-				EmploymentStatus: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailEmploymentStatusEmployed),
-				IncomeCountry:    moderntreasury.F("income_country"),
-				IncomeSource:     moderntreasury.F(shared.LegalEntityWealthEmploymentDetailIncomeSourceFamilySupport),
-				IncomeState:      moderntreasury.F("income_state"),
-				Industry:         moderntreasury.F(shared.LegalEntityWealthEmploymentDetailIndustryAccounting),
-				LiveMode:         moderntreasury.F(true),
-				Object:           moderntreasury.F("object"),
-				Occupation:       moderntreasury.F(shared.LegalEntityWealthEmploymentDetailOccupationConsulting),
-				SourceOfFunds:    moderntreasury.F(shared.LegalEntityWealthEmploymentDetailSourceOfFundsAlimony),
-				UpdatedAt:        moderntreasury.F(time.Now()),
-				WealthSource:     moderntreasury.F(shared.LegalEntityWealthEmploymentDetailWealthSourceBusinessSale),
-			}),
-			Website: moderntreasury.F("website"),
-		}),
-		LegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		Metadata: moderntreasury.F(map[string]string{
-			"key":    "value",
-			"foo":    "bar",
-			"modern": "treasury",
-		}),
-		SendRemittanceAdvice: moderntreasury.F(true),
-		TaxpayerIdentifier:   moderntreasury.F("taxpayer_identifier"),
-		VerificationStatus:   moderntreasury.F("verification_status"),
-	})
-	if err != nil {
-		var apierr *moderntreasury.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
+  baseURL := "http://localhost:4010"
+  if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+    baseURL = envURL
+  }
+  if !testutil.CheckTestServer(t, baseURL) {
+    return
+  }
+  client := moderntreasury.NewClient(
+    option.WithBaseURL(baseURL),
+    option.WithAPIKey("My API Key"),
+    option.WithOrganizationID("my-organization-ID"),
+  )
+  _, err := client.Counterparties.New(context.TODO(), moderntreasury.CounterpartyNewParams{
+    Name: moderntreasury.F("name"),
+    Accounting: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccounting{
+      Type: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountingTypeCustomer),
+    }),
+    Accounts: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccount{moderntreasury.CounterpartyNewParamsAccount{
+      AccountDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsAccountDetail{moderntreasury.CounterpartyNewParamsAccountsAccountDetail{
+        AccountNumber: moderntreasury.F("account_number"),
+        AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeAuNumber),
+      }}),
+      AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
+      ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{moderntreasury.ContactDetailCreateRequestParam{
+        ContactIdentifier: moderntreasury.F("contact_identifier"),
+        ContactIdentifierType: moderntreasury.F(moderntreasury.ContactDetailCreateRequestContactIdentifierTypeEmail),
+      }}),
+      ExternalID: moderntreasury.F("external_id"),
+      LedgerAccount: moderntreasury.F(shared.LedgerAccountCreateRequestParam{
+        Currency: moderntreasury.F("currency"),
+        LedgerID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+        Name: moderntreasury.F("name"),
+        NormalBalance: moderntreasury.F(shared.TransactionDirectionCredit),
+        CurrencyExponent: moderntreasury.F(int64(0)),
+        Description: moderntreasury.F("description"),
+        ExternalID: moderntreasury.F("external_id"),
+        LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
+        LedgerableID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+        LedgerableType: moderntreasury.F(shared.LedgerAccountCreateRequestLedgerableTypeCounterparty),
+        Metadata: moderntreasury.F(map[string]string{
+        "key": "value",
+        "foo": "bar",
+        "modern": "treasury",
+        }),
+      }),
+      Metadata: moderntreasury.F(map[string]string{
+      "key": "value",
+      "foo": "bar",
+      "modern": "treasury",
+      }),
+      Name: moderntreasury.F("name"),
+      PartyAddress: moderntreasury.F(shared.AddressRequestParam{
+        Country: moderntreasury.F("country"),
+        Line1: moderntreasury.F("line1"),
+        Line2: moderntreasury.F("line2"),
+        Locality: moderntreasury.F("locality"),
+        PostalCode: moderntreasury.F("postal_code"),
+        Region: moderntreasury.F("region"),
+      }),
+      PartyIdentifier: moderntreasury.F("party_identifier"),
+      PartyName: moderntreasury.F("party_name"),
+      PartyType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsPartyTypeBusiness),
+      PlaidProcessorToken: moderntreasury.F("plaid_processor_token"),
+      RoutingDetails: moderntreasury.F([]moderntreasury.CounterpartyNewParamsAccountsRoutingDetail{moderntreasury.CounterpartyNewParamsAccountsRoutingDetail{
+        RoutingNumber: moderntreasury.F("routing_number"),
+        RoutingNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsRoutingNumberTypeAba),
+        PaymentType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH),
+      }}),
+    }}),
+    Email: moderntreasury.F("dev@stainless.com"),
+    ExternalID: moderntreasury.F("external_id"),
+    LedgerType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
+    LegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntity{
+      LegalEntityType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness),
+      Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{shared.LegalEntityAddressCreateRequestParam{
+        Country: moderntreasury.F("country"),
+        Line1: moderntreasury.F("line1"),
+        Locality: moderntreasury.F("locality"),
+        PostalCode: moderntreasury.F("postal_code"),
+        Region: moderntreasury.F("region"),
+        AddressTypes: moderntreasury.F([]shared.LegalEntityAddressCreateRequestAddressType{shared.LegalEntityAddressCreateRequestAddressTypeBusiness}),
+        Line2: moderntreasury.F("line2"),
+        Primary: moderntreasury.F(true),
+      }}),
+      BankSettings: moderntreasury.F(shared.LegalEntityBankSettingsParam{
+        ID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+        BackupWithholdingPercentage: moderntreasury.F(int64(0)),
+        CreatedAt: moderntreasury.F(time.Now()),
+        DiscardedAt: moderntreasury.F(time.Now()),
+        EnableBackupWithholding: moderntreasury.F(true),
+        LiveMode: moderntreasury.F(true),
+        Object: moderntreasury.F("object"),
+        PrivacyOptOut: moderntreasury.F(true),
+        RegulationO: moderntreasury.F(true),
+        UpdatedAt: moderntreasury.F(time.Now()),
+      }),
+      BusinessDescription: moderntreasury.F("business_description"),
+      BusinessName: moderntreasury.F("business_name"),
+      CitizenshipCountry: moderntreasury.F("citizenship_country"),
+      ComplianceDetails: moderntreasury.F[any](map[string]interface{}{
+      }),
+      ConnectionID: moderntreasury.F("connection_id"),
+      CountryOfIncorporation: moderntreasury.F("country_of_incorporation"),
+      DateFormed: moderntreasury.F(time.Now()),
+      DateOfBirth: moderntreasury.F(time.Now()),
+      Documents: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityDocument{moderntreasury.CounterpartyNewParamsLegalEntityDocument{
+        DocumentType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityDocumentsDocumentTypeArticlesOfIncorporation),
+        FileData: moderntreasury.F("file_data"),
+        Filename: moderntreasury.F("filename"),
+      }}),
+      DoingBusinessAsNames: moderntreasury.F([]string{"string"}),
+      Email: moderntreasury.F("email"),
+      ExpectedActivityVolume: moderntreasury.F(int64(0)),
+      ExternalID: moderntreasury.F("external_id"),
+      FirstName: moderntreasury.F("first_name"),
+      Identifications: moderntreasury.F([]shared.IdentificationCreateRequestParam{shared.IdentificationCreateRequestParam{
+        IDNumber: moderntreasury.F("id_number"),
+        IDType: moderntreasury.F(shared.IdentificationCreateRequestIDTypeArCuil),
+        Documents: moderntreasury.F([]shared.IdentificationCreateRequestDocumentParam{shared.IdentificationCreateRequestDocumentParam{
+          DocumentType: moderntreasury.F(shared.IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation),
+          FileData: moderntreasury.F("file_data"),
+          Filename: moderntreasury.F("filename"),
+        }}),
+        ExpirationDate: moderntreasury.F(time.Now()),
+        IssuingCountry: moderntreasury.F("issuing_country"),
+        IssuingRegion: moderntreasury.F("issuing_region"),
+      }}),
+      IndustryClassifications: moderntreasury.F([]shared.LegalEntityIndustryClassificationParam{shared.LegalEntityIndustryClassificationParam{
+        ID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+        ClassificationCodes: moderntreasury.F([]string{"string"}),
+        ClassificationType: moderntreasury.F(shared.LegalEntityIndustryClassificationClassificationTypeAnzsic),
+        CreatedAt: moderntreasury.F(time.Now()),
+        DiscardedAt: moderntreasury.F(time.Now()),
+        LiveMode: moderntreasury.F(true),
+        Object: moderntreasury.F("object"),
+        UpdatedAt: moderntreasury.F(time.Now()),
+      }}),
+      IntendedUse: moderntreasury.F("intended_use"),
+      LastName: moderntreasury.F("last_name"),
+      LegalEntityAssociations: moderntreasury.F([]shared.LegalEntityAssociationInlineCreateParam{shared.LegalEntityAssociationInlineCreateParam{
+        RelationshipTypes: moderntreasury.F([]shared.LegalEntityAssociationInlineCreateRelationshipType{shared.LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner}),
+        ChildLegalEntity: moderntreasury.F(shared.ChildLegalEntityCreateParam{
+          Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{shared.LegalEntityAddressCreateRequestParam{
+            Country: moderntreasury.F("country"),
+            Line1: moderntreasury.F("line1"),
+            Locality: moderntreasury.F("locality"),
+            PostalCode: moderntreasury.F("postal_code"),
+            Region: moderntreasury.F("region"),
+            AddressTypes: moderntreasury.F([]shared.LegalEntityAddressCreateRequestAddressType{shared.LegalEntityAddressCreateRequestAddressTypeBusiness}),
+            Line2: moderntreasury.F("line2"),
+            Primary: moderntreasury.F(true),
+          }}),
+          BankSettings: moderntreasury.F(shared.LegalEntityBankSettingsParam{
+            ID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+            BackupWithholdingPercentage: moderntreasury.F(int64(0)),
+            CreatedAt: moderntreasury.F(time.Now()),
+            DiscardedAt: moderntreasury.F(time.Now()),
+            EnableBackupWithholding: moderntreasury.F(true),
+            LiveMode: moderntreasury.F(true),
+            Object: moderntreasury.F("object"),
+            PrivacyOptOut: moderntreasury.F(true),
+            RegulationO: moderntreasury.F(true),
+            UpdatedAt: moderntreasury.F(time.Now()),
+          }),
+          BusinessDescription: moderntreasury.F("business_description"),
+          BusinessName: moderntreasury.F("business_name"),
+          CitizenshipCountry: moderntreasury.F("citizenship_country"),
+          ComplianceDetails: moderntreasury.F[any](map[string]interface{}{
+          }),
+          ConnectionID: moderntreasury.F("connection_id"),
+          CountryOfIncorporation: moderntreasury.F("country_of_incorporation"),
+          DateFormed: moderntreasury.F(time.Now()),
+          DateOfBirth: moderntreasury.F(time.Now()),
+          Documents: moderntreasury.F([]shared.ChildLegalEntityCreateDocumentParam{shared.ChildLegalEntityCreateDocumentParam{
+            DocumentType: moderntreasury.F(shared.ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation),
+            FileData: moderntreasury.F("file_data"),
+            Filename: moderntreasury.F("filename"),
+          }}),
+          DoingBusinessAsNames: moderntreasury.F([]string{"string"}),
+          Email: moderntreasury.F("email"),
+          ExpectedActivityVolume: moderntreasury.F(int64(0)),
+          ExternalID: moderntreasury.F("external_id"),
+          FirstName: moderntreasury.F("first_name"),
+          Identifications: moderntreasury.F([]shared.IdentificationCreateRequestParam{shared.IdentificationCreateRequestParam{
+            IDNumber: moderntreasury.F("id_number"),
+            IDType: moderntreasury.F(shared.IdentificationCreateRequestIDTypeArCuil),
+            Documents: moderntreasury.F([]shared.IdentificationCreateRequestDocumentParam{shared.IdentificationCreateRequestDocumentParam{
+              DocumentType: moderntreasury.F(shared.IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation),
+              FileData: moderntreasury.F("file_data"),
+              Filename: moderntreasury.F("filename"),
+            }}),
+            ExpirationDate: moderntreasury.F(time.Now()),
+            IssuingCountry: moderntreasury.F("issuing_country"),
+            IssuingRegion: moderntreasury.F("issuing_region"),
+          }}),
+          IndustryClassifications: moderntreasury.F([]shared.LegalEntityIndustryClassificationParam{shared.LegalEntityIndustryClassificationParam{
+            ID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+            ClassificationCodes: moderntreasury.F([]string{"string"}),
+            ClassificationType: moderntreasury.F(shared.LegalEntityIndustryClassificationClassificationTypeAnzsic),
+            CreatedAt: moderntreasury.F(time.Now()),
+            DiscardedAt: moderntreasury.F(time.Now()),
+            LiveMode: moderntreasury.F(true),
+            Object: moderntreasury.F("object"),
+            UpdatedAt: moderntreasury.F(time.Now()),
+          }}),
+          IntendedUse: moderntreasury.F("intended_use"),
+          LastName: moderntreasury.F("last_name"),
+          LegalEntityAssociations: moderntreasury.F([]shared.LegalEntityAssociationInlineCreateParam{}),
+          LegalEntityType: moderntreasury.F(shared.ChildLegalEntityCreateLegalEntityTypeBusiness),
+          LegalStructure: moderntreasury.F(shared.ChildLegalEntityCreateLegalStructureCorporation),
+          ListedExchange: moderntreasury.F("listed_exchange"),
+          Metadata: moderntreasury.F(map[string]string{
+          "key": "value",
+          "foo": "bar",
+          "modern": "treasury",
+          }),
+          MiddleName: moderntreasury.F("middle_name"),
+          OperatingJurisdictions: moderntreasury.F([]string{"string"}),
+          PhoneNumbers: moderntreasury.F([]shared.ChildLegalEntityCreatePhoneNumberParam{shared.ChildLegalEntityCreatePhoneNumberParam{
+            PhoneNumber: moderntreasury.F("phone_number"),
+          }}),
+          PoliticallyExposedPerson: moderntreasury.F(true),
+          PreferredName: moderntreasury.F("preferred_name"),
+          Prefix: moderntreasury.F("prefix"),
+          PrimarySocialMediaSites: moderntreasury.F([]string{"string"}),
+          Regulators: moderntreasury.F([]shared.ChildLegalEntityCreateRegulatorParam{shared.ChildLegalEntityCreateRegulatorParam{
+            Jurisdiction: moderntreasury.F("jurisdiction"),
+            Name: moderntreasury.F("name"),
+            RegistrationNumber: moderntreasury.F("registration_number"),
+          }}),
+          RiskRating: moderntreasury.F(shared.ChildLegalEntityCreateRiskRatingLow),
+          ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+          Suffix: moderntreasury.F("suffix"),
+          TermsOfUse: moderntreasury.F(shared.ChildLegalEntityCreateTermsOfUseParam{
+            AcceptedAt: moderntreasury.F(time.Now()),
+            IPAddress: moderntreasury.F("ip_address"),
+          }),
+          ThirdPartyVerification: moderntreasury.F(shared.ThirdPartyVerificationParam{
+            Outcome: moderntreasury.F(shared.ThirdPartyVerificationOutcomePassed),
+            Vendor: moderntreasury.F(shared.ThirdPartyVerificationVendorPersona),
+            VendorVerificationID: moderntreasury.F("vendor_verification_id"),
+            VerificationCategory: moderntreasury.F(shared.ThirdPartyVerificationVerificationCategoryLegalName),
+            VerificationMethod: moderntreasury.F("verification_method"),
+            VerificationTime: moderntreasury.F(time.Now()),
+            Comment: moderntreasury.F("comment"),
+          }),
+          ThirdPartyVerifications: moderntreasury.F([]shared.ThirdPartyVerificationParam{shared.ThirdPartyVerificationParam{
+            Outcome: moderntreasury.F(shared.ThirdPartyVerificationOutcomePassed),
+            Vendor: moderntreasury.F(shared.ThirdPartyVerificationVendorPersona),
+            VendorVerificationID: moderntreasury.F("vendor_verification_id"),
+            VerificationCategory: moderntreasury.F(shared.ThirdPartyVerificationVerificationCategoryLegalName),
+            VerificationMethod: moderntreasury.F("verification_method"),
+            VerificationTime: moderntreasury.F(time.Now()),
+            Comment: moderntreasury.F("comment"),
+          }}),
+          TickerSymbol: moderntreasury.F("ticker_symbol"),
+          WealthAndEmploymentDetails: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailParam{
+            ID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+            AnnualIncome: moderntreasury.F(int64(0)),
+            CreatedAt: moderntreasury.F(time.Now()),
+            DiscardedAt: moderntreasury.F(time.Now()),
+            EmployerCountry: moderntreasury.F("employer_country"),
+            EmployerName: moderntreasury.F("employer_name"),
+            EmployerState: moderntreasury.F("employer_state"),
+            EmploymentStatus: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailEmploymentStatusEmployed),
+            IncomeCountry: moderntreasury.F("income_country"),
+            IncomeSource: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailIncomeSourceFamilySupport),
+            IncomeState: moderntreasury.F("income_state"),
+            Industry: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailIndustryAccounting),
+            LiveMode: moderntreasury.F(true),
+            Object: moderntreasury.F("object"),
+            Occupation: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailOccupationConsulting),
+            SourceOfFunds: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailSourceOfFundsAlimony),
+            UpdatedAt: moderntreasury.F(time.Now()),
+            WealthSource: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailWealthSourceBusinessSale),
+          }),
+          Website: moderntreasury.F("website"),
+        }),
+        ChildLegalEntityID: moderntreasury.F("child_legal_entity_id"),
+        OwnershipPercentage: moderntreasury.F(int64(0)),
+        Title: moderntreasury.F("title"),
+      }}),
+      LegalStructure: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalStructureCorporation),
+      ListedExchange: moderntreasury.F("listed_exchange"),
+      Metadata: moderntreasury.F(map[string]string{
+      "key": "value",
+      "foo": "bar",
+      "modern": "treasury",
+      }),
+      MiddleName: moderntreasury.F("middle_name"),
+      OperatingJurisdictions: moderntreasury.F([]string{"string"}),
+      PhoneNumbers: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityPhoneNumber{moderntreasury.CounterpartyNewParamsLegalEntityPhoneNumber{
+        PhoneNumber: moderntreasury.F("phone_number"),
+      }}),
+      PoliticallyExposedPerson: moderntreasury.F(true),
+      PreferredName: moderntreasury.F("preferred_name"),
+      Prefix: moderntreasury.F("prefix"),
+      PrimarySocialMediaSites: moderntreasury.F([]string{"string"}),
+      Regulators: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityRegulator{moderntreasury.CounterpartyNewParamsLegalEntityRegulator{
+        Jurisdiction: moderntreasury.F("jurisdiction"),
+        Name: moderntreasury.F("name"),
+        RegistrationNumber: moderntreasury.F("registration_number"),
+      }}),
+      RiskRating: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityRiskRatingLow),
+      ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+      Suffix: moderntreasury.F("suffix"),
+      TermsOfUse: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityTermsOfUse{
+        AcceptedAt: moderntreasury.F(time.Now()),
+        IPAddress: moderntreasury.F("ip_address"),
+      }),
+      ThirdPartyVerification: moderntreasury.F(shared.ThirdPartyVerificationParam{
+        Outcome: moderntreasury.F(shared.ThirdPartyVerificationOutcomePassed),
+        Vendor: moderntreasury.F(shared.ThirdPartyVerificationVendorPersona),
+        VendorVerificationID: moderntreasury.F("vendor_verification_id"),
+        VerificationCategory: moderntreasury.F(shared.ThirdPartyVerificationVerificationCategoryLegalName),
+        VerificationMethod: moderntreasury.F("verification_method"),
+        VerificationTime: moderntreasury.F(time.Now()),
+        Comment: moderntreasury.F("comment"),
+      }),
+      ThirdPartyVerifications: moderntreasury.F([]shared.ThirdPartyVerificationParam{shared.ThirdPartyVerificationParam{
+        Outcome: moderntreasury.F(shared.ThirdPartyVerificationOutcomePassed),
+        Vendor: moderntreasury.F(shared.ThirdPartyVerificationVendorPersona),
+        VendorVerificationID: moderntreasury.F("vendor_verification_id"),
+        VerificationCategory: moderntreasury.F(shared.ThirdPartyVerificationVerificationCategoryLegalName),
+        VerificationMethod: moderntreasury.F("verification_method"),
+        VerificationTime: moderntreasury.F(time.Now()),
+        Comment: moderntreasury.F("comment"),
+      }}),
+      TickerSymbol: moderntreasury.F("ticker_symbol"),
+      WealthAndEmploymentDetails: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailParam{
+        ID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+        AnnualIncome: moderntreasury.F(int64(0)),
+        CreatedAt: moderntreasury.F(time.Now()),
+        DiscardedAt: moderntreasury.F(time.Now()),
+        EmployerCountry: moderntreasury.F("employer_country"),
+        EmployerName: moderntreasury.F("employer_name"),
+        EmployerState: moderntreasury.F("employer_state"),
+        EmploymentStatus: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailEmploymentStatusEmployed),
+        IncomeCountry: moderntreasury.F("income_country"),
+        IncomeSource: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailIncomeSourceFamilySupport),
+        IncomeState: moderntreasury.F("income_state"),
+        Industry: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailIndustryAccounting),
+        LiveMode: moderntreasury.F(true),
+        Object: moderntreasury.F("object"),
+        Occupation: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailOccupationConsulting),
+        SourceOfFunds: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailSourceOfFundsAlimony),
+        UpdatedAt: moderntreasury.F(time.Now()),
+        WealthSource: moderntreasury.F(shared.LegalEntityWealthEmploymentDetailWealthSourceBusinessSale),
+      }),
+      Website: moderntreasury.F("website"),
+    }),
+    LegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+    Metadata: moderntreasury.F(map[string]string{
+    "key": "value",
+    "foo": "bar",
+    "modern": "treasury",
+    }),
+    SendRemittanceAdvice: moderntreasury.F(true),
+    TaxpayerIdentifier: moderntreasury.F("taxpayer_identifier"),
+    VerificationStatus: moderntreasury.F("verification_status"),
+  })
+  if err != nil {
+    var apierr *moderntreasury.Error
+    if errors.As(err, &apierr) {
+      t.Log(string(apierr.DumpRequest(true)))
+    }
+    t.Fatalf("err should be nil: %s", err.Error())
+  }
 }
 
 func TestCounterpartyGet(t *testing.T) {
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := moderntreasury.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
-		option.WithOrganizationID("my-organization-ID"),
-	)
-	_, err := client.Counterparties.Get(context.TODO(), "id")
-	if err != nil {
-		var apierr *moderntreasury.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
+  baseURL := "http://localhost:4010"
+  if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+    baseURL = envURL
+  }
+  if !testutil.CheckTestServer(t, baseURL) {
+    return
+  }
+  client := moderntreasury.NewClient(
+    option.WithBaseURL(baseURL),
+    option.WithAPIKey("My API Key"),
+    option.WithOrganizationID("my-organization-ID"),
+  )
+  _, err := client.Counterparties.Get(context.TODO(), "id")
+  if err != nil {
+    var apierr *moderntreasury.Error
+    if errors.As(err, &apierr) {
+      t.Log(string(apierr.DumpRequest(true)))
+    }
+    t.Fatalf("err should be nil: %s", err.Error())
+  }
 }
 
 func TestCounterpartyUpdateWithOptionalParams(t *testing.T) {
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := moderntreasury.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
-		option.WithOrganizationID("my-organization-ID"),
-	)
-	_, err := client.Counterparties.Update(
-		context.TODO(),
-		"id",
-		moderntreasury.CounterpartyUpdateParams{
-			Email:         moderntreasury.F("dev@stainless.com"),
-			ExternalID:    moderntreasury.F("external_id"),
-			LegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			Metadata: moderntreasury.F(map[string]string{
-				"foo": "string",
-			}),
-			Name:                 moderntreasury.F("name"),
-			SendRemittanceAdvice: moderntreasury.F(true),
-			TaxpayerIdentifier:   moderntreasury.F("taxpayer_identifier"),
-		},
-	)
-	if err != nil {
-		var apierr *moderntreasury.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
+  baseURL := "http://localhost:4010"
+  if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+    baseURL = envURL
+  }
+  if !testutil.CheckTestServer(t, baseURL) {
+    return
+  }
+  client := moderntreasury.NewClient(
+    option.WithBaseURL(baseURL),
+    option.WithAPIKey("My API Key"),
+    option.WithOrganizationID("my-organization-ID"),
+  )
+  _, err := client.Counterparties.Update(
+    context.TODO(),
+    "id",
+    moderntreasury.CounterpartyUpdateParams{
+      Email: moderntreasury.F("dev@stainless.com"),
+      ExternalID: moderntreasury.F("external_id"),
+      LegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+      Metadata: moderntreasury.F(map[string]string{
+      "foo": "string",
+      }),
+      Name: moderntreasury.F("name"),
+      SendRemittanceAdvice: moderntreasury.F(true),
+      TaxpayerIdentifier: moderntreasury.F("taxpayer_identifier"),
+    },
+  )
+  if err != nil {
+    var apierr *moderntreasury.Error
+    if errors.As(err, &apierr) {
+      t.Log(string(apierr.DumpRequest(true)))
+    }
+    t.Fatalf("err should be nil: %s", err.Error())
+  }
 }
 
 func TestCounterpartyListWithOptionalParams(t *testing.T) {
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := moderntreasury.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
-		option.WithOrganizationID("my-organization-ID"),
-	)
-	_, err := client.Counterparties.List(context.TODO(), moderntreasury.CounterpartyListParams{
-		AfterCursor:         moderntreasury.F("after_cursor"),
-		CreatedAtLowerBound: moderntreasury.F(time.Now()),
-		CreatedAtUpperBound: moderntreasury.F(time.Now()),
-		Email:               moderntreasury.F("dev@stainless.com"),
-		ExternalID:          moderntreasury.F("external_id"),
-		LegalEntityID:       moderntreasury.F("legal_entity_id"),
-		Metadata: moderntreasury.F(map[string]string{
-			"foo": "string",
-		}),
-		Name:    moderntreasury.F("name"),
-		PerPage: moderntreasury.F(int64(0)),
-	})
-	if err != nil {
-		var apierr *moderntreasury.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
+  baseURL := "http://localhost:4010"
+  if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+    baseURL = envURL
+  }
+  if !testutil.CheckTestServer(t, baseURL) {
+    return
+  }
+  client := moderntreasury.NewClient(
+    option.WithBaseURL(baseURL),
+    option.WithAPIKey("My API Key"),
+    option.WithOrganizationID("my-organization-ID"),
+  )
+  _, err := client.Counterparties.List(context.TODO(), moderntreasury.CounterpartyListParams{
+    AfterCursor: moderntreasury.F("after_cursor"),
+    CreatedAtLowerBound: moderntreasury.F(time.Now()),
+    CreatedAtUpperBound: moderntreasury.F(time.Now()),
+    Email: moderntreasury.F("dev@stainless.com"),
+    ExternalID: moderntreasury.F("external_id"),
+    LegalEntityID: moderntreasury.F("legal_entity_id"),
+    Metadata: moderntreasury.F(map[string]string{
+    "foo": "string",
+    }),
+    Name: moderntreasury.F("name"),
+    PerPage: moderntreasury.F(int64(0)),
+  })
+  if err != nil {
+    var apierr *moderntreasury.Error
+    if errors.As(err, &apierr) {
+      t.Log(string(apierr.DumpRequest(true)))
+    }
+    t.Fatalf("err should be nil: %s", err.Error())
+  }
 }
 
 func TestCounterpartyDelete(t *testing.T) {
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := moderntreasury.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
-		option.WithOrganizationID("my-organization-ID"),
-	)
-	err := client.Counterparties.Delete(context.TODO(), "id")
-	if err != nil {
-		var apierr *moderntreasury.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
+  baseURL := "http://localhost:4010"
+  if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+    baseURL = envURL
+  }
+  if !testutil.CheckTestServer(t, baseURL) {
+    return
+  }
+  client := moderntreasury.NewClient(
+    option.WithBaseURL(baseURL),
+    option.WithAPIKey("My API Key"),
+    option.WithOrganizationID("my-organization-ID"),
+  )
+  err := client.Counterparties.Delete(context.TODO(), "id")
+  if err != nil {
+    var apierr *moderntreasury.Error
+    if errors.As(err, &apierr) {
+      t.Log(string(apierr.DumpRequest(true)))
+    }
+    t.Fatalf("err should be nil: %s", err.Error())
+  }
 }
 
 func TestCounterpartyCollectAccountWithOptionalParams(t *testing.T) {
-	baseURL := "http://localhost:4010"
-	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
-		baseURL = envURL
-	}
-	if !testutil.CheckTestServer(t, baseURL) {
-		return
-	}
-	client := moderntreasury.NewClient(
-		option.WithBaseURL(baseURL),
-		option.WithAPIKey("My API Key"),
-		option.WithOrganizationID("my-organization-ID"),
-	)
-	_, err := client.Counterparties.CollectAccount(
-		context.TODO(),
-		"id",
-		moderntreasury.CounterpartyCollectAccountParams{
-			Direction:      moderntreasury.F(shared.TransactionDirectionCredit),
-			CustomRedirect: moderntreasury.F("https://example.com"),
-			Fields:         moderntreasury.F([]moderntreasury.CounterpartyCollectAccountParamsField{moderntreasury.CounterpartyCollectAccountParamsFieldName}),
-			SendEmail:      moderntreasury.F(true),
-		},
-	)
-	if err != nil {
-		var apierr *moderntreasury.Error
-		if errors.As(err, &apierr) {
-			t.Log(string(apierr.DumpRequest(true)))
-		}
-		t.Fatalf("err should be nil: %s", err.Error())
-	}
+  baseURL := "http://localhost:4010"
+  if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+    baseURL = envURL
+  }
+  if !testutil.CheckTestServer(t, baseURL) {
+    return
+  }
+  client := moderntreasury.NewClient(
+    option.WithBaseURL(baseURL),
+    option.WithAPIKey("My API Key"),
+    option.WithOrganizationID("my-organization-ID"),
+  )
+  _, err := client.Counterparties.CollectAccount(
+    context.TODO(),
+    "id",
+    moderntreasury.CounterpartyCollectAccountParams{
+      Direction: moderntreasury.F(shared.TransactionDirectionCredit),
+      CustomRedirect: moderntreasury.F("https://example.com"),
+      Fields: moderntreasury.F([]moderntreasury.CounterpartyCollectAccountParamsField{moderntreasury.CounterpartyCollectAccountParamsFieldName}),
+      SendEmail: moderntreasury.F(true),
+    },
+  )
+  if err != nil {
+    var apierr *moderntreasury.Error
+    if errors.As(err, &apierr) {
+      t.Log(string(apierr.DumpRequest(true)))
+    }
+    t.Fatalf("err should be nil: %s", err.Error())
+  }
 }

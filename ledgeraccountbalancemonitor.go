@@ -3,21 +3,21 @@
 package moderntreasury
 
 import (
-	"context"
-	"errors"
-	"fmt"
-	"net/http"
-	"net/url"
-	"slices"
-	"time"
+  "context"
+  "errors"
+  "fmt"
+  "net/http"
+  "net/url"
+  "slices"
+  "time"
 
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/option"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
 
 // LedgerAccountBalanceMonitorService contains methods and other services that help
@@ -27,266 +27,266 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewLedgerAccountBalanceMonitorService] method instead.
 type LedgerAccountBalanceMonitorService struct {
-	Options []option.RequestOption
+Options []option.RequestOption
 }
 
 // NewLedgerAccountBalanceMonitorService generates a new service that applies the
 // given options to each request. These options are applied after the parent
 // client's options (if there is one), and before any request-specific options.
 func NewLedgerAccountBalanceMonitorService(opts ...option.RequestOption) (r *LedgerAccountBalanceMonitorService) {
-	r = &LedgerAccountBalanceMonitorService{}
-	r.Options = opts
-	return
+  r = &LedgerAccountBalanceMonitorService{}
+  r.Options = opts
+  return
 }
 
 // Create a ledger account balance monitor.
 func (r *LedgerAccountBalanceMonitorService) New(ctx context.Context, body LedgerAccountBalanceMonitorNewParams, opts ...option.RequestOption) (res *LedgerAccountBalanceMonitor, err error) {
-	opts = slices.Concat(r.Options, opts)
-	path := "api/ledger_account_balance_monitors"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  path := "api/ledger_account_balance_monitors"
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+  return res, err
 }
 
 // Get details on a single ledger account balance monitor.
 func (r *LedgerAccountBalanceMonitorService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountBalanceMonitor, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/ledger_account_balance_monitors/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return nil, err
+  }
+  path := fmt.Sprintf("api/ledger_account_balance_monitors/%s", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
+  return res, err
 }
 
 // Update a ledger account balance monitor.
 func (r *LedgerAccountBalanceMonitorService) Update(ctx context.Context, id string, body LedgerAccountBalanceMonitorUpdateParams, opts ...option.RequestOption) (res *LedgerAccountBalanceMonitor, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/ledger_account_balance_monitors/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return nil, err
+  }
+  path := fmt.Sprintf("api/ledger_account_balance_monitors/%s", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+  return res, err
 }
 
 // Get a list of ledger account balance monitors.
 func (r *LedgerAccountBalanceMonitorService) List(ctx context.Context, query LedgerAccountBalanceMonitorListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerAccountBalanceMonitor], err error) {
-	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := "api/ledger_account_balance_monitors"
-	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
-	if err != nil {
-		return nil, err
-	}
-	err = cfg.Execute()
-	if err != nil {
-		return nil, err
-	}
-	res.SetPageConfig(cfg, raw)
-	return res, nil
+  var raw *http.Response
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
+  path := "api/ledger_account_balance_monitors"
+  cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+  if err != nil {
+    return nil, err
+  }
+  err = cfg.Execute()
+  if err != nil {
+    return nil, err
+  }
+  res.SetPageConfig(cfg, raw)
+  return res, nil
 }
 
 // Get a list of ledger account balance monitors.
-func (r *LedgerAccountBalanceMonitorService) ListAutoPaging(ctx context.Context, query LedgerAccountBalanceMonitorListParams, opts ...option.RequestOption) *pagination.PageAutoPager[LedgerAccountBalanceMonitor] {
-	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *LedgerAccountBalanceMonitorService) ListAutoPaging(ctx context.Context, query LedgerAccountBalanceMonitorListParams, opts ...option.RequestOption) (*pagination.PageAutoPager[LedgerAccountBalanceMonitor]) {
+  return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Delete a ledger account balance monitor.
 func (r *LedgerAccountBalanceMonitorService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountBalanceMonitor, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/ledger_account_balance_monitors/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return nil, err
+  }
+  path := fmt.Sprintf("api/ledger_account_balance_monitors/%s", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
+  return res, err
 }
 
 type LedgerAccountBalanceMonitor struct {
-	ID string `json:"id" api:"required" format:"uuid"`
-	// Describes the condition that must be satisfied for the monitor to be triggered.
-	AlertCondition LedgerAccountBalanceMonitorAlertCondition `json:"alert_condition" api:"required"`
-	CreatedAt      time.Time                                 `json:"created_at" api:"required" format:"date-time"`
-	// The ledger account's balances and the monitor state as of the current ledger
-	// account lock version.
-	CurrentLedgerAccountBalanceState LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceState `json:"current_ledger_account_balance_state" api:"required"`
-	// An optional, free-form description for internal use.
-	Description string    `json:"description" api:"required,nullable"`
-	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
-	// The ledger account associated with this balance monitor.
-	LedgerAccountID string `json:"ledger_account_id" api:"required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode" api:"required"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata  map[string]string               `json:"metadata" api:"required"`
-	Object    string                          `json:"object" api:"required"`
-	UpdatedAt time.Time                       `json:"updated_at" api:"required" format:"date-time"`
-	JSON      ledgerAccountBalanceMonitorJSON `json:"-"`
+ID string `json:"id" api:"required" format:"uuid"`
+// Describes the condition that must be satisfied for the monitor to be triggered.
+AlertCondition LedgerAccountBalanceMonitorAlertCondition `json:"alert_condition" api:"required"`
+CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
+// The ledger account's balances and the monitor state as of the current ledger
+// account lock version.
+CurrentLedgerAccountBalanceState LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceState `json:"current_ledger_account_balance_state" api:"required"`
+// An optional, free-form description for internal use.
+Description string `json:"description" api:"required,nullable"`
+DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+// The ledger account associated with this balance monitor.
+LedgerAccountID string `json:"ledger_account_id" api:"required"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode bool `json:"live_mode" api:"required"`
+// Additional data represented as key-value pairs. Both the key and value must be
+// strings.
+Metadata map[string]string `json:"metadata" api:"required"`
+Object string `json:"object" api:"required"`
+UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
+JSON ledgerAccountBalanceMonitorJSON `json:"-"`
 }
 
 // ledgerAccountBalanceMonitorJSON contains the JSON metadata for the struct
 // [LedgerAccountBalanceMonitor]
 type ledgerAccountBalanceMonitorJSON struct {
-	ID                               apijson.Field
-	AlertCondition                   apijson.Field
-	CreatedAt                        apijson.Field
-	CurrentLedgerAccountBalanceState apijson.Field
-	Description                      apijson.Field
-	DiscardedAt                      apijson.Field
-	LedgerAccountID                  apijson.Field
-	LiveMode                         apijson.Field
-	Metadata                         apijson.Field
-	Object                           apijson.Field
-	UpdatedAt                        apijson.Field
-	raw                              string
-	ExtraFields                      map[string]apijson.Field
+ID apijson.Field
+AlertCondition apijson.Field
+CreatedAt apijson.Field
+CurrentLedgerAccountBalanceState apijson.Field
+Description apijson.Field
+DiscardedAt apijson.Field
+LedgerAccountID apijson.Field
+LiveMode apijson.Field
+Metadata apijson.Field
+Object apijson.Field
+UpdatedAt apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *LedgerAccountBalanceMonitor) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r ledgerAccountBalanceMonitorJSON) RawJSON() string {
-	return r.raw
+func (r ledgerAccountBalanceMonitorJSON) RawJSON() (string) {
+  return r.raw
 }
 
 // Describes the condition that must be satisfied for the monitor to be triggered.
 type LedgerAccountBalanceMonitorAlertCondition struct {
-	// One of `available_balance_amount`, `pending_balance_amount`,
-	// `posted_balance_amount`, `ledger_account_lock_version`.
-	Field string `json:"field" api:"required"`
-	// A logical operator to compare the `field` against the `value`. One of
-	// `less_than`, `less_than_or_equals`, `equals`, `greater_than_or_equals`,
-	// `greater_than`.
-	Operator string `json:"operator" api:"required"`
-	// The monitor's `current_ledger_account_balance_state.triggered` will be `true`
-	// when comparing the `field` to this integer value using the `operator` is
-	// logically true.
-	Value int64                                         `json:"value" api:"required"`
-	JSON  ledgerAccountBalanceMonitorAlertConditionJSON `json:"-"`
+// One of `available_balance_amount`, `pending_balance_amount`,
+// `posted_balance_amount`, `ledger_account_lock_version`.
+Field string `json:"field" api:"required"`
+// A logical operator to compare the `field` against the `value`. One of
+// `less_than`, `less_than_or_equals`, `equals`, `greater_than_or_equals`,
+// `greater_than`.
+Operator string `json:"operator" api:"required"`
+// The monitor's `current_ledger_account_balance_state.triggered` will be `true`
+// when comparing the `field` to this integer value using the `operator` is
+// logically true.
+Value int64 `json:"value" api:"required"`
+JSON ledgerAccountBalanceMonitorAlertConditionJSON `json:"-"`
 }
 
 // ledgerAccountBalanceMonitorAlertConditionJSON contains the JSON metadata for the
 // struct [LedgerAccountBalanceMonitorAlertCondition]
 type ledgerAccountBalanceMonitorAlertConditionJSON struct {
-	Field       apijson.Field
-	Operator    apijson.Field
-	Value       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+Field apijson.Field
+Operator apijson.Field
+Value apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *LedgerAccountBalanceMonitorAlertCondition) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r ledgerAccountBalanceMonitorAlertConditionJSON) RawJSON() string {
-	return r.raw
+func (r ledgerAccountBalanceMonitorAlertConditionJSON) RawJSON() (string) {
+  return r.raw
 }
 
 // The ledger account's balances and the monitor state as of the current ledger
 // account lock version.
 type LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceState struct {
-	Balances shared.LedgerBalances `json:"balances" api:"required"`
-	// The current lock version of the ledger account.
-	LedgerAccountLockVersion int64 `json:"ledger_account_lock_version" api:"required"`
-	// If `true`, the ledger account's balances satisfy the `alert_condition` at this
-	// lock version.
-	Triggered bool                                                            `json:"triggered" api:"required"`
-	JSON      ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateJSON `json:"-"`
+Balances shared.LedgerBalances `json:"balances" api:"required"`
+// The current lock version of the ledger account.
+LedgerAccountLockVersion int64 `json:"ledger_account_lock_version" api:"required"`
+// If `true`, the ledger account's balances satisfy the `alert_condition` at this
+// lock version.
+Triggered bool `json:"triggered" api:"required"`
+JSON ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateJSON `json:"-"`
 }
 
 // ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateJSON contains the
 // JSON metadata for the struct
 // [LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceState]
 type ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateJSON struct {
-	Balances                 apijson.Field
-	LedgerAccountLockVersion apijson.Field
-	Triggered                apijson.Field
-	raw                      string
-	ExtraFields              map[string]apijson.Field
+Balances apijson.Field
+LedgerAccountLockVersion apijson.Field
+Triggered apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *LedgerAccountBalanceMonitorCurrentLedgerAccountBalanceState) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateJSON) RawJSON() string {
-	return r.raw
+func (r ledgerAccountBalanceMonitorCurrentLedgerAccountBalanceStateJSON) RawJSON() (string) {
+  return r.raw
 }
 
 type LedgerAccountBalanceMonitorNewParams struct {
-	// Describes the condition that must be satisfied for the monitor to be triggered.
-	AlertCondition param.Field[LedgerAccountBalanceMonitorNewParamsAlertCondition] `json:"alert_condition" api:"required"`
-	// The ledger account associated with this balance monitor.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id" api:"required"`
-	// An optional, free-form description for internal use.
-	Description param.Field[string] `json:"description"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
+// Describes the condition that must be satisfied for the monitor to be triggered.
+AlertCondition param.Field[LedgerAccountBalanceMonitorNewParamsAlertCondition] `json:"alert_condition" api:"required"`
+// The ledger account associated with this balance monitor.
+LedgerAccountID param.Field[string] `json:"ledger_account_id" api:"required"`
+// An optional, free-form description for internal use.
+Description param.Field[string] `json:"description"`
+// Additional data represented as key-value pairs. Both the key and value must be
+// strings.
+Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
 func (r LedgerAccountBalanceMonitorNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 // Describes the condition that must be satisfied for the monitor to be triggered.
 type LedgerAccountBalanceMonitorNewParamsAlertCondition struct {
-	// One of `available_balance_amount`, `pending_balance_amount`,
-	// `posted_balance_amount`, `ledger_account_lock_version`.
-	Field param.Field[string] `json:"field" api:"required"`
-	// A logical operator to compare the `field` against the `value`. One of
-	// `less_than`, `less_than_or_equals`, `equals`, `greater_than_or_equals`,
-	// `greater_than`.
-	Operator param.Field[string] `json:"operator" api:"required"`
-	// The monitor's `current_ledger_account_balance_state.triggered` will be `true`
-	// when comparing the `field` to this integer value using the `operator` is
-	// logically true.
-	Value param.Field[int64] `json:"value" api:"required"`
+// One of `available_balance_amount`, `pending_balance_amount`,
+// `posted_balance_amount`, `ledger_account_lock_version`.
+Field param.Field[string] `json:"field" api:"required"`
+// A logical operator to compare the `field` against the `value`. One of
+// `less_than`, `less_than_or_equals`, `equals`, `greater_than_or_equals`,
+// `greater_than`.
+Operator param.Field[string] `json:"operator" api:"required"`
+// The monitor's `current_ledger_account_balance_state.triggered` will be `true`
+// when comparing the `field` to this integer value using the `operator` is
+// logically true.
+Value param.Field[int64] `json:"value" api:"required"`
 }
 
 func (r LedgerAccountBalanceMonitorNewParamsAlertCondition) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type LedgerAccountBalanceMonitorUpdateParams struct {
-	// An optional, free-form description for internal use.
-	Description param.Field[string] `json:"description"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
+// An optional, free-form description for internal use.
+Description param.Field[string] `json:"description"`
+// Additional data represented as key-value pairs. Both the key and value must be
+// strings.
+Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
 func (r LedgerAccountBalanceMonitorUpdateParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type LedgerAccountBalanceMonitorListParams struct {
-	// If you have specific IDs to retrieve in bulk, you can pass them as query
-	// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
-	ID          param.Field[[]string] `query:"id"`
-	AfterCursor param.Field[string]   `query:"after_cursor"`
-	// Query the balance monitors for a single ledger account.
-	LedgerAccountID param.Field[string] `query:"ledger_account_id"`
-	// For example, if you want to query for records with metadata key `Type` and value
-	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
-	// parameters.
-	Metadata param.Field[map[string]string] `query:"metadata"`
-	PerPage  param.Field[int64]             `query:"per_page"`
+// If you have specific IDs to retrieve in bulk, you can pass them as query
+// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
+ID param.Field[[]string] `query:"id"`
+AfterCursor param.Field[string] `query:"after_cursor"`
+// Query the balance monitors for a single ledger account.
+LedgerAccountID param.Field[string] `query:"ledger_account_id"`
+// For example, if you want to query for records with metadata key `Type` and value
+// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
+// parameters.
+Metadata param.Field[map[string]string] `query:"metadata"`
+PerPage param.Field[int64] `query:"per_page"`
 }
 
 // URLQuery serializes [LedgerAccountBalanceMonitorListParams]'s query parameters
 // as `url.Values`.
 func (r LedgerAccountBalanceMonitorListParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
+  return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+    ArrayFormat: apiquery.ArrayQueryFormatBrackets,
+    NestedFormat: apiquery.NestedQueryFormatBrackets,
+  })
 }

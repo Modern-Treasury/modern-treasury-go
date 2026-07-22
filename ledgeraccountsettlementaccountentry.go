@@ -3,16 +3,16 @@
 package moderntreasury
 
 import (
-	"context"
-	"errors"
-	"fmt"
-	"net/http"
-	"slices"
+  "context"
+  "errors"
+  "fmt"
+  "net/http"
+  "slices"
 
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
 // LedgerAccountSettlementAccountEntryService contains methods and other services
@@ -22,7 +22,7 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewLedgerAccountSettlementAccountEntryService] method instead.
 type LedgerAccountSettlementAccountEntryService struct {
-	Options []option.RequestOption
+Options []option.RequestOption
 }
 
 // NewLedgerAccountSettlementAccountEntryService generates a new service that
@@ -30,53 +30,53 @@ type LedgerAccountSettlementAccountEntryService struct {
 // parent client's options (if there is one), and before any request-specific
 // options.
 func NewLedgerAccountSettlementAccountEntryService(opts ...option.RequestOption) (r *LedgerAccountSettlementAccountEntryService) {
-	r = &LedgerAccountSettlementAccountEntryService{}
-	r.Options = opts
-	return
+  r = &LedgerAccountSettlementAccountEntryService{}
+  r.Options = opts
+  return
 }
 
 // Add ledger entries to a draft ledger account settlement.
 func (r *LedgerAccountSettlementAccountEntryService) Update(ctx context.Context, id string, body LedgerAccountSettlementAccountEntryUpdateParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return err
-	}
-	path := fmt.Sprintf("api/ledger_account_settlements/%s/ledger_entries", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, nil, opts...)
-	return err
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return err
+  }
+  path := fmt.Sprintf("api/ledger_account_settlements/%s/ledger_entries", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, nil, opts...)
+  return err
 }
 
 // Remove ledger entries from a draft ledger account settlement.
 func (r *LedgerAccountSettlementAccountEntryService) Delete(ctx context.Context, id string, body LedgerAccountSettlementAccountEntryDeleteParams, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return err
-	}
-	path := fmt.Sprintf("api/ledger_account_settlements/%s/ledger_entries", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, body, nil, opts...)
-	return err
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return err
+  }
+  path := fmt.Sprintf("api/ledger_account_settlements/%s/ledger_entries", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, body, nil, opts...)
+  return err
 }
 
 type LedgerAccountSettlementAccountEntryUpdateParams struct {
-	// The ids of the ledger entries that are to be added or removed from the ledger
-	// account settlement.
-	LedgerEntryIDs param.Field[[]string] `json:"ledger_entry_ids" api:"required" format:"uuid"`
+// The ids of the ledger entries that are to be added or removed from the ledger
+// account settlement.
+LedgerEntryIDs param.Field[[]string] `json:"ledger_entry_ids" api:"required" format:"uuid"`
 }
 
 func (r LedgerAccountSettlementAccountEntryUpdateParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type LedgerAccountSettlementAccountEntryDeleteParams struct {
-	// The ids of the ledger entries that are to be added or removed from the ledger
-	// account settlement.
-	LedgerEntryIDs param.Field[[]string] `json:"ledger_entry_ids" api:"required" format:"uuid"`
+// The ids of the ledger entries that are to be added or removed from the ledger
+// account settlement.
+LedgerEntryIDs param.Field[[]string] `json:"ledger_entry_ids" api:"required" format:"uuid"`
 }
 
 func (r LedgerAccountSettlementAccountEntryDeleteParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }

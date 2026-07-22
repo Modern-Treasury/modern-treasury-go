@@ -3,21 +3,21 @@
 package moderntreasury
 
 import (
-	"context"
-	"errors"
-	"fmt"
-	"net/http"
-	"net/url"
-	"slices"
-	"time"
+  "context"
+  "errors"
+  "fmt"
+  "net/http"
+  "net/url"
+  "slices"
+  "time"
 
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apiquery"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/option"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
 
 // LedgerAccountCategoryService contains methods and other services that help with
@@ -27,254 +27,254 @@ import (
 // automatically. You should not instantiate this service directly, and instead use
 // the [NewLedgerAccountCategoryService] method instead.
 type LedgerAccountCategoryService struct {
-	Options []option.RequestOption
+Options []option.RequestOption
 }
 
 // NewLedgerAccountCategoryService generates a new service that applies the given
 // options to each request. These options are applied after the parent client's
 // options (if there is one), and before any request-specific options.
 func NewLedgerAccountCategoryService(opts ...option.RequestOption) (r *LedgerAccountCategoryService) {
-	r = &LedgerAccountCategoryService{}
-	r.Options = opts
-	return
+  r = &LedgerAccountCategoryService{}
+  r.Options = opts
+  return
 }
 
 // Create a ledger account category.
 func (r *LedgerAccountCategoryService) New(ctx context.Context, body LedgerAccountCategoryNewParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
-	opts = slices.Concat(r.Options, opts)
-	path := "api/ledger_account_categories"
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  path := "api/ledger_account_categories"
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, body, &res, opts...)
+  return res, err
 }
 
 // Get the details on a single ledger account category.
 func (r *LedgerAccountCategoryService) Get(ctx context.Context, id string, query LedgerAccountCategoryGetParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/ledger_account_categories/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return nil, err
+  }
+  path := fmt.Sprintf("api/ledger_account_categories/%s", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+  return res, err
 }
 
 // Update the details of a ledger account category.
 func (r *LedgerAccountCategoryService) Update(ctx context.Context, id string, body LedgerAccountCategoryUpdateParams, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/ledger_account_categories/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return nil, err
+  }
+  path := fmt.Sprintf("api/ledger_account_categories/%s", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
+  return res, err
 }
 
 // Get a list of ledger account categories.
 func (r *LedgerAccountCategoryService) List(ctx context.Context, query LedgerAccountCategoryListParams, opts ...option.RequestOption) (res *pagination.Page[LedgerAccountCategory], err error) {
-	var raw *http.Response
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
-	path := "api/ledger_account_categories"
-	cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
-	if err != nil {
-		return nil, err
-	}
-	err = cfg.Execute()
-	if err != nil {
-		return nil, err
-	}
-	res.SetPageConfig(cfg, raw)
-	return res, nil
+  var raw *http.Response
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithResponseInto(&raw)}, opts...)
+  path := "api/ledger_account_categories"
+  cfg, err := requestconfig.NewRequestConfig(ctx, http.MethodGet, path, query, &res, opts...)
+  if err != nil {
+    return nil, err
+  }
+  err = cfg.Execute()
+  if err != nil {
+    return nil, err
+  }
+  res.SetPageConfig(cfg, raw)
+  return res, nil
 }
 
 // Get a list of ledger account categories.
-func (r *LedgerAccountCategoryService) ListAutoPaging(ctx context.Context, query LedgerAccountCategoryListParams, opts ...option.RequestOption) *pagination.PageAutoPager[LedgerAccountCategory] {
-	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
+func (r *LedgerAccountCategoryService) ListAutoPaging(ctx context.Context, query LedgerAccountCategoryListParams, opts ...option.RequestOption) (*pagination.PageAutoPager[LedgerAccountCategory]) {
+  return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
 // Delete a ledger account category.
 func (r *LedgerAccountCategoryService) Delete(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerAccountCategory, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/ledger_account_categories/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
-	return res, err
+  opts = slices.Concat(r.Options, opts)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return nil, err
+  }
+  path := fmt.Sprintf("api/ledger_account_categories/%s", id)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, &res, opts...)
+  return res, err
 }
 
 // Add a ledger account to a ledger account category.
 func (r *LedgerAccountCategoryService) AddLedgerAccount(ctx context.Context, id string, ledgerAccountID string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return err
-	}
-	if ledgerAccountID == "" {
-		err = errors.New("missing required ledger_account_id parameter")
-		return err
-	}
-	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_accounts/%s", id, ledgerAccountID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, nil, nil, opts...)
-	return err
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return err
+  }
+  if ledgerAccountID == "" {
+    err = errors.New("missing required ledger_account_id parameter")
+    return err
+  }
+  path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_accounts/%s", id, ledgerAccountID)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, nil, nil, opts...)
+  return err
 }
 
 // Add a ledger account category to a ledger account category.
 func (r *LedgerAccountCategoryService) AddNestedCategory(ctx context.Context, id string, subCategoryID string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return err
-	}
-	if subCategoryID == "" {
-		err = errors.New("missing required sub_category_id parameter")
-		return err
-	}
-	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_account_categories/%s", id, subCategoryID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, nil, nil, opts...)
-	return err
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return err
+  }
+  if subCategoryID == "" {
+    err = errors.New("missing required sub_category_id parameter")
+    return err
+  }
+  path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_account_categories/%s", id, subCategoryID)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodPut, path, nil, nil, opts...)
+  return err
 }
 
 // Remove a ledger account from a ledger account category.
 func (r *LedgerAccountCategoryService) RemoveLedgerAccount(ctx context.Context, id string, ledgerAccountID string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return err
-	}
-	if ledgerAccountID == "" {
-		err = errors.New("missing required ledger_account_id parameter")
-		return err
-	}
-	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_accounts/%s", id, ledgerAccountID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return err
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return err
+  }
+  if ledgerAccountID == "" {
+    err = errors.New("missing required ledger_account_id parameter")
+    return err
+  }
+  path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_accounts/%s", id, ledgerAccountID)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
+  return err
 }
 
 // Delete a ledger account category from a ledger account category.
 func (r *LedgerAccountCategoryService) RemoveNestedCategory(ctx context.Context, id string, subCategoryID string, opts ...option.RequestOption) (err error) {
-	opts = slices.Concat(r.Options, opts)
-	opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return err
-	}
-	if subCategoryID == "" {
-		err = errors.New("missing required sub_category_id parameter")
-		return err
-	}
-	path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_account_categories/%s", id, subCategoryID)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
-	return err
+  opts = slices.Concat(r.Options, opts)
+  opts = append([]option.RequestOption{option.WithHeader("Accept", "*/*")}, opts...)
+  if id == "" {
+    err = errors.New("missing required id parameter")
+    return err
+  }
+  if subCategoryID == "" {
+    err = errors.New("missing required sub_category_id parameter")
+    return err
+  }
+  path := fmt.Sprintf("api/ledger_account_categories/%s/ledger_account_categories/%s", id, subCategoryID)
+  err = requestconfig.ExecuteNewRequest(ctx, http.MethodDelete, path, nil, nil, opts...)
+  return err
 }
 
 type LedgerAccountCategory struct {
-	ID string `json:"id" api:"required" format:"uuid"`
-	// The pending, posted, and available balances for this ledger account category.
-	// The posted balance is the sum of all posted entries on the account. The pending
-	// balance is the sum of all pending and posted entries on the account. The
-	// available balance is the posted incoming entries minus the sum of the pending
-	// and posted outgoing amounts.
-	Balances  shared.LedgerBalances `json:"balances" api:"required"`
-	CreatedAt time.Time             `json:"created_at" api:"required" format:"date-time"`
-	// The description of the ledger account category.
-	Description string    `json:"description" api:"required,nullable"`
-	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID string `json:"external_id" api:"required,nullable"`
-	// The id of the ledger that this account category belongs to.
-	LedgerID string `json:"ledger_id" api:"required" format:"uuid"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode" api:"required"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata map[string]string `json:"metadata" api:"required"`
-	// The name of the ledger account category.
-	Name string `json:"name" api:"required"`
-	// The normal balance of the ledger account category.
-	NormalBalance shared.TransactionDirection `json:"normal_balance" api:"required"`
-	Object        string                      `json:"object" api:"required"`
-	UpdatedAt     time.Time                   `json:"updated_at" api:"required" format:"date-time"`
-	JSON          ledgerAccountCategoryJSON   `json:"-"`
+ID string `json:"id" api:"required" format:"uuid"`
+// The pending, posted, and available balances for this ledger account category.
+// The posted balance is the sum of all posted entries on the account. The pending
+// balance is the sum of all pending and posted entries on the account. The
+// available balance is the posted incoming entries minus the sum of the pending
+// and posted outgoing amounts.
+Balances shared.LedgerBalances `json:"balances" api:"required"`
+CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
+// The description of the ledger account category.
+Description string `json:"description" api:"required,nullable"`
+DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+// An optional user-defined 180 character unique identifier.
+ExternalID string `json:"external_id" api:"required,nullable"`
+// The id of the ledger that this account category belongs to.
+LedgerID string `json:"ledger_id" api:"required" format:"uuid"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode bool `json:"live_mode" api:"required"`
+// Additional data represented as key-value pairs. Both the key and value must be
+// strings.
+Metadata map[string]string `json:"metadata" api:"required"`
+// The name of the ledger account category.
+Name string `json:"name" api:"required"`
+// The normal balance of the ledger account category.
+NormalBalance shared.TransactionDirection `json:"normal_balance" api:"required"`
+Object string `json:"object" api:"required"`
+UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
+JSON ledgerAccountCategoryJSON `json:"-"`
 }
 
 // ledgerAccountCategoryJSON contains the JSON metadata for the struct
 // [LedgerAccountCategory]
 type ledgerAccountCategoryJSON struct {
-	ID            apijson.Field
-	Balances      apijson.Field
-	CreatedAt     apijson.Field
-	Description   apijson.Field
-	DiscardedAt   apijson.Field
-	ExternalID    apijson.Field
-	LedgerID      apijson.Field
-	LiveMode      apijson.Field
-	Metadata      apijson.Field
-	Name          apijson.Field
-	NormalBalance apijson.Field
-	Object        apijson.Field
-	UpdatedAt     apijson.Field
-	raw           string
-	ExtraFields   map[string]apijson.Field
+ID apijson.Field
+Balances apijson.Field
+CreatedAt apijson.Field
+Description apijson.Field
+DiscardedAt apijson.Field
+ExternalID apijson.Field
+LedgerID apijson.Field
+LiveMode apijson.Field
+Metadata apijson.Field
+Name apijson.Field
+NormalBalance apijson.Field
+Object apijson.Field
+UpdatedAt apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *LedgerAccountCategory) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r ledgerAccountCategoryJSON) RawJSON() string {
-	return r.raw
+func (r ledgerAccountCategoryJSON) RawJSON() (string) {
+  return r.raw
 }
 
 type LedgerAccountCategoryNewParams struct {
-	// The currency of the ledger account category.
-	Currency param.Field[string] `json:"currency" api:"required"`
-	// The id of the ledger that this account category belongs to.
-	LedgerID param.Field[string] `json:"ledger_id" api:"required" format:"uuid"`
-	// The name of the ledger account category.
-	Name param.Field[string] `json:"name" api:"required"`
-	// The normal balance of the ledger account category.
-	NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance" api:"required"`
-	// The currency exponent of the ledger account category.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
-	// The description of the ledger account category.
-	Description param.Field[string] `json:"description"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `json:"external_id"`
-	// The array of ledger account category ids that this ledger account category
-	// should be a child of.
-	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
+// The currency of the ledger account category.
+Currency param.Field[string] `json:"currency" api:"required"`
+// The id of the ledger that this account category belongs to.
+LedgerID param.Field[string] `json:"ledger_id" api:"required" format:"uuid"`
+// The name of the ledger account category.
+Name param.Field[string] `json:"name" api:"required"`
+// The normal balance of the ledger account category.
+NormalBalance param.Field[shared.TransactionDirection] `json:"normal_balance" api:"required"`
+// The currency exponent of the ledger account category.
+CurrencyExponent param.Field[int64] `json:"currency_exponent"`
+// The description of the ledger account category.
+Description param.Field[string] `json:"description"`
+// An optional user-defined 180 character unique identifier.
+ExternalID param.Field[string] `json:"external_id"`
+// The array of ledger account category ids that this ledger account category
+// should be a child of.
+LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
+// Additional data represented as key-value pairs. Both the key and value must be
+// strings.
+Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
 func (r LedgerAccountCategoryNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type LedgerAccountCategoryGetParams struct {
-	// For example, if you want the balances as of a particular time (ISO8601), the
-	// encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
-	// The balances as of a time are inclusive of entries with that exact time, but
-	// with respect to the ledger accounts that are currently present in the category.
-	Balances param.Field[LedgerAccountCategoryGetParamsBalances] `query:"balances"`
+// For example, if you want the balances as of a particular time (ISO8601), the
+// encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
+// The balances as of a time are inclusive of entries with that exact time, but
+// with respect to the ledger accounts that are currently present in the category.
+Balances param.Field[LedgerAccountCategoryGetParamsBalances] `query:"balances"`
 }
 
 // URLQuery serializes [LedgerAccountCategoryGetParams]'s query parameters as
 // `url.Values`.
 func (r LedgerAccountCategoryGetParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
+  return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+    ArrayFormat: apiquery.ArrayQueryFormatBrackets,
+    NestedFormat: apiquery.NestedQueryFormatBrackets,
+  })
 }
 
 // For example, if you want the balances as of a particular time (ISO8601), the
@@ -282,68 +282,68 @@ func (r LedgerAccountCategoryGetParams) URLQuery() (v url.Values) {
 // The balances as of a time are inclusive of entries with that exact time, but
 // with respect to the ledger accounts that are currently present in the category.
 type LedgerAccountCategoryGetParamsBalances struct {
-	AsOfDate    param.Field[time.Time] `query:"as_of_date" format:"date"`
-	EffectiveAt param.Field[time.Time] `query:"effective_at" format:"date-time"`
+AsOfDate param.Field[time.Time] `query:"as_of_date" format:"date"`
+EffectiveAt param.Field[time.Time] `query:"effective_at" format:"date-time"`
 }
 
 // URLQuery serializes [LedgerAccountCategoryGetParamsBalances]'s query parameters
 // as `url.Values`.
 func (r LedgerAccountCategoryGetParamsBalances) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
+  return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+    ArrayFormat: apiquery.ArrayQueryFormatBrackets,
+    NestedFormat: apiquery.NestedQueryFormatBrackets,
+  })
 }
 
 type LedgerAccountCategoryUpdateParams struct {
-	// The description of the ledger account category.
-	Description param.Field[string] `json:"description"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `json:"external_id"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The name of the ledger account category.
-	Name param.Field[string] `json:"name"`
+// The description of the ledger account category.
+Description param.Field[string] `json:"description"`
+// An optional user-defined 180 character unique identifier.
+ExternalID param.Field[string] `json:"external_id"`
+// Additional data represented as key-value pairs. Both the key and value must be
+// strings.
+Metadata param.Field[map[string]string] `json:"metadata"`
+// The name of the ledger account category.
+Name param.Field[string] `json:"name"`
 }
 
 func (r LedgerAccountCategoryUpdateParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type LedgerAccountCategoryListParams struct {
-	// If you have specific IDs to retrieve in bulk, you can pass them as query
-	// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
-	ID          param.Field[[]string] `query:"id"`
-	AfterCursor param.Field[string]   `query:"after_cursor"`
-	// For example, if you want the balances as of a particular time (ISO8601), the
-	// encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
-	// The balances as of a time are inclusive of entries with that exact time, but
-	// with respect to the ledger accounts that are currently present in the category.
-	Balances   param.Field[LedgerAccountCategoryListParamsBalances] `query:"balances"`
-	Currency   param.Field[string]                                  `query:"currency"`
-	ExternalID param.Field[string]                                  `query:"external_id"`
-	// Query categories which contain a ledger account directly or through child
-	// categories.
-	LedgerAccountID param.Field[string] `query:"ledger_account_id"`
-	LedgerID        param.Field[string] `query:"ledger_id"`
-	// For example, if you want to query for records with metadata key `Type` and value
-	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
-	// parameters.
-	Metadata param.Field[map[string]string] `query:"metadata"`
-	Name     param.Field[string]            `query:"name"`
-	// Query categories that are nested underneath a parent category
-	ParentLedgerAccountCategoryID param.Field[string] `query:"parent_ledger_account_category_id"`
-	PerPage                       param.Field[int64]  `query:"per_page"`
+// If you have specific IDs to retrieve in bulk, you can pass them as query
+// parameters delimited with `id[]=`, for example `?id[]=123&id[]=abc`.
+ID param.Field[[]string] `query:"id"`
+AfterCursor param.Field[string] `query:"after_cursor"`
+// For example, if you want the balances as of a particular time (ISO8601), the
+// encoded query string would be `balances%5Beffective_at%5D=2000-12-31T12:00:00Z`.
+// The balances as of a time are inclusive of entries with that exact time, but
+// with respect to the ledger accounts that are currently present in the category.
+Balances param.Field[LedgerAccountCategoryListParamsBalances] `query:"balances"`
+Currency param.Field[string] `query:"currency"`
+ExternalID param.Field[string] `query:"external_id"`
+// Query categories which contain a ledger account directly or through child
+// categories.
+LedgerAccountID param.Field[string] `query:"ledger_account_id"`
+LedgerID param.Field[string] `query:"ledger_id"`
+// For example, if you want to query for records with metadata key `Type` and value
+// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
+// parameters.
+Metadata param.Field[map[string]string] `query:"metadata"`
+Name param.Field[string] `query:"name"`
+// Query categories that are nested underneath a parent category
+ParentLedgerAccountCategoryID param.Field[string] `query:"parent_ledger_account_category_id"`
+PerPage param.Field[int64] `query:"per_page"`
 }
 
 // URLQuery serializes [LedgerAccountCategoryListParams]'s query parameters as
 // `url.Values`.
 func (r LedgerAccountCategoryListParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
+  return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+    ArrayFormat: apiquery.ArrayQueryFormatBrackets,
+    NestedFormat: apiquery.NestedQueryFormatBrackets,
+  })
 }
 
 // For example, if you want the balances as of a particular time (ISO8601), the
@@ -351,14 +351,14 @@ func (r LedgerAccountCategoryListParams) URLQuery() (v url.Values) {
 // The balances as of a time are inclusive of entries with that exact time, but
 // with respect to the ledger accounts that are currently present in the category.
 type LedgerAccountCategoryListParamsBalances struct {
-	EffectiveAt param.Field[time.Time] `query:"effective_at" format:"date-time"`
+EffectiveAt param.Field[time.Time] `query:"effective_at" format:"date-time"`
 }
 
 // URLQuery serializes [LedgerAccountCategoryListParamsBalances]'s query parameters
 // as `url.Values`.
 func (r LedgerAccountCategoryListParamsBalances) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
+  return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
+    ArrayFormat: apiquery.ArrayQueryFormatBrackets,
+    NestedFormat: apiquery.NestedQueryFormatBrackets,
+  })
 }

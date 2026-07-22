@@ -9,8 +9,8 @@ from applications written in Go.
 
 Use the Modern Treasury MCP Server to enable AI assistants to interact with this API, allowing them to explore endpoints, make test requests, and use documentation to help integrate this SDK into your application.
 
-[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=modern-treasury-mcp&config=eyJuYW1lIjoibW9kZXJuLXRyZWFzdXJ5LW1jcCIsInRyYW5zcG9ydCI6Imh0dHAiLCJ1cmwiOiJodHRwczovL21vZGVybi10cmVhc3VyeS5zdGxtY3AuY29tIiwiaGVhZGVycyI6eyJ4LW1vZGVybi10cmVhc3VyeS1vcmdhbml6YXRpb24taWQiOiJteS1vcmdhbml6YXRpb24tSUQiLCJ4LW1vZGVybi10cmVhc3VyeS1hcGkta2V5IjoiTXkgQVBJIEtleSJ9fQ)
-[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22modern-treasury-mcp%22%2C%22type%22%3A%22http%22%2C%22url%22%3A%22https%3A%2F%2Fmodern-treasury.stlmcp.com%22%2C%22headers%22%3A%7B%22x-modern-treasury-organization-id%22%3A%22my-organization-ID%22%2C%22x-modern-treasury-api-key%22%3A%22My%20API%20Key%22%7D%7D)
+[![Add to Cursor](https://cursor.com/deeplink/mcp-install-dark.svg)](https://cursor.com/en-US/install-mcp?name=modern-treasury-mcp&config=eyJjb21tYW5kIjoibnB4IiwiYXJncyI6WyIteSIsIm1vZGVybi10cmVhc3VyeS1tY3AiXSwiZW52Ijp7Ik1PREVSTl9UUkVBU1VSWV9BUElfS0VZIjoiTXkgQVBJIEtleSIsIk1PREVSTl9UUkVBU1VSWV9PUkdBTklaQVRJT05fSUQiOiJteS1vcmdhbml6YXRpb24tSUQiLCJNT0RFUk5fVFJFQVNVUllfV0VCSE9PS19LRVkiOiJNeSBXZWJob29rIEtleSJ9fQ)
+[![Install in VS Code](https://img.shields.io/badge/_-Add_to_VS_Code-blue?style=for-the-badge&logo=data:image/svg%2bxml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA0MCA0MCI+PHBhdGggZmlsbD0iI0VFRSIgZmlsbC1ydWxlPSJldmVub2RkIiBkPSJNMzAuMjM1IDM5Ljg4NGEyLjQ5MSAyLjQ5MSAwIDAgMS0xLjc4MS0uNzNMMTIuNyAyNC43OGwtMy40NiAyLjYyNC0zLjQwNiAyLjU4MmExLjY2NSAxLjY2NSAwIDAgMS0xLjA4Mi4zMzggMS42NjQgMS42NjQgMCAwIDEtMS4wNDYtLjQzMWwtMi4yLTJhMS42NjYgMS42NjYgMCAwIDEgMC0yLjQ2M0w3LjQ1OCAyMCA0LjY3IDE3LjQ1MyAxLjUwNyAxNC41N2ExLjY2NSAxLjY2NSAwIDAgMSAwLTIuNDYzbDIuMi0yYTEuNjY1IDEuNjY1IDAgMCAxIDIuMTMtLjA5N2w2Ljg2MyA1LjIwOUwyOC40NTIuODQ0YTIuNDg4IDIuNDg4IDAgMCAxIDEuODQxLS43MjljLjM1MS4wMDkuNjk5LjA5MSAxLjAxOS4yNDVsOC4yMzYgMy45NjFhMi41IDIuNSAwIDAgMSAxLjQxNSAyLjI1M3YuMDk5LS4wNDVWMzMuMzd2LS4wNDUuMDk1YTIuNTAxIDIuNTAxIDAgMCAxLTEuNDE2IDIuMjU3bC04LjIzNSAzLjk2MWEyLjQ5MiAyLjQ5MiAwIDAgMS0xLjA3Ny4yNDZabS43MTYtMjguOTQ3LTExLjk0OCA5LjA2MiAxMS45NTIgOS4wNjUtLjAwNC0xOC4xMjdaIi8+PC9zdmc+)](https://vscode.stainless.com/mcp/%7B%22name%22%3A%22modern-treasury-mcp%22%2C%22command%22%3A%22npx%22%2C%22args%22%3A%5B%22-y%22%2C%22modern-treasury-mcp%22%5D%2C%22env%22%3A%7B%22MODERN_TREASURY_API_KEY%22%3A%22My%20API%20Key%22%2C%22MODERN_TREASURY_ORGANIZATION_ID%22%3A%22my-organization-ID%22%2C%22MODERN_TREASURY_WEBHOOK_KEY%22%3A%22My%20Webhook%20Key%22%7D%7D)
 
 > Note: You may need to set environment variables in your MCP client.
 
@@ -48,25 +48,25 @@ The full API of this library can be found in [api.md](api.md).
 package main
 
 import (
-	"context"
-	"fmt"
+  "context"
+  "fmt"
 
-	"github.com/Modern-Treasury/modern-treasury-go/v2"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
+  "github.com/Modern-Treasury/modern-treasury-go/v2"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
 func main() {
-	client := moderntreasury.NewClient(
-		option.WithAPIKey("My API Key"),                 // defaults to os.LookupEnv("MODERN_TREASURY_API_KEY")
-		option.WithOrganizationID("my-organization-ID"), // defaults to os.LookupEnv("MODERN_TREASURY_ORGANIZATION_ID")
-	)
-	counterparty, err := client.Counterparties.New(context.TODO(), moderntreasury.CounterpartyNewParams{
-		Name: moderntreasury.F("my first counterparty"),
-	})
-	if err != nil {
-		panic(err.Error())
-	}
-	fmt.Printf("%+v\n", counterparty.ID)
+  client := moderntreasury.NewClient(
+    option.WithAPIKey("My API Key"), // defaults to os.LookupEnv("MODERN_TREASURY_API_KEY")
+    option.WithOrganizationID("my-organization-ID"), // defaults to os.LookupEnv("MODERN_TREASURY_ORGANIZATION_ID")
+  )
+  counterparty, err := client.Counterparties.New(context.TODO(), moderntreasury.CounterpartyNewParams{
+    Name: moderntreasury.F("my first counterparty"),
+  })
+  if err != nil {
+    panic(err.Error())
+  }
+  fmt.Printf("%+v\n", counterparty.ID)
 }
 
 ```
@@ -172,14 +172,16 @@ This library provides some conveniences for working with paginated list endpoint
 You can use `.ListAutoPaging()` methods to iterate through items across all pages:
 
 ```go
-iter := client.Counterparties.ListAutoPaging(context.TODO(), moderntreasury.CounterpartyListParams{})
+iter := client.Counterparties.ListAutoPaging(context.TODO(), moderntreasury.CounterpartyListParams{
+
+})
 // Automatically fetches more pages as needed.
 for iter.Next() {
-	counterparty := iter.Current()
-	fmt.Printf("%+v\n", counterparty)
+  counterparty := iter.Current()
+  fmt.Printf("%+v\n", counterparty)
 }
 if err := iter.Err(); err != nil {
-	panic(err.Error())
+  panic(err.Error())
 }
 ```
 
@@ -187,15 +189,17 @@ Or you can use simple `.List()` methods to fetch a single page and receive a sta
 with additional helper methods like `.GetNextPage()`, e.g.:
 
 ```go
-page, err := client.Counterparties.List(context.TODO(), moderntreasury.CounterpartyListParams{})
+page, err := client.Counterparties.List(context.TODO(), moderntreasury.CounterpartyListParams{
+
+})
 for page != nil {
-	for _, counterparty := range page.Items {
-		fmt.Printf("%+v\n", counterparty)
-	}
-	page, err = page.GetNextPage()
+  for _, counterparty := range page.Items {
+    fmt.Printf("%+v\n", counterparty)
+  }
+  page, err = page.GetNextPage()
 }
 if err != nil {
-	panic(err.Error())
+  panic(err.Error())
 }
 ```
 
@@ -210,15 +214,15 @@ To handle errors, we recommend that you use the `errors.As` pattern:
 
 ```go
 _, err := client.ExternalAccounts.New(context.TODO(), moderntreasury.ExternalAccountNewParams{
-	CounterpartyID: moderntreasury.F("missing"),
+  CounterpartyID: moderntreasury.F("missing"),
 })
 if err != nil {
-	var apierr *moderntreasury.Error
-	if errors.As(err, &apierr) {
-		println(string(apierr.DumpRequest(true)))  // Prints the serialized HTTP request
-		println(string(apierr.DumpResponse(true))) // Prints the serialized HTTP response
-	}
-	panic(err.Error()) // GET "/api/external_accounts": 400 Bad Request { ... }
+  var apierr *moderntreasury.Error
+  if errors.As(err, &apierr) {
+     println(string(apierr.DumpRequest(true))) // Prints the serialized HTTP request
+     println(string(apierr.DumpResponse(true))) // Prints the serialized HTTP response
+  }
+  panic(err.Error()) // GET "/api/external_accounts": 400 Bad Request { ... }
 }
 ```
 
@@ -234,15 +238,15 @@ To set a per-retry timeout, use `option.WithRequestTimeout()`.
 
 ```go
 // This sets the timeout for the request, including all the retries.
-ctx, cancel := context.WithTimeout(context.Background(), 5*time.Minute)
+ctx, cancel := context.WithTimeout(context.Background(), 5 * time.Minute)
 defer cancel()
 client.Counterparties.New(
-	ctx,
-	moderntreasury.CounterpartyNewParams{
-		Name: moderntreasury.F("my first counterparty"),
-	},
-	// This sets the per-retry timeout
-	option.WithRequestTimeout(20*time.Second),
+  ctx,
+  moderntreasury.CounterpartyNewParams{
+    Name: moderntreasury.F("my first counterparty"),
+  },
+  // This sets the per-retry timeout
+    option.WithRequestTimeout(20 * time.Second),
 )
 ```
 
@@ -263,27 +267,27 @@ which can be used to wrap any `io.Reader` with the appropriate file name and con
 // A file from the file system
 file, err := os.Open("my/file.txt")
 moderntreasury.DocumentNewParams{
-	File:             moderntreasury.F[io.Reader](file),
-	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
-	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeConnection),
+  File: moderntreasury.F[io.Reader](file),
+  DocumentableID: moderntreasury.F("24c6b7a3-02..."),
+  DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeConnection),
 }
 
 // A file from a string
 moderntreasury.DocumentNewParams{
-	File:             moderntreasury.F[io.Reader](strings.NewReader("my file contents")),
-	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
-	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeConnection),
+  File: moderntreasury.F[io.Reader](strings.NewReader("my file contents")),
+  DocumentableID: moderntreasury.F("24c6b7a3-02..."),
+  DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeConnection),
 }
 
 // With a custom filename and contentType
 moderntreasury.DocumentNewParams{
-	File:             moderntreasury.FileParam(strings.NewReader(`{"hello": "foo"}`), "file.go", "application/json"),
-	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
-	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeConnection),
+  File: moderntreasury.FileParam(strings.NewReader(`{"hello": "foo"}`), "file.go", "application/json"),
+  DocumentableID: moderntreasury.F("24c6b7a3-02..."),
+  DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeConnection),
 }
 ```
 
-## Retries
+### Retries
 
 Certain errors will be automatically retried 2 times by default, with a short exponential backoff.
 We retry by default all connection errors, 408 Request Timeout, 409 Conflict, 429 Rate Limit,
@@ -294,18 +298,91 @@ You can use the `WithMaxRetries` option to configure or disable this:
 ```go
 // Configure the default for all requests:
 client := moderntreasury.NewClient(
-	option.WithMaxRetries(0), // default is 2
+  option.WithMaxRetries(0), // default is 2
 )
 
 // Override per-request:
 client.Counterparties.New(
-	context.TODO(),
-	moderntreasury.CounterpartyNewParams{
-		Name: moderntreasury.F("my first counterparty"),
-	},
-	option.WithMaxRetries(5),
+  context.TODO(),
+  moderntreasury.CounterpartyNewParams{
+    Name: moderntreasury.F("my first counterparty"),
+  },
+  option.WithMaxRetries(5),
 )
 ```
+
+### Accessing raw response data (e.g. response headers)
+
+You can access the raw HTTP response data by using the `option.WithResponseInto()` request option. This is useful when
+you need to examine response headers, status codes, or other details.
+
+```go
+// Create a variable to store the HTTP response
+var response *http.Response
+counterparty, err := client.Counterparties.New(
+  context.TODO(),
+  moderntreasury.CounterpartyNewParams{
+    Name: moderntreasury.F("my first counterparty"),
+  },
+  option.WithResponseInto(&response),
+)
+if err != nil {
+  // handle error
+}
+fmt.Printf("%+v\n", counterparty)
+
+fmt.Printf("Status Code: %d\n", response.StatusCode)
+fmt.Printf("Headers: %+#v\n", response.Header)
+```
+
+### Making custom/undocumented requests
+
+This library is typed for convenient access to the documented API. If you need to access undocumented
+endpoints, params, or response properties, the library can still be used.
+
+#### Undocumented endpoints
+
+To make requests to undocumented endpoints, you can use `client.Get`, `client.Post`, and other HTTP verbs.
+`RequestOptions` on the client, such as retries, will be respected when making these requests.
+
+```go
+var (
+    // params can be an io.Reader, a []byte, an encoding/json serializable object,
+    // or a "…Params" struct defined in this library.
+    params map[string]interface{}
+
+    // result can be an []byte, *http.Response, a encoding/json deserializable object,
+    // or a model defined in this library.
+    result *http.Response
+)
+err := client.Post(context.Background(), "/unspecified", params, &result)
+if err != nil {
+    …
+}
+```
+
+#### Undocumented request params
+
+To make requests using undocumented parameters, you may use either the `option.WithQuerySet()`
+or the `option.WithJSONSet()` methods.
+
+```go
+params := FooNewParams{
+    ID:   moderntreasury.F("id_xxxx"),
+    Data: moderntreasury.F(FooNewParamsData{
+        FirstName: moderntreasury.F("John"),
+    }),
+}
+client.Foo.New(context.Background(), params, option.WithJSONSet("data.last_name", "Doe"))
+```
+
+#### Undocumented response properties
+
+To access undocumented response properties, you may either access the raw JSON of the response as a string
+with `result.JSON.RawJSON()`, or get the raw JSON of a particular field on the result with
+`result.JSON.Foo.Raw()`.
+
+Any fields that are not present on the response struct will be saved and can be accessed by `result.JSON.ExtraFields()` which returns the extra fields as a `map[string]Field`.
 
 ### Middleware
 

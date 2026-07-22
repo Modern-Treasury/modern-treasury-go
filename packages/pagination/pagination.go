@@ -3,117 +3,117 @@
 package pagination
 
 import (
-	"net/http"
+  "net/http"
 
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/option"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/requestconfig"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/option"
 )
 
 type Page[T any] struct {
-	Items []T      `json:"-,inline"`
-	JSON  pageJSON `json:"-"`
-	cfg   *requestconfig.RequestConfig
-	res   *http.Response
+Items []T `json:"-,inline"`
+JSON pageJSON `json:"-"`
+cfg *requestconfig.RequestConfig
+res *http.Response
 }
 
 // pageJSON contains the JSON metadata for the struct [Page[T]]
 type pageJSON struct {
-	Items       apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+Items apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *Page[T]) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r pageJSON) RawJSON() string {
-	return r.raw
+func (r pageJSON) RawJSON() (string) {
+  return r.raw
 }
 
 // GetNextPage returns the next page as defined by this pagination style. When
 // there is no next page, this function will return a 'nil' for the page value, but
 // will not return an error
 func (r *Page[T]) GetNextPage() (res *Page[T], err error) {
-	next := r.res.Header.Get("X-After-Cursor")
-	if len(next) == 0 {
-		return nil, nil
-	}
-	cfg := r.cfg.Clone(r.cfg.Context)
-	err = cfg.Apply(option.WithQuery("after_cursor", next))
-	if err != nil {
-		return nil, err
-	}
-	var raw *http.Response
-	cfg.ResponseInto = &raw
-	cfg.ResponseBodyInto = &res
-	err = cfg.Execute()
-	if err != nil {
-		return nil, err
-	}
-	res.SetPageConfig(cfg, raw)
-	return res, nil
+  next := r.res.Header.Get("X-After-Cursor")
+  if len(next) == 0 {
+    return nil, nil
+  }
+  cfg := r.cfg.Clone(r.cfg.Context)
+  err = cfg.Apply(option.WithQuery("after_cursor", next))
+  if err != nil {
+    return nil, err
+  }
+  var raw *http.Response
+  cfg.ResponseInto = &raw
+  cfg.ResponseBodyInto = &res
+  err = cfg.Execute()
+  if err != nil {
+    return nil, err
+  }
+  res.SetPageConfig(cfg, raw)
+  return res, nil
 }
 
 func (r *Page[T]) SetPageConfig(cfg *requestconfig.RequestConfig, res *http.Response) {
-	if r == nil {
-		r = &Page[T]{}
-	}
-	r.cfg = cfg
-	r.res = res
+  if r == nil {
+    r = &Page[T]{}
+  }
+  r.cfg = cfg
+  r.res = res
 }
 
 type PageAutoPager[T any] struct {
-	page *Page[T]
-	cur  T
-	idx  int
-	run  int
-	err  error
+page *Page[T]
+cur T
+idx int
+run int
+err error
 }
 
-func NewPageAutoPager[T any](page *Page[T], err error) *PageAutoPager[T] {
-	return &PageAutoPager[T]{
-		page: page,
-		err:  err,
-	}
+func NewPageAutoPager[T any](page *Page[T], err error) (*PageAutoPager[T]) {
+  return &PageAutoPager[T]{
+    page: page,
+    err: err,
+  }
 }
 
-func (r *PageAutoPager[T]) Next() bool {
-	if r.page == nil {
-		return false
-	}
-	if r.idx >= len(r.page.Items) {
-		r.idx = 0
-		r.page, r.err = r.page.GetNextPage()
-		if r.err != nil || r.page == nil {
-			return false
-		}
-	}
-	// if the API returned empty data then keep iterating
-	// until we either get more data or there are no more pages
-	// to fetch
-	for len(r.page.Items) == 0 {
-		r.idx = 0
-		r.page, r.err = r.page.GetNextPage()
-		if r.err != nil || r.page == nil {
-			return false
-		}
-	}
-	r.cur = r.page.Items[r.idx]
-	r.run += 1
-	r.idx += 1
-	return true
+func (r *PageAutoPager[T]) Next() (bool) {
+  if r.page == nil  {
+    return false
+  }
+  if r.idx >= len(r.page.Items) {
+    r.idx = 0
+    r.page, r.err = r.page.GetNextPage()
+    if r.err != nil || r.page == nil  {
+      return false
+    }
+  }
+  // if the API returned empty data then keep iterating
+  // until we either get more data or there are no more pages
+  // to fetch
+  for len(r.page.Items) == 0 {
+    r.idx = 0
+    r.page, r.err = r.page.GetNextPage()
+    if r.err != nil || r.page == nil {
+      return false
+    }
+  }
+  r.cur = r.page.Items[r.idx]
+  r.run += 1
+  r.idx += 1
+  return true
 }
 
-func (r *PageAutoPager[T]) Current() T {
-	return r.cur
+func (r *PageAutoPager[T]) Current() (T) {
+  return r.cur
 }
 
-func (r *PageAutoPager[T]) Err() error {
-	return r.err
+func (r *PageAutoPager[T]) Err() (error) {
+  return r.err
 }
 
-func (r *PageAutoPager[T]) Index() int {
-	return r.run
+func (r *PageAutoPager[T]) Index() (int) {
+  return r.run
 }

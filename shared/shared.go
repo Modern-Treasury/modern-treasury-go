@@ -3,877 +3,893 @@
 package shared
 
 import (
-	"time"
+  "time"
 
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
-	"github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/apijson"
+  "github.com/Modern-Treasury/modern-treasury-go/v2/internal/param"
 )
 
 type AccountsType string
 
 const (
-	AccountsTypeExternalAccounts AccountsType = "external_accounts"
-	AccountsTypeInternalAccounts AccountsType = "internal_accounts"
-)
+    AccountsTypeExternalAccounts AccountsType = "external_accounts"
+    AccountsTypeInternalAccounts AccountsType = "internal_accounts"
+  )
 
-func (r AccountsType) IsKnown() bool {
-	switch r {
-	case AccountsTypeExternalAccounts, AccountsTypeInternalAccounts:
-		return true
-	}
-	return false
+func (r AccountsType) IsKnown() (bool) {
+  switch r {
+  case AccountsTypeExternalAccounts, AccountsTypeInternalAccounts:
+      return true
+  }
+  return false
 }
 
 type Address struct {
-	ID string `json:"id" api:"required" format:"uuid"`
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country   string    `json:"country" api:"required,nullable"`
-	CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
-	Line1     string    `json:"line1" api:"required,nullable"`
-	Line2     string    `json:"line2" api:"required,nullable"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool `json:"live_mode" api:"required"`
-	// Locality or City.
-	Locality string `json:"locality" api:"required,nullable"`
-	Object   string `json:"object" api:"required"`
-	// The postal code of the address.
-	PostalCode string `json:"postal_code" api:"required,nullable"`
-	// Region or State.
-	Region    string      `json:"region" api:"required,nullable"`
-	UpdatedAt time.Time   `json:"updated_at" api:"required" format:"date-time"`
-	JSON      addressJSON `json:"-"`
+ID string `json:"id" api:"required" format:"uuid"`
+// Country code conforms to [ISO 3166-1 alpha-2]
+Country string `json:"country" api:"required,nullable"`
+CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
+Line1 string `json:"line1" api:"required,nullable"`
+Line2 string `json:"line2" api:"required,nullable"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode bool `json:"live_mode" api:"required"`
+// Locality or City.
+Locality string `json:"locality" api:"required,nullable"`
+Object string `json:"object" api:"required"`
+// The postal code of the address.
+PostalCode string `json:"postal_code" api:"required,nullable"`
+// Region or State.
+Region string `json:"region" api:"required,nullable"`
+UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
+JSON addressJSON `json:"-"`
 }
 
 // addressJSON contains the JSON metadata for the struct [Address]
 type addressJSON struct {
-	ID          apijson.Field
-	Country     apijson.Field
-	CreatedAt   apijson.Field
-	Line1       apijson.Field
-	Line2       apijson.Field
-	LiveMode    apijson.Field
-	Locality    apijson.Field
-	Object      apijson.Field
-	PostalCode  apijson.Field
-	Region      apijson.Field
-	UpdatedAt   apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+ID apijson.Field
+Country apijson.Field
+CreatedAt apijson.Field
+Line1 apijson.Field
+Line2 apijson.Field
+LiveMode apijson.Field
+Locality apijson.Field
+Object apijson.Field
+PostalCode apijson.Field
+Region apijson.Field
+UpdatedAt apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *Address) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r addressJSON) RawJSON() string {
-	return r.raw
+func (r addressJSON) RawJSON() (string) {
+  return r.raw
 }
 
 type AddressRequest struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country string `json:"country" api:"nullable"`
-	Line1   string `json:"line1" api:"nullable"`
-	Line2   string `json:"line2" api:"nullable"`
-	// Locality or City.
-	Locality string `json:"locality" api:"nullable"`
-	// The postal code of the address.
-	PostalCode string `json:"postal_code" api:"nullable"`
-	// Region or State.
-	Region string             `json:"region" api:"nullable"`
-	JSON   addressRequestJSON `json:"-"`
+// Country code conforms to [ISO 3166-1 alpha-2]
+Country string `json:"country" api:"nullable"`
+Line1 string `json:"line1" api:"nullable"`
+Line2 string `json:"line2" api:"nullable"`
+// Locality or City.
+Locality string `json:"locality" api:"nullable"`
+// The postal code of the address.
+PostalCode string `json:"postal_code" api:"nullable"`
+// Region or State.
+Region string `json:"region" api:"nullable"`
+JSON addressRequestJSON `json:"-"`
 }
 
 // addressRequestJSON contains the JSON metadata for the struct [AddressRequest]
 type addressRequestJSON struct {
-	Country     apijson.Field
-	Line1       apijson.Field
-	Line2       apijson.Field
-	Locality    apijson.Field
-	PostalCode  apijson.Field
-	Region      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+Country apijson.Field
+Line1 apijson.Field
+Line2 apijson.Field
+Locality apijson.Field
+PostalCode apijson.Field
+Region apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *AddressRequest) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r addressRequestJSON) RawJSON() string {
-	return r.raw
+func (r addressRequestJSON) RawJSON() (string) {
+  return r.raw
 }
 
 type AddressRequestParam struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country"`
-	Line1   param.Field[string] `json:"line1"`
-	Line2   param.Field[string] `json:"line2"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code"`
-	// Region or State.
-	Region param.Field[string] `json:"region"`
+// Country code conforms to [ISO 3166-1 alpha-2]
+Country param.Field[string] `json:"country"`
+Line1 param.Field[string] `json:"line1"`
+Line2 param.Field[string] `json:"line2"`
+// Locality or City.
+Locality param.Field[string] `json:"locality"`
+// The postal code of the address.
+PostalCode param.Field[string] `json:"postal_code"`
+// Region or State.
+Region param.Field[string] `json:"region"`
 }
 
 func (r AddressRequestParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type AsyncResponse struct {
-	ID     string            `json:"id" api:"required" format:"uuid"`
-	Object string            `json:"object" api:"required"`
-	JSON   asyncResponseJSON `json:"-"`
+ID string `json:"id" api:"required" format:"uuid"`
+Object string `json:"object" api:"required"`
+JSON asyncResponseJSON `json:"-"`
 }
 
 // asyncResponseJSON contains the JSON metadata for the struct [AsyncResponse]
 type asyncResponseJSON struct {
-	ID          apijson.Field
-	Object      apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
+ID apijson.Field
+Object apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *AsyncResponse) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r asyncResponseJSON) RawJSON() string {
-	return r.raw
+func (r asyncResponseJSON) RawJSON() (string) {
+  return r.raw
 }
 
 type ChildLegalEntityCreateParam struct {
-	// A list of addresses for the entity.
-	Addresses    param.Field[[]LegalEntityAddressCreateRequestParam] `json:"addresses"`
-	BankSettings param.Field[LegalEntityBankSettingsParam]           `json:"bank_settings"`
-	// A description of the business.
-	BusinessDescription param.Field[string] `json:"business_description"`
-	// The business's legal business name.
-	BusinessName param.Field[string] `json:"business_name"`
-	// The country of citizenship for an individual.
-	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
-	// Deprecated: deprecated
-	ComplianceDetails param.Field[interface{}] `json:"compliance_details"`
-	// The connection ID for the connection the legal entity is associated with.
-	// Defaults to the id of the connection designated with an is_default value of true
-	// or the id of an existing operational connection if only one is available. Pass
-	// in a value of null to prevent the connection from being associated with the
-	// legal entity.
-	ConnectionID param.Field[string] `json:"connection_id"`
-	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
-	// alpha-3 formats.
-	CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`
-	// A business's formation date (YYYY-MM-DD).
-	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
-	// An individual's date of birth (YYYY-MM-DD).
-	DateOfBirth param.Field[time.Time] `json:"date_of_birth" format:"date"`
-	// A list of documents to attach to the legal entity (e.g. articles of
-	// incorporation, certificate of good standing, proof of address).
-	Documents            param.Field[[]ChildLegalEntityCreateDocumentParam] `json:"documents"`
-	DoingBusinessAsNames param.Field[[]string]                              `json:"doing_business_as_names"`
-	// The entity's primary email.
-	Email param.Field[string] `json:"email"`
-	// Monthly expected transaction volume in USD.
-	ExpectedActivityVolume param.Field[int64] `json:"expected_activity_volume"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `json:"external_id"`
-	// An individual's first name.
-	FirstName param.Field[string] `json:"first_name"`
-	// A list of identifications for the legal entity.
-	Identifications param.Field[[]IdentificationCreateRequestParam] `json:"identifications"`
-	// A list of industry classifications for the legal entity.
-	IndustryClassifications param.Field[[]LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
-	// A description of the intended use of the legal entity.
-	IntendedUse param.Field[string] `json:"intended_use"`
-	// An individual's last name.
-	LastName param.Field[string] `json:"last_name"`
-	// The legal entity associations and its child legal entities.
-	LegalEntityAssociations param.Field[[]LegalEntityAssociationInlineCreateParam] `json:"legal_entity_associations"`
-	// The type of legal entity.
-	LegalEntityType param.Field[ChildLegalEntityCreateLegalEntityType] `json:"legal_entity_type"`
-	// The business's legal structure.
-	LegalStructure param.Field[ChildLegalEntityCreateLegalStructure] `json:"legal_structure"`
-	// ISO 10383 market identifier code.
-	ListedExchange param.Field[string] `json:"listed_exchange"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// An individual's middle name.
-	MiddleName param.Field[string] `json:"middle_name"`
-	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
-	// codes).
-	OperatingJurisdictions param.Field[[]string]                                 `json:"operating_jurisdictions"`
-	PhoneNumbers           param.Field[[]ChildLegalEntityCreatePhoneNumberParam] `json:"phone_numbers"`
-	// Whether the individual is a politically exposed person.
-	PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
-	// An individual's preferred name.
-	PreferredName param.Field[string] `json:"preferred_name"`
-	// An individual's prefix.
-	Prefix param.Field[string] `json:"prefix"`
-	// A list of primary social media URLs for the business.
-	PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
-	// Array of regulatory bodies overseeing this institution.
-	Regulators param.Field[[]ChildLegalEntityCreateRegulatorParam] `json:"regulators"`
-	// The risk rating of the legal entity. One of low, medium, high.
-	RiskRating param.Field[ChildLegalEntityCreateRiskRating] `json:"risk_rating"`
-	// The UUID of the parent legal entity in the service provider tree.
-	ServiceProviderLegalEntityID param.Field[string] `json:"service_provider_legal_entity_id" format:"uuid"`
-	// An individual's suffix.
-	Suffix param.Field[string] `json:"suffix"`
-	// Deprecated. Use `third_party_verifications` instead.
-	//
-	// Deprecated: deprecated
-	ThirdPartyVerification param.Field[ThirdPartyVerificationParam] `json:"third_party_verification"`
-	// A list of third-party verifications run by external vendors.
-	ThirdPartyVerifications param.Field[[]ThirdPartyVerificationParam] `json:"third_party_verifications"`
-	// Stock ticker symbol for publicly traded companies.
-	TickerSymbol               param.Field[string]                                 `json:"ticker_symbol"`
-	WealthAndEmploymentDetails param.Field[LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
-	// The entity's primary website URL.
-	Website param.Field[string] `json:"website"`
+// A list of addresses for the entity.
+Addresses param.Field[[]LegalEntityAddressCreateRequestParam] `json:"addresses"`
+BankSettings param.Field[LegalEntityBankSettingsParam] `json:"bank_settings"`
+// A description of the business.
+BusinessDescription param.Field[string] `json:"business_description"`
+// The business's legal business name.
+BusinessName param.Field[string] `json:"business_name"`
+// The country of citizenship for an individual.
+CitizenshipCountry param.Field[string] `json:"citizenship_country"`
+// Deprecated: deprecated
+ComplianceDetails param.Field[interface{}] `json:"compliance_details"`
+// The connection ID for the connection the legal entity is associated with.
+// Defaults to the id of the connection designated with an is_default value of true
+// or the id of an existing operational connection if only one is available. Pass
+// in a value of null to prevent the connection from being associated with the
+// legal entity.
+ConnectionID param.Field[string] `json:"connection_id"`
+// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
+// alpha-3 formats.
+CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`
+// A business's formation date (YYYY-MM-DD).
+DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
+// An individual's date of birth (YYYY-MM-DD).
+DateOfBirth param.Field[time.Time] `json:"date_of_birth" format:"date"`
+// A list of documents to attach to the legal entity (e.g. articles of
+// incorporation, certificate of good standing, proof of address).
+Documents param.Field[[]ChildLegalEntityCreateDocumentParam] `json:"documents"`
+DoingBusinessAsNames param.Field[[]string] `json:"doing_business_as_names"`
+// The entity's primary email.
+Email param.Field[string] `json:"email"`
+// Monthly expected transaction volume in USD.
+ExpectedActivityVolume param.Field[int64] `json:"expected_activity_volume"`
+// An optional user-defined 180 character unique identifier.
+ExternalID param.Field[string] `json:"external_id"`
+// An individual's first name.
+FirstName param.Field[string] `json:"first_name"`
+// A list of identifications for the legal entity.
+Identifications param.Field[[]IdentificationCreateRequestParam] `json:"identifications"`
+// A list of industry classifications for the legal entity.
+IndustryClassifications param.Field[[]LegalEntityIndustryClassificationParam] `json:"industry_classifications"`
+// A description of the intended use of the legal entity.
+IntendedUse param.Field[string] `json:"intended_use"`
+// An individual's last name.
+LastName param.Field[string] `json:"last_name"`
+// The legal entity associations and its child legal entities.
+LegalEntityAssociations param.Field[[]LegalEntityAssociationInlineCreateParam] `json:"legal_entity_associations"`
+// The type of legal entity.
+LegalEntityType param.Field[ChildLegalEntityCreateLegalEntityType] `json:"legal_entity_type"`
+// The business's legal structure.
+LegalStructure param.Field[ChildLegalEntityCreateLegalStructure] `json:"legal_structure"`
+// ISO 10383 market identifier code.
+ListedExchange param.Field[string] `json:"listed_exchange"`
+// Additional data represented as key-value pairs. Both the key and value must be
+// strings.
+Metadata param.Field[map[string]string] `json:"metadata"`
+// An individual's middle name.
+MiddleName param.Field[string] `json:"middle_name"`
+// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
+// codes).
+OperatingJurisdictions param.Field[[]string] `json:"operating_jurisdictions"`
+PhoneNumbers param.Field[[]ChildLegalEntityCreatePhoneNumberParam] `json:"phone_numbers"`
+// Whether the individual is a politically exposed person.
+PoliticallyExposedPerson param.Field[bool] `json:"politically_exposed_person"`
+// An individual's preferred name.
+PreferredName param.Field[string] `json:"preferred_name"`
+// An individual's prefix.
+Prefix param.Field[string] `json:"prefix"`
+// A list of primary social media URLs for the business.
+PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
+// Array of regulatory bodies overseeing this institution.
+Regulators param.Field[[]ChildLegalEntityCreateRegulatorParam] `json:"regulators"`
+// The risk rating of the legal entity. One of low, medium, high.
+RiskRating param.Field[ChildLegalEntityCreateRiskRating] `json:"risk_rating"`
+// The UUID of the parent legal entity in the service provider tree.
+ServiceProviderLegalEntityID param.Field[string] `json:"service_provider_legal_entity_id" format:"uuid"`
+// An individual's suffix.
+Suffix param.Field[string] `json:"suffix"`
+// Acceptance of terms of use by the legal entity.
+TermsOfUse param.Field[ChildLegalEntityCreateTermsOfUseParam] `json:"terms_of_use"`
+// Deprecated. Use `third_party_verifications` instead.
+//
+// Deprecated: deprecated
+ThirdPartyVerification param.Field[ThirdPartyVerificationParam] `json:"third_party_verification"`
+// A list of third-party verifications run by external vendors.
+ThirdPartyVerifications param.Field[[]ThirdPartyVerificationParam] `json:"third_party_verifications"`
+// Stock ticker symbol for publicly traded companies.
+TickerSymbol param.Field[string] `json:"ticker_symbol"`
+WealthAndEmploymentDetails param.Field[LegalEntityWealthEmploymentDetailParam] `json:"wealth_and_employment_details"`
+// The entity's primary website URL.
+Website param.Field[string] `json:"website"`
 }
 
 func (r ChildLegalEntityCreateParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type ChildLegalEntityCreateDocumentParam struct {
-	// A category given to the document, can be `null`.
-	DocumentType param.Field[ChildLegalEntityCreateDocumentsDocumentType] `json:"document_type" api:"required"`
-	// Base64-encoded file content for the document.
-	FileData param.Field[string] `json:"file_data" api:"required"`
-	// The original filename of the document.
-	Filename param.Field[string] `json:"filename"`
+// A category given to the document, can be `null`.
+DocumentType param.Field[ChildLegalEntityCreateDocumentsDocumentType] `json:"document_type" api:"required"`
+// Base64-encoded file content for the document.
+FileData param.Field[string] `json:"file_data" api:"required"`
+// The original filename of the document.
+Filename param.Field[string] `json:"filename"`
 }
 
 func (r ChildLegalEntityCreateDocumentParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 // A category given to the document, can be `null`.
 type ChildLegalEntityCreateDocumentsDocumentType string
 
 const (
-	ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation   ChildLegalEntityCreateDocumentsDocumentType = "articles_of_incorporation"
-	ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding ChildLegalEntityCreateDocumentsDocumentType = "certificate_of_good_standing"
-	ChildLegalEntityCreateDocumentsDocumentTypeEinLetter                 ChildLegalEntityCreateDocumentsDocumentType = "ein_letter"
-	ChildLegalEntityCreateDocumentsDocumentTypeGeneric                   ChildLegalEntityCreateDocumentsDocumentType = "generic"
-	ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack        ChildLegalEntityCreateDocumentsDocumentType = "identification_back"
-	ChildLegalEntityCreateDocumentsDocumentTypeIdentificationFront       ChildLegalEntityCreateDocumentsDocumentType = "identification_front"
-	ChildLegalEntityCreateDocumentsDocumentTypeProofOfAddress            ChildLegalEntityCreateDocumentsDocumentType = "proof_of_address"
-)
+    ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation ChildLegalEntityCreateDocumentsDocumentType = "articles_of_incorporation"
+    ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding ChildLegalEntityCreateDocumentsDocumentType = "certificate_of_good_standing"
+    ChildLegalEntityCreateDocumentsDocumentTypeEinLetter ChildLegalEntityCreateDocumentsDocumentType = "ein_letter"
+    ChildLegalEntityCreateDocumentsDocumentTypeGeneric ChildLegalEntityCreateDocumentsDocumentType = "generic"
+    ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack ChildLegalEntityCreateDocumentsDocumentType = "identification_back"
+    ChildLegalEntityCreateDocumentsDocumentTypeIdentificationFront ChildLegalEntityCreateDocumentsDocumentType = "identification_front"
+    ChildLegalEntityCreateDocumentsDocumentTypeProofOfAddress ChildLegalEntityCreateDocumentsDocumentType = "proof_of_address"
+  )
 
-func (r ChildLegalEntityCreateDocumentsDocumentType) IsKnown() bool {
-	switch r {
-	case ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation, ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding, ChildLegalEntityCreateDocumentsDocumentTypeEinLetter, ChildLegalEntityCreateDocumentsDocumentTypeGeneric, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationFront, ChildLegalEntityCreateDocumentsDocumentTypeProofOfAddress:
-		return true
-	}
-	return false
+func (r ChildLegalEntityCreateDocumentsDocumentType) IsKnown() (bool) {
+  switch r {
+  case ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation, ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding, ChildLegalEntityCreateDocumentsDocumentTypeEinLetter, ChildLegalEntityCreateDocumentsDocumentTypeGeneric, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationFront, ChildLegalEntityCreateDocumentsDocumentTypeProofOfAddress:
+      return true
+  }
+  return false
 }
 
 // The type of legal entity.
 type ChildLegalEntityCreateLegalEntityType string
 
 const (
-	ChildLegalEntityCreateLegalEntityTypeBusiness   ChildLegalEntityCreateLegalEntityType = "business"
-	ChildLegalEntityCreateLegalEntityTypeIndividual ChildLegalEntityCreateLegalEntityType = "individual"
-)
+    ChildLegalEntityCreateLegalEntityTypeBusiness ChildLegalEntityCreateLegalEntityType = "business"
+    ChildLegalEntityCreateLegalEntityTypeIndividual ChildLegalEntityCreateLegalEntityType = "individual"
+  )
 
-func (r ChildLegalEntityCreateLegalEntityType) IsKnown() bool {
-	switch r {
-	case ChildLegalEntityCreateLegalEntityTypeBusiness, ChildLegalEntityCreateLegalEntityTypeIndividual:
-		return true
-	}
-	return false
+func (r ChildLegalEntityCreateLegalEntityType) IsKnown() (bool) {
+  switch r {
+  case ChildLegalEntityCreateLegalEntityTypeBusiness, ChildLegalEntityCreateLegalEntityTypeIndividual:
+      return true
+  }
+  return false
 }
 
 // The business's legal structure.
 type ChildLegalEntityCreateLegalStructure string
 
 const (
-	ChildLegalEntityCreateLegalStructureCorporation        ChildLegalEntityCreateLegalStructure = "corporation"
-	ChildLegalEntityCreateLegalStructureLlc                ChildLegalEntityCreateLegalStructure = "llc"
-	ChildLegalEntityCreateLegalStructureNonProfit          ChildLegalEntityCreateLegalStructure = "non_profit"
-	ChildLegalEntityCreateLegalStructurePartnership        ChildLegalEntityCreateLegalStructure = "partnership"
-	ChildLegalEntityCreateLegalStructureSoleProprietorship ChildLegalEntityCreateLegalStructure = "sole_proprietorship"
-	ChildLegalEntityCreateLegalStructureTrust              ChildLegalEntityCreateLegalStructure = "trust"
-)
+    ChildLegalEntityCreateLegalStructureCorporation ChildLegalEntityCreateLegalStructure = "corporation"
+    ChildLegalEntityCreateLegalStructureLlc ChildLegalEntityCreateLegalStructure = "llc"
+    ChildLegalEntityCreateLegalStructureNonProfit ChildLegalEntityCreateLegalStructure = "non_profit"
+    ChildLegalEntityCreateLegalStructurePartnership ChildLegalEntityCreateLegalStructure = "partnership"
+    ChildLegalEntityCreateLegalStructureSoleProprietorship ChildLegalEntityCreateLegalStructure = "sole_proprietorship"
+    ChildLegalEntityCreateLegalStructureTrust ChildLegalEntityCreateLegalStructure = "trust"
+  )
 
-func (r ChildLegalEntityCreateLegalStructure) IsKnown() bool {
-	switch r {
-	case ChildLegalEntityCreateLegalStructureCorporation, ChildLegalEntityCreateLegalStructureLlc, ChildLegalEntityCreateLegalStructureNonProfit, ChildLegalEntityCreateLegalStructurePartnership, ChildLegalEntityCreateLegalStructureSoleProprietorship, ChildLegalEntityCreateLegalStructureTrust:
-		return true
-	}
-	return false
+func (r ChildLegalEntityCreateLegalStructure) IsKnown() (bool) {
+  switch r {
+  case ChildLegalEntityCreateLegalStructureCorporation, ChildLegalEntityCreateLegalStructureLlc, ChildLegalEntityCreateLegalStructureNonProfit, ChildLegalEntityCreateLegalStructurePartnership, ChildLegalEntityCreateLegalStructureSoleProprietorship, ChildLegalEntityCreateLegalStructureTrust:
+      return true
+  }
+  return false
 }
 
 // A list of phone numbers in E.164 format.
 type ChildLegalEntityCreatePhoneNumberParam struct {
-	PhoneNumber param.Field[string] `json:"phone_number"`
+PhoneNumber param.Field[string] `json:"phone_number"`
 }
 
 func (r ChildLegalEntityCreatePhoneNumberParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type ChildLegalEntityCreateRegulatorParam struct {
-	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
-	// (e.g., "US", "CA", "GB").
-	Jurisdiction param.Field[string] `json:"jurisdiction" api:"required"`
-	// Full name of the regulatory body.
-	Name param.Field[string] `json:"name" api:"required"`
-	// Registration or identification number with the regulator.
-	RegistrationNumber param.Field[string] `json:"registration_number" api:"required"`
+// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
+// (e.g., "US", "CA", "GB").
+Jurisdiction param.Field[string] `json:"jurisdiction" api:"required"`
+// Full name of the regulatory body.
+Name param.Field[string] `json:"name" api:"required"`
+// Registration or identification number with the regulator.
+RegistrationNumber param.Field[string] `json:"registration_number" api:"required"`
 }
 
 func (r ChildLegalEntityCreateRegulatorParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 // The risk rating of the legal entity. One of low, medium, high.
 type ChildLegalEntityCreateRiskRating string
 
 const (
-	ChildLegalEntityCreateRiskRatingLow    ChildLegalEntityCreateRiskRating = "low"
-	ChildLegalEntityCreateRiskRatingMedium ChildLegalEntityCreateRiskRating = "medium"
-	ChildLegalEntityCreateRiskRatingHigh   ChildLegalEntityCreateRiskRating = "high"
-)
+    ChildLegalEntityCreateRiskRatingLow ChildLegalEntityCreateRiskRating = "low"
+    ChildLegalEntityCreateRiskRatingMedium ChildLegalEntityCreateRiskRating = "medium"
+    ChildLegalEntityCreateRiskRatingHigh ChildLegalEntityCreateRiskRating = "high"
+  )
 
-func (r ChildLegalEntityCreateRiskRating) IsKnown() bool {
-	switch r {
-	case ChildLegalEntityCreateRiskRatingLow, ChildLegalEntityCreateRiskRatingMedium, ChildLegalEntityCreateRiskRatingHigh:
-		return true
-	}
-	return false
+func (r ChildLegalEntityCreateRiskRating) IsKnown() (bool) {
+  switch r {
+  case ChildLegalEntityCreateRiskRatingLow, ChildLegalEntityCreateRiskRatingMedium, ChildLegalEntityCreateRiskRatingHigh:
+      return true
+  }
+  return false
+}
+
+// Acceptance of terms of use by the legal entity.
+type ChildLegalEntityCreateTermsOfUseParam struct {
+// The ISO 8601 timestamp indicating when the terms of use were accepted.
+AcceptedAt param.Field[time.Time] `json:"accepted_at" format:"date-time"`
+// The IP address from which the terms of use were accepted. Supports both IPv4 and
+// IPv6 formats.
+IPAddress param.Field[string] `json:"ip_address"`
+}
+
+func (r ChildLegalEntityCreateTermsOfUseParam) MarshalJSON() (data []byte, err error) {
+  return apijson.MarshalRoot(r)
 }
 
 type ContactDetail struct {
-	ID                    string                             `json:"id" api:"required" format:"uuid"`
-	ContactIdentifier     string                             `json:"contact_identifier" api:"required"`
-	ContactIdentifierType ContactDetailContactIdentifierType `json:"contact_identifier_type" api:"required"`
-	CreatedAt             time.Time                          `json:"created_at" api:"required" format:"date-time"`
-	DiscardedAt           time.Time                          `json:"discarded_at" api:"required,nullable" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool              `json:"live_mode" api:"required"`
-	Object    string            `json:"object" api:"required"`
-	UpdatedAt time.Time         `json:"updated_at" api:"required" format:"date-time"`
-	JSON      contactDetailJSON `json:"-"`
+ID string `json:"id" api:"required" format:"uuid"`
+ContactIdentifier string `json:"contact_identifier" api:"required"`
+ContactIdentifierType ContactDetailContactIdentifierType `json:"contact_identifier_type" api:"required"`
+CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
+DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode bool `json:"live_mode" api:"required"`
+Object string `json:"object" api:"required"`
+UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
+JSON contactDetailJSON `json:"-"`
 }
 
 // contactDetailJSON contains the JSON metadata for the struct [ContactDetail]
 type contactDetailJSON struct {
-	ID                    apijson.Field
-	ContactIdentifier     apijson.Field
-	ContactIdentifierType apijson.Field
-	CreatedAt             apijson.Field
-	DiscardedAt           apijson.Field
-	LiveMode              apijson.Field
-	Object                apijson.Field
-	UpdatedAt             apijson.Field
-	raw                   string
-	ExtraFields           map[string]apijson.Field
+ID apijson.Field
+ContactIdentifier apijson.Field
+ContactIdentifierType apijson.Field
+CreatedAt apijson.Field
+DiscardedAt apijson.Field
+LiveMode apijson.Field
+Object apijson.Field
+UpdatedAt apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *ContactDetail) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r contactDetailJSON) RawJSON() string {
-	return r.raw
+func (r contactDetailJSON) RawJSON() (string) {
+  return r.raw
 }
 
 type ContactDetailContactIdentifierType string
 
 const (
-	ContactDetailContactIdentifierTypeEmail       ContactDetailContactIdentifierType = "email"
-	ContactDetailContactIdentifierTypePhoneNumber ContactDetailContactIdentifierType = "phone_number"
-	ContactDetailContactIdentifierTypeWebsite     ContactDetailContactIdentifierType = "website"
-)
+    ContactDetailContactIdentifierTypeEmail ContactDetailContactIdentifierType = "email"
+    ContactDetailContactIdentifierTypePhoneNumber ContactDetailContactIdentifierType = "phone_number"
+    ContactDetailContactIdentifierTypeWebsite ContactDetailContactIdentifierType = "website"
+  )
 
-func (r ContactDetailContactIdentifierType) IsKnown() bool {
-	switch r {
-	case ContactDetailContactIdentifierTypeEmail, ContactDetailContactIdentifierTypePhoneNumber, ContactDetailContactIdentifierTypeWebsite:
-		return true
-	}
-	return false
+func (r ContactDetailContactIdentifierType) IsKnown() (bool) {
+  switch r {
+  case ContactDetailContactIdentifierTypeEmail, ContactDetailContactIdentifierTypePhoneNumber, ContactDetailContactIdentifierTypeWebsite:
+      return true
+  }
+  return false
 }
 
 type ContactDetailParam struct {
-	ID                    param.Field[string]                             `json:"id" api:"required" format:"uuid"`
-	ContactIdentifier     param.Field[string]                             `json:"contact_identifier" api:"required"`
-	ContactIdentifierType param.Field[ContactDetailContactIdentifierType] `json:"contact_identifier_type" api:"required"`
-	CreatedAt             param.Field[time.Time]                          `json:"created_at" api:"required" format:"date-time"`
-	DiscardedAt           param.Field[time.Time]                          `json:"discarded_at" api:"required" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  param.Field[bool]      `json:"live_mode" api:"required"`
-	Object    param.Field[string]    `json:"object" api:"required"`
-	UpdatedAt param.Field[time.Time] `json:"updated_at" api:"required" format:"date-time"`
+ID param.Field[string] `json:"id" api:"required" format:"uuid"`
+ContactIdentifier param.Field[string] `json:"contact_identifier" api:"required"`
+ContactIdentifierType param.Field[ContactDetailContactIdentifierType] `json:"contact_identifier_type" api:"required"`
+CreatedAt param.Field[time.Time] `json:"created_at" api:"required" format:"date-time"`
+DiscardedAt param.Field[time.Time] `json:"discarded_at" api:"required" format:"date-time"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode param.Field[bool] `json:"live_mode" api:"required"`
+Object param.Field[string] `json:"object" api:"required"`
+UpdatedAt param.Field[time.Time] `json:"updated_at" api:"required" format:"date-time"`
 }
 
 func (r ContactDetailParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 // Three-letter ISO currency code.
 type Currency string
 
 const (
-	CurrencyAed   Currency = "AED"
-	CurrencyAfn   Currency = "AFN"
-	CurrencyAll   Currency = "ALL"
-	CurrencyAmd   Currency = "AMD"
-	CurrencyAng   Currency = "ANG"
-	CurrencyAoa   Currency = "AOA"
-	CurrencyArs   Currency = "ARS"
-	CurrencyAud   Currency = "AUD"
-	CurrencyAwg   Currency = "AWG"
-	CurrencyAzn   Currency = "AZN"
-	CurrencyBam   Currency = "BAM"
-	CurrencyBbd   Currency = "BBD"
-	CurrencyBch   Currency = "BCH"
-	CurrencyBdt   Currency = "BDT"
-	CurrencyBgn   Currency = "BGN"
-	CurrencyBhd   Currency = "BHD"
-	CurrencyBif   Currency = "BIF"
-	CurrencyBmd   Currency = "BMD"
-	CurrencyBnd   Currency = "BND"
-	CurrencyBob   Currency = "BOB"
-	CurrencyBrl   Currency = "BRL"
-	CurrencyBsd   Currency = "BSD"
-	CurrencyBtc   Currency = "BTC"
-	CurrencyBtn   Currency = "BTN"
-	CurrencyBwp   Currency = "BWP"
-	CurrencyByn   Currency = "BYN"
-	CurrencyByr   Currency = "BYR"
-	CurrencyBzd   Currency = "BZD"
-	CurrencyCad   Currency = "CAD"
-	CurrencyCdf   Currency = "CDF"
-	CurrencyChf   Currency = "CHF"
-	CurrencyClf   Currency = "CLF"
-	CurrencyClp   Currency = "CLP"
-	CurrencyCnh   Currency = "CNH"
-	CurrencyCny   Currency = "CNY"
-	CurrencyCop   Currency = "COP"
-	CurrencyCrc   Currency = "CRC"
-	CurrencyCuc   Currency = "CUC"
-	CurrencyCup   Currency = "CUP"
-	CurrencyCve   Currency = "CVE"
-	CurrencyCzk   Currency = "CZK"
-	CurrencyDjf   Currency = "DJF"
-	CurrencyDkk   Currency = "DKK"
-	CurrencyDop   Currency = "DOP"
-	CurrencyDzd   Currency = "DZD"
-	CurrencyEek   Currency = "EEK"
-	CurrencyEgp   Currency = "EGP"
-	CurrencyErn   Currency = "ERN"
-	CurrencyEtb   Currency = "ETB"
-	CurrencyEth   Currency = "ETH"
-	CurrencyEur   Currency = "EUR"
-	CurrencyEurc  Currency = "EURC"
-	CurrencyFjd   Currency = "FJD"
-	CurrencyFkp   Currency = "FKP"
-	CurrencyGbp   Currency = "GBP"
-	CurrencyGbx   Currency = "GBX"
-	CurrencyGel   Currency = "GEL"
-	CurrencyGgp   Currency = "GGP"
-	CurrencyGhs   Currency = "GHS"
-	CurrencyGip   Currency = "GIP"
-	CurrencyGmd   Currency = "GMD"
-	CurrencyGnf   Currency = "GNF"
-	CurrencyGtq   Currency = "GTQ"
-	CurrencyGyd   Currency = "GYD"
-	CurrencyHkd   Currency = "HKD"
-	CurrencyHnl   Currency = "HNL"
-	CurrencyHrk   Currency = "HRK"
-	CurrencyHtg   Currency = "HTG"
-	CurrencyHuf   Currency = "HUF"
-	CurrencyIdr   Currency = "IDR"
-	CurrencyIls   Currency = "ILS"
-	CurrencyImp   Currency = "IMP"
-	CurrencyInr   Currency = "INR"
-	CurrencyIqd   Currency = "IQD"
-	CurrencyIrr   Currency = "IRR"
-	CurrencyIsk   Currency = "ISK"
-	CurrencyJep   Currency = "JEP"
-	CurrencyJmd   Currency = "JMD"
-	CurrencyJod   Currency = "JOD"
-	CurrencyJpy   Currency = "JPY"
-	CurrencyKes   Currency = "KES"
-	CurrencyKgs   Currency = "KGS"
-	CurrencyKhr   Currency = "KHR"
-	CurrencyKmf   Currency = "KMF"
-	CurrencyKpw   Currency = "KPW"
-	CurrencyKrw   Currency = "KRW"
-	CurrencyKwd   Currency = "KWD"
-	CurrencyKyd   Currency = "KYD"
-	CurrencyKzt   Currency = "KZT"
-	CurrencyLak   Currency = "LAK"
-	CurrencyLbp   Currency = "LBP"
-	CurrencyLkr   Currency = "LKR"
-	CurrencyLrd   Currency = "LRD"
-	CurrencyLsl   Currency = "LSL"
-	CurrencyLtl   Currency = "LTL"
-	CurrencyLvl   Currency = "LVL"
-	CurrencyLyd   Currency = "LYD"
-	CurrencyMad   Currency = "MAD"
-	CurrencyMdl   Currency = "MDL"
-	CurrencyMga   Currency = "MGA"
-	CurrencyMkd   Currency = "MKD"
-	CurrencyMmk   Currency = "MMK"
-	CurrencyMnt   Currency = "MNT"
-	CurrencyMop   Currency = "MOP"
-	CurrencyMro   Currency = "MRO"
-	CurrencyMru   Currency = "MRU"
-	CurrencyMtl   Currency = "MTL"
-	CurrencyMur   Currency = "MUR"
-	CurrencyMvr   Currency = "MVR"
-	CurrencyMwk   Currency = "MWK"
-	CurrencyMxn   Currency = "MXN"
-	CurrencyMyr   Currency = "MYR"
-	CurrencyMzn   Currency = "MZN"
-	CurrencyNad   Currency = "NAD"
-	CurrencyNgn   Currency = "NGN"
-	CurrencyNio   Currency = "NIO"
-	CurrencyNok   Currency = "NOK"
-	CurrencyNpr   Currency = "NPR"
-	CurrencyNzd   Currency = "NZD"
-	CurrencyOmr   Currency = "OMR"
-	CurrencyOp    Currency = "OP"
-	CurrencyPab   Currency = "PAB"
-	CurrencyPen   Currency = "PEN"
-	CurrencyPgk   Currency = "PGK"
-	CurrencyPhp   Currency = "PHP"
-	CurrencyPkr   Currency = "PKR"
-	CurrencyPln   Currency = "PLN"
-	CurrencyPyg   Currency = "PYG"
-	CurrencyPyusd Currency = "PYUSD"
-	CurrencyQar   Currency = "QAR"
-	CurrencyRon   Currency = "RON"
-	CurrencyRsd   Currency = "RSD"
-	CurrencyRub   Currency = "RUB"
-	CurrencyRwf   Currency = "RWF"
-	CurrencySar   Currency = "SAR"
-	CurrencySbd   Currency = "SBD"
-	CurrencyScr   Currency = "SCR"
-	CurrencySdg   Currency = "SDG"
-	CurrencySek   Currency = "SEK"
-	CurrencySgd   Currency = "SGD"
-	CurrencyShp   Currency = "SHP"
-	CurrencySkk   Currency = "SKK"
-	CurrencySle   Currency = "SLE"
-	CurrencySll   Currency = "SLL"
-	CurrencySos   Currency = "SOS"
-	CurrencySrd   Currency = "SRD"
-	CurrencySsp   Currency = "SSP"
-	CurrencyStd   Currency = "STD"
-	CurrencyStn   Currency = "STN"
-	CurrencySvc   Currency = "SVC"
-	CurrencySyp   Currency = "SYP"
-	CurrencySzl   Currency = "SZL"
-	CurrencyThb   Currency = "THB"
-	CurrencyTjs   Currency = "TJS"
-	CurrencyTmm   Currency = "TMM"
-	CurrencyTmt   Currency = "TMT"
-	CurrencyTnd   Currency = "TND"
-	CurrencyTop   Currency = "TOP"
-	CurrencyTry   Currency = "TRY"
-	CurrencyTtd   Currency = "TTD"
-	CurrencyTwd   Currency = "TWD"
-	CurrencyTzs   Currency = "TZS"
-	CurrencyUah   Currency = "UAH"
-	CurrencyUgx   Currency = "UGX"
-	CurrencyUsd   Currency = "USD"
-	CurrencyUsdc  Currency = "USDC"
-	CurrencyUsdg  Currency = "USDG"
-	CurrencyUsdt  Currency = "USDT"
-	CurrencyUyu   Currency = "UYU"
-	CurrencyUzs   Currency = "UZS"
-	CurrencyVef   Currency = "VEF"
-	CurrencyVes   Currency = "VES"
-	CurrencyVnd   Currency = "VND"
-	CurrencyVuv   Currency = "VUV"
-	CurrencyWst   Currency = "WST"
-	CurrencyXaf   Currency = "XAF"
-	CurrencyXag   Currency = "XAG"
-	CurrencyXau   Currency = "XAU"
-	CurrencyXba   Currency = "XBA"
-	CurrencyXbb   Currency = "XBB"
-	CurrencyXbc   Currency = "XBC"
-	CurrencyXbd   Currency = "XBD"
-	CurrencyXcd   Currency = "XCD"
-	CurrencyXcg   Currency = "XCG"
-	CurrencyXdr   Currency = "XDR"
-	CurrencyXfu   Currency = "XFU"
-	CurrencyXof   Currency = "XOF"
-	CurrencyXpd   Currency = "XPD"
-	CurrencyXpf   Currency = "XPF"
-	CurrencyXpt   Currency = "XPT"
-	CurrencyXts   Currency = "XTS"
-	CurrencyYer   Currency = "YER"
-	CurrencyZar   Currency = "ZAR"
-	CurrencyZmk   Currency = "ZMK"
-	CurrencyZmw   Currency = "ZMW"
-	CurrencyZwd   Currency = "ZWD"
-	CurrencyZwg   Currency = "ZWG"
-	CurrencyZwl   Currency = "ZWL"
-	CurrencyZwn   Currency = "ZWN"
-	CurrencyZwr   Currency = "ZWR"
-)
+    CurrencyAed Currency = "AED"
+    CurrencyAfn Currency = "AFN"
+    CurrencyAll Currency = "ALL"
+    CurrencyAmd Currency = "AMD"
+    CurrencyAng Currency = "ANG"
+    CurrencyAoa Currency = "AOA"
+    CurrencyArs Currency = "ARS"
+    CurrencyAud Currency = "AUD"
+    CurrencyAwg Currency = "AWG"
+    CurrencyAzn Currency = "AZN"
+    CurrencyBam Currency = "BAM"
+    CurrencyBbd Currency = "BBD"
+    CurrencyBch Currency = "BCH"
+    CurrencyBdt Currency = "BDT"
+    CurrencyBgn Currency = "BGN"
+    CurrencyBhd Currency = "BHD"
+    CurrencyBif Currency = "BIF"
+    CurrencyBmd Currency = "BMD"
+    CurrencyBnd Currency = "BND"
+    CurrencyBob Currency = "BOB"
+    CurrencyBrl Currency = "BRL"
+    CurrencyBsd Currency = "BSD"
+    CurrencyBtc Currency = "BTC"
+    CurrencyBtn Currency = "BTN"
+    CurrencyBwp Currency = "BWP"
+    CurrencyByn Currency = "BYN"
+    CurrencyByr Currency = "BYR"
+    CurrencyBzd Currency = "BZD"
+    CurrencyCad Currency = "CAD"
+    CurrencyCdf Currency = "CDF"
+    CurrencyChf Currency = "CHF"
+    CurrencyClf Currency = "CLF"
+    CurrencyClp Currency = "CLP"
+    CurrencyCnh Currency = "CNH"
+    CurrencyCny Currency = "CNY"
+    CurrencyCop Currency = "COP"
+    CurrencyCrc Currency = "CRC"
+    CurrencyCuc Currency = "CUC"
+    CurrencyCup Currency = "CUP"
+    CurrencyCve Currency = "CVE"
+    CurrencyCzk Currency = "CZK"
+    CurrencyDjf Currency = "DJF"
+    CurrencyDkk Currency = "DKK"
+    CurrencyDop Currency = "DOP"
+    CurrencyDzd Currency = "DZD"
+    CurrencyEek Currency = "EEK"
+    CurrencyEgp Currency = "EGP"
+    CurrencyErn Currency = "ERN"
+    CurrencyEtb Currency = "ETB"
+    CurrencyEth Currency = "ETH"
+    CurrencyEur Currency = "EUR"
+    CurrencyEurc Currency = "EURC"
+    CurrencyFjd Currency = "FJD"
+    CurrencyFkp Currency = "FKP"
+    CurrencyGbp Currency = "GBP"
+    CurrencyGbx Currency = "GBX"
+    CurrencyGel Currency = "GEL"
+    CurrencyGgp Currency = "GGP"
+    CurrencyGhs Currency = "GHS"
+    CurrencyGip Currency = "GIP"
+    CurrencyGmd Currency = "GMD"
+    CurrencyGnf Currency = "GNF"
+    CurrencyGtq Currency = "GTQ"
+    CurrencyGyd Currency = "GYD"
+    CurrencyHkd Currency = "HKD"
+    CurrencyHnl Currency = "HNL"
+    CurrencyHrk Currency = "HRK"
+    CurrencyHtg Currency = "HTG"
+    CurrencyHuf Currency = "HUF"
+    CurrencyIdr Currency = "IDR"
+    CurrencyIls Currency = "ILS"
+    CurrencyImp Currency = "IMP"
+    CurrencyInr Currency = "INR"
+    CurrencyIqd Currency = "IQD"
+    CurrencyIrr Currency = "IRR"
+    CurrencyIsk Currency = "ISK"
+    CurrencyJep Currency = "JEP"
+    CurrencyJmd Currency = "JMD"
+    CurrencyJod Currency = "JOD"
+    CurrencyJpy Currency = "JPY"
+    CurrencyKes Currency = "KES"
+    CurrencyKgs Currency = "KGS"
+    CurrencyKhr Currency = "KHR"
+    CurrencyKmf Currency = "KMF"
+    CurrencyKpw Currency = "KPW"
+    CurrencyKrw Currency = "KRW"
+    CurrencyKwd Currency = "KWD"
+    CurrencyKyd Currency = "KYD"
+    CurrencyKzt Currency = "KZT"
+    CurrencyLak Currency = "LAK"
+    CurrencyLbp Currency = "LBP"
+    CurrencyLkr Currency = "LKR"
+    CurrencyLrd Currency = "LRD"
+    CurrencyLsl Currency = "LSL"
+    CurrencyLtl Currency = "LTL"
+    CurrencyLvl Currency = "LVL"
+    CurrencyLyd Currency = "LYD"
+    CurrencyMad Currency = "MAD"
+    CurrencyMdl Currency = "MDL"
+    CurrencyMga Currency = "MGA"
+    CurrencyMkd Currency = "MKD"
+    CurrencyMmk Currency = "MMK"
+    CurrencyMnt Currency = "MNT"
+    CurrencyMop Currency = "MOP"
+    CurrencyMro Currency = "MRO"
+    CurrencyMru Currency = "MRU"
+    CurrencyMtl Currency = "MTL"
+    CurrencyMur Currency = "MUR"
+    CurrencyMvr Currency = "MVR"
+    CurrencyMwk Currency = "MWK"
+    CurrencyMxn Currency = "MXN"
+    CurrencyMyr Currency = "MYR"
+    CurrencyMzn Currency = "MZN"
+    CurrencyNad Currency = "NAD"
+    CurrencyNgn Currency = "NGN"
+    CurrencyNio Currency = "NIO"
+    CurrencyNok Currency = "NOK"
+    CurrencyNpr Currency = "NPR"
+    CurrencyNzd Currency = "NZD"
+    CurrencyOmr Currency = "OMR"
+    CurrencyOp Currency = "OP"
+    CurrencyPab Currency = "PAB"
+    CurrencyPen Currency = "PEN"
+    CurrencyPgk Currency = "PGK"
+    CurrencyPhp Currency = "PHP"
+    CurrencyPkr Currency = "PKR"
+    CurrencyPln Currency = "PLN"
+    CurrencyPyg Currency = "PYG"
+    CurrencyPyusd Currency = "PYUSD"
+    CurrencyQar Currency = "QAR"
+    CurrencyRon Currency = "RON"
+    CurrencyRsd Currency = "RSD"
+    CurrencyRub Currency = "RUB"
+    CurrencyRwf Currency = "RWF"
+    CurrencySar Currency = "SAR"
+    CurrencySbd Currency = "SBD"
+    CurrencyScr Currency = "SCR"
+    CurrencySdg Currency = "SDG"
+    CurrencySek Currency = "SEK"
+    CurrencySgd Currency = "SGD"
+    CurrencyShp Currency = "SHP"
+    CurrencySkk Currency = "SKK"
+    CurrencySle Currency = "SLE"
+    CurrencySll Currency = "SLL"
+    CurrencySos Currency = "SOS"
+    CurrencySrd Currency = "SRD"
+    CurrencySsp Currency = "SSP"
+    CurrencyStd Currency = "STD"
+    CurrencyStn Currency = "STN"
+    CurrencySvc Currency = "SVC"
+    CurrencySyp Currency = "SYP"
+    CurrencySzl Currency = "SZL"
+    CurrencyThb Currency = "THB"
+    CurrencyTjs Currency = "TJS"
+    CurrencyTmm Currency = "TMM"
+    CurrencyTmt Currency = "TMT"
+    CurrencyTnd Currency = "TND"
+    CurrencyTop Currency = "TOP"
+    CurrencyTry Currency = "TRY"
+    CurrencyTtd Currency = "TTD"
+    CurrencyTwd Currency = "TWD"
+    CurrencyTzs Currency = "TZS"
+    CurrencyUah Currency = "UAH"
+    CurrencyUgx Currency = "UGX"
+    CurrencyUsd Currency = "USD"
+    CurrencyUsdc Currency = "USDC"
+    CurrencyUsdg Currency = "USDG"
+    CurrencyUsdt Currency = "USDT"
+    CurrencyUyu Currency = "UYU"
+    CurrencyUzs Currency = "UZS"
+    CurrencyVef Currency = "VEF"
+    CurrencyVes Currency = "VES"
+    CurrencyVnd Currency = "VND"
+    CurrencyVuv Currency = "VUV"
+    CurrencyWst Currency = "WST"
+    CurrencyXaf Currency = "XAF"
+    CurrencyXag Currency = "XAG"
+    CurrencyXau Currency = "XAU"
+    CurrencyXba Currency = "XBA"
+    CurrencyXbb Currency = "XBB"
+    CurrencyXbc Currency = "XBC"
+    CurrencyXbd Currency = "XBD"
+    CurrencyXcd Currency = "XCD"
+    CurrencyXcg Currency = "XCG"
+    CurrencyXdr Currency = "XDR"
+    CurrencyXfu Currency = "XFU"
+    CurrencyXof Currency = "XOF"
+    CurrencyXpd Currency = "XPD"
+    CurrencyXpf Currency = "XPF"
+    CurrencyXpt Currency = "XPT"
+    CurrencyXts Currency = "XTS"
+    CurrencyYer Currency = "YER"
+    CurrencyZar Currency = "ZAR"
+    CurrencyZmk Currency = "ZMK"
+    CurrencyZmw Currency = "ZMW"
+    CurrencyZwd Currency = "ZWD"
+    CurrencyZwg Currency = "ZWG"
+    CurrencyZwl Currency = "ZWL"
+    CurrencyZwn Currency = "ZWN"
+    CurrencyZwr Currency = "ZWR"
+  )
 
-func (r Currency) IsKnown() bool {
-	switch r {
-	case CurrencyAed, CurrencyAfn, CurrencyAll, CurrencyAmd, CurrencyAng, CurrencyAoa, CurrencyArs, CurrencyAud, CurrencyAwg, CurrencyAzn, CurrencyBam, CurrencyBbd, CurrencyBch, CurrencyBdt, CurrencyBgn, CurrencyBhd, CurrencyBif, CurrencyBmd, CurrencyBnd, CurrencyBob, CurrencyBrl, CurrencyBsd, CurrencyBtc, CurrencyBtn, CurrencyBwp, CurrencyByn, CurrencyByr, CurrencyBzd, CurrencyCad, CurrencyCdf, CurrencyChf, CurrencyClf, CurrencyClp, CurrencyCnh, CurrencyCny, CurrencyCop, CurrencyCrc, CurrencyCuc, CurrencyCup, CurrencyCve, CurrencyCzk, CurrencyDjf, CurrencyDkk, CurrencyDop, CurrencyDzd, CurrencyEek, CurrencyEgp, CurrencyErn, CurrencyEtb, CurrencyEth, CurrencyEur, CurrencyEurc, CurrencyFjd, CurrencyFkp, CurrencyGbp, CurrencyGbx, CurrencyGel, CurrencyGgp, CurrencyGhs, CurrencyGip, CurrencyGmd, CurrencyGnf, CurrencyGtq, CurrencyGyd, CurrencyHkd, CurrencyHnl, CurrencyHrk, CurrencyHtg, CurrencyHuf, CurrencyIdr, CurrencyIls, CurrencyImp, CurrencyInr, CurrencyIqd, CurrencyIrr, CurrencyIsk, CurrencyJep, CurrencyJmd, CurrencyJod, CurrencyJpy, CurrencyKes, CurrencyKgs, CurrencyKhr, CurrencyKmf, CurrencyKpw, CurrencyKrw, CurrencyKwd, CurrencyKyd, CurrencyKzt, CurrencyLak, CurrencyLbp, CurrencyLkr, CurrencyLrd, CurrencyLsl, CurrencyLtl, CurrencyLvl, CurrencyLyd, CurrencyMad, CurrencyMdl, CurrencyMga, CurrencyMkd, CurrencyMmk, CurrencyMnt, CurrencyMop, CurrencyMro, CurrencyMru, CurrencyMtl, CurrencyMur, CurrencyMvr, CurrencyMwk, CurrencyMxn, CurrencyMyr, CurrencyMzn, CurrencyNad, CurrencyNgn, CurrencyNio, CurrencyNok, CurrencyNpr, CurrencyNzd, CurrencyOmr, CurrencyOp, CurrencyPab, CurrencyPen, CurrencyPgk, CurrencyPhp, CurrencyPkr, CurrencyPln, CurrencyPyg, CurrencyPyusd, CurrencyQar, CurrencyRon, CurrencyRsd, CurrencyRub, CurrencyRwf, CurrencySar, CurrencySbd, CurrencyScr, CurrencySdg, CurrencySek, CurrencySgd, CurrencyShp, CurrencySkk, CurrencySle, CurrencySll, CurrencySos, CurrencySrd, CurrencySsp, CurrencyStd, CurrencyStn, CurrencySvc, CurrencySyp, CurrencySzl, CurrencyThb, CurrencyTjs, CurrencyTmm, CurrencyTmt, CurrencyTnd, CurrencyTop, CurrencyTry, CurrencyTtd, CurrencyTwd, CurrencyTzs, CurrencyUah, CurrencyUgx, CurrencyUsd, CurrencyUsdc, CurrencyUsdg, CurrencyUsdt, CurrencyUyu, CurrencyUzs, CurrencyVef, CurrencyVes, CurrencyVnd, CurrencyVuv, CurrencyWst, CurrencyXaf, CurrencyXag, CurrencyXau, CurrencyXba, CurrencyXbb, CurrencyXbc, CurrencyXbd, CurrencyXcd, CurrencyXcg, CurrencyXdr, CurrencyXfu, CurrencyXof, CurrencyXpd, CurrencyXpf, CurrencyXpt, CurrencyXts, CurrencyYer, CurrencyZar, CurrencyZmk, CurrencyZmw, CurrencyZwd, CurrencyZwg, CurrencyZwl, CurrencyZwn, CurrencyZwr:
-		return true
-	}
-	return false
+func (r Currency) IsKnown() (bool) {
+  switch r {
+  case CurrencyAed, CurrencyAfn, CurrencyAll, CurrencyAmd, CurrencyAng, CurrencyAoa, CurrencyArs, CurrencyAud, CurrencyAwg, CurrencyAzn, CurrencyBam, CurrencyBbd, CurrencyBch, CurrencyBdt, CurrencyBgn, CurrencyBhd, CurrencyBif, CurrencyBmd, CurrencyBnd, CurrencyBob, CurrencyBrl, CurrencyBsd, CurrencyBtc, CurrencyBtn, CurrencyBwp, CurrencyByn, CurrencyByr, CurrencyBzd, CurrencyCad, CurrencyCdf, CurrencyChf, CurrencyClf, CurrencyClp, CurrencyCnh, CurrencyCny, CurrencyCop, CurrencyCrc, CurrencyCuc, CurrencyCup, CurrencyCve, CurrencyCzk, CurrencyDjf, CurrencyDkk, CurrencyDop, CurrencyDzd, CurrencyEek, CurrencyEgp, CurrencyErn, CurrencyEtb, CurrencyEth, CurrencyEur, CurrencyEurc, CurrencyFjd, CurrencyFkp, CurrencyGbp, CurrencyGbx, CurrencyGel, CurrencyGgp, CurrencyGhs, CurrencyGip, CurrencyGmd, CurrencyGnf, CurrencyGtq, CurrencyGyd, CurrencyHkd, CurrencyHnl, CurrencyHrk, CurrencyHtg, CurrencyHuf, CurrencyIdr, CurrencyIls, CurrencyImp, CurrencyInr, CurrencyIqd, CurrencyIrr, CurrencyIsk, CurrencyJep, CurrencyJmd, CurrencyJod, CurrencyJpy, CurrencyKes, CurrencyKgs, CurrencyKhr, CurrencyKmf, CurrencyKpw, CurrencyKrw, CurrencyKwd, CurrencyKyd, CurrencyKzt, CurrencyLak, CurrencyLbp, CurrencyLkr, CurrencyLrd, CurrencyLsl, CurrencyLtl, CurrencyLvl, CurrencyLyd, CurrencyMad, CurrencyMdl, CurrencyMga, CurrencyMkd, CurrencyMmk, CurrencyMnt, CurrencyMop, CurrencyMro, CurrencyMru, CurrencyMtl, CurrencyMur, CurrencyMvr, CurrencyMwk, CurrencyMxn, CurrencyMyr, CurrencyMzn, CurrencyNad, CurrencyNgn, CurrencyNio, CurrencyNok, CurrencyNpr, CurrencyNzd, CurrencyOmr, CurrencyOp, CurrencyPab, CurrencyPen, CurrencyPgk, CurrencyPhp, CurrencyPkr, CurrencyPln, CurrencyPyg, CurrencyPyusd, CurrencyQar, CurrencyRon, CurrencyRsd, CurrencyRub, CurrencyRwf, CurrencySar, CurrencySbd, CurrencyScr, CurrencySdg, CurrencySek, CurrencySgd, CurrencyShp, CurrencySkk, CurrencySle, CurrencySll, CurrencySos, CurrencySrd, CurrencySsp, CurrencyStd, CurrencyStn, CurrencySvc, CurrencySyp, CurrencySzl, CurrencyThb, CurrencyTjs, CurrencyTmm, CurrencyTmt, CurrencyTnd, CurrencyTop, CurrencyTry, CurrencyTtd, CurrencyTwd, CurrencyTzs, CurrencyUah, CurrencyUgx, CurrencyUsd, CurrencyUsdc, CurrencyUsdg, CurrencyUsdt, CurrencyUyu, CurrencyUzs, CurrencyVef, CurrencyVes, CurrencyVnd, CurrencyVuv, CurrencyWst, CurrencyXaf, CurrencyXag, CurrencyXau, CurrencyXba, CurrencyXbb, CurrencyXbc, CurrencyXbd, CurrencyXcd, CurrencyXcg, CurrencyXdr, CurrencyXfu, CurrencyXof, CurrencyXpd, CurrencyXpf, CurrencyXpt, CurrencyXts, CurrencyYer, CurrencyZar, CurrencyZmk, CurrencyZmw, CurrencyZwd, CurrencyZwg, CurrencyZwl, CurrencyZwn, CurrencyZwr:
+      return true
+  }
+  return false
 }
 
 type ForeignExchangeRate struct {
-	// Amount in the lowest denomination of the `base_currency` to convert, often
-	// called the "sell" amount.
-	BaseAmount int64 `json:"base_amount" api:"required"`
-	// Currency to convert, often called the "sell" currency.
-	BaseCurrency Currency `json:"base_currency" api:"required"`
-	// The exponent component of the rate. The decimal is calculated as `value` / (10 ^
-	// `exponent`).
-	Exponent int64 `json:"exponent" api:"required"`
-	// A string representation of the rate.
-	RateString string `json:"rate_string" api:"required"`
-	// Amount in the lowest denomination of the `target_currency`, often called the
-	// "buy" amount.
-	TargetAmount int64 `json:"target_amount" api:"required"`
-	// Currency to convert the `base_currency` to, often called the "buy" currency.
-	TargetCurrency Currency `json:"target_currency" api:"required"`
-	// The whole number component of the rate. The decimal is calculated as `value` /
-	// (10 ^ `exponent`).
-	Value int64                   `json:"value" api:"required"`
-	JSON  foreignExchangeRateJSON `json:"-"`
+// Amount in the lowest denomination of the `base_currency` to convert, often
+// called the "sell" amount.
+BaseAmount int64 `json:"base_amount" api:"required"`
+// Currency to convert, often called the "sell" currency.
+BaseCurrency Currency `json:"base_currency" api:"required"`
+// The exponent component of the rate. The decimal is calculated as `value` / (10 ^
+// `exponent`).
+Exponent int64 `json:"exponent" api:"required"`
+// A string representation of the rate.
+RateString string `json:"rate_string" api:"required"`
+// Amount in the lowest denomination of the `target_currency`, often called the
+// "buy" amount.
+TargetAmount int64 `json:"target_amount" api:"required"`
+// Currency to convert the `base_currency` to, often called the "buy" currency.
+TargetCurrency Currency `json:"target_currency" api:"required"`
+// The whole number component of the rate. The decimal is calculated as `value` /
+// (10 ^ `exponent`).
+Value int64 `json:"value" api:"required"`
+JSON foreignExchangeRateJSON `json:"-"`
 }
 
 // foreignExchangeRateJSON contains the JSON metadata for the struct
 // [ForeignExchangeRate]
 type foreignExchangeRateJSON struct {
-	BaseAmount     apijson.Field
-	BaseCurrency   apijson.Field
-	Exponent       apijson.Field
-	RateString     apijson.Field
-	TargetAmount   apijson.Field
-	TargetCurrency apijson.Field
-	Value          apijson.Field
-	raw            string
-	ExtraFields    map[string]apijson.Field
+BaseAmount apijson.Field
+BaseCurrency apijson.Field
+Exponent apijson.Field
+RateString apijson.Field
+TargetAmount apijson.Field
+TargetCurrency apijson.Field
+Value apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *ForeignExchangeRate) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r foreignExchangeRateJSON) RawJSON() string {
-	return r.raw
+func (r foreignExchangeRateJSON) RawJSON() (string) {
+  return r.raw
 }
 
 type IdentificationCreateRequestParam struct {
-	// The ID number of identification document.
-	IDNumber param.Field[string] `json:"id_number" api:"required"`
-	// The type of ID number.
-	IDType param.Field[IdentificationCreateRequestIDType] `json:"id_type" api:"required"`
-	// A list of documents to attach to the identification.
-	Documents param.Field[[]IdentificationCreateRequestDocumentParam] `json:"documents"`
-	// The date when the Identification is no longer considered valid by the issuing
-	// authority.
-	ExpirationDate param.Field[time.Time] `json:"expiration_date" format:"date"`
-	// The ISO 3166-1 alpha-2 country code of the country that issued the
-	// identification
-	IssuingCountry param.Field[string] `json:"issuing_country"`
-	// The region in which the identifcation was issued.
-	IssuingRegion param.Field[string] `json:"issuing_region"`
+// The ID number of identification document.
+IDNumber param.Field[string] `json:"id_number" api:"required"`
+// The type of ID number.
+IDType param.Field[IdentificationCreateRequestIDType] `json:"id_type" api:"required"`
+// A list of documents to attach to the identification.
+Documents param.Field[[]IdentificationCreateRequestDocumentParam] `json:"documents"`
+// The date when the Identification is no longer considered valid by the issuing
+// authority.
+ExpirationDate param.Field[time.Time] `json:"expiration_date" format:"date"`
+// The ISO 3166-1 alpha-2 country code of the country that issued the
+// identification
+IssuingCountry param.Field[string] `json:"issuing_country"`
+// The region in which the identifcation was issued.
+IssuingRegion param.Field[string] `json:"issuing_region"`
 }
 
 func (r IdentificationCreateRequestParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 // The type of ID number.
 type IdentificationCreateRequestIDType string
 
 const (
-	IdentificationCreateRequestIDTypeArCuil         IdentificationCreateRequestIDType = "ar_cuil"
-	IdentificationCreateRequestIDTypeArCuit         IdentificationCreateRequestIDType = "ar_cuit"
-	IdentificationCreateRequestIDTypeAtAtin         IdentificationCreateRequestIDType = "at_atin"
-	IdentificationCreateRequestIDTypeAtVat          IdentificationCreateRequestIDType = "at_vat"
-	IdentificationCreateRequestIDTypeAuAbn          IdentificationCreateRequestIDType = "au_abn"
-	IdentificationCreateRequestIDTypeAuTfn          IdentificationCreateRequestIDType = "au_tfn"
-	IdentificationCreateRequestIDTypeBeEnt          IdentificationCreateRequestIDType = "be_ent"
-	IdentificationCreateRequestIDTypeBeNrn          IdentificationCreateRequestIDType = "be_nrn"
-	IdentificationCreateRequestIDTypeBrCnpj         IdentificationCreateRequestIDType = "br_cnpj"
-	IdentificationCreateRequestIDTypeBrCpf          IdentificationCreateRequestIDType = "br_cpf"
-	IdentificationCreateRequestIDTypeCaBn           IdentificationCreateRequestIDType = "ca_bn"
-	IdentificationCreateRequestIDTypeCaSin          IdentificationCreateRequestIDType = "ca_sin"
-	IdentificationCreateRequestIDTypeChAhv          IdentificationCreateRequestIDType = "ch_ahv"
-	IdentificationCreateRequestIDTypeChUid          IdentificationCreateRequestIDType = "ch_uid"
-	IdentificationCreateRequestIDTypeClRun          IdentificationCreateRequestIDType = "cl_run"
-	IdentificationCreateRequestIDTypeClRut          IdentificationCreateRequestIDType = "cl_rut"
-	IdentificationCreateRequestIDTypeCoCedulas      IdentificationCreateRequestIDType = "co_cedulas"
-	IdentificationCreateRequestIDTypeCoNit          IdentificationCreateRequestIDType = "co_nit"
-	IdentificationCreateRequestIDTypeCyTin          IdentificationCreateRequestIDType = "cy_tin"
-	IdentificationCreateRequestIDTypeCzIco          IdentificationCreateRequestIDType = "cz_ico"
-	IdentificationCreateRequestIDTypeCzRc           IdentificationCreateRequestIDType = "cz_rc"
-	IdentificationCreateRequestIDTypeDeStid         IdentificationCreateRequestIDType = "de_stid"
-	IdentificationCreateRequestIDTypeDeStnr         IdentificationCreateRequestIDType = "de_stnr"
-	IdentificationCreateRequestIDTypeDeVat          IdentificationCreateRequestIDType = "de_vat"
-	IdentificationCreateRequestIDTypeDkCpr          IdentificationCreateRequestIDType = "dk_cpr"
-	IdentificationCreateRequestIDTypeDkCvr          IdentificationCreateRequestIDType = "dk_cvr"
-	IdentificationCreateRequestIDTypeDriversLicense IdentificationCreateRequestIDType = "drivers_license"
-	IdentificationCreateRequestIDTypeEeIk           IdentificationCreateRequestIDType = "ee_ik"
-	IdentificationCreateRequestIDTypeEeRk           IdentificationCreateRequestIDType = "ee_rk"
-	IdentificationCreateRequestIDTypeEsNie          IdentificationCreateRequestIDType = "es_nie"
-	IdentificationCreateRequestIDTypeEsNif          IdentificationCreateRequestIDType = "es_nif"
-	IdentificationCreateRequestIDTypeFiHetu         IdentificationCreateRequestIDType = "fi_hetu"
-	IdentificationCreateRequestIDTypeFiYtj          IdentificationCreateRequestIDType = "fi_ytj"
-	IdentificationCreateRequestIDTypeFrNif          IdentificationCreateRequestIDType = "fr_nif"
-	IdentificationCreateRequestIDTypeFrSiren        IdentificationCreateRequestIDType = "fr_siren"
-	IdentificationCreateRequestIDTypeFrVat          IdentificationCreateRequestIDType = "fr_vat"
-	IdentificationCreateRequestIDTypeGBNino         IdentificationCreateRequestIDType = "gb_nino"
-	IdentificationCreateRequestIDTypeGBUtr          IdentificationCreateRequestIDType = "gb_utr"
-	IdentificationCreateRequestIDTypeGBVat          IdentificationCreateRequestIDType = "gb_vat"
-	IdentificationCreateRequestIDTypeGrVat          IdentificationCreateRequestIDType = "gr_vat"
-	IdentificationCreateRequestIDTypeHnID           IdentificationCreateRequestIDType = "hn_id"
-	IdentificationCreateRequestIDTypeHnRtn          IdentificationCreateRequestIDType = "hn_rtn"
-	IdentificationCreateRequestIDTypeHrOib          IdentificationCreateRequestIDType = "hr_oib"
-	IdentificationCreateRequestIDTypeHuAdj          IdentificationCreateRequestIDType = "hu_adj"
-	IdentificationCreateRequestIDTypeHuAnum         IdentificationCreateRequestIDType = "hu_anum"
-	IdentificationCreateRequestIDTypeIePps          IdentificationCreateRequestIDType = "ie_pps"
-	IdentificationCreateRequestIDTypeIeTrn          IdentificationCreateRequestIDType = "ie_trn"
-	IdentificationCreateRequestIDTypeInLei          IdentificationCreateRequestIDType = "in_lei"
-	IdentificationCreateRequestIDTypeIsKnt          IdentificationCreateRequestIDType = "is_knt"
-	IdentificationCreateRequestIDTypeItCf           IdentificationCreateRequestIDType = "it_cf"
-	IdentificationCreateRequestIDTypeItPiva         IdentificationCreateRequestIDType = "it_piva"
-	IdentificationCreateRequestIDTypeJpHb           IdentificationCreateRequestIDType = "jp_hb"
-	IdentificationCreateRequestIDTypeJpMn           IdentificationCreateRequestIDType = "jp_mn"
-	IdentificationCreateRequestIDTypeKrBrn          IdentificationCreateRequestIDType = "kr_brn"
-	IdentificationCreateRequestIDTypeKrCrn          IdentificationCreateRequestIDType = "kr_crn"
-	IdentificationCreateRequestIDTypeKrRrn          IdentificationCreateRequestIDType = "kr_rrn"
-	IdentificationCreateRequestIDTypeLiPeid         IdentificationCreateRequestIDType = "li_peid"
-	IdentificationCreateRequestIDTypeLtAk           IdentificationCreateRequestIDType = "lt_ak"
-	IdentificationCreateRequestIDTypeLtJak          IdentificationCreateRequestIDType = "lt_jak"
-	IdentificationCreateRequestIDTypeLuMtc          IdentificationCreateRequestIDType = "lu_mtc"
-	IdentificationCreateRequestIDTypeLuVat          IdentificationCreateRequestIDType = "lu_vat"
-	IdentificationCreateRequestIDTypeLvPk           IdentificationCreateRequestIDType = "lv_pk"
-	IdentificationCreateRequestIDTypeLvRn           IdentificationCreateRequestIDType = "lv_rn"
-	IdentificationCreateRequestIDTypeMtTin          IdentificationCreateRequestIDType = "mt_tin"
-	IdentificationCreateRequestIDTypeMtVat          IdentificationCreateRequestIDType = "mt_vat"
-	IdentificationCreateRequestIDTypeMxCurp         IdentificationCreateRequestIDType = "mx_curp"
-	IdentificationCreateRequestIDTypeMxIne          IdentificationCreateRequestIDType = "mx_ine"
-	IdentificationCreateRequestIDTypeMxRfc          IdentificationCreateRequestIDType = "mx_rfc"
-	IdentificationCreateRequestIDTypeNationalID     IdentificationCreateRequestIDType = "national_id"
-	IdentificationCreateRequestIDTypeNlBsn          IdentificationCreateRequestIDType = "nl_bsn"
-	IdentificationCreateRequestIDTypeNlBtw          IdentificationCreateRequestIDType = "nl_btw"
-	IdentificationCreateRequestIDTypeNlRsin         IdentificationCreateRequestIDType = "nl_rsin"
-	IdentificationCreateRequestIDTypeNoFdn          IdentificationCreateRequestIDType = "no_fdn"
-	IdentificationCreateRequestIDTypeNoMva          IdentificationCreateRequestIDType = "no_mva"
-	IdentificationCreateRequestIDTypeNoOrgnr        IdentificationCreateRequestIDType = "no_orgnr"
-	IdentificationCreateRequestIDTypeNzIrd          IdentificationCreateRequestIDType = "nz_ird"
-	IdentificationCreateRequestIDTypePassport       IdentificationCreateRequestIDType = "passport"
-	IdentificationCreateRequestIDTypePlNip          IdentificationCreateRequestIDType = "pl_nip"
-	IdentificationCreateRequestIDTypePlPesel        IdentificationCreateRequestIDType = "pl_pesel"
-	IdentificationCreateRequestIDTypePtNif          IdentificationCreateRequestIDType = "pt_nif"
-	IdentificationCreateRequestIDTypeRoCnp          IdentificationCreateRequestIDType = "ro_cnp"
-	IdentificationCreateRequestIDTypeRoCui          IdentificationCreateRequestIDType = "ro_cui"
-	IdentificationCreateRequestIDTypeSaTin          IdentificationCreateRequestIDType = "sa_tin"
-	IdentificationCreateRequestIDTypeSaVat          IdentificationCreateRequestIDType = "sa_vat"
-	IdentificationCreateRequestIDTypeSeOrgnr        IdentificationCreateRequestIDType = "se_orgnr"
-	IdentificationCreateRequestIDTypeSePnmr         IdentificationCreateRequestIDType = "se_pnmr"
-	IdentificationCreateRequestIDTypeSgFin          IdentificationCreateRequestIDType = "sg_fin"
-	IdentificationCreateRequestIDTypeSgNric         IdentificationCreateRequestIDType = "sg_nric"
-	IdentificationCreateRequestIDTypeSgUen          IdentificationCreateRequestIDType = "sg_uen"
-	IdentificationCreateRequestIDTypeSiDav          IdentificationCreateRequestIDType = "si_dav"
-	IdentificationCreateRequestIDTypeSiTin          IdentificationCreateRequestIDType = "si_tin"
-	IdentificationCreateRequestIDTypeSkIco          IdentificationCreateRequestIDType = "sk_ico"
-	IdentificationCreateRequestIDTypeSkRc           IdentificationCreateRequestIDType = "sk_rc"
-	IdentificationCreateRequestIDTypeUsEin          IdentificationCreateRequestIDType = "us_ein"
-	IdentificationCreateRequestIDTypeUsItin         IdentificationCreateRequestIDType = "us_itin"
-	IdentificationCreateRequestIDTypeUsSsn          IdentificationCreateRequestIDType = "us_ssn"
-	IdentificationCreateRequestIDTypeUyRut          IdentificationCreateRequestIDType = "uy_rut"
-	IdentificationCreateRequestIDTypeVnTin          IdentificationCreateRequestIDType = "vn_tin"
-)
+    IdentificationCreateRequestIDTypeArCuil IdentificationCreateRequestIDType = "ar_cuil"
+    IdentificationCreateRequestIDTypeArCuit IdentificationCreateRequestIDType = "ar_cuit"
+    IdentificationCreateRequestIDTypeAtAtin IdentificationCreateRequestIDType = "at_atin"
+    IdentificationCreateRequestIDTypeAtVat IdentificationCreateRequestIDType = "at_vat"
+    IdentificationCreateRequestIDTypeAuAbn IdentificationCreateRequestIDType = "au_abn"
+    IdentificationCreateRequestIDTypeAuTfn IdentificationCreateRequestIDType = "au_tfn"
+    IdentificationCreateRequestIDTypeBeEnt IdentificationCreateRequestIDType = "be_ent"
+    IdentificationCreateRequestIDTypeBeNrn IdentificationCreateRequestIDType = "be_nrn"
+    IdentificationCreateRequestIDTypeBrCnpj IdentificationCreateRequestIDType = "br_cnpj"
+    IdentificationCreateRequestIDTypeBrCpf IdentificationCreateRequestIDType = "br_cpf"
+    IdentificationCreateRequestIDTypeCaBn IdentificationCreateRequestIDType = "ca_bn"
+    IdentificationCreateRequestIDTypeCaSin IdentificationCreateRequestIDType = "ca_sin"
+    IdentificationCreateRequestIDTypeChAhv IdentificationCreateRequestIDType = "ch_ahv"
+    IdentificationCreateRequestIDTypeChUid IdentificationCreateRequestIDType = "ch_uid"
+    IdentificationCreateRequestIDTypeClRun IdentificationCreateRequestIDType = "cl_run"
+    IdentificationCreateRequestIDTypeClRut IdentificationCreateRequestIDType = "cl_rut"
+    IdentificationCreateRequestIDTypeCoCedulas IdentificationCreateRequestIDType = "co_cedulas"
+    IdentificationCreateRequestIDTypeCoNit IdentificationCreateRequestIDType = "co_nit"
+    IdentificationCreateRequestIDTypeCyTin IdentificationCreateRequestIDType = "cy_tin"
+    IdentificationCreateRequestIDTypeCzIco IdentificationCreateRequestIDType = "cz_ico"
+    IdentificationCreateRequestIDTypeCzRc IdentificationCreateRequestIDType = "cz_rc"
+    IdentificationCreateRequestIDTypeDeStid IdentificationCreateRequestIDType = "de_stid"
+    IdentificationCreateRequestIDTypeDeStnr IdentificationCreateRequestIDType = "de_stnr"
+    IdentificationCreateRequestIDTypeDeVat IdentificationCreateRequestIDType = "de_vat"
+    IdentificationCreateRequestIDTypeDkCpr IdentificationCreateRequestIDType = "dk_cpr"
+    IdentificationCreateRequestIDTypeDkCvr IdentificationCreateRequestIDType = "dk_cvr"
+    IdentificationCreateRequestIDTypeDriversLicense IdentificationCreateRequestIDType = "drivers_license"
+    IdentificationCreateRequestIDTypeEeIk IdentificationCreateRequestIDType = "ee_ik"
+    IdentificationCreateRequestIDTypeEeRk IdentificationCreateRequestIDType = "ee_rk"
+    IdentificationCreateRequestIDTypeEsNie IdentificationCreateRequestIDType = "es_nie"
+    IdentificationCreateRequestIDTypeEsNif IdentificationCreateRequestIDType = "es_nif"
+    IdentificationCreateRequestIDTypeFiHetu IdentificationCreateRequestIDType = "fi_hetu"
+    IdentificationCreateRequestIDTypeFiYtj IdentificationCreateRequestIDType = "fi_ytj"
+    IdentificationCreateRequestIDTypeFrNif IdentificationCreateRequestIDType = "fr_nif"
+    IdentificationCreateRequestIDTypeFrSiren IdentificationCreateRequestIDType = "fr_siren"
+    IdentificationCreateRequestIDTypeFrVat IdentificationCreateRequestIDType = "fr_vat"
+    IdentificationCreateRequestIDTypeGBNino IdentificationCreateRequestIDType = "gb_nino"
+    IdentificationCreateRequestIDTypeGBUtr IdentificationCreateRequestIDType = "gb_utr"
+    IdentificationCreateRequestIDTypeGBVat IdentificationCreateRequestIDType = "gb_vat"
+    IdentificationCreateRequestIDTypeGenericInternational IdentificationCreateRequestIDType = "generic_international"
+    IdentificationCreateRequestIDTypeGrVat IdentificationCreateRequestIDType = "gr_vat"
+    IdentificationCreateRequestIDTypeHnID IdentificationCreateRequestIDType = "hn_id"
+    IdentificationCreateRequestIDTypeHnRtn IdentificationCreateRequestIDType = "hn_rtn"
+    IdentificationCreateRequestIDTypeHrOib IdentificationCreateRequestIDType = "hr_oib"
+    IdentificationCreateRequestIDTypeHuAdj IdentificationCreateRequestIDType = "hu_adj"
+    IdentificationCreateRequestIDTypeHuAnum IdentificationCreateRequestIDType = "hu_anum"
+    IdentificationCreateRequestIDTypeIePps IdentificationCreateRequestIDType = "ie_pps"
+    IdentificationCreateRequestIDTypeIeTrn IdentificationCreateRequestIDType = "ie_trn"
+    IdentificationCreateRequestIDTypeInLei IdentificationCreateRequestIDType = "in_lei"
+    IdentificationCreateRequestIDTypeIsKnt IdentificationCreateRequestIDType = "is_knt"
+    IdentificationCreateRequestIDTypeItCf IdentificationCreateRequestIDType = "it_cf"
+    IdentificationCreateRequestIDTypeItPiva IdentificationCreateRequestIDType = "it_piva"
+    IdentificationCreateRequestIDTypeJpHb IdentificationCreateRequestIDType = "jp_hb"
+    IdentificationCreateRequestIDTypeJpMn IdentificationCreateRequestIDType = "jp_mn"
+    IdentificationCreateRequestIDTypeKrBrn IdentificationCreateRequestIDType = "kr_brn"
+    IdentificationCreateRequestIDTypeKrCrn IdentificationCreateRequestIDType = "kr_crn"
+    IdentificationCreateRequestIDTypeKrRrn IdentificationCreateRequestIDType = "kr_rrn"
+    IdentificationCreateRequestIDTypeLiPeid IdentificationCreateRequestIDType = "li_peid"
+    IdentificationCreateRequestIDTypeLtAk IdentificationCreateRequestIDType = "lt_ak"
+    IdentificationCreateRequestIDTypeLtJak IdentificationCreateRequestIDType = "lt_jak"
+    IdentificationCreateRequestIDTypeLuMtc IdentificationCreateRequestIDType = "lu_mtc"
+    IdentificationCreateRequestIDTypeLuVat IdentificationCreateRequestIDType = "lu_vat"
+    IdentificationCreateRequestIDTypeLvPk IdentificationCreateRequestIDType = "lv_pk"
+    IdentificationCreateRequestIDTypeLvRn IdentificationCreateRequestIDType = "lv_rn"
+    IdentificationCreateRequestIDTypeMtTin IdentificationCreateRequestIDType = "mt_tin"
+    IdentificationCreateRequestIDTypeMtVat IdentificationCreateRequestIDType = "mt_vat"
+    IdentificationCreateRequestIDTypeMxCurp IdentificationCreateRequestIDType = "mx_curp"
+    IdentificationCreateRequestIDTypeMxIne IdentificationCreateRequestIDType = "mx_ine"
+    IdentificationCreateRequestIDTypeMxRfc IdentificationCreateRequestIDType = "mx_rfc"
+    IdentificationCreateRequestIDTypeNationalID IdentificationCreateRequestIDType = "national_id"
+    IdentificationCreateRequestIDTypeNlBsn IdentificationCreateRequestIDType = "nl_bsn"
+    IdentificationCreateRequestIDTypeNlBtw IdentificationCreateRequestIDType = "nl_btw"
+    IdentificationCreateRequestIDTypeNlRsin IdentificationCreateRequestIDType = "nl_rsin"
+    IdentificationCreateRequestIDTypeNoFdn IdentificationCreateRequestIDType = "no_fdn"
+    IdentificationCreateRequestIDTypeNoMva IdentificationCreateRequestIDType = "no_mva"
+    IdentificationCreateRequestIDTypeNoOrgnr IdentificationCreateRequestIDType = "no_orgnr"
+    IdentificationCreateRequestIDTypeNzIrd IdentificationCreateRequestIDType = "nz_ird"
+    IdentificationCreateRequestIDTypePassport IdentificationCreateRequestIDType = "passport"
+    IdentificationCreateRequestIDTypePlNip IdentificationCreateRequestIDType = "pl_nip"
+    IdentificationCreateRequestIDTypePlPesel IdentificationCreateRequestIDType = "pl_pesel"
+    IdentificationCreateRequestIDTypePtNif IdentificationCreateRequestIDType = "pt_nif"
+    IdentificationCreateRequestIDTypeRoCnp IdentificationCreateRequestIDType = "ro_cnp"
+    IdentificationCreateRequestIDTypeRoCui IdentificationCreateRequestIDType = "ro_cui"
+    IdentificationCreateRequestIDTypeSaTin IdentificationCreateRequestIDType = "sa_tin"
+    IdentificationCreateRequestIDTypeSaVat IdentificationCreateRequestIDType = "sa_vat"
+    IdentificationCreateRequestIDTypeSeOrgnr IdentificationCreateRequestIDType = "se_orgnr"
+    IdentificationCreateRequestIDTypeSePnmr IdentificationCreateRequestIDType = "se_pnmr"
+    IdentificationCreateRequestIDTypeSgFin IdentificationCreateRequestIDType = "sg_fin"
+    IdentificationCreateRequestIDTypeSgNric IdentificationCreateRequestIDType = "sg_nric"
+    IdentificationCreateRequestIDTypeSgUen IdentificationCreateRequestIDType = "sg_uen"
+    IdentificationCreateRequestIDTypeSiDav IdentificationCreateRequestIDType = "si_dav"
+    IdentificationCreateRequestIDTypeSiTin IdentificationCreateRequestIDType = "si_tin"
+    IdentificationCreateRequestIDTypeSkIco IdentificationCreateRequestIDType = "sk_ico"
+    IdentificationCreateRequestIDTypeSkRc IdentificationCreateRequestIDType = "sk_rc"
+    IdentificationCreateRequestIDTypeUsEin IdentificationCreateRequestIDType = "us_ein"
+    IdentificationCreateRequestIDTypeUsItin IdentificationCreateRequestIDType = "us_itin"
+    IdentificationCreateRequestIDTypeUsSsn IdentificationCreateRequestIDType = "us_ssn"
+    IdentificationCreateRequestIDTypeUyRut IdentificationCreateRequestIDType = "uy_rut"
+    IdentificationCreateRequestIDTypeVnTin IdentificationCreateRequestIDType = "vn_tin"
+  )
 
-func (r IdentificationCreateRequestIDType) IsKnown() bool {
-	switch r {
-	case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeAtAtin, IdentificationCreateRequestIDTypeAtVat, IdentificationCreateRequestIDTypeAuAbn, IdentificationCreateRequestIDTypeAuTfn, IdentificationCreateRequestIDTypeBeEnt, IdentificationCreateRequestIDTypeBeNrn, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaBn, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeChAhv, IdentificationCreateRequestIDTypeChUid, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeCyTin, IdentificationCreateRequestIDTypeCzIco, IdentificationCreateRequestIDTypeCzRc, IdentificationCreateRequestIDTypeDeStid, IdentificationCreateRequestIDTypeDeStnr, IdentificationCreateRequestIDTypeDeVat, IdentificationCreateRequestIDTypeDkCpr, IdentificationCreateRequestIDTypeDkCvr, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeEeIk, IdentificationCreateRequestIDTypeEeRk, IdentificationCreateRequestIDTypeEsNie, IdentificationCreateRequestIDTypeEsNif, IdentificationCreateRequestIDTypeFiHetu, IdentificationCreateRequestIDTypeFiYtj, IdentificationCreateRequestIDTypeFrNif, IdentificationCreateRequestIDTypeFrSiren, IdentificationCreateRequestIDTypeFrVat, IdentificationCreateRequestIDTypeGBNino, IdentificationCreateRequestIDTypeGBUtr, IdentificationCreateRequestIDTypeGBVat, IdentificationCreateRequestIDTypeGrVat, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeHrOib, IdentificationCreateRequestIDTypeHuAdj, IdentificationCreateRequestIDTypeHuAnum, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeIeTrn, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeIsKnt, IdentificationCreateRequestIDTypeItCf, IdentificationCreateRequestIDTypeItPiva, IdentificationCreateRequestIDTypeJpHb, IdentificationCreateRequestIDTypeJpMn, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypeLiPeid, IdentificationCreateRequestIDTypeLtAk, IdentificationCreateRequestIDTypeLtJak, IdentificationCreateRequestIDTypeLuMtc, IdentificationCreateRequestIDTypeLuVat, IdentificationCreateRequestIDTypeLvPk, IdentificationCreateRequestIDTypeLvRn, IdentificationCreateRequestIDTypeMtTin, IdentificationCreateRequestIDTypeMtVat, IdentificationCreateRequestIDTypeMxCurp, IdentificationCreateRequestIDTypeMxIne, IdentificationCreateRequestIDTypeMxRfc, IdentificationCreateRequestIDTypeNationalID, IdentificationCreateRequestIDTypeNlBsn, IdentificationCreateRequestIDTypeNlBtw, IdentificationCreateRequestIDTypeNlRsin, IdentificationCreateRequestIDTypeNoFdn, IdentificationCreateRequestIDTypeNoMva, IdentificationCreateRequestIDTypeNoOrgnr, IdentificationCreateRequestIDTypeNzIrd, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypePlNip, IdentificationCreateRequestIDTypePlPesel, IdentificationCreateRequestIDTypePtNif, IdentificationCreateRequestIDTypeRoCnp, IdentificationCreateRequestIDTypeRoCui, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeSeOrgnr, IdentificationCreateRequestIDTypeSePnmr, IdentificationCreateRequestIDTypeSgFin, IdentificationCreateRequestIDTypeSgNric, IdentificationCreateRequestIDTypeSgUen, IdentificationCreateRequestIDTypeSiDav, IdentificationCreateRequestIDTypeSiTin, IdentificationCreateRequestIDTypeSkIco, IdentificationCreateRequestIDTypeSkRc, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeUyRut, IdentificationCreateRequestIDTypeVnTin:
-		return true
-	}
-	return false
+func (r IdentificationCreateRequestIDType) IsKnown() (bool) {
+  switch r {
+  case IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeAtAtin, IdentificationCreateRequestIDTypeAtVat, IdentificationCreateRequestIDTypeAuAbn, IdentificationCreateRequestIDTypeAuTfn, IdentificationCreateRequestIDTypeBeEnt, IdentificationCreateRequestIDTypeBeNrn, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeCaBn, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeChAhv, IdentificationCreateRequestIDTypeChUid, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeCyTin, IdentificationCreateRequestIDTypeCzIco, IdentificationCreateRequestIDTypeCzRc, IdentificationCreateRequestIDTypeDeStid, IdentificationCreateRequestIDTypeDeStnr, IdentificationCreateRequestIDTypeDeVat, IdentificationCreateRequestIDTypeDkCpr, IdentificationCreateRequestIDTypeDkCvr, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeEeIk, IdentificationCreateRequestIDTypeEeRk, IdentificationCreateRequestIDTypeEsNie, IdentificationCreateRequestIDTypeEsNif, IdentificationCreateRequestIDTypeFiHetu, IdentificationCreateRequestIDTypeFiYtj, IdentificationCreateRequestIDTypeFrNif, IdentificationCreateRequestIDTypeFrSiren, IdentificationCreateRequestIDTypeFrVat, IdentificationCreateRequestIDTypeGBNino, IdentificationCreateRequestIDTypeGBUtr, IdentificationCreateRequestIDTypeGBVat, IdentificationCreateRequestIDTypeGenericInternational, IdentificationCreateRequestIDTypeGrVat, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeHrOib, IdentificationCreateRequestIDTypeHuAdj, IdentificationCreateRequestIDTypeHuAnum, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeIeTrn, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeIsKnt, IdentificationCreateRequestIDTypeItCf, IdentificationCreateRequestIDTypeItPiva, IdentificationCreateRequestIDTypeJpHb, IdentificationCreateRequestIDTypeJpMn, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypeLiPeid, IdentificationCreateRequestIDTypeLtAk, IdentificationCreateRequestIDTypeLtJak, IdentificationCreateRequestIDTypeLuMtc, IdentificationCreateRequestIDTypeLuVat, IdentificationCreateRequestIDTypeLvPk, IdentificationCreateRequestIDTypeLvRn, IdentificationCreateRequestIDTypeMtTin, IdentificationCreateRequestIDTypeMtVat, IdentificationCreateRequestIDTypeMxCurp, IdentificationCreateRequestIDTypeMxIne, IdentificationCreateRequestIDTypeMxRfc, IdentificationCreateRequestIDTypeNationalID, IdentificationCreateRequestIDTypeNlBsn, IdentificationCreateRequestIDTypeNlBtw, IdentificationCreateRequestIDTypeNlRsin, IdentificationCreateRequestIDTypeNoFdn, IdentificationCreateRequestIDTypeNoMva, IdentificationCreateRequestIDTypeNoOrgnr, IdentificationCreateRequestIDTypeNzIrd, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypePlNip, IdentificationCreateRequestIDTypePlPesel, IdentificationCreateRequestIDTypePtNif, IdentificationCreateRequestIDTypeRoCnp, IdentificationCreateRequestIDTypeRoCui, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeSeOrgnr, IdentificationCreateRequestIDTypeSePnmr, IdentificationCreateRequestIDTypeSgFin, IdentificationCreateRequestIDTypeSgNric, IdentificationCreateRequestIDTypeSgUen, IdentificationCreateRequestIDTypeSiDav, IdentificationCreateRequestIDTypeSiTin, IdentificationCreateRequestIDTypeSkIco, IdentificationCreateRequestIDTypeSkRc, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeUyRut, IdentificationCreateRequestIDTypeVnTin:
+      return true
+  }
+  return false
 }
 
 type IdentificationCreateRequestDocumentParam struct {
-	// A category given to the document, can be `null`.
-	DocumentType param.Field[IdentificationCreateRequestDocumentsDocumentType] `json:"document_type" api:"required"`
-	// Base64-encoded file content for the document.
-	FileData param.Field[string] `json:"file_data" api:"required"`
-	// The original filename of the document.
-	Filename param.Field[string] `json:"filename"`
+// A category given to the document, can be `null`.
+DocumentType param.Field[IdentificationCreateRequestDocumentsDocumentType] `json:"document_type" api:"required"`
+// Base64-encoded file content for the document.
+FileData param.Field[string] `json:"file_data" api:"required"`
+// The original filename of the document.
+Filename param.Field[string] `json:"filename"`
 }
 
 func (r IdentificationCreateRequestDocumentParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 // A category given to the document, can be `null`.
 type IdentificationCreateRequestDocumentsDocumentType string
 
 const (
-	IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation   IdentificationCreateRequestDocumentsDocumentType = "articles_of_incorporation"
-	IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding IdentificationCreateRequestDocumentsDocumentType = "certificate_of_good_standing"
-	IdentificationCreateRequestDocumentsDocumentTypeEinLetter                 IdentificationCreateRequestDocumentsDocumentType = "ein_letter"
-	IdentificationCreateRequestDocumentsDocumentTypeGeneric                   IdentificationCreateRequestDocumentsDocumentType = "generic"
-	IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack        IdentificationCreateRequestDocumentsDocumentType = "identification_back"
-	IdentificationCreateRequestDocumentsDocumentTypeIdentificationFront       IdentificationCreateRequestDocumentsDocumentType = "identification_front"
-	IdentificationCreateRequestDocumentsDocumentTypeProofOfAddress            IdentificationCreateRequestDocumentsDocumentType = "proof_of_address"
-)
+    IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation IdentificationCreateRequestDocumentsDocumentType = "articles_of_incorporation"
+    IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding IdentificationCreateRequestDocumentsDocumentType = "certificate_of_good_standing"
+    IdentificationCreateRequestDocumentsDocumentTypeEinLetter IdentificationCreateRequestDocumentsDocumentType = "ein_letter"
+    IdentificationCreateRequestDocumentsDocumentTypeGeneric IdentificationCreateRequestDocumentsDocumentType = "generic"
+    IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack IdentificationCreateRequestDocumentsDocumentType = "identification_back"
+    IdentificationCreateRequestDocumentsDocumentTypeIdentificationFront IdentificationCreateRequestDocumentsDocumentType = "identification_front"
+    IdentificationCreateRequestDocumentsDocumentTypeProofOfAddress IdentificationCreateRequestDocumentsDocumentType = "proof_of_address"
+  )
 
-func (r IdentificationCreateRequestDocumentsDocumentType) IsKnown() bool {
-	switch r {
-	case IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation, IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding, IdentificationCreateRequestDocumentsDocumentTypeEinLetter, IdentificationCreateRequestDocumentsDocumentTypeGeneric, IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack, IdentificationCreateRequestDocumentsDocumentTypeIdentificationFront, IdentificationCreateRequestDocumentsDocumentTypeProofOfAddress:
-		return true
-	}
-	return false
+func (r IdentificationCreateRequestDocumentsDocumentType) IsKnown() (bool) {
+  switch r {
+  case IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation, IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding, IdentificationCreateRequestDocumentsDocumentTypeEinLetter, IdentificationCreateRequestDocumentsDocumentTypeGeneric, IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack, IdentificationCreateRequestDocumentsDocumentTypeIdentificationFront, IdentificationCreateRequestDocumentsDocumentTypeProofOfAddress:
+      return true
+  }
+  return false
 }
 
 type LedgerAccountCreateRequestParam struct {
-	// The currency of the ledger account.
-	Currency param.Field[string] `json:"currency" api:"required"`
-	// The id of the ledger that this account belongs to.
-	LedgerID param.Field[string] `json:"ledger_id" api:"required" format:"uuid"`
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name" api:"required"`
-	// The normal balance of the ledger account.
-	NormalBalance param.Field[TransactionDirection] `json:"normal_balance" api:"required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent param.Field[int64] `json:"currency_exponent"`
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `json:"external_id"`
-	// The array of ledger account category ids that this ledger account should be a
-	// child of.
-	LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the id will be
-	// populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger account links to another object in Modern Treasury, the type will
-	// be populated here, otherwise null. The value is one of internal_account or
-	// external_account.
-	LedgerableType param.Field[LedgerAccountCreateRequestLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
+// The currency of the ledger account.
+Currency param.Field[string] `json:"currency" api:"required"`
+// The id of the ledger that this account belongs to.
+LedgerID param.Field[string] `json:"ledger_id" api:"required" format:"uuid"`
+// The name of the ledger account.
+Name param.Field[string] `json:"name" api:"required"`
+// The normal balance of the ledger account.
+NormalBalance param.Field[TransactionDirection] `json:"normal_balance" api:"required"`
+// The currency exponent of the ledger account.
+CurrencyExponent param.Field[int64] `json:"currency_exponent"`
+// The description of the ledger account.
+Description param.Field[string] `json:"description"`
+// An optional user-defined 180 character unique identifier.
+ExternalID param.Field[string] `json:"external_id"`
+// The array of ledger account category ids that this ledger account should be a
+// child of.
+LedgerAccountCategoryIDs param.Field[[]string] `json:"ledger_account_category_ids" format:"uuid"`
+// If the ledger account links to another object in Modern Treasury, the id will be
+// populated here, otherwise null.
+LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+// If the ledger account links to another object in Modern Treasury, the type will
+// be populated here, otherwise null. The value is one of internal_account or
+// external_account.
+LedgerableType param.Field[LedgerAccountCreateRequestLedgerableType] `json:"ledgerable_type"`
+// Additional data represented as key-value pairs. Both the key and value must be
+// strings.
+Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
 func (r LedgerAccountCreateRequestParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 func (r LedgerAccountCreateRequestParam) ImplementsBulkRequestNewParamsResourceUnion() {}
@@ -884,162 +900,162 @@ func (r LedgerAccountCreateRequestParam) ImplementsBulkRequestNewParamsResourceU
 type LedgerAccountCreateRequestLedgerableType string
 
 const (
-	LedgerAccountCreateRequestLedgerableTypeCounterparty    LedgerAccountCreateRequestLedgerableType = "counterparty"
-	LedgerAccountCreateRequestLedgerableTypeExternalAccount LedgerAccountCreateRequestLedgerableType = "external_account"
-	LedgerAccountCreateRequestLedgerableTypeInternalAccount LedgerAccountCreateRequestLedgerableType = "internal_account"
-	LedgerAccountCreateRequestLedgerableTypeVirtualAccount  LedgerAccountCreateRequestLedgerableType = "virtual_account"
-)
+    LedgerAccountCreateRequestLedgerableTypeCounterparty LedgerAccountCreateRequestLedgerableType = "counterparty"
+    LedgerAccountCreateRequestLedgerableTypeExternalAccount LedgerAccountCreateRequestLedgerableType = "external_account"
+    LedgerAccountCreateRequestLedgerableTypeInternalAccount LedgerAccountCreateRequestLedgerableType = "internal_account"
+    LedgerAccountCreateRequestLedgerableTypeVirtualAccount LedgerAccountCreateRequestLedgerableType = "virtual_account"
+  )
 
-func (r LedgerAccountCreateRequestLedgerableType) IsKnown() bool {
-	switch r {
-	case LedgerAccountCreateRequestLedgerableTypeCounterparty, LedgerAccountCreateRequestLedgerableTypeExternalAccount, LedgerAccountCreateRequestLedgerableTypeInternalAccount, LedgerAccountCreateRequestLedgerableTypeVirtualAccount:
-		return true
-	}
-	return false
+func (r LedgerAccountCreateRequestLedgerableType) IsKnown() (bool) {
+  switch r {
+  case LedgerAccountCreateRequestLedgerableTypeCounterparty, LedgerAccountCreateRequestLedgerableTypeExternalAccount, LedgerAccountCreateRequestLedgerableTypeInternalAccount, LedgerAccountCreateRequestLedgerableTypeVirtualAccount:
+      return true
+  }
+  return false
 }
 
 type LedgerBalance struct {
-	Amount        int64  `json:"amount" api:"required"`
-	AmountString  string `json:"amount_string" api:"required"`
-	Credits       int64  `json:"credits" api:"required"`
-	CreditsString string `json:"credits_string" api:"required"`
-	// The currency of the ledger account.
-	Currency string `json:"currency" api:"required"`
-	// The currency exponent of the ledger account.
-	CurrencyExponent int64             `json:"currency_exponent" api:"required"`
-	Debits           int64             `json:"debits" api:"required"`
-	DebitsString     string            `json:"debits_string" api:"required"`
-	JSON             ledgerBalanceJSON `json:"-"`
+Amount int64 `json:"amount" api:"required"`
+AmountString string `json:"amount_string" api:"required"`
+Credits int64 `json:"credits" api:"required"`
+CreditsString string `json:"credits_string" api:"required"`
+// The currency of the ledger account.
+Currency string `json:"currency" api:"required"`
+// The currency exponent of the ledger account.
+CurrencyExponent int64 `json:"currency_exponent" api:"required"`
+Debits int64 `json:"debits" api:"required"`
+DebitsString string `json:"debits_string" api:"required"`
+JSON ledgerBalanceJSON `json:"-"`
 }
 
 // ledgerBalanceJSON contains the JSON metadata for the struct [LedgerBalance]
 type ledgerBalanceJSON struct {
-	Amount           apijson.Field
-	AmountString     apijson.Field
-	Credits          apijson.Field
-	CreditsString    apijson.Field
-	Currency         apijson.Field
-	CurrencyExponent apijson.Field
-	Debits           apijson.Field
-	DebitsString     apijson.Field
-	raw              string
-	ExtraFields      map[string]apijson.Field
+Amount apijson.Field
+AmountString apijson.Field
+Credits apijson.Field
+CreditsString apijson.Field
+Currency apijson.Field
+CurrencyExponent apijson.Field
+Debits apijson.Field
+DebitsString apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *LedgerBalance) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r ledgerBalanceJSON) RawJSON() string {
-	return r.raw
+func (r ledgerBalanceJSON) RawJSON() (string) {
+  return r.raw
 }
 
 type LedgerBalances struct {
-	// The available_balance is the sum of all posted inbound entries and pending
-	// outbound entries. For credit normal, available_amount = posted_credits -
-	// pending_debits; for debit normal, available_amount = posted_debits -
-	// pending_credits.
-	AvailableBalance LedgerBalance `json:"available_balance" api:"required"`
-	// The pending_balance is the sum of all pending and posted entries.
-	PendingBalance LedgerBalance `json:"pending_balance" api:"required"`
-	// The posted_balance is the sum of all posted entries.
-	PostedBalance LedgerBalance      `json:"posted_balance" api:"required"`
-	JSON          ledgerBalancesJSON `json:"-"`
+// The available_balance is the sum of all posted inbound entries and pending
+// outbound entries. For credit normal, available_amount = posted_credits -
+// pending_debits; for debit normal, available_amount = posted_debits -
+// pending_credits.
+AvailableBalance LedgerBalance `json:"available_balance" api:"required"`
+// The pending_balance is the sum of all pending and posted entries.
+PendingBalance LedgerBalance `json:"pending_balance" api:"required"`
+// The posted_balance is the sum of all posted entries.
+PostedBalance LedgerBalance `json:"posted_balance" api:"required"`
+JSON ledgerBalancesJSON `json:"-"`
 }
 
 // ledgerBalancesJSON contains the JSON metadata for the struct [LedgerBalances]
 type ledgerBalancesJSON struct {
-	AvailableBalance apijson.Field
-	PendingBalance   apijson.Field
-	PostedBalance    apijson.Field
-	raw              string
-	ExtraFields      map[string]apijson.Field
+AvailableBalance apijson.Field
+PendingBalance apijson.Field
+PostedBalance apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *LedgerBalances) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r ledgerBalancesJSON) RawJSON() string {
-	return r.raw
+func (r ledgerBalancesJSON) RawJSON() (string) {
+  return r.raw
 }
 
 type LedgerEntryCreateRequestParam struct {
-	// One of `credit`, `debit`. Describes the direction money is flowing in the
-	// transaction. A `credit` moves money from your account to someone else's. A
-	// `debit` pulls money from someone else's account to your own. Note that wire,
-	// rtp, and check payments will always be `credit`.
-	Direction param.Field[TransactionDirection] `json:"direction" api:"required"`
-	// The ledger account that this ledger entry is associated with.
-	LedgerAccountID param.Field[string] `json:"ledger_account_id" api:"required" format:"uuid"`
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount"`
-	// The amount of the ledger entry as a string, preserving full precision for values
-	// that may exceed safe integer limits in some languages.
-	AmountString param.Field[string] `json:"amount_string"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s available balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
-	// The timestamp (ISO8601 format) at which the ledger transaction happened for
-	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
-	// Lock version of the ledger account. This can be passed when creating a ledger
-	// transaction to only succeed if no ledger transactions have posted since the
-	// given version. See our post about Designing the Ledgers API with Optimistic
-	// Locking for more details.
-	LockVersion param.Field[int64] `json:"lock_version"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s pending balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
-	// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
-	// account’s posted balance. If any of these conditions would be false after the
-	// transaction is created, the entire call will fail with error code 422.
-	PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
-	// If true, response will include the balance of the associated ledger account for
-	// the entry.
-	ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
+// One of `credit`, `debit`. Describes the direction money is flowing in the
+// transaction. A `credit` moves money from your account to someone else's. A
+// `debit` pulls money from someone else's account to your own. Note that wire,
+// rtp, and check payments will always be `credit`.
+Direction param.Field[TransactionDirection] `json:"direction" api:"required"`
+// The ledger account that this ledger entry is associated with.
+LedgerAccountID param.Field[string] `json:"ledger_account_id" api:"required" format:"uuid"`
+// Value in specified currency's smallest unit. e.g. $10 would be represented
+// as 1000. Can be any integer up to 36 digits.
+Amount param.Field[int64] `json:"amount"`
+// The amount of the ledger entry as a string, preserving full precision for values
+// that may exceed safe integer limits in some languages.
+AmountString param.Field[string] `json:"amount_string"`
+// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
+// account’s available balance. If any of these conditions would be false after the
+// transaction is created, the entire call will fail with error code 422.
+AvailableBalanceAmount param.Field[map[string]int64] `json:"available_balance_amount"`
+// The timestamp (ISO8601 format) at which the ledger transaction happened for
+// reporting purposes.
+EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
+// Lock version of the ledger account. This can be passed when creating a ledger
+// transaction to only succeed if no ledger transactions have posted since the
+// given version. See our post about Designing the Ledgers API with Optimistic
+// Locking for more details.
+LockVersion param.Field[int64] `json:"lock_version"`
+// Additional data represented as key-value pairs. Both the key and value must be
+// strings.
+Metadata param.Field[map[string]string] `json:"metadata"`
+// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
+// account’s pending balance. If any of these conditions would be false after the
+// transaction is created, the entire call will fail with error code 422.
+PendingBalanceAmount param.Field[map[string]int64] `json:"pending_balance_amount"`
+// Use `gt` (>), `gte` (>=), `lt` (<), `lte` (<=), or `eq` (=) to lock on the
+// account’s posted balance. If any of these conditions would be false after the
+// transaction is created, the entire call will fail with error code 422.
+PostedBalanceAmount param.Field[map[string]int64] `json:"posted_balance_amount"`
+// If true, response will include the balance of the associated ledger account for
+// the entry.
+ShowResultingLedgerAccountBalances param.Field[bool] `json:"show_resulting_ledger_account_balances"`
 }
 
 func (r LedgerEntryCreateRequestParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type LedgerTransactionCreateRequestParam struct {
-	// An array of ledger entry objects.
-	LedgerEntries param.Field[[]LedgerEntryCreateRequestParam] `json:"ledger_entries" api:"required"`
-	// An optional description for internal use.
-	Description param.Field[string] `json:"description"`
-	// The timestamp (ISO8601 format) at which the ledger transaction happened for
-	// reporting purposes.
-	EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
-	// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
-	// purposes.
-	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
-	// A unique string to represent the ledger transaction. Only one pending or posted
-	// ledger transaction may have this ID in the ledger.
-	ExternalID param.Field[string] `json:"external_id"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the id will be populated here, otherwise null.
-	LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
-	// If the ledger transaction can be reconciled to another object in Modern
-	// Treasury, the type will be populated here, otherwise null. This can be one of
-	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
-	LedgerableType param.Field[LedgerTransactionCreateRequestLedgerableType] `json:"ledgerable_type"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[LedgerTransactionCreateRequestStatus] `json:"status"`
+// An array of ledger entry objects.
+LedgerEntries param.Field[[]LedgerEntryCreateRequestParam] `json:"ledger_entries" api:"required"`
+// An optional description for internal use.
+Description param.Field[string] `json:"description"`
+// The timestamp (ISO8601 format) at which the ledger transaction happened for
+// reporting purposes.
+EffectiveAt param.Field[time.Time] `json:"effective_at" format:"date-time"`
+// The date (YYYY-MM-DD) on which the ledger transaction happened for reporting
+// purposes.
+EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
+// A unique string to represent the ledger transaction. Only one pending or posted
+// ledger transaction may have this ID in the ledger.
+ExternalID param.Field[string] `json:"external_id"`
+// If the ledger transaction can be reconciled to another object in Modern
+// Treasury, the id will be populated here, otherwise null.
+LedgerableID param.Field[string] `json:"ledgerable_id" format:"uuid"`
+// If the ledger transaction can be reconciled to another object in Modern
+// Treasury, the type will be populated here, otherwise null. This can be one of
+// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
+LedgerableType param.Field[LedgerTransactionCreateRequestLedgerableType] `json:"ledgerable_type"`
+// Additional data represented as key-value pairs. Both the key and value must be
+// strings.
+Metadata param.Field[map[string]string] `json:"metadata"`
+// To post a ledger transaction at creation, use `posted`.
+Status param.Field[LedgerTransactionCreateRequestStatus] `json:"status"`
 }
 
 func (r LedgerTransactionCreateRequestParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 func (r LedgerTransactionCreateRequestParam) ImplementsBulkRequestNewParamsResourceUnion() {}
@@ -1050,684 +1066,688 @@ func (r LedgerTransactionCreateRequestParam) ImplementsBulkRequestNewParamsResou
 type LedgerTransactionCreateRequestLedgerableType string
 
 const (
-	LedgerTransactionCreateRequestLedgerableTypeExpectedPayment       LedgerTransactionCreateRequestLedgerableType = "expected_payment"
-	LedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail LedgerTransactionCreateRequestLedgerableType = "incoming_payment_detail"
-	LedgerTransactionCreateRequestLedgerableTypePaymentOrder          LedgerTransactionCreateRequestLedgerableType = "payment_order"
-	LedgerTransactionCreateRequestLedgerableTypeReturn                LedgerTransactionCreateRequestLedgerableType = "return"
-	LedgerTransactionCreateRequestLedgerableTypeReversal              LedgerTransactionCreateRequestLedgerableType = "reversal"
-)
+    LedgerTransactionCreateRequestLedgerableTypeExpectedPayment LedgerTransactionCreateRequestLedgerableType = "expected_payment"
+    LedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail LedgerTransactionCreateRequestLedgerableType = "incoming_payment_detail"
+    LedgerTransactionCreateRequestLedgerableTypePaymentOrder LedgerTransactionCreateRequestLedgerableType = "payment_order"
+    LedgerTransactionCreateRequestLedgerableTypeReturn LedgerTransactionCreateRequestLedgerableType = "return"
+    LedgerTransactionCreateRequestLedgerableTypeReversal LedgerTransactionCreateRequestLedgerableType = "reversal"
+  )
 
-func (r LedgerTransactionCreateRequestLedgerableType) IsKnown() bool {
-	switch r {
-	case LedgerTransactionCreateRequestLedgerableTypeExpectedPayment, LedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail, LedgerTransactionCreateRequestLedgerableTypePaymentOrder, LedgerTransactionCreateRequestLedgerableTypeReturn, LedgerTransactionCreateRequestLedgerableTypeReversal:
-		return true
-	}
-	return false
+func (r LedgerTransactionCreateRequestLedgerableType) IsKnown() (bool) {
+  switch r {
+  case LedgerTransactionCreateRequestLedgerableTypeExpectedPayment, LedgerTransactionCreateRequestLedgerableTypeIncomingPaymentDetail, LedgerTransactionCreateRequestLedgerableTypePaymentOrder, LedgerTransactionCreateRequestLedgerableTypeReturn, LedgerTransactionCreateRequestLedgerableTypeReversal:
+      return true
+  }
+  return false
 }
 
 // To post a ledger transaction at creation, use `posted`.
 type LedgerTransactionCreateRequestStatus string
 
 const (
-	LedgerTransactionCreateRequestStatusArchived LedgerTransactionCreateRequestStatus = "archived"
-	LedgerTransactionCreateRequestStatusPending  LedgerTransactionCreateRequestStatus = "pending"
-	LedgerTransactionCreateRequestStatusPosted   LedgerTransactionCreateRequestStatus = "posted"
-)
+    LedgerTransactionCreateRequestStatusArchived LedgerTransactionCreateRequestStatus = "archived"
+    LedgerTransactionCreateRequestStatusPending LedgerTransactionCreateRequestStatus = "pending"
+    LedgerTransactionCreateRequestStatusPosted LedgerTransactionCreateRequestStatus = "posted"
+  )
 
-func (r LedgerTransactionCreateRequestStatus) IsKnown() bool {
-	switch r {
-	case LedgerTransactionCreateRequestStatusArchived, LedgerTransactionCreateRequestStatusPending, LedgerTransactionCreateRequestStatusPosted:
-		return true
-	}
-	return false
+func (r LedgerTransactionCreateRequestStatus) IsKnown() (bool) {
+  switch r {
+  case LedgerTransactionCreateRequestStatusArchived, LedgerTransactionCreateRequestStatusPending, LedgerTransactionCreateRequestStatusPosted:
+      return true
+  }
+  return false
 }
 
 type LegalEntityAddressCreateRequestParam struct {
-	// Country code conforms to [ISO 3166-1 alpha-2]
-	Country param.Field[string] `json:"country" api:"required"`
-	Line1   param.Field[string] `json:"line1" api:"required"`
-	// Locality or City.
-	Locality param.Field[string] `json:"locality" api:"required"`
-	// The postal code of the address.
-	PostalCode param.Field[string] `json:"postal_code" api:"required"`
-	// Region or State.
-	Region param.Field[string] `json:"region" api:"required"`
-	// The types of this address.
-	AddressTypes param.Field[[]LegalEntityAddressCreateRequestAddressType] `json:"address_types"`
-	Line2        param.Field[string]                                       `json:"line2"`
-	// Whether this address is the primary address for the legal entity.
-	Primary param.Field[bool] `json:"primary"`
+// Country code conforms to [ISO 3166-1 alpha-2]
+Country param.Field[string] `json:"country" api:"required"`
+Line1 param.Field[string] `json:"line1" api:"required"`
+// Locality or City.
+Locality param.Field[string] `json:"locality" api:"required"`
+// The postal code of the address.
+PostalCode param.Field[string] `json:"postal_code" api:"required"`
+// Region or State.
+Region param.Field[string] `json:"region" api:"required"`
+// The types of this address.
+AddressTypes param.Field[[]LegalEntityAddressCreateRequestAddressType] `json:"address_types"`
+Line2 param.Field[string] `json:"line2"`
+// Whether this address is the primary address for the legal entity. Optional; when
+// omitted it is inferred from the address types.
+Primary param.Field[bool] `json:"primary"`
 }
 
 func (r LegalEntityAddressCreateRequestParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type LegalEntityAddressCreateRequestAddressType string
 
 const (
-	LegalEntityAddressCreateRequestAddressTypeBusiness           LegalEntityAddressCreateRequestAddressType = "business"
-	LegalEntityAddressCreateRequestAddressTypeBusinessRegistered LegalEntityAddressCreateRequestAddressType = "business_registered"
-	LegalEntityAddressCreateRequestAddressTypeMailing            LegalEntityAddressCreateRequestAddressType = "mailing"
-	LegalEntityAddressCreateRequestAddressTypeOther              LegalEntityAddressCreateRequestAddressType = "other"
-	LegalEntityAddressCreateRequestAddressTypePoBox              LegalEntityAddressCreateRequestAddressType = "po_box"
-	LegalEntityAddressCreateRequestAddressTypeResidential        LegalEntityAddressCreateRequestAddressType = "residential"
-)
+    LegalEntityAddressCreateRequestAddressTypeBusiness LegalEntityAddressCreateRequestAddressType = "business"
+    LegalEntityAddressCreateRequestAddressTypeBusinessPhysical LegalEntityAddressCreateRequestAddressType = "business_physical"
+    LegalEntityAddressCreateRequestAddressTypeBusinessRegistered LegalEntityAddressCreateRequestAddressType = "business_registered"
+    LegalEntityAddressCreateRequestAddressTypeMailing LegalEntityAddressCreateRequestAddressType = "mailing"
+    LegalEntityAddressCreateRequestAddressTypeOther LegalEntityAddressCreateRequestAddressType = "other"
+    LegalEntityAddressCreateRequestAddressTypePoBox LegalEntityAddressCreateRequestAddressType = "po_box"
+    LegalEntityAddressCreateRequestAddressTypeResidential LegalEntityAddressCreateRequestAddressType = "residential"
+  )
 
-func (r LegalEntityAddressCreateRequestAddressType) IsKnown() bool {
-	switch r {
-	case LegalEntityAddressCreateRequestAddressTypeBusiness, LegalEntityAddressCreateRequestAddressTypeBusinessRegistered, LegalEntityAddressCreateRequestAddressTypeMailing, LegalEntityAddressCreateRequestAddressTypeOther, LegalEntityAddressCreateRequestAddressTypePoBox, LegalEntityAddressCreateRequestAddressTypeResidential:
-		return true
-	}
-	return false
+func (r LegalEntityAddressCreateRequestAddressType) IsKnown() (bool) {
+  switch r {
+  case LegalEntityAddressCreateRequestAddressTypeBusiness, LegalEntityAddressCreateRequestAddressTypeBusinessPhysical, LegalEntityAddressCreateRequestAddressTypeBusinessRegistered, LegalEntityAddressCreateRequestAddressTypeMailing, LegalEntityAddressCreateRequestAddressTypeOther, LegalEntityAddressCreateRequestAddressTypePoBox, LegalEntityAddressCreateRequestAddressTypeResidential:
+      return true
+  }
+  return false
 }
 
 type LegalEntityAssociationInlineCreateParam struct {
-	RelationshipTypes param.Field[[]LegalEntityAssociationInlineCreateRelationshipType] `json:"relationship_types" api:"required"`
-	// The child legal entity.
-	ChildLegalEntity param.Field[ChildLegalEntityCreateParam] `json:"child_legal_entity"`
-	// The ID of the child legal entity.
-	ChildLegalEntityID param.Field[string] `json:"child_legal_entity_id"`
-	// The child entity's ownership percentage iff they are a beneficial owner.
-	OwnershipPercentage param.Field[int64] `json:"ownership_percentage"`
-	// The job title of the child entity at the parent entity.
-	Title param.Field[string] `json:"title"`
+RelationshipTypes param.Field[[]LegalEntityAssociationInlineCreateRelationshipType] `json:"relationship_types" api:"required"`
+// The child legal entity.
+ChildLegalEntity param.Field[ChildLegalEntityCreateParam] `json:"child_legal_entity"`
+// The ID of the child legal entity.
+ChildLegalEntityID param.Field[string] `json:"child_legal_entity_id"`
+// The child entity's ownership percentage iff they are a beneficial owner.
+OwnershipPercentage param.Field[int64] `json:"ownership_percentage"`
+// The job title of the child entity at the parent entity.
+Title param.Field[string] `json:"title"`
 }
 
 func (r LegalEntityAssociationInlineCreateParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 // A list of relationship types for how the child entity relates to parent entity.
 type LegalEntityAssociationInlineCreateRelationshipType string
 
 const (
-	LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner LegalEntityAssociationInlineCreateRelationshipType = "authorized_signer"
-	LegalEntityAssociationInlineCreateRelationshipTypeBeneficialOwner  LegalEntityAssociationInlineCreateRelationshipType = "beneficial_owner"
-	LegalEntityAssociationInlineCreateRelationshipTypeControlPerson    LegalEntityAssociationInlineCreateRelationshipType = "control_person"
-)
+    LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner LegalEntityAssociationInlineCreateRelationshipType = "authorized_signer"
+    LegalEntityAssociationInlineCreateRelationshipTypeBeneficialOwner LegalEntityAssociationInlineCreateRelationshipType = "beneficial_owner"
+    LegalEntityAssociationInlineCreateRelationshipTypeControlPerson LegalEntityAssociationInlineCreateRelationshipType = "control_person"
+  )
 
-func (r LegalEntityAssociationInlineCreateRelationshipType) IsKnown() bool {
-	switch r {
-	case LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner, LegalEntityAssociationInlineCreateRelationshipTypeBeneficialOwner, LegalEntityAssociationInlineCreateRelationshipTypeControlPerson:
-		return true
-	}
-	return false
+func (r LegalEntityAssociationInlineCreateRelationshipType) IsKnown() (bool) {
+  switch r {
+  case LegalEntityAssociationInlineCreateRelationshipTypeAuthorizedSigner, LegalEntityAssociationInlineCreateRelationshipTypeBeneficialOwner, LegalEntityAssociationInlineCreateRelationshipTypeControlPerson:
+      return true
+  }
+  return false
 }
 
 type LegalEntityBankSettings struct {
-	ID string `json:"id" api:"required" format:"uuid"`
-	// The percentage of backup withholding to apply to the legal entity.
-	BackupWithholdingPercentage int64     `json:"backup_withholding_percentage" api:"required,nullable"`
-	CreatedAt                   time.Time `json:"created_at" api:"required" format:"date-time"`
-	DiscardedAt                 time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
-	// Whether backup withholding is enabled. See more here -
-	// https://www.irs.gov/businesses/small-businesses-self-employed/backup-withholding.
-	EnableBackupWithholding bool `json:"enable_backup_withholding" api:"required,nullable"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode" api:"required"`
-	Object   string `json:"object" api:"required"`
-	// Cross River Bank specific setting to opt out of privacy policy.
-	PrivacyOptOut bool `json:"privacy_opt_out" api:"required,nullable"`
-	// It covers, among other types of insider loans, extensions of credit by a member
-	// bank to an executive officer, director, or principal shareholder of the member
-	// bank; a bank holding company of which the member bank is a subsidiary; and any
-	// other subsidiary of that bank holding company.
-	RegulationO bool                        `json:"regulation_o" api:"required,nullable"`
-	UpdatedAt   time.Time                   `json:"updated_at" api:"required" format:"date-time"`
-	JSON        legalEntityBankSettingsJSON `json:"-"`
+ID string `json:"id" api:"required" format:"uuid"`
+// The percentage of backup withholding to apply to the legal entity.
+BackupWithholdingPercentage int64 `json:"backup_withholding_percentage" api:"required,nullable"`
+CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
+DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+// Whether backup withholding is enabled. See more here -
+// https://www.irs.gov/businesses/small-businesses-self-employed/backup-withholding.
+EnableBackupWithholding bool `json:"enable_backup_withholding" api:"required,nullable"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode bool `json:"live_mode" api:"required"`
+Object string `json:"object" api:"required"`
+// Cross River Bank specific setting to opt out of privacy policy.
+PrivacyOptOut bool `json:"privacy_opt_out" api:"required,nullable"`
+// It covers, among other types of insider loans, extensions of credit by a member
+// bank to an executive officer, director, or principal shareholder of the member
+// bank; a bank holding company of which the member bank is a subsidiary; and any
+// other subsidiary of that bank holding company.
+RegulationO bool `json:"regulation_o" api:"required,nullable"`
+UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
+JSON legalEntityBankSettingsJSON `json:"-"`
 }
 
 // legalEntityBankSettingsJSON contains the JSON metadata for the struct
 // [LegalEntityBankSettings]
 type legalEntityBankSettingsJSON struct {
-	ID                          apijson.Field
-	BackupWithholdingPercentage apijson.Field
-	CreatedAt                   apijson.Field
-	DiscardedAt                 apijson.Field
-	EnableBackupWithholding     apijson.Field
-	LiveMode                    apijson.Field
-	Object                      apijson.Field
-	PrivacyOptOut               apijson.Field
-	RegulationO                 apijson.Field
-	UpdatedAt                   apijson.Field
-	raw                         string
-	ExtraFields                 map[string]apijson.Field
+ID apijson.Field
+BackupWithholdingPercentage apijson.Field
+CreatedAt apijson.Field
+DiscardedAt apijson.Field
+EnableBackupWithholding apijson.Field
+LiveMode apijson.Field
+Object apijson.Field
+PrivacyOptOut apijson.Field
+RegulationO apijson.Field
+UpdatedAt apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *LegalEntityBankSettings) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r legalEntityBankSettingsJSON) RawJSON() string {
-	return r.raw
+func (r legalEntityBankSettingsJSON) RawJSON() (string) {
+  return r.raw
 }
 
 type LegalEntityBankSettingsParam struct {
-	ID param.Field[string] `json:"id" api:"required" format:"uuid"`
-	// The percentage of backup withholding to apply to the legal entity.
-	BackupWithholdingPercentage param.Field[int64]     `json:"backup_withholding_percentage" api:"required"`
-	CreatedAt                   param.Field[time.Time] `json:"created_at" api:"required" format:"date-time"`
-	DiscardedAt                 param.Field[time.Time] `json:"discarded_at" api:"required" format:"date-time"`
-	// Whether backup withholding is enabled. See more here -
-	// https://www.irs.gov/businesses/small-businesses-self-employed/backup-withholding.
-	EnableBackupWithholding param.Field[bool] `json:"enable_backup_withholding" api:"required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode param.Field[bool]   `json:"live_mode" api:"required"`
-	Object   param.Field[string] `json:"object" api:"required"`
-	// Cross River Bank specific setting to opt out of privacy policy.
-	PrivacyOptOut param.Field[bool] `json:"privacy_opt_out" api:"required"`
-	// It covers, among other types of insider loans, extensions of credit by a member
-	// bank to an executive officer, director, or principal shareholder of the member
-	// bank; a bank holding company of which the member bank is a subsidiary; and any
-	// other subsidiary of that bank holding company.
-	RegulationO param.Field[bool]      `json:"regulation_o" api:"required"`
-	UpdatedAt   param.Field[time.Time] `json:"updated_at" api:"required" format:"date-time"`
+ID param.Field[string] `json:"id" api:"required" format:"uuid"`
+// The percentage of backup withholding to apply to the legal entity.
+BackupWithholdingPercentage param.Field[int64] `json:"backup_withholding_percentage" api:"required"`
+CreatedAt param.Field[time.Time] `json:"created_at" api:"required" format:"date-time"`
+DiscardedAt param.Field[time.Time] `json:"discarded_at" api:"required" format:"date-time"`
+// Whether backup withholding is enabled. See more here -
+// https://www.irs.gov/businesses/small-businesses-self-employed/backup-withholding.
+EnableBackupWithholding param.Field[bool] `json:"enable_backup_withholding" api:"required"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode param.Field[bool] `json:"live_mode" api:"required"`
+Object param.Field[string] `json:"object" api:"required"`
+// Cross River Bank specific setting to opt out of privacy policy.
+PrivacyOptOut param.Field[bool] `json:"privacy_opt_out" api:"required"`
+// It covers, among other types of insider loans, extensions of credit by a member
+// bank to an executive officer, director, or principal shareholder of the member
+// bank; a bank holding company of which the member bank is a subsidiary; and any
+// other subsidiary of that bank holding company.
+RegulationO param.Field[bool] `json:"regulation_o" api:"required"`
+UpdatedAt param.Field[time.Time] `json:"updated_at" api:"required" format:"date-time"`
 }
 
 func (r LegalEntityBankSettingsParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type LegalEntityIndustryClassification struct {
-	ID string `json:"id" api:"required" format:"uuid"`
-	// The industry classification codes for the legal entity.
-	ClassificationCodes []string `json:"classification_codes" api:"required"`
-	// The classification system of the classification codes.
-	ClassificationType LegalEntityIndustryClassificationClassificationType `json:"classification_type" api:"required"`
-	CreatedAt          time.Time                                           `json:"created_at" api:"required" format:"date-time"`
-	DiscardedAt        time.Time                                           `json:"discarded_at" api:"required,nullable" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  bool                                  `json:"live_mode" api:"required"`
-	Object    string                                `json:"object" api:"required"`
-	UpdatedAt time.Time                             `json:"updated_at" api:"required" format:"date-time"`
-	JSON      legalEntityIndustryClassificationJSON `json:"-"`
+ID string `json:"id" api:"required" format:"uuid"`
+// The industry classification codes for the legal entity.
+ClassificationCodes []string `json:"classification_codes" api:"required"`
+// The classification system of the classification codes.
+ClassificationType LegalEntityIndustryClassificationClassificationType `json:"classification_type" api:"required"`
+CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
+DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode bool `json:"live_mode" api:"required"`
+Object string `json:"object" api:"required"`
+UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
+JSON legalEntityIndustryClassificationJSON `json:"-"`
 }
 
 // legalEntityIndustryClassificationJSON contains the JSON metadata for the struct
 // [LegalEntityIndustryClassification]
 type legalEntityIndustryClassificationJSON struct {
-	ID                  apijson.Field
-	ClassificationCodes apijson.Field
-	ClassificationType  apijson.Field
-	CreatedAt           apijson.Field
-	DiscardedAt         apijson.Field
-	LiveMode            apijson.Field
-	Object              apijson.Field
-	UpdatedAt           apijson.Field
-	raw                 string
-	ExtraFields         map[string]apijson.Field
+ID apijson.Field
+ClassificationCodes apijson.Field
+ClassificationType apijson.Field
+CreatedAt apijson.Field
+DiscardedAt apijson.Field
+LiveMode apijson.Field
+Object apijson.Field
+UpdatedAt apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *LegalEntityIndustryClassification) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r legalEntityIndustryClassificationJSON) RawJSON() string {
-	return r.raw
+func (r legalEntityIndustryClassificationJSON) RawJSON() (string) {
+  return r.raw
 }
 
 // The classification system of the classification codes.
 type LegalEntityIndustryClassificationClassificationType string
 
 const (
-	LegalEntityIndustryClassificationClassificationTypeAnzsic LegalEntityIndustryClassificationClassificationType = "anzsic"
-	LegalEntityIndustryClassificationClassificationTypeBics   LegalEntityIndustryClassificationClassificationType = "bics"
-	LegalEntityIndustryClassificationClassificationTypeGics   LegalEntityIndustryClassificationClassificationType = "gics"
-	LegalEntityIndustryClassificationClassificationTypeHsics  LegalEntityIndustryClassificationClassificationType = "hsics"
-	LegalEntityIndustryClassificationClassificationTypeIcb    LegalEntityIndustryClassificationClassificationType = "icb"
-	LegalEntityIndustryClassificationClassificationTypeIsic   LegalEntityIndustryClassificationClassificationType = "isic"
-	LegalEntityIndustryClassificationClassificationTypeMgecs  LegalEntityIndustryClassificationClassificationType = "mgecs"
-	LegalEntityIndustryClassificationClassificationTypeNace   LegalEntityIndustryClassificationClassificationType = "nace"
-	LegalEntityIndustryClassificationClassificationTypeNaics  LegalEntityIndustryClassificationClassificationType = "naics"
-	LegalEntityIndustryClassificationClassificationTypeRbics  LegalEntityIndustryClassificationClassificationType = "rbics"
-	LegalEntityIndustryClassificationClassificationTypeSic    LegalEntityIndustryClassificationClassificationType = "sic"
-	LegalEntityIndustryClassificationClassificationTypeSni    LegalEntityIndustryClassificationClassificationType = "sni"
-	LegalEntityIndustryClassificationClassificationTypeTrbc   LegalEntityIndustryClassificationClassificationType = "trbc"
-	LegalEntityIndustryClassificationClassificationTypeUksic  LegalEntityIndustryClassificationClassificationType = "uksic"
-	LegalEntityIndustryClassificationClassificationTypeUnspsc LegalEntityIndustryClassificationClassificationType = "unspsc"
-)
+    LegalEntityIndustryClassificationClassificationTypeAnzsic LegalEntityIndustryClassificationClassificationType = "anzsic"
+    LegalEntityIndustryClassificationClassificationTypeBics LegalEntityIndustryClassificationClassificationType = "bics"
+    LegalEntityIndustryClassificationClassificationTypeGics LegalEntityIndustryClassificationClassificationType = "gics"
+    LegalEntityIndustryClassificationClassificationTypeHsics LegalEntityIndustryClassificationClassificationType = "hsics"
+    LegalEntityIndustryClassificationClassificationTypeIcb LegalEntityIndustryClassificationClassificationType = "icb"
+    LegalEntityIndustryClassificationClassificationTypeIsic LegalEntityIndustryClassificationClassificationType = "isic"
+    LegalEntityIndustryClassificationClassificationTypeMgecs LegalEntityIndustryClassificationClassificationType = "mgecs"
+    LegalEntityIndustryClassificationClassificationTypeNace LegalEntityIndustryClassificationClassificationType = "nace"
+    LegalEntityIndustryClassificationClassificationTypeNaics LegalEntityIndustryClassificationClassificationType = "naics"
+    LegalEntityIndustryClassificationClassificationTypeRbics LegalEntityIndustryClassificationClassificationType = "rbics"
+    LegalEntityIndustryClassificationClassificationTypeSic LegalEntityIndustryClassificationClassificationType = "sic"
+    LegalEntityIndustryClassificationClassificationTypeSni LegalEntityIndustryClassificationClassificationType = "sni"
+    LegalEntityIndustryClassificationClassificationTypeTrbc LegalEntityIndustryClassificationClassificationType = "trbc"
+    LegalEntityIndustryClassificationClassificationTypeUksic LegalEntityIndustryClassificationClassificationType = "uksic"
+    LegalEntityIndustryClassificationClassificationTypeUnspsc LegalEntityIndustryClassificationClassificationType = "unspsc"
+  )
 
-func (r LegalEntityIndustryClassificationClassificationType) IsKnown() bool {
-	switch r {
-	case LegalEntityIndustryClassificationClassificationTypeAnzsic, LegalEntityIndustryClassificationClassificationTypeBics, LegalEntityIndustryClassificationClassificationTypeGics, LegalEntityIndustryClassificationClassificationTypeHsics, LegalEntityIndustryClassificationClassificationTypeIcb, LegalEntityIndustryClassificationClassificationTypeIsic, LegalEntityIndustryClassificationClassificationTypeMgecs, LegalEntityIndustryClassificationClassificationTypeNace, LegalEntityIndustryClassificationClassificationTypeNaics, LegalEntityIndustryClassificationClassificationTypeRbics, LegalEntityIndustryClassificationClassificationTypeSic, LegalEntityIndustryClassificationClassificationTypeSni, LegalEntityIndustryClassificationClassificationTypeTrbc, LegalEntityIndustryClassificationClassificationTypeUksic, LegalEntityIndustryClassificationClassificationTypeUnspsc:
-		return true
-	}
-	return false
+func (r LegalEntityIndustryClassificationClassificationType) IsKnown() (bool) {
+  switch r {
+  case LegalEntityIndustryClassificationClassificationTypeAnzsic, LegalEntityIndustryClassificationClassificationTypeBics, LegalEntityIndustryClassificationClassificationTypeGics, LegalEntityIndustryClassificationClassificationTypeHsics, LegalEntityIndustryClassificationClassificationTypeIcb, LegalEntityIndustryClassificationClassificationTypeIsic, LegalEntityIndustryClassificationClassificationTypeMgecs, LegalEntityIndustryClassificationClassificationTypeNace, LegalEntityIndustryClassificationClassificationTypeNaics, LegalEntityIndustryClassificationClassificationTypeRbics, LegalEntityIndustryClassificationClassificationTypeSic, LegalEntityIndustryClassificationClassificationTypeSni, LegalEntityIndustryClassificationClassificationTypeTrbc, LegalEntityIndustryClassificationClassificationTypeUksic, LegalEntityIndustryClassificationClassificationTypeUnspsc:
+      return true
+  }
+  return false
 }
 
 type LegalEntityIndustryClassificationParam struct {
-	ID param.Field[string] `json:"id" api:"required" format:"uuid"`
-	// The industry classification codes for the legal entity.
-	ClassificationCodes param.Field[[]string] `json:"classification_codes" api:"required"`
-	// The classification system of the classification codes.
-	ClassificationType param.Field[LegalEntityIndustryClassificationClassificationType] `json:"classification_type" api:"required"`
-	CreatedAt          param.Field[time.Time]                                           `json:"created_at" api:"required" format:"date-time"`
-	DiscardedAt        param.Field[time.Time]                                           `json:"discarded_at" api:"required" format:"date-time"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode  param.Field[bool]      `json:"live_mode" api:"required"`
-	Object    param.Field[string]    `json:"object" api:"required"`
-	UpdatedAt param.Field[time.Time] `json:"updated_at" api:"required" format:"date-time"`
+ID param.Field[string] `json:"id" api:"required" format:"uuid"`
+// The industry classification codes for the legal entity.
+ClassificationCodes param.Field[[]string] `json:"classification_codes" api:"required"`
+// The classification system of the classification codes.
+ClassificationType param.Field[LegalEntityIndustryClassificationClassificationType] `json:"classification_type" api:"required"`
+CreatedAt param.Field[time.Time] `json:"created_at" api:"required" format:"date-time"`
+DiscardedAt param.Field[time.Time] `json:"discarded_at" api:"required" format:"date-time"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode param.Field[bool] `json:"live_mode" api:"required"`
+Object param.Field[string] `json:"object" api:"required"`
+UpdatedAt param.Field[time.Time] `json:"updated_at" api:"required" format:"date-time"`
 }
 
 func (r LegalEntityIndustryClassificationParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type LegalEntityWealthEmploymentDetail struct {
-	ID string `json:"id" api:"required" format:"uuid"`
-	// The annual income of the individual in USD.
-	AnnualIncome int64     `json:"annual_income" api:"required,nullable"`
-	CreatedAt    time.Time `json:"created_at" api:"required" format:"date-time"`
-	DiscardedAt  time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
-	// The country in which the employer is located.
-	EmployerCountry string `json:"employer_country" api:"required,nullable"`
-	// The name of the employer.
-	EmployerName string `json:"employer_name" api:"required,nullable"`
-	// The state in which the employer is located.
-	EmployerState string `json:"employer_state" api:"required,nullable"`
-	// The employment status of the individual.
-	EmploymentStatus LegalEntityWealthEmploymentDetailEmploymentStatus `json:"employment_status" api:"required,nullable"`
-	// The country in which the individual's income is earned.
-	IncomeCountry string `json:"income_country" api:"required,nullable"`
-	// The source of the individual's income.
-	IncomeSource LegalEntityWealthEmploymentDetailIncomeSource `json:"income_source" api:"required,nullable"`
-	// The state in which the individual's income is earned.
-	IncomeState string `json:"income_state" api:"required,nullable"`
-	// The industry of the individual.
-	Industry LegalEntityWealthEmploymentDetailIndustry `json:"industry" api:"required,nullable"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode" api:"required"`
-	Object   string `json:"object" api:"required"`
-	// The occupation of the individual.
-	Occupation LegalEntityWealthEmploymentDetailOccupation `json:"occupation" api:"required,nullable"`
-	// The source of the individual's funds.
-	SourceOfFunds LegalEntityWealthEmploymentDetailSourceOfFunds `json:"source_of_funds" api:"required,nullable"`
-	UpdatedAt     time.Time                                      `json:"updated_at" api:"required" format:"date-time"`
-	// The source of the individual's wealth.
-	WealthSource LegalEntityWealthEmploymentDetailWealthSource `json:"wealth_source" api:"required,nullable"`
-	JSON         legalEntityWealthEmploymentDetailJSON         `json:"-"`
+ID string `json:"id" api:"required" format:"uuid"`
+// The annual income of the individual in USD.
+AnnualIncome int64 `json:"annual_income" api:"required,nullable"`
+CreatedAt time.Time `json:"created_at" api:"required" format:"date-time"`
+DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+// The country in which the employer is located.
+EmployerCountry string `json:"employer_country" api:"required,nullable"`
+// The name of the employer.
+EmployerName string `json:"employer_name" api:"required,nullable"`
+// The state in which the employer is located.
+EmployerState string `json:"employer_state" api:"required,nullable"`
+// The employment status of the individual.
+EmploymentStatus LegalEntityWealthEmploymentDetailEmploymentStatus `json:"employment_status" api:"required,nullable"`
+// The country in which the individual's income is earned.
+IncomeCountry string `json:"income_country" api:"required,nullable"`
+// The source of the individual's income.
+IncomeSource LegalEntityWealthEmploymentDetailIncomeSource `json:"income_source" api:"required,nullable"`
+// The state in which the individual's income is earned.
+IncomeState string `json:"income_state" api:"required,nullable"`
+// The industry of the individual.
+Industry LegalEntityWealthEmploymentDetailIndustry `json:"industry" api:"required,nullable"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode bool `json:"live_mode" api:"required"`
+Object string `json:"object" api:"required"`
+// The occupation of the individual.
+Occupation LegalEntityWealthEmploymentDetailOccupation `json:"occupation" api:"required,nullable"`
+// The source of the individual's funds.
+SourceOfFunds LegalEntityWealthEmploymentDetailSourceOfFunds `json:"source_of_funds" api:"required,nullable"`
+UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
+// The source of the individual's wealth.
+WealthSource LegalEntityWealthEmploymentDetailWealthSource `json:"wealth_source" api:"required,nullable"`
+JSON legalEntityWealthEmploymentDetailJSON `json:"-"`
 }
 
 // legalEntityWealthEmploymentDetailJSON contains the JSON metadata for the struct
 // [LegalEntityWealthEmploymentDetail]
 type legalEntityWealthEmploymentDetailJSON struct {
-	ID               apijson.Field
-	AnnualIncome     apijson.Field
-	CreatedAt        apijson.Field
-	DiscardedAt      apijson.Field
-	EmployerCountry  apijson.Field
-	EmployerName     apijson.Field
-	EmployerState    apijson.Field
-	EmploymentStatus apijson.Field
-	IncomeCountry    apijson.Field
-	IncomeSource     apijson.Field
-	IncomeState      apijson.Field
-	Industry         apijson.Field
-	LiveMode         apijson.Field
-	Object           apijson.Field
-	Occupation       apijson.Field
-	SourceOfFunds    apijson.Field
-	UpdatedAt        apijson.Field
-	WealthSource     apijson.Field
-	raw              string
-	ExtraFields      map[string]apijson.Field
+ID apijson.Field
+AnnualIncome apijson.Field
+CreatedAt apijson.Field
+DiscardedAt apijson.Field
+EmployerCountry apijson.Field
+EmployerName apijson.Field
+EmployerState apijson.Field
+EmploymentStatus apijson.Field
+IncomeCountry apijson.Field
+IncomeSource apijson.Field
+IncomeState apijson.Field
+Industry apijson.Field
+LiveMode apijson.Field
+Object apijson.Field
+Occupation apijson.Field
+SourceOfFunds apijson.Field
+UpdatedAt apijson.Field
+WealthSource apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *LegalEntityWealthEmploymentDetail) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r legalEntityWealthEmploymentDetailJSON) RawJSON() string {
-	return r.raw
+func (r legalEntityWealthEmploymentDetailJSON) RawJSON() (string) {
+  return r.raw
 }
 
 // The employment status of the individual.
 type LegalEntityWealthEmploymentDetailEmploymentStatus string
 
 const (
-	LegalEntityWealthEmploymentDetailEmploymentStatusEmployed     LegalEntityWealthEmploymentDetailEmploymentStatus = "employed"
-	LegalEntityWealthEmploymentDetailEmploymentStatusRetired      LegalEntityWealthEmploymentDetailEmploymentStatus = "retired"
-	LegalEntityWealthEmploymentDetailEmploymentStatusSelfEmployed LegalEntityWealthEmploymentDetailEmploymentStatus = "self_employed"
-	LegalEntityWealthEmploymentDetailEmploymentStatusStudent      LegalEntityWealthEmploymentDetailEmploymentStatus = "student"
-	LegalEntityWealthEmploymentDetailEmploymentStatusUnemployed   LegalEntityWealthEmploymentDetailEmploymentStatus = "unemployed"
-)
+    LegalEntityWealthEmploymentDetailEmploymentStatusEmployed LegalEntityWealthEmploymentDetailEmploymentStatus = "employed"
+    LegalEntityWealthEmploymentDetailEmploymentStatusRetired LegalEntityWealthEmploymentDetailEmploymentStatus = "retired"
+    LegalEntityWealthEmploymentDetailEmploymentStatusSelfEmployed LegalEntityWealthEmploymentDetailEmploymentStatus = "self_employed"
+    LegalEntityWealthEmploymentDetailEmploymentStatusStudent LegalEntityWealthEmploymentDetailEmploymentStatus = "student"
+    LegalEntityWealthEmploymentDetailEmploymentStatusUnemployed LegalEntityWealthEmploymentDetailEmploymentStatus = "unemployed"
+  )
 
-func (r LegalEntityWealthEmploymentDetailEmploymentStatus) IsKnown() bool {
-	switch r {
-	case LegalEntityWealthEmploymentDetailEmploymentStatusEmployed, LegalEntityWealthEmploymentDetailEmploymentStatusRetired, LegalEntityWealthEmploymentDetailEmploymentStatusSelfEmployed, LegalEntityWealthEmploymentDetailEmploymentStatusStudent, LegalEntityWealthEmploymentDetailEmploymentStatusUnemployed:
-		return true
-	}
-	return false
+func (r LegalEntityWealthEmploymentDetailEmploymentStatus) IsKnown() (bool) {
+  switch r {
+  case LegalEntityWealthEmploymentDetailEmploymentStatusEmployed, LegalEntityWealthEmploymentDetailEmploymentStatusRetired, LegalEntityWealthEmploymentDetailEmploymentStatusSelfEmployed, LegalEntityWealthEmploymentDetailEmploymentStatusStudent, LegalEntityWealthEmploymentDetailEmploymentStatusUnemployed:
+      return true
+  }
+  return false
 }
 
 // The source of the individual's income.
 type LegalEntityWealthEmploymentDetailIncomeSource string
 
 const (
-	LegalEntityWealthEmploymentDetailIncomeSourceFamilySupport      LegalEntityWealthEmploymentDetailIncomeSource = "family_support"
-	LegalEntityWealthEmploymentDetailIncomeSourceGovernmentBenefits LegalEntityWealthEmploymentDetailIncomeSource = "government_benefits"
-	LegalEntityWealthEmploymentDetailIncomeSourceInheritance        LegalEntityWealthEmploymentDetailIncomeSource = "inheritance"
-	LegalEntityWealthEmploymentDetailIncomeSourceInvestments        LegalEntityWealthEmploymentDetailIncomeSource = "investments"
-	LegalEntityWealthEmploymentDetailIncomeSourceRentalIncome       LegalEntityWealthEmploymentDetailIncomeSource = "rental_income"
-	LegalEntityWealthEmploymentDetailIncomeSourceRetirement         LegalEntityWealthEmploymentDetailIncomeSource = "retirement"
-	LegalEntityWealthEmploymentDetailIncomeSourceSalary             LegalEntityWealthEmploymentDetailIncomeSource = "salary"
-	LegalEntityWealthEmploymentDetailIncomeSourceSelfEmployed       LegalEntityWealthEmploymentDetailIncomeSource = "self_employed"
-)
+    LegalEntityWealthEmploymentDetailIncomeSourceFamilySupport LegalEntityWealthEmploymentDetailIncomeSource = "family_support"
+    LegalEntityWealthEmploymentDetailIncomeSourceGovernmentBenefits LegalEntityWealthEmploymentDetailIncomeSource = "government_benefits"
+    LegalEntityWealthEmploymentDetailIncomeSourceInheritance LegalEntityWealthEmploymentDetailIncomeSource = "inheritance"
+    LegalEntityWealthEmploymentDetailIncomeSourceInvestments LegalEntityWealthEmploymentDetailIncomeSource = "investments"
+    LegalEntityWealthEmploymentDetailIncomeSourceRentalIncome LegalEntityWealthEmploymentDetailIncomeSource = "rental_income"
+    LegalEntityWealthEmploymentDetailIncomeSourceRetirement LegalEntityWealthEmploymentDetailIncomeSource = "retirement"
+    LegalEntityWealthEmploymentDetailIncomeSourceSalary LegalEntityWealthEmploymentDetailIncomeSource = "salary"
+    LegalEntityWealthEmploymentDetailIncomeSourceSelfEmployed LegalEntityWealthEmploymentDetailIncomeSource = "self_employed"
+  )
 
-func (r LegalEntityWealthEmploymentDetailIncomeSource) IsKnown() bool {
-	switch r {
-	case LegalEntityWealthEmploymentDetailIncomeSourceFamilySupport, LegalEntityWealthEmploymentDetailIncomeSourceGovernmentBenefits, LegalEntityWealthEmploymentDetailIncomeSourceInheritance, LegalEntityWealthEmploymentDetailIncomeSourceInvestments, LegalEntityWealthEmploymentDetailIncomeSourceRentalIncome, LegalEntityWealthEmploymentDetailIncomeSourceRetirement, LegalEntityWealthEmploymentDetailIncomeSourceSalary, LegalEntityWealthEmploymentDetailIncomeSourceSelfEmployed:
-		return true
-	}
-	return false
+func (r LegalEntityWealthEmploymentDetailIncomeSource) IsKnown() (bool) {
+  switch r {
+  case LegalEntityWealthEmploymentDetailIncomeSourceFamilySupport, LegalEntityWealthEmploymentDetailIncomeSourceGovernmentBenefits, LegalEntityWealthEmploymentDetailIncomeSourceInheritance, LegalEntityWealthEmploymentDetailIncomeSourceInvestments, LegalEntityWealthEmploymentDetailIncomeSourceRentalIncome, LegalEntityWealthEmploymentDetailIncomeSourceRetirement, LegalEntityWealthEmploymentDetailIncomeSourceSalary, LegalEntityWealthEmploymentDetailIncomeSourceSelfEmployed:
+      return true
+  }
+  return false
 }
 
 // The industry of the individual.
 type LegalEntityWealthEmploymentDetailIndustry string
 
 const (
-	LegalEntityWealthEmploymentDetailIndustryAccounting            LegalEntityWealthEmploymentDetailIndustry = "accounting"
-	LegalEntityWealthEmploymentDetailIndustryAgriculture           LegalEntityWealthEmploymentDetailIndustry = "agriculture"
-	LegalEntityWealthEmploymentDetailIndustryAutomotive            LegalEntityWealthEmploymentDetailIndustry = "automotive"
-	LegalEntityWealthEmploymentDetailIndustryChemicalManufacturing LegalEntityWealthEmploymentDetailIndustry = "chemical_manufacturing"
-	LegalEntityWealthEmploymentDetailIndustryConstruction          LegalEntityWealthEmploymentDetailIndustry = "construction"
-	LegalEntityWealthEmploymentDetailIndustryEducationalMedical    LegalEntityWealthEmploymentDetailIndustry = "educational_medical"
-	LegalEntityWealthEmploymentDetailIndustryFoodService           LegalEntityWealthEmploymentDetailIndustry = "food_service"
-	LegalEntityWealthEmploymentDetailIndustryFinance               LegalEntityWealthEmploymentDetailIndustry = "finance"
-	LegalEntityWealthEmploymentDetailIndustryGasoline              LegalEntityWealthEmploymentDetailIndustry = "gasoline"
-	LegalEntityWealthEmploymentDetailIndustryHealthStores          LegalEntityWealthEmploymentDetailIndustry = "health_stores"
-	LegalEntityWealthEmploymentDetailIndustryLaundry               LegalEntityWealthEmploymentDetailIndustry = "laundry"
-	LegalEntityWealthEmploymentDetailIndustryMaintenance           LegalEntityWealthEmploymentDetailIndustry = "maintenance"
-	LegalEntityWealthEmploymentDetailIndustryManufacturing         LegalEntityWealthEmploymentDetailIndustry = "manufacturing"
-	LegalEntityWealthEmploymentDetailIndustryMerchantWholesale     LegalEntityWealthEmploymentDetailIndustry = "merchant_wholesale"
-	LegalEntityWealthEmploymentDetailIndustryMining                LegalEntityWealthEmploymentDetailIndustry = "mining"
-	LegalEntityWealthEmploymentDetailIndustryPerformingArts        LegalEntityWealthEmploymentDetailIndustry = "performing_arts"
-	LegalEntityWealthEmploymentDetailIndustryProfessionalNonLegal  LegalEntityWealthEmploymentDetailIndustry = "professional_non_legal"
-	LegalEntityWealthEmploymentDetailIndustryPublicAdministration  LegalEntityWealthEmploymentDetailIndustry = "public_administration"
-	LegalEntityWealthEmploymentDetailIndustryPublishing            LegalEntityWealthEmploymentDetailIndustry = "publishing"
-	LegalEntityWealthEmploymentDetailIndustryRealEstate            LegalEntityWealthEmploymentDetailIndustry = "real_estate"
-	LegalEntityWealthEmploymentDetailIndustryRecreationGambling    LegalEntityWealthEmploymentDetailIndustry = "recreation_gambling"
-	LegalEntityWealthEmploymentDetailIndustryReligiousCharity      LegalEntityWealthEmploymentDetailIndustry = "religious_charity"
-	LegalEntityWealthEmploymentDetailIndustryRentalServices        LegalEntityWealthEmploymentDetailIndustry = "rental_services"
-	LegalEntityWealthEmploymentDetailIndustryRetailClothing        LegalEntityWealthEmploymentDetailIndustry = "retail_clothing"
-	LegalEntityWealthEmploymentDetailIndustryRetailElectronics     LegalEntityWealthEmploymentDetailIndustry = "retail_electronics"
-	LegalEntityWealthEmploymentDetailIndustryRetailFood            LegalEntityWealthEmploymentDetailIndustry = "retail_food"
-	LegalEntityWealthEmploymentDetailIndustryRetailFurnishing      LegalEntityWealthEmploymentDetailIndustry = "retail_furnishing"
-	LegalEntityWealthEmploymentDetailIndustryRetailHome            LegalEntityWealthEmploymentDetailIndustry = "retail_home"
-	LegalEntityWealthEmploymentDetailIndustryRetailNonStore        LegalEntityWealthEmploymentDetailIndustry = "retail_non_store"
-	LegalEntityWealthEmploymentDetailIndustryRetailSporting        LegalEntityWealthEmploymentDetailIndustry = "retail_sporting"
-	LegalEntityWealthEmploymentDetailIndustryTransportation        LegalEntityWealthEmploymentDetailIndustry = "transportation"
-	LegalEntityWealthEmploymentDetailIndustryTravel                LegalEntityWealthEmploymentDetailIndustry = "travel"
-	LegalEntityWealthEmploymentDetailIndustryUtilities             LegalEntityWealthEmploymentDetailIndustry = "utilities"
-)
+    LegalEntityWealthEmploymentDetailIndustryAccounting LegalEntityWealthEmploymentDetailIndustry = "accounting"
+    LegalEntityWealthEmploymentDetailIndustryAgriculture LegalEntityWealthEmploymentDetailIndustry = "agriculture"
+    LegalEntityWealthEmploymentDetailIndustryAutomotive LegalEntityWealthEmploymentDetailIndustry = "automotive"
+    LegalEntityWealthEmploymentDetailIndustryChemicalManufacturing LegalEntityWealthEmploymentDetailIndustry = "chemical_manufacturing"
+    LegalEntityWealthEmploymentDetailIndustryConstruction LegalEntityWealthEmploymentDetailIndustry = "construction"
+    LegalEntityWealthEmploymentDetailIndustryEducationalMedical LegalEntityWealthEmploymentDetailIndustry = "educational_medical"
+    LegalEntityWealthEmploymentDetailIndustryFoodService LegalEntityWealthEmploymentDetailIndustry = "food_service"
+    LegalEntityWealthEmploymentDetailIndustryFinance LegalEntityWealthEmploymentDetailIndustry = "finance"
+    LegalEntityWealthEmploymentDetailIndustryGasoline LegalEntityWealthEmploymentDetailIndustry = "gasoline"
+    LegalEntityWealthEmploymentDetailIndustryHealthStores LegalEntityWealthEmploymentDetailIndustry = "health_stores"
+    LegalEntityWealthEmploymentDetailIndustryLaundry LegalEntityWealthEmploymentDetailIndustry = "laundry"
+    LegalEntityWealthEmploymentDetailIndustryMaintenance LegalEntityWealthEmploymentDetailIndustry = "maintenance"
+    LegalEntityWealthEmploymentDetailIndustryManufacturing LegalEntityWealthEmploymentDetailIndustry = "manufacturing"
+    LegalEntityWealthEmploymentDetailIndustryMerchantWholesale LegalEntityWealthEmploymentDetailIndustry = "merchant_wholesale"
+    LegalEntityWealthEmploymentDetailIndustryMining LegalEntityWealthEmploymentDetailIndustry = "mining"
+    LegalEntityWealthEmploymentDetailIndustryPerformingArts LegalEntityWealthEmploymentDetailIndustry = "performing_arts"
+    LegalEntityWealthEmploymentDetailIndustryProfessionalNonLegal LegalEntityWealthEmploymentDetailIndustry = "professional_non_legal"
+    LegalEntityWealthEmploymentDetailIndustryPublicAdministration LegalEntityWealthEmploymentDetailIndustry = "public_administration"
+    LegalEntityWealthEmploymentDetailIndustryPublishing LegalEntityWealthEmploymentDetailIndustry = "publishing"
+    LegalEntityWealthEmploymentDetailIndustryRealEstate LegalEntityWealthEmploymentDetailIndustry = "real_estate"
+    LegalEntityWealthEmploymentDetailIndustryRecreationGambling LegalEntityWealthEmploymentDetailIndustry = "recreation_gambling"
+    LegalEntityWealthEmploymentDetailIndustryReligiousCharity LegalEntityWealthEmploymentDetailIndustry = "religious_charity"
+    LegalEntityWealthEmploymentDetailIndustryRentalServices LegalEntityWealthEmploymentDetailIndustry = "rental_services"
+    LegalEntityWealthEmploymentDetailIndustryRetailClothing LegalEntityWealthEmploymentDetailIndustry = "retail_clothing"
+    LegalEntityWealthEmploymentDetailIndustryRetailElectronics LegalEntityWealthEmploymentDetailIndustry = "retail_electronics"
+    LegalEntityWealthEmploymentDetailIndustryRetailFood LegalEntityWealthEmploymentDetailIndustry = "retail_food"
+    LegalEntityWealthEmploymentDetailIndustryRetailFurnishing LegalEntityWealthEmploymentDetailIndustry = "retail_furnishing"
+    LegalEntityWealthEmploymentDetailIndustryRetailHome LegalEntityWealthEmploymentDetailIndustry = "retail_home"
+    LegalEntityWealthEmploymentDetailIndustryRetailNonStore LegalEntityWealthEmploymentDetailIndustry = "retail_non_store"
+    LegalEntityWealthEmploymentDetailIndustryRetailSporting LegalEntityWealthEmploymentDetailIndustry = "retail_sporting"
+    LegalEntityWealthEmploymentDetailIndustryTransportation LegalEntityWealthEmploymentDetailIndustry = "transportation"
+    LegalEntityWealthEmploymentDetailIndustryTravel LegalEntityWealthEmploymentDetailIndustry = "travel"
+    LegalEntityWealthEmploymentDetailIndustryUtilities LegalEntityWealthEmploymentDetailIndustry = "utilities"
+  )
 
-func (r LegalEntityWealthEmploymentDetailIndustry) IsKnown() bool {
-	switch r {
-	case LegalEntityWealthEmploymentDetailIndustryAccounting, LegalEntityWealthEmploymentDetailIndustryAgriculture, LegalEntityWealthEmploymentDetailIndustryAutomotive, LegalEntityWealthEmploymentDetailIndustryChemicalManufacturing, LegalEntityWealthEmploymentDetailIndustryConstruction, LegalEntityWealthEmploymentDetailIndustryEducationalMedical, LegalEntityWealthEmploymentDetailIndustryFoodService, LegalEntityWealthEmploymentDetailIndustryFinance, LegalEntityWealthEmploymentDetailIndustryGasoline, LegalEntityWealthEmploymentDetailIndustryHealthStores, LegalEntityWealthEmploymentDetailIndustryLaundry, LegalEntityWealthEmploymentDetailIndustryMaintenance, LegalEntityWealthEmploymentDetailIndustryManufacturing, LegalEntityWealthEmploymentDetailIndustryMerchantWholesale, LegalEntityWealthEmploymentDetailIndustryMining, LegalEntityWealthEmploymentDetailIndustryPerformingArts, LegalEntityWealthEmploymentDetailIndustryProfessionalNonLegal, LegalEntityWealthEmploymentDetailIndustryPublicAdministration, LegalEntityWealthEmploymentDetailIndustryPublishing, LegalEntityWealthEmploymentDetailIndustryRealEstate, LegalEntityWealthEmploymentDetailIndustryRecreationGambling, LegalEntityWealthEmploymentDetailIndustryReligiousCharity, LegalEntityWealthEmploymentDetailIndustryRentalServices, LegalEntityWealthEmploymentDetailIndustryRetailClothing, LegalEntityWealthEmploymentDetailIndustryRetailElectronics, LegalEntityWealthEmploymentDetailIndustryRetailFood, LegalEntityWealthEmploymentDetailIndustryRetailFurnishing, LegalEntityWealthEmploymentDetailIndustryRetailHome, LegalEntityWealthEmploymentDetailIndustryRetailNonStore, LegalEntityWealthEmploymentDetailIndustryRetailSporting, LegalEntityWealthEmploymentDetailIndustryTransportation, LegalEntityWealthEmploymentDetailIndustryTravel, LegalEntityWealthEmploymentDetailIndustryUtilities:
-		return true
-	}
-	return false
+func (r LegalEntityWealthEmploymentDetailIndustry) IsKnown() (bool) {
+  switch r {
+  case LegalEntityWealthEmploymentDetailIndustryAccounting, LegalEntityWealthEmploymentDetailIndustryAgriculture, LegalEntityWealthEmploymentDetailIndustryAutomotive, LegalEntityWealthEmploymentDetailIndustryChemicalManufacturing, LegalEntityWealthEmploymentDetailIndustryConstruction, LegalEntityWealthEmploymentDetailIndustryEducationalMedical, LegalEntityWealthEmploymentDetailIndustryFoodService, LegalEntityWealthEmploymentDetailIndustryFinance, LegalEntityWealthEmploymentDetailIndustryGasoline, LegalEntityWealthEmploymentDetailIndustryHealthStores, LegalEntityWealthEmploymentDetailIndustryLaundry, LegalEntityWealthEmploymentDetailIndustryMaintenance, LegalEntityWealthEmploymentDetailIndustryManufacturing, LegalEntityWealthEmploymentDetailIndustryMerchantWholesale, LegalEntityWealthEmploymentDetailIndustryMining, LegalEntityWealthEmploymentDetailIndustryPerformingArts, LegalEntityWealthEmploymentDetailIndustryProfessionalNonLegal, LegalEntityWealthEmploymentDetailIndustryPublicAdministration, LegalEntityWealthEmploymentDetailIndustryPublishing, LegalEntityWealthEmploymentDetailIndustryRealEstate, LegalEntityWealthEmploymentDetailIndustryRecreationGambling, LegalEntityWealthEmploymentDetailIndustryReligiousCharity, LegalEntityWealthEmploymentDetailIndustryRentalServices, LegalEntityWealthEmploymentDetailIndustryRetailClothing, LegalEntityWealthEmploymentDetailIndustryRetailElectronics, LegalEntityWealthEmploymentDetailIndustryRetailFood, LegalEntityWealthEmploymentDetailIndustryRetailFurnishing, LegalEntityWealthEmploymentDetailIndustryRetailHome, LegalEntityWealthEmploymentDetailIndustryRetailNonStore, LegalEntityWealthEmploymentDetailIndustryRetailSporting, LegalEntityWealthEmploymentDetailIndustryTransportation, LegalEntityWealthEmploymentDetailIndustryTravel, LegalEntityWealthEmploymentDetailIndustryUtilities:
+      return true
+  }
+  return false
 }
 
 // The occupation of the individual.
 type LegalEntityWealthEmploymentDetailOccupation string
 
 const (
-	LegalEntityWealthEmploymentDetailOccupationConsulting         LegalEntityWealthEmploymentDetailOccupation = "consulting"
-	LegalEntityWealthEmploymentDetailOccupationExecutive          LegalEntityWealthEmploymentDetailOccupation = "executive"
-	LegalEntityWealthEmploymentDetailOccupationFinanceAccounting  LegalEntityWealthEmploymentDetailOccupation = "finance_accounting"
-	LegalEntityWealthEmploymentDetailOccupationFoodServices       LegalEntityWealthEmploymentDetailOccupation = "food_services"
-	LegalEntityWealthEmploymentDetailOccupationGovernment         LegalEntityWealthEmploymentDetailOccupation = "government"
-	LegalEntityWealthEmploymentDetailOccupationHealthcare         LegalEntityWealthEmploymentDetailOccupation = "healthcare"
-	LegalEntityWealthEmploymentDetailOccupationLegalServices      LegalEntityWealthEmploymentDetailOccupation = "legal_services"
-	LegalEntityWealthEmploymentDetailOccupationManufacturing      LegalEntityWealthEmploymentDetailOccupation = "manufacturing"
-	LegalEntityWealthEmploymentDetailOccupationOther              LegalEntityWealthEmploymentDetailOccupation = "other"
-	LegalEntityWealthEmploymentDetailOccupationSales              LegalEntityWealthEmploymentDetailOccupation = "sales"
-	LegalEntityWealthEmploymentDetailOccupationScienceEngineering LegalEntityWealthEmploymentDetailOccupation = "science_engineering"
-	LegalEntityWealthEmploymentDetailOccupationTechnology         LegalEntityWealthEmploymentDetailOccupation = "technology"
-)
+    LegalEntityWealthEmploymentDetailOccupationConsulting LegalEntityWealthEmploymentDetailOccupation = "consulting"
+    LegalEntityWealthEmploymentDetailOccupationExecutive LegalEntityWealthEmploymentDetailOccupation = "executive"
+    LegalEntityWealthEmploymentDetailOccupationFinanceAccounting LegalEntityWealthEmploymentDetailOccupation = "finance_accounting"
+    LegalEntityWealthEmploymentDetailOccupationFoodServices LegalEntityWealthEmploymentDetailOccupation = "food_services"
+    LegalEntityWealthEmploymentDetailOccupationGovernment LegalEntityWealthEmploymentDetailOccupation = "government"
+    LegalEntityWealthEmploymentDetailOccupationHealthcare LegalEntityWealthEmploymentDetailOccupation = "healthcare"
+    LegalEntityWealthEmploymentDetailOccupationLegalServices LegalEntityWealthEmploymentDetailOccupation = "legal_services"
+    LegalEntityWealthEmploymentDetailOccupationManufacturing LegalEntityWealthEmploymentDetailOccupation = "manufacturing"
+    LegalEntityWealthEmploymentDetailOccupationOther LegalEntityWealthEmploymentDetailOccupation = "other"
+    LegalEntityWealthEmploymentDetailOccupationSales LegalEntityWealthEmploymentDetailOccupation = "sales"
+    LegalEntityWealthEmploymentDetailOccupationScienceEngineering LegalEntityWealthEmploymentDetailOccupation = "science_engineering"
+    LegalEntityWealthEmploymentDetailOccupationTechnology LegalEntityWealthEmploymentDetailOccupation = "technology"
+  )
 
-func (r LegalEntityWealthEmploymentDetailOccupation) IsKnown() bool {
-	switch r {
-	case LegalEntityWealthEmploymentDetailOccupationConsulting, LegalEntityWealthEmploymentDetailOccupationExecutive, LegalEntityWealthEmploymentDetailOccupationFinanceAccounting, LegalEntityWealthEmploymentDetailOccupationFoodServices, LegalEntityWealthEmploymentDetailOccupationGovernment, LegalEntityWealthEmploymentDetailOccupationHealthcare, LegalEntityWealthEmploymentDetailOccupationLegalServices, LegalEntityWealthEmploymentDetailOccupationManufacturing, LegalEntityWealthEmploymentDetailOccupationOther, LegalEntityWealthEmploymentDetailOccupationSales, LegalEntityWealthEmploymentDetailOccupationScienceEngineering, LegalEntityWealthEmploymentDetailOccupationTechnology:
-		return true
-	}
-	return false
+func (r LegalEntityWealthEmploymentDetailOccupation) IsKnown() (bool) {
+  switch r {
+  case LegalEntityWealthEmploymentDetailOccupationConsulting, LegalEntityWealthEmploymentDetailOccupationExecutive, LegalEntityWealthEmploymentDetailOccupationFinanceAccounting, LegalEntityWealthEmploymentDetailOccupationFoodServices, LegalEntityWealthEmploymentDetailOccupationGovernment, LegalEntityWealthEmploymentDetailOccupationHealthcare, LegalEntityWealthEmploymentDetailOccupationLegalServices, LegalEntityWealthEmploymentDetailOccupationManufacturing, LegalEntityWealthEmploymentDetailOccupationOther, LegalEntityWealthEmploymentDetailOccupationSales, LegalEntityWealthEmploymentDetailOccupationScienceEngineering, LegalEntityWealthEmploymentDetailOccupationTechnology:
+      return true
+  }
+  return false
 }
 
 // The source of the individual's funds.
 type LegalEntityWealthEmploymentDetailSourceOfFunds string
 
 const (
-	LegalEntityWealthEmploymentDetailSourceOfFundsAlimony                   LegalEntityWealthEmploymentDetailSourceOfFunds = "alimony"
-	LegalEntityWealthEmploymentDetailSourceOfFundsAnnuity                   LegalEntityWealthEmploymentDetailSourceOfFunds = "annuity"
-	LegalEntityWealthEmploymentDetailSourceOfFundsBusinessOwner             LegalEntityWealthEmploymentDetailSourceOfFunds = "business_owner"
-	LegalEntityWealthEmploymentDetailSourceOfFundsBusinessRevenue           LegalEntityWealthEmploymentDetailSourceOfFunds = "business_revenue"
-	LegalEntityWealthEmploymentDetailSourceOfFundsDebtFinancing             LegalEntityWealthEmploymentDetailSourceOfFunds = "debt_financing"
-	LegalEntityWealthEmploymentDetailSourceOfFundsGeneralEmployee           LegalEntityWealthEmploymentDetailSourceOfFunds = "general_employee"
-	LegalEntityWealthEmploymentDetailSourceOfFundsGovernmentBenefits        LegalEntityWealthEmploymentDetailSourceOfFunds = "government_benefits"
-	LegalEntityWealthEmploymentDetailSourceOfFundsHomemaker                 LegalEntityWealthEmploymentDetailSourceOfFunds = "homemaker"
-	LegalEntityWealthEmploymentDetailSourceOfFundsInheritanceGift           LegalEntityWealthEmploymentDetailSourceOfFunds = "inheritance_gift"
-	LegalEntityWealthEmploymentDetailSourceOfFundsIntercompanyLoan          LegalEntityWealthEmploymentDetailSourceOfFunds = "intercompany_loan"
-	LegalEntityWealthEmploymentDetailSourceOfFundsInvestment                LegalEntityWealthEmploymentDetailSourceOfFunds = "investment"
-	LegalEntityWealthEmploymentDetailSourceOfFundsInvestorFunding           LegalEntityWealthEmploymentDetailSourceOfFunds = "investor_funding"
-	LegalEntityWealthEmploymentDetailSourceOfFundsLegalSettlement           LegalEntityWealthEmploymentDetailSourceOfFunds = "legal_settlement"
-	LegalEntityWealthEmploymentDetailSourceOfFundsLottery                   LegalEntityWealthEmploymentDetailSourceOfFunds = "lottery"
-	LegalEntityWealthEmploymentDetailSourceOfFundsRealEstate                LegalEntityWealthEmploymentDetailSourceOfFunds = "real_estate"
-	LegalEntityWealthEmploymentDetailSourceOfFundsRetainedEarningsOrSavings LegalEntityWealthEmploymentDetailSourceOfFunds = "retained_earnings_or_savings"
-	LegalEntityWealthEmploymentDetailSourceOfFundsRetired                   LegalEntityWealthEmploymentDetailSourceOfFunds = "retired"
-	LegalEntityWealthEmploymentDetailSourceOfFundsRetirement                LegalEntityWealthEmploymentDetailSourceOfFunds = "retirement"
-	LegalEntityWealthEmploymentDetailSourceOfFundsSalary                    LegalEntityWealthEmploymentDetailSourceOfFunds = "salary"
-	LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfBusinessAssets      LegalEntityWealthEmploymentDetailSourceOfFunds = "sale_of_business_assets"
-	LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfRealEstate          LegalEntityWealthEmploymentDetailSourceOfFunds = "sale_of_real_estate"
-	LegalEntityWealthEmploymentDetailSourceOfFundsSelfEmployed              LegalEntityWealthEmploymentDetailSourceOfFunds = "self_employed"
-	LegalEntityWealthEmploymentDetailSourceOfFundsSeniorExecutive           LegalEntityWealthEmploymentDetailSourceOfFunds = "senior_executive"
-	LegalEntityWealthEmploymentDetailSourceOfFundsTrustIncome               LegalEntityWealthEmploymentDetailSourceOfFunds = "trust_income"
-)
+    LegalEntityWealthEmploymentDetailSourceOfFundsAlimony LegalEntityWealthEmploymentDetailSourceOfFunds = "alimony"
+    LegalEntityWealthEmploymentDetailSourceOfFundsAnnuity LegalEntityWealthEmploymentDetailSourceOfFunds = "annuity"
+    LegalEntityWealthEmploymentDetailSourceOfFundsBusinessOwner LegalEntityWealthEmploymentDetailSourceOfFunds = "business_owner"
+    LegalEntityWealthEmploymentDetailSourceOfFundsBusinessRevenue LegalEntityWealthEmploymentDetailSourceOfFunds = "business_revenue"
+    LegalEntityWealthEmploymentDetailSourceOfFundsDebtFinancing LegalEntityWealthEmploymentDetailSourceOfFunds = "debt_financing"
+    LegalEntityWealthEmploymentDetailSourceOfFundsGeneralEmployee LegalEntityWealthEmploymentDetailSourceOfFunds = "general_employee"
+    LegalEntityWealthEmploymentDetailSourceOfFundsGovernmentBenefits LegalEntityWealthEmploymentDetailSourceOfFunds = "government_benefits"
+    LegalEntityWealthEmploymentDetailSourceOfFundsHomemaker LegalEntityWealthEmploymentDetailSourceOfFunds = "homemaker"
+    LegalEntityWealthEmploymentDetailSourceOfFundsInheritanceGift LegalEntityWealthEmploymentDetailSourceOfFunds = "inheritance_gift"
+    LegalEntityWealthEmploymentDetailSourceOfFundsIntercompanyLoan LegalEntityWealthEmploymentDetailSourceOfFunds = "intercompany_loan"
+    LegalEntityWealthEmploymentDetailSourceOfFundsInvestment LegalEntityWealthEmploymentDetailSourceOfFunds = "investment"
+    LegalEntityWealthEmploymentDetailSourceOfFundsInvestorFunding LegalEntityWealthEmploymentDetailSourceOfFunds = "investor_funding"
+    LegalEntityWealthEmploymentDetailSourceOfFundsLegalSettlement LegalEntityWealthEmploymentDetailSourceOfFunds = "legal_settlement"
+    LegalEntityWealthEmploymentDetailSourceOfFundsLottery LegalEntityWealthEmploymentDetailSourceOfFunds = "lottery"
+    LegalEntityWealthEmploymentDetailSourceOfFundsRealEstate LegalEntityWealthEmploymentDetailSourceOfFunds = "real_estate"
+    LegalEntityWealthEmploymentDetailSourceOfFundsRetainedEarningsOrSavings LegalEntityWealthEmploymentDetailSourceOfFunds = "retained_earnings_or_savings"
+    LegalEntityWealthEmploymentDetailSourceOfFundsRetired LegalEntityWealthEmploymentDetailSourceOfFunds = "retired"
+    LegalEntityWealthEmploymentDetailSourceOfFundsRetirement LegalEntityWealthEmploymentDetailSourceOfFunds = "retirement"
+    LegalEntityWealthEmploymentDetailSourceOfFundsSalary LegalEntityWealthEmploymentDetailSourceOfFunds = "salary"
+    LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfBusinessAssets LegalEntityWealthEmploymentDetailSourceOfFunds = "sale_of_business_assets"
+    LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfRealEstate LegalEntityWealthEmploymentDetailSourceOfFunds = "sale_of_real_estate"
+    LegalEntityWealthEmploymentDetailSourceOfFundsSelfEmployed LegalEntityWealthEmploymentDetailSourceOfFunds = "self_employed"
+    LegalEntityWealthEmploymentDetailSourceOfFundsSeniorExecutive LegalEntityWealthEmploymentDetailSourceOfFunds = "senior_executive"
+    LegalEntityWealthEmploymentDetailSourceOfFundsTrustIncome LegalEntityWealthEmploymentDetailSourceOfFunds = "trust_income"
+  )
 
-func (r LegalEntityWealthEmploymentDetailSourceOfFunds) IsKnown() bool {
-	switch r {
-	case LegalEntityWealthEmploymentDetailSourceOfFundsAlimony, LegalEntityWealthEmploymentDetailSourceOfFundsAnnuity, LegalEntityWealthEmploymentDetailSourceOfFundsBusinessOwner, LegalEntityWealthEmploymentDetailSourceOfFundsBusinessRevenue, LegalEntityWealthEmploymentDetailSourceOfFundsDebtFinancing, LegalEntityWealthEmploymentDetailSourceOfFundsGeneralEmployee, LegalEntityWealthEmploymentDetailSourceOfFundsGovernmentBenefits, LegalEntityWealthEmploymentDetailSourceOfFundsHomemaker, LegalEntityWealthEmploymentDetailSourceOfFundsInheritanceGift, LegalEntityWealthEmploymentDetailSourceOfFundsIntercompanyLoan, LegalEntityWealthEmploymentDetailSourceOfFundsInvestment, LegalEntityWealthEmploymentDetailSourceOfFundsInvestorFunding, LegalEntityWealthEmploymentDetailSourceOfFundsLegalSettlement, LegalEntityWealthEmploymentDetailSourceOfFundsLottery, LegalEntityWealthEmploymentDetailSourceOfFundsRealEstate, LegalEntityWealthEmploymentDetailSourceOfFundsRetainedEarningsOrSavings, LegalEntityWealthEmploymentDetailSourceOfFundsRetired, LegalEntityWealthEmploymentDetailSourceOfFundsRetirement, LegalEntityWealthEmploymentDetailSourceOfFundsSalary, LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfBusinessAssets, LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfRealEstate, LegalEntityWealthEmploymentDetailSourceOfFundsSelfEmployed, LegalEntityWealthEmploymentDetailSourceOfFundsSeniorExecutive, LegalEntityWealthEmploymentDetailSourceOfFundsTrustIncome:
-		return true
-	}
-	return false
+func (r LegalEntityWealthEmploymentDetailSourceOfFunds) IsKnown() (bool) {
+  switch r {
+  case LegalEntityWealthEmploymentDetailSourceOfFundsAlimony, LegalEntityWealthEmploymentDetailSourceOfFundsAnnuity, LegalEntityWealthEmploymentDetailSourceOfFundsBusinessOwner, LegalEntityWealthEmploymentDetailSourceOfFundsBusinessRevenue, LegalEntityWealthEmploymentDetailSourceOfFundsDebtFinancing, LegalEntityWealthEmploymentDetailSourceOfFundsGeneralEmployee, LegalEntityWealthEmploymentDetailSourceOfFundsGovernmentBenefits, LegalEntityWealthEmploymentDetailSourceOfFundsHomemaker, LegalEntityWealthEmploymentDetailSourceOfFundsInheritanceGift, LegalEntityWealthEmploymentDetailSourceOfFundsIntercompanyLoan, LegalEntityWealthEmploymentDetailSourceOfFundsInvestment, LegalEntityWealthEmploymentDetailSourceOfFundsInvestorFunding, LegalEntityWealthEmploymentDetailSourceOfFundsLegalSettlement, LegalEntityWealthEmploymentDetailSourceOfFundsLottery, LegalEntityWealthEmploymentDetailSourceOfFundsRealEstate, LegalEntityWealthEmploymentDetailSourceOfFundsRetainedEarningsOrSavings, LegalEntityWealthEmploymentDetailSourceOfFundsRetired, LegalEntityWealthEmploymentDetailSourceOfFundsRetirement, LegalEntityWealthEmploymentDetailSourceOfFundsSalary, LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfBusinessAssets, LegalEntityWealthEmploymentDetailSourceOfFundsSaleOfRealEstate, LegalEntityWealthEmploymentDetailSourceOfFundsSelfEmployed, LegalEntityWealthEmploymentDetailSourceOfFundsSeniorExecutive, LegalEntityWealthEmploymentDetailSourceOfFundsTrustIncome:
+      return true
+  }
+  return false
 }
 
 // The source of the individual's wealth.
 type LegalEntityWealthEmploymentDetailWealthSource string
 
 const (
-	LegalEntityWealthEmploymentDetailWealthSourceBusinessSale       LegalEntityWealthEmploymentDetailWealthSource = "business_sale"
-	LegalEntityWealthEmploymentDetailWealthSourceFamilySupport      LegalEntityWealthEmploymentDetailWealthSource = "family_support"
-	LegalEntityWealthEmploymentDetailWealthSourceGovernmentBenefits LegalEntityWealthEmploymentDetailWealthSource = "government_benefits"
-	LegalEntityWealthEmploymentDetailWealthSourceInheritance        LegalEntityWealthEmploymentDetailWealthSource = "inheritance"
-	LegalEntityWealthEmploymentDetailWealthSourceInvestments        LegalEntityWealthEmploymentDetailWealthSource = "investments"
-	LegalEntityWealthEmploymentDetailWealthSourceOther              LegalEntityWealthEmploymentDetailWealthSource = "other"
-	LegalEntityWealthEmploymentDetailWealthSourceRentalIncome       LegalEntityWealthEmploymentDetailWealthSource = "rental_income"
-	LegalEntityWealthEmploymentDetailWealthSourceRetirement         LegalEntityWealthEmploymentDetailWealthSource = "retirement"
-	LegalEntityWealthEmploymentDetailWealthSourceSalary             LegalEntityWealthEmploymentDetailWealthSource = "salary"
-	LegalEntityWealthEmploymentDetailWealthSourceSelfEmployed       LegalEntityWealthEmploymentDetailWealthSource = "self_employed"
-)
+    LegalEntityWealthEmploymentDetailWealthSourceBusinessSale LegalEntityWealthEmploymentDetailWealthSource = "business_sale"
+    LegalEntityWealthEmploymentDetailWealthSourceFamilySupport LegalEntityWealthEmploymentDetailWealthSource = "family_support"
+    LegalEntityWealthEmploymentDetailWealthSourceGovernmentBenefits LegalEntityWealthEmploymentDetailWealthSource = "government_benefits"
+    LegalEntityWealthEmploymentDetailWealthSourceInheritance LegalEntityWealthEmploymentDetailWealthSource = "inheritance"
+    LegalEntityWealthEmploymentDetailWealthSourceInvestments LegalEntityWealthEmploymentDetailWealthSource = "investments"
+    LegalEntityWealthEmploymentDetailWealthSourceOther LegalEntityWealthEmploymentDetailWealthSource = "other"
+    LegalEntityWealthEmploymentDetailWealthSourceRentalIncome LegalEntityWealthEmploymentDetailWealthSource = "rental_income"
+    LegalEntityWealthEmploymentDetailWealthSourceRetirement LegalEntityWealthEmploymentDetailWealthSource = "retirement"
+    LegalEntityWealthEmploymentDetailWealthSourceSalary LegalEntityWealthEmploymentDetailWealthSource = "salary"
+    LegalEntityWealthEmploymentDetailWealthSourceSelfEmployed LegalEntityWealthEmploymentDetailWealthSource = "self_employed"
+  )
 
-func (r LegalEntityWealthEmploymentDetailWealthSource) IsKnown() bool {
-	switch r {
-	case LegalEntityWealthEmploymentDetailWealthSourceBusinessSale, LegalEntityWealthEmploymentDetailWealthSourceFamilySupport, LegalEntityWealthEmploymentDetailWealthSourceGovernmentBenefits, LegalEntityWealthEmploymentDetailWealthSourceInheritance, LegalEntityWealthEmploymentDetailWealthSourceInvestments, LegalEntityWealthEmploymentDetailWealthSourceOther, LegalEntityWealthEmploymentDetailWealthSourceRentalIncome, LegalEntityWealthEmploymentDetailWealthSourceRetirement, LegalEntityWealthEmploymentDetailWealthSourceSalary, LegalEntityWealthEmploymentDetailWealthSourceSelfEmployed:
-		return true
-	}
-	return false
+func (r LegalEntityWealthEmploymentDetailWealthSource) IsKnown() (bool) {
+  switch r {
+  case LegalEntityWealthEmploymentDetailWealthSourceBusinessSale, LegalEntityWealthEmploymentDetailWealthSourceFamilySupport, LegalEntityWealthEmploymentDetailWealthSourceGovernmentBenefits, LegalEntityWealthEmploymentDetailWealthSourceInheritance, LegalEntityWealthEmploymentDetailWealthSourceInvestments, LegalEntityWealthEmploymentDetailWealthSourceOther, LegalEntityWealthEmploymentDetailWealthSourceRentalIncome, LegalEntityWealthEmploymentDetailWealthSourceRetirement, LegalEntityWealthEmploymentDetailWealthSourceSalary, LegalEntityWealthEmploymentDetailWealthSourceSelfEmployed:
+      return true
+  }
+  return false
 }
 
 type LegalEntityWealthEmploymentDetailParam struct {
-	ID param.Field[string] `json:"id" api:"required" format:"uuid"`
-	// The annual income of the individual in USD.
-	AnnualIncome param.Field[int64]     `json:"annual_income" api:"required"`
-	CreatedAt    param.Field[time.Time] `json:"created_at" api:"required" format:"date-time"`
-	DiscardedAt  param.Field[time.Time] `json:"discarded_at" api:"required" format:"date-time"`
-	// The country in which the employer is located.
-	EmployerCountry param.Field[string] `json:"employer_country" api:"required"`
-	// The name of the employer.
-	EmployerName param.Field[string] `json:"employer_name" api:"required"`
-	// The state in which the employer is located.
-	EmployerState param.Field[string] `json:"employer_state" api:"required"`
-	// The employment status of the individual.
-	EmploymentStatus param.Field[LegalEntityWealthEmploymentDetailEmploymentStatus] `json:"employment_status" api:"required"`
-	// The country in which the individual's income is earned.
-	IncomeCountry param.Field[string] `json:"income_country" api:"required"`
-	// The source of the individual's income.
-	IncomeSource param.Field[LegalEntityWealthEmploymentDetailIncomeSource] `json:"income_source" api:"required"`
-	// The state in which the individual's income is earned.
-	IncomeState param.Field[string] `json:"income_state" api:"required"`
-	// The industry of the individual.
-	Industry param.Field[LegalEntityWealthEmploymentDetailIndustry] `json:"industry" api:"required"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode param.Field[bool]   `json:"live_mode" api:"required"`
-	Object   param.Field[string] `json:"object" api:"required"`
-	// The occupation of the individual.
-	Occupation param.Field[LegalEntityWealthEmploymentDetailOccupation] `json:"occupation" api:"required"`
-	// The source of the individual's funds.
-	SourceOfFunds param.Field[LegalEntityWealthEmploymentDetailSourceOfFunds] `json:"source_of_funds" api:"required"`
-	UpdatedAt     param.Field[time.Time]                                      `json:"updated_at" api:"required" format:"date-time"`
-	// The source of the individual's wealth.
-	WealthSource param.Field[LegalEntityWealthEmploymentDetailWealthSource] `json:"wealth_source" api:"required"`
+ID param.Field[string] `json:"id" api:"required" format:"uuid"`
+// The annual income of the individual in USD.
+AnnualIncome param.Field[int64] `json:"annual_income" api:"required"`
+CreatedAt param.Field[time.Time] `json:"created_at" api:"required" format:"date-time"`
+DiscardedAt param.Field[time.Time] `json:"discarded_at" api:"required" format:"date-time"`
+// The country in which the employer is located.
+EmployerCountry param.Field[string] `json:"employer_country" api:"required"`
+// The name of the employer.
+EmployerName param.Field[string] `json:"employer_name" api:"required"`
+// The state in which the employer is located.
+EmployerState param.Field[string] `json:"employer_state" api:"required"`
+// The employment status of the individual.
+EmploymentStatus param.Field[LegalEntityWealthEmploymentDetailEmploymentStatus] `json:"employment_status" api:"required"`
+// The country in which the individual's income is earned.
+IncomeCountry param.Field[string] `json:"income_country" api:"required"`
+// The source of the individual's income.
+IncomeSource param.Field[LegalEntityWealthEmploymentDetailIncomeSource] `json:"income_source" api:"required"`
+// The state in which the individual's income is earned.
+IncomeState param.Field[string] `json:"income_state" api:"required"`
+// The industry of the individual.
+Industry param.Field[LegalEntityWealthEmploymentDetailIndustry] `json:"industry" api:"required"`
+// This field will be true if this object exists in the live environment or false
+// if it exists in the test environment.
+LiveMode param.Field[bool] `json:"live_mode" api:"required"`
+Object param.Field[string] `json:"object" api:"required"`
+// The occupation of the individual.
+Occupation param.Field[LegalEntityWealthEmploymentDetailOccupation] `json:"occupation" api:"required"`
+// The source of the individual's funds.
+SourceOfFunds param.Field[LegalEntityWealthEmploymentDetailSourceOfFunds] `json:"source_of_funds" api:"required"`
+UpdatedAt param.Field[time.Time] `json:"updated_at" api:"required" format:"date-time"`
+// The source of the individual's wealth.
+WealthSource param.Field[LegalEntityWealthEmploymentDetailWealthSource] `json:"wealth_source" api:"required"`
 }
 
 func (r LegalEntityWealthEmploymentDetailParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type ThirdPartyVerification struct {
-	// The outcome of the verification. One of `passed` or `failed`.
-	Outcome ThirdPartyVerificationOutcome `json:"outcome" api:"required"`
-	// The vendor that performed the verification, e.g. `persona`.
-	Vendor ThirdPartyVerificationVendor `json:"vendor" api:"required"`
-	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID string `json:"vendor_verification_id" api:"required"`
-	// The category of verification performed.
-	VerificationCategory ThirdPartyVerificationVerificationCategory `json:"verification_category" api:"required"`
-	// The method used to perform the verification.
-	VerificationMethod string `json:"verification_method" api:"required"`
-	// The timestamp when the verification was performed.
-	VerificationTime time.Time `json:"verification_time" api:"required" format:"date-time"`
-	// An optional comment about the verification.
-	Comment string                     `json:"comment" api:"nullable"`
-	JSON    thirdPartyVerificationJSON `json:"-"`
+// The outcome of the verification. One of `passed` or `failed`.
+Outcome ThirdPartyVerificationOutcome `json:"outcome" api:"required"`
+// The vendor that performed the verification, e.g. `persona`.
+Vendor ThirdPartyVerificationVendor `json:"vendor" api:"required"`
+// The identification of the third party verification in `vendor`'s system.
+VendorVerificationID string `json:"vendor_verification_id" api:"required"`
+// The category of verification performed.
+VerificationCategory ThirdPartyVerificationVerificationCategory `json:"verification_category" api:"required"`
+// The method used to perform the verification.
+VerificationMethod string `json:"verification_method" api:"required"`
+// The timestamp when the verification was performed.
+VerificationTime time.Time `json:"verification_time" api:"required" format:"date-time"`
+// An optional comment about the verification.
+Comment string `json:"comment" api:"nullable"`
+JSON thirdPartyVerificationJSON `json:"-"`
 }
 
 // thirdPartyVerificationJSON contains the JSON metadata for the struct
 // [ThirdPartyVerification]
 type thirdPartyVerificationJSON struct {
-	Outcome              apijson.Field
-	Vendor               apijson.Field
-	VendorVerificationID apijson.Field
-	VerificationCategory apijson.Field
-	VerificationMethod   apijson.Field
-	VerificationTime     apijson.Field
-	Comment              apijson.Field
-	raw                  string
-	ExtraFields          map[string]apijson.Field
+Outcome apijson.Field
+Vendor apijson.Field
+VendorVerificationID apijson.Field
+VerificationCategory apijson.Field
+VerificationMethod apijson.Field
+VerificationTime apijson.Field
+Comment apijson.Field
+raw string
+ExtraFields map[string]apijson.Field
 }
 
 func (r *ThirdPartyVerification) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
+  return apijson.UnmarshalRoot(data, r)
 }
 
-func (r thirdPartyVerificationJSON) RawJSON() string {
-	return r.raw
+func (r thirdPartyVerificationJSON) RawJSON() (string) {
+  return r.raw
 }
 
 // The outcome of the verification. One of `passed` or `failed`.
 type ThirdPartyVerificationOutcome string
 
 const (
-	ThirdPartyVerificationOutcomePassed ThirdPartyVerificationOutcome = "passed"
-	ThirdPartyVerificationOutcomeFailed ThirdPartyVerificationOutcome = "failed"
-)
+    ThirdPartyVerificationOutcomePassed ThirdPartyVerificationOutcome = "passed"
+    ThirdPartyVerificationOutcomeFailed ThirdPartyVerificationOutcome = "failed"
+  )
 
-func (r ThirdPartyVerificationOutcome) IsKnown() bool {
-	switch r {
-	case ThirdPartyVerificationOutcomePassed, ThirdPartyVerificationOutcomeFailed:
-		return true
-	}
-	return false
+func (r ThirdPartyVerificationOutcome) IsKnown() (bool) {
+  switch r {
+  case ThirdPartyVerificationOutcomePassed, ThirdPartyVerificationOutcomeFailed:
+      return true
+  }
+  return false
 }
 
 // The vendor that performed the verification, e.g. `persona`.
 type ThirdPartyVerificationVendor string
 
 const (
-	ThirdPartyVerificationVendorPersona ThirdPartyVerificationVendor = "persona"
-	ThirdPartyVerificationVendorMiddesk ThirdPartyVerificationVendor = "middesk"
-	ThirdPartyVerificationVendorAlloy   ThirdPartyVerificationVendor = "alloy"
-	ThirdPartyVerificationVendorSumsub  ThirdPartyVerificationVendor = "sumsub"
-	ThirdPartyVerificationVendorVeriff  ThirdPartyVerificationVendor = "veriff"
-)
+    ThirdPartyVerificationVendorPersona ThirdPartyVerificationVendor = "persona"
+    ThirdPartyVerificationVendorMiddesk ThirdPartyVerificationVendor = "middesk"
+    ThirdPartyVerificationVendorAlloy ThirdPartyVerificationVendor = "alloy"
+    ThirdPartyVerificationVendorIdology ThirdPartyVerificationVendor = "idology"
+    ThirdPartyVerificationVendorSocure ThirdPartyVerificationVendor = "socure"
+    ThirdPartyVerificationVendorSumsub ThirdPartyVerificationVendor = "sumsub"
+    ThirdPartyVerificationVendorVeriff ThirdPartyVerificationVendor = "veriff"
+  )
 
-func (r ThirdPartyVerificationVendor) IsKnown() bool {
-	switch r {
-	case ThirdPartyVerificationVendorPersona, ThirdPartyVerificationVendorMiddesk, ThirdPartyVerificationVendorAlloy, ThirdPartyVerificationVendorSumsub, ThirdPartyVerificationVendorVeriff:
-		return true
-	}
-	return false
+func (r ThirdPartyVerificationVendor) IsKnown() (bool) {
+  switch r {
+  case ThirdPartyVerificationVendorPersona, ThirdPartyVerificationVendorMiddesk, ThirdPartyVerificationVendorAlloy, ThirdPartyVerificationVendorIdology, ThirdPartyVerificationVendorSocure, ThirdPartyVerificationVendorSumsub, ThirdPartyVerificationVendorVeriff:
+      return true
+  }
+  return false
 }
 
 // The category of verification performed.
 type ThirdPartyVerificationVerificationCategory string
 
 const (
-	ThirdPartyVerificationVerificationCategoryLegalName          ThirdPartyVerificationVerificationCategory = "legal_name"
-	ThirdPartyVerificationVerificationCategoryDateOfBirth        ThirdPartyVerificationVerificationCategory = "date_of_birth"
-	ThirdPartyVerificationVerificationCategoryAddress            ThirdPartyVerificationVerificationCategory = "address"
-	ThirdPartyVerificationVerificationCategoryGovernmentIDNumber ThirdPartyVerificationVerificationCategory = "government_id_number"
-	ThirdPartyVerificationVerificationCategoryAdverseMedia       ThirdPartyVerificationVerificationCategory = "adverse_media"
-)
+    ThirdPartyVerificationVerificationCategoryLegalName ThirdPartyVerificationVerificationCategory = "legal_name"
+    ThirdPartyVerificationVerificationCategoryDateOfBirth ThirdPartyVerificationVerificationCategory = "date_of_birth"
+    ThirdPartyVerificationVerificationCategoryAddress ThirdPartyVerificationVerificationCategory = "address"
+    ThirdPartyVerificationVerificationCategoryGovernmentIDNumber ThirdPartyVerificationVerificationCategory = "government_id_number"
+    ThirdPartyVerificationVerificationCategoryAdverseMedia ThirdPartyVerificationVerificationCategory = "adverse_media"
+  )
 
-func (r ThirdPartyVerificationVerificationCategory) IsKnown() bool {
-	switch r {
-	case ThirdPartyVerificationVerificationCategoryLegalName, ThirdPartyVerificationVerificationCategoryDateOfBirth, ThirdPartyVerificationVerificationCategoryAddress, ThirdPartyVerificationVerificationCategoryGovernmentIDNumber, ThirdPartyVerificationVerificationCategoryAdverseMedia:
-		return true
-	}
-	return false
+func (r ThirdPartyVerificationVerificationCategory) IsKnown() (bool) {
+  switch r {
+  case ThirdPartyVerificationVerificationCategoryLegalName, ThirdPartyVerificationVerificationCategoryDateOfBirth, ThirdPartyVerificationVerificationCategoryAddress, ThirdPartyVerificationVerificationCategoryGovernmentIDNumber, ThirdPartyVerificationVerificationCategoryAdverseMedia:
+      return true
+  }
+  return false
 }
 
 type ThirdPartyVerificationParam struct {
-	// The outcome of the verification. One of `passed` or `failed`.
-	Outcome param.Field[ThirdPartyVerificationOutcome] `json:"outcome" api:"required"`
-	// The vendor that performed the verification, e.g. `persona`.
-	Vendor param.Field[ThirdPartyVerificationVendor] `json:"vendor" api:"required"`
-	// The identification of the third party verification in `vendor`'s system.
-	VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
-	// The category of verification performed.
-	VerificationCategory param.Field[ThirdPartyVerificationVerificationCategory] `json:"verification_category" api:"required"`
-	// The method used to perform the verification.
-	VerificationMethod param.Field[string] `json:"verification_method" api:"required"`
-	// The timestamp when the verification was performed.
-	VerificationTime param.Field[time.Time] `json:"verification_time" api:"required" format:"date-time"`
-	// An optional comment about the verification.
-	Comment param.Field[string] `json:"comment"`
+// The outcome of the verification. One of `passed` or `failed`.
+Outcome param.Field[ThirdPartyVerificationOutcome] `json:"outcome" api:"required"`
+// The vendor that performed the verification, e.g. `persona`.
+Vendor param.Field[ThirdPartyVerificationVendor] `json:"vendor" api:"required"`
+// The identification of the third party verification in `vendor`'s system.
+VendorVerificationID param.Field[string] `json:"vendor_verification_id" api:"required"`
+// The category of verification performed.
+VerificationCategory param.Field[ThirdPartyVerificationVerificationCategory] `json:"verification_category" api:"required"`
+// The method used to perform the verification.
+VerificationMethod param.Field[string] `json:"verification_method" api:"required"`
+// The timestamp when the verification was performed.
+VerificationTime param.Field[time.Time] `json:"verification_time" api:"required" format:"date-time"`
+// An optional comment about the verification.
+Comment param.Field[string] `json:"comment"`
 }
 
 func (r ThirdPartyVerificationParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+  return apijson.MarshalRoot(r)
 }
 
 type TransactionDirection string
 
 const (
-	TransactionDirectionCredit TransactionDirection = "credit"
-	TransactionDirectionDebit  TransactionDirection = "debit"
-)
+    TransactionDirectionCredit TransactionDirection = "credit"
+    TransactionDirectionDebit TransactionDirection = "debit"
+  )
 
-func (r TransactionDirection) IsKnown() bool {
-	switch r {
-	case TransactionDirectionCredit, TransactionDirectionDebit:
-		return true
-	}
-	return false
+func (r TransactionDirection) IsKnown() (bool) {
+  switch r {
+  case TransactionDirectionCredit, TransactionDirectionDebit:
+      return true
+  }
+  return false
 }
