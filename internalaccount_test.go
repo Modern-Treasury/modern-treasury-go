@@ -29,10 +29,8 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.InternalAccounts.New(context.TODO(), moderntreasury.InternalAccountNewParams{
-		ConnectionID: moderntreasury.F("connection_id"),
-		Currency:     moderntreasury.F(moderntreasury.InternalAccountNewParamsCurrencyUsd),
-		Name:         moderntreasury.F("name"),
-		PartyName:    moderntreasury.F("party_name"),
+		Currency: moderntreasury.F(moderntreasury.InternalAccountNewParamsCurrencyUsd),
+		Name:     moderntreasury.F("name"),
 		AccountCapabilities: moderntreasury.F([]moderntreasury.InternalAccountNewParamsAccountCapability{{
 			ID:          moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			CreatedAt:   moderntreasury.F(time.Now()),
@@ -45,6 +43,7 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 			UpdatedAt:   moderntreasury.F(time.Now()),
 		}}),
 		AccountType:    moderntreasury.F(moderntreasury.InternalAccountNewParamsAccountTypeChecking),
+		ConnectionID:   moderntreasury.F("connection_id"),
 		CounterpartyID: moderntreasury.F("counterparty_id"),
 		Debitable:      moderntreasury.F(true),
 		ExternalID:     moderntreasury.F("external_id"),
@@ -61,6 +60,8 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 			Region:     moderntreasury.F("region"),
 			Line2:      moderntreasury.F("line2"),
 		}),
+		PartyName:                   moderntreasury.F("party_name"),
+		RequestedAccountNumberTypes: moderntreasury.F([]moderntreasury.InternalAccountNewParamsRequestedAccountNumberType{moderntreasury.InternalAccountNewParamsRequestedAccountNumberTypeEthereumAddress}),
 		VendorAttributes: moderntreasury.F(map[string]string{
 			"key":    "value",
 			"foo":    "bar",

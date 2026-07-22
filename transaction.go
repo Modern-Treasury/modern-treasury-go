@@ -114,6 +114,9 @@ type Transaction struct {
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
 	Amount int64 `json:"amount" api:"required"`
+	// The amount of the transaction as a string, preserving full precision for values
+	// that may exceed safe integer limits in some languages.
+	AmountString string `json:"amount_string" api:"required"`
 	// The date on which the transaction occurred.
 	AsOfDate time.Time `json:"as_of_date" api:"required,nullable" format:"date"`
 	// The time on which the transaction occurred. Depending on the granularity of the
@@ -149,7 +152,7 @@ type Transaction struct {
 	// transaction's amount.
 	Reconciled bool `json:"reconciled" api:"required"`
 	// The type of the transaction. Examples could be
-	// `card, `ach`, `wire`, `check`, `rtp`, `book`, or `sen`.
+	// `card, `ach`, `wire`, `check`, `rtp`, or `book`.
 	Type      TransactionType `json:"type" api:"required"`
 	UpdatedAt time.Time       `json:"updated_at" api:"required" format:"date-time"`
 	// When applicable, the bank-given code that determines the transaction's category.
@@ -157,8 +160,8 @@ type Transaction struct {
 	VendorCode string `json:"vendor_code" api:"required,nullable"`
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
-	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
-	// `swift`, `us_bank`, or others.
+	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`,
+	// `us_bank`, or others.
 	VendorCodeType TransactionVendorCodeType `json:"vendor_code_type" api:"required,nullable"`
 	// An identifier given to this transaction by the bank, often `null`.
 	VendorCustomerID string `json:"vendor_customer_id" api:"required,nullable"`
@@ -182,6 +185,7 @@ type Transaction struct {
 type transactionJSON struct {
 	ID                  apijson.Field
 	Amount              apijson.Field
+	AmountString        apijson.Field
 	AsOfDate            apijson.Field
 	AsOfTime            apijson.Field
 	AsOfTimezone        apijson.Field
@@ -220,7 +224,7 @@ func (r transactionJSON) RawJSON() string {
 func (r Transaction) implementsBulkResultEntity() {}
 
 // The type of the transaction. Examples could be
-// `card, `ach`, `wire`, `check`, `rtp`, `book`, or `sen`.
+// `card, `ach`, `wire`, `check`, `rtp`, or `book`.
 type TransactionType string
 
 const (
@@ -235,24 +239,17 @@ const (
 	TransactionTypeDkNets      TransactionType = "dk_nets"
 	TransactionTypeEft         TransactionType = "eft"
 	TransactionTypeGBFps       TransactionType = "gb_fps"
-	TransactionTypeHuIcs       TransactionType = "hu_ics"
-	TransactionTypeInterac     TransactionType = "interac"
 	TransactionTypeMasav       TransactionType = "masav"
 	TransactionTypeMxCcen      TransactionType = "mx_ccen"
 	TransactionTypeNeft        TransactionType = "neft"
 	TransactionTypeNics        TransactionType = "nics"
 	TransactionTypeNzBecs      TransactionType = "nz_becs"
 	TransactionTypePlElixir    TransactionType = "pl_elixir"
-	TransactionTypeProvxchange TransactionType = "provxchange"
-	TransactionTypeRoSent      TransactionType = "ro_sent"
 	TransactionTypeRtp         TransactionType = "rtp"
 	TransactionTypeSeBankgirot TransactionType = "se_bankgirot"
-	TransactionTypeSen         TransactionType = "sen"
 	TransactionTypeSepa        TransactionType = "sepa"
 	TransactionTypeSgGiro      TransactionType = "sg_giro"
 	TransactionTypeSic         TransactionType = "sic"
-	TransactionTypeSignet      TransactionType = "signet"
-	TransactionTypeSknbi       TransactionType = "sknbi"
 	TransactionTypeStablecoin  TransactionType = "stablecoin"
 	TransactionTypeWire        TransactionType = "wire"
 	TransactionTypeZengin      TransactionType = "zengin"
@@ -261,7 +258,7 @@ const (
 
 func (r TransactionType) IsKnown() bool {
 	switch r {
-	case TransactionTypeACH, TransactionTypeAuBecs, TransactionTypeBacs, TransactionTypeBook, TransactionTypeCard, TransactionTypeChats, TransactionTypeCheck, TransactionTypeCrossBorder, TransactionTypeDkNets, TransactionTypeEft, TransactionTypeGBFps, TransactionTypeHuIcs, TransactionTypeInterac, TransactionTypeMasav, TransactionTypeMxCcen, TransactionTypeNeft, TransactionTypeNics, TransactionTypeNzBecs, TransactionTypePlElixir, TransactionTypeProvxchange, TransactionTypeRoSent, TransactionTypeRtp, TransactionTypeSeBankgirot, TransactionTypeSen, TransactionTypeSepa, TransactionTypeSgGiro, TransactionTypeSic, TransactionTypeSignet, TransactionTypeSknbi, TransactionTypeStablecoin, TransactionTypeWire, TransactionTypeZengin, TransactionTypeOther:
+	case TransactionTypeACH, TransactionTypeAuBecs, TransactionTypeBacs, TransactionTypeBook, TransactionTypeCard, TransactionTypeChats, TransactionTypeCheck, TransactionTypeCrossBorder, TransactionTypeDkNets, TransactionTypeEft, TransactionTypeGBFps, TransactionTypeMasav, TransactionTypeMxCcen, TransactionTypeNeft, TransactionTypeNics, TransactionTypeNzBecs, TransactionTypePlElixir, TransactionTypeRtp, TransactionTypeSeBankgirot, TransactionTypeSepa, TransactionTypeSgGiro, TransactionTypeSic, TransactionTypeStablecoin, TransactionTypeWire, TransactionTypeZengin, TransactionTypeOther:
 		return true
 	}
 	return false
@@ -269,8 +266,8 @@ func (r TransactionType) IsKnown() bool {
 
 // The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 // `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
-// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
-// `swift`, `us_bank`, or others.
+// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`,
+// `us_bank`, or others.
 type TransactionVendorCodeType string
 
 const (
@@ -295,9 +292,9 @@ const (
 	TransactionVendorCodeTypePaxos           TransactionVendorCodeType = "paxos"
 	TransactionVendorCodeTypePaypal          TransactionVendorCodeType = "paypal"
 	TransactionVendorCodeTypePnc             TransactionVendorCodeType = "pnc"
-	TransactionVendorCodeTypeSignet          TransactionVendorCodeType = "signet"
 	TransactionVendorCodeTypeSilvergate      TransactionVendorCodeType = "silvergate"
 	TransactionVendorCodeTypeSwift           TransactionVendorCodeType = "swift"
+	TransactionVendorCodeTypeTurnkey         TransactionVendorCodeType = "turnkey"
 	TransactionVendorCodeTypeUsBank          TransactionVendorCodeType = "us_bank"
 	TransactionVendorCodeTypeUser            TransactionVendorCodeType = "user"
 	TransactionVendorCodeTypeWesternAlliance TransactionVendorCodeType = "western_alliance"
@@ -305,16 +302,13 @@ const (
 
 func (r TransactionVendorCodeType) IsKnown() bool {
 	switch r {
-	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankingCircle, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeCoinbasePrime, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeFakeVendor, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeModernTreasury, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePaxos, TransactionVendorCodeTypePaypal, TransactionVendorCodeTypePnc, TransactionVendorCodeTypeSignet, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser, TransactionVendorCodeTypeWesternAlliance:
+	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankingCircle, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeCoinbasePrime, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeFakeVendor, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeModernTreasury, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePaxos, TransactionVendorCodeTypePaypal, TransactionVendorCodeTypePnc, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeTurnkey, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser, TransactionVendorCodeTypeWesternAlliance:
 		return true
 	}
 	return false
 }
 
 type TransactionNewParams struct {
-	// Value in specified currency's smallest unit. e.g. $10 would be represented
-	// as 1000.
-	Amount param.Field[int64] `json:"amount" api:"required"`
 	// The date on which the transaction occurred.
 	AsOfDate param.Field[time.Time] `json:"as_of_date" api:"required" format:"date"`
 	// Either `credit` or `debit`.
@@ -326,16 +320,22 @@ type TransactionNewParams struct {
 	VendorCode param.Field[string] `json:"vendor_code" api:"required"`
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
 	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
-	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `signet`, `silvergate`,
-	// `swift`, `us_bank`, or others.
+	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`,
+	// `us_bank`, or others.
 	VendorCodeType param.Field[string] `json:"vendor_code_type" api:"required"`
+	// Value in specified currency's smallest unit. e.g. $10 would be represented
+	// as 1000.
+	Amount param.Field[int64] `json:"amount"`
+	// The transaction amount as a string, preserving full precision for values that
+	// may exceed safe integer limits in some languages.
+	AmountString param.Field[string] `json:"amount_string"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// This field will be `true` if the transaction has posted to the account.
 	Posted param.Field[bool] `json:"posted"`
 	// The type of the transaction. Examples could be
-	// `card, `ach`, `wire`, `check`, `rtp`, `book`, or `sen`.
+	// `card, `ach`, `wire`, `check`, `rtp`, or `book`.
 	Type param.Field[TransactionNewParamsType] `json:"type"`
 	// An identifier given to this transaction by the bank, often `null`.
 	VendorCustomerID param.Field[string] `json:"vendor_customer_id"`
@@ -349,7 +349,7 @@ func (r TransactionNewParams) MarshalJSON() (data []byte, err error) {
 }
 
 // The type of the transaction. Examples could be
-// `card, `ach`, `wire`, `check`, `rtp`, `book`, or `sen`.
+// `card, `ach`, `wire`, `check`, `rtp`, or `book`.
 type TransactionNewParamsType string
 
 const (
@@ -364,24 +364,17 @@ const (
 	TransactionNewParamsTypeDkNets      TransactionNewParamsType = "dk_nets"
 	TransactionNewParamsTypeEft         TransactionNewParamsType = "eft"
 	TransactionNewParamsTypeGBFps       TransactionNewParamsType = "gb_fps"
-	TransactionNewParamsTypeHuIcs       TransactionNewParamsType = "hu_ics"
-	TransactionNewParamsTypeInterac     TransactionNewParamsType = "interac"
 	TransactionNewParamsTypeMasav       TransactionNewParamsType = "masav"
 	TransactionNewParamsTypeMxCcen      TransactionNewParamsType = "mx_ccen"
 	TransactionNewParamsTypeNeft        TransactionNewParamsType = "neft"
 	TransactionNewParamsTypeNics        TransactionNewParamsType = "nics"
 	TransactionNewParamsTypeNzBecs      TransactionNewParamsType = "nz_becs"
 	TransactionNewParamsTypePlElixir    TransactionNewParamsType = "pl_elixir"
-	TransactionNewParamsTypeProvxchange TransactionNewParamsType = "provxchange"
-	TransactionNewParamsTypeRoSent      TransactionNewParamsType = "ro_sent"
 	TransactionNewParamsTypeRtp         TransactionNewParamsType = "rtp"
 	TransactionNewParamsTypeSeBankgirot TransactionNewParamsType = "se_bankgirot"
-	TransactionNewParamsTypeSen         TransactionNewParamsType = "sen"
 	TransactionNewParamsTypeSepa        TransactionNewParamsType = "sepa"
 	TransactionNewParamsTypeSgGiro      TransactionNewParamsType = "sg_giro"
 	TransactionNewParamsTypeSic         TransactionNewParamsType = "sic"
-	TransactionNewParamsTypeSignet      TransactionNewParamsType = "signet"
-	TransactionNewParamsTypeSknbi       TransactionNewParamsType = "sknbi"
 	TransactionNewParamsTypeStablecoin  TransactionNewParamsType = "stablecoin"
 	TransactionNewParamsTypeWire        TransactionNewParamsType = "wire"
 	TransactionNewParamsTypeZengin      TransactionNewParamsType = "zengin"
@@ -390,7 +383,7 @@ const (
 
 func (r TransactionNewParamsType) IsKnown() bool {
 	switch r {
-	case TransactionNewParamsTypeACH, TransactionNewParamsTypeAuBecs, TransactionNewParamsTypeBacs, TransactionNewParamsTypeBook, TransactionNewParamsTypeCard, TransactionNewParamsTypeChats, TransactionNewParamsTypeCheck, TransactionNewParamsTypeCrossBorder, TransactionNewParamsTypeDkNets, TransactionNewParamsTypeEft, TransactionNewParamsTypeGBFps, TransactionNewParamsTypeHuIcs, TransactionNewParamsTypeInterac, TransactionNewParamsTypeMasav, TransactionNewParamsTypeMxCcen, TransactionNewParamsTypeNeft, TransactionNewParamsTypeNics, TransactionNewParamsTypeNzBecs, TransactionNewParamsTypePlElixir, TransactionNewParamsTypeProvxchange, TransactionNewParamsTypeRoSent, TransactionNewParamsTypeRtp, TransactionNewParamsTypeSeBankgirot, TransactionNewParamsTypeSen, TransactionNewParamsTypeSepa, TransactionNewParamsTypeSgGiro, TransactionNewParamsTypeSic, TransactionNewParamsTypeSignet, TransactionNewParamsTypeSknbi, TransactionNewParamsTypeStablecoin, TransactionNewParamsTypeWire, TransactionNewParamsTypeZengin, TransactionNewParamsTypeOther:
+	case TransactionNewParamsTypeACH, TransactionNewParamsTypeAuBecs, TransactionNewParamsTypeBacs, TransactionNewParamsTypeBook, TransactionNewParamsTypeCard, TransactionNewParamsTypeChats, TransactionNewParamsTypeCheck, TransactionNewParamsTypeCrossBorder, TransactionNewParamsTypeDkNets, TransactionNewParamsTypeEft, TransactionNewParamsTypeGBFps, TransactionNewParamsTypeMasav, TransactionNewParamsTypeMxCcen, TransactionNewParamsTypeNeft, TransactionNewParamsTypeNics, TransactionNewParamsTypeNzBecs, TransactionNewParamsTypePlElixir, TransactionNewParamsTypeRtp, TransactionNewParamsTypeSeBankgirot, TransactionNewParamsTypeSepa, TransactionNewParamsTypeSgGiro, TransactionNewParamsTypeSic, TransactionNewParamsTypeStablecoin, TransactionNewParamsTypeWire, TransactionNewParamsTypeZengin, TransactionNewParamsTypeOther:
 		return true
 	}
 	return false
