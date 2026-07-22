@@ -190,8 +190,8 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	// in a value of null to prevent the connection from being associated with the
 	// legal entity.
 	ConnectionID param.Field[string] `json:"connection_id"`
-	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
-	// alpha-3 formats.
+	// The country where the business is incorporated, as an ISO 3166-1 alpha-2 country
+	// code (e.g. US).
 	CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
@@ -230,8 +230,8 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// An individual's middle name.
 	MiddleName param.Field[string] `json:"middle_name"`
-	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
-	// codes).
+	// A list of countries where the business operates, as ISO 3166-1 alpha-2 country
+	// codes (e.g. ["US", "CA"]).
 	OperatingJurisdictions param.Field[[]string]                                               `json:"operating_jurisdictions"`
 	PhoneNumbers           param.Field[[]ConnectionLegalEntityNewParamsLegalEntityPhoneNumber] `json:"phone_numbers"`
 	// Whether the individual is a politically exposed person.
@@ -341,6 +341,9 @@ func (r ConnectionLegalEntityNewParamsLegalEntityLegalStructure) IsKnown() bool 
 
 // A list of phone numbers in E.164 format.
 type ConnectionLegalEntityNewParamsLegalEntityPhoneNumber struct {
+	// A phone number in E.164 format. This format is strictly validated: include a
+	// leading + and country code, followed by digits only (no spaces or dashes), e.g.
+	// +12025551234.
 	PhoneNumber param.Field[string] `json:"phone_number"`
 }
 
