@@ -274,11 +274,13 @@ type InvoiceCounterpartyBillingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country" api:"required"`
 	Line1   string `json:"line1" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality string `json:"locality" api:"required"`
 	// The postal code of the address.
 	PostalCode string `json:"postal_code" api:"required"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region string                                `json:"region" api:"required"`
 	Line2  string                                `json:"line2"`
 	JSON   invoiceCounterpartyBillingAddressJSON `json:"-"`
@@ -310,11 +312,13 @@ type InvoiceCounterpartyShippingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country" api:"required"`
 	Line1   string `json:"line1" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality string `json:"locality" api:"required"`
 	// The postal code of the address.
 	PostalCode string `json:"postal_code" api:"required"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region string                                 `json:"region" api:"required"`
 	Line2  string                                 `json:"line2"`
 	JSON   invoiceCounterpartyShippingAddressJSON `json:"-"`
@@ -346,11 +350,13 @@ type InvoiceInvoicerAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country string `json:"country" api:"required"`
 	Line1   string `json:"line1" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality string `json:"locality" api:"required"`
 	// The postal code of the address.
 	PostalCode string `json:"postal_code" api:"required"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region string                     `json:"region" api:"required"`
 	Line2  string                     `json:"line2"`
 	JSON   invoiceInvoicerAddressJSON `json:"-"`
@@ -512,11 +518,13 @@ type InvoiceNewParamsCounterpartyBillingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country" api:"required"`
 	Line1   param.Field[string] `json:"line1" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code" api:"required"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
@@ -530,11 +538,13 @@ type InvoiceNewParamsCounterpartyShippingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country" api:"required"`
 	Line1   param.Field[string] `json:"line1" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code" api:"required"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
@@ -576,11 +586,13 @@ type InvoiceNewParamsInvoicerAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country" api:"required"`
 	Line1   param.Field[string] `json:"line1" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code" api:"required"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
@@ -692,11 +704,13 @@ type InvoiceUpdateParamsCounterpartyBillingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country" api:"required"`
 	Line1   param.Field[string] `json:"line1" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code" api:"required"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
@@ -710,11 +724,13 @@ type InvoiceUpdateParamsCounterpartyShippingAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country" api:"required"`
 	Line1   param.Field[string] `json:"line1" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code" api:"required"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }
@@ -756,11 +772,13 @@ type InvoiceUpdateParamsInvoicerAddress struct {
 	// Country code conforms to [ISO 3166-1 alpha-2]
 	Country param.Field[string] `json:"country" api:"required"`
 	Line1   param.Field[string] `json:"line1" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality param.Field[string] `json:"locality" api:"required"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code" api:"required"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region param.Field[string] `json:"region" api:"required"`
 	Line2  param.Field[string] `json:"line2"`
 }

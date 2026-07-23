@@ -39,7 +39,7 @@ func NewLegalEntityService(opts ...option.RequestOption) (r *LegalEntityService)
 	return
 }
 
-// create legal_entity
+// Create a legal entity. All country fields use ISO 3166-1 alpha-2 (e.g. US).
 func (r *LegalEntityService) New(ctx context.Context, body LegalEntityNewParams, opts ...option.RequestOption) (res *LegalEntity, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "api/legal_entities"
@@ -94,18 +94,6 @@ func (r *LegalEntityService) ListAutoPaging(ctx context.Context, query LegalEnti
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
-// Update Legal Entity Status (sandbox only)
-func (r *LegalEntityService) UpdateStatus(ctx context.Context, id string, body LegalEntityUpdateStatusParams, opts ...option.RequestOption) (res *LegalEntity, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/simulations/legal_entities/%s/update_status", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return res, err
-}
-
 type LegalEntity struct {
 	ID string `json:"id" api:"required" format:"uuid"`
 	// A list of addresses for the entity.
@@ -119,8 +107,8 @@ type LegalEntity struct {
 	CitizenshipCountry string `json:"citizenship_country" api:"required,nullable"`
 	// Deprecated: deprecated
 	ComplianceDetails interface{} `json:"compliance_details" api:"required,nullable"`
-	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
-	// alpha-3 formats.
+	// The country where the business is incorporated, as an ISO 3166-1 alpha-2 country
+	// code (e.g. US).
 	CountryOfIncorporation string    `json:"country_of_incorporation" api:"required,nullable"`
 	CreatedAt              time.Time `json:"created_at" api:"required" format:"date-time"`
 	// A business's formation date (YYYY-MM-DD).
@@ -161,8 +149,8 @@ type LegalEntity struct {
 	// An individual's middle name.
 	MiddleName string `json:"middle_name" api:"required,nullable"`
 	Object     string `json:"object" api:"required"`
-	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
-	// codes).
+	// A list of countries where the business operates, as ISO 3166-1 alpha-2 country
+	// codes (e.g. ["US", "CA"]).
 	OperatingJurisdictions []string                 `json:"operating_jurisdictions" api:"required"`
 	PhoneNumbers           []LegalEntityPhoneNumber `json:"phone_numbers" api:"required"`
 	// Whether the individual is a politically exposed person.
@@ -278,7 +266,8 @@ type LegalEntityAddress struct {
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool `json:"live_mode" api:"required"`
-	// Locality or City.
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
 	Locality string `json:"locality" api:"required,nullable"`
 	Object   string `json:"object" api:"required"`
 	// The postal code of the address.
@@ -286,7 +275,8 @@ type LegalEntityAddress struct {
 	// Whether this address is the primary address for the legal entity. Optional; when
 	// omitted it is inferred from the address types.
 	Primary bool `json:"primary" api:"required,nullable"`
-	// Region or State.
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
 	Region    string                 `json:"region" api:"required,nullable"`
 	UpdatedAt time.Time              `json:"updated_at" api:"required" format:"date-time"`
 	JSON      legalEntityAddressJSON `json:"-"`
@@ -435,6 +425,8 @@ const (
 	LegalEntityIdentificationsIDTypeGBVat                LegalEntityIdentificationsIDType = "gb_vat"
 	LegalEntityIdentificationsIDTypeGenericInternational LegalEntityIdentificationsIDType = "generic_international"
 	LegalEntityIdentificationsIDTypeGrVat                LegalEntityIdentificationsIDType = "gr_vat"
+	LegalEntityIdentificationsIDTypeHkBrn                LegalEntityIdentificationsIDType = "hk_brn"
+	LegalEntityIdentificationsIDTypeHkHkid               LegalEntityIdentificationsIDType = "hk_hkid"
 	LegalEntityIdentificationsIDTypeHnID                 LegalEntityIdentificationsIDType = "hn_id"
 	LegalEntityIdentificationsIDTypeHnRtn                LegalEntityIdentificationsIDType = "hn_rtn"
 	LegalEntityIdentificationsIDTypeHrOib                LegalEntityIdentificationsIDType = "hr_oib"
@@ -497,7 +489,7 @@ const (
 
 func (r LegalEntityIdentificationsIDType) IsKnown() bool {
 	switch r {
-	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeAtAtin, LegalEntityIdentificationsIDTypeAtVat, LegalEntityIdentificationsIDTypeAuAbn, LegalEntityIdentificationsIDTypeAuTfn, LegalEntityIdentificationsIDTypeBeEnt, LegalEntityIdentificationsIDTypeBeNrn, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeCaBn, LegalEntityIdentificationsIDTypeCaSin, LegalEntityIdentificationsIDTypeChAhv, LegalEntityIdentificationsIDTypeChUid, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeCyTin, LegalEntityIdentificationsIDTypeCzIco, LegalEntityIdentificationsIDTypeCzRc, LegalEntityIdentificationsIDTypeDeStid, LegalEntityIdentificationsIDTypeDeStnr, LegalEntityIdentificationsIDTypeDeVat, LegalEntityIdentificationsIDTypeDkCpr, LegalEntityIdentificationsIDTypeDkCvr, LegalEntityIdentificationsIDTypeDriversLicense, LegalEntityIdentificationsIDTypeEeIk, LegalEntityIdentificationsIDTypeEeRk, LegalEntityIdentificationsIDTypeEsNie, LegalEntityIdentificationsIDTypeEsNif, LegalEntityIdentificationsIDTypeFiHetu, LegalEntityIdentificationsIDTypeFiYtj, LegalEntityIdentificationsIDTypeFrNif, LegalEntityIdentificationsIDTypeFrSiren, LegalEntityIdentificationsIDTypeFrVat, LegalEntityIdentificationsIDTypeGBNino, LegalEntityIdentificationsIDTypeGBUtr, LegalEntityIdentificationsIDTypeGBVat, LegalEntityIdentificationsIDTypeGenericInternational, LegalEntityIdentificationsIDTypeGrVat, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeHrOib, LegalEntityIdentificationsIDTypeHuAdj, LegalEntityIdentificationsIDTypeHuAnum, LegalEntityIdentificationsIDTypeIePps, LegalEntityIdentificationsIDTypeIeTrn, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeIsKnt, LegalEntityIdentificationsIDTypeItCf, LegalEntityIdentificationsIDTypeItPiva, LegalEntityIdentificationsIDTypeJpHb, LegalEntityIdentificationsIDTypeJpMn, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypeLiPeid, LegalEntityIdentificationsIDTypeLtAk, LegalEntityIdentificationsIDTypeLtJak, LegalEntityIdentificationsIDTypeLuMtc, LegalEntityIdentificationsIDTypeLuVat, LegalEntityIdentificationsIDTypeLvPk, LegalEntityIdentificationsIDTypeLvRn, LegalEntityIdentificationsIDTypeMtTin, LegalEntityIdentificationsIDTypeMtVat, LegalEntityIdentificationsIDTypeMxCurp, LegalEntityIdentificationsIDTypeMxIne, LegalEntityIdentificationsIDTypeMxRfc, LegalEntityIdentificationsIDTypeNationalID, LegalEntityIdentificationsIDTypeNlBsn, LegalEntityIdentificationsIDTypeNlBtw, LegalEntityIdentificationsIDTypeNlRsin, LegalEntityIdentificationsIDTypeNoFdn, LegalEntityIdentificationsIDTypeNoMva, LegalEntityIdentificationsIDTypeNoOrgnr, LegalEntityIdentificationsIDTypeNzIrd, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypePlNip, LegalEntityIdentificationsIDTypePlPesel, LegalEntityIdentificationsIDTypePtNif, LegalEntityIdentificationsIDTypeRoCnp, LegalEntityIdentificationsIDTypeRoCui, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeSeOrgnr, LegalEntityIdentificationsIDTypeSePnmr, LegalEntityIdentificationsIDTypeSgFin, LegalEntityIdentificationsIDTypeSgNric, LegalEntityIdentificationsIDTypeSgUen, LegalEntityIdentificationsIDTypeSiDav, LegalEntityIdentificationsIDTypeSiTin, LegalEntityIdentificationsIDTypeSkIco, LegalEntityIdentificationsIDTypeSkRc, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeUyRut, LegalEntityIdentificationsIDTypeVnTin:
+	case LegalEntityIdentificationsIDTypeArCuil, LegalEntityIdentificationsIDTypeArCuit, LegalEntityIdentificationsIDTypeAtAtin, LegalEntityIdentificationsIDTypeAtVat, LegalEntityIdentificationsIDTypeAuAbn, LegalEntityIdentificationsIDTypeAuTfn, LegalEntityIdentificationsIDTypeBeEnt, LegalEntityIdentificationsIDTypeBeNrn, LegalEntityIdentificationsIDTypeBrCnpj, LegalEntityIdentificationsIDTypeBrCpf, LegalEntityIdentificationsIDTypeCaBn, LegalEntityIdentificationsIDTypeCaSin, LegalEntityIdentificationsIDTypeChAhv, LegalEntityIdentificationsIDTypeChUid, LegalEntityIdentificationsIDTypeClRun, LegalEntityIdentificationsIDTypeClRut, LegalEntityIdentificationsIDTypeCoCedulas, LegalEntityIdentificationsIDTypeCoNit, LegalEntityIdentificationsIDTypeCyTin, LegalEntityIdentificationsIDTypeCzIco, LegalEntityIdentificationsIDTypeCzRc, LegalEntityIdentificationsIDTypeDeStid, LegalEntityIdentificationsIDTypeDeStnr, LegalEntityIdentificationsIDTypeDeVat, LegalEntityIdentificationsIDTypeDkCpr, LegalEntityIdentificationsIDTypeDkCvr, LegalEntityIdentificationsIDTypeDriversLicense, LegalEntityIdentificationsIDTypeEeIk, LegalEntityIdentificationsIDTypeEeRk, LegalEntityIdentificationsIDTypeEsNie, LegalEntityIdentificationsIDTypeEsNif, LegalEntityIdentificationsIDTypeFiHetu, LegalEntityIdentificationsIDTypeFiYtj, LegalEntityIdentificationsIDTypeFrNif, LegalEntityIdentificationsIDTypeFrSiren, LegalEntityIdentificationsIDTypeFrVat, LegalEntityIdentificationsIDTypeGBNino, LegalEntityIdentificationsIDTypeGBUtr, LegalEntityIdentificationsIDTypeGBVat, LegalEntityIdentificationsIDTypeGenericInternational, LegalEntityIdentificationsIDTypeGrVat, LegalEntityIdentificationsIDTypeHkBrn, LegalEntityIdentificationsIDTypeHkHkid, LegalEntityIdentificationsIDTypeHnID, LegalEntityIdentificationsIDTypeHnRtn, LegalEntityIdentificationsIDTypeHrOib, LegalEntityIdentificationsIDTypeHuAdj, LegalEntityIdentificationsIDTypeHuAnum, LegalEntityIdentificationsIDTypeIePps, LegalEntityIdentificationsIDTypeIeTrn, LegalEntityIdentificationsIDTypeInLei, LegalEntityIdentificationsIDTypeIsKnt, LegalEntityIdentificationsIDTypeItCf, LegalEntityIdentificationsIDTypeItPiva, LegalEntityIdentificationsIDTypeJpHb, LegalEntityIdentificationsIDTypeJpMn, LegalEntityIdentificationsIDTypeKrBrn, LegalEntityIdentificationsIDTypeKrCrn, LegalEntityIdentificationsIDTypeKrRrn, LegalEntityIdentificationsIDTypeLiPeid, LegalEntityIdentificationsIDTypeLtAk, LegalEntityIdentificationsIDTypeLtJak, LegalEntityIdentificationsIDTypeLuMtc, LegalEntityIdentificationsIDTypeLuVat, LegalEntityIdentificationsIDTypeLvPk, LegalEntityIdentificationsIDTypeLvRn, LegalEntityIdentificationsIDTypeMtTin, LegalEntityIdentificationsIDTypeMtVat, LegalEntityIdentificationsIDTypeMxCurp, LegalEntityIdentificationsIDTypeMxIne, LegalEntityIdentificationsIDTypeMxRfc, LegalEntityIdentificationsIDTypeNationalID, LegalEntityIdentificationsIDTypeNlBsn, LegalEntityIdentificationsIDTypeNlBtw, LegalEntityIdentificationsIDTypeNlRsin, LegalEntityIdentificationsIDTypeNoFdn, LegalEntityIdentificationsIDTypeNoMva, LegalEntityIdentificationsIDTypeNoOrgnr, LegalEntityIdentificationsIDTypeNzIrd, LegalEntityIdentificationsIDTypePassport, LegalEntityIdentificationsIDTypePlNip, LegalEntityIdentificationsIDTypePlPesel, LegalEntityIdentificationsIDTypePtNif, LegalEntityIdentificationsIDTypeRoCnp, LegalEntityIdentificationsIDTypeRoCui, LegalEntityIdentificationsIDTypeSaTin, LegalEntityIdentificationsIDTypeSaVat, LegalEntityIdentificationsIDTypeSeOrgnr, LegalEntityIdentificationsIDTypeSePnmr, LegalEntityIdentificationsIDTypeSgFin, LegalEntityIdentificationsIDTypeSgNric, LegalEntityIdentificationsIDTypeSgUen, LegalEntityIdentificationsIDTypeSiDav, LegalEntityIdentificationsIDTypeSiTin, LegalEntityIdentificationsIDTypeSkIco, LegalEntityIdentificationsIDTypeSkRc, LegalEntityIdentificationsIDTypeUsEin, LegalEntityIdentificationsIDTypeUsItin, LegalEntityIdentificationsIDTypeUsSsn, LegalEntityIdentificationsIDTypeUyRut, LegalEntityIdentificationsIDTypeVnTin:
 		return true
 	}
 	return false
@@ -541,6 +533,9 @@ func (r LegalEntityLegalStructure) IsKnown() bool {
 
 // A list of phone numbers in E.164 format.
 type LegalEntityPhoneNumber struct {
+	// A phone number in E.164 format. This format is strictly validated: include a
+	// leading + and country code, followed by digits only (no spaces or dashes), e.g.
+	// +12025551234.
 	PhoneNumber string                     `json:"phone_number"`
 	JSON        legalEntityPhoneNumberJSON `json:"-"`
 }
@@ -672,8 +667,8 @@ type LegalEntityNewParams struct {
 	// in a value of null to prevent the connection from being associated with the
 	// legal entity.
 	ConnectionID param.Field[string] `json:"connection_id"`
-	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
-	// alpha-3 formats.
+	// The country where the business is incorporated, as an ISO 3166-1 alpha-2 country
+	// code (e.g. US).
 	CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
@@ -710,8 +705,8 @@ type LegalEntityNewParams struct {
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// An individual's middle name.
 	MiddleName param.Field[string] `json:"middle_name"`
-	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
-	// codes).
+	// A list of countries where the business operates, as ISO 3166-1 alpha-2 country
+	// codes (e.g. ["US", "CA"]).
 	OperatingJurisdictions param.Field[[]string]                          `json:"operating_jurisdictions"`
 	PhoneNumbers           param.Field[[]LegalEntityNewParamsPhoneNumber] `json:"phone_numbers"`
 	// Whether the individual is a politically exposed person.
@@ -819,6 +814,9 @@ func (r LegalEntityNewParamsLegalStructure) IsKnown() bool {
 
 // A list of phone numbers in E.164 format.
 type LegalEntityNewParamsPhoneNumber struct {
+	// A phone number in E.164 format. This format is strictly validated: include a
+	// leading + and country code, followed by digits only (no spaces or dashes), e.g.
+	// +12025551234.
 	PhoneNumber param.Field[string] `json:"phone_number"`
 }
 
@@ -880,8 +878,8 @@ type LegalEntityUpdateParams struct {
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
 	CitizenshipCountry param.Field[string] `json:"citizenship_country"`
-	// The country code where the business is incorporated in the ISO 3166-1 alpha-2 or
-	// alpha-3 formats.
+	// The country where the business is incorporated, as an ISO 3166-1 alpha-2 country
+	// code (e.g. US).
 	CountryOfIncorporation param.Field[string] `json:"country_of_incorporation"`
 	// A business's formation date (YYYY-MM-DD).
 	DateFormed param.Field[time.Time] `json:"date_formed" format:"date"`
@@ -913,8 +911,8 @@ type LegalEntityUpdateParams struct {
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// An individual's middle name.
 	MiddleName param.Field[string] `json:"middle_name"`
-	// A list of countries where the business operates (ISO 3166-1 alpha-2 or alpha-3
-	// codes).
+	// A list of countries where the business operates, as ISO 3166-1 alpha-2 country
+	// codes (e.g. ["US", "CA"]).
 	OperatingJurisdictions param.Field[[]string]                             `json:"operating_jurisdictions"`
 	PhoneNumbers           param.Field[[]LegalEntityUpdateParamsPhoneNumber] `json:"phone_numbers"`
 	// Whether the individual is a politically exposed person.
@@ -972,6 +970,9 @@ func (r LegalEntityUpdateParamsLegalStructure) IsKnown() bool {
 
 // A list of phone numbers in E.164 format.
 type LegalEntityUpdateParamsPhoneNumber struct {
+	// A phone number in E.164 format. This format is strictly validated: include a
+	// leading + and country code, followed by digits only (no spaces or dashes), e.g.
+	// +12025551234.
 	PhoneNumber param.Field[string] `json:"phone_number"`
 }
 
@@ -1072,34 +1073,6 @@ const (
 func (r LegalEntityListParamsStatus) IsKnown() bool {
 	switch r {
 	case LegalEntityListParamsStatusPending, LegalEntityListParamsStatusActive, LegalEntityListParamsStatusSuspended, LegalEntityListParamsStatusDenied:
-		return true
-	}
-	return false
-}
-
-type LegalEntityUpdateStatusParams struct {
-	// The target status for the legal entity. One of `active`, `suspended`, or
-	// `denied`. Valid transitions depend on the current status.
-	Status param.Field[LegalEntityUpdateStatusParamsStatus] `json:"status" api:"required"`
-}
-
-func (r LegalEntityUpdateStatusParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The target status for the legal entity. One of `active`, `suspended`, or
-// `denied`. Valid transitions depend on the current status.
-type LegalEntityUpdateStatusParamsStatus string
-
-const (
-	LegalEntityUpdateStatusParamsStatusActive    LegalEntityUpdateStatusParamsStatus = "active"
-	LegalEntityUpdateStatusParamsStatusSuspended LegalEntityUpdateStatusParamsStatus = "suspended"
-	LegalEntityUpdateStatusParamsStatusDenied    LegalEntityUpdateStatusParamsStatus = "denied"
-)
-
-func (r LegalEntityUpdateStatusParamsStatus) IsKnown() bool {
-	switch r {
-	case LegalEntityUpdateStatusParamsStatusActive, LegalEntityUpdateStatusParamsStatusSuspended, LegalEntityUpdateStatusParamsStatusDenied:
 		return true
 	}
 	return false
