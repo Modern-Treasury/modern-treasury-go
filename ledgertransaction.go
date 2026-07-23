@@ -522,6 +522,7 @@ func (r LedgerTransactionNewPartialPostParams) MarshalJSON() (data []byte, err e
 	return apijson.MarshalRoot(r)
 }
 
+// At least one of "amount" or "amount_string" is required.
 type LedgerTransactionNewPartialPostParamsPostedLedgerEntry struct {
 	// One of `credit`, `debit`. Describes the direction money is flowing in the
 	// transaction. A `credit` moves money from your account to someone else's. A
