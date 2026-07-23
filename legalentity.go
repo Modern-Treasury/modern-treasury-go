@@ -94,18 +94,6 @@ func (r *LegalEntityService) ListAutoPaging(ctx context.Context, query LegalEnti
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
-// Update Legal Entity Status (sandbox only)
-func (r *LegalEntityService) UpdateStatus(ctx context.Context, id string, body LegalEntityUpdateStatusParams, opts ...option.RequestOption) (res *LegalEntity, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/simulations/legal_entities/%s/update_status", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPatch, path, body, &res, opts...)
-	return res, err
-}
-
 type LegalEntity struct {
 	ID string `json:"id" api:"required" format:"uuid"`
 	// A list of addresses for the entity.
@@ -1085,34 +1073,6 @@ const (
 func (r LegalEntityListParamsStatus) IsKnown() bool {
 	switch r {
 	case LegalEntityListParamsStatusPending, LegalEntityListParamsStatusActive, LegalEntityListParamsStatusSuspended, LegalEntityListParamsStatusDenied:
-		return true
-	}
-	return false
-}
-
-type LegalEntityUpdateStatusParams struct {
-	// The target status for the legal entity. One of `active`, `suspended`, or
-	// `denied`. Valid transitions depend on the current status.
-	Status param.Field[LegalEntityUpdateStatusParamsStatus] `json:"status" api:"required"`
-}
-
-func (r LegalEntityUpdateStatusParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// The target status for the legal entity. One of `active`, `suspended`, or
-// `denied`. Valid transitions depend on the current status.
-type LegalEntityUpdateStatusParamsStatus string
-
-const (
-	LegalEntityUpdateStatusParamsStatusActive    LegalEntityUpdateStatusParamsStatus = "active"
-	LegalEntityUpdateStatusParamsStatusSuspended LegalEntityUpdateStatusParamsStatus = "suspended"
-	LegalEntityUpdateStatusParamsStatusDenied    LegalEntityUpdateStatusParamsStatus = "denied"
-)
-
-func (r LegalEntityUpdateStatusParamsStatus) IsKnown() bool {
-	switch r {
-	case LegalEntityUpdateStatusParamsStatusActive, LegalEntityUpdateStatusParamsStatusSuspended, LegalEntityUpdateStatusParamsStatusDenied:
 		return true
 	}
 	return false
