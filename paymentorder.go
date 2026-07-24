@@ -1214,7 +1214,7 @@ type PaymentOrderNewParams struct {
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
 	// Additional vendor specific fields for this payment. Data must be represented as
 	// key-value pairs.
-	VendorAttributes param.Field[interface{}] `json:"vendor_attributes"`
+	VendorAttributes param.Field[map[string]interface{}] `json:"vendor_attributes"`
 }
 
 func (r PaymentOrderNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
@@ -1315,12 +1315,13 @@ const (
 	PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntity           PaymentOrderNewParamsDocumentsDocumentableType = "legal_entity"
 	PaymentOrderNewParamsDocumentsDocumentableTypeOrganization          PaymentOrderNewParamsDocumentsDocumentableType = "organization"
 	PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrder          PaymentOrderNewParamsDocumentsDocumentableType = "payment_order"
+	PaymentOrderNewParamsDocumentsDocumentableTypeReturn                PaymentOrderNewParamsDocumentsDocumentableType = "return"
 	PaymentOrderNewParamsDocumentsDocumentableTypeTransaction           PaymentOrderNewParamsDocumentsDocumentableType = "transaction"
 )
 
 func (r PaymentOrderNewParamsDocumentsDocumentableType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewParamsDocumentsDocumentableTypeConnection, PaymentOrderNewParamsDocumentsDocumentableTypeCounterparty, PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayment, PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccount, PaymentOrderNewParamsDocumentsDocumentableTypeIdentification, PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetail, PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccount, PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntity, PaymentOrderNewParamsDocumentsDocumentableTypeOrganization, PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrder, PaymentOrderNewParamsDocumentsDocumentableTypeTransaction:
+	case PaymentOrderNewParamsDocumentsDocumentableTypeConnection, PaymentOrderNewParamsDocumentsDocumentableTypeCounterparty, PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayment, PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccount, PaymentOrderNewParamsDocumentsDocumentableTypeIdentification, PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetail, PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccount, PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntity, PaymentOrderNewParamsDocumentsDocumentableTypeOrganization, PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrder, PaymentOrderNewParamsDocumentsDocumentableTypeReturn, PaymentOrderNewParamsDocumentsDocumentableTypeTransaction:
 		return true
 	}
 	return false
@@ -2343,7 +2344,7 @@ type PaymentOrderNewAsyncParams struct {
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
 	// Additional vendor specific fields for this payment. Data must be represented as
 	// key-value pairs.
-	VendorAttributes param.Field[interface{}] `json:"vendor_attributes"`
+	VendorAttributes param.Field[map[string]interface{}] `json:"vendor_attributes"`
 }
 
 func (r PaymentOrderNewAsyncParams) MarshalJSON() (data []byte, err error) {
