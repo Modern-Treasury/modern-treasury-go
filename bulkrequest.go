@@ -614,7 +614,7 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
 	// Additional vendor specific fields for this payment. Data must be represented as
 	// key-value pairs.
-	VendorAttributes param.Field[interface{}] `json:"vendor_attributes"`
+	VendorAttributes param.Field[map[string]interface{}] `json:"vendor_attributes"`
 }
 
 func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest) MarshalJSON() (data []byte, err error) {
