@@ -186,7 +186,9 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 		UltimateOriginatingPartyName:       moderntreasury.F("ultimate_originating_party_name"),
 		UltimateReceivingPartyIdentifier:   moderntreasury.F("ultimate_receiving_party_identifier"),
 		UltimateReceivingPartyName:         moderntreasury.F("ultimate_receiving_party_name"),
-		VendorAttributes:                   moderntreasury.F[any](map[string]interface{}{}),
+		VendorAttributes: moderntreasury.F(map[string]interface{}{
+			"foo": "bar",
+		}),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -558,7 +560,9 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 		UltimateOriginatingPartyName:       moderntreasury.F("ultimate_originating_party_name"),
 		UltimateReceivingPartyIdentifier:   moderntreasury.F("ultimate_receiving_party_identifier"),
 		UltimateReceivingPartyName:         moderntreasury.F("ultimate_receiving_party_name"),
-		VendorAttributes:                   moderntreasury.F[any](map[string]interface{}{}),
+		VendorAttributes: moderntreasury.F(map[string]interface{}{
+			"foo": "bar",
+		}),
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
