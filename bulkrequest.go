@@ -356,7 +356,8 @@ type BulkRequestNewParamsResource struct {
 	// that this setting must also be turned on in your organization settings page.
 	NsfProtected param.Field[bool] `json:"nsf_protected"`
 	// The ID of one of your organization's internal accounts.
-	OriginatingAccountID param.Field[string] `json:"originating_account_id" format:"uuid"`
+	OriginatingAccountID    param.Field[string]      `json:"originating_account_id" format:"uuid"`
+	OriginatingPartyAddress param.Field[interface{}] `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
 	// statement. This field can only be used for ACH payments currently. For ACH, only
 	// the first 16 characters of this string will be used. Any additional characters
@@ -523,6 +524,9 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// A boolean to determine if NSF Protection is enabled for this payment order. Note
 	// that this setting must also be turned on in your organization settings page.
 	NsfProtected param.Field[bool] `json:"nsf_protected"`
+	// If present, this address will override the default originating party address
+	// used on the payment order. This works across all payment types.
+	OriginatingPartyAddress param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestOriginatingPartyAddress] `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
 	// statement. This field can only be used for ACH payments currently. For ACH, only
 	// the first 16 characters of this string will be used. Any additional characters
@@ -708,6 +712,27 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLineItem struct 
 }
 
 func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLineItem) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// If present, this address will override the default originating party address
+// used on the payment order. This works across all payment types.
+type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestOriginatingPartyAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country param.Field[string] `json:"country"`
+	Line1   param.Field[string] `json:"line1"`
+	Line2   param.Field[string] `json:"line2"`
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
+	Locality param.Field[string] `json:"locality"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code"`
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
+	Region param.Field[string] `json:"region"`
+}
+
+func (r BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestOriginatingPartyAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -1155,6 +1180,9 @@ type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
 	NsfProtected param.Field[bool] `json:"nsf_protected"`
 	// The ID of one of your organization's internal accounts.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id" format:"uuid"`
+	// If present, this address will override the default originating party address
+	// used on the payment order. This works across all payment types.
+	OriginatingPartyAddress param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDOriginatingPartyAddress] `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
 	// statement. This field can only be used for ACH payments currently. For ACH, only
 	// the first 16 characters of this string will be used. Any additional characters
@@ -1342,6 +1370,27 @@ type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDLineItem struct
 }
 
 func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDLineItem) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// If present, this address will override the default originating party address
+// used on the payment order. This works across all payment types.
+type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDOriginatingPartyAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country param.Field[string] `json:"country"`
+	Line1   param.Field[string] `json:"line1"`
+	Line2   param.Field[string] `json:"line2"`
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
+	Locality param.Field[string] `json:"locality"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code"`
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
+	Region param.Field[string] `json:"region"`
+}
+
+func (r BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDOriginatingPartyAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

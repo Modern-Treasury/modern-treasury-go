@@ -209,6 +209,9 @@ type PaymentOrder struct {
 	Object       string `json:"object" api:"required"`
 	// The ID of one of your organization's internal accounts.
 	OriginatingAccountID string `json:"originating_account_id" api:"required" format:"uuid"`
+	// If present, this address will override the default originating party address
+	// used on the payment order. This works across all payment types.
+	OriginatingPartyAddress PaymentOrderOriginatingPartyAddress `json:"originating_party_address" api:"required,nullable"`
 	// If present, this will replace your default company name on receiver's bank
 	// statement. This field can only be used for ACH payments currently. For ACH, only
 	// the first 16 characters of this string will be used. Any additional characters
@@ -314,6 +317,7 @@ type paymentOrderJSON struct {
 	NsfProtected                       apijson.Field
 	Object                             apijson.Field
 	OriginatingAccountID               apijson.Field
+	OriginatingPartyAddress            apijson.Field
 	OriginatingPartyName               apijson.Field
 	Priority                           apijson.Field
 	ProcessAfter                       apijson.Field
@@ -541,6 +545,45 @@ func (r PaymentOrderForeignExchangeIndicator) IsKnown() bool {
 		return true
 	}
 	return false
+}
+
+// If present, this address will override the default originating party address
+// used on the payment order. This works across all payment types.
+type PaymentOrderOriginatingPartyAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country string `json:"country" api:"nullable"`
+	Line1   string `json:"line1" api:"nullable"`
+	Line2   string `json:"line2" api:"nullable"`
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
+	Locality string `json:"locality" api:"nullable"`
+	// The postal code of the address.
+	PostalCode string `json:"postal_code" api:"nullable"`
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
+	Region string                                  `json:"region" api:"nullable"`
+	JSON   paymentOrderOriginatingPartyAddressJSON `json:"-"`
+}
+
+// paymentOrderOriginatingPartyAddressJSON contains the JSON metadata for the
+// struct [PaymentOrderOriginatingPartyAddress]
+type paymentOrderOriginatingPartyAddressJSON struct {
+	Country     apijson.Field
+	Line1       apijson.Field
+	Line2       apijson.Field
+	Locality    apijson.Field
+	PostalCode  apijson.Field
+	Region      apijson.Field
+	raw         string
+	ExtraFields map[string]apijson.Field
+}
+
+func (r *PaymentOrderOriginatingPartyAddress) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r paymentOrderOriginatingPartyAddressJSON) RawJSON() string {
+	return r.raw
 }
 
 // Either `normal` or `high`. For ACH and EFT payments, `high` represents a
@@ -1148,6 +1191,9 @@ type PaymentOrderNewParams struct {
 	// A boolean to determine if NSF Protection is enabled for this payment order. Note
 	// that this setting must also be turned on in your organization settings page.
 	NsfProtected param.Field[bool] `json:"nsf_protected"`
+	// If present, this address will override the default originating party address
+	// used on the payment order. This works across all payment types.
+	OriginatingPartyAddress param.Field[PaymentOrderNewParamsOriginatingPartyAddress] `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
 	// statement. This field can only be used for ACH payments currently. For ACH, only
 	// the first 16 characters of this string will be used. Any additional characters
@@ -1377,6 +1423,27 @@ type PaymentOrderNewParamsLineItem struct {
 }
 
 func (r PaymentOrderNewParamsLineItem) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// If present, this address will override the default originating party address
+// used on the payment order. This works across all payment types.
+type PaymentOrderNewParamsOriginatingPartyAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country param.Field[string] `json:"country"`
+	Line1   param.Field[string] `json:"line1"`
+	Line2   param.Field[string] `json:"line2"`
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
+	Locality param.Field[string] `json:"locality"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code"`
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
+	Region param.Field[string] `json:"region"`
+}
+
+func (r PaymentOrderNewParamsOriginatingPartyAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -1663,6 +1730,9 @@ type PaymentOrderUpdateParams struct {
 	NsfProtected param.Field[bool] `json:"nsf_protected"`
 	// The ID of one of your organization's internal accounts.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id" format:"uuid"`
+	// If present, this address will override the default originating party address
+	// used on the payment order. This works across all payment types.
+	OriginatingPartyAddress param.Field[PaymentOrderUpdateParamsOriginatingPartyAddress] `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
 	// statement. This field can only be used for ACH payments currently. For ACH, only
 	// the first 16 characters of this string will be used. Any additional characters
@@ -1847,6 +1917,27 @@ type PaymentOrderUpdateParamsLineItem struct {
 }
 
 func (r PaymentOrderUpdateParamsLineItem) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// If present, this address will override the default originating party address
+// used on the payment order. This works across all payment types.
+type PaymentOrderUpdateParamsOriginatingPartyAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country param.Field[string] `json:"country"`
+	Line1   param.Field[string] `json:"line1"`
+	Line2   param.Field[string] `json:"line2"`
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
+	Locality param.Field[string] `json:"locality"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code"`
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
+	Region param.Field[string] `json:"region"`
+}
+
+func (r PaymentOrderUpdateParamsOriginatingPartyAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -2278,6 +2369,9 @@ type PaymentOrderNewAsyncParams struct {
 	// A boolean to determine if NSF Protection is enabled for this payment order. Note
 	// that this setting must also be turned on in your organization settings page.
 	NsfProtected param.Field[bool] `json:"nsf_protected"`
+	// If present, this address will override the default originating party address
+	// used on the payment order. This works across all payment types.
+	OriginatingPartyAddress param.Field[PaymentOrderNewAsyncParamsOriginatingPartyAddress] `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
 	// statement. This field can only be used for ACH payments currently. For ACH, only
 	// the first 16 characters of this string will be used. Any additional characters
@@ -2458,6 +2552,27 @@ type PaymentOrderNewAsyncParamsLineItem struct {
 }
 
 func (r PaymentOrderNewAsyncParamsLineItem) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// If present, this address will override the default originating party address
+// used on the payment order. This works across all payment types.
+type PaymentOrderNewAsyncParamsOriginatingPartyAddress struct {
+	// Country code conforms to [ISO 3166-1 alpha-2]
+	Country param.Field[string] `json:"country"`
+	Line1   param.Field[string] `json:"line1"`
+	Line2   param.Field[string] `json:"line2"`
+	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
+	// Francisco).
+	Locality param.Field[string] `json:"locality"`
+	// The postal code of the address.
+	PostalCode param.Field[string] `json:"postal_code"`
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
+	Region param.Field[string] `json:"region"`
+}
+
+func (r PaymentOrderNewAsyncParamsOriginatingPartyAddress) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
