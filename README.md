@@ -31,7 +31,7 @@ Or to pin the version:
 <!-- x-release-please-start-version -->
 
 ```sh
-go get -u 'github.com/Modern-Treasury/modern-treasury-go/v2@v2.54.0'
+go get -u 'github.com/Modern-Treasury/modern-treasury-go/v2@v2.60.0'
 ```
 
 <!-- x-release-please-end -->
@@ -265,21 +265,21 @@ file, err := os.Open("my/file.txt")
 moderntreasury.DocumentNewParams{
 	File:             moderntreasury.F[io.Reader](file),
 	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
-	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
+	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeConnection),
 }
 
 // A file from a string
 moderntreasury.DocumentNewParams{
 	File:             moderntreasury.F[io.Reader](strings.NewReader("my file contents")),
 	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
-	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
+	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeConnection),
 }
 
 // With a custom filename and contentType
 moderntreasury.DocumentNewParams{
 	File:             moderntreasury.FileParam(strings.NewReader(`{"hello": "foo"}`), "file.go", "application/json"),
 	DocumentableID:   moderntreasury.F("24c6b7a3-02..."),
-	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeCounterparties),
+	DocumentableType: moderntreasury.F(moderntreasury.DocumentNewParamsDocumentableTypeConnection),
 }
 ```
 
