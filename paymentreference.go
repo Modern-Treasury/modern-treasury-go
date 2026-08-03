@@ -240,14 +240,16 @@ func (r PaymentReferenceReferenceNumberType) IsKnown() bool {
 type PaymentReferenceReferenceableType string
 
 const (
-	PaymentReferenceReferenceableTypePaymentOrder PaymentReferenceReferenceableType = "payment_order"
-	PaymentReferenceReferenceableTypeReversal     PaymentReferenceReferenceableType = "reversal"
-	PaymentReferenceReferenceableTypeReturn       PaymentReferenceReferenceableType = "return"
+	PaymentReferenceReferenceableTypePaymentOrder          PaymentReferenceReferenceableType = "payment_order"
+	PaymentReferenceReferenceableTypeReversal              PaymentReferenceReferenceableType = "reversal"
+	PaymentReferenceReferenceableTypeReturn                PaymentReferenceReferenceableType = "return"
+	PaymentReferenceReferenceableTypeIncomingPaymentDetail PaymentReferenceReferenceableType = "incoming_payment_detail"
+	PaymentReferenceReferenceableTypeTransaction           PaymentReferenceReferenceableType = "transaction"
 )
 
 func (r PaymentReferenceReferenceableType) IsKnown() bool {
 	switch r {
-	case PaymentReferenceReferenceableTypePaymentOrder, PaymentReferenceReferenceableTypeReversal, PaymentReferenceReferenceableTypeReturn:
+	case PaymentReferenceReferenceableTypePaymentOrder, PaymentReferenceReferenceableTypeReversal, PaymentReferenceReferenceableTypeReturn, PaymentReferenceReferenceableTypeIncomingPaymentDetail, PaymentReferenceReferenceableTypeTransaction:
 		return true
 	}
 	return false
@@ -280,14 +282,16 @@ func (r PaymentReferenceListParams) URLQuery() (v url.Values) {
 type PaymentReferenceListParamsReferenceableType string
 
 const (
-	PaymentReferenceListParamsReferenceableTypePaymentOrder PaymentReferenceListParamsReferenceableType = "payment_order"
-	PaymentReferenceListParamsReferenceableTypeReturn       PaymentReferenceListParamsReferenceableType = "return"
-	PaymentReferenceListParamsReferenceableTypeReversal     PaymentReferenceListParamsReferenceableType = "reversal"
+	PaymentReferenceListParamsReferenceableTypePaymentOrder          PaymentReferenceListParamsReferenceableType = "payment_order"
+	PaymentReferenceListParamsReferenceableTypeReturn                PaymentReferenceListParamsReferenceableType = "return"
+	PaymentReferenceListParamsReferenceableTypeReversal              PaymentReferenceListParamsReferenceableType = "reversal"
+	PaymentReferenceListParamsReferenceableTypeIncomingPaymentDetail PaymentReferenceListParamsReferenceableType = "incoming_payment_detail"
+	PaymentReferenceListParamsReferenceableTypeTransaction           PaymentReferenceListParamsReferenceableType = "transaction"
 )
 
 func (r PaymentReferenceListParamsReferenceableType) IsKnown() bool {
 	switch r {
-	case PaymentReferenceListParamsReferenceableTypePaymentOrder, PaymentReferenceListParamsReferenceableTypeReturn, PaymentReferenceListParamsReferenceableTypeReversal:
+	case PaymentReferenceListParamsReferenceableTypePaymentOrder, PaymentReferenceListParamsReferenceableTypeReturn, PaymentReferenceListParamsReferenceableTypeReversal, PaymentReferenceListParamsReferenceableTypeIncomingPaymentDetail, PaymentReferenceListParamsReferenceableTypeTransaction:
 		return true
 	}
 	return false
