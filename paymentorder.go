@@ -1214,7 +1214,7 @@ type PaymentOrderNewParams struct {
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
 	// Additional vendor specific fields for this payment. Data must be represented as
 	// key-value pairs.
-	VendorAttributes param.Field[map[string]interface{}] `json:"vendor_attributes"`
+	VendorAttributes param.Field[interface{}] `json:"vendor_attributes"`
 }
 
 func (r PaymentOrderNewParams) MarshalMultipart() (data []byte, contentType string, err error) {
@@ -1593,13 +1593,11 @@ type PaymentOrderNewParamsUltimateOriginatingPartyAddress struct {
 	Country param.Field[string] `json:"country"`
 	Line1   param.Field[string] `json:"line1"`
 	Line2   param.Field[string] `json:"line2"`
-	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
-	// Francisco).
+	// Locality or City.
 	Locality param.Field[string] `json:"locality"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code"`
-	// Region or State. This field is free-form; for US states, we recommend a
-	// two-letter code (e.g. CA). Full state names are also accepted.
+	// Region or State.
 	Region param.Field[string] `json:"region"`
 }
 
@@ -2343,7 +2341,7 @@ type PaymentOrderNewAsyncParams struct {
 	UltimateReceivingPartyName param.Field[string] `json:"ultimate_receiving_party_name"`
 	// Additional vendor specific fields for this payment. Data must be represented as
 	// key-value pairs.
-	VendorAttributes param.Field[map[string]interface{}] `json:"vendor_attributes"`
+	VendorAttributes param.Field[interface{}] `json:"vendor_attributes"`
 }
 
 func (r PaymentOrderNewAsyncParams) MarshalJSON() (data []byte, err error) {
@@ -2674,13 +2672,11 @@ type PaymentOrderNewAsyncParamsUltimateOriginatingPartyAddress struct {
 	Country param.Field[string] `json:"country"`
 	Line1   param.Field[string] `json:"line1"`
 	Line2   param.Field[string] `json:"line2"`
-	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
-	// Francisco).
+	// Locality or City.
 	Locality param.Field[string] `json:"locality"`
 	// The postal code of the address.
 	PostalCode param.Field[string] `json:"postal_code"`
-	// Region or State. This field is free-form; for US states, we recommend a
-	// two-letter code (e.g. CA). Full state names are also accepted.
+	// Region or State.
 	Region param.Field[string] `json:"region"`
 }
 

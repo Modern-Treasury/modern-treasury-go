@@ -57,7 +57,7 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 		CitizenshipCountry:     moderntreasury.F("citizenship_country"),
 		ComplianceDetails:      moderntreasury.F[any](map[string]interface{}{}),
 		ConnectionID:           moderntreasury.F("connection_id"),
-		CountryOfIncorporation: moderntreasury.F("US"),
+		CountryOfIncorporation: moderntreasury.F("country_of_incorporation"),
 		DateFormed:             moderntreasury.F(time.Now()),
 		DateOfBirth:            moderntreasury.F(time.Now()),
 		Documents: moderntreasury.F([]moderntreasury.LegalEntityNewParamsDocument{{
@@ -124,7 +124,7 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 				CitizenshipCountry:     moderntreasury.F("citizenship_country"),
 				ComplianceDetails:      moderntreasury.F[any](map[string]interface{}{}),
 				ConnectionID:           moderntreasury.F("connection_id"),
-				CountryOfIncorporation: moderntreasury.F("US"),
+				CountryOfIncorporation: moderntreasury.F("country_of_incorporation"),
 				DateFormed:             moderntreasury.F(time.Now()),
 				DateOfBirth:            moderntreasury.F(time.Now()),
 				Documents: moderntreasury.F([]shared.ChildLegalEntityCreateDocumentParam{{
@@ -171,7 +171,7 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 					"modern": "treasury",
 				}),
 				MiddleName:             moderntreasury.F("middle_name"),
-				OperatingJurisdictions: moderntreasury.F([]string{"US", "CA"}),
+				OperatingJurisdictions: moderntreasury.F([]string{"string"}),
 				PhoneNumbers: moderntreasury.F([]shared.ChildLegalEntityCreatePhoneNumberParam{{
 					PhoneNumber: moderntreasury.F("phone_number"),
 				}}),
@@ -244,7 +244,7 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 			"modern": "treasury",
 		}),
 		MiddleName:             moderntreasury.F("middle_name"),
-		OperatingJurisdictions: moderntreasury.F([]string{"US", "CA"}),
+		OperatingJurisdictions: moderntreasury.F([]string{"string"}),
 		PhoneNumbers: moderntreasury.F([]moderntreasury.LegalEntityNewParamsPhoneNumber{{
 			PhoneNumber: moderntreasury.F("phone_number"),
 		}}),
@@ -379,7 +379,7 @@ func TestLegalEntityUpdateWithOptionalParams(t *testing.T) {
 			BusinessDescription:    moderntreasury.F("business_description"),
 			BusinessName:           moderntreasury.F("business_name"),
 			CitizenshipCountry:     moderntreasury.F("citizenship_country"),
-			CountryOfIncorporation: moderntreasury.F("US"),
+			CountryOfIncorporation: moderntreasury.F("country_of_incorporation"),
 			DateFormed:             moderntreasury.F(time.Now()),
 			DateOfBirth:            moderntreasury.F(time.Now()),
 			DoingBusinessAsNames:   moderntreasury.F([]string{"string"}),
@@ -419,7 +419,7 @@ func TestLegalEntityUpdateWithOptionalParams(t *testing.T) {
 				"modern": "treasury",
 			}),
 			MiddleName:             moderntreasury.F("middle_name"),
-			OperatingJurisdictions: moderntreasury.F([]string{"US", "CA"}),
+			OperatingJurisdictions: moderntreasury.F([]string{"string"}),
 			PhoneNumbers: moderntreasury.F([]moderntreasury.LegalEntityUpdateParamsPhoneNumber{{
 				PhoneNumber: moderntreasury.F("phone_number"),
 			}}),
