@@ -278,6 +278,8 @@ type BulkResultEntity struct {
 	NsfProtected bool `json:"nsf_protected"`
 	// The ID of one of your organization's internal accounts.
 	OriginatingAccountID string `json:"originating_account_id" format:"uuid"`
+	// This field can have the runtime type of [PaymentOrderOriginatingPartyAddress].
+	OriginatingPartyAddress interface{} `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
 	// statement. This field can only be used for ACH payments currently. For ACH, only
 	// the first 16 characters of this string will be used. Any additional characters
@@ -455,6 +457,7 @@ type bulkResultEntityJSON struct {
 	NormalBalance                      apijson.Field
 	NsfProtected                       apijson.Field
 	OriginatingAccountID               apijson.Field
+	OriginatingPartyAddress            apijson.Field
 	OriginatingPartyName               apijson.Field
 	PartiallyPostsLedgerTransactionID  apijson.Field
 	Posted                             apijson.Field
