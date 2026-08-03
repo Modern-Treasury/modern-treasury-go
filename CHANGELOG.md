@@ -1,5 +1,23 @@
 # Changelog
 
+## 2.60.0 (2026-07-24)
+
+Full Changelog: [v2.59.0...v2.60.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.59.0...v2.60.0)
+
+### Features
+
+* **api:** api update ([de6d3da](https://github.com/Modern-Treasury/modern-treasury-go/commit/de6d3da33d4ebb3af095fd83b79213df71f6e4ec))
+* **api:** api update ([b7d9e5a](https://github.com/Modern-Treasury/modern-treasury-go/commit/b7d9e5a212b7a2932460b11419329af262e51095))
+* **api:** api update ([9a0e5f2](https://github.com/Modern-Treasury/modern-treasury-go/commit/9a0e5f26fe345396b57c62fd8ee24b59e27f8ebc))
+* **api:** api update ([eafa453](https://github.com/Modern-Treasury/modern-treasury-go/commit/eafa45356596b19fe9ebf5ab2f7dbef619910022))
+* **stlc:** configurable CI runner and private-production-repo support in workflow templates ([b66eb26](https://github.com/Modern-Treasury/modern-treasury-go/commit/b66eb26c526af67c2796e0cf66c40111dbb48a8a))
+
+
+### Chores
+
+* regenerate SDKs from 24f3dc7dc33d9f75e2d589541d11b7a8bd943451 ([4a8d4a7](https://github.com/Modern-Treasury/modern-treasury-go/commit/4a8d4a73cfbe0bdee967e27cef1f9eaaaba2f6cb))
+* regenerate SDKs from e1e0e3ef1458022fd1daec6fcf15bb4695c49a4b ([6d8e6bd](https://github.com/Modern-Treasury/modern-treasury-go/commit/6d8e6bd090a74474c4f4d0bf547dd88fc5ba8150))
+
 ## 2.59.0 (2026-07-11)
 
 Full Changelog: [v2.58.0...v2.59.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.58.0...v2.59.0)
