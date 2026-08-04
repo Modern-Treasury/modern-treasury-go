@@ -126,6 +126,7 @@ func TestInternalAccountUpdateWithOptionalParams(t *testing.T) {
 			}),
 			Name:            moderntreasury.F("name"),
 			ParentAccountID: moderntreasury.F("parent_account_id"),
+			Status:          moderntreasury.F(moderntreasury.InternalAccountUpdateParamsStatusPendingClosure),
 		},
 	)
 	if err != nil {
