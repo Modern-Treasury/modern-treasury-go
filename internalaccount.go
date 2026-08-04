@@ -669,10 +669,29 @@ type InternalAccountUpdateParams struct {
 	Name param.Field[string] `json:"name"`
 	// The parent internal account for this account.
 	ParentAccountID param.Field[string] `json:"parent_account_id"`
+	// Requests closure of the internal account. The resulting status may be `closed`
+	// for vendors that close synchronously.
+	Status param.Field[InternalAccountUpdateParamsStatus] `json:"status"`
 }
 
 func (r InternalAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// Requests closure of the internal account. The resulting status may be `closed`
+// for vendors that close synchronously.
+type InternalAccountUpdateParamsStatus string
+
+const (
+	InternalAccountUpdateParamsStatusPendingClosure InternalAccountUpdateParamsStatus = "pending_closure"
+)
+
+func (r InternalAccountUpdateParamsStatus) IsKnown() bool {
+	switch r {
+	case InternalAccountUpdateParamsStatusPendingClosure:
+		return true
+	}
+	return false
 }
 
 type InternalAccountListParams struct {
