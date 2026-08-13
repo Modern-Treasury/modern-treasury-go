@@ -894,14 +894,13 @@ const (
 	BulkResultEntityTypeLedgerTransaction   BulkResultEntityType = "ledger_transaction"
 	BulkResultEntityTypeExpectedPayment     BulkResultEntityType = "expected_payment"
 	BulkResultEntityTypeTransaction         BulkResultEntityType = "transaction"
-	BulkResultEntityTypeEntityLink          BulkResultEntityType = "entity_link"
 	BulkResultEntityTypeTransactionLineItem BulkResultEntityType = "transaction_line_item"
 	BulkResultEntityTypeBulkError           BulkResultEntityType = "bulk_error"
 )
 
 func (r BulkResultEntityType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityTypePaymentOrder, BulkResultEntityTypeLedgerAccount, BulkResultEntityTypeLedgerTransaction, BulkResultEntityTypeExpectedPayment, BulkResultEntityTypeTransaction, BulkResultEntityTypeEntityLink, BulkResultEntityTypeTransactionLineItem, BulkResultEntityTypeBulkError:
+	case BulkResultEntityTypePaymentOrder, BulkResultEntityTypeLedgerAccount, BulkResultEntityTypeLedgerTransaction, BulkResultEntityTypeExpectedPayment, BulkResultEntityTypeTransaction, BulkResultEntityTypeTransactionLineItem, BulkResultEntityTypeBulkError:
 		return true
 	}
 	return false
@@ -976,14 +975,13 @@ const (
 	BulkResultListParamsEntityTypeLedgerTransaction   BulkResultListParamsEntityType = "ledger_transaction"
 	BulkResultListParamsEntityTypeExpectedPayment     BulkResultListParamsEntityType = "expected_payment"
 	BulkResultListParamsEntityTypeTransaction         BulkResultListParamsEntityType = "transaction"
-	BulkResultListParamsEntityTypeEntityLink          BulkResultListParamsEntityType = "entity_link"
 	BulkResultListParamsEntityTypeTransactionLineItem BulkResultListParamsEntityType = "transaction_line_item"
 	BulkResultListParamsEntityTypeBulkError           BulkResultListParamsEntityType = "bulk_error"
 )
 
 func (r BulkResultListParamsEntityType) IsKnown() bool {
 	switch r {
-	case BulkResultListParamsEntityTypePaymentOrder, BulkResultListParamsEntityTypeLedgerAccount, BulkResultListParamsEntityTypeLedgerTransaction, BulkResultListParamsEntityTypeExpectedPayment, BulkResultListParamsEntityTypeTransaction, BulkResultListParamsEntityTypeEntityLink, BulkResultListParamsEntityTypeTransactionLineItem, BulkResultListParamsEntityTypeBulkError:
+	case BulkResultListParamsEntityTypePaymentOrder, BulkResultListParamsEntityTypeLedgerAccount, BulkResultListParamsEntityTypeLedgerTransaction, BulkResultListParamsEntityTypeExpectedPayment, BulkResultListParamsEntityTypeTransaction, BulkResultListParamsEntityTypeTransactionLineItem, BulkResultListParamsEntityTypeBulkError:
 		return true
 	}
 	return false
