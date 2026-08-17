@@ -138,6 +138,7 @@ type ExternalAccount struct {
 	AccountDetails []AccountDetail `json:"account_details" api:"required"`
 	// Can be `checking`, `savings` or `other`.
 	AccountType    ExternalAccountType    `json:"account_type" api:"required"`
+	CardID         string                 `json:"card_id" api:"required,nullable" format:"uuid"`
 	ContactDetails []shared.ContactDetail `json:"contact_details" api:"required"`
 	CounterpartyID string                 `json:"counterparty_id" api:"required,nullable" format:"uuid"`
 	CreatedAt      time.Time              `json:"created_at" api:"required" format:"date-time"`
@@ -175,6 +176,7 @@ type externalAccountJSON struct {
 	ID                 apijson.Field
 	AccountDetails     apijson.Field
 	AccountType        apijson.Field
+	CardID             apijson.Field
 	ContactDetails     apijson.Field
 	CounterpartyID     apijson.Field
 	CreatedAt          apijson.Field
@@ -293,6 +295,7 @@ type ExternalAccountVerifyResponse struct {
 	AccountDetails interface{} `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
 	AccountType ExternalAccountType `json:"account_type"`
+	CardID      string              `json:"card_id" api:"nullable" format:"uuid"`
 	// This field can have the runtime type of [[]shared.ContactDetail].
 	ContactDetails interface{} `json:"contact_details"`
 	CounterpartyID string      `json:"counterparty_id" api:"nullable" format:"uuid"`
@@ -343,6 +346,7 @@ type externalAccountVerifyResponseJSON struct {
 	UpdatedAt            apijson.Field
 	AccountDetails       apijson.Field
 	AccountType          apijson.Field
+	CardID               apijson.Field
 	ContactDetails       apijson.Field
 	CounterpartyID       apijson.Field
 	DiscardedAt          apijson.Field
