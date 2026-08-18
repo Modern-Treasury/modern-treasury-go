@@ -184,6 +184,7 @@ type CounterpartyAccount struct {
 	AccountDetails []AccountDetail `json:"account_details"`
 	// Can be `checking`, `savings` or `other`.
 	AccountType    ExternalAccountType    `json:"account_type"`
+	CardID         string                 `json:"card_id" api:"nullable" format:"uuid"`
 	ContactDetails []shared.ContactDetail `json:"contact_details"`
 	CreatedAt      time.Time              `json:"created_at" format:"date-time"`
 	DiscardedAt    time.Time              `json:"discarded_at" api:"nullable" format:"date-time"`
@@ -221,6 +222,7 @@ type counterpartyAccountJSON struct {
 	ID                 apijson.Field
 	AccountDetails     apijson.Field
 	AccountType        apijson.Field
+	CardID             apijson.Field
 	ContactDetails     apijson.Field
 	CreatedAt          apijson.Field
 	DiscardedAt        apijson.Field
