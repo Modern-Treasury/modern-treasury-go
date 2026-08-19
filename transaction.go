@@ -159,9 +159,9 @@ type Transaction struct {
 	// For most banks this is the BAI2/BTRS transaction code.
 	VendorCode string `json:"vendor_code" api:"required,nullable"`
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
-	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
-	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`,
-	// `us_bank`, or others.
+	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dwolla`, `evolve`,
+	// `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`, `us_bank`, or
+	// others.
 	VendorCodeType TransactionVendorCodeType `json:"vendor_code_type" api:"required,nullable"`
 	// An identifier given to this transaction by the bank, often `null`.
 	VendorCustomerID string `json:"vendor_customer_id" api:"required,nullable"`
@@ -265,9 +265,9 @@ func (r TransactionType) IsKnown() bool {
 }
 
 // The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
-// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
-// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`,
-// `us_bank`, or others.
+// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dwolla`, `evolve`,
+// `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`, `us_bank`, or
+// others.
 type TransactionVendorCodeType string
 
 const (
@@ -280,7 +280,6 @@ const (
 	TransactionVendorCodeTypeColumn          TransactionVendorCodeType = "column"
 	TransactionVendorCodeTypeCrossRiver      TransactionVendorCodeType = "cross_river"
 	TransactionVendorCodeTypeCurrencycloud   TransactionVendorCodeType = "currencycloud"
-	TransactionVendorCodeTypeDcBank          TransactionVendorCodeType = "dc_bank"
 	TransactionVendorCodeTypeDwolla          TransactionVendorCodeType = "dwolla"
 	TransactionVendorCodeTypeEvolve          TransactionVendorCodeType = "evolve"
 	TransactionVendorCodeTypeFakeVendor      TransactionVendorCodeType = "fake_vendor"
@@ -302,7 +301,7 @@ const (
 
 func (r TransactionVendorCodeType) IsKnown() bool {
 	switch r {
-	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankingCircle, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeCoinbasePrime, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDcBank, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeFakeVendor, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeModernTreasury, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePaxos, TransactionVendorCodeTypePaypal, TransactionVendorCodeTypePnc, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeTurnkey, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser, TransactionVendorCodeTypeWesternAlliance:
+	case TransactionVendorCodeTypeBai2, TransactionVendorCodeTypeBankingCircle, TransactionVendorCodeTypeBankprov, TransactionVendorCodeTypeBnkDev, TransactionVendorCodeTypeCleartouch, TransactionVendorCodeTypeCoinbasePrime, TransactionVendorCodeTypeColumn, TransactionVendorCodeTypeCrossRiver, TransactionVendorCodeTypeCurrencycloud, TransactionVendorCodeTypeDwolla, TransactionVendorCodeTypeEvolve, TransactionVendorCodeTypeFakeVendor, TransactionVendorCodeTypeGoldmanSachs, TransactionVendorCodeTypeIso20022, TransactionVendorCodeTypeJpmc, TransactionVendorCodeTypeModernTreasury, TransactionVendorCodeTypeMx, TransactionVendorCodeTypePaxos, TransactionVendorCodeTypePaypal, TransactionVendorCodeTypePnc, TransactionVendorCodeTypeSilvergate, TransactionVendorCodeTypeSwift, TransactionVendorCodeTypeTurnkey, TransactionVendorCodeTypeUsBank, TransactionVendorCodeTypeUser, TransactionVendorCodeTypeWesternAlliance:
 		return true
 	}
 	return false
@@ -319,9 +318,9 @@ type TransactionNewParams struct {
 	// For most banks this is the BAI2/BTRS transaction code.
 	VendorCode param.Field[string] `json:"vendor_code" api:"required"`
 	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
-	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dc_bank`, `dwolla`,
-	// `evolve`, `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`,
-	// `us_bank`, or others.
+	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dwolla`, `evolve`,
+	// `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`, `us_bank`, or
+	// others.
 	VendorCodeType param.Field[string] `json:"vendor_code_type" api:"required"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
