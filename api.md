@@ -494,6 +494,8 @@ Methods:
 - <code title="get /api/virtual_accounts">client.VirtualAccounts.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#VirtualAccountService.List">List</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#VirtualAccountListParams">VirtualAccountListParams</a>) (\*<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination">pagination</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2/packages/pagination#Page">Page</a>[<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#VirtualAccount">VirtualAccount</a>], <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 - <code title="delete /api/virtual_accounts/{id}">client.VirtualAccounts.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#VirtualAccountService.Delete">Delete</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, id <a href="https://pkg.go.dev/builtin#string">string</a>) (\*<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#VirtualAccount">VirtualAccount</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
+# VirtualAccountSettings
+
 # BulkRequests
 
 Response Types:
