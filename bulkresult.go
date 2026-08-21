@@ -277,7 +277,8 @@ type BulkResultEntity struct {
 	// that this setting must also be turned on in your organization settings page.
 	NsfProtected bool `json:"nsf_protected"`
 	// The ID of one of your organization's internal accounts.
-	OriginatingAccountID string `json:"originating_account_id" format:"uuid"`
+	OriginatingAccountID   string                                 `json:"originating_account_id" format:"uuid"`
+	OriginatingAccountType BulkResultEntityOriginatingAccountType `json:"originating_account_type"`
 	// This field can have the runtime type of [PaymentOrderOriginatingPartyAddress].
 	OriginatingPartyAddress interface{} `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
@@ -457,6 +458,7 @@ type bulkResultEntityJSON struct {
 	NormalBalance                      apijson.Field
 	NsfProtected                       apijson.Field
 	OriginatingAccountID               apijson.Field
+	OriginatingAccountType             apijson.Field
 	OriginatingPartyAddress            apijson.Field
 	OriginatingPartyName               apijson.Field
 	PartiallyPostsLedgerTransactionID  apijson.Field
@@ -719,6 +721,21 @@ const (
 func (r BulkResultEntityLedgerableType) IsKnown() bool {
 	switch r {
 	case BulkResultEntityLedgerableTypeExpectedPayment, BulkResultEntityLedgerableTypeIncomingPaymentDetail, BulkResultEntityLedgerableTypePaymentOrder, BulkResultEntityLedgerableTypeReturn, BulkResultEntityLedgerableTypeReversal, BulkResultEntityLedgerableTypeCounterparty, BulkResultEntityLedgerableTypeExternalAccount, BulkResultEntityLedgerableTypeInternalAccount, BulkResultEntityLedgerableTypeVirtualAccount:
+		return true
+	}
+	return false
+}
+
+type BulkResultEntityOriginatingAccountType string
+
+const (
+	BulkResultEntityOriginatingAccountTypeInternalAccount BulkResultEntityOriginatingAccountType = "internal_account"
+	BulkResultEntityOriginatingAccountTypeVirtualAccount  BulkResultEntityOriginatingAccountType = "virtual_account"
+)
+
+func (r BulkResultEntityOriginatingAccountType) IsKnown() bool {
+	switch r {
+	case BulkResultEntityOriginatingAccountTypeInternalAccount, BulkResultEntityOriginatingAccountTypeVirtualAccount:
 		return true
 	}
 	return false
