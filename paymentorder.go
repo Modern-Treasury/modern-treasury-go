@@ -208,7 +208,8 @@ type PaymentOrder struct {
 	NsfProtected bool   `json:"nsf_protected" api:"required"`
 	Object       string `json:"object" api:"required"`
 	// The ID of one of your organization's internal accounts.
-	OriginatingAccountID string `json:"originating_account_id" api:"required" format:"uuid"`
+	OriginatingAccountID   string                             `json:"originating_account_id" api:"required" format:"uuid"`
+	OriginatingAccountType PaymentOrderOriginatingAccountType `json:"originating_account_type" api:"required"`
 	// If present, this address will override the default originating party address
 	// used on the payment order. This works across all payment types.
 	OriginatingPartyAddress PaymentOrderOriginatingPartyAddress `json:"originating_party_address" api:"required,nullable"`
@@ -317,6 +318,7 @@ type paymentOrderJSON struct {
 	NsfProtected                       apijson.Field
 	Object                             apijson.Field
 	OriginatingAccountID               apijson.Field
+	OriginatingAccountType             apijson.Field
 	OriginatingPartyAddress            apijson.Field
 	OriginatingPartyName               apijson.Field
 	Priority                           apijson.Field
@@ -542,6 +544,21 @@ const (
 func (r PaymentOrderForeignExchangeIndicator) IsKnown() bool {
 	switch r {
 	case PaymentOrderForeignExchangeIndicatorFixedToVariable, PaymentOrderForeignExchangeIndicatorVariableToFixed:
+		return true
+	}
+	return false
+}
+
+type PaymentOrderOriginatingAccountType string
+
+const (
+	PaymentOrderOriginatingAccountTypeInternalAccount PaymentOrderOriginatingAccountType = "internal_account"
+	PaymentOrderOriginatingAccountTypeVirtualAccount  PaymentOrderOriginatingAccountType = "virtual_account"
+)
+
+func (r PaymentOrderOriginatingAccountType) IsKnown() bool {
+	switch r {
+	case PaymentOrderOriginatingAccountTypeInternalAccount, PaymentOrderOriginatingAccountTypeVirtualAccount:
 		return true
 	}
 	return false
