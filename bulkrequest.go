@@ -363,10 +363,9 @@ type BulkRequestNewParamsResource struct {
 	OriginatingAccountID    param.Field[string]      `json:"originating_account_id" format:"uuid"`
 	OriginatingPartyAddress param.Field[interface{}] `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
-	// statement. For ACH, only the first 16 characters of this string will be used.
-	// This must be a name the account holder legally operates under, such as a DBA. Do
-	// not use it to originate on behalf of another person or business, including an
-	// end customer.
+	// statement. This field can only be used for ACH payments currently. For ACH, only
+	// the first 16 characters of this string will be used. Any additional characters
+	// will be truncated.
 	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
 	// This field will be `true` if the transaction has posted to the account.
 	Posted param.Field[bool] `json:"posted"`
@@ -550,10 +549,9 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// used on the payment order. This works across all payment types.
 	OriginatingPartyAddress param.Field[BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestOriginatingPartyAddress] `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
-	// statement. For ACH, only the first 16 characters of this string will be used.
-	// This must be a name the account holder legally operates under, such as a DBA. Do
-	// not use it to originate on behalf of another person or business, including an
-	// end customer.
+	// statement. This field can only be used for ACH payments currently. For ACH, only
+	// the first 16 characters of this string will be used. Any additional characters
+	// will be truncated.
 	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
 	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
@@ -1292,10 +1290,9 @@ type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
 	// used on the payment order. This works across all payment types.
 	OriginatingPartyAddress param.Field[BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithIDOriginatingPartyAddress] `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
-	// statement. For ACH, only the first 16 characters of this string will be used.
-	// This must be a name the account holder legally operates under, such as a DBA. Do
-	// not use it to originate on behalf of another person or business, including an
-	// end customer.
+	// statement. This field can only be used for ACH payments currently. For ACH, only
+	// the first 16 characters of this string will be used. Any additional characters
+	// will be truncated.
 	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
 	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
