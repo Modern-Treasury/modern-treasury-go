@@ -282,10 +282,9 @@ type BulkResultEntity struct {
 	// This field can have the runtime type of [PaymentOrderOriginatingPartyAddress].
 	OriginatingPartyAddress interface{} `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
-	// statement. For ACH, only the first 16 characters of this string will be used.
-	// This must be a name the account holder legally operates under, such as a DBA. Do
-	// not use it to originate on behalf of another person or business, including an
-	// end customer.
+	// statement. This field can only be used for ACH payments currently. For ACH, only
+	// the first 16 characters of this string will be used. Any additional characters
+	// will be truncated.
 	OriginatingPartyName string `json:"originating_party_name" api:"nullable"`
 	// The ID of the ledger transaction that this ledger transaction partially posts.
 	PartiallyPostsLedgerTransactionID string `json:"partially_posts_ledger_transaction_id" api:"nullable"`
