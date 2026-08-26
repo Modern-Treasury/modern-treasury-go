@@ -689,7 +689,7 @@ type InvoiceUpdateParams struct {
 	RemindAfterOverdueDays param.Field[[]int64] `json:"remind_after_overdue_days"`
 	// Invoice status must be updated in a `PATCH` request that does not modify any
 	// other invoice attributes. Valid state transitions are `draft` to `unpaid`,
-	// `draft` or `unpaid` to `voided`, and `draft` or `unpaid` to `paid`.
+	// `draft`, `unpaid` or `paid` to `voided`, and `draft` or `unpaid` to `paid`.
 	Status param.Field[string] `json:"status"`
 	// The ID of the virtual account the invoice should be paid to.
 	VirtualAccountID param.Field[string] `json:"virtual_account_id" format:"uuid"`

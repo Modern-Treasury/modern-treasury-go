@@ -214,9 +214,10 @@ type PaymentOrder struct {
 	// used on the payment order. This works across all payment types.
 	OriginatingPartyAddress PaymentOrderOriginatingPartyAddress `json:"originating_party_address" api:"required,nullable"`
 	// If present, this will replace your default company name on receiver's bank
-	// statement. This field can only be used for ACH payments currently. For ACH, only
-	// the first 16 characters of this string will be used. Any additional characters
-	// will be truncated.
+	// statement. For ACH, only the first 16 characters of this string will be used.
+	// This must be a name the account holder legally operates under, such as a DBA. Do
+	// not use it to originate on behalf of another person or business, including an
+	// end customer.
 	OriginatingPartyName string `json:"originating_party_name" api:"required,nullable"`
 	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
@@ -1212,9 +1213,10 @@ type PaymentOrderNewParams struct {
 	// used on the payment order. This works across all payment types.
 	OriginatingPartyAddress param.Field[PaymentOrderNewParamsOriginatingPartyAddress] `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
-	// statement. This field can only be used for ACH payments currently. For ACH, only
-	// the first 16 characters of this string will be used. Any additional characters
-	// will be truncated.
+	// statement. For ACH, only the first 16 characters of this string will be used.
+	// This must be a name the account holder legally operates under, such as a DBA. Do
+	// not use it to originate on behalf of another person or business, including an
+	// end customer.
 	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
 	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
@@ -1751,9 +1753,10 @@ type PaymentOrderUpdateParams struct {
 	// used on the payment order. This works across all payment types.
 	OriginatingPartyAddress param.Field[PaymentOrderUpdateParamsOriginatingPartyAddress] `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
-	// statement. This field can only be used for ACH payments currently. For ACH, only
-	// the first 16 characters of this string will be used. Any additional characters
-	// will be truncated.
+	// statement. For ACH, only the first 16 characters of this string will be used.
+	// This must be a name the account holder legally operates under, such as a DBA. Do
+	// not use it to originate on behalf of another person or business, including an
+	// end customer.
 	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
 	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
@@ -2390,9 +2393,10 @@ type PaymentOrderNewAsyncParams struct {
 	// used on the payment order. This works across all payment types.
 	OriginatingPartyAddress param.Field[PaymentOrderNewAsyncParamsOriginatingPartyAddress] `json:"originating_party_address"`
 	// If present, this will replace your default company name on receiver's bank
-	// statement. This field can only be used for ACH payments currently. For ACH, only
-	// the first 16 characters of this string will be used. Any additional characters
-	// will be truncated.
+	// statement. For ACH, only the first 16 characters of this string will be used.
+	// This must be a name the account holder legally operates under, such as a DBA. Do
+	// not use it to originate on behalf of another person or business, including an
+	// end customer.
 	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
 	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
