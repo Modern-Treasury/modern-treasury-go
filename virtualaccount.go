@@ -205,6 +205,8 @@ type VirtualAccountNewParams struct {
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// An array of routing detail objects.
 	RoutingDetails param.Field[[]VirtualAccountNewParamsRoutingDetail] `json:"routing_details"`
+	// The ID of the virtual account setting used to allocate this virtual account.
+	VirtualAccountSettingID param.Field[string] `json:"virtual_account_setting_id" format:"uuid"`
 }
 
 func (r VirtualAccountNewParams) MarshalJSON() (data []byte, err error) {
