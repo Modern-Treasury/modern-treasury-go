@@ -36,6 +36,8 @@ type ChildLegalEntity struct {
 	BankSettings shared.LegalEntityBankSettings `json:"bank_settings" api:"required,nullable"`
 	// A description of the business.
 	BusinessDescription string `json:"business_description" api:"required,nullable"`
+	// Legal designation associated with the business.
+	BusinessDesignation ChildLegalEntityBusinessDesignation `json:"business_designation" api:"required,nullable"`
 	// The business's legal business name.
 	BusinessName string `json:"business_name" api:"required,nullable"`
 	// The country of citizenship for an individual.
@@ -133,6 +135,7 @@ type childLegalEntityJSON struct {
 	Addresses                    apijson.Field
 	BankSettings                 apijson.Field
 	BusinessDescription          apijson.Field
+	BusinessDesignation          apijson.Field
 	BusinessName                 apijson.Field
 	CitizenshipCountry           apijson.Field
 	ComplianceDetails            apijson.Field
@@ -262,6 +265,22 @@ const (
 func (r ChildLegalEntityAddressesAddressType) IsKnown() bool {
 	switch r {
 	case ChildLegalEntityAddressesAddressTypeBusiness, ChildLegalEntityAddressesAddressTypeBusinessPhysical, ChildLegalEntityAddressesAddressTypeBusinessRegistered, ChildLegalEntityAddressesAddressTypeMailing, ChildLegalEntityAddressesAddressTypeOther, ChildLegalEntityAddressesAddressTypePoBox, ChildLegalEntityAddressesAddressTypeResidential:
+		return true
+	}
+	return false
+}
+
+// Legal designation associated with the business.
+type ChildLegalEntityBusinessDesignation string
+
+const (
+	ChildLegalEntityBusinessDesignationExemptFinancialInstitution ChildLegalEntityBusinessDesignation = "exempt_financial_institution"
+	ChildLegalEntityBusinessDesignationNonOperatingBusiness       ChildLegalEntityBusinessDesignation = "non_operating_business"
+)
+
+func (r ChildLegalEntityBusinessDesignation) IsKnown() bool {
+	switch r {
+	case ChildLegalEntityBusinessDesignationExemptFinancialInstitution, ChildLegalEntityBusinessDesignationNonOperatingBusiness:
 		return true
 	}
 	return false
