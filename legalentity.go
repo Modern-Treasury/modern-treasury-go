@@ -101,6 +101,8 @@ type LegalEntity struct {
 	BankSettings shared.LegalEntityBankSettings `json:"bank_settings" api:"required,nullable"`
 	// A description of the business.
 	BusinessDescription string `json:"business_description" api:"required,nullable"`
+	// Legal designation associated with the business.
+	BusinessDesignation LegalEntityBusinessDesignation `json:"business_designation" api:"required,nullable"`
 	// The business's legal business name.
 	BusinessName string `json:"business_name" api:"required,nullable"`
 	// The country of citizenship for an individual.
@@ -197,6 +199,7 @@ type legalEntityJSON struct {
 	Addresses                    apijson.Field
 	BankSettings                 apijson.Field
 	BusinessDescription          apijson.Field
+	BusinessDesignation          apijson.Field
 	BusinessName                 apijson.Field
 	CitizenshipCountry           apijson.Field
 	ComplianceDetails            apijson.Field
@@ -326,6 +329,22 @@ const (
 func (r LegalEntityAddressesAddressType) IsKnown() bool {
 	switch r {
 	case LegalEntityAddressesAddressTypeBusiness, LegalEntityAddressesAddressTypeBusinessPhysical, LegalEntityAddressesAddressTypeBusinessRegistered, LegalEntityAddressesAddressTypeMailing, LegalEntityAddressesAddressTypeOther, LegalEntityAddressesAddressTypePoBox, LegalEntityAddressesAddressTypeResidential:
+		return true
+	}
+	return false
+}
+
+// Legal designation associated with the business.
+type LegalEntityBusinessDesignation string
+
+const (
+	LegalEntityBusinessDesignationExemptFinancialInstitution LegalEntityBusinessDesignation = "exempt_financial_institution"
+	LegalEntityBusinessDesignationNonOperatingBusiness       LegalEntityBusinessDesignation = "non_operating_business"
+)
+
+func (r LegalEntityBusinessDesignation) IsKnown() bool {
+	switch r {
+	case LegalEntityBusinessDesignationExemptFinancialInstitution, LegalEntityBusinessDesignationNonOperatingBusiness:
 		return true
 	}
 	return false
@@ -656,6 +675,8 @@ type LegalEntityNewParams struct {
 	BankSettings param.Field[shared.LegalEntityBankSettingsParam]           `json:"bank_settings"`
 	// A description of the business.
 	BusinessDescription param.Field[string] `json:"business_description"`
+	// Legal designation associated with the business.
+	BusinessDesignation param.Field[LegalEntityNewParamsBusinessDesignation] `json:"business_designation"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
@@ -753,6 +774,22 @@ const (
 func (r LegalEntityNewParamsLegalEntityType) IsKnown() bool {
 	switch r {
 	case LegalEntityNewParamsLegalEntityTypeBusiness, LegalEntityNewParamsLegalEntityTypeIndividual:
+		return true
+	}
+	return false
+}
+
+// Legal designation associated with the business.
+type LegalEntityNewParamsBusinessDesignation string
+
+const (
+	LegalEntityNewParamsBusinessDesignationExemptFinancialInstitution LegalEntityNewParamsBusinessDesignation = "exempt_financial_institution"
+	LegalEntityNewParamsBusinessDesignationNonOperatingBusiness       LegalEntityNewParamsBusinessDesignation = "non_operating_business"
+)
+
+func (r LegalEntityNewParamsBusinessDesignation) IsKnown() bool {
+	switch r {
+	case LegalEntityNewParamsBusinessDesignationExemptFinancialInstitution, LegalEntityNewParamsBusinessDesignationNonOperatingBusiness:
 		return true
 	}
 	return false
@@ -874,6 +911,8 @@ type LegalEntityUpdateParams struct {
 	BankSettings param.Field[shared.LegalEntityBankSettingsParam]           `json:"bank_settings"`
 	// A description of the business.
 	BusinessDescription param.Field[string] `json:"business_description"`
+	// Legal designation associated with the business.
+	BusinessDesignation param.Field[LegalEntityUpdateParamsBusinessDesignation] `json:"business_designation"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
@@ -946,6 +985,22 @@ type LegalEntityUpdateParams struct {
 
 func (r LegalEntityUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// Legal designation associated with the business.
+type LegalEntityUpdateParamsBusinessDesignation string
+
+const (
+	LegalEntityUpdateParamsBusinessDesignationExemptFinancialInstitution LegalEntityUpdateParamsBusinessDesignation = "exempt_financial_institution"
+	LegalEntityUpdateParamsBusinessDesignationNonOperatingBusiness       LegalEntityUpdateParamsBusinessDesignation = "non_operating_business"
+)
+
+func (r LegalEntityUpdateParamsBusinessDesignation) IsKnown() bool {
+	switch r {
+	case LegalEntityUpdateParamsBusinessDesignationExemptFinancialInstitution, LegalEntityUpdateParamsBusinessDesignationNonOperatingBusiness:
+		return true
+	}
+	return false
 }
 
 // The business's legal structure.

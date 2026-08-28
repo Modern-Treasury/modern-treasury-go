@@ -33,6 +33,17 @@ type AsyncResponse = shared.AsyncResponse
 // This is an alias to an internal type.
 type ChildLegalEntityCreateParam = shared.ChildLegalEntityCreateParam
 
+// Legal designation associated with the business.
+//
+// This is an alias to an internal type.
+type ChildLegalEntityCreateBusinessDesignation = shared.ChildLegalEntityCreateBusinessDesignation
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateBusinessDesignationExemptFinancialInstitution = shared.ChildLegalEntityCreateBusinessDesignationExemptFinancialInstitution
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateBusinessDesignationNonOperatingBusiness = shared.ChildLegalEntityCreateBusinessDesignationNonOperatingBusiness
+
 // This is an alias to an internal type.
 type ChildLegalEntityCreateDocumentParam = shared.ChildLegalEntityCreateDocumentParam
 
