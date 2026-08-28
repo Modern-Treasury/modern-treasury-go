@@ -178,6 +178,8 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	BankSettings param.Field[shared.LegalEntityBankSettingsParam]           `json:"bank_settings"`
 	// A description of the business.
 	BusinessDescription param.Field[string] `json:"business_description"`
+	// Legal designation associated with the business.
+	BusinessDesignation param.Field[ConnectionLegalEntityNewParamsLegalEntityBusinessDesignation] `json:"business_designation"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
@@ -267,6 +269,22 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 
 func (r ConnectionLegalEntityNewParamsLegalEntity) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// Legal designation associated with the business.
+type ConnectionLegalEntityNewParamsLegalEntityBusinessDesignation string
+
+const (
+	ConnectionLegalEntityNewParamsLegalEntityBusinessDesignationExemptFinancialInstitution ConnectionLegalEntityNewParamsLegalEntityBusinessDesignation = "exempt_financial_institution"
+	ConnectionLegalEntityNewParamsLegalEntityBusinessDesignationNonOperatingBusiness       ConnectionLegalEntityNewParamsLegalEntityBusinessDesignation = "non_operating_business"
+)
+
+func (r ConnectionLegalEntityNewParamsLegalEntityBusinessDesignation) IsKnown() bool {
+	switch r {
+	case ConnectionLegalEntityNewParamsLegalEntityBusinessDesignationExemptFinancialInstitution, ConnectionLegalEntityNewParamsLegalEntityBusinessDesignationNonOperatingBusiness:
+		return true
+	}
+	return false
 }
 
 type ConnectionLegalEntityNewParamsLegalEntityDocument struct {
