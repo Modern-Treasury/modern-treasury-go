@@ -525,3 +525,32 @@ func TestLegalEntityListWithOptionalParams(t *testing.T) {
 		t.Fatalf("err should be nil: %s", err.Error())
 	}
 }
+
+func TestLegalEntityUpdateStatus(t *testing.T) {
+	baseURL := "http://localhost:4010"
+	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
+		baseURL = envURL
+	}
+	if !testutil.CheckTestServer(t, baseURL) {
+		return
+	}
+	client := moderntreasury.NewClient(
+		option.WithBaseURL(baseURL),
+		option.WithAPIKey("My API Key"),
+		option.WithOrganizationID("my-organization-ID"),
+	)
+	_, err := client.LegalEntities.UpdateStatus(
+		context.TODO(),
+		"id",
+		moderntreasury.LegalEntityUpdateStatusParams{
+			Status: moderntreasury.F(moderntreasury.LegalEntityUpdateStatusParamsStatusActive),
+		},
+	)
+	if err != nil {
+		var apierr *moderntreasury.Error
+		if errors.As(err, &apierr) {
+			t.Log(string(apierr.DumpRequest(true)))
+		}
+		t.Fatalf("err should be nil: %s", err.Error())
+	}
+}
