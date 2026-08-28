@@ -586,6 +586,8 @@ type CounterpartyNewParamsLegalEntity struct {
 	BankSettings param.Field[shared.LegalEntityBankSettingsParam]           `json:"bank_settings"`
 	// A description of the business.
 	BusinessDescription param.Field[string] `json:"business_description"`
+	// Legal designation associated with the business.
+	BusinessDesignation param.Field[CounterpartyNewParamsLegalEntityBusinessDesignation] `json:"business_designation"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
@@ -686,6 +688,22 @@ const (
 func (r CounterpartyNewParamsLegalEntityLegalEntityType) IsKnown() bool {
 	switch r {
 	case CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness, CounterpartyNewParamsLegalEntityLegalEntityTypeIndividual:
+		return true
+	}
+	return false
+}
+
+// Legal designation associated with the business.
+type CounterpartyNewParamsLegalEntityBusinessDesignation string
+
+const (
+	CounterpartyNewParamsLegalEntityBusinessDesignationExemptFinancialInstitution CounterpartyNewParamsLegalEntityBusinessDesignation = "exempt_financial_institution"
+	CounterpartyNewParamsLegalEntityBusinessDesignationNonOperatingBusiness       CounterpartyNewParamsLegalEntityBusinessDesignation = "non_operating_business"
+)
+
+func (r CounterpartyNewParamsLegalEntityBusinessDesignation) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityBusinessDesignationExemptFinancialInstitution, CounterpartyNewParamsLegalEntityBusinessDesignationNonOperatingBusiness:
 		return true
 	}
 	return false

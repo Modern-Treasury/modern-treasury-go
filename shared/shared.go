@@ -155,6 +155,8 @@ type ChildLegalEntityCreateParam struct {
 	BankSettings param.Field[LegalEntityBankSettingsParam]           `json:"bank_settings"`
 	// A description of the business.
 	BusinessDescription param.Field[string] `json:"business_description"`
+	// Legal designation associated with the business.
+	BusinessDesignation param.Field[ChildLegalEntityCreateBusinessDesignation] `json:"business_designation"`
 	// The business's legal business name.
 	BusinessName param.Field[string] `json:"business_name"`
 	// The country of citizenship for an individual.
@@ -244,6 +246,22 @@ type ChildLegalEntityCreateParam struct {
 
 func (r ChildLegalEntityCreateParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// Legal designation associated with the business.
+type ChildLegalEntityCreateBusinessDesignation string
+
+const (
+	ChildLegalEntityCreateBusinessDesignationExemptFinancialInstitution ChildLegalEntityCreateBusinessDesignation = "exempt_financial_institution"
+	ChildLegalEntityCreateBusinessDesignationNonOperatingBusiness       ChildLegalEntityCreateBusinessDesignation = "non_operating_business"
+)
+
+func (r ChildLegalEntityCreateBusinessDesignation) IsKnown() bool {
+	switch r {
+	case ChildLegalEntityCreateBusinessDesignationExemptFinancialInstitution, ChildLegalEntityCreateBusinessDesignationNonOperatingBusiness:
+		return true
+	}
+	return false
 }
 
 type ChildLegalEntityCreateDocumentParam struct {
