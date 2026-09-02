@@ -695,11 +695,13 @@ func (r LegalEntityAssociationRelationshipType) IsKnown() bool {
 }
 
 type LegalEntityAssociationNewParams struct {
-	// The ID of the child legal entity.
-	ChildLegalEntityID param.Field[string] `json:"child_legal_entity_id" api:"required"`
 	// The ID of the parent legal entity. This must be a business legal entity.
 	ParentLegalEntityID param.Field[string]                                            `json:"parent_legal_entity_id" api:"required"`
 	RelationshipTypes   param.Field[[]LegalEntityAssociationNewParamsRelationshipType] `json:"relationship_types" api:"required"`
+	// The child legal entity.
+	ChildLegalEntity param.Field[shared.ChildLegalEntityCreateParam] `json:"child_legal_entity"`
+	// The ID of the child legal entity.
+	ChildLegalEntityID param.Field[string] `json:"child_legal_entity_id"`
 	// The child entity's ownership percentage iff they are a beneficial owner.
 	OwnershipPercentage param.Field[int64] `json:"ownership_percentage"`
 	// The job title of the child entity at the parent entity.
