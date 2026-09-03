@@ -669,6 +669,11 @@ type InternalAccountUpdateParams struct {
 	Name param.Field[string] `json:"name"`
 	// The parent internal account for this account.
 	ParentAccountID param.Field[string] `json:"parent_account_id"`
+	// The address associated with the owner of the internal account. Updating this
+	// value does not guarantee that the new address matches the address on record with
+	// the account's bank; you are responsible for verifying that the address is
+	// accurate.
+	PartyAddress param.Field[shared.AddressRequestParam] `json:"party_address"`
 	// Requests closure of the internal account. The resulting status may be `closed`
 	// for vendors that close synchronously.
 	Status param.Field[InternalAccountUpdateParamsStatus] `json:"status"`
