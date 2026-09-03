@@ -200,6 +200,8 @@ type VirtualAccountNewParams struct {
 	// The resulting ledger account is linked to the virtual account for auto-ledgering
 	// IPDs.
 	LedgerAccount param.Field[shared.LedgerAccountCreateRequestParam] `json:"ledger_account"`
+	// The ledger account that you'd like to link to the virtual account.
+	LedgerAccountID param.Field[string] `json:"ledger_account_id" format:"uuid"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
