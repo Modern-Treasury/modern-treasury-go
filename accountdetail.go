@@ -115,8 +115,8 @@ type AccountDetail struct {
 	ID string `json:"id" api:"required" format:"uuid"`
 	// The last 4 digits of the account_number.
 	AccountNumberSafe string `json:"account_number_safe" api:"required"`
-	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
-	// account number is in a generic format.
+	// One of `iban`, `clabe`, or `other`. Use `other` if the bank account number is in
+	// a generic format.
 	AccountNumberType AccountDetailAccountNumberType `json:"account_number_type" api:"required"`
 	CreatedAt         time.Time                      `json:"created_at" api:"required" format:"date-time"`
 	DiscardedAt       time.Time                      `json:"discarded_at" api:"required,nullable" format:"date-time"`
@@ -153,8 +153,8 @@ func (r accountDetailJSON) RawJSON() string {
 	return r.raw
 }
 
-// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
-// account number is in a generic format.
+// One of `iban`, `clabe`, or `other`. Use `other` if the bank account number is in
+// a generic format.
 type AccountDetailAccountNumberType string
 
 const (
@@ -172,12 +172,11 @@ const (
 	AccountDetailAccountNumberTypePolygonAddress  AccountDetailAccountNumberType = "polygon_address"
 	AccountDetailAccountNumberTypeSgNumber        AccountDetailAccountNumberType = "sg_number"
 	AccountDetailAccountNumberTypeSolanaAddress   AccountDetailAccountNumberType = "solana_address"
-	AccountDetailAccountNumberTypeWalletAddress   AccountDetailAccountNumberType = "wallet_address"
 )
 
 func (r AccountDetailAccountNumberType) IsKnown() bool {
 	switch r {
-	case AccountDetailAccountNumberTypeAuNumber, AccountDetailAccountNumberTypeBaseAddress, AccountDetailAccountNumberTypeCardToken, AccountDetailAccountNumberTypeClabe, AccountDetailAccountNumberTypeEthereumAddress, AccountDetailAccountNumberTypeHkNumber, AccountDetailAccountNumberTypeIban, AccountDetailAccountNumberTypeIDNumber, AccountDetailAccountNumberTypeNzNumber, AccountDetailAccountNumberTypeOther, AccountDetailAccountNumberTypePan, AccountDetailAccountNumberTypePolygonAddress, AccountDetailAccountNumberTypeSgNumber, AccountDetailAccountNumberTypeSolanaAddress, AccountDetailAccountNumberTypeWalletAddress:
+	case AccountDetailAccountNumberTypeAuNumber, AccountDetailAccountNumberTypeBaseAddress, AccountDetailAccountNumberTypeCardToken, AccountDetailAccountNumberTypeClabe, AccountDetailAccountNumberTypeEthereumAddress, AccountDetailAccountNumberTypeHkNumber, AccountDetailAccountNumberTypeIban, AccountDetailAccountNumberTypeIDNumber, AccountDetailAccountNumberTypeNzNumber, AccountDetailAccountNumberTypeOther, AccountDetailAccountNumberTypePan, AccountDetailAccountNumberTypePolygonAddress, AccountDetailAccountNumberTypeSgNumber, AccountDetailAccountNumberTypeSolanaAddress:
 		return true
 	}
 	return false
@@ -186,8 +185,8 @@ func (r AccountDetailAccountNumberType) IsKnown() bool {
 type AccountDetailNewParams struct {
 	// The account number for the bank account.
 	AccountNumber param.Field[string] `json:"account_number" api:"required"`
-	// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
-	// account number is in a generic format.
+	// One of `iban`, `clabe`, or `other`. Use `other` if the bank account number is in
+	// a generic format.
 	AccountNumberType param.Field[AccountDetailNewParamsAccountNumberType] `json:"account_number_type"`
 }
 
@@ -209,8 +208,8 @@ func (r AccountDetailNewParamsAccountsType) IsKnown() bool {
 	return false
 }
 
-// One of `iban`, `clabe`, `wallet_address`, or `other`. Use `other` if the bank
-// account number is in a generic format.
+// One of `iban`, `clabe`, or `other`. Use `other` if the bank account number is in
+// a generic format.
 type AccountDetailNewParamsAccountNumberType string
 
 const (
@@ -228,12 +227,11 @@ const (
 	AccountDetailNewParamsAccountNumberTypePolygonAddress  AccountDetailNewParamsAccountNumberType = "polygon_address"
 	AccountDetailNewParamsAccountNumberTypeSgNumber        AccountDetailNewParamsAccountNumberType = "sg_number"
 	AccountDetailNewParamsAccountNumberTypeSolanaAddress   AccountDetailNewParamsAccountNumberType = "solana_address"
-	AccountDetailNewParamsAccountNumberTypeWalletAddress   AccountDetailNewParamsAccountNumberType = "wallet_address"
 )
 
 func (r AccountDetailNewParamsAccountNumberType) IsKnown() bool {
 	switch r {
-	case AccountDetailNewParamsAccountNumberTypeAuNumber, AccountDetailNewParamsAccountNumberTypeBaseAddress, AccountDetailNewParamsAccountNumberTypeCardToken, AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeEthereumAddress, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeIDNumber, AccountDetailNewParamsAccountNumberTypeNzNumber, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypePolygonAddress, AccountDetailNewParamsAccountNumberTypeSgNumber, AccountDetailNewParamsAccountNumberTypeSolanaAddress, AccountDetailNewParamsAccountNumberTypeWalletAddress:
+	case AccountDetailNewParamsAccountNumberTypeAuNumber, AccountDetailNewParamsAccountNumberTypeBaseAddress, AccountDetailNewParamsAccountNumberTypeCardToken, AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeEthereumAddress, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeIDNumber, AccountDetailNewParamsAccountNumberTypeNzNumber, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypePolygonAddress, AccountDetailNewParamsAccountNumberTypeSgNumber, AccountDetailNewParamsAccountNumberTypeSolanaAddress:
 		return true
 	}
 	return false
