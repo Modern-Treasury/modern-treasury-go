@@ -60,6 +60,7 @@ type Client struct {
 	Holds                        *HoldService
 	Cases                        *CaseService
 	VirtualAccountSettings       *VirtualAccountSettingService
+	Identifications              *IdentificationService
 }
 
 // DefaultClientOptions read from the environment (MODERN_TREASURY_API_KEY,
@@ -142,6 +143,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.Holds = NewHoldService(opts...)
 	r.Cases = NewCaseService(opts...)
 	r.VirtualAccountSettings = NewVirtualAccountSettingService(opts...)
+	r.Identifications = NewIdentificationService(opts...)
 
 	return
 }
