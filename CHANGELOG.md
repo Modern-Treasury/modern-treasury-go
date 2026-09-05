@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.62.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.61.0...v2.62.0) (2026-09-05)
+
+
+### Features
+
+* regenerate SDKs from 256e67f3902acc2a01de6f9ebf5a5a59f434d332 ([979807d](https://github.com/Modern-Treasury/modern-treasury-go/commit/979807d6976c4043fa77b9e0de3fcbbb0b5be0d7))
+* regenerate SDKs from 6f84b3ee98f7c58add7e7b9c27ad77e30890d095 ([6f20814](https://github.com/Modern-Treasury/modern-treasury-go/commit/6f208147f1fcdd0555cf97391e3b8d7ae31ec6bb))
+
 ## [2.61.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.60.1...v2.61.0) (2026-09-04)
 
 
