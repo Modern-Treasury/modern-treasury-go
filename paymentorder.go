@@ -829,6 +829,8 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	// The ID of a counterparty that the virtual account belongs to. Optional.
 	CounterpartyID string    `json:"counterparty_id" api:"required,nullable" format:"uuid"`
 	CreatedAt      time.Time `json:"created_at" api:"required" format:"date-time"`
+	// A user-defined identifier for the virtual account.
+	ExternalID string `json:"external_id" api:"required,nullable"`
 	// If the virtual account links to a ledger account in Modern Treasury, the id of
 	// the ledger account will be populated here.
 	LedgerAccountID string `json:"ledger_account_id" api:"required,nullable" format:"uuid"`
@@ -870,8 +872,6 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	// An optional free-form description for internal use.
 	Description string    `json:"description" api:"nullable"`
 	DiscardedAt time.Time `json:"discarded_at" api:"nullable" format:"date-time"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID string `json:"external_id" api:"nullable"`
 	// The ID of the internal account that the virtual account is in.
 	InternalAccountID string `json:"internal_account_id" format:"uuid"`
 	// The Legal Entity associated to this account.
@@ -899,6 +899,7 @@ type paymentOrderUltimateOriginatingAccountJSON struct {
 	AccountDetails        apijson.Field
 	CounterpartyID        apijson.Field
 	CreatedAt             apijson.Field
+	ExternalID            apijson.Field
 	LedgerAccountID       apijson.Field
 	LiveMode              apijson.Field
 	Metadata              apijson.Field
@@ -916,7 +917,6 @@ type paymentOrderUltimateOriginatingAccountJSON struct {
 	Debitable             apijson.Field
 	Description           apijson.Field
 	DiscardedAt           apijson.Field
-	ExternalID            apijson.Field
 	InternalAccountID     apijson.Field
 	LegalEntityID         apijson.Field
 	ParentAccountID       apijson.Field
