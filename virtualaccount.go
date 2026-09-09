@@ -124,6 +124,8 @@ type VirtualAccount struct {
 	// An optional free-form description for internal use.
 	Description string    `json:"description" api:"required,nullable"`
 	DiscardedAt time.Time `json:"discarded_at" api:"required,nullable" format:"date-time"`
+	// A user-defined identifier for the virtual account.
+	ExternalID string `json:"external_id" api:"required,nullable"`
 	// The ID of the internal account that the virtual account is in.
 	InternalAccountID string `json:"internal_account_id" api:"required" format:"uuid"`
 	// If the virtual account links to a ledger account in Modern Treasury, the id of
@@ -155,6 +157,7 @@ type virtualAccountJSON struct {
 	DebitLedgerAccountID  apijson.Field
 	Description           apijson.Field
 	DiscardedAt           apijson.Field
+	ExternalID            apijson.Field
 	InternalAccountID     apijson.Field
 	LedgerAccountID       apijson.Field
 	LiveMode              apijson.Field
@@ -196,6 +199,8 @@ type VirtualAccountNewParams struct {
 	DebitLedgerAccountID param.Field[string] `json:"debit_ledger_account_id" format:"uuid"`
 	// An optional description for internal use.
 	Description param.Field[string] `json:"description"`
+	// A user-defined identifier for the virtual account.
+	ExternalID param.Field[string] `json:"external_id"`
 	// Specifies a ledger account object that will be created with the virtual account.
 	// The resulting ledger account is linked to the virtual account for auto-ledgering
 	// IPDs.
@@ -363,8 +368,10 @@ func (r VirtualAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 }
 
 type VirtualAccountListParams struct {
-	AfterCursor       param.Field[string] `query:"after_cursor"`
-	CounterpartyID    param.Field[string] `query:"counterparty_id"`
+	AfterCursor    param.Field[string] `query:"after_cursor"`
+	CounterpartyID param.Field[string] `query:"counterparty_id"`
+	// Only return virtual accounts with this external ID.
+	ExternalID        param.Field[string] `query:"external_id"`
 	InternalAccountID param.Field[string] `query:"internal_account_id"`
 	// For example, if you want to query for records with metadata key `Type` and value
 	// `Loan`, the query would be `metadata%5BType%5D=Loan`. This encodes the query
