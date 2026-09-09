@@ -38,6 +38,7 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 		CreditLedgerAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		DebitLedgerAccountID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Description:           moderntreasury.F("description"),
+		ExternalID:            moderntreasury.F("external_id"),
 		LedgerAccount: moderntreasury.F(shared.LedgerAccountCreateRequestParam{
 			Currency:                 moderntreasury.F("currency"),
 			LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
@@ -148,6 +149,7 @@ func TestVirtualAccountListWithOptionalParams(t *testing.T) {
 	_, err := client.VirtualAccounts.List(context.TODO(), moderntreasury.VirtualAccountListParams{
 		AfterCursor:       moderntreasury.F("after_cursor"),
 		CounterpartyID:    moderntreasury.F("counterparty_id"),
+		ExternalID:        moderntreasury.F("external_id"),
 		InternalAccountID: moderntreasury.F("internal_account_id"),
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
