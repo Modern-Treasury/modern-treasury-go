@@ -173,7 +173,7 @@ type LegalEntity struct {
 	PreferredName string `json:"preferred_name" api:"required,nullable"`
 	// An individual's prefix.
 	Prefix string `json:"prefix" api:"required,nullable"`
-	// A list of primary social media URLs for the business.
+	// A list of the entity's primary social media URLs.
 	PrimarySocialMediaSites []string `json:"primary_social_media_sites" api:"required"`
 	// Array of regulatory bodies overseeing this institution.
 	Regulators []LegalEntityRegulator `json:"regulators" api:"required,nullable"`
@@ -584,7 +584,7 @@ type LegalEntityNewParams struct {
 	PreferredName param.Field[string] `json:"preferred_name"`
 	// An individual's prefix.
 	Prefix param.Field[string] `json:"prefix"`
-	// A list of primary social media URLs for the business.
+	// A list of the entity's primary social media URLs.
 	PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
 	// Array of regulatory bodies overseeing this institution.
 	Regulators param.Field[[]LegalEntityNewParamsRegulator] `json:"regulators"`
@@ -808,7 +808,7 @@ type LegalEntityUpdateParams struct {
 	PreferredName param.Field[string] `json:"preferred_name"`
 	// An individual's prefix.
 	Prefix param.Field[string] `json:"prefix"`
-	// A list of primary social media URLs for the business.
+	// A list of the entity's primary social media URLs.
 	PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
 	// Array of regulatory bodies overseeing this institution.
 	Regulators param.Field[[]LegalEntityUpdateParamsRegulator] `json:"regulators"`

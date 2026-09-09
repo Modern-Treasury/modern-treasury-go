@@ -219,7 +219,7 @@ type ChildLegalEntityCreateParam struct {
 	PreferredName param.Field[string] `json:"preferred_name"`
 	// An individual's prefix.
 	Prefix param.Field[string] `json:"prefix"`
-	// A list of primary social media URLs for the business.
+	// A list of the entity's primary social media URLs.
 	PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
 	// Array of regulatory bodies overseeing this institution.
 	Regulators param.Field[[]ChildLegalEntityCreateRegulatorParam] `json:"regulators"`
