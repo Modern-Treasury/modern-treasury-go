@@ -125,7 +125,7 @@ type ChildLegalEntity struct {
 	PreferredName string `json:"preferred_name" api:"required,nullable"`
 	// An individual's prefix.
 	Prefix string `json:"prefix" api:"required,nullable"`
-	// A list of primary social media URLs for the business.
+	// A list of the entity's primary social media URLs.
 	PrimarySocialMediaSites []string `json:"primary_social_media_sites" api:"required"`
 	// Array of regulatory bodies overseeing this institution.
 	Regulators []ChildLegalEntityRegulator `json:"regulators" api:"required,nullable"`
