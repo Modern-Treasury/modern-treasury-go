@@ -93,9 +93,9 @@ type Document struct {
 	DocumentType string `json:"document_type" api:"required,nullable"`
 	// The unique identifier for the associated object.
 	DocumentableID string `json:"documentable_id" api:"required,nullable" format:"uuid"`
-	// The type of the associated object. Currently can be one of `payment_order`,
-	// `transaction`, `expected_payment`, `return`, `legal_entity`, `counterparty`,
-	// `organization`, `case`, `internal_account`, `decision`, or `external_account`.
+	// The type of the associated object. Currently can be one of `connection`,
+	// `counterparty`, `expected_payment`, `identification`, `incoming_payment_detail`,
+	// `internal_account`, `legal_entity`, `payment_order`, `return`, or `transaction`.
 	DocumentableType DocumentDocumentableType `json:"documentable_type" api:"required,nullable"`
 	File             DocumentFile             `json:"file" api:"required"`
 	// This field will be true if this object exists in the live environment or false
@@ -133,21 +133,19 @@ func (r documentJSON) RawJSON() string {
 	return r.raw
 }
 
-// The type of the associated object. Currently can be one of `payment_order`,
-// `transaction`, `expected_payment`, `return`, `legal_entity`, `counterparty`,
-// `organization`, `case`, `internal_account`, `decision`, or `external_account`.
+// The type of the associated object. Currently can be one of `connection`,
+// `counterparty`, `expected_payment`, `identification`, `incoming_payment_detail`,
+// `internal_account`, `legal_entity`, `payment_order`, `return`, or `transaction`.
 type DocumentDocumentableType string
 
 const (
 	DocumentDocumentableTypeConnection            DocumentDocumentableType = "connection"
 	DocumentDocumentableTypeCounterparty          DocumentDocumentableType = "counterparty"
 	DocumentDocumentableTypeExpectedPayment       DocumentDocumentableType = "expected_payment"
-	DocumentDocumentableTypeExternalAccount       DocumentDocumentableType = "external_account"
 	DocumentDocumentableTypeIdentification        DocumentDocumentableType = "identification"
 	DocumentDocumentableTypeIncomingPaymentDetail DocumentDocumentableType = "incoming_payment_detail"
 	DocumentDocumentableTypeInternalAccount       DocumentDocumentableType = "internal_account"
 	DocumentDocumentableTypeLegalEntity           DocumentDocumentableType = "legal_entity"
-	DocumentDocumentableTypeOrganization          DocumentDocumentableType = "organization"
 	DocumentDocumentableTypePaymentOrder          DocumentDocumentableType = "payment_order"
 	DocumentDocumentableTypeReturn                DocumentDocumentableType = "return"
 	DocumentDocumentableTypeTransaction           DocumentDocumentableType = "transaction"
@@ -155,7 +153,7 @@ const (
 
 func (r DocumentDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentDocumentableTypeConnection, DocumentDocumentableTypeCounterparty, DocumentDocumentableTypeExpectedPayment, DocumentDocumentableTypeExternalAccount, DocumentDocumentableTypeIdentification, DocumentDocumentableTypeIncomingPaymentDetail, DocumentDocumentableTypeInternalAccount, DocumentDocumentableTypeLegalEntity, DocumentDocumentableTypeOrganization, DocumentDocumentableTypePaymentOrder, DocumentDocumentableTypeReturn, DocumentDocumentableTypeTransaction:
+	case DocumentDocumentableTypeConnection, DocumentDocumentableTypeCounterparty, DocumentDocumentableTypeExpectedPayment, DocumentDocumentableTypeIdentification, DocumentDocumentableTypeIncomingPaymentDetail, DocumentDocumentableTypeInternalAccount, DocumentDocumentableTypeLegalEntity, DocumentDocumentableTypePaymentOrder, DocumentDocumentableTypeReturn, DocumentDocumentableTypeTransaction:
 		return true
 	}
 	return false
@@ -218,12 +216,10 @@ const (
 	DocumentNewParamsDocumentableTypeConnection            DocumentNewParamsDocumentableType = "connection"
 	DocumentNewParamsDocumentableTypeCounterparty          DocumentNewParamsDocumentableType = "counterparty"
 	DocumentNewParamsDocumentableTypeExpectedPayment       DocumentNewParamsDocumentableType = "expected_payment"
-	DocumentNewParamsDocumentableTypeExternalAccount       DocumentNewParamsDocumentableType = "external_account"
 	DocumentNewParamsDocumentableTypeIdentification        DocumentNewParamsDocumentableType = "identification"
 	DocumentNewParamsDocumentableTypeIncomingPaymentDetail DocumentNewParamsDocumentableType = "incoming_payment_detail"
 	DocumentNewParamsDocumentableTypeInternalAccount       DocumentNewParamsDocumentableType = "internal_account"
 	DocumentNewParamsDocumentableTypeLegalEntity           DocumentNewParamsDocumentableType = "legal_entity"
-	DocumentNewParamsDocumentableTypeOrganization          DocumentNewParamsDocumentableType = "organization"
 	DocumentNewParamsDocumentableTypePaymentOrder          DocumentNewParamsDocumentableType = "payment_order"
 	DocumentNewParamsDocumentableTypeReturn                DocumentNewParamsDocumentableType = "return"
 	DocumentNewParamsDocumentableTypeTransaction           DocumentNewParamsDocumentableType = "transaction"
@@ -231,7 +227,7 @@ const (
 
 func (r DocumentNewParamsDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentNewParamsDocumentableTypeConnection, DocumentNewParamsDocumentableTypeCounterparty, DocumentNewParamsDocumentableTypeExpectedPayment, DocumentNewParamsDocumentableTypeExternalAccount, DocumentNewParamsDocumentableTypeIdentification, DocumentNewParamsDocumentableTypeIncomingPaymentDetail, DocumentNewParamsDocumentableTypeInternalAccount, DocumentNewParamsDocumentableTypeLegalEntity, DocumentNewParamsDocumentableTypeOrganization, DocumentNewParamsDocumentableTypePaymentOrder, DocumentNewParamsDocumentableTypeReturn, DocumentNewParamsDocumentableTypeTransaction:
+	case DocumentNewParamsDocumentableTypeConnection, DocumentNewParamsDocumentableTypeCounterparty, DocumentNewParamsDocumentableTypeExpectedPayment, DocumentNewParamsDocumentableTypeIdentification, DocumentNewParamsDocumentableTypeIncomingPaymentDetail, DocumentNewParamsDocumentableTypeInternalAccount, DocumentNewParamsDocumentableTypeLegalEntity, DocumentNewParamsDocumentableTypePaymentOrder, DocumentNewParamsDocumentableTypeReturn, DocumentNewParamsDocumentableTypeTransaction:
 		return true
 	}
 	return false
@@ -241,9 +237,9 @@ type DocumentListParams struct {
 	AfterCursor param.Field[string] `query:"after_cursor"`
 	// The unique identifier for the associated object.
 	DocumentableID param.Field[string] `query:"documentable_id"`
-	// The type of the associated object. Currently can be one of `payment_order`,
-	// `transaction`, `expected_payment`, `return`, `legal_entity`, `counterparty`,
-	// `organization`, `case`, `internal_account`, `decision`, or `external_account`.
+	// The type of the associated object. Currently can be one of `connection`,
+	// `counterparty`, `expected_payment`, `identification`, `incoming_payment_detail`,
+	// `internal_account`, `legal_entity`, `payment_order`, `return`, or `transaction`.
 	DocumentableType param.Field[DocumentListParamsDocumentableType] `query:"documentable_type"`
 	PerPage          param.Field[int64]                              `query:"per_page"`
 }
@@ -256,21 +252,19 @@ func (r DocumentListParams) URLQuery() (v url.Values) {
 	})
 }
 
-// The type of the associated object. Currently can be one of `payment_order`,
-// `transaction`, `expected_payment`, `return`, `legal_entity`, `counterparty`,
-// `organization`, `case`, `internal_account`, `decision`, or `external_account`.
+// The type of the associated object. Currently can be one of `connection`,
+// `counterparty`, `expected_payment`, `identification`, `incoming_payment_detail`,
+// `internal_account`, `legal_entity`, `payment_order`, `return`, or `transaction`.
 type DocumentListParamsDocumentableType string
 
 const (
 	DocumentListParamsDocumentableTypeConnection            DocumentListParamsDocumentableType = "connection"
 	DocumentListParamsDocumentableTypeCounterparty          DocumentListParamsDocumentableType = "counterparty"
 	DocumentListParamsDocumentableTypeExpectedPayment       DocumentListParamsDocumentableType = "expected_payment"
-	DocumentListParamsDocumentableTypeExternalAccount       DocumentListParamsDocumentableType = "external_account"
 	DocumentListParamsDocumentableTypeIdentification        DocumentListParamsDocumentableType = "identification"
 	DocumentListParamsDocumentableTypeIncomingPaymentDetail DocumentListParamsDocumentableType = "incoming_payment_detail"
 	DocumentListParamsDocumentableTypeInternalAccount       DocumentListParamsDocumentableType = "internal_account"
 	DocumentListParamsDocumentableTypeLegalEntity           DocumentListParamsDocumentableType = "legal_entity"
-	DocumentListParamsDocumentableTypeOrganization          DocumentListParamsDocumentableType = "organization"
 	DocumentListParamsDocumentableTypePaymentOrder          DocumentListParamsDocumentableType = "payment_order"
 	DocumentListParamsDocumentableTypeReturn                DocumentListParamsDocumentableType = "return"
 	DocumentListParamsDocumentableTypeTransaction           DocumentListParamsDocumentableType = "transaction"
@@ -278,7 +272,7 @@ const (
 
 func (r DocumentListParamsDocumentableType) IsKnown() bool {
 	switch r {
-	case DocumentListParamsDocumentableTypeConnection, DocumentListParamsDocumentableTypeCounterparty, DocumentListParamsDocumentableTypeExpectedPayment, DocumentListParamsDocumentableTypeExternalAccount, DocumentListParamsDocumentableTypeIdentification, DocumentListParamsDocumentableTypeIncomingPaymentDetail, DocumentListParamsDocumentableTypeInternalAccount, DocumentListParamsDocumentableTypeLegalEntity, DocumentListParamsDocumentableTypeOrganization, DocumentListParamsDocumentableTypePaymentOrder, DocumentListParamsDocumentableTypeReturn, DocumentListParamsDocumentableTypeTransaction:
+	case DocumentListParamsDocumentableTypeConnection, DocumentListParamsDocumentableTypeCounterparty, DocumentListParamsDocumentableTypeExpectedPayment, DocumentListParamsDocumentableTypeIdentification, DocumentListParamsDocumentableTypeIncomingPaymentDetail, DocumentListParamsDocumentableTypeInternalAccount, DocumentListParamsDocumentableTypeLegalEntity, DocumentListParamsDocumentableTypePaymentOrder, DocumentListParamsDocumentableTypeReturn, DocumentListParamsDocumentableTypeTransaction:
 		return true
 	}
 	return false
