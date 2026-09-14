@@ -1371,12 +1371,10 @@ const (
 	PaymentOrderNewParamsDocumentsDocumentableTypeConnection            PaymentOrderNewParamsDocumentsDocumentableType = "connection"
 	PaymentOrderNewParamsDocumentsDocumentableTypeCounterparty          PaymentOrderNewParamsDocumentsDocumentableType = "counterparty"
 	PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayment       PaymentOrderNewParamsDocumentsDocumentableType = "expected_payment"
-	PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccount       PaymentOrderNewParamsDocumentsDocumentableType = "external_account"
 	PaymentOrderNewParamsDocumentsDocumentableTypeIdentification        PaymentOrderNewParamsDocumentsDocumentableType = "identification"
 	PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetail PaymentOrderNewParamsDocumentsDocumentableType = "incoming_payment_detail"
 	PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccount       PaymentOrderNewParamsDocumentsDocumentableType = "internal_account"
 	PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntity           PaymentOrderNewParamsDocumentsDocumentableType = "legal_entity"
-	PaymentOrderNewParamsDocumentsDocumentableTypeOrganization          PaymentOrderNewParamsDocumentsDocumentableType = "organization"
 	PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrder          PaymentOrderNewParamsDocumentsDocumentableType = "payment_order"
 	PaymentOrderNewParamsDocumentsDocumentableTypeReturn                PaymentOrderNewParamsDocumentsDocumentableType = "return"
 	PaymentOrderNewParamsDocumentsDocumentableTypeTransaction           PaymentOrderNewParamsDocumentsDocumentableType = "transaction"
@@ -1384,7 +1382,7 @@ const (
 
 func (r PaymentOrderNewParamsDocumentsDocumentableType) IsKnown() bool {
 	switch r {
-	case PaymentOrderNewParamsDocumentsDocumentableTypeConnection, PaymentOrderNewParamsDocumentsDocumentableTypeCounterparty, PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayment, PaymentOrderNewParamsDocumentsDocumentableTypeExternalAccount, PaymentOrderNewParamsDocumentsDocumentableTypeIdentification, PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetail, PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccount, PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntity, PaymentOrderNewParamsDocumentsDocumentableTypeOrganization, PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrder, PaymentOrderNewParamsDocumentsDocumentableTypeReturn, PaymentOrderNewParamsDocumentsDocumentableTypeTransaction:
+	case PaymentOrderNewParamsDocumentsDocumentableTypeConnection, PaymentOrderNewParamsDocumentsDocumentableTypeCounterparty, PaymentOrderNewParamsDocumentsDocumentableTypeExpectedPayment, PaymentOrderNewParamsDocumentsDocumentableTypeIdentification, PaymentOrderNewParamsDocumentsDocumentableTypeIncomingPaymentDetail, PaymentOrderNewParamsDocumentsDocumentableTypeInternalAccount, PaymentOrderNewParamsDocumentsDocumentableTypeLegalEntity, PaymentOrderNewParamsDocumentsDocumentableTypePaymentOrder, PaymentOrderNewParamsDocumentsDocumentableTypeReturn, PaymentOrderNewParamsDocumentsDocumentableTypeTransaction:
 		return true
 	}
 	return false
