@@ -121,7 +121,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 			ReceivingAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccount{
 				AccountDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetail{{
 					AccountNumber:     moderntreasury.F("account_number"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
+					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeArbitrumAddress),
 				}}),
 				AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
 				ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{

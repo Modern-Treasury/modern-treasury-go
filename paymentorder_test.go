@@ -125,7 +125,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 		ReceivingAccount: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccount{
 			AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetail{{
 				AccountNumber:     moderntreasury.F("account_number"),
-				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
+				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeArbitrumAddress),
 			}}),
 			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
 			ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{
@@ -297,7 +297,7 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 			ReceivingAccount: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccount{
 				AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetail{{
 					AccountNumber:     moderntreasury.F("account_number"),
-					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
+					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeArbitrumAddress),
 				}}),
 				AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
 				ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{
@@ -515,7 +515,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 		ReceivingAccount: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccount{
 			AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetail{{
 				AccountNumber:     moderntreasury.F("account_number"),
-				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeAuNumber),
+				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeArbitrumAddress),
 			}}),
 			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
 			ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{

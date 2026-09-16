@@ -639,6 +639,7 @@ func (r InternalAccountNewParamsPartyAddress) MarshalJSON() (data []byte, err er
 type InternalAccountNewParamsRequestedAccountNumberType string
 
 const (
+	InternalAccountNewParamsRequestedAccountNumberTypeArbitrumAddress InternalAccountNewParamsRequestedAccountNumberType = "arbitrum_address"
 	InternalAccountNewParamsRequestedAccountNumberTypeBaseAddress     InternalAccountNewParamsRequestedAccountNumberType = "base_address"
 	InternalAccountNewParamsRequestedAccountNumberTypeEthereumAddress InternalAccountNewParamsRequestedAccountNumberType = "ethereum_address"
 	InternalAccountNewParamsRequestedAccountNumberTypePolygonAddress  InternalAccountNewParamsRequestedAccountNumberType = "polygon_address"
@@ -647,7 +648,7 @@ const (
 
 func (r InternalAccountNewParamsRequestedAccountNumberType) IsKnown() bool {
 	switch r {
-	case InternalAccountNewParamsRequestedAccountNumberTypeBaseAddress, InternalAccountNewParamsRequestedAccountNumberTypeEthereumAddress, InternalAccountNewParamsRequestedAccountNumberTypePolygonAddress, InternalAccountNewParamsRequestedAccountNumberTypeSolanaAddress:
+	case InternalAccountNewParamsRequestedAccountNumberTypeArbitrumAddress, InternalAccountNewParamsRequestedAccountNumberTypeBaseAddress, InternalAccountNewParamsRequestedAccountNumberTypeEthereumAddress, InternalAccountNewParamsRequestedAccountNumberTypePolygonAddress, InternalAccountNewParamsRequestedAccountNumberTypeSolanaAddress:
 		return true
 	}
 	return false
