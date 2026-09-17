@@ -34,8 +34,8 @@ func TestLedgerAccountSettlementNewWithOptionalParams(t *testing.T) {
 		Description:            moderntreasury.F("description"),
 		EffectiveAtUpperBound:  moderntreasury.F(time.Now()),
 		Metadata: moderntreasury.F(map[string]string{
-			"key":    "value",
 			"foo":    "bar",
+			"key":    "value",
 			"modern": "treasury",
 		}),
 		SkipSettlementLedgerTransaction: moderntreasury.F(true),
@@ -92,8 +92,8 @@ func TestLedgerAccountSettlementUpdateWithOptionalParams(t *testing.T) {
 		moderntreasury.LedgerAccountSettlementUpdateParams{
 			Description: moderntreasury.F("description"),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			SkipSettlementLedgerTransaction: moderntreasury.F(true),
