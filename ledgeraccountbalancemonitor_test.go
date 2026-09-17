@@ -35,8 +35,8 @@ func TestLedgerAccountBalanceMonitorNewWithOptionalParams(t *testing.T) {
 		LedgerAccountID: moderntreasury.F("ledger_account_id"),
 		Description:     moderntreasury.F("description"),
 		Metadata: moderntreasury.F(map[string]string{
-			"key":    "value",
 			"foo":    "bar",
+			"key":    "value",
 			"modern": "treasury",
 		}),
 	})
@@ -91,8 +91,8 @@ func TestLedgerAccountBalanceMonitorUpdateWithOptionalParams(t *testing.T) {
 		moderntreasury.LedgerAccountBalanceMonitorUpdateParams{
 			Description: moderntreasury.F("description"),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 		},

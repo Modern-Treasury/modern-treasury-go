@@ -38,8 +38,8 @@ func TestLedgerAccountCategoryNewWithOptionalParams(t *testing.T) {
 		ExternalID:               moderntreasury.F("external_id"),
 		LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 		Metadata: moderntreasury.F(map[string]string{
-			"key":    "value",
 			"foo":    "bar",
+			"key":    "value",
 			"modern": "treasury",
 		}),
 	})
@@ -104,8 +104,8 @@ func TestLedgerAccountCategoryUpdateWithOptionalParams(t *testing.T) {
 			Description: moderntreasury.F("description"),
 			ExternalID:  moderntreasury.F("external_id"),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			Name: moderntreasury.F("name"),
