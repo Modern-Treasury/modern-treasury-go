@@ -35,8 +35,8 @@ func TestInvoiceLineItemNewWithOptionalParams(t *testing.T) {
 			Description: moderntreasury.F("description"),
 			Direction:   moderntreasury.F("direction"),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			Quantity:          moderntreasury.F(int64(0)),
@@ -100,8 +100,8 @@ func TestInvoiceLineItemUpdateWithOptionalParams(t *testing.T) {
 			Description: moderntreasury.F("description"),
 			Direction:   moderntreasury.F("direction"),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			Name:              moderntreasury.F("name"),

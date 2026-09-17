@@ -169,8 +169,8 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 					LegalStructure:          moderntreasury.F(shared.ChildLegalEntityCreateLegalStructureCorporation),
 					ListedExchange:          moderntreasury.F("listed_exchange"),
 					Metadata: moderntreasury.F(map[string]string{
-						"key":    "value",
 						"foo":    "bar",
+						"key":    "value",
 						"modern": "treasury",
 					}),
 					MiddleName:             moderntreasury.F("middle_name"),
@@ -243,8 +243,8 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 			LegalStructure:  moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityLegalStructureCorporation),
 			ListedExchange:  moderntreasury.F("listed_exchange"),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			MiddleName:             moderntreasury.F("middle_name"),

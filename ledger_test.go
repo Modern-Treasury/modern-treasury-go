@@ -31,8 +31,8 @@ func TestLedgerNewWithOptionalParams(t *testing.T) {
 		Name:        moderntreasury.F("name"),
 		Description: moderntreasury.F("description"),
 		Metadata: moderntreasury.F(map[string]string{
-			"key":    "value",
 			"foo":    "bar",
+			"key":    "value",
 			"modern": "treasury",
 		}),
 	})
@@ -87,8 +87,8 @@ func TestLedgerUpdateWithOptionalParams(t *testing.T) {
 		moderntreasury.LedgerUpdateParams{
 			Description: moderntreasury.F("description"),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			Name: moderntreasury.F("name"),

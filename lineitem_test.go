@@ -61,8 +61,8 @@ func TestLineItemUpdateWithOptionalParams(t *testing.T) {
 		"id",
 		moderntreasury.LineItemUpdateParams{
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 		},
