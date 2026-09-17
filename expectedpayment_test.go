@@ -55,8 +55,8 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 				EffectiveAt: moderntreasury.F(time.Now()),
 				LockVersion: moderntreasury.F(int64(0)),
 				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
 					"foo":    "bar",
+					"key":    "value",
 					"modern": "treasury",
 				}),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -74,8 +74,8 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			LedgerableType: moderntreasury.F(shared.LedgerTransactionCreateRequestLedgerableTypeExpectedPayment),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			Status: moderntreasury.F(shared.LedgerTransactionCreateRequestStatusArchived),
@@ -86,14 +86,14 @@ func TestExpectedPaymentNewWithOptionalParams(t *testing.T) {
 			AccountingCategoryID: moderntreasury.F("accounting_category_id"),
 			Description:          moderntreasury.F("description"),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 		}}),
 		Metadata: moderntreasury.F(map[string]string{
-			"key":    "value",
 			"foo":    "bar",
+			"key":    "value",
 			"modern": "treasury",
 		}),
 		ReconciliationFilters: moderntreasury.F[any](map[string]interface{}{}),
@@ -180,8 +180,8 @@ func TestExpectedPaymentUpdateWithOptionalParams(t *testing.T) {
 			ExternalID:                  moderntreasury.F("external_id"),
 			InternalAccountID:           moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			ReconciliationFilters: moderntreasury.F[any](map[string]interface{}{}),

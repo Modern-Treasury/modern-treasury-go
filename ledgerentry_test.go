@@ -62,8 +62,8 @@ func TestLedgerEntryUpdateWithOptionalParams(t *testing.T) {
 		"id",
 		moderntreasury.LedgerEntryUpdateParams{
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 		},
