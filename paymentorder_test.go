@@ -118,10 +118,11 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 			PostalCode: moderntreasury.F("postal_code"),
 			Region:     moderntreasury.F("region"),
 		}),
-		OriginatingPartyName: moderntreasury.F("originating_party_name"),
-		Priority:             moderntreasury.F(moderntreasury.PaymentOrderNewParamsPriorityHigh),
-		ProcessAfter:         moderntreasury.F(time.Now()),
-		Purpose:              moderntreasury.F("purpose"),
+		OriginatingPartyName:          moderntreasury.F("originating_party_name"),
+		OriginatingSecondaryPartyName: moderntreasury.F("originating_secondary_party_name"),
+		Priority:                      moderntreasury.F(moderntreasury.PaymentOrderNewParamsPriorityHigh),
+		ProcessAfter:                  moderntreasury.F(time.Now()),
+		Purpose:                       moderntreasury.F("purpose"),
 		ReceivingAccount: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccount{
 			AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetail{{
 				AccountNumber:     moderntreasury.F("account_number"),
@@ -290,10 +291,11 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 				PostalCode: moderntreasury.F("postal_code"),
 				Region:     moderntreasury.F("region"),
 			}),
-			OriginatingPartyName: moderntreasury.F("originating_party_name"),
-			Priority:             moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsPriorityHigh),
-			ProcessAfter:         moderntreasury.F(time.Now()),
-			Purpose:              moderntreasury.F("purpose"),
+			OriginatingPartyName:          moderntreasury.F("originating_party_name"),
+			OriginatingSecondaryPartyName: moderntreasury.F("originating_secondary_party_name"),
+			Priority:                      moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsPriorityHigh),
+			ProcessAfter:                  moderntreasury.F(time.Now()),
+			Purpose:                       moderntreasury.F("purpose"),
 			ReceivingAccount: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccount{
 				AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetail{{
 					AccountNumber:     moderntreasury.F("account_number"),
@@ -508,10 +510,11 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 			PostalCode: moderntreasury.F("postal_code"),
 			Region:     moderntreasury.F("region"),
 		}),
-		OriginatingPartyName: moderntreasury.F("originating_party_name"),
-		Priority:             moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsPriorityHigh),
-		ProcessAfter:         moderntreasury.F(time.Now()),
-		Purpose:              moderntreasury.F("purpose"),
+		OriginatingPartyName:          moderntreasury.F("originating_party_name"),
+		OriginatingSecondaryPartyName: moderntreasury.F("originating_secondary_party_name"),
+		Priority:                      moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsPriorityHigh),
+		ProcessAfter:                  moderntreasury.F(time.Now()),
+		Purpose:                       moderntreasury.F("purpose"),
 		ReceivingAccount: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccount{
 			AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetail{{
 				AccountNumber:     moderntreasury.F("account_number"),

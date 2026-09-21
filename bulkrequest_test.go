@@ -114,10 +114,11 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				PostalCode: moderntreasury.F("postal_code"),
 				Region:     moderntreasury.F("region"),
 			}),
-			OriginatingPartyName: moderntreasury.F("originating_party_name"),
-			Priority:             moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriorityHigh),
-			ProcessAfter:         moderntreasury.F(time.Now()),
-			Purpose:              moderntreasury.F("purpose"),
+			OriginatingPartyName:          moderntreasury.F("originating_party_name"),
+			OriginatingSecondaryPartyName: moderntreasury.F("originating_secondary_party_name"),
+			Priority:                      moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriorityHigh),
+			ProcessAfter:                  moderntreasury.F(time.Now()),
+			Purpose:                       moderntreasury.F("purpose"),
 			ReceivingAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccount{
 				AccountDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetail{{
 					AccountNumber:     moderntreasury.F("account_number"),
