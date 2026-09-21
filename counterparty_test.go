@@ -56,14 +56,14 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				LedgerableType:           moderntreasury.F(shared.LedgerAccountCreateRequestLedgerableTypeCounterparty),
 				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
 					"foo":    "bar",
+					"key":    "value",
 					"modern": "treasury",
 				}),
 			}),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			Name: moderntreasury.F("name"),
@@ -228,8 +228,8 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 					LegalStructure:          moderntreasury.F(shared.ChildLegalEntityCreateLegalStructureCorporation),
 					ListedExchange:          moderntreasury.F("listed_exchange"),
 					Metadata: moderntreasury.F(map[string]string{
-						"key":    "value",
 						"foo":    "bar",
+						"key":    "value",
 						"modern": "treasury",
 					}),
 					MiddleName:             moderntreasury.F("middle_name"),
@@ -301,8 +301,8 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			LegalStructure: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalStructureCorporation),
 			ListedExchange: moderntreasury.F("listed_exchange"),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			MiddleName:             moderntreasury.F("middle_name"),
@@ -369,8 +369,8 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 		}),
 		LegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Metadata: moderntreasury.F(map[string]string{
-			"key":    "value",
 			"foo":    "bar",
+			"key":    "value",
 			"modern": "treasury",
 		}),
 		SendRemittanceAdvice: moderntreasury.F(true),

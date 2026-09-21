@@ -68,8 +68,8 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 			Description: moderntreasury.F("description"),
 			Direction:   moderntreasury.F("direction"),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			Quantity:          moderntreasury.F(int64(0)),
@@ -85,8 +85,8 @@ func TestInvoiceNewWithOptionalParams(t *testing.T) {
 		}),
 		InvoicerName: moderntreasury.F("invoicer_name"),
 		Metadata: moderntreasury.F(map[string]string{
-			"key":    "value",
 			"foo":    "bar",
+			"key":    "value",
 			"modern": "treasury",
 		}),
 		NotificationEmailAddresses: moderntreasury.F([]string{"string"}),
@@ -186,8 +186,8 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 				Description: moderntreasury.F("description"),
 				Direction:   moderntreasury.F("direction"),
 				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
 					"foo":    "bar",
+					"key":    "value",
 					"modern": "treasury",
 				}),
 				Quantity:          moderntreasury.F(int64(0)),
@@ -203,8 +203,8 @@ func TestInvoiceUpdateWithOptionalParams(t *testing.T) {
 			}),
 			InvoicerName: moderntreasury.F("invoicer_name"),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			NotificationEmailAddresses: moderntreasury.F([]string{"string"}),

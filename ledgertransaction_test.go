@@ -41,8 +41,8 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 				EffectiveAt: moderntreasury.F(time.Now()),
 				LockVersion: moderntreasury.F(int64(0)),
 				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
 					"foo":    "bar",
+					"key":    "value",
 					"modern": "treasury",
 				}),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -60,8 +60,8 @@ func TestLedgerTransactionNewWithOptionalParams(t *testing.T) {
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			LedgerableType: moderntreasury.F(shared.LedgerTransactionCreateRequestLedgerableTypeExpectedPayment),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			Status: moderntreasury.F(shared.LedgerTransactionCreateRequestStatusArchived),
@@ -130,8 +130,8 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 				EffectiveAt: moderntreasury.F(time.Now()),
 				LockVersion: moderntreasury.F(int64(0)),
 				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
 					"foo":    "bar",
+					"key":    "value",
 					"modern": "treasury",
 				}),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -145,8 +145,8 @@ func TestLedgerTransactionUpdateWithOptionalParams(t *testing.T) {
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionUpdateParamsLedgerableTypeExpectedPayment),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			Status: moderntreasury.F(moderntreasury.LedgerTransactionUpdateParamsStatusArchived),
@@ -251,8 +251,8 @@ func TestLedgerTransactionNewPartialPostWithOptionalParams(t *testing.T) {
 				}),
 				LockVersion: moderntreasury.F(int64(0)),
 				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
 					"foo":    "bar",
+					"key":    "value",
 					"modern": "treasury",
 				}),
 				PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -266,8 +266,8 @@ func TestLedgerTransactionNewPartialPostWithOptionalParams(t *testing.T) {
 			Description: moderntreasury.F("description"),
 			EffectiveAt: moderntreasury.F(time.Now()),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 		},
@@ -304,8 +304,8 @@ func TestLedgerTransactionNewReversalWithOptionalParams(t *testing.T) {
 			LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			LedgerableType: moderntreasury.F(moderntreasury.LedgerTransactionNewReversalParamsLedgerableTypeExpectedPayment),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			Status: moderntreasury.F(moderntreasury.LedgerTransactionNewReversalParamsStatusArchived),

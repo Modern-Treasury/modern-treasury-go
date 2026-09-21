@@ -64,8 +64,8 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					EffectiveAt: moderntreasury.F(time.Now()),
 					LockVersion: moderntreasury.F(int64(0)),
 					Metadata: moderntreasury.F(map[string]string{
-						"key":    "value",
 						"foo":    "bar",
+						"key":    "value",
 						"modern": "treasury",
 					}),
 					PendingBalanceAmount: moderntreasury.F(map[string]int64{
@@ -83,8 +83,8 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				LedgerableID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				LedgerableType: moderntreasury.F(shared.LedgerTransactionCreateRequestLedgerableTypeExpectedPayment),
 				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
 					"foo":    "bar",
+					"key":    "value",
 					"modern": "treasury",
 				}),
 				Status: moderntreasury.F(shared.LedgerTransactionCreateRequestStatusArchived),
@@ -95,14 +95,14 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				AccountingCategoryID: moderntreasury.F("accounting_category_id"),
 				Description:          moderntreasury.F("description"),
 				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
 					"foo":    "bar",
+					"key":    "value",
 					"modern": "treasury",
 				}),
 			}}),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			NsfProtected: moderntreasury.F(true),
@@ -114,10 +114,11 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				PostalCode: moderntreasury.F("postal_code"),
 				Region:     moderntreasury.F("region"),
 			}),
-			OriginatingPartyName: moderntreasury.F("originating_party_name"),
-			Priority:             moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriorityHigh),
-			ProcessAfter:         moderntreasury.F(time.Now()),
-			Purpose:              moderntreasury.F("purpose"),
+			OriginatingPartyName:          moderntreasury.F("originating_party_name"),
+			OriginatingSecondaryPartyName: moderntreasury.F("originating_secondary_party_name"),
+			Priority:                      moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriorityHigh),
+			ProcessAfter:                  moderntreasury.F(time.Now()),
+			Purpose:                       moderntreasury.F("purpose"),
 			ReceivingAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccount{
 				AccountDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetail{{
 					AccountNumber:     moderntreasury.F("account_number"),
@@ -141,14 +142,14 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 					LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 					LedgerableType:           moderntreasury.F(shared.LedgerAccountCreateRequestLedgerableTypeCounterparty),
 					Metadata: moderntreasury.F(map[string]string{
-						"key":    "value",
 						"foo":    "bar",
+						"key":    "value",
 						"modern": "treasury",
 					}),
 				}),
 				Metadata: moderntreasury.F(map[string]string{
-					"key":    "value",
 					"foo":    "bar",
+					"key":    "value",
 					"modern": "treasury",
 				}),
 				Name: moderntreasury.F("name"),
@@ -195,8 +196,8 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 			}),
 		}}),
 		Metadata: moderntreasury.F(map[string]string{
-			"key":    "value",
 			"foo":    "bar",
+			"key":    "value",
 			"modern": "treasury",
 		}),
 	})

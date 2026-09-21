@@ -36,8 +36,8 @@ func TestTransactionNewWithOptionalParams(t *testing.T) {
 		Amount:            moderntreasury.F(int64(0)),
 		AmountString:      moderntreasury.F("amount_string"),
 		Metadata: moderntreasury.F(map[string]string{
-			"key":    "value",
 			"foo":    "bar",
+			"key":    "value",
 			"modern": "treasury",
 		}),
 		Posted:            moderntreasury.F(true),

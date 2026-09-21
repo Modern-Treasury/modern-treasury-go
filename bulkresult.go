@@ -286,6 +286,10 @@ type BulkResultEntity struct {
 	// the first 16 characters of this string will be used. Any additional characters
 	// will be truncated.
 	OriginatingPartyName string `json:"originating_party_name" api:"nullable"`
+	// Secondary name for the legal entity making the payment. Can be used for e.g.
+	// check signatures where the originating party wishes to retain their company's
+	// display name but use an employee's name for the signature.
+	OriginatingSecondaryPartyName string `json:"originating_secondary_party_name" api:"nullable"`
 	// The ID of the ledger transaction that this ledger transaction partially posts.
 	PartiallyPostsLedgerTransactionID string `json:"partially_posts_ledger_transaction_id" api:"nullable"`
 	// This field will be `true` if the transaction has posted to the account.
@@ -461,6 +465,7 @@ type bulkResultEntityJSON struct {
 	OriginatingAccountType             apijson.Field
 	OriginatingPartyAddress            apijson.Field
 	OriginatingPartyName               apijson.Field
+	OriginatingSecondaryPartyName      apijson.Field
 	PartiallyPostsLedgerTransactionID  apijson.Field
 	Posted                             apijson.Field
 	PostedAt                           apijson.Field

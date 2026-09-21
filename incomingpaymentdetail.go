@@ -451,7 +451,7 @@ type IncomingPaymentDetailNewAsyncParams struct {
 	// Defaults to a random description.
 	Description param.Field[string] `json:"description"`
 	// One of `credit`, `debit`.
-	Direction param.Field[IncomingPaymentDetailNewAsyncParamsDirection] `json:"direction"`
+	Direction param.Field[shared.TransactionDirection] `json:"direction"`
 	// The ID of one of your internal accounts.
 	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
 	// An additional layer of classification for the type of incoming payment detail,
@@ -466,22 +466,6 @@ type IncomingPaymentDetailNewAsyncParams struct {
 
 func (r IncomingPaymentDetailNewAsyncParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-// One of `credit`, `debit`.
-type IncomingPaymentDetailNewAsyncParamsDirection string
-
-const (
-	IncomingPaymentDetailNewAsyncParamsDirectionCredit IncomingPaymentDetailNewAsyncParamsDirection = "credit"
-	IncomingPaymentDetailNewAsyncParamsDirectionDebit  IncomingPaymentDetailNewAsyncParamsDirection = "debit"
-)
-
-func (r IncomingPaymentDetailNewAsyncParamsDirection) IsKnown() bool {
-	switch r {
-	case IncomingPaymentDetailNewAsyncParamsDirectionCredit, IncomingPaymentDetailNewAsyncParamsDirectionDebit:
-		return true
-	}
-	return false
 }
 
 // One of `ach`, `wire`, `check`.
