@@ -367,6 +367,10 @@ type BulkRequestNewParamsResource struct {
 	// the first 16 characters of this string will be used. Any additional characters
 	// will be truncated.
 	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
+	// Secondary name for the legal entity making the payment. Can be used for e.g.
+	// check signatures where the originating party wishes to retain their company's
+	// display name but use an employee's name for the signature.
+	OriginatingSecondaryPartyName param.Field[string] `json:"originating_secondary_party_name"`
 	// This field will be `true` if the transaction has posted to the account.
 	Posted param.Field[bool] `json:"posted"`
 	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
@@ -553,6 +557,10 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// the first 16 characters of this string will be used. Any additional characters
 	// will be truncated.
 	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
+	// Secondary name for the legal entity making the payment. Can be used for e.g.
+	// check signatures where the originating party wishes to retain their company's
+	// display name but use an employee's name for the signature.
+	OriginatingSecondaryPartyName param.Field[string] `json:"originating_secondary_party_name"`
 	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.
@@ -1294,6 +1302,10 @@ type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
 	// the first 16 characters of this string will be used. Any additional characters
 	// will be truncated.
 	OriginatingPartyName param.Field[string] `json:"originating_party_name"`
+	// Secondary name for the legal entity making the payment. Can be used for e.g.
+	// check signatures where the originating party wishes to retain their company's
+	// display name but use an employee's name for the signature.
+	OriginatingSecondaryPartyName param.Field[string] `json:"originating_secondary_party_name"`
 	// Either `normal` or `high`. For ACH and EFT payments, `high` represents a
 	// same-day ACH or EFT transfer, respectively. For check payments, `high` can mean
 	// an overnight check rather than standard mail.

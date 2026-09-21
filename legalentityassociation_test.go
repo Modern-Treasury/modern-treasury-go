@@ -107,8 +107,8 @@ func TestLegalEntityAssociationNewWithOptionalParams(t *testing.T) {
 			LegalStructure:  moderntreasury.F(shared.ChildLegalEntityCreateLegalStructureCorporation),
 			ListedExchange:  moderntreasury.F("listed_exchange"),
 			Metadata: moderntreasury.F(map[string]string{
-				"key":    "value",
 				"foo":    "bar",
+				"key":    "value",
 				"modern": "treasury",
 			}),
 			MiddleName:             moderntreasury.F("middle_name"),
