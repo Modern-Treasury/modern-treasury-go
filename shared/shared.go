@@ -1739,12 +1739,13 @@ const (
 	ThirdPartyVerificationVerificationCategoryDateOfBirth        ThirdPartyVerificationVerificationCategory = "date_of_birth"
 	ThirdPartyVerificationVerificationCategoryAddress            ThirdPartyVerificationVerificationCategory = "address"
 	ThirdPartyVerificationVerificationCategoryGovernmentIDNumber ThirdPartyVerificationVerificationCategory = "government_id_number"
+	ThirdPartyVerificationVerificationCategoryTaxID              ThirdPartyVerificationVerificationCategory = "tax_id"
 	ThirdPartyVerificationVerificationCategoryAdverseMedia       ThirdPartyVerificationVerificationCategory = "adverse_media"
 )
 
 func (r ThirdPartyVerificationVerificationCategory) IsKnown() bool {
 	switch r {
-	case ThirdPartyVerificationVerificationCategoryLegalName, ThirdPartyVerificationVerificationCategoryDateOfBirth, ThirdPartyVerificationVerificationCategoryAddress, ThirdPartyVerificationVerificationCategoryGovernmentIDNumber, ThirdPartyVerificationVerificationCategoryAdverseMedia:
+	case ThirdPartyVerificationVerificationCategoryLegalName, ThirdPartyVerificationVerificationCategoryDateOfBirth, ThirdPartyVerificationVerificationCategoryAddress, ThirdPartyVerificationVerificationCategoryGovernmentIDNumber, ThirdPartyVerificationVerificationCategoryTaxID, ThirdPartyVerificationVerificationCategoryAdverseMedia:
 		return true
 	}
 	return false
