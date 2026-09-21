@@ -1648,6 +1648,9 @@ const ThirdPartyVerificationVerificationCategoryAddress = shared.ThirdPartyVerif
 const ThirdPartyVerificationVerificationCategoryGovernmentIDNumber = shared.ThirdPartyVerificationVerificationCategoryGovernmentIDNumber
 
 // This is an alias to an internal value.
+const ThirdPartyVerificationVerificationCategoryTaxID = shared.ThirdPartyVerificationVerificationCategoryTaxID
+
+// This is an alias to an internal value.
 const ThirdPartyVerificationVerificationCategoryAdverseMedia = shared.ThirdPartyVerificationVerificationCategoryAdverseMedia
 
 // This is an alias to an internal type.
