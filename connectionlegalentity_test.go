@@ -35,10 +35,10 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 				Country:      moderntreasury.F("country"),
 				Line1:        moderntreasury.F("line1"),
 				Locality:     moderntreasury.F("locality"),
-				PostalCode:   moderntreasury.F("postal_code"),
 				Region:       moderntreasury.F("region"),
 				AddressTypes: moderntreasury.F([]shared.LegalEntityAddressCreateRequestAddressType{shared.LegalEntityAddressCreateRequestAddressTypeBusiness}),
 				Line2:        moderntreasury.F("line2"),
+				PostalCode:   moderntreasury.F("postal_code"),
 				Primary:      moderntreasury.F(true),
 			}}),
 			BankSettings: moderntreasury.F(shared.LegalEntityBankSettingsParam{
@@ -103,10 +103,10 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 						Country:      moderntreasury.F("country"),
 						Line1:        moderntreasury.F("line1"),
 						Locality:     moderntreasury.F("locality"),
-						PostalCode:   moderntreasury.F("postal_code"),
 						Region:       moderntreasury.F("region"),
 						AddressTypes: moderntreasury.F([]shared.LegalEntityAddressCreateRequestAddressType{shared.LegalEntityAddressCreateRequestAddressTypeBusiness}),
 						Line2:        moderntreasury.F("line2"),
+						PostalCode:   moderntreasury.F("postal_code"),
 						Primary:      moderntreasury.F(true),
 					}}),
 					BankSettings: moderntreasury.F(shared.LegalEntityBankSettingsParam{
