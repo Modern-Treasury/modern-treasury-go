@@ -29,7 +29,7 @@ func TestIdentificationNewWithOptionalParams(t *testing.T) {
 	)
 	_, err := client.Identifications.New(context.TODO(), moderntreasury.IdentificationNewParams{
 		IDNumber:      moderntreasury.F("id_number"),
-		IDType:        moderntreasury.F(moderntreasury.IdentificationNewParamsIDTypeArCuil),
+		IDType:        moderntreasury.F(moderntreasury.IdentificationNewParamsIDTypeAdNrt),
 		LegalEntityID: moderntreasury.F("legal_entity_id"),
 		Documents: moderntreasury.F([]moderntreasury.IdentificationNewParamsDocument{{
 			DocumentType: moderntreasury.F(moderntreasury.IdentificationNewParamsDocumentsDocumentTypeArticlesOfIncorporation),
@@ -91,7 +91,7 @@ func TestIdentificationUpdateWithOptionalParams(t *testing.T) {
 		moderntreasury.IdentificationUpdateParams{
 			ExpirationDate: moderntreasury.F(time.Now()),
 			IDNumber:       moderntreasury.F("id_number"),
-			IDType:         moderntreasury.F(moderntreasury.IdentificationUpdateParamsIDTypeArCuil),
+			IDType:         moderntreasury.F(moderntreasury.IdentificationUpdateParamsIDTypeAdNrt),
 			IssuingCountry: moderntreasury.F("issuing_country"),
 			IssuingRegion:  moderntreasury.F("issuing_region"),
 		},
