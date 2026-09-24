@@ -162,7 +162,7 @@ type ExpectedPayment struct {
 	// is unreconciled.
 	ReconciliationMethod ExpectedPaymentReconciliationMethod `json:"reconciliation_method" api:"required,nullable"`
 	// An array of reconciliation rule variables for this payment.
-	ReconciliationRuleVariables []ReconciliationRule `json:"reconciliation_rule_variables" api:"required,nullable"`
+	ReconciliationRuleVariables []ReconciliationRule `json:"reconciliation_rule_variables" api:"required"`
 	// For `ach`, this field will be passed through on an addenda record. For `wire`
 	// payments the field will be passed through as the "Originator to Beneficiary
 	// Information", also known as OBI or Fedwire tag 6000.
