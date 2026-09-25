@@ -1179,9 +1179,6 @@ type LegalEntityAddressCreateRequestParam struct {
 	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
 	// Francisco).
 	Locality param.Field[string] `json:"locality" api:"required"`
-	// Region or State. This field is free-form; for US states, we recommend a
-	// two-letter code (e.g. CA). Full state names are also accepted.
-	Region param.Field[string] `json:"region" api:"required"`
 	// The types of this address.
 	AddressTypes param.Field[[]LegalEntityAddressCreateRequestAddressType] `json:"address_types"`
 	Line2        param.Field[string]                                       `json:"line2"`
@@ -1190,6 +1187,9 @@ type LegalEntityAddressCreateRequestParam struct {
 	// Whether this address is the primary address for the legal entity. Optional; when
 	// omitted it is inferred from the address types.
 	Primary param.Field[bool] `json:"primary"`
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
+	Region param.Field[string] `json:"region"`
 }
 
 func (r LegalEntityAddressCreateRequestParam) MarshalJSON() (data []byte, err error) {
