@@ -1014,7 +1014,7 @@ type BulkRequestNewParamsResourcesExpectedPaymentCreateRequest struct {
 	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
 	// The ID of the counterparty you expect for this payment.
 	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
-	// Must conform to ISO 4217. Defaults to the currency of the internal account.
+	// Three-letter ISO currency code.
 	Currency param.Field[shared.Currency] `json:"currency"`
 	// The earliest date the payment may come in. Format: yyyy-mm-dd
 	DateLowerBound param.Field[time.Time] `json:"date_lower_bound" format:"date"`
@@ -1771,7 +1771,7 @@ type BulkRequestNewParamsResourcesExpectedPaymentUpdateRequestWithID struct {
 	AmountUpperBound param.Field[int64] `json:"amount_upper_bound"`
 	// The ID of the counterparty you expect for this payment.
 	CounterpartyID param.Field[string] `json:"counterparty_id" format:"uuid"`
-	// Must conform to ISO 4217. Defaults to the currency of the internal account.
+	// Three-letter ISO currency code.
 	Currency param.Field[shared.Currency] `json:"currency"`
 	// The earliest date the payment may come in. Format: yyyy-mm-dd
 	DateLowerBound param.Field[time.Time] `json:"date_lower_bound" format:"date"`
