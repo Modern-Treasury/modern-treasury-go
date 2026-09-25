@@ -827,6 +827,7 @@ const (
 	IdentificationCreateRequestIDTypeGlGer                IdentificationCreateRequestIDType = "gl_ger"
 	IdentificationCreateRequestIDTypeGmTin                IdentificationCreateRequestIDType = "gm_tin"
 	IdentificationCreateRequestIDTypeGrVat                IdentificationCreateRequestIDType = "gr_vat"
+	IdentificationCreateRequestIDTypeGtNit                IdentificationCreateRequestIDType = "gt_nit"
 	IdentificationCreateRequestIDTypeHkBrn                IdentificationCreateRequestIDType = "hk_brn"
 	IdentificationCreateRequestIDTypeHkHkid               IdentificationCreateRequestIDType = "hk_hkid"
 	IdentificationCreateRequestIDTypeHnID                 IdentificationCreateRequestIDType = "hn_id"
@@ -834,29 +835,64 @@ const (
 	IdentificationCreateRequestIDTypeHrOib                IdentificationCreateRequestIDType = "hr_oib"
 	IdentificationCreateRequestIDTypeHuAdj                IdentificationCreateRequestIDType = "hu_adj"
 	IdentificationCreateRequestIDTypeHuAnum               IdentificationCreateRequestIDType = "hu_anum"
+	IdentificationCreateRequestIDTypeIDNik                IdentificationCreateRequestIDType = "id_nik"
+	IdentificationCreateRequestIDTypeIDNpwp               IdentificationCreateRequestIDType = "id_npwp"
 	IdentificationCreateRequestIDTypeIePps                IdentificationCreateRequestIDType = "ie_pps"
 	IdentificationCreateRequestIDTypeIeTrn                IdentificationCreateRequestIDType = "ie_trn"
+	IdentificationCreateRequestIDTypeIlCn                 IdentificationCreateRequestIDType = "il_cn"
+	IdentificationCreateRequestIDTypeIlPin                IdentificationCreateRequestIDType = "il_pin"
+	IdentificationCreateRequestIDTypeImTrn                IdentificationCreateRequestIDType = "im_trn"
 	IdentificationCreateRequestIDTypeInLei                IdentificationCreateRequestIDType = "in_lei"
 	IdentificationCreateRequestIDTypeIsKnt                IdentificationCreateRequestIDType = "is_knt"
 	IdentificationCreateRequestIDTypeItCf                 IdentificationCreateRequestIDType = "it_cf"
 	IdentificationCreateRequestIDTypeItPiva               IdentificationCreateRequestIDType = "it_piva"
+	IdentificationCreateRequestIDTypeJeSsn                IdentificationCreateRequestIDType = "je_ssn"
+	IdentificationCreateRequestIDTypeJeTin                IdentificationCreateRequestIDType = "je_tin"
+	IdentificationCreateRequestIDTypeJmTrn                IdentificationCreateRequestIDType = "jm_trn"
+	IdentificationCreateRequestIDTypeJoTin                IdentificationCreateRequestIDType = "jo_tin"
 	IdentificationCreateRequestIDTypeJpHb                 IdentificationCreateRequestIDType = "jp_hb"
 	IdentificationCreateRequestIDTypeJpMn                 IdentificationCreateRequestIDType = "jp_mn"
+	IdentificationCreateRequestIDTypeKePin                IdentificationCreateRequestIDType = "ke_pin"
+	IdentificationCreateRequestIDTypeKgPin                IdentificationCreateRequestIDType = "kg_pin"
+	IdentificationCreateRequestIDTypeKnTin                IdentificationCreateRequestIDType = "kn_tin"
 	IdentificationCreateRequestIDTypeKrBrn                IdentificationCreateRequestIDType = "kr_brn"
 	IdentificationCreateRequestIDTypeKrCrn                IdentificationCreateRequestIDType = "kr_crn"
 	IdentificationCreateRequestIDTypeKrRrn                IdentificationCreateRequestIDType = "kr_rrn"
+	IdentificationCreateRequestIDTypeKwCid                IdentificationCreateRequestIDType = "kw_cid"
+	IdentificationCreateRequestIDTypeKzBin                IdentificationCreateRequestIDType = "kz_bin"
+	IdentificationCreateRequestIDTypeKzIin                IdentificationCreateRequestIDType = "kz_iin"
+	IdentificationCreateRequestIDTypeLaTin                IdentificationCreateRequestIDType = "la_tin"
+	IdentificationCreateRequestIDTypeLcTin                IdentificationCreateRequestIDType = "lc_tin"
 	IdentificationCreateRequestIDTypeLiPeid               IdentificationCreateRequestIDType = "li_peid"
+	IdentificationCreateRequestIDTypeLkTin                IdentificationCreateRequestIDType = "lk_tin"
+	IdentificationCreateRequestIDTypeLsTin                IdentificationCreateRequestIDType = "ls_tin"
 	IdentificationCreateRequestIDTypeLtAk                 IdentificationCreateRequestIDType = "lt_ak"
 	IdentificationCreateRequestIDTypeLtJak                IdentificationCreateRequestIDType = "lt_jak"
 	IdentificationCreateRequestIDTypeLuMtc                IdentificationCreateRequestIDType = "lu_mtc"
 	IdentificationCreateRequestIDTypeLuVat                IdentificationCreateRequestIDType = "lu_vat"
 	IdentificationCreateRequestIDTypeLvPk                 IdentificationCreateRequestIDType = "lv_pk"
 	IdentificationCreateRequestIDTypeLvRn                 IdentificationCreateRequestIDType = "lv_rn"
+	IdentificationCreateRequestIDTypeMdIdnp               IdentificationCreateRequestIDType = "md_idnp"
+	IdentificationCreateRequestIDTypeMeJmbg               IdentificationCreateRequestIDType = "me_jmbg"
+	IdentificationCreateRequestIDTypeMePib                IdentificationCreateRequestIDType = "me_pib"
+	IdentificationCreateRequestIDTypeMgNif                IdentificationCreateRequestIDType = "mg_nif"
+	IdentificationCreateRequestIDTypeMhSsn                IdentificationCreateRequestIDType = "mh_ssn"
+	IdentificationCreateRequestIDTypeMoBir                IdentificationCreateRequestIDType = "mo_bir"
+	IdentificationCreateRequestIDTypeMoTinB               IdentificationCreateRequestIDType = "mo_tin_b"
+	IdentificationCreateRequestIDTypeMoTinI               IdentificationCreateRequestIDType = "mo_tin_i"
+	IdentificationCreateRequestIDTypeMrNif                IdentificationCreateRequestIDType = "mr_nif"
 	IdentificationCreateRequestIDTypeMtTin                IdentificationCreateRequestIDType = "mt_tin"
 	IdentificationCreateRequestIDTypeMtVat                IdentificationCreateRequestIDType = "mt_vat"
+	IdentificationCreateRequestIDTypeMuTan                IdentificationCreateRequestIDType = "mu_tan"
+	IdentificationCreateRequestIDTypeMwTpin               IdentificationCreateRequestIDType = "mw_tpin"
 	IdentificationCreateRequestIDTypeMxCurp               IdentificationCreateRequestIDType = "mx_curp"
 	IdentificationCreateRequestIDTypeMxIne                IdentificationCreateRequestIDType = "mx_ine"
 	IdentificationCreateRequestIDTypeMxRfc                IdentificationCreateRequestIDType = "mx_rfc"
+	IdentificationCreateRequestIDTypeMyNpc                IdentificationCreateRequestIDType = "my_npc"
+	IdentificationCreateRequestIDTypeMyNric               IdentificationCreateRequestIDType = "my_nric"
+	IdentificationCreateRequestIDTypeMyTinB               IdentificationCreateRequestIDType = "my_tin_b"
+	IdentificationCreateRequestIDTypeMzNuit               IdentificationCreateRequestIDType = "mz_nuit"
+	IdentificationCreateRequestIDTypeNaTin                IdentificationCreateRequestIDType = "na_tin"
 	IdentificationCreateRequestIDTypeNationalID           IdentificationCreateRequestIDType = "national_id"
 	IdentificationCreateRequestIDTypeNlBsn                IdentificationCreateRequestIDType = "nl_bsn"
 	IdentificationCreateRequestIDTypeNlBtw                IdentificationCreateRequestIDType = "nl_btw"
@@ -864,11 +900,19 @@ const (
 	IdentificationCreateRequestIDTypeNoFdn                IdentificationCreateRequestIDType = "no_fdn"
 	IdentificationCreateRequestIDTypeNoMva                IdentificationCreateRequestIDType = "no_mva"
 	IdentificationCreateRequestIDTypeNoOrgnr              IdentificationCreateRequestIDType = "no_orgnr"
+	IdentificationCreateRequestIDTypeNrTin                IdentificationCreateRequestIDType = "nr_tin"
 	IdentificationCreateRequestIDTypeNzIrd                IdentificationCreateRequestIDType = "nz_ird"
+	IdentificationCreateRequestIDTypeOmCid                IdentificationCreateRequestIDType = "om_cid"
+	IdentificationCreateRequestIDTypePaCedula             IdentificationCreateRequestIDType = "pa_cedula"
+	IdentificationCreateRequestIDTypePaRuc                IdentificationCreateRequestIDType = "pa_ruc"
 	IdentificationCreateRequestIDTypePassport             IdentificationCreateRequestIDType = "passport"
+	IdentificationCreateRequestIDTypePeRuc                IdentificationCreateRequestIDType = "pe_ruc"
+	IdentificationCreateRequestIDTypePgTin                IdentificationCreateRequestIDType = "pg_tin"
+	IdentificationCreateRequestIDTypePhTin                IdentificationCreateRequestIDType = "ph_tin"
 	IdentificationCreateRequestIDTypePlNip                IdentificationCreateRequestIDType = "pl_nip"
 	IdentificationCreateRequestIDTypePlPesel              IdentificationCreateRequestIDType = "pl_pesel"
 	IdentificationCreateRequestIDTypePtNif                IdentificationCreateRequestIDType = "pt_nif"
+	IdentificationCreateRequestIDTypePyRuc                IdentificationCreateRequestIDType = "py_ruc"
 	IdentificationCreateRequestIDTypeRoCnp                IdentificationCreateRequestIDType = "ro_cnp"
 	IdentificationCreateRequestIDTypeRoCui                IdentificationCreateRequestIDType = "ro_cui"
 	IdentificationCreateRequestIDTypeSaTin                IdentificationCreateRequestIDType = "sa_tin"
@@ -891,7 +935,7 @@ const (
 
 func (r IdentificationCreateRequestIDType) IsKnown() bool {
 	switch r {
-	case IdentificationCreateRequestIDTypeAdNrt, IdentificationCreateRequestIDTypeAeEid, IdentificationCreateRequestIDTypeAeTrn, IdentificationCreateRequestIDTypeAgTin, IdentificationCreateRequestIDTypeAITin, IdentificationCreateRequestIDTypeAlNid, IdentificationCreateRequestIDTypeAlNipt, IdentificationCreateRequestIDTypeAmTin, IdentificationCreateRequestIDTypeAoNif, IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeAtAtin, IdentificationCreateRequestIDTypeAtVat, IdentificationCreateRequestIDTypeAuAbn, IdentificationCreateRequestIDTypeAuTfn, IdentificationCreateRequestIDTypeAwTin, IdentificationCreateRequestIDTypeAzPin, IdentificationCreateRequestIDTypeBbTin, IdentificationCreateRequestIDTypeBdTin, IdentificationCreateRequestIDTypeBeEnt, IdentificationCreateRequestIDTypeBeNrn, IdentificationCreateRequestIDTypeBfIfu, IdentificationCreateRequestIDTypeBgEgn, IdentificationCreateRequestIDTypeBhCpr, IdentificationCreateRequestIDTypeBhVat, IdentificationCreateRequestIDTypeBjIfu, IdentificationCreateRequestIDTypeBoNit, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeBsTin, IdentificationCreateRequestIDTypeBtBin, IdentificationCreateRequestIDTypeBwTin, IdentificationCreateRequestIDTypeBzTin, IdentificationCreateRequestIDTypeCaBn, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeChAhv, IdentificationCreateRequestIDTypeChUid, IdentificationCreateRequestIDTypeCiNcc, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCmNiu, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeCrCpf, IdentificationCreateRequestIDTypeCwCrib, IdentificationCreateRequestIDTypeCyTin, IdentificationCreateRequestIDTypeCzIco, IdentificationCreateRequestIDTypeCzRc, IdentificationCreateRequestIDTypeDeStid, IdentificationCreateRequestIDTypeDeStnr, IdentificationCreateRequestIDTypeDeVat, IdentificationCreateRequestIDTypeDkCpr, IdentificationCreateRequestIDTypeDkCvr, IdentificationCreateRequestIDTypeDmTin, IdentificationCreateRequestIDTypeDoCedula, IdentificationCreateRequestIDTypeDoRnc, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeEcRuc, IdentificationCreateRequestIDTypeEeIk, IdentificationCreateRequestIDTypeEeRk, IdentificationCreateRequestIDTypeEsNie, IdentificationCreateRequestIDTypeEsNif, IdentificationCreateRequestIDTypeFiHetu, IdentificationCreateRequestIDTypeFiYtj, IdentificationCreateRequestIDTypeFjTin, IdentificationCreateRequestIDTypeFoPtal, IdentificationCreateRequestIDTypeFrNif, IdentificationCreateRequestIDTypeFrSiren, IdentificationCreateRequestIDTypeFrVat, IdentificationCreateRequestIDTypeGBNino, IdentificationCreateRequestIDTypeGBUtr, IdentificationCreateRequestIDTypeGBVat, IdentificationCreateRequestIDTypeGdTin, IdentificationCreateRequestIDTypeGeIc, IdentificationCreateRequestIDTypeGePn, IdentificationCreateRequestIDTypeGeTin, IdentificationCreateRequestIDTypeGenericInternational, IdentificationCreateRequestIDTypeGgSin, IdentificationCreateRequestIDTypeGhPin, IdentificationCreateRequestIDTypeGhTin, IdentificationCreateRequestIDTypeGiTrn, IdentificationCreateRequestIDTypeGlCpr, IdentificationCreateRequestIDTypeGlGer, IdentificationCreateRequestIDTypeGmTin, IdentificationCreateRequestIDTypeGrVat, IdentificationCreateRequestIDTypeHkBrn, IdentificationCreateRequestIDTypeHkHkid, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeHrOib, IdentificationCreateRequestIDTypeHuAdj, IdentificationCreateRequestIDTypeHuAnum, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeIeTrn, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeIsKnt, IdentificationCreateRequestIDTypeItCf, IdentificationCreateRequestIDTypeItPiva, IdentificationCreateRequestIDTypeJpHb, IdentificationCreateRequestIDTypeJpMn, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypeLiPeid, IdentificationCreateRequestIDTypeLtAk, IdentificationCreateRequestIDTypeLtJak, IdentificationCreateRequestIDTypeLuMtc, IdentificationCreateRequestIDTypeLuVat, IdentificationCreateRequestIDTypeLvPk, IdentificationCreateRequestIDTypeLvRn, IdentificationCreateRequestIDTypeMtTin, IdentificationCreateRequestIDTypeMtVat, IdentificationCreateRequestIDTypeMxCurp, IdentificationCreateRequestIDTypeMxIne, IdentificationCreateRequestIDTypeMxRfc, IdentificationCreateRequestIDTypeNationalID, IdentificationCreateRequestIDTypeNlBsn, IdentificationCreateRequestIDTypeNlBtw, IdentificationCreateRequestIDTypeNlRsin, IdentificationCreateRequestIDTypeNoFdn, IdentificationCreateRequestIDTypeNoMva, IdentificationCreateRequestIDTypeNoOrgnr, IdentificationCreateRequestIDTypeNzIrd, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypePlNip, IdentificationCreateRequestIDTypePlPesel, IdentificationCreateRequestIDTypePtNif, IdentificationCreateRequestIDTypeRoCnp, IdentificationCreateRequestIDTypeRoCui, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeSeOrgnr, IdentificationCreateRequestIDTypeSePnmr, IdentificationCreateRequestIDTypeSgFin, IdentificationCreateRequestIDTypeSgNric, IdentificationCreateRequestIDTypeSgUen, IdentificationCreateRequestIDTypeSiDav, IdentificationCreateRequestIDTypeSiTin, IdentificationCreateRequestIDTypeSkIco, IdentificationCreateRequestIDTypeSkRc, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeUyRut, IdentificationCreateRequestIDTypeVnTin:
+	case IdentificationCreateRequestIDTypeAdNrt, IdentificationCreateRequestIDTypeAeEid, IdentificationCreateRequestIDTypeAeTrn, IdentificationCreateRequestIDTypeAgTin, IdentificationCreateRequestIDTypeAITin, IdentificationCreateRequestIDTypeAlNid, IdentificationCreateRequestIDTypeAlNipt, IdentificationCreateRequestIDTypeAmTin, IdentificationCreateRequestIDTypeAoNif, IdentificationCreateRequestIDTypeArCuil, IdentificationCreateRequestIDTypeArCuit, IdentificationCreateRequestIDTypeAtAtin, IdentificationCreateRequestIDTypeAtVat, IdentificationCreateRequestIDTypeAuAbn, IdentificationCreateRequestIDTypeAuTfn, IdentificationCreateRequestIDTypeAwTin, IdentificationCreateRequestIDTypeAzPin, IdentificationCreateRequestIDTypeBbTin, IdentificationCreateRequestIDTypeBdTin, IdentificationCreateRequestIDTypeBeEnt, IdentificationCreateRequestIDTypeBeNrn, IdentificationCreateRequestIDTypeBfIfu, IdentificationCreateRequestIDTypeBgEgn, IdentificationCreateRequestIDTypeBhCpr, IdentificationCreateRequestIDTypeBhVat, IdentificationCreateRequestIDTypeBjIfu, IdentificationCreateRequestIDTypeBoNit, IdentificationCreateRequestIDTypeBrCnpj, IdentificationCreateRequestIDTypeBrCpf, IdentificationCreateRequestIDTypeBsTin, IdentificationCreateRequestIDTypeBtBin, IdentificationCreateRequestIDTypeBwTin, IdentificationCreateRequestIDTypeBzTin, IdentificationCreateRequestIDTypeCaBn, IdentificationCreateRequestIDTypeCaSin, IdentificationCreateRequestIDTypeChAhv, IdentificationCreateRequestIDTypeChUid, IdentificationCreateRequestIDTypeCiNcc, IdentificationCreateRequestIDTypeClRun, IdentificationCreateRequestIDTypeClRut, IdentificationCreateRequestIDTypeCmNiu, IdentificationCreateRequestIDTypeCoCedulas, IdentificationCreateRequestIDTypeCoNit, IdentificationCreateRequestIDTypeCrCpf, IdentificationCreateRequestIDTypeCwCrib, IdentificationCreateRequestIDTypeCyTin, IdentificationCreateRequestIDTypeCzIco, IdentificationCreateRequestIDTypeCzRc, IdentificationCreateRequestIDTypeDeStid, IdentificationCreateRequestIDTypeDeStnr, IdentificationCreateRequestIDTypeDeVat, IdentificationCreateRequestIDTypeDkCpr, IdentificationCreateRequestIDTypeDkCvr, IdentificationCreateRequestIDTypeDmTin, IdentificationCreateRequestIDTypeDoCedula, IdentificationCreateRequestIDTypeDoRnc, IdentificationCreateRequestIDTypeDriversLicense, IdentificationCreateRequestIDTypeEcRuc, IdentificationCreateRequestIDTypeEeIk, IdentificationCreateRequestIDTypeEeRk, IdentificationCreateRequestIDTypeEsNie, IdentificationCreateRequestIDTypeEsNif, IdentificationCreateRequestIDTypeFiHetu, IdentificationCreateRequestIDTypeFiYtj, IdentificationCreateRequestIDTypeFjTin, IdentificationCreateRequestIDTypeFoPtal, IdentificationCreateRequestIDTypeFrNif, IdentificationCreateRequestIDTypeFrSiren, IdentificationCreateRequestIDTypeFrVat, IdentificationCreateRequestIDTypeGBNino, IdentificationCreateRequestIDTypeGBUtr, IdentificationCreateRequestIDTypeGBVat, IdentificationCreateRequestIDTypeGdTin, IdentificationCreateRequestIDTypeGeIc, IdentificationCreateRequestIDTypeGePn, IdentificationCreateRequestIDTypeGeTin, IdentificationCreateRequestIDTypeGenericInternational, IdentificationCreateRequestIDTypeGgSin, IdentificationCreateRequestIDTypeGhPin, IdentificationCreateRequestIDTypeGhTin, IdentificationCreateRequestIDTypeGiTrn, IdentificationCreateRequestIDTypeGlCpr, IdentificationCreateRequestIDTypeGlGer, IdentificationCreateRequestIDTypeGmTin, IdentificationCreateRequestIDTypeGrVat, IdentificationCreateRequestIDTypeGtNit, IdentificationCreateRequestIDTypeHkBrn, IdentificationCreateRequestIDTypeHkHkid, IdentificationCreateRequestIDTypeHnID, IdentificationCreateRequestIDTypeHnRtn, IdentificationCreateRequestIDTypeHrOib, IdentificationCreateRequestIDTypeHuAdj, IdentificationCreateRequestIDTypeHuAnum, IdentificationCreateRequestIDTypeIDNik, IdentificationCreateRequestIDTypeIDNpwp, IdentificationCreateRequestIDTypeIePps, IdentificationCreateRequestIDTypeIeTrn, IdentificationCreateRequestIDTypeIlCn, IdentificationCreateRequestIDTypeIlPin, IdentificationCreateRequestIDTypeImTrn, IdentificationCreateRequestIDTypeInLei, IdentificationCreateRequestIDTypeIsKnt, IdentificationCreateRequestIDTypeItCf, IdentificationCreateRequestIDTypeItPiva, IdentificationCreateRequestIDTypeJeSsn, IdentificationCreateRequestIDTypeJeTin, IdentificationCreateRequestIDTypeJmTrn, IdentificationCreateRequestIDTypeJoTin, IdentificationCreateRequestIDTypeJpHb, IdentificationCreateRequestIDTypeJpMn, IdentificationCreateRequestIDTypeKePin, IdentificationCreateRequestIDTypeKgPin, IdentificationCreateRequestIDTypeKnTin, IdentificationCreateRequestIDTypeKrBrn, IdentificationCreateRequestIDTypeKrCrn, IdentificationCreateRequestIDTypeKrRrn, IdentificationCreateRequestIDTypeKwCid, IdentificationCreateRequestIDTypeKzBin, IdentificationCreateRequestIDTypeKzIin, IdentificationCreateRequestIDTypeLaTin, IdentificationCreateRequestIDTypeLcTin, IdentificationCreateRequestIDTypeLiPeid, IdentificationCreateRequestIDTypeLkTin, IdentificationCreateRequestIDTypeLsTin, IdentificationCreateRequestIDTypeLtAk, IdentificationCreateRequestIDTypeLtJak, IdentificationCreateRequestIDTypeLuMtc, IdentificationCreateRequestIDTypeLuVat, IdentificationCreateRequestIDTypeLvPk, IdentificationCreateRequestIDTypeLvRn, IdentificationCreateRequestIDTypeMdIdnp, IdentificationCreateRequestIDTypeMeJmbg, IdentificationCreateRequestIDTypeMePib, IdentificationCreateRequestIDTypeMgNif, IdentificationCreateRequestIDTypeMhSsn, IdentificationCreateRequestIDTypeMoBir, IdentificationCreateRequestIDTypeMoTinB, IdentificationCreateRequestIDTypeMoTinI, IdentificationCreateRequestIDTypeMrNif, IdentificationCreateRequestIDTypeMtTin, IdentificationCreateRequestIDTypeMtVat, IdentificationCreateRequestIDTypeMuTan, IdentificationCreateRequestIDTypeMwTpin, IdentificationCreateRequestIDTypeMxCurp, IdentificationCreateRequestIDTypeMxIne, IdentificationCreateRequestIDTypeMxRfc, IdentificationCreateRequestIDTypeMyNpc, IdentificationCreateRequestIDTypeMyNric, IdentificationCreateRequestIDTypeMyTinB, IdentificationCreateRequestIDTypeMzNuit, IdentificationCreateRequestIDTypeNaTin, IdentificationCreateRequestIDTypeNationalID, IdentificationCreateRequestIDTypeNlBsn, IdentificationCreateRequestIDTypeNlBtw, IdentificationCreateRequestIDTypeNlRsin, IdentificationCreateRequestIDTypeNoFdn, IdentificationCreateRequestIDTypeNoMva, IdentificationCreateRequestIDTypeNoOrgnr, IdentificationCreateRequestIDTypeNrTin, IdentificationCreateRequestIDTypeNzIrd, IdentificationCreateRequestIDTypeOmCid, IdentificationCreateRequestIDTypePaCedula, IdentificationCreateRequestIDTypePaRuc, IdentificationCreateRequestIDTypePassport, IdentificationCreateRequestIDTypePeRuc, IdentificationCreateRequestIDTypePgTin, IdentificationCreateRequestIDTypePhTin, IdentificationCreateRequestIDTypePlNip, IdentificationCreateRequestIDTypePlPesel, IdentificationCreateRequestIDTypePtNif, IdentificationCreateRequestIDTypePyRuc, IdentificationCreateRequestIDTypeRoCnp, IdentificationCreateRequestIDTypeRoCui, IdentificationCreateRequestIDTypeSaTin, IdentificationCreateRequestIDTypeSaVat, IdentificationCreateRequestIDTypeSeOrgnr, IdentificationCreateRequestIDTypeSePnmr, IdentificationCreateRequestIDTypeSgFin, IdentificationCreateRequestIDTypeSgNric, IdentificationCreateRequestIDTypeSgUen, IdentificationCreateRequestIDTypeSiDav, IdentificationCreateRequestIDTypeSiTin, IdentificationCreateRequestIDTypeSkIco, IdentificationCreateRequestIDTypeSkRc, IdentificationCreateRequestIDTypeUsEin, IdentificationCreateRequestIDTypeUsItin, IdentificationCreateRequestIDTypeUsSsn, IdentificationCreateRequestIDTypeUyRut, IdentificationCreateRequestIDTypeVnTin:
 		return true
 	}
 	return false
@@ -1179,9 +1223,6 @@ type LegalEntityAddressCreateRequestParam struct {
 	// Locality or City. Use the full city name rather than an abbreviation (e.g. San
 	// Francisco).
 	Locality param.Field[string] `json:"locality" api:"required"`
-	// Region or State. This field is free-form; for US states, we recommend a
-	// two-letter code (e.g. CA). Full state names are also accepted.
-	Region param.Field[string] `json:"region" api:"required"`
 	// The types of this address.
 	AddressTypes param.Field[[]LegalEntityAddressCreateRequestAddressType] `json:"address_types"`
 	Line2        param.Field[string]                                       `json:"line2"`
@@ -1190,6 +1231,9 @@ type LegalEntityAddressCreateRequestParam struct {
 	// Whether this address is the primary address for the legal entity. Optional; when
 	// omitted it is inferred from the address types.
 	Primary param.Field[bool] `json:"primary"`
+	// Region or State. This field is free-form; for US states, we recommend a
+	// two-letter code (e.g. CA). Full state names are also accepted.
+	Region param.Field[string] `json:"region"`
 }
 
 func (r LegalEntityAddressCreateRequestParam) MarshalJSON() (data []byte, err error) {
