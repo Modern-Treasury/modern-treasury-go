@@ -443,7 +443,7 @@ type IncomingPaymentDetailNewAsyncParams struct {
 	Amount param.Field[int64] `json:"amount"`
 	// Defaults to today.
 	AsOfDate param.Field[time.Time] `json:"as_of_date" format:"date"`
-	// Defaults to the currency of the originating account.
+	// Three-letter ISO currency code.
 	Currency param.Field[shared.Currency] `json:"currency"`
 	// An object passed through to the simulated IPD that could reflect what a vendor
 	// would pass.
