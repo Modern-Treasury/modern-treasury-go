@@ -769,6 +769,33 @@ type IdentificationCreateRequestParam = shared.IdentificationCreateRequestParam
 type IdentificationCreateRequestIDType = shared.IdentificationCreateRequestIDType
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeAdNrt = shared.IdentificationCreateRequestIDTypeAdNrt
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeAeEid = shared.IdentificationCreateRequestIDTypeAeEid
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeAeTrn = shared.IdentificationCreateRequestIDTypeAeTrn
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeAgTin = shared.IdentificationCreateRequestIDTypeAgTin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeAITin = shared.IdentificationCreateRequestIDTypeAITin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeAlNid = shared.IdentificationCreateRequestIDTypeAlNid
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeAlNipt = shared.IdentificationCreateRequestIDTypeAlNipt
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeAmTin = shared.IdentificationCreateRequestIDTypeAmTin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeAoNif = shared.IdentificationCreateRequestIDTypeAoNif
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeArCuil = shared.IdentificationCreateRequestIDTypeArCuil
 
 // This is an alias to an internal value.
@@ -787,16 +814,58 @@ const IdentificationCreateRequestIDTypeAuAbn = shared.IdentificationCreateReques
 const IdentificationCreateRequestIDTypeAuTfn = shared.IdentificationCreateRequestIDTypeAuTfn
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeAwTin = shared.IdentificationCreateRequestIDTypeAwTin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeAzPin = shared.IdentificationCreateRequestIDTypeAzPin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBbTin = shared.IdentificationCreateRequestIDTypeBbTin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBdTin = shared.IdentificationCreateRequestIDTypeBdTin
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeBeEnt = shared.IdentificationCreateRequestIDTypeBeEnt
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeBeNrn = shared.IdentificationCreateRequestIDTypeBeNrn
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBfIfu = shared.IdentificationCreateRequestIDTypeBfIfu
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBgEgn = shared.IdentificationCreateRequestIDTypeBgEgn
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBhCpr = shared.IdentificationCreateRequestIDTypeBhCpr
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBhVat = shared.IdentificationCreateRequestIDTypeBhVat
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBjIfu = shared.IdentificationCreateRequestIDTypeBjIfu
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBoNit = shared.IdentificationCreateRequestIDTypeBoNit
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeBrCnpj = shared.IdentificationCreateRequestIDTypeBrCnpj
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeBrCpf = shared.IdentificationCreateRequestIDTypeBrCpf
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBsTin = shared.IdentificationCreateRequestIDTypeBsTin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBtBin = shared.IdentificationCreateRequestIDTypeBtBin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBwTin = shared.IdentificationCreateRequestIDTypeBwTin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeBzTin = shared.IdentificationCreateRequestIDTypeBzTin
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeCaBn = shared.IdentificationCreateRequestIDTypeCaBn
@@ -811,16 +880,28 @@ const IdentificationCreateRequestIDTypeChAhv = shared.IdentificationCreateReques
 const IdentificationCreateRequestIDTypeChUid = shared.IdentificationCreateRequestIDTypeChUid
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeCiNcc = shared.IdentificationCreateRequestIDTypeCiNcc
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeClRun = shared.IdentificationCreateRequestIDTypeClRun
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeClRut = shared.IdentificationCreateRequestIDTypeClRut
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeCmNiu = shared.IdentificationCreateRequestIDTypeCmNiu
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeCoCedulas = shared.IdentificationCreateRequestIDTypeCoCedulas
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeCoNit = shared.IdentificationCreateRequestIDTypeCoNit
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeCrCpf = shared.IdentificationCreateRequestIDTypeCrCpf
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeCwCrib = shared.IdentificationCreateRequestIDTypeCwCrib
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeCyTin = shared.IdentificationCreateRequestIDTypeCyTin
@@ -847,7 +928,19 @@ const IdentificationCreateRequestIDTypeDkCpr = shared.IdentificationCreateReques
 const IdentificationCreateRequestIDTypeDkCvr = shared.IdentificationCreateRequestIDTypeDkCvr
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeDmTin = shared.IdentificationCreateRequestIDTypeDmTin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeDoCedula = shared.IdentificationCreateRequestIDTypeDoCedula
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeDoRnc = shared.IdentificationCreateRequestIDTypeDoRnc
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeDriversLicense = shared.IdentificationCreateRequestIDTypeDriversLicense
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeEcRuc = shared.IdentificationCreateRequestIDTypeEcRuc
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeEeIk = shared.IdentificationCreateRequestIDTypeEeIk
@@ -868,6 +961,12 @@ const IdentificationCreateRequestIDTypeFiHetu = shared.IdentificationCreateReque
 const IdentificationCreateRequestIDTypeFiYtj = shared.IdentificationCreateRequestIDTypeFiYtj
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeFjTin = shared.IdentificationCreateRequestIDTypeFjTin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeFoPtal = shared.IdentificationCreateRequestIDTypeFoPtal
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeFrNif = shared.IdentificationCreateRequestIDTypeFrNif
 
 // This is an alias to an internal value.
@@ -886,7 +985,40 @@ const IdentificationCreateRequestIDTypeGBUtr = shared.IdentificationCreateReques
 const IdentificationCreateRequestIDTypeGBVat = shared.IdentificationCreateRequestIDTypeGBVat
 
 // This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGdTin = shared.IdentificationCreateRequestIDTypeGdTin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGeIc = shared.IdentificationCreateRequestIDTypeGeIc
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGePn = shared.IdentificationCreateRequestIDTypeGePn
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGeTin = shared.IdentificationCreateRequestIDTypeGeTin
+
+// This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeGenericInternational = shared.IdentificationCreateRequestIDTypeGenericInternational
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGgSin = shared.IdentificationCreateRequestIDTypeGgSin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGhPin = shared.IdentificationCreateRequestIDTypeGhPin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGhTin = shared.IdentificationCreateRequestIDTypeGhTin
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGiTrn = shared.IdentificationCreateRequestIDTypeGiTrn
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGlCpr = shared.IdentificationCreateRequestIDTypeGlCpr
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGlGer = shared.IdentificationCreateRequestIDTypeGlGer
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestIDTypeGmTin = shared.IdentificationCreateRequestIDTypeGmTin
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestIDTypeGrVat = shared.IdentificationCreateRequestIDTypeGrVat
