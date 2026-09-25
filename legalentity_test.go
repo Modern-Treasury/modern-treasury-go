@@ -73,7 +73,7 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 		FirstName:              moderntreasury.F("first_name"),
 		Identifications: moderntreasury.F([]shared.IdentificationCreateRequestParam{{
 			IDNumber: moderntreasury.F("id_number"),
-			IDType:   moderntreasury.F(shared.IdentificationCreateRequestIDTypeArCuil),
+			IDType:   moderntreasury.F(shared.IdentificationCreateRequestIDTypeAdNrt),
 			Documents: moderntreasury.F([]shared.IdentificationCreateRequestDocumentParam{{
 				DocumentType: moderntreasury.F(shared.IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation),
 				FileData:     moderntreasury.F("file_data"),
@@ -141,7 +141,7 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 				FirstName:              moderntreasury.F("first_name"),
 				Identifications: moderntreasury.F([]shared.IdentificationCreateRequestParam{{
 					IDNumber: moderntreasury.F("id_number"),
-					IDType:   moderntreasury.F(shared.IdentificationCreateRequestIDTypeArCuil),
+					IDType:   moderntreasury.F(shared.IdentificationCreateRequestIDTypeAdNrt),
 					Documents: moderntreasury.F([]shared.IdentificationCreateRequestDocumentParam{{
 						DocumentType: moderntreasury.F(shared.IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation),
 						FileData:     moderntreasury.F("file_data"),
@@ -392,7 +392,7 @@ func TestLegalEntityUpdateWithOptionalParams(t *testing.T) {
 			FirstName:              moderntreasury.F("first_name"),
 			Identifications: moderntreasury.F([]shared.IdentificationCreateRequestParam{{
 				IDNumber: moderntreasury.F("id_number"),
-				IDType:   moderntreasury.F(shared.IdentificationCreateRequestIDTypeArCuil),
+				IDType:   moderntreasury.F(shared.IdentificationCreateRequestIDTypeAdNrt),
 				Documents: moderntreasury.F([]shared.IdentificationCreateRequestDocumentParam{{
 					DocumentType: moderntreasury.F(shared.IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation),
 					FileData:     moderntreasury.F("file_data"),
