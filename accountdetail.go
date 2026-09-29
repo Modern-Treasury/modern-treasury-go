@@ -160,26 +160,27 @@ func (r accountDetailJSON) RawJSON() string {
 type AccountDetailAccountNumberType string
 
 const (
-	AccountDetailAccountNumberTypeArbitrumAddress AccountDetailAccountNumberType = "arbitrum_address"
-	AccountDetailAccountNumberTypeAuNumber        AccountDetailAccountNumberType = "au_number"
-	AccountDetailAccountNumberTypeBaseAddress     AccountDetailAccountNumberType = "base_address"
-	AccountDetailAccountNumberTypeCardToken       AccountDetailAccountNumberType = "card_token"
-	AccountDetailAccountNumberTypeClabe           AccountDetailAccountNumberType = "clabe"
-	AccountDetailAccountNumberTypeEthereumAddress AccountDetailAccountNumberType = "ethereum_address"
-	AccountDetailAccountNumberTypeHkNumber        AccountDetailAccountNumberType = "hk_number"
-	AccountDetailAccountNumberTypeIban            AccountDetailAccountNumberType = "iban"
-	AccountDetailAccountNumberTypeIDNumber        AccountDetailAccountNumberType = "id_number"
-	AccountDetailAccountNumberTypeNzNumber        AccountDetailAccountNumberType = "nz_number"
-	AccountDetailAccountNumberTypeOther           AccountDetailAccountNumberType = "other"
-	AccountDetailAccountNumberTypePan             AccountDetailAccountNumberType = "pan"
-	AccountDetailAccountNumberTypePolygonAddress  AccountDetailAccountNumberType = "polygon_address"
-	AccountDetailAccountNumberTypeSgNumber        AccountDetailAccountNumberType = "sg_number"
-	AccountDetailAccountNumberTypeSolanaAddress   AccountDetailAccountNumberType = "solana_address"
+	AccountDetailAccountNumberTypeArbitrumAddress  AccountDetailAccountNumberType = "arbitrum_address"
+	AccountDetailAccountNumberTypeAuNumber         AccountDetailAccountNumberType = "au_number"
+	AccountDetailAccountNumberTypeAvalancheAddress AccountDetailAccountNumberType = "avalanche_address"
+	AccountDetailAccountNumberTypeBaseAddress      AccountDetailAccountNumberType = "base_address"
+	AccountDetailAccountNumberTypeCardToken        AccountDetailAccountNumberType = "card_token"
+	AccountDetailAccountNumberTypeClabe            AccountDetailAccountNumberType = "clabe"
+	AccountDetailAccountNumberTypeEthereumAddress  AccountDetailAccountNumberType = "ethereum_address"
+	AccountDetailAccountNumberTypeHkNumber         AccountDetailAccountNumberType = "hk_number"
+	AccountDetailAccountNumberTypeIban             AccountDetailAccountNumberType = "iban"
+	AccountDetailAccountNumberTypeIDNumber         AccountDetailAccountNumberType = "id_number"
+	AccountDetailAccountNumberTypeNzNumber         AccountDetailAccountNumberType = "nz_number"
+	AccountDetailAccountNumberTypeOther            AccountDetailAccountNumberType = "other"
+	AccountDetailAccountNumberTypePan              AccountDetailAccountNumberType = "pan"
+	AccountDetailAccountNumberTypePolygonAddress   AccountDetailAccountNumberType = "polygon_address"
+	AccountDetailAccountNumberTypeSgNumber         AccountDetailAccountNumberType = "sg_number"
+	AccountDetailAccountNumberTypeSolanaAddress    AccountDetailAccountNumberType = "solana_address"
 )
 
 func (r AccountDetailAccountNumberType) IsKnown() bool {
 	switch r {
-	case AccountDetailAccountNumberTypeArbitrumAddress, AccountDetailAccountNumberTypeAuNumber, AccountDetailAccountNumberTypeBaseAddress, AccountDetailAccountNumberTypeCardToken, AccountDetailAccountNumberTypeClabe, AccountDetailAccountNumberTypeEthereumAddress, AccountDetailAccountNumberTypeHkNumber, AccountDetailAccountNumberTypeIban, AccountDetailAccountNumberTypeIDNumber, AccountDetailAccountNumberTypeNzNumber, AccountDetailAccountNumberTypeOther, AccountDetailAccountNumberTypePan, AccountDetailAccountNumberTypePolygonAddress, AccountDetailAccountNumberTypeSgNumber, AccountDetailAccountNumberTypeSolanaAddress:
+	case AccountDetailAccountNumberTypeArbitrumAddress, AccountDetailAccountNumberTypeAuNumber, AccountDetailAccountNumberTypeAvalancheAddress, AccountDetailAccountNumberTypeBaseAddress, AccountDetailAccountNumberTypeCardToken, AccountDetailAccountNumberTypeClabe, AccountDetailAccountNumberTypeEthereumAddress, AccountDetailAccountNumberTypeHkNumber, AccountDetailAccountNumberTypeIban, AccountDetailAccountNumberTypeIDNumber, AccountDetailAccountNumberTypeNzNumber, AccountDetailAccountNumberTypeOther, AccountDetailAccountNumberTypePan, AccountDetailAccountNumberTypePolygonAddress, AccountDetailAccountNumberTypeSgNumber, AccountDetailAccountNumberTypeSolanaAddress:
 		return true
 	}
 	return false
@@ -218,26 +219,27 @@ func (r AccountDetailNewParamsAccountsType) IsKnown() bool {
 type AccountDetailNewParamsAccountNumberType string
 
 const (
-	AccountDetailNewParamsAccountNumberTypeArbitrumAddress AccountDetailNewParamsAccountNumberType = "arbitrum_address"
-	AccountDetailNewParamsAccountNumberTypeAuNumber        AccountDetailNewParamsAccountNumberType = "au_number"
-	AccountDetailNewParamsAccountNumberTypeBaseAddress     AccountDetailNewParamsAccountNumberType = "base_address"
-	AccountDetailNewParamsAccountNumberTypeCardToken       AccountDetailNewParamsAccountNumberType = "card_token"
-	AccountDetailNewParamsAccountNumberTypeClabe           AccountDetailNewParamsAccountNumberType = "clabe"
-	AccountDetailNewParamsAccountNumberTypeEthereumAddress AccountDetailNewParamsAccountNumberType = "ethereum_address"
-	AccountDetailNewParamsAccountNumberTypeHkNumber        AccountDetailNewParamsAccountNumberType = "hk_number"
-	AccountDetailNewParamsAccountNumberTypeIban            AccountDetailNewParamsAccountNumberType = "iban"
-	AccountDetailNewParamsAccountNumberTypeIDNumber        AccountDetailNewParamsAccountNumberType = "id_number"
-	AccountDetailNewParamsAccountNumberTypeNzNumber        AccountDetailNewParamsAccountNumberType = "nz_number"
-	AccountDetailNewParamsAccountNumberTypeOther           AccountDetailNewParamsAccountNumberType = "other"
-	AccountDetailNewParamsAccountNumberTypePan             AccountDetailNewParamsAccountNumberType = "pan"
-	AccountDetailNewParamsAccountNumberTypePolygonAddress  AccountDetailNewParamsAccountNumberType = "polygon_address"
-	AccountDetailNewParamsAccountNumberTypeSgNumber        AccountDetailNewParamsAccountNumberType = "sg_number"
-	AccountDetailNewParamsAccountNumberTypeSolanaAddress   AccountDetailNewParamsAccountNumberType = "solana_address"
+	AccountDetailNewParamsAccountNumberTypeArbitrumAddress  AccountDetailNewParamsAccountNumberType = "arbitrum_address"
+	AccountDetailNewParamsAccountNumberTypeAuNumber         AccountDetailNewParamsAccountNumberType = "au_number"
+	AccountDetailNewParamsAccountNumberTypeAvalancheAddress AccountDetailNewParamsAccountNumberType = "avalanche_address"
+	AccountDetailNewParamsAccountNumberTypeBaseAddress      AccountDetailNewParamsAccountNumberType = "base_address"
+	AccountDetailNewParamsAccountNumberTypeCardToken        AccountDetailNewParamsAccountNumberType = "card_token"
+	AccountDetailNewParamsAccountNumberTypeClabe            AccountDetailNewParamsAccountNumberType = "clabe"
+	AccountDetailNewParamsAccountNumberTypeEthereumAddress  AccountDetailNewParamsAccountNumberType = "ethereum_address"
+	AccountDetailNewParamsAccountNumberTypeHkNumber         AccountDetailNewParamsAccountNumberType = "hk_number"
+	AccountDetailNewParamsAccountNumberTypeIban             AccountDetailNewParamsAccountNumberType = "iban"
+	AccountDetailNewParamsAccountNumberTypeIDNumber         AccountDetailNewParamsAccountNumberType = "id_number"
+	AccountDetailNewParamsAccountNumberTypeNzNumber         AccountDetailNewParamsAccountNumberType = "nz_number"
+	AccountDetailNewParamsAccountNumberTypeOther            AccountDetailNewParamsAccountNumberType = "other"
+	AccountDetailNewParamsAccountNumberTypePan              AccountDetailNewParamsAccountNumberType = "pan"
+	AccountDetailNewParamsAccountNumberTypePolygonAddress   AccountDetailNewParamsAccountNumberType = "polygon_address"
+	AccountDetailNewParamsAccountNumberTypeSgNumber         AccountDetailNewParamsAccountNumberType = "sg_number"
+	AccountDetailNewParamsAccountNumberTypeSolanaAddress    AccountDetailNewParamsAccountNumberType = "solana_address"
 )
 
 func (r AccountDetailNewParamsAccountNumberType) IsKnown() bool {
 	switch r {
-	case AccountDetailNewParamsAccountNumberTypeArbitrumAddress, AccountDetailNewParamsAccountNumberTypeAuNumber, AccountDetailNewParamsAccountNumberTypeBaseAddress, AccountDetailNewParamsAccountNumberTypeCardToken, AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeEthereumAddress, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeIDNumber, AccountDetailNewParamsAccountNumberTypeNzNumber, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypePolygonAddress, AccountDetailNewParamsAccountNumberTypeSgNumber, AccountDetailNewParamsAccountNumberTypeSolanaAddress:
+	case AccountDetailNewParamsAccountNumberTypeArbitrumAddress, AccountDetailNewParamsAccountNumberTypeAuNumber, AccountDetailNewParamsAccountNumberTypeAvalancheAddress, AccountDetailNewParamsAccountNumberTypeBaseAddress, AccountDetailNewParamsAccountNumberTypeCardToken, AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeEthereumAddress, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeIDNumber, AccountDetailNewParamsAccountNumberTypeNzNumber, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypePolygonAddress, AccountDetailNewParamsAccountNumberTypeSgNumber, AccountDetailNewParamsAccountNumberTypeSolanaAddress:
 		return true
 	}
 	return false
