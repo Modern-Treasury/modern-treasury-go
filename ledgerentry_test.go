@@ -15,7 +15,7 @@ import (
 	"github.com/Modern-Treasury/modern-treasury-go/v2/shared"
 )
 
-func TestLedgerEntryGetWithOptionalParams(t *testing.T) {
+func TestLedgerEntryGet(t *testing.T) {
 	baseURL := "http://localhost:4010"
 	if envURL, ok := os.LookupEnv("TEST_API_BASE_URL"); ok {
 		baseURL = envURL
@@ -28,13 +28,7 @@ func TestLedgerEntryGetWithOptionalParams(t *testing.T) {
 		option.WithAPIKey("My API Key"),
 		option.WithOrganizationID("my-organization-ID"),
 	)
-	_, err := client.LedgerEntries.Get(
-		context.TODO(),
-		"id",
-		moderntreasury.LedgerEntryGetParams{
-			ShowBalances: moderntreasury.F(true),
-		},
-	)
+	_, err := client.LedgerEntries.Get(context.TODO(), "id")
 	if err != nil {
 		var apierr *moderntreasury.Error
 		if errors.As(err, &apierr) {
@@ -124,10 +118,9 @@ func TestLedgerEntryListWithOptionalParams(t *testing.T) {
 			CreatedAt:   moderntreasury.F(moderntreasury.LedgerEntryListParamsOrderByCreatedAtAsc),
 			EffectiveAt: moderntreasury.F(moderntreasury.LedgerEntryListParamsOrderByEffectiveAtAsc),
 		}),
-		PerPage:      moderntreasury.F(int64(0)),
-		ShowBalances: moderntreasury.F(true),
-		ShowDeleted:  moderntreasury.F(true),
-		Status:       moderntreasury.F(moderntreasury.LedgerEntryListParamsStatusPending),
+		PerPage:     moderntreasury.F(int64(0)),
+		ShowDeleted: moderntreasury.F(true),
+		Status:      moderntreasury.F(moderntreasury.LedgerEntryListParamsStatusPending),
 		UpdatedAt: moderntreasury.F(map[string]time.Time{
 			"foo": time.Now(),
 		}),

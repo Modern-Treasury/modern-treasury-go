@@ -40,14 +40,14 @@ func NewLedgerEntryService(opts ...option.RequestOption) (r *LedgerEntryService)
 }
 
 // Get details on a single ledger entry.
-func (r *LedgerEntryService) Get(ctx context.Context, id string, query LedgerEntryGetParams, opts ...option.RequestOption) (res *LedgerEntry, err error) {
+func (r *LedgerEntryService) Get(ctx context.Context, id string, opts ...option.RequestOption) (res *LedgerEntry, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
 		err = errors.New("missing required id parameter")
 		return nil, err
 	}
 	path := fmt.Sprintf("api/ledger_entries/%s", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, query, &res, opts...)
+	err = requestconfig.ExecuteNewRequest(ctx, http.MethodGet, path, nil, &res, opts...)
 	return res, err
 }
 
@@ -189,20 +189,6 @@ func (r LedgerEntryStatus) IsKnown() bool {
 	return false
 }
 
-type LedgerEntryGetParams struct {
-	// If true, response will include the balances attached to the ledger entry. If
-	// there is no balance available, null will be returned instead.
-	ShowBalances param.Field[bool] `query:"show_balances"`
-}
-
-// URLQuery serializes [LedgerEntryGetParams]'s query parameters as `url.Values`.
-func (r LedgerEntryGetParams) URLQuery() (v url.Values) {
-	return apiquery.MarshalWithSettings(r, apiquery.QuerySettings{
-		ArrayFormat:  apiquery.ArrayQueryFormatBrackets,
-		NestedFormat: apiquery.NestedQueryFormatBrackets,
-	})
-}
-
 type LedgerEntryUpdateParams struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
@@ -256,9 +242,6 @@ type LedgerEntryListParams struct {
 	// by only one field at a time is supported.
 	OrderBy param.Field[LedgerEntryListParamsOrderBy] `query:"order_by"`
 	PerPage param.Field[int64]                        `query:"per_page"`
-	// If true, response will include the balances attached to the ledger entry. If
-	// there is no balance available, null will be returned instead.
-	ShowBalances param.Field[bool] `query:"show_balances"`
 	// If true, response will include ledger entries that were deleted. When you update
 	// a ledger transaction to specify a new set of entries, the previous entries are
 	// deleted.
