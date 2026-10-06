@@ -1090,6 +1090,7 @@ const (
 	PaymentOrderSubtypePlElixir                    PaymentOrderSubtype = "pl_elixir"
 	PaymentOrderSubtypePolygon                     PaymentOrderSubtype = "polygon"
 	PaymentOrderSubtypePrint                       PaymentOrderSubtype = "print"
+	PaymentOrderSubtypeRemoteDeposit               PaymentOrderSubtype = "remote_deposit"
 	PaymentOrderSubtypeSeBankgirot                 PaymentOrderSubtype = "se_bankgirot"
 	PaymentOrderSubtypeSepa                        PaymentOrderSubtype = "sepa"
 	PaymentOrderSubtypeSgGiro                      PaymentOrderSubtype = "sg_giro"
@@ -1100,7 +1101,7 @@ const (
 
 func (r PaymentOrderSubtype) IsKnown() bool {
 	switch r {
-	case PaymentOrderSubtypeBacsNewInstruction, PaymentOrderSubtypeBacsCancellationInstruction, PaymentOrderSubtypeBacsConversionInstruction, PaymentOrderSubtypeCcd, PaymentOrderSubtypeCie, PaymentOrderSubtypeCtx, PaymentOrderSubtypeIat, PaymentOrderSubtypePpd, PaymentOrderSubtypeTel, PaymentOrderSubtypeWeb, PaymentOrderSubtypeArbitrum, PaymentOrderSubtypeAuBecs, PaymentOrderSubtypeAvalanche, PaymentOrderSubtypeBacs, PaymentOrderSubtypeBase, PaymentOrderSubtypeChats, PaymentOrderSubtypeDigital, PaymentOrderSubtypeDkNets, PaymentOrderSubtypeEft, PaymentOrderSubtypeEthereum, PaymentOrderSubtypeMasav, PaymentOrderSubtypeMxCcen, PaymentOrderSubtypeNeft, PaymentOrderSubtypeNics, PaymentOrderSubtypeNzBecs, PaymentOrderSubtypePlElixir, PaymentOrderSubtypePolygon, PaymentOrderSubtypePrint, PaymentOrderSubtypeSeBankgirot, PaymentOrderSubtypeSepa, PaymentOrderSubtypeSgGiro, PaymentOrderSubtypeSic, PaymentOrderSubtypeSolana, PaymentOrderSubtypeZengin:
+	case PaymentOrderSubtypeBacsNewInstruction, PaymentOrderSubtypeBacsCancellationInstruction, PaymentOrderSubtypeBacsConversionInstruction, PaymentOrderSubtypeCcd, PaymentOrderSubtypeCie, PaymentOrderSubtypeCtx, PaymentOrderSubtypeIat, PaymentOrderSubtypePpd, PaymentOrderSubtypeTel, PaymentOrderSubtypeWeb, PaymentOrderSubtypeArbitrum, PaymentOrderSubtypeAuBecs, PaymentOrderSubtypeAvalanche, PaymentOrderSubtypeBacs, PaymentOrderSubtypeBase, PaymentOrderSubtypeChats, PaymentOrderSubtypeDigital, PaymentOrderSubtypeDkNets, PaymentOrderSubtypeEft, PaymentOrderSubtypeEthereum, PaymentOrderSubtypeMasav, PaymentOrderSubtypeMxCcen, PaymentOrderSubtypeNeft, PaymentOrderSubtypeNics, PaymentOrderSubtypeNzBecs, PaymentOrderSubtypePlElixir, PaymentOrderSubtypePolygon, PaymentOrderSubtypePrint, PaymentOrderSubtypeRemoteDeposit, PaymentOrderSubtypeSeBankgirot, PaymentOrderSubtypeSepa, PaymentOrderSubtypeSgGiro, PaymentOrderSubtypeSic, PaymentOrderSubtypeSolana, PaymentOrderSubtypeZengin:
 		return true
 	}
 	return false
