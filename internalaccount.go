@@ -96,7 +96,10 @@ func (r *InternalAccountService) ListAutoPaging(ctx context.Context, query Inter
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
-// request closure of internal account
+// This endpoint has been deprecated. Request closure with PATCH
+// /api/internal_accounts/{id} and status: "pending_closure".
+//
+// Deprecated: deprecated
 func (r *InternalAccountService) RequestClosure(ctx context.Context, id string, opts ...option.RequestOption) (res *InternalAccount, err error) {
 	opts = slices.Concat(r.Options, opts)
 	if id == "" {
