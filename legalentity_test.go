@@ -261,6 +261,7 @@ func TestLegalEntityNewWithOptionalParams(t *testing.T) {
 		}}),
 		RiskRating:                   moderntreasury.F(moderntreasury.LegalEntityNewParamsRiskRatingLow),
 		ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+		Status:                       moderntreasury.F(moderntreasury.LegalEntityNewParamsStatusDraft),
 		Suffix:                       moderntreasury.F("suffix"),
 		TermsOfUse: moderntreasury.F(moderntreasury.LegalEntityNewParamsTermsOfUse{
 			AcceptedAt: moderntreasury.F(time.Now()),
@@ -437,6 +438,7 @@ func TestLegalEntityUpdateWithOptionalParams(t *testing.T) {
 			}}),
 			RiskRating:                   moderntreasury.F(moderntreasury.LegalEntityUpdateParamsRiskRatingLow),
 			ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			Status:                       moderntreasury.F(moderntreasury.LegalEntityUpdateParamsStatusPending),
 			Suffix:                       moderntreasury.F("suffix"),
 			TermsOfUse: moderntreasury.F(moderntreasury.LegalEntityUpdateParamsTermsOfUse{
 				AcceptedAt: moderntreasury.F(time.Now()),

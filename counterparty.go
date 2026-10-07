@@ -657,6 +657,9 @@ type CounterpartyNewParamsLegalEntity struct {
 	RiskRating param.Field[CounterpartyNewParamsLegalEntityRiskRating] `json:"risk_rating"`
 	// The UUID of the parent legal entity in the service provider tree.
 	ServiceProviderLegalEntityID param.Field[string] `json:"service_provider_legal_entity_id" format:"uuid"`
+	// Set to draft to create the legal entity as a draft. Omit to create it as
+	// pending. Inline child legal entities take the parent's status.
+	Status param.Field[CounterpartyNewParamsLegalEntityStatus] `json:"status"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
 	// Acceptance of terms of use by the legal entity.
@@ -802,6 +805,22 @@ const (
 func (r CounterpartyNewParamsLegalEntityRiskRating) IsKnown() bool {
 	switch r {
 	case CounterpartyNewParamsLegalEntityRiskRatingLow, CounterpartyNewParamsLegalEntityRiskRatingMedium, CounterpartyNewParamsLegalEntityRiskRatingHigh:
+		return true
+	}
+	return false
+}
+
+// Set to draft to create the legal entity as a draft. Omit to create it as
+// pending. Inline child legal entities take the parent's status.
+type CounterpartyNewParamsLegalEntityStatus string
+
+const (
+	CounterpartyNewParamsLegalEntityStatusDraft CounterpartyNewParamsLegalEntityStatus = "draft"
+)
+
+func (r CounterpartyNewParamsLegalEntityStatus) IsKnown() bool {
+	switch r {
+	case CounterpartyNewParamsLegalEntityStatusDraft:
 		return true
 	}
 	return false
