@@ -181,8 +181,8 @@ type LegalEntity struct {
 	RiskRating LegalEntityRiskRating `json:"risk_rating" api:"required,nullable"`
 	// The UUID of the parent legal entity in the service provider tree.
 	ServiceProviderLegalEntityID string `json:"service_provider_legal_entity_id" api:"required,nullable" format:"uuid"`
-	// The activation status of the legal entity. One of pending, active, suspended, or
-	// denied.
+	// The activation status of the legal entity. One of draft, pending, active,
+	// suspended, or denied.
 	Status LegalEntityStatus `json:"status" api:"required,nullable"`
 	// An individual's suffix.
 	Suffix string `json:"suffix" api:"required,nullable"`
@@ -469,20 +469,21 @@ func (r LegalEntityRiskRating) IsKnown() bool {
 	return false
 }
 
-// The activation status of the legal entity. One of pending, active, suspended, or
-// denied.
+// The activation status of the legal entity. One of draft, pending, active,
+// suspended, or denied.
 type LegalEntityStatus string
 
 const (
 	LegalEntityStatusActive    LegalEntityStatus = "active"
 	LegalEntityStatusDenied    LegalEntityStatus = "denied"
+	LegalEntityStatusDraft     LegalEntityStatus = "draft"
 	LegalEntityStatusPending   LegalEntityStatus = "pending"
 	LegalEntityStatusSuspended LegalEntityStatus = "suspended"
 )
 
 func (r LegalEntityStatus) IsKnown() bool {
 	switch r {
-	case LegalEntityStatusActive, LegalEntityStatusDenied, LegalEntityStatusPending, LegalEntityStatusSuspended:
+	case LegalEntityStatusActive, LegalEntityStatusDenied, LegalEntityStatusDraft, LegalEntityStatusPending, LegalEntityStatusSuspended:
 		return true
 	}
 	return false
@@ -592,6 +593,9 @@ type LegalEntityNewParams struct {
 	RiskRating param.Field[LegalEntityNewParamsRiskRating] `json:"risk_rating"`
 	// The UUID of the parent legal entity in the service provider tree.
 	ServiceProviderLegalEntityID param.Field[string] `json:"service_provider_legal_entity_id" format:"uuid"`
+	// Set to draft to create the legal entity as a draft. Omit to create it as
+	// pending. Inline child legal entities take the parent's status.
+	Status param.Field[LegalEntityNewParamsStatus] `json:"status"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
 	// Acceptance of terms of use by the legal entity.
@@ -740,6 +744,22 @@ func (r LegalEntityNewParamsRiskRating) IsKnown() bool {
 	return false
 }
 
+// Set to draft to create the legal entity as a draft. Omit to create it as
+// pending. Inline child legal entities take the parent's status.
+type LegalEntityNewParamsStatus string
+
+const (
+	LegalEntityNewParamsStatusDraft LegalEntityNewParamsStatus = "draft"
+)
+
+func (r LegalEntityNewParamsStatus) IsKnown() bool {
+	switch r {
+	case LegalEntityNewParamsStatusDraft:
+		return true
+	}
+	return false
+}
+
 // Acceptance of terms of use by the legal entity.
 type LegalEntityNewParamsTermsOfUse struct {
 	// The ISO 8601 timestamp indicating when the terms of use were accepted.
@@ -816,6 +836,10 @@ type LegalEntityUpdateParams struct {
 	RiskRating param.Field[LegalEntityUpdateParamsRiskRating] `json:"risk_rating"`
 	// The UUID of the parent legal entity in the service provider tree.
 	ServiceProviderLegalEntityID param.Field[string] `json:"service_provider_legal_entity_id" format:"uuid"`
+	// Set to pending to submit a draft legal entity for processing. Only valid while
+	// the legal entity is draft, and must be the only attribute in the request. Draft
+	// child legal entities are submitted with it.
+	Status param.Field[LegalEntityUpdateParamsStatus] `json:"status"`
 	// An individual's suffix.
 	Suffix param.Field[string] `json:"suffix"`
 	// Acceptance of terms of use by the legal entity.
@@ -914,6 +938,23 @@ func (r LegalEntityUpdateParamsRiskRating) IsKnown() bool {
 	return false
 }
 
+// Set to pending to submit a draft legal entity for processing. Only valid while
+// the legal entity is draft, and must be the only attribute in the request. Draft
+// child legal entities are submitted with it.
+type LegalEntityUpdateParamsStatus string
+
+const (
+	LegalEntityUpdateParamsStatusPending LegalEntityUpdateParamsStatus = "pending"
+)
+
+func (r LegalEntityUpdateParamsStatus) IsKnown() bool {
+	switch r {
+	case LegalEntityUpdateParamsStatusPending:
+		return true
+	}
+	return false
+}
+
 // Acceptance of terms of use by the legal entity.
 type LegalEntityUpdateParamsTermsOfUse struct {
 	// The ISO 8601 timestamp indicating when the terms of use were accepted.
@@ -968,6 +1009,7 @@ type LegalEntityListParamsStatus string
 
 const (
 	LegalEntityListParamsStatusPending   LegalEntityListParamsStatus = "pending"
+	LegalEntityListParamsStatusDraft     LegalEntityListParamsStatus = "draft"
 	LegalEntityListParamsStatusActive    LegalEntityListParamsStatus = "active"
 	LegalEntityListParamsStatusSuspended LegalEntityListParamsStatus = "suspended"
 	LegalEntityListParamsStatusDenied    LegalEntityListParamsStatus = "denied"
@@ -975,7 +1017,7 @@ const (
 
 func (r LegalEntityListParamsStatus) IsKnown() bool {
 	switch r {
-	case LegalEntityListParamsStatusPending, LegalEntityListParamsStatusActive, LegalEntityListParamsStatusSuspended, LegalEntityListParamsStatusDenied:
+	case LegalEntityListParamsStatusPending, LegalEntityListParamsStatusDraft, LegalEntityListParamsStatusActive, LegalEntityListParamsStatusSuspended, LegalEntityListParamsStatusDenied:
 		return true
 	}
 	return false
