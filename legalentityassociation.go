@@ -133,8 +133,8 @@ type ChildLegalEntity struct {
 	RiskRating ChildLegalEntityRiskRating `json:"risk_rating" api:"required,nullable"`
 	// The UUID of the parent legal entity in the service provider tree.
 	ServiceProviderLegalEntityID string `json:"service_provider_legal_entity_id" api:"required,nullable" format:"uuid"`
-	// The activation status of the legal entity. One of pending, active, suspended, or
-	// denied.
+	// The activation status of the legal entity. One of draft, pending, active,
+	// suspended, or denied.
 	Status ChildLegalEntityStatus `json:"status" api:"required,nullable"`
 	// An individual's suffix.
 	Suffix string `json:"suffix" api:"required,nullable"`
@@ -420,20 +420,21 @@ func (r ChildLegalEntityRiskRating) IsKnown() bool {
 	return false
 }
 
-// The activation status of the legal entity. One of pending, active, suspended, or
-// denied.
+// The activation status of the legal entity. One of draft, pending, active,
+// suspended, or denied.
 type ChildLegalEntityStatus string
 
 const (
 	ChildLegalEntityStatusActive    ChildLegalEntityStatus = "active"
 	ChildLegalEntityStatusDenied    ChildLegalEntityStatus = "denied"
+	ChildLegalEntityStatusDraft     ChildLegalEntityStatus = "draft"
 	ChildLegalEntityStatusPending   ChildLegalEntityStatus = "pending"
 	ChildLegalEntityStatusSuspended ChildLegalEntityStatus = "suspended"
 )
 
 func (r ChildLegalEntityStatus) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityStatusActive, ChildLegalEntityStatusDenied, ChildLegalEntityStatusPending, ChildLegalEntityStatusSuspended:
+	case ChildLegalEntityStatusActive, ChildLegalEntityStatusDenied, ChildLegalEntityStatusDraft, ChildLegalEntityStatusPending, ChildLegalEntityStatusSuspended:
 		return true
 	}
 	return false
