@@ -1438,9 +1438,6 @@ type LedgerAccountCreateRequestParam = shared.LedgerAccountCreateRequestParam
 type LedgerAccountCreateRequestLedgerableType = shared.LedgerAccountCreateRequestLedgerableType
 
 // This is an alias to an internal value.
-const LedgerAccountCreateRequestLedgerableTypeCounterparty = shared.LedgerAccountCreateRequestLedgerableTypeCounterparty
-
-// This is an alias to an internal value.
 const LedgerAccountCreateRequestLedgerableTypeExternalAccount = shared.LedgerAccountCreateRequestLedgerableTypeExternalAccount
 
 // This is an alias to an internal value.
