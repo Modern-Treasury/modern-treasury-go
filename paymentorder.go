@@ -891,6 +891,9 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	PartyType PaymentOrderUltimateOriginatingAccountPartyType `json:"party_type" api:"nullable"`
 	// The internal account status.
 	Status PaymentOrderUltimateOriginatingAccountStatus `json:"status" api:"nullable"`
+	// The account title at the financial institution, used in place of the party name.
+	// Only applicable to accounts created under supported connections.
+	Title string `json:"title" api:"nullable"`
 	// The vendor ID associated with this account.
 	VendorID string                                     `json:"vendor_id" api:"nullable" format:"string"`
 	JSON     paymentOrderUltimateOriginatingAccountJSON `json:"-"`
@@ -929,6 +932,7 @@ type paymentOrderUltimateOriginatingAccountJSON struct {
 	PartyName             apijson.Field
 	PartyType             apijson.Field
 	Status                apijson.Field
+	Title                 apijson.Field
 	VendorID              apijson.Field
 	raw                   string
 	ExtraFields           map[string]apijson.Field
