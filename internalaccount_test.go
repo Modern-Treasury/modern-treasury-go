@@ -62,6 +62,7 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 		}),
 		PartyName:                   moderntreasury.F("party_name"),
 		RequestedAccountNumberTypes: moderntreasury.F([]moderntreasury.InternalAccountNewParamsRequestedAccountNumberType{moderntreasury.InternalAccountNewParamsRequestedAccountNumberTypeArbitrumAddress}),
+		Title:                       moderntreasury.F("title"),
 		VendorAttributes: moderntreasury.F(map[string]string{
 			"foo":    "bar",
 			"key":    "value",

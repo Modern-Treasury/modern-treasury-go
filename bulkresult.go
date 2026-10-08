@@ -884,6 +884,7 @@ const (
 	BulkResultEntityVendorCodeTypeJpmc            BulkResultEntityVendorCodeType = "jpmc"
 	BulkResultEntityVendorCodeTypeModernTreasury  BulkResultEntityVendorCodeType = "modern_treasury"
 	BulkResultEntityVendorCodeTypeMx              BulkResultEntityVendorCodeType = "mx"
+	BulkResultEntityVendorCodeTypeOneMoney        BulkResultEntityVendorCodeType = "one_money"
 	BulkResultEntityVendorCodeTypePaxos           BulkResultEntityVendorCodeType = "paxos"
 	BulkResultEntityVendorCodeTypePaypal          BulkResultEntityVendorCodeType = "paypal"
 	BulkResultEntityVendorCodeTypePnc             BulkResultEntityVendorCodeType = "pnc"
@@ -897,7 +898,7 @@ const (
 
 func (r BulkResultEntityVendorCodeType) IsKnown() bool {
 	switch r {
-	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankingCircle, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeCoinbasePrime, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeFakeVendor, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeModernTreasury, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypePaxos, BulkResultEntityVendorCodeTypePaypal, BulkResultEntityVendorCodeTypePnc, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeTurnkey, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser, BulkResultEntityVendorCodeTypeWesternAlliance:
+	case BulkResultEntityVendorCodeTypeBai2, BulkResultEntityVendorCodeTypeBankingCircle, BulkResultEntityVendorCodeTypeBankprov, BulkResultEntityVendorCodeTypeBnkDev, BulkResultEntityVendorCodeTypeCleartouch, BulkResultEntityVendorCodeTypeCoinbasePrime, BulkResultEntityVendorCodeTypeColumn, BulkResultEntityVendorCodeTypeCrossRiver, BulkResultEntityVendorCodeTypeCurrencycloud, BulkResultEntityVendorCodeTypeDwolla, BulkResultEntityVendorCodeTypeEvolve, BulkResultEntityVendorCodeTypeFakeVendor, BulkResultEntityVendorCodeTypeGoldmanSachs, BulkResultEntityVendorCodeTypeIso20022, BulkResultEntityVendorCodeTypeJpmc, BulkResultEntityVendorCodeTypeModernTreasury, BulkResultEntityVendorCodeTypeMx, BulkResultEntityVendorCodeTypeOneMoney, BulkResultEntityVendorCodeTypePaxos, BulkResultEntityVendorCodeTypePaypal, BulkResultEntityVendorCodeTypePnc, BulkResultEntityVendorCodeTypeSilvergate, BulkResultEntityVendorCodeTypeSwift, BulkResultEntityVendorCodeTypeTurnkey, BulkResultEntityVendorCodeTypeUsBank, BulkResultEntityVendorCodeTypeUser, BulkResultEntityVendorCodeTypeWesternAlliance:
 		return true
 	}
 	return false
