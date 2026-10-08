@@ -54,7 +54,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				ExternalID:               moderntreasury.F("external_id"),
 				LedgerAccountCategoryIDs: moderntreasury.F([]string{"182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"}),
 				LedgerableID:             moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-				LedgerableType:           moderntreasury.F(shared.LedgerAccountCreateRequestLedgerableTypeCounterparty),
+				LedgerableType:           moderntreasury.F(shared.LedgerAccountCreateRequestLedgerableTypeExternalAccount),
 				Metadata: moderntreasury.F(map[string]string{
 					"foo":    "bar",
 					"key":    "value",

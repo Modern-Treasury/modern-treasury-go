@@ -228,7 +228,6 @@ func (r ledgerAccountBalancesJSON) RawJSON() string {
 type LedgerAccountLedgerableType string
 
 const (
-	LedgerAccountLedgerableTypeCounterparty    LedgerAccountLedgerableType = "counterparty"
 	LedgerAccountLedgerableTypeExternalAccount LedgerAccountLedgerableType = "external_account"
 	LedgerAccountLedgerableTypeInternalAccount LedgerAccountLedgerableType = "internal_account"
 	LedgerAccountLedgerableTypeVirtualAccount  LedgerAccountLedgerableType = "virtual_account"
@@ -236,7 +235,7 @@ const (
 
 func (r LedgerAccountLedgerableType) IsKnown() bool {
 	switch r {
-	case LedgerAccountLedgerableTypeCounterparty, LedgerAccountLedgerableTypeExternalAccount, LedgerAccountLedgerableTypeInternalAccount, LedgerAccountLedgerableTypeVirtualAccount:
+	case LedgerAccountLedgerableTypeExternalAccount, LedgerAccountLedgerableTypeInternalAccount, LedgerAccountLedgerableTypeVirtualAccount:
 		return true
 	}
 	return false
