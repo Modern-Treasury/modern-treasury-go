@@ -179,9 +179,10 @@ type InternalAccount struct {
 	RoutingDetails []RoutingDetail `json:"routing_details" api:"required"`
 	// The internal account status.
 	Status InternalAccountStatus `json:"status" api:"required,nullable"`
-	// The account title at the financial institution, used in place of the party name.
-	// Only applicable to accounts created under supported connections.
-	Title     string    `json:"title" api:"required,nullable"`
+	// The account title at the financial institution. Defaults to the party name
+	// unless a custom title was set on creation. Custom titles are only applicable to
+	// accounts created under supported connections.
+	Title     string    `json:"title" api:"required"`
 	UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
 	// The vendor ID associated with this account.
 	VendorID string              `json:"vendor_id" api:"required,nullable" format:"string"`
@@ -502,8 +503,9 @@ type InternalAccountNewParams struct {
 	// An array of account number types requested for provisioning.
 	RequestedAccountNumberTypes param.Field[[]InternalAccountNewParamsRequestedAccountNumberType] `json:"requested_account_number_types"`
 	// The account title at the financial institution, used in place of the party name.
-	// Only applicable to accounts created under supported connections. Please reach
-	// out to your customer success manager to enable this capability for your program.
+	// Defaults to the party name if not set. Only applicable to accounts created under
+	// supported connections. Please reach out to your customer success manager to
+	// enable this capability for your program.
 	Title param.Field[string] `json:"title"`
 	// A hash of vendor specific attributes that will be used when creating the account
 	// at the vendor specified by the given connection.
