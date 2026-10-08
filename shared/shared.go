@@ -1038,7 +1038,6 @@ func (r LedgerAccountCreateRequestParam) ImplementsBulkRequestNewParamsResourceU
 type LedgerAccountCreateRequestLedgerableType string
 
 const (
-	LedgerAccountCreateRequestLedgerableTypeCounterparty    LedgerAccountCreateRequestLedgerableType = "counterparty"
 	LedgerAccountCreateRequestLedgerableTypeExternalAccount LedgerAccountCreateRequestLedgerableType = "external_account"
 	LedgerAccountCreateRequestLedgerableTypeInternalAccount LedgerAccountCreateRequestLedgerableType = "internal_account"
 	LedgerAccountCreateRequestLedgerableTypeVirtualAccount  LedgerAccountCreateRequestLedgerableType = "virtual_account"
@@ -1046,7 +1045,7 @@ const (
 
 func (r LedgerAccountCreateRequestLedgerableType) IsKnown() bool {
 	switch r {
-	case LedgerAccountCreateRequestLedgerableTypeCounterparty, LedgerAccountCreateRequestLedgerableTypeExternalAccount, LedgerAccountCreateRequestLedgerableTypeInternalAccount, LedgerAccountCreateRequestLedgerableTypeVirtualAccount:
+	case LedgerAccountCreateRequestLedgerableTypeExternalAccount, LedgerAccountCreateRequestLedgerableTypeInternalAccount, LedgerAccountCreateRequestLedgerableTypeVirtualAccount:
 		return true
 	}
 	return false
