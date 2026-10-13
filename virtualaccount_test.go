@@ -60,6 +60,14 @@ func TestVirtualAccountNewWithOptionalParams(t *testing.T) {
 		Metadata: moderntreasury.F(map[string]string{
 			"foo": "string",
 		}),
+		PartyAddress: moderntreasury.F(shared.AddressRequestParam{
+			Country:    moderntreasury.F("country"),
+			Line1:      moderntreasury.F("line1"),
+			Line2:      moderntreasury.F("line2"),
+			Locality:   moderntreasury.F("locality"),
+			PostalCode: moderntreasury.F("postal_code"),
+			Region:     moderntreasury.F("region"),
+		}),
 		RoutingDetails: moderntreasury.F([]moderntreasury.VirtualAccountNewParamsRoutingDetail{{
 			RoutingNumber:     moderntreasury.F("routing_number"),
 			RoutingNumberType: moderntreasury.F(moderntreasury.VirtualAccountNewParamsRoutingDetailsRoutingNumberTypeAba),
@@ -122,6 +130,14 @@ func TestVirtualAccountUpdateWithOptionalParams(t *testing.T) {
 				"foo": "string",
 			}),
 			Name: moderntreasury.F("name"),
+			PartyAddress: moderntreasury.F(shared.AddressRequestParam{
+				Country:    moderntreasury.F("country"),
+				Line1:      moderntreasury.F("line1"),
+				Line2:      moderntreasury.F("line2"),
+				Locality:   moderntreasury.F("locality"),
+				PostalCode: moderntreasury.F("postal_code"),
+				Region:     moderntreasury.F("region"),
+			}),
 		},
 	)
 	if err != nil {
