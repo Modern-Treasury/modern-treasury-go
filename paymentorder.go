@@ -847,6 +847,8 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	// The name of the virtual account.
 	Name   string `json:"name" api:"required,nullable"`
 	Object string `json:"object" api:"required"`
+	// The address of the owner of the virtual account, or null.
+	PartyAddress shared.Address `json:"party_address" api:"required,nullable"`
 	// This field can have the runtime type of [[]RoutingDetail].
 	RoutingDetails interface{} `json:"routing_details" api:"required"`
 	UpdatedAt      time.Time   `json:"updated_at" api:"required" format:"date-time"`
@@ -883,8 +885,6 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	LegalEntityID string `json:"legal_entity_id" api:"nullable" format:"uuid"`
 	// The parent InternalAccount of this account.
 	ParentAccountID string `json:"parent_account_id" api:"nullable" format:"uuid"`
-	// The address associated with the owner or null.
-	PartyAddress shared.Address `json:"party_address" api:"nullable"`
 	// The legal name of the entity which owns the account.
 	PartyName string `json:"party_name"`
 	// Either individual or business.
@@ -914,6 +914,7 @@ type paymentOrderUltimateOriginatingAccountJSON struct {
 	Metadata              apijson.Field
 	Name                  apijson.Field
 	Object                apijson.Field
+	PartyAddress          apijson.Field
 	RoutingDetails        apijson.Field
 	UpdatedAt             apijson.Field
 	AccountCapabilities   apijson.Field
@@ -929,7 +930,6 @@ type paymentOrderUltimateOriginatingAccountJSON struct {
 	InternalAccountID     apijson.Field
 	LegalEntityID         apijson.Field
 	ParentAccountID       apijson.Field
-	PartyAddress          apijson.Field
 	PartyName             apijson.Field
 	PartyType             apijson.Field
 	Status                apijson.Field
