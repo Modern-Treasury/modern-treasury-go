@@ -140,6 +140,8 @@ type VirtualAccount struct {
 	// The name of the virtual account.
 	Name   string `json:"name" api:"required"`
 	Object string `json:"object" api:"required"`
+	// The address of the owner of the virtual account, or null.
+	PartyAddress shared.Address `json:"party_address" api:"required,nullable"`
 	// An array of routing detail objects. These will be the routing details of the
 	// internal account.
 	RoutingDetails []RoutingDetail    `json:"routing_details" api:"required"`
@@ -164,6 +166,7 @@ type virtualAccountJSON struct {
 	Metadata              apijson.Field
 	Name                  apijson.Field
 	Object                apijson.Field
+	PartyAddress          apijson.Field
 	RoutingDetails        apijson.Field
 	UpdatedAt             apijson.Field
 	raw                   string
@@ -210,6 +213,9 @@ type VirtualAccountNewParams struct {
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The address of the owner of the virtual account. When absent, the internal
+	// account's party address is used.
+	PartyAddress param.Field[shared.AddressRequestParam] `json:"party_address"`
 	// An array of routing detail objects.
 	RoutingDetails param.Field[[]VirtualAccountNewParamsRoutingDetail] `json:"routing_details"`
 	// The ID of the virtual account setting used to allocate this virtual account.
@@ -363,6 +369,10 @@ type VirtualAccountUpdateParams struct {
 	LedgerAccountID param.Field[string]            `json:"ledger_account_id" format:"uuid"`
 	Metadata        param.Field[map[string]string] `json:"metadata"`
 	Name            param.Field[string]            `json:"name"`
+	// The address of the owner of the virtual account. Omit to leave it unchanged;
+	// pass all fields blank to clear it, after which the internal account's party
+	// address is used.
+	PartyAddress param.Field[shared.AddressRequestParam] `json:"party_address"`
 }
 
 func (r VirtualAccountUpdateParams) MarshalJSON() (data []byte, err error) {
