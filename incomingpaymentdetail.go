@@ -108,6 +108,8 @@ type IncomingPaymentDetail struct {
 	Data map[string]interface{} `json:"data" api:"required"`
 	// One of `credit` or `debit`.
 	Direction shared.TransactionDirection `json:"direction" api:"required"`
+	// The reason the incoming payment detail failed, or `null`.
+	FailureReason string `json:"failure_reason" api:"required,nullable"`
 	// The ID of the Internal Account for the incoming payment detail. This is always
 	// present.
 	InternalAccountID string `json:"internal_account_id" api:"required" format:"uuid"`
@@ -133,7 +135,7 @@ type IncomingPaymentDetail struct {
 	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
 	ReconciliationStatus IncomingPaymentDetailReconciliationStatus `json:"reconciliation_status" api:"required"`
 	// The current status of the incoming payment order. One of `pending`, `completed`,
-	// or `returned`.
+	// `returned`, or `failed`.
 	Status IncomingPaymentDetailStatus `json:"status" api:"required"`
 	// An additional layer of classification for the type of incoming payment detail.
 	// For example, a `type` of `stablecoin` may have a `subtype` of `ethereum` or
@@ -182,6 +184,7 @@ type incomingPaymentDetailJSON struct {
 	Currency                         apijson.Field
 	Data                             apijson.Field
 	Direction                        apijson.Field
+	FailureReason                    apijson.Field
 	InternalAccountID                apijson.Field
 	LedgerTransactionID              apijson.Field
 	LiveMode                         apijson.Field
@@ -301,18 +304,19 @@ func (r IncomingPaymentDetailReconciliationStatus) IsKnown() bool {
 }
 
 // The current status of the incoming payment order. One of `pending`, `completed`,
-// or `returned`.
+// `returned`, or `failed`.
 type IncomingPaymentDetailStatus string
 
 const (
 	IncomingPaymentDetailStatusCompleted IncomingPaymentDetailStatus = "completed"
+	IncomingPaymentDetailStatusFailed    IncomingPaymentDetailStatus = "failed"
 	IncomingPaymentDetailStatusPending   IncomingPaymentDetailStatus = "pending"
 	IncomingPaymentDetailStatusReturned  IncomingPaymentDetailStatus = "returned"
 )
 
 func (r IncomingPaymentDetailStatus) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailStatusCompleted, IncomingPaymentDetailStatusPending, IncomingPaymentDetailStatusReturned:
+	case IncomingPaymentDetailStatusCompleted, IncomingPaymentDetailStatusFailed, IncomingPaymentDetailStatusPending, IncomingPaymentDetailStatusReturned:
 		return true
 	}
 	return false
@@ -399,13 +403,14 @@ type IncomingPaymentDetailListParamsStatus string
 
 const (
 	IncomingPaymentDetailListParamsStatusCompleted IncomingPaymentDetailListParamsStatus = "completed"
+	IncomingPaymentDetailListParamsStatusFailed    IncomingPaymentDetailListParamsStatus = "failed"
 	IncomingPaymentDetailListParamsStatusPending   IncomingPaymentDetailListParamsStatus = "pending"
 	IncomingPaymentDetailListParamsStatusReturned  IncomingPaymentDetailListParamsStatus = "returned"
 )
 
 func (r IncomingPaymentDetailListParamsStatus) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailListParamsStatusCompleted, IncomingPaymentDetailListParamsStatusPending, IncomingPaymentDetailListParamsStatusReturned:
+	case IncomingPaymentDetailListParamsStatusCompleted, IncomingPaymentDetailListParamsStatusFailed, IncomingPaymentDetailListParamsStatusPending, IncomingPaymentDetailListParamsStatusReturned:
 		return true
 	}
 	return false
