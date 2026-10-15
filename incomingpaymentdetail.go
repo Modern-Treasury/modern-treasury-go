@@ -135,7 +135,7 @@ type IncomingPaymentDetail struct {
 	// One of `unreconciled`, `tentatively_reconciled` or `reconciled`.
 	ReconciliationStatus IncomingPaymentDetailReconciliationStatus `json:"reconciliation_status" api:"required"`
 	// The current status of the incoming payment order. One of `pending`, `completed`,
-	// `returned`, or `failed`.
+	// `returned`, `failed`, or `held`.
 	Status IncomingPaymentDetailStatus `json:"status" api:"required"`
 	// An additional layer of classification for the type of incoming payment detail.
 	// For example, a `type` of `stablecoin` may have a `subtype` of `ethereum` or
@@ -304,19 +304,20 @@ func (r IncomingPaymentDetailReconciliationStatus) IsKnown() bool {
 }
 
 // The current status of the incoming payment order. One of `pending`, `completed`,
-// `returned`, or `failed`.
+// `returned`, `failed`, or `held`.
 type IncomingPaymentDetailStatus string
 
 const (
 	IncomingPaymentDetailStatusCompleted IncomingPaymentDetailStatus = "completed"
 	IncomingPaymentDetailStatusFailed    IncomingPaymentDetailStatus = "failed"
+	IncomingPaymentDetailStatusHeld      IncomingPaymentDetailStatus = "held"
 	IncomingPaymentDetailStatusPending   IncomingPaymentDetailStatus = "pending"
 	IncomingPaymentDetailStatusReturned  IncomingPaymentDetailStatus = "returned"
 )
 
 func (r IncomingPaymentDetailStatus) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailStatusCompleted, IncomingPaymentDetailStatusFailed, IncomingPaymentDetailStatusPending, IncomingPaymentDetailStatusReturned:
+	case IncomingPaymentDetailStatusCompleted, IncomingPaymentDetailStatusFailed, IncomingPaymentDetailStatusHeld, IncomingPaymentDetailStatusPending, IncomingPaymentDetailStatusReturned:
 		return true
 	}
 	return false
@@ -375,7 +376,7 @@ type IncomingPaymentDetailListParams struct {
 	Metadata param.Field[map[string]string] `query:"metadata"`
 	PerPage  param.Field[int64]             `query:"per_page"`
 	// The current status of the incoming payment order. One of `pending`, `completed`,
-	// or `returned`.
+	// `returned`, `failed`, or `held`.
 	Status param.Field[IncomingPaymentDetailListParamsStatus] `query:"status"`
 	// An additional layer of classification for the type of incoming payment detail.
 	// For example, a `type` of `stablecoin` may have a `subtype` of `ethereum` or
@@ -398,19 +399,20 @@ func (r IncomingPaymentDetailListParams) URLQuery() (v url.Values) {
 }
 
 // The current status of the incoming payment order. One of `pending`, `completed`,
-// or `returned`.
+// `returned`, `failed`, or `held`.
 type IncomingPaymentDetailListParamsStatus string
 
 const (
 	IncomingPaymentDetailListParamsStatusCompleted IncomingPaymentDetailListParamsStatus = "completed"
 	IncomingPaymentDetailListParamsStatusFailed    IncomingPaymentDetailListParamsStatus = "failed"
+	IncomingPaymentDetailListParamsStatusHeld      IncomingPaymentDetailListParamsStatus = "held"
 	IncomingPaymentDetailListParamsStatusPending   IncomingPaymentDetailListParamsStatus = "pending"
 	IncomingPaymentDetailListParamsStatusReturned  IncomingPaymentDetailListParamsStatus = "returned"
 )
 
 func (r IncomingPaymentDetailListParamsStatus) IsKnown() bool {
 	switch r {
-	case IncomingPaymentDetailListParamsStatusCompleted, IncomingPaymentDetailListParamsStatusFailed, IncomingPaymentDetailListParamsStatusPending, IncomingPaymentDetailListParamsStatusReturned:
+	case IncomingPaymentDetailListParamsStatusCompleted, IncomingPaymentDetailListParamsStatusFailed, IncomingPaymentDetailListParamsStatusHeld, IncomingPaymentDetailListParamsStatusPending, IncomingPaymentDetailListParamsStatusReturned:
 		return true
 	}
 	return false
