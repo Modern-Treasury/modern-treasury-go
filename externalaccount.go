@@ -260,24 +260,26 @@ func (r ExternalAccountVerificationStatus) IsKnown() bool {
 type ExternalAccountType string
 
 const (
-	ExternalAccountTypeBaseWallet     ExternalAccountType = "base_wallet"
-	ExternalAccountTypeCash           ExternalAccountType = "cash"
-	ExternalAccountTypeChecking       ExternalAccountType = "checking"
-	ExternalAccountTypeCryptoWallet   ExternalAccountType = "crypto_wallet"
-	ExternalAccountTypeEthereumWallet ExternalAccountType = "ethereum_wallet"
-	ExternalAccountTypeGeneralLedger  ExternalAccountType = "general_ledger"
-	ExternalAccountTypeLoan           ExternalAccountType = "loan"
-	ExternalAccountTypeNonResident    ExternalAccountType = "non_resident"
-	ExternalAccountTypeOther          ExternalAccountType = "other"
-	ExternalAccountTypeOverdraft      ExternalAccountType = "overdraft"
-	ExternalAccountTypePolygonWallet  ExternalAccountType = "polygon_wallet"
-	ExternalAccountTypeSavings        ExternalAccountType = "savings"
-	ExternalAccountTypeSolanaWallet   ExternalAccountType = "solana_wallet"
+	ExternalAccountTypeBaseWallet       ExternalAccountType = "base_wallet"
+	ExternalAccountTypeCash             ExternalAccountType = "cash"
+	ExternalAccountTypeChecking         ExternalAccountType = "checking"
+	ExternalAccountTypeCryptoWallet     ExternalAccountType = "crypto_wallet"
+	ExternalAccountTypeEthereumWallet   ExternalAccountType = "ethereum_wallet"
+	ExternalAccountTypeGeneralLedger    ExternalAccountType = "general_ledger"
+	ExternalAccountTypeHostedWallet     ExternalAccountType = "hosted_wallet"
+	ExternalAccountTypeLoan             ExternalAccountType = "loan"
+	ExternalAccountTypeNonResident      ExternalAccountType = "non_resident"
+	ExternalAccountTypeOther            ExternalAccountType = "other"
+	ExternalAccountTypeOverdraft        ExternalAccountType = "overdraft"
+	ExternalAccountTypePolygonWallet    ExternalAccountType = "polygon_wallet"
+	ExternalAccountTypeSavings          ExternalAccountType = "savings"
+	ExternalAccountTypeSelfHostedWallet ExternalAccountType = "self_hosted_wallet"
+	ExternalAccountTypeSolanaWallet     ExternalAccountType = "solana_wallet"
 )
 
 func (r ExternalAccountType) IsKnown() bool {
 	switch r {
-	case ExternalAccountTypeBaseWallet, ExternalAccountTypeCash, ExternalAccountTypeChecking, ExternalAccountTypeCryptoWallet, ExternalAccountTypeEthereumWallet, ExternalAccountTypeGeneralLedger, ExternalAccountTypeLoan, ExternalAccountTypeNonResident, ExternalAccountTypeOther, ExternalAccountTypeOverdraft, ExternalAccountTypePolygonWallet, ExternalAccountTypeSavings, ExternalAccountTypeSolanaWallet:
+	case ExternalAccountTypeBaseWallet, ExternalAccountTypeCash, ExternalAccountTypeChecking, ExternalAccountTypeCryptoWallet, ExternalAccountTypeEthereumWallet, ExternalAccountTypeGeneralLedger, ExternalAccountTypeHostedWallet, ExternalAccountTypeLoan, ExternalAccountTypeNonResident, ExternalAccountTypeOther, ExternalAccountTypeOverdraft, ExternalAccountTypePolygonWallet, ExternalAccountTypeSavings, ExternalAccountTypeSelfHostedWallet, ExternalAccountTypeSolanaWallet:
 		return true
 	}
 	return false
