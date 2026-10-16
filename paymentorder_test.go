@@ -128,7 +128,7 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				AccountNumber:     moderntreasury.F("account_number"),
 				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewParamsReceivingAccountAccountDetailsAccountNumberTypeArbitrumAddress),
 			}}),
-			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
+			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
 			ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{
 				ContactIdentifier:     moderntreasury.F("contact_identifier"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.ContactDetailCreateRequestContactIdentifierTypeEmail),
@@ -301,7 +301,7 @@ func TestPaymentOrderUpdateWithOptionalParams(t *testing.T) {
 					AccountNumber:     moderntreasury.F("account_number"),
 					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderUpdateParamsReceivingAccountAccountDetailsAccountNumberTypeArbitrumAddress),
 				}}),
-				AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
+				AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
 				ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{
 					ContactIdentifier:     moderntreasury.F("contact_identifier"),
 					ContactIdentifierType: moderntreasury.F(moderntreasury.ContactDetailCreateRequestContactIdentifierTypeEmail),
@@ -520,7 +520,7 @@ func TestPaymentOrderNewAsyncWithOptionalParams(t *testing.T) {
 				AccountNumber:     moderntreasury.F("account_number"),
 				AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderNewAsyncParamsReceivingAccountAccountDetailsAccountNumberTypeArbitrumAddress),
 			}}),
-			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
+			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
 			ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{
 				ContactIdentifier:     moderntreasury.F("contact_identifier"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.ContactDetailCreateRequestContactIdentifierTypeEmail),
