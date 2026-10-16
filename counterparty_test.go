@@ -38,7 +38,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				AccountNumber:     moderntreasury.F("account_number"),
 				AccountNumberType: moderntreasury.F(moderntreasury.CounterpartyNewParamsAccountsAccountDetailsAccountNumberTypeArbitrumAddress),
 			}}),
-			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeBaseWallet),
+			AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
 			ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{
 				ContactIdentifier:     moderntreasury.F("contact_identifier"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.ContactDetailCreateRequestContactIdentifierTypeEmail),
