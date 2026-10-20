@@ -321,24 +321,19 @@ func (r InternalAccountAccountCapabilitiesPaymentType) IsKnown() bool {
 type InternalAccountAccountType string
 
 const (
-	InternalAccountAccountTypeBaseWallet     InternalAccountAccountType = "base_wallet"
-	InternalAccountAccountTypeCash           InternalAccountAccountType = "cash"
-	InternalAccountAccountTypeChecking       InternalAccountAccountType = "checking"
-	InternalAccountAccountTypeCryptoWallet   InternalAccountAccountType = "crypto_wallet"
-	InternalAccountAccountTypeEthereumWallet InternalAccountAccountType = "ethereum_wallet"
-	InternalAccountAccountTypeGeneralLedger  InternalAccountAccountType = "general_ledger"
-	InternalAccountAccountTypeLoan           InternalAccountAccountType = "loan"
-	InternalAccountAccountTypeNonResident    InternalAccountAccountType = "non_resident"
-	InternalAccountAccountTypeOther          InternalAccountAccountType = "other"
-	InternalAccountAccountTypeOverdraft      InternalAccountAccountType = "overdraft"
-	InternalAccountAccountTypePolygonWallet  InternalAccountAccountType = "polygon_wallet"
-	InternalAccountAccountTypeSavings        InternalAccountAccountType = "savings"
-	InternalAccountAccountTypeSolanaWallet   InternalAccountAccountType = "solana_wallet"
+	InternalAccountAccountTypeCash          InternalAccountAccountType = "cash"
+	InternalAccountAccountTypeChecking      InternalAccountAccountType = "checking"
+	InternalAccountAccountTypeGeneralLedger InternalAccountAccountType = "general_ledger"
+	InternalAccountAccountTypeLoan          InternalAccountAccountType = "loan"
+	InternalAccountAccountTypeNonResident   InternalAccountAccountType = "non_resident"
+	InternalAccountAccountTypeOther         InternalAccountAccountType = "other"
+	InternalAccountAccountTypeOverdraft     InternalAccountAccountType = "overdraft"
+	InternalAccountAccountTypeSavings       InternalAccountAccountType = "savings"
 )
 
 func (r InternalAccountAccountType) IsKnown() bool {
 	switch r {
-	case InternalAccountAccountTypeBaseWallet, InternalAccountAccountTypeCash, InternalAccountAccountTypeChecking, InternalAccountAccountTypeCryptoWallet, InternalAccountAccountTypeEthereumWallet, InternalAccountAccountTypeGeneralLedger, InternalAccountAccountTypeLoan, InternalAccountAccountTypeNonResident, InternalAccountAccountTypeOther, InternalAccountAccountTypeOverdraft, InternalAccountAccountTypePolygonWallet, InternalAccountAccountTypeSavings, InternalAccountAccountTypeSolanaWallet:
+	case InternalAccountAccountTypeCash, InternalAccountAccountTypeChecking, InternalAccountAccountTypeGeneralLedger, InternalAccountAccountTypeLoan, InternalAccountAccountTypeNonResident, InternalAccountAccountTypeOther, InternalAccountAccountTypeOverdraft, InternalAccountAccountTypeSavings:
 		return true
 	}
 	return false
@@ -606,24 +601,19 @@ func (r InternalAccountNewParamsAccountCapabilitiesPaymentType) IsKnown() bool {
 type InternalAccountNewParamsAccountType string
 
 const (
-	InternalAccountNewParamsAccountTypeBaseWallet     InternalAccountNewParamsAccountType = "base_wallet"
-	InternalAccountNewParamsAccountTypeCash           InternalAccountNewParamsAccountType = "cash"
-	InternalAccountNewParamsAccountTypeChecking       InternalAccountNewParamsAccountType = "checking"
-	InternalAccountNewParamsAccountTypeCryptoWallet   InternalAccountNewParamsAccountType = "crypto_wallet"
-	InternalAccountNewParamsAccountTypeEthereumWallet InternalAccountNewParamsAccountType = "ethereum_wallet"
-	InternalAccountNewParamsAccountTypeGeneralLedger  InternalAccountNewParamsAccountType = "general_ledger"
-	InternalAccountNewParamsAccountTypeLoan           InternalAccountNewParamsAccountType = "loan"
-	InternalAccountNewParamsAccountTypeNonResident    InternalAccountNewParamsAccountType = "non_resident"
-	InternalAccountNewParamsAccountTypeOther          InternalAccountNewParamsAccountType = "other"
-	InternalAccountNewParamsAccountTypeOverdraft      InternalAccountNewParamsAccountType = "overdraft"
-	InternalAccountNewParamsAccountTypePolygonWallet  InternalAccountNewParamsAccountType = "polygon_wallet"
-	InternalAccountNewParamsAccountTypeSavings        InternalAccountNewParamsAccountType = "savings"
-	InternalAccountNewParamsAccountTypeSolanaWallet   InternalAccountNewParamsAccountType = "solana_wallet"
+	InternalAccountNewParamsAccountTypeCash          InternalAccountNewParamsAccountType = "cash"
+	InternalAccountNewParamsAccountTypeChecking      InternalAccountNewParamsAccountType = "checking"
+	InternalAccountNewParamsAccountTypeGeneralLedger InternalAccountNewParamsAccountType = "general_ledger"
+	InternalAccountNewParamsAccountTypeLoan          InternalAccountNewParamsAccountType = "loan"
+	InternalAccountNewParamsAccountTypeNonResident   InternalAccountNewParamsAccountType = "non_resident"
+	InternalAccountNewParamsAccountTypeOther         InternalAccountNewParamsAccountType = "other"
+	InternalAccountNewParamsAccountTypeOverdraft     InternalAccountNewParamsAccountType = "overdraft"
+	InternalAccountNewParamsAccountTypeSavings       InternalAccountNewParamsAccountType = "savings"
 )
 
 func (r InternalAccountNewParamsAccountType) IsKnown() bool {
 	switch r {
-	case InternalAccountNewParamsAccountTypeBaseWallet, InternalAccountNewParamsAccountTypeCash, InternalAccountNewParamsAccountTypeChecking, InternalAccountNewParamsAccountTypeCryptoWallet, InternalAccountNewParamsAccountTypeEthereumWallet, InternalAccountNewParamsAccountTypeGeneralLedger, InternalAccountNewParamsAccountTypeLoan, InternalAccountNewParamsAccountTypeNonResident, InternalAccountNewParamsAccountTypeOther, InternalAccountNewParamsAccountTypeOverdraft, InternalAccountNewParamsAccountTypePolygonWallet, InternalAccountNewParamsAccountTypeSavings, InternalAccountNewParamsAccountTypeSolanaWallet:
+	case InternalAccountNewParamsAccountTypeCash, InternalAccountNewParamsAccountTypeChecking, InternalAccountNewParamsAccountTypeGeneralLedger, InternalAccountNewParamsAccountTypeLoan, InternalAccountNewParamsAccountTypeNonResident, InternalAccountNewParamsAccountTypeOther, InternalAccountNewParamsAccountTypeOverdraft, InternalAccountNewParamsAccountTypeSavings:
 		return true
 	}
 	return false
