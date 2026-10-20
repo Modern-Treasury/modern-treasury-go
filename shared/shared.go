@@ -1829,11 +1829,12 @@ const (
 	ThirdPartyVerificationVendorSocure  ThirdPartyVerificationVendor = "socure"
 	ThirdPartyVerificationVendorSumsub  ThirdPartyVerificationVendor = "sumsub"
 	ThirdPartyVerificationVendorVeriff  ThirdPartyVerificationVendor = "veriff"
+	ThirdPartyVerificationVendorSmarty  ThirdPartyVerificationVendor = "smarty"
 )
 
 func (r ThirdPartyVerificationVendor) IsKnown() bool {
 	switch r {
-	case ThirdPartyVerificationVendorPersona, ThirdPartyVerificationVendorMiddesk, ThirdPartyVerificationVendorAlloy, ThirdPartyVerificationVendorIdology, ThirdPartyVerificationVendorSocure, ThirdPartyVerificationVendorSumsub, ThirdPartyVerificationVendorVeriff:
+	case ThirdPartyVerificationVendorPersona, ThirdPartyVerificationVendorMiddesk, ThirdPartyVerificationVendorAlloy, ThirdPartyVerificationVendorIdology, ThirdPartyVerificationVendorSocure, ThirdPartyVerificationVendorSumsub, ThirdPartyVerificationVendorVeriff, ThirdPartyVerificationVendorSmarty:
 		return true
 	}
 	return false
