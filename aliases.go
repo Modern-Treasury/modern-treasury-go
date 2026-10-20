@@ -1954,6 +1954,9 @@ const ThirdPartyVerificationVendorSumsub = shared.ThirdPartyVerificationVendorSu
 // This is an alias to an internal value.
 const ThirdPartyVerificationVendorVeriff = shared.ThirdPartyVerificationVendorVeriff
 
+// This is an alias to an internal value.
+const ThirdPartyVerificationVendorSmarty = shared.ThirdPartyVerificationVendorSmarty
+
 // The category of verification performed.
 //
 // This is an alias to an internal type.
