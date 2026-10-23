@@ -887,7 +887,8 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	ParentAccountID string `json:"parent_account_id" api:"nullable" format:"uuid"`
 	// The legal name of the entity which owns the account.
 	PartyName string `json:"party_name"`
-	// Either individual or business.
+	// Either individual or business. Inherits from associated LegalEntity
+	// legal_entity_type, if one exists.
 	PartyType PaymentOrderUltimateOriginatingAccountPartyType `json:"party_type" api:"nullable"`
 	// The internal account status.
 	Status PaymentOrderUltimateOriginatingAccountStatus `json:"status" api:"nullable"`
@@ -1005,7 +1006,8 @@ func (r PaymentOrderUltimateOriginatingAccountAccountType) IsKnown() bool {
 	return false
 }
 
-// Either individual or business.
+// Either individual or business. Inherits from associated LegalEntity
+// legal_entity_type, if one exists.
 type PaymentOrderUltimateOriginatingAccountPartyType string
 
 const (
