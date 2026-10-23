@@ -61,6 +61,7 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 			Line2:      moderntreasury.F("line2"),
 		}),
 		PartyName:                   moderntreasury.F("party_name"),
+		PartyType:                   moderntreasury.F(moderntreasury.InternalAccountNewParamsPartyTypeIndividual),
 		RequestedAccountNumberTypes: moderntreasury.F([]moderntreasury.InternalAccountNewParamsRequestedAccountNumberType{moderntreasury.InternalAccountNewParamsRequestedAccountNumberTypeArbitrumAddress}),
 		Title:                       moderntreasury.F("title"),
 		VendorAttributes: moderntreasury.F(map[string]string{
@@ -135,7 +136,8 @@ func TestInternalAccountUpdateWithOptionalParams(t *testing.T) {
 				PostalCode: moderntreasury.F("postal_code"),
 				Region:     moderntreasury.F("region"),
 			}),
-			Status: moderntreasury.F(moderntreasury.InternalAccountUpdateParamsStatusPendingClosure),
+			PartyType: moderntreasury.F(moderntreasury.InternalAccountUpdateParamsPartyTypeIndividual),
+			Status:    moderntreasury.F(moderntreasury.InternalAccountUpdateParamsStatusPendingClosure),
 		},
 	)
 	if err != nil {
