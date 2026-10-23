@@ -173,7 +173,8 @@ type InternalAccount struct {
 	PartyAddress shared.Address `json:"party_address" api:"required,nullable"`
 	// The legal name of the entity which owns the account.
 	PartyName string `json:"party_name" api:"required"`
-	// Either individual or business.
+	// Either individual or business. Inherits from associated LegalEntity
+	// legal_entity_type, if one exists.
 	PartyType InternalAccountPartyType `json:"party_type" api:"required,nullable"`
 	// An array of routing detail objects.
 	RoutingDetails []RoutingDetail `json:"routing_details" api:"required"`
@@ -339,7 +340,8 @@ func (r InternalAccountAccountType) IsKnown() bool {
 	return false
 }
 
-// Either individual or business.
+// Either individual or business. Inherits from associated LegalEntity
+// legal_entity_type, if one exists.
 type InternalAccountPartyType string
 
 const (
@@ -495,6 +497,9 @@ type InternalAccountNewParams struct {
 	PartyAddress param.Field[InternalAccountNewParamsPartyAddress] `json:"party_address"`
 	// The legal name of the entity which owns the account.
 	PartyName param.Field[string] `json:"party_name"`
+	// Either individual or business. Inherits from associated LegalEntity
+	// legal_entity_type, if one exists.
+	PartyType param.Field[InternalAccountNewParamsPartyType] `json:"party_type"`
 	// An array of account number types requested for provisioning.
 	RequestedAccountNumberTypes param.Field[[]InternalAccountNewParamsRequestedAccountNumberType] `json:"requested_account_number_types"`
 	// The account title at the financial institution, used in place of the party name.
@@ -639,6 +644,23 @@ func (r InternalAccountNewParamsPartyAddress) MarshalJSON() (data []byte, err er
 	return apijson.MarshalRoot(r)
 }
 
+// Either individual or business. Inherits from associated LegalEntity
+// legal_entity_type, if one exists.
+type InternalAccountNewParamsPartyType string
+
+const (
+	InternalAccountNewParamsPartyTypeIndividual InternalAccountNewParamsPartyType = "individual"
+	InternalAccountNewParamsPartyTypeBusiness   InternalAccountNewParamsPartyType = "business"
+)
+
+func (r InternalAccountNewParamsPartyType) IsKnown() bool {
+	switch r {
+	case InternalAccountNewParamsPartyTypeIndividual, InternalAccountNewParamsPartyTypeBusiness:
+		return true
+	}
+	return false
+}
+
 type InternalAccountNewParamsRequestedAccountNumberType string
 
 const (
@@ -679,6 +701,9 @@ type InternalAccountUpdateParams struct {
 	// the account's bank; you are responsible for verifying that the address is
 	// accurate.
 	PartyAddress param.Field[shared.AddressRequestParam] `json:"party_address"`
+	// Either individual or business. Inherits from associated LegalEntity
+	// legal_entity_type, if one exists.
+	PartyType param.Field[InternalAccountUpdateParamsPartyType] `json:"party_type"`
 	// Requests closure of the internal account. The resulting status may be `closed`
 	// for vendors that close synchronously.
 	Status param.Field[InternalAccountUpdateParamsStatus] `json:"status"`
@@ -686,6 +711,23 @@ type InternalAccountUpdateParams struct {
 
 func (r InternalAccountUpdateParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+// Either individual or business. Inherits from associated LegalEntity
+// legal_entity_type, if one exists.
+type InternalAccountUpdateParamsPartyType string
+
+const (
+	InternalAccountUpdateParamsPartyTypeIndividual InternalAccountUpdateParamsPartyType = "individual"
+	InternalAccountUpdateParamsPartyTypeBusiness   InternalAccountUpdateParamsPartyType = "business"
+)
+
+func (r InternalAccountUpdateParamsPartyType) IsKnown() bool {
+	switch r {
+	case InternalAccountUpdateParamsPartyTypeIndividual, InternalAccountUpdateParamsPartyTypeBusiness:
+		return true
+	}
+	return false
 }
 
 // Requests closure of the internal account. The resulting status may be `closed`
