@@ -39,6 +39,8 @@ func NewPaymentFlowService(opts ...option.RequestOption) (r *PaymentFlowService)
 }
 
 // create payment_flow
+//
+// Deprecated: deprecated
 func (r *PaymentFlowService) New(ctx context.Context, body PaymentFlowNewParams, opts ...option.RequestOption) (res *PaymentFlow, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "api/payment_flows"
