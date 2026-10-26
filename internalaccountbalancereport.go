@@ -185,8 +185,10 @@ type BalanceReportBalance struct {
 	AsOfTime string `json:"as_of_time" api:"required,nullable" format:"time"`
 	// The specific type of balance reported. One of `opening_ledger`,
 	// `closing_ledger`, `current_ledger`, `opening_available`,
-	// `opening_available_next_business_day`, `closing_available`, `current_available`,
-	// 'previously_closed_book', or `other`.
+	// `opening_available_next_business_day`, `closing_available`,
+	// `closing_pending_inflows`, `closing_pending_outflows`, `current_available`,
+	// 'previously_closed_book', `current_pending_inflows`, `current_pending_outflows`,
+	// or `other`.
 	BalanceType BalanceReportBalancesBalanceType `json:"balance_type" api:"required"`
 	CreatedAt   time.Time                        `json:"created_at" api:"required" format:"date-time"`
 	// The currency of the balance.
@@ -238,15 +240,21 @@ func (r balanceReportBalanceJSON) RawJSON() string {
 
 // The specific type of balance reported. One of `opening_ledger`,
 // `closing_ledger`, `current_ledger`, `opening_available`,
-// `opening_available_next_business_day`, `closing_available`, `current_available`,
-// 'previously_closed_book', or `other`.
+// `opening_available_next_business_day`, `closing_available`,
+// `closing_pending_inflows`, `closing_pending_outflows`, `current_available`,
+// 'previously_closed_book', `current_pending_inflows`, `current_pending_outflows`,
+// or `other`.
 type BalanceReportBalancesBalanceType string
 
 const (
 	BalanceReportBalancesBalanceTypeClosingAvailable                BalanceReportBalancesBalanceType = "closing_available"
 	BalanceReportBalancesBalanceTypeClosingLedger                   BalanceReportBalancesBalanceType = "closing_ledger"
+	BalanceReportBalancesBalanceTypeClosingPendingInflows           BalanceReportBalancesBalanceType = "closing_pending_inflows"
+	BalanceReportBalancesBalanceTypeClosingPendingOutflows          BalanceReportBalancesBalanceType = "closing_pending_outflows"
 	BalanceReportBalancesBalanceTypeCurrentAvailable                BalanceReportBalancesBalanceType = "current_available"
 	BalanceReportBalancesBalanceTypeCurrentLedger                   BalanceReportBalancesBalanceType = "current_ledger"
+	BalanceReportBalancesBalanceTypeCurrentPendingInflows           BalanceReportBalancesBalanceType = "current_pending_inflows"
+	BalanceReportBalancesBalanceTypeCurrentPendingOutflows          BalanceReportBalancesBalanceType = "current_pending_outflows"
 	BalanceReportBalancesBalanceTypeOpeningAvailable                BalanceReportBalancesBalanceType = "opening_available"
 	BalanceReportBalancesBalanceTypeOpeningAvailableNextBusinessDay BalanceReportBalancesBalanceType = "opening_available_next_business_day"
 	BalanceReportBalancesBalanceTypeOpeningLedger                   BalanceReportBalancesBalanceType = "opening_ledger"
@@ -256,7 +264,7 @@ const (
 
 func (r BalanceReportBalancesBalanceType) IsKnown() bool {
 	switch r {
-	case BalanceReportBalancesBalanceTypeClosingAvailable, BalanceReportBalancesBalanceTypeClosingLedger, BalanceReportBalancesBalanceTypeCurrentAvailable, BalanceReportBalancesBalanceTypeCurrentLedger, BalanceReportBalancesBalanceTypeOpeningAvailable, BalanceReportBalancesBalanceTypeOpeningAvailableNextBusinessDay, BalanceReportBalancesBalanceTypeOpeningLedger, BalanceReportBalancesBalanceTypeOther, BalanceReportBalancesBalanceTypePreviouslyClosedBook:
+	case BalanceReportBalancesBalanceTypeClosingAvailable, BalanceReportBalancesBalanceTypeClosingLedger, BalanceReportBalancesBalanceTypeClosingPendingInflows, BalanceReportBalancesBalanceTypeClosingPendingOutflows, BalanceReportBalancesBalanceTypeCurrentAvailable, BalanceReportBalancesBalanceTypeCurrentLedger, BalanceReportBalancesBalanceTypeCurrentPendingInflows, BalanceReportBalancesBalanceTypeCurrentPendingOutflows, BalanceReportBalancesBalanceTypeOpeningAvailable, BalanceReportBalancesBalanceTypeOpeningAvailableNextBusinessDay, BalanceReportBalancesBalanceTypeOpeningLedger, BalanceReportBalancesBalanceTypeOther, BalanceReportBalancesBalanceTypePreviouslyClosedBook:
 		return true
 	}
 	return false
@@ -301,8 +309,10 @@ func (r BalanceReportNewParamsBalanceReportType) IsKnown() bool {
 type BalanceReportNewParamsBalance struct {
 	// The specific type of balance reported. One of `opening_ledger`,
 	// `closing_ledger`, `current_ledger`, `opening_available`,
-	// `opening_available_next_business_day`, `closing_available`, `current_available`,
-	// 'previously_closed_book', or `other`.
+	// `opening_available_next_business_day`, `closing_available`,
+	// `closing_pending_inflows`, `closing_pending_outflows`, `current_available`,
+	// 'previously_closed_book', `current_pending_inflows`, `current_pending_outflows`,
+	// or `other`.
 	BalanceType param.Field[BalanceReportNewParamsBalancesBalanceType] `json:"balance_type" api:"required"`
 	// The code used by the bank when reporting this specific balance.
 	VendorCode param.Field[string] `json:"vendor_code" api:"required"`
@@ -323,15 +333,21 @@ func (r BalanceReportNewParamsBalance) MarshalJSON() (data []byte, err error) {
 
 // The specific type of balance reported. One of `opening_ledger`,
 // `closing_ledger`, `current_ledger`, `opening_available`,
-// `opening_available_next_business_day`, `closing_available`, `current_available`,
-// 'previously_closed_book', or `other`.
+// `opening_available_next_business_day`, `closing_available`,
+// `closing_pending_inflows`, `closing_pending_outflows`, `current_available`,
+// 'previously_closed_book', `current_pending_inflows`, `current_pending_outflows`,
+// or `other`.
 type BalanceReportNewParamsBalancesBalanceType string
 
 const (
 	BalanceReportNewParamsBalancesBalanceTypeClosingAvailable                BalanceReportNewParamsBalancesBalanceType = "closing_available"
 	BalanceReportNewParamsBalancesBalanceTypeClosingLedger                   BalanceReportNewParamsBalancesBalanceType = "closing_ledger"
+	BalanceReportNewParamsBalancesBalanceTypeClosingPendingInflows           BalanceReportNewParamsBalancesBalanceType = "closing_pending_inflows"
+	BalanceReportNewParamsBalancesBalanceTypeClosingPendingOutflows          BalanceReportNewParamsBalancesBalanceType = "closing_pending_outflows"
 	BalanceReportNewParamsBalancesBalanceTypeCurrentAvailable                BalanceReportNewParamsBalancesBalanceType = "current_available"
 	BalanceReportNewParamsBalancesBalanceTypeCurrentLedger                   BalanceReportNewParamsBalancesBalanceType = "current_ledger"
+	BalanceReportNewParamsBalancesBalanceTypeCurrentPendingInflows           BalanceReportNewParamsBalancesBalanceType = "current_pending_inflows"
+	BalanceReportNewParamsBalancesBalanceTypeCurrentPendingOutflows          BalanceReportNewParamsBalancesBalanceType = "current_pending_outflows"
 	BalanceReportNewParamsBalancesBalanceTypeOpeningAvailable                BalanceReportNewParamsBalancesBalanceType = "opening_available"
 	BalanceReportNewParamsBalancesBalanceTypeOpeningAvailableNextBusinessDay BalanceReportNewParamsBalancesBalanceType = "opening_available_next_business_day"
 	BalanceReportNewParamsBalancesBalanceTypeOpeningLedger                   BalanceReportNewParamsBalancesBalanceType = "opening_ledger"
@@ -341,7 +357,7 @@ const (
 
 func (r BalanceReportNewParamsBalancesBalanceType) IsKnown() bool {
 	switch r {
-	case BalanceReportNewParamsBalancesBalanceTypeClosingAvailable, BalanceReportNewParamsBalancesBalanceTypeClosingLedger, BalanceReportNewParamsBalancesBalanceTypeCurrentAvailable, BalanceReportNewParamsBalancesBalanceTypeCurrentLedger, BalanceReportNewParamsBalancesBalanceTypeOpeningAvailable, BalanceReportNewParamsBalancesBalanceTypeOpeningAvailableNextBusinessDay, BalanceReportNewParamsBalancesBalanceTypeOpeningLedger, BalanceReportNewParamsBalancesBalanceTypeOther, BalanceReportNewParamsBalancesBalanceTypePreviouslyClosedBook:
+	case BalanceReportNewParamsBalancesBalanceTypeClosingAvailable, BalanceReportNewParamsBalancesBalanceTypeClosingLedger, BalanceReportNewParamsBalancesBalanceTypeClosingPendingInflows, BalanceReportNewParamsBalancesBalanceTypeClosingPendingOutflows, BalanceReportNewParamsBalancesBalanceTypeCurrentAvailable, BalanceReportNewParamsBalancesBalanceTypeCurrentLedger, BalanceReportNewParamsBalancesBalanceTypeCurrentPendingInflows, BalanceReportNewParamsBalancesBalanceTypeCurrentPendingOutflows, BalanceReportNewParamsBalancesBalanceTypeOpeningAvailable, BalanceReportNewParamsBalancesBalanceTypeOpeningAvailableNextBusinessDay, BalanceReportNewParamsBalancesBalanceTypeOpeningLedger, BalanceReportNewParamsBalancesBalanceTypeOther, BalanceReportNewParamsBalancesBalanceTypePreviouslyClosedBook:
 		return true
 	}
 	return false
