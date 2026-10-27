@@ -39,6 +39,8 @@ func NewAccountCollectionFlowService(opts ...option.RequestOption) (r *AccountCo
 }
 
 // create account_collection_flow
+//
+// Deprecated: deprecated
 func (r *AccountCollectionFlowService) New(ctx context.Context, body AccountCollectionFlowNewParams, opts ...option.RequestOption) (res *AccountCollectionFlow, err error) {
 	opts = slices.Concat(r.Options, opts)
 	path := "api/account_collection_flows"
