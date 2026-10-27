@@ -43,7 +43,7 @@ func TestInternalAccountNewWithOptionalParams(t *testing.T) {
 			UpdatedAt:   moderntreasury.F(time.Now()),
 		}}),
 		AccountType:               moderntreasury.F(moderntreasury.InternalAccountNewParamsAccountTypeChecking),
-		AllowedACHDebitCompanyIDs: moderntreasury.F([]string{"x"}),
+		AllowedACHDebitCompanyIDs: moderntreasury.F([]string{"string"}),
 		ConnectionID:              moderntreasury.F("connection_id"),
 		CounterpartyID:            moderntreasury.F("counterparty_id"),
 		Debitable:                 moderntreasury.F(true),
