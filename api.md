@@ -473,13 +473,6 @@ Methods:
 
 - <code title="get /api/validations/routing_numbers">client.Validations.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ValidationService.ValidateRoutingNumber">ValidateRoutingNumber</a>(ctx <a href="https://pkg.go.dev/context">context</a>.<a href="https://pkg.go.dev/context#Context">Context</a>, query <a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#ValidationValidateRoutingNumberParams">ValidationValidateRoutingNumberParams</a>) (\*<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2">moderntreasury</a>.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#RoutingNumberLookupRequest">RoutingNumberLookupRequest</a>, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
 
-# Webhooks
-
-Methods:
-
-- <code>client.Webhooks.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#WebhookService.GetSignature">GetSignature</a>(payload []byte, key string) (string, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-- <code>client.Webhooks.<a href="https://pkg.go.dev/github.com/Modern-Treasury/modern-treasury-go/v2#WebhookService.ValidateSignature">ValidateSignature</a>(payload []byte, key string, headers http.Header) (bool, <a href="https://pkg.go.dev/builtin#error">error</a>)</code>
-
 # VirtualAccounts
 
 Response Types:
