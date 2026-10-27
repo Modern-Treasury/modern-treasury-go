@@ -61,6 +61,7 @@ type Client struct {
 	Cases                        *CaseService
 	VirtualAccountSettings       *VirtualAccountSettingService
 	Identifications              *IdentificationService
+	EmbeddableFlows              *EmbeddableFlowService
 }
 
 // DefaultClientOptions read from the environment (MODERN_TREASURY_API_KEY,
@@ -144,6 +145,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.Cases = NewCaseService(opts...)
 	r.VirtualAccountSettings = NewVirtualAccountSettingService(opts...)
 	r.Identifications = NewIdentificationService(opts...)
+	r.EmbeddableFlows = NewEmbeddableFlowService(opts...)
 
 	return
 }
