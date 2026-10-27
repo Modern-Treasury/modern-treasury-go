@@ -150,19 +150,19 @@ Content-Disposition: form-data; name="e"
 
 43.76
 --xxx
-Content-Disposition: form-data; name="f.0"
+Content-Disposition: form-data; name="f[0]"
 
 1
 --xxx
-Content-Disposition: form-data; name="f.1"
+Content-Disposition: form-data; name="f[1]"
 
 2
 --xxx
-Content-Disposition: form-data; name="f.2"
+Content-Disposition: form-data; name="f[2]"
 
 3
 --xxx
-Content-Disposition: form-data; name="f.3"
+Content-Disposition: form-data; name="f[3]"
 
 4
 --xxx--
@@ -172,39 +172,39 @@ Content-Disposition: form-data; name="f.3"
 
 	"slices": {
 		`--xxx
-Content-Disposition: form-data; name="slices.0.a"
+Content-Disposition: form-data; name="slices[0][a]"
 
 false
 --xxx
-Content-Disposition: form-data; name="slices.0.b"
+Content-Disposition: form-data; name="slices[0][b]"
 
 237628372683
 --xxx
-Content-Disposition: form-data; name="slices.0.c"
+Content-Disposition: form-data; name="slices[0][c]"
 
 654
 --xxx
-Content-Disposition: form-data; name="slices.0.d"
+Content-Disposition: form-data; name="slices[0][d]"
 
 9999.43
 --xxx
-Content-Disposition: form-data; name="slices.0.e"
+Content-Disposition: form-data; name="slices[0][e]"
 
 43.76
 --xxx
-Content-Disposition: form-data; name="slices.0.f.0"
+Content-Disposition: form-data; name="slices[0][f][0]"
 
 1
 --xxx
-Content-Disposition: form-data; name="slices.0.f.1"
+Content-Disposition: form-data; name="slices[0][f][1]"
 
 2
 --xxx
-Content-Disposition: form-data; name="slices.0.f.2"
+Content-Disposition: form-data; name="slices[0][f][2]"
 
 3
 --xxx
-Content-Disposition: form-data; name="slices.0.f.3"
+Content-Disposition: form-data; name="slices[0][f][3]"
 
 4
 --xxx--
@@ -236,23 +236,23 @@ Content-Disposition: form-data; name="e"
 
 43.76
 --xxx
-Content-Disposition: form-data; name="f.0"
+Content-Disposition: form-data; name="f[0]"
 
 1
 --xxx
-Content-Disposition: form-data; name="f.1"
+Content-Disposition: form-data; name="f[1]"
 
 2
 --xxx
-Content-Disposition: form-data; name="f.2"
+Content-Disposition: form-data; name="f[2]"
 
 3
 --xxx
-Content-Disposition: form-data; name="f.3"
+Content-Disposition: form-data; name="f[3]"
 
 4
 --xxx
-Content-Disposition: form-data; name="f.4"
+Content-Disposition: form-data; name="f[4]"
 
 5
 --xxx--
@@ -310,7 +310,7 @@ true
 
 	"recursive_struct": {
 		`--xxx
-Content-Disposition: form-data; name="child.name"
+Content-Disposition: form-data; name="child[name]"
 
 Alex
 --xxx
@@ -336,7 +336,7 @@ Content-Disposition: form-data; name="unknown"
 
 	"unknown_struct_map": {
 		`--xxx
-Content-Disposition: form-data; name="unknown.foo"
+Content-Disposition: form-data; name="unknown[foo]"
 
 bar
 --xxx--
@@ -362,15 +362,15 @@ Content-Disposition: form-data; name="union"
 
 	"union_struct_discriminated_a": {
 		`--xxx
-Content-Disposition: form-data; name="union.a"
+Content-Disposition: form-data; name="union[a]"
 
 foo
 --xxx
-Content-Disposition: form-data; name="union.b"
+Content-Disposition: form-data; name="union[b]"
 
 bar
 --xxx
-Content-Disposition: form-data; name="union.type"
+Content-Disposition: form-data; name="union[type]"
 
 typeA
 --xxx--
@@ -387,11 +387,11 @@ typeA
 
 	"union_struct_discriminated_b": {
 		`--xxx
-Content-Disposition: form-data; name="union.a"
+Content-Disposition: form-data; name="union[a]"
 
 foo
 --xxx
-Content-Disposition: form-data; name="union.type"
+Content-Disposition: form-data; name="union[type]"
 
 typeB
 --xxx--
