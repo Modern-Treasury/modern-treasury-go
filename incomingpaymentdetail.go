@@ -447,6 +447,8 @@ func (r IncomingPaymentDetailListParamsType) IsKnown() bool {
 }
 
 type IncomingPaymentDetailNewAsyncParams struct {
+	// One of `ach`, `wire`, `check`.
+	Type param.Field[IncomingPaymentDetailNewAsyncParamsType] `json:"type" api:"required"`
 	// Value in specified currency's smallest unit. e.g. $10 would be represented
 	// as 1000.
 	Amount param.Field[int64] `json:"amount"`
@@ -455,7 +457,9 @@ type IncomingPaymentDetailNewAsyncParams struct {
 	// Defaults to the currency of the originating account.
 	Currency param.Field[shared.Currency] `json:"currency"`
 	// An object passed through to the simulated IPD that could reflect what a vendor
-	// would pass.
+	// would pass. For `type: check` with `subtype: lockbox` (sandbox Modern Treasury
+	// payment accounts only), `data` must include `payor_name`, otherwise the request
+	// returns 422.
 	Data param.Field[interface{}] `json:"data"`
 	// Defaults to a random description.
 	Description param.Field[string] `json:"description"`
@@ -464,10 +468,9 @@ type IncomingPaymentDetailNewAsyncParams struct {
 	// The ID of one of your internal accounts.
 	InternalAccountID param.Field[string] `json:"internal_account_id" format:"uuid"`
 	// An additional layer of classification for the type of incoming payment detail,
-	// e.g. `ethereum` for a `stablecoin` type.
+	// e.g. `ethereum` for a `stablecoin` type. For `type: check`, `subtype: lockbox`
+	// simulates a lockbox check deposit.
 	Subtype param.Field[string] `json:"subtype"`
-	// One of `ach`, `wire`, `check`.
-	Type param.Field[IncomingPaymentDetailNewAsyncParamsType] `json:"type"`
 	// An optional parameter to associate the incoming payment detail to a virtual
 	// account.
 	VirtualAccountID param.Field[string] `json:"virtual_account_id" format:"uuid"`
