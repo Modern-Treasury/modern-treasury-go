@@ -856,6 +856,8 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	AccountCapabilities interface{} `json:"account_capabilities"`
 	// Can be checking, savings or other.
 	AccountType PaymentOrderUltimateOriginatingAccountAccountType `json:"account_type" api:"nullable"`
+	// This field can have the runtime type of [[]string].
+	AllowedACHDebitCompanyIDs interface{} `json:"allowed_ach_debit_company_ids"`
 	// Specifies which financial institution the accounts belong to.
 	Connection Connection `json:"connection"`
 	// If the internal account links to a contra ledger account in Modern Treasury, the
@@ -905,39 +907,40 @@ type PaymentOrderUltimateOriginatingAccount struct {
 // paymentOrderUltimateOriginatingAccountJSON contains the JSON metadata for the
 // struct [PaymentOrderUltimateOriginatingAccount]
 type paymentOrderUltimateOriginatingAccountJSON struct {
-	ID                    apijson.Field
-	AccountDetails        apijson.Field
-	CounterpartyID        apijson.Field
-	CreatedAt             apijson.Field
-	ExternalID            apijson.Field
-	LedgerAccountID       apijson.Field
-	LiveMode              apijson.Field
-	Metadata              apijson.Field
-	Name                  apijson.Field
-	Object                apijson.Field
-	PartyAddress          apijson.Field
-	RoutingDetails        apijson.Field
-	UpdatedAt             apijson.Field
-	AccountCapabilities   apijson.Field
-	AccountType           apijson.Field
-	Connection            apijson.Field
-	ContraLedgerAccountID apijson.Field
-	CreditLedgerAccountID apijson.Field
-	Currency              apijson.Field
-	DebitLedgerAccountID  apijson.Field
-	Debitable             apijson.Field
-	Description           apijson.Field
-	DiscardedAt           apijson.Field
-	InternalAccountID     apijson.Field
-	LegalEntityID         apijson.Field
-	ParentAccountID       apijson.Field
-	PartyName             apijson.Field
-	PartyType             apijson.Field
-	Status                apijson.Field
-	Title                 apijson.Field
-	VendorID              apijson.Field
-	raw                   string
-	ExtraFields           map[string]apijson.Field
+	ID                        apijson.Field
+	AccountDetails            apijson.Field
+	CounterpartyID            apijson.Field
+	CreatedAt                 apijson.Field
+	ExternalID                apijson.Field
+	LedgerAccountID           apijson.Field
+	LiveMode                  apijson.Field
+	Metadata                  apijson.Field
+	Name                      apijson.Field
+	Object                    apijson.Field
+	PartyAddress              apijson.Field
+	RoutingDetails            apijson.Field
+	UpdatedAt                 apijson.Field
+	AccountCapabilities       apijson.Field
+	AccountType               apijson.Field
+	AllowedACHDebitCompanyIDs apijson.Field
+	Connection                apijson.Field
+	ContraLedgerAccountID     apijson.Field
+	CreditLedgerAccountID     apijson.Field
+	Currency                  apijson.Field
+	DebitLedgerAccountID      apijson.Field
+	Debitable                 apijson.Field
+	Description               apijson.Field
+	DiscardedAt               apijson.Field
+	InternalAccountID         apijson.Field
+	LegalEntityID             apijson.Field
+	ParentAccountID           apijson.Field
+	PartyName                 apijson.Field
+	PartyType                 apijson.Field
+	Status                    apijson.Field
+	Title                     apijson.Field
+	VendorID                  apijson.Field
+	raw                       string
+	ExtraFields               map[string]apijson.Field
 }
 
 func (r paymentOrderUltimateOriginatingAccountJSON) RawJSON() string {

@@ -136,6 +136,11 @@ type InternalAccount struct {
 	AccountDetails []AccountDetail `json:"account_details" api:"required"`
 	// Can be checking, savings or other.
 	AccountType InternalAccountAccountType `json:"account_type" api:"required,nullable"`
+	// The ACH Company IDs allowed to debit this account. `null` allows every company.
+	// An empty array allows none. Debits from any other company are returned with code
+	// R10. Only applicable to debitable accounts under a Modern Treasury PSP
+	// connection.
+	AllowedACHDebitCompanyIDs []string `json:"allowed_ach_debit_company_ids" api:"required,nullable"`
 	// Specifies which financial institution the accounts belong to.
 	Connection Connection `json:"connection" api:"required"`
 	// If the internal account links to a contra ledger account in Modern Treasury, the
@@ -192,34 +197,35 @@ type InternalAccount struct {
 
 // internalAccountJSON contains the JSON metadata for the struct [InternalAccount]
 type internalAccountJSON struct {
-	ID                    apijson.Field
-	AccountCapabilities   apijson.Field
-	AccountDetails        apijson.Field
-	AccountType           apijson.Field
-	Connection            apijson.Field
-	ContraLedgerAccountID apijson.Field
-	CounterpartyID        apijson.Field
-	CreatedAt             apijson.Field
-	Currency              apijson.Field
-	Debitable             apijson.Field
-	ExternalID            apijson.Field
-	LedgerAccountID       apijson.Field
-	LegalEntityID         apijson.Field
-	LiveMode              apijson.Field
-	Metadata              apijson.Field
-	Name                  apijson.Field
-	Object                apijson.Field
-	ParentAccountID       apijson.Field
-	PartyAddress          apijson.Field
-	PartyName             apijson.Field
-	PartyType             apijson.Field
-	RoutingDetails        apijson.Field
-	Status                apijson.Field
-	Title                 apijson.Field
-	UpdatedAt             apijson.Field
-	VendorID              apijson.Field
-	raw                   string
-	ExtraFields           map[string]apijson.Field
+	ID                        apijson.Field
+	AccountCapabilities       apijson.Field
+	AccountDetails            apijson.Field
+	AccountType               apijson.Field
+	AllowedACHDebitCompanyIDs apijson.Field
+	Connection                apijson.Field
+	ContraLedgerAccountID     apijson.Field
+	CounterpartyID            apijson.Field
+	CreatedAt                 apijson.Field
+	Currency                  apijson.Field
+	Debitable                 apijson.Field
+	ExternalID                apijson.Field
+	LedgerAccountID           apijson.Field
+	LegalEntityID             apijson.Field
+	LiveMode                  apijson.Field
+	Metadata                  apijson.Field
+	Name                      apijson.Field
+	Object                    apijson.Field
+	ParentAccountID           apijson.Field
+	PartyAddress              apijson.Field
+	PartyName                 apijson.Field
+	PartyType                 apijson.Field
+	RoutingDetails            apijson.Field
+	Status                    apijson.Field
+	Title                     apijson.Field
+	UpdatedAt                 apijson.Field
+	VendorID                  apijson.Field
+	raw                       string
+	ExtraFields               map[string]apijson.Field
 }
 
 func (r *InternalAccount) UnmarshalJSON(data []byte) (err error) {
@@ -473,6 +479,11 @@ type InternalAccountNewParams struct {
 	// The account type, used to provision the appropriate account at the financial
 	// institution.
 	AccountType param.Field[InternalAccountNewParamsAccountType] `json:"account_type"`
+	// The ACH Company IDs allowed to debit this account. `null` allows every company.
+	// An empty array allows none. Debits from any other company are returned with code
+	// R10. Only applicable to debitable accounts under a Modern Treasury PSP
+	// connection.
+	AllowedACHDebitCompanyIDs param.Field[[]string] `json:"allowed_ach_debit_company_ids"`
 	// The identifier of the financial institution the account belongs to. If not
 	// provided, defaults to the default connection, or the sole connection if only one
 	// exists.
