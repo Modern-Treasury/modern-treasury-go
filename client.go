@@ -44,7 +44,6 @@ type Client struct {
 	Returns                      *ReturnService
 	Transactions                 *TransactionService
 	Validations                  *ValidationService
-	Webhooks                     *WebhookService
 	VirtualAccounts              *VirtualAccountService
 	BulkRequests                 *BulkRequestService
 	BulkResults                  *BulkResultService
@@ -61,6 +60,7 @@ type Client struct {
 	Cases                        *CaseService
 	VirtualAccountSettings       *VirtualAccountSettingService
 	Identifications              *IdentificationService
+	EmbeddableFlows              *EmbeddableFlowService
 }
 
 // DefaultClientOptions read from the environment (MODERN_TREASURY_API_KEY,
@@ -127,7 +127,6 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.Returns = NewReturnService(opts...)
 	r.Transactions = NewTransactionService(opts...)
 	r.Validations = NewValidationService(opts...)
-	r.Webhooks = NewWebhookService(opts...)
 	r.VirtualAccounts = NewVirtualAccountService(opts...)
 	r.BulkRequests = NewBulkRequestService(opts...)
 	r.BulkResults = NewBulkResultService(opts...)
@@ -144,6 +143,7 @@ func NewClient(opts ...option.RequestOption) (r *Client) {
 	r.Cases = NewCaseService(opts...)
 	r.VirtualAccountSettings = NewVirtualAccountSettingService(opts...)
 	r.Identifications = NewIdentificationService(opts...)
+	r.EmbeddableFlows = NewEmbeddableFlowService(opts...)
 
 	return
 }
