@@ -119,6 +119,7 @@ func TestIncomingPaymentDetailNewAsyncWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.IncomingPaymentDetails.NewAsync(context.TODO(), moderntreasury.IncomingPaymentDetailNewAsyncParams{
+		Type:              moderntreasury.F(moderntreasury.IncomingPaymentDetailNewAsyncParamsTypeACH),
 		Amount:            moderntreasury.F(int64(0)),
 		AsOfDate:          moderntreasury.F(time.Now()),
 		Currency:          moderntreasury.F(shared.CurrencyAed),
@@ -127,7 +128,6 @@ func TestIncomingPaymentDetailNewAsyncWithOptionalParams(t *testing.T) {
 		Direction:         moderntreasury.F(shared.TransactionDirectionCredit),
 		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 		Subtype:           moderntreasury.F("subtype"),
-		Type:              moderntreasury.F(moderntreasury.IncomingPaymentDetailNewAsyncParamsTypeACH),
 		VirtualAccountID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 	})
 	if err != nil {
