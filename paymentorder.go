@@ -991,19 +991,21 @@ func init() {
 type PaymentOrderUltimateOriginatingAccountAccountType string
 
 const (
-	PaymentOrderUltimateOriginatingAccountAccountTypeCash          PaymentOrderUltimateOriginatingAccountAccountType = "cash"
-	PaymentOrderUltimateOriginatingAccountAccountTypeChecking      PaymentOrderUltimateOriginatingAccountAccountType = "checking"
-	PaymentOrderUltimateOriginatingAccountAccountTypeGeneralLedger PaymentOrderUltimateOriginatingAccountAccountType = "general_ledger"
-	PaymentOrderUltimateOriginatingAccountAccountTypeLoan          PaymentOrderUltimateOriginatingAccountAccountType = "loan"
-	PaymentOrderUltimateOriginatingAccountAccountTypeNonResident   PaymentOrderUltimateOriginatingAccountAccountType = "non_resident"
-	PaymentOrderUltimateOriginatingAccountAccountTypeOther         PaymentOrderUltimateOriginatingAccountAccountType = "other"
-	PaymentOrderUltimateOriginatingAccountAccountTypeOverdraft     PaymentOrderUltimateOriginatingAccountAccountType = "overdraft"
-	PaymentOrderUltimateOriginatingAccountAccountTypeSavings       PaymentOrderUltimateOriginatingAccountAccountType = "savings"
+	PaymentOrderUltimateOriginatingAccountAccountTypeCash             PaymentOrderUltimateOriginatingAccountAccountType = "cash"
+	PaymentOrderUltimateOriginatingAccountAccountTypeChecking         PaymentOrderUltimateOriginatingAccountAccountType = "checking"
+	PaymentOrderUltimateOriginatingAccountAccountTypeGeneralLedger    PaymentOrderUltimateOriginatingAccountAccountType = "general_ledger"
+	PaymentOrderUltimateOriginatingAccountAccountTypeHostedWallet     PaymentOrderUltimateOriginatingAccountAccountType = "hosted_wallet"
+	PaymentOrderUltimateOriginatingAccountAccountTypeLoan             PaymentOrderUltimateOriginatingAccountAccountType = "loan"
+	PaymentOrderUltimateOriginatingAccountAccountTypeNonResident      PaymentOrderUltimateOriginatingAccountAccountType = "non_resident"
+	PaymentOrderUltimateOriginatingAccountAccountTypeOther            PaymentOrderUltimateOriginatingAccountAccountType = "other"
+	PaymentOrderUltimateOriginatingAccountAccountTypeOverdraft        PaymentOrderUltimateOriginatingAccountAccountType = "overdraft"
+	PaymentOrderUltimateOriginatingAccountAccountTypeSavings          PaymentOrderUltimateOriginatingAccountAccountType = "savings"
+	PaymentOrderUltimateOriginatingAccountAccountTypeSelfHostedWallet PaymentOrderUltimateOriginatingAccountAccountType = "self_hosted_wallet"
 )
 
 func (r PaymentOrderUltimateOriginatingAccountAccountType) IsKnown() bool {
 	switch r {
-	case PaymentOrderUltimateOriginatingAccountAccountTypeCash, PaymentOrderUltimateOriginatingAccountAccountTypeChecking, PaymentOrderUltimateOriginatingAccountAccountTypeGeneralLedger, PaymentOrderUltimateOriginatingAccountAccountTypeLoan, PaymentOrderUltimateOriginatingAccountAccountTypeNonResident, PaymentOrderUltimateOriginatingAccountAccountTypeOther, PaymentOrderUltimateOriginatingAccountAccountTypeOverdraft, PaymentOrderUltimateOriginatingAccountAccountTypeSavings:
+	case PaymentOrderUltimateOriginatingAccountAccountTypeCash, PaymentOrderUltimateOriginatingAccountAccountTypeChecking, PaymentOrderUltimateOriginatingAccountAccountTypeGeneralLedger, PaymentOrderUltimateOriginatingAccountAccountTypeHostedWallet, PaymentOrderUltimateOriginatingAccountAccountTypeLoan, PaymentOrderUltimateOriginatingAccountAccountTypeNonResident, PaymentOrderUltimateOriginatingAccountAccountTypeOther, PaymentOrderUltimateOriginatingAccountAccountTypeOverdraft, PaymentOrderUltimateOriginatingAccountAccountTypeSavings, PaymentOrderUltimateOriginatingAccountAccountTypeSelfHostedWallet:
 		return true
 	}
 	return false
