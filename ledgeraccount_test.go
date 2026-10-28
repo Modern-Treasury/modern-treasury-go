@@ -108,14 +108,16 @@ func TestLedgerAccountUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		moderntreasury.LedgerAccountUpdateParams{
-			Description: moderntreasury.F("description"),
-			ExternalID:  moderntreasury.F("external_id"),
-			Metadata: moderntreasury.F(map[string]string{
-				"foo":    "bar",
-				"key":    "value",
-				"modern": "treasury",
-			}),
-			Name: moderntreasury.F("name"),
+			LedgerAccountUpdateRequest: moderntreasury.LedgerAccountUpdateRequestParam{
+				Description: moderntreasury.F("description"),
+				ExternalID:  moderntreasury.F("external_id"),
+				Metadata: moderntreasury.F(map[string]string{
+					"foo":    "bar",
+					"key":    "value",
+					"modern": "treasury",
+				}),
+				Name: moderntreasury.F("name"),
+			},
 		},
 	)
 	if err != nil {

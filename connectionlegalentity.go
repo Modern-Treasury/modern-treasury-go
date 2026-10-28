@@ -245,7 +245,7 @@ type ConnectionLegalEntityNewParamsLegalEntity struct {
 	// A list of the entity's primary social media URLs.
 	PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
 	// Array of regulatory bodies overseeing this institution.
-	Regulators param.Field[[]ConnectionLegalEntityNewParamsLegalEntityRegulator] `json:"regulators"`
+	Regulators param.Field[[]shared.LegalEntityRegulatorParam] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[ConnectionLegalEntityNewParamsLegalEntityRiskRating] `json:"risk_rating"`
 	// The UUID of the parent legal entity in the service provider tree.
@@ -366,20 +366,6 @@ type ConnectionLegalEntityNewParamsLegalEntityPhoneNumber struct {
 }
 
 func (r ConnectionLegalEntityNewParamsLegalEntityPhoneNumber) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type ConnectionLegalEntityNewParamsLegalEntityRegulator struct {
-	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
-	// (e.g., "US", "CA", "GB").
-	Jurisdiction param.Field[string] `json:"jurisdiction" api:"required"`
-	// Full name of the regulatory body.
-	Name param.Field[string] `json:"name" api:"required"`
-	// Registration or identification number with the regulator.
-	RegistrationNumber param.Field[string] `json:"registration_number" api:"required"`
-}
-
-func (r ConnectionLegalEntityNewParamsLegalEntityRegulator) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

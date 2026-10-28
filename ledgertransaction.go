@@ -247,15 +247,7 @@ func (r LedgerTransactionStatus) IsKnown() bool {
 	return false
 }
 
-type LedgerTransactionNewParams struct {
-	LedgerTransactionCreateRequest shared.LedgerTransactionCreateRequestParam `json:"ledger_transaction_create_request" api:"required"`
-}
-
-func (r LedgerTransactionNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r.LedgerTransactionCreateRequest)
-}
-
-type LedgerTransactionUpdateParams struct {
+type LedgerTransactionUpdateRequestParam struct {
 	// An optional description for internal use.
 	Description param.Field[string] `json:"description"`
 	// The timestamp (ISO8601 format) at which the ledger transaction happened for
@@ -272,54 +264,70 @@ type LedgerTransactionUpdateParams struct {
 	// If the ledger transaction can be reconciled to another object in Modern
 	// Treasury, the type will be populated here, otherwise null. This can be one of
 	// payment_order, incoming_payment_detail, expected_payment, return, or reversal.
-	LedgerableType param.Field[LedgerTransactionUpdateParamsLedgerableType] `json:"ledgerable_type"`
+	LedgerableType param.Field[LedgerTransactionUpdateRequestLedgerableType] `json:"ledgerable_type"`
 	// Additional data represented as key-value pairs. Both the key and value must be
 	// strings.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 	// To post a ledger transaction at creation, use `posted`.
-	Status param.Field[LedgerTransactionUpdateParamsStatus] `json:"status"`
+	Status param.Field[LedgerTransactionUpdateRequestStatus] `json:"status"`
 }
 
-func (r LedgerTransactionUpdateParams) MarshalJSON() (data []byte, err error) {
+func (r LedgerTransactionUpdateRequestParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
 // If the ledger transaction can be reconciled to another object in Modern
 // Treasury, the type will be populated here, otherwise null. This can be one of
 // payment_order, incoming_payment_detail, expected_payment, return, or reversal.
-type LedgerTransactionUpdateParamsLedgerableType string
+type LedgerTransactionUpdateRequestLedgerableType string
 
 const (
-	LedgerTransactionUpdateParamsLedgerableTypeExpectedPayment       LedgerTransactionUpdateParamsLedgerableType = "expected_payment"
-	LedgerTransactionUpdateParamsLedgerableTypeIncomingPaymentDetail LedgerTransactionUpdateParamsLedgerableType = "incoming_payment_detail"
-	LedgerTransactionUpdateParamsLedgerableTypePaymentOrder          LedgerTransactionUpdateParamsLedgerableType = "payment_order"
-	LedgerTransactionUpdateParamsLedgerableTypeReturn                LedgerTransactionUpdateParamsLedgerableType = "return"
-	LedgerTransactionUpdateParamsLedgerableTypeReversal              LedgerTransactionUpdateParamsLedgerableType = "reversal"
+	LedgerTransactionUpdateRequestLedgerableTypeExpectedPayment       LedgerTransactionUpdateRequestLedgerableType = "expected_payment"
+	LedgerTransactionUpdateRequestLedgerableTypeIncomingPaymentDetail LedgerTransactionUpdateRequestLedgerableType = "incoming_payment_detail"
+	LedgerTransactionUpdateRequestLedgerableTypePaymentOrder          LedgerTransactionUpdateRequestLedgerableType = "payment_order"
+	LedgerTransactionUpdateRequestLedgerableTypeReturn                LedgerTransactionUpdateRequestLedgerableType = "return"
+	LedgerTransactionUpdateRequestLedgerableTypeReversal              LedgerTransactionUpdateRequestLedgerableType = "reversal"
 )
 
-func (r LedgerTransactionUpdateParamsLedgerableType) IsKnown() bool {
+func (r LedgerTransactionUpdateRequestLedgerableType) IsKnown() bool {
 	switch r {
-	case LedgerTransactionUpdateParamsLedgerableTypeExpectedPayment, LedgerTransactionUpdateParamsLedgerableTypeIncomingPaymentDetail, LedgerTransactionUpdateParamsLedgerableTypePaymentOrder, LedgerTransactionUpdateParamsLedgerableTypeReturn, LedgerTransactionUpdateParamsLedgerableTypeReversal:
+	case LedgerTransactionUpdateRequestLedgerableTypeExpectedPayment, LedgerTransactionUpdateRequestLedgerableTypeIncomingPaymentDetail, LedgerTransactionUpdateRequestLedgerableTypePaymentOrder, LedgerTransactionUpdateRequestLedgerableTypeReturn, LedgerTransactionUpdateRequestLedgerableTypeReversal:
 		return true
 	}
 	return false
 }
 
 // To post a ledger transaction at creation, use `posted`.
-type LedgerTransactionUpdateParamsStatus string
+type LedgerTransactionUpdateRequestStatus string
 
 const (
-	LedgerTransactionUpdateParamsStatusArchived LedgerTransactionUpdateParamsStatus = "archived"
-	LedgerTransactionUpdateParamsStatusPending  LedgerTransactionUpdateParamsStatus = "pending"
-	LedgerTransactionUpdateParamsStatusPosted   LedgerTransactionUpdateParamsStatus = "posted"
+	LedgerTransactionUpdateRequestStatusArchived LedgerTransactionUpdateRequestStatus = "archived"
+	LedgerTransactionUpdateRequestStatusPending  LedgerTransactionUpdateRequestStatus = "pending"
+	LedgerTransactionUpdateRequestStatusPosted   LedgerTransactionUpdateRequestStatus = "posted"
 )
 
-func (r LedgerTransactionUpdateParamsStatus) IsKnown() bool {
+func (r LedgerTransactionUpdateRequestStatus) IsKnown() bool {
 	switch r {
-	case LedgerTransactionUpdateParamsStatusArchived, LedgerTransactionUpdateParamsStatusPending, LedgerTransactionUpdateParamsStatusPosted:
+	case LedgerTransactionUpdateRequestStatusArchived, LedgerTransactionUpdateRequestStatusPending, LedgerTransactionUpdateRequestStatusPosted:
 		return true
 	}
 	return false
+}
+
+type LedgerTransactionNewParams struct {
+	LedgerTransactionCreateRequest shared.LedgerTransactionCreateRequestParam `json:"ledger_transaction_create_request" api:"required"`
+}
+
+func (r LedgerTransactionNewParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r.LedgerTransactionCreateRequest)
+}
+
+type LedgerTransactionUpdateParams struct {
+	LedgerTransactionUpdateRequest LedgerTransactionUpdateRequestParam `json:"ledger_transaction_update_request"`
+}
+
+func (r LedgerTransactionUpdateParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r.LedgerTransactionUpdateRequest)
 }
 
 type LedgerTransactionListParams struct {

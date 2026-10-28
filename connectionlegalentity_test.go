@@ -182,7 +182,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 					PreferredName:            moderntreasury.F("preferred_name"),
 					Prefix:                   moderntreasury.F("prefix"),
 					PrimarySocialMediaSites:  moderntreasury.F([]string{"string"}),
-					Regulators: moderntreasury.F([]shared.ChildLegalEntityCreateRegulatorParam{{
+					Regulators: moderntreasury.F([]shared.LegalEntityRegulatorParam{{
 						Jurisdiction:       moderntreasury.F("jurisdiction"),
 						Name:               moderntreasury.F("name"),
 						RegistrationNumber: moderntreasury.F("registration_number"),
@@ -256,7 +256,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 			PreferredName:            moderntreasury.F("preferred_name"),
 			Prefix:                   moderntreasury.F("prefix"),
 			PrimarySocialMediaSites:  moderntreasury.F([]string{"string"}),
-			Regulators: moderntreasury.F([]moderntreasury.ConnectionLegalEntityNewParamsLegalEntityRegulator{{
+			Regulators: moderntreasury.F([]shared.LegalEntityRegulatorParam{{
 				Jurisdiction:       moderntreasury.F("jurisdiction"),
 				Name:               moderntreasury.F("name"),
 				RegistrationNumber: moderntreasury.F("registration_number"),

@@ -213,47 +213,57 @@ func (r AccountCollectionFlowStatus) IsKnown() bool {
 	return false
 }
 
-type AccountCollectionFlowNewParams struct {
+type AccountCollectionFlowCreateRequestParam struct {
 	// Required.
-	CounterpartyID     param.Field[string]                                           `json:"counterparty_id" api:"required" format:"uuid"`
-	PaymentTypes       param.Field[[]string]                                         `json:"payment_types" api:"required"`
-	ReceivingCountries param.Field[[]AccountCollectionFlowNewParamsReceivingCountry] `json:"receiving_countries"`
+	CounterpartyID     param.Field[string]                                               `json:"counterparty_id" api:"required" format:"uuid"`
+	PaymentTypes       param.Field[[]string]                                             `json:"payment_types" api:"required"`
+	ReceivingCountries param.Field[[]AccountCollectionFlowCreateRequestReceivingCountry] `json:"receiving_countries"`
 }
 
-func (r AccountCollectionFlowNewParams) MarshalJSON() (data []byte, err error) {
+func (r AccountCollectionFlowCreateRequestParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+func (r AccountCollectionFlowCreateRequestParam) implementsEmbeddableFlowNewParamsOptionsUnion() {}
+
 // Optional. Array of 3-digit ISO country codes.
-type AccountCollectionFlowNewParamsReceivingCountry string
+type AccountCollectionFlowCreateRequestReceivingCountry string
 
 const (
-	AccountCollectionFlowNewParamsReceivingCountryUsa AccountCollectionFlowNewParamsReceivingCountry = "USA"
-	AccountCollectionFlowNewParamsReceivingCountryAus AccountCollectionFlowNewParamsReceivingCountry = "AUS"
-	AccountCollectionFlowNewParamsReceivingCountryBel AccountCollectionFlowNewParamsReceivingCountry = "BEL"
-	AccountCollectionFlowNewParamsReceivingCountryCan AccountCollectionFlowNewParamsReceivingCountry = "CAN"
-	AccountCollectionFlowNewParamsReceivingCountryChl AccountCollectionFlowNewParamsReceivingCountry = "CHL"
-	AccountCollectionFlowNewParamsReceivingCountryChn AccountCollectionFlowNewParamsReceivingCountry = "CHN"
-	AccountCollectionFlowNewParamsReceivingCountryCol AccountCollectionFlowNewParamsReceivingCountry = "COL"
-	AccountCollectionFlowNewParamsReceivingCountryFra AccountCollectionFlowNewParamsReceivingCountry = "FRA"
-	AccountCollectionFlowNewParamsReceivingCountryDeu AccountCollectionFlowNewParamsReceivingCountry = "DEU"
-	AccountCollectionFlowNewParamsReceivingCountryHkg AccountCollectionFlowNewParamsReceivingCountry = "HKG"
-	AccountCollectionFlowNewParamsReceivingCountryInd AccountCollectionFlowNewParamsReceivingCountry = "IND"
-	AccountCollectionFlowNewParamsReceivingCountryIrl AccountCollectionFlowNewParamsReceivingCountry = "IRL"
-	AccountCollectionFlowNewParamsReceivingCountryIta AccountCollectionFlowNewParamsReceivingCountry = "ITA"
-	AccountCollectionFlowNewParamsReceivingCountryMex AccountCollectionFlowNewParamsReceivingCountry = "MEX"
-	AccountCollectionFlowNewParamsReceivingCountryNld AccountCollectionFlowNewParamsReceivingCountry = "NLD"
-	AccountCollectionFlowNewParamsReceivingCountryPer AccountCollectionFlowNewParamsReceivingCountry = "PER"
-	AccountCollectionFlowNewParamsReceivingCountryEsp AccountCollectionFlowNewParamsReceivingCountry = "ESP"
-	AccountCollectionFlowNewParamsReceivingCountryGbr AccountCollectionFlowNewParamsReceivingCountry = "GBR"
+	AccountCollectionFlowCreateRequestReceivingCountryUsa AccountCollectionFlowCreateRequestReceivingCountry = "USA"
+	AccountCollectionFlowCreateRequestReceivingCountryAus AccountCollectionFlowCreateRequestReceivingCountry = "AUS"
+	AccountCollectionFlowCreateRequestReceivingCountryBel AccountCollectionFlowCreateRequestReceivingCountry = "BEL"
+	AccountCollectionFlowCreateRequestReceivingCountryCan AccountCollectionFlowCreateRequestReceivingCountry = "CAN"
+	AccountCollectionFlowCreateRequestReceivingCountryChl AccountCollectionFlowCreateRequestReceivingCountry = "CHL"
+	AccountCollectionFlowCreateRequestReceivingCountryChn AccountCollectionFlowCreateRequestReceivingCountry = "CHN"
+	AccountCollectionFlowCreateRequestReceivingCountryCol AccountCollectionFlowCreateRequestReceivingCountry = "COL"
+	AccountCollectionFlowCreateRequestReceivingCountryFra AccountCollectionFlowCreateRequestReceivingCountry = "FRA"
+	AccountCollectionFlowCreateRequestReceivingCountryDeu AccountCollectionFlowCreateRequestReceivingCountry = "DEU"
+	AccountCollectionFlowCreateRequestReceivingCountryHkg AccountCollectionFlowCreateRequestReceivingCountry = "HKG"
+	AccountCollectionFlowCreateRequestReceivingCountryInd AccountCollectionFlowCreateRequestReceivingCountry = "IND"
+	AccountCollectionFlowCreateRequestReceivingCountryIrl AccountCollectionFlowCreateRequestReceivingCountry = "IRL"
+	AccountCollectionFlowCreateRequestReceivingCountryIta AccountCollectionFlowCreateRequestReceivingCountry = "ITA"
+	AccountCollectionFlowCreateRequestReceivingCountryMex AccountCollectionFlowCreateRequestReceivingCountry = "MEX"
+	AccountCollectionFlowCreateRequestReceivingCountryNld AccountCollectionFlowCreateRequestReceivingCountry = "NLD"
+	AccountCollectionFlowCreateRequestReceivingCountryPer AccountCollectionFlowCreateRequestReceivingCountry = "PER"
+	AccountCollectionFlowCreateRequestReceivingCountryEsp AccountCollectionFlowCreateRequestReceivingCountry = "ESP"
+	AccountCollectionFlowCreateRequestReceivingCountryGbr AccountCollectionFlowCreateRequestReceivingCountry = "GBR"
 )
 
-func (r AccountCollectionFlowNewParamsReceivingCountry) IsKnown() bool {
+func (r AccountCollectionFlowCreateRequestReceivingCountry) IsKnown() bool {
 	switch r {
-	case AccountCollectionFlowNewParamsReceivingCountryUsa, AccountCollectionFlowNewParamsReceivingCountryAus, AccountCollectionFlowNewParamsReceivingCountryBel, AccountCollectionFlowNewParamsReceivingCountryCan, AccountCollectionFlowNewParamsReceivingCountryChl, AccountCollectionFlowNewParamsReceivingCountryChn, AccountCollectionFlowNewParamsReceivingCountryCol, AccountCollectionFlowNewParamsReceivingCountryFra, AccountCollectionFlowNewParamsReceivingCountryDeu, AccountCollectionFlowNewParamsReceivingCountryHkg, AccountCollectionFlowNewParamsReceivingCountryInd, AccountCollectionFlowNewParamsReceivingCountryIrl, AccountCollectionFlowNewParamsReceivingCountryIta, AccountCollectionFlowNewParamsReceivingCountryMex, AccountCollectionFlowNewParamsReceivingCountryNld, AccountCollectionFlowNewParamsReceivingCountryPer, AccountCollectionFlowNewParamsReceivingCountryEsp, AccountCollectionFlowNewParamsReceivingCountryGbr:
+	case AccountCollectionFlowCreateRequestReceivingCountryUsa, AccountCollectionFlowCreateRequestReceivingCountryAus, AccountCollectionFlowCreateRequestReceivingCountryBel, AccountCollectionFlowCreateRequestReceivingCountryCan, AccountCollectionFlowCreateRequestReceivingCountryChl, AccountCollectionFlowCreateRequestReceivingCountryChn, AccountCollectionFlowCreateRequestReceivingCountryCol, AccountCollectionFlowCreateRequestReceivingCountryFra, AccountCollectionFlowCreateRequestReceivingCountryDeu, AccountCollectionFlowCreateRequestReceivingCountryHkg, AccountCollectionFlowCreateRequestReceivingCountryInd, AccountCollectionFlowCreateRequestReceivingCountryIrl, AccountCollectionFlowCreateRequestReceivingCountryIta, AccountCollectionFlowCreateRequestReceivingCountryMex, AccountCollectionFlowCreateRequestReceivingCountryNld, AccountCollectionFlowCreateRequestReceivingCountryPer, AccountCollectionFlowCreateRequestReceivingCountryEsp, AccountCollectionFlowCreateRequestReceivingCountryGbr:
 		return true
 	}
 	return false
+}
+
+type AccountCollectionFlowNewParams struct {
+	AccountCollectionFlowCreateRequest AccountCollectionFlowCreateRequestParam `json:"account_collection_flow_create_request" api:"required"`
+}
+
+func (r AccountCollectionFlowNewParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r.AccountCollectionFlowCreateRequest)
 }
 
 type AccountCollectionFlowUpdateParams struct {
