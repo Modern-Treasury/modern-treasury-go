@@ -28,12 +28,14 @@ func TestPaymentFlowNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.PaymentFlows.New(context.TODO(), moderntreasury.PaymentFlowNewParams{
-		Amount:               moderntreasury.F(int64(0)),
-		CounterpartyID:       moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		Currency:             moderntreasury.F("currency"),
-		Direction:            moderntreasury.F(moderntreasury.PaymentFlowNewParamsDirectionCredit),
-		OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		DueDate:              moderntreasury.F(time.Now()),
+		PaymentFlowCreateRequest: moderntreasury.PaymentFlowCreateRequestParam{
+			Amount:               moderntreasury.F(int64(0)),
+			CounterpartyID:       moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			Currency:             moderntreasury.F("currency"),
+			Direction:            moderntreasury.F(moderntreasury.PaymentFlowCreateRequestDirectionCredit),
+			OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			DueDate:              moderntreasury.F(time.Now()),
+		},
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
