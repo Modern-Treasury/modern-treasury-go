@@ -692,6 +692,11 @@ func (r InternalAccountNewParamsRequestedAccountNumberType) IsKnown() bool {
 }
 
 type InternalAccountUpdateParams struct {
+	// The ACH Company IDs allowed to debit this account. `null` allows every company.
+	// An empty array allows none. Debits from any other company are returned with code
+	// R10. Only applicable to debitable accounts under a Modern Treasury PSP
+	// connection.
+	AllowedACHDebitCompanyIDs param.Field[[]string] `json:"allowed_ach_debit_company_ids"`
 	// The Contra Ledger Account associated to this account.
 	ContraLedgerAccountID param.Field[string] `json:"contra_ledger_account_id"`
 	// The Counterparty associated to this account.
