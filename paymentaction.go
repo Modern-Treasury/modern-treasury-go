@@ -428,13 +428,14 @@ func (r PaymentActionListParamsStatus) IsKnown() bool {
 type PaymentActionListParamsType string
 
 const (
+	PaymentActionListParamsTypeVoid  PaymentActionListParamsType = "void"
 	PaymentActionListParamsTypeStop  PaymentActionListParamsType = "stop"
 	PaymentActionListParamsTypeIssue PaymentActionListParamsType = "issue"
 )
 
 func (r PaymentActionListParamsType) IsKnown() bool {
 	switch r {
-	case PaymentActionListParamsTypeStop, PaymentActionListParamsTypeIssue:
+	case PaymentActionListParamsTypeVoid, PaymentActionListParamsTypeStop, PaymentActionListParamsTypeIssue:
 		return true
 	}
 	return false
