@@ -32,26 +32,26 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 	_, err := client.BulkRequests.New(context.TODO(), moderntreasury.BulkRequestNewParams{
 		ActionType:   moderntreasury.F(moderntreasury.BulkRequestNewParamsActionTypeCreate),
 		ResourceType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourceTypePaymentOrder),
-		Resources: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourceUnion{moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest{
+		Resources: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourceUnion{moderntreasury.PaymentOrderAsyncCreateRequestParam{
 			Amount:               moderntreasury.F(int64(0)),
-			Direction:            moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestDirectionCredit),
+			Direction:            moderntreasury.F(moderntreasury.PaymentOrderAsyncCreateRequestDirectionCredit),
 			OriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			Type:                 moderntreasury.F(moderntreasury.PaymentOrderTypeACH),
-			Accounting: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestAccounting{
+			Accounting: moderntreasury.F(moderntreasury.AccountingParam{
 				AccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 				ClassID:   moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			}),
 			AccountingCategoryID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			AccountingLedgerClassID:  moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			ChargeBearer:             moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestChargeBearerShared),
+			ChargeBearer:             moderntreasury.F(moderntreasury.PaymentOrderAsyncCreateRequestChargeBearerShared),
 			Currency:                 moderntreasury.F(shared.CurrencyAed),
 			Description:              moderntreasury.F("description"),
 			EffectiveDate:            moderntreasury.F(time.Now()),
 			ExpiresAt:                moderntreasury.F(time.Now()),
 			ExternalID:               moderntreasury.F("external_id"),
-			FallbackType:             moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestFallbackTypeACH),
+			FallbackType:             moderntreasury.F(moderntreasury.PaymentOrderAsyncCreateRequestFallbackTypeACH),
 			ForeignExchangeContract:  moderntreasury.F("foreign_exchange_contract"),
-			ForeignExchangeIndicator: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestForeignExchangeIndicatorFixedToVariable),
+			ForeignExchangeIndicator: moderntreasury.F(moderntreasury.PaymentOrderAsyncCreateRequestForeignExchangeIndicatorFixedToVariable),
 			LedgerTransaction: moderntreasury.F(shared.LedgerTransactionCreateRequestParam{
 				LedgerEntries: moderntreasury.F([]shared.LedgerEntryCreateRequestParam{{
 					Direction:       moderntreasury.F(shared.TransactionDirectionCredit),
@@ -90,7 +90,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				Status: moderntreasury.F(shared.LedgerTransactionCreateRequestStatusArchived),
 			}),
 			LedgerTransactionID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			LineItems: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestLineItem{{
+			LineItems: moderntreasury.F([]moderntreasury.LineItemRequestParam{{
 				Amount:               moderntreasury.F(int64(0)),
 				AccountingCategoryID: moderntreasury.F("accounting_category_id"),
 				Description:          moderntreasury.F("description"),
@@ -106,7 +106,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				"modern": "treasury",
 			}),
 			NsfProtected: moderntreasury.F(true),
-			OriginatingPartyAddress: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestOriginatingPartyAddress{
+			OriginatingPartyAddress: moderntreasury.F(moderntreasury.PaymentOrderAsyncCreateRequestOriginatingPartyAddressParam{
 				Country:    moderntreasury.F("country"),
 				Line1:      moderntreasury.F("line1"),
 				Line2:      moderntreasury.F("line2"),
@@ -116,13 +116,13 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 			}),
 			OriginatingPartyName:          moderntreasury.F("originating_party_name"),
 			OriginatingSecondaryPartyName: moderntreasury.F("originating_secondary_party_name"),
-			Priority:                      moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestPriorityHigh),
+			Priority:                      moderntreasury.F(moderntreasury.PaymentOrderAsyncCreateRequestPriorityHigh),
 			ProcessAfter:                  moderntreasury.F(time.Now()),
 			Purpose:                       moderntreasury.F("purpose"),
-			ReceivingAccount: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccount{
-				AccountDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetail{{
+			ReceivingAccount: moderntreasury.F(moderntreasury.PaymentOrderAsyncCreateRequestReceivingAccountParam{
+				AccountDetails: moderntreasury.F([]moderntreasury.PaymentOrderAsyncCreateRequestReceivingAccountAccountDetailParam{{
 					AccountNumber:     moderntreasury.F("account_number"),
-					AccountNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeArbitrumAddress),
+					AccountNumberType: moderntreasury.F(moderntreasury.PaymentOrderAsyncCreateRequestReceivingAccountAccountDetailsAccountNumberTypeArbitrumAddress),
 				}}),
 				AccountType: moderntreasury.F(moderntreasury.ExternalAccountTypeCash),
 				ContactDetails: moderntreasury.F([]moderntreasury.ContactDetailCreateRequestParam{{
@@ -163,23 +163,23 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 				}),
 				PartyIdentifier:     moderntreasury.F("party_identifier"),
 				PartyName:           moderntreasury.F("party_name"),
-				PartyType:           moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountPartyTypeBusiness),
+				PartyType:           moderntreasury.F(moderntreasury.PaymentOrderAsyncCreateRequestReceivingAccountPartyTypeBusiness),
 				PlaidProcessorToken: moderntreasury.F("plaid_processor_token"),
-				RoutingDetails: moderntreasury.F([]moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetail{{
+				RoutingDetails: moderntreasury.F([]moderntreasury.PaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailParam{{
 					RoutingNumber:     moderntreasury.F("routing_number"),
-					RoutingNumberType: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
-					PaymentType:       moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
+					RoutingNumberType: moderntreasury.F(moderntreasury.PaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsRoutingNumberTypeAba),
+					PaymentType:       moderntreasury.F(moderntreasury.PaymentOrderAsyncCreateRequestReceivingAccountRoutingDetailsPaymentTypeACH),
 				}}),
 			}),
 			ReceivingAccountID:           moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			ReconciliationStatus:         moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestReconciliationStatusUnreconciled),
+			ReconciliationStatus:         moderntreasury.F(moderntreasury.PaymentOrderAsyncCreateRequestReconciliationStatusUnreconciled),
 			RemittanceInformation:        moderntreasury.F("remittance_information"),
 			SendRemittanceAdvice:         moderntreasury.F(true),
 			StatementDescriptor:          moderntreasury.F("statement_descriptor"),
 			Subtype:                      moderntreasury.F(moderntreasury.PaymentOrderSubtypeBacsNewInstruction),
 			TransactionMonitoringEnabled: moderntreasury.F(true),
 			UltimateOriginatingAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			UltimateOriginatingPartyAddress: moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestUltimateOriginatingPartyAddress{
+			UltimateOriginatingPartyAddress: moderntreasury.F(moderntreasury.PaymentOrderAsyncCreateRequestUltimateOriginatingPartyAddressParam{
 				Country:    moderntreasury.F("country"),
 				Line1:      moderntreasury.F("line1"),
 				Line2:      moderntreasury.F("line2"),
