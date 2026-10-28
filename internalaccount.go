@@ -328,19 +328,21 @@ func (r InternalAccountAccountCapabilitiesPaymentType) IsKnown() bool {
 type InternalAccountAccountType string
 
 const (
-	InternalAccountAccountTypeCash          InternalAccountAccountType = "cash"
-	InternalAccountAccountTypeChecking      InternalAccountAccountType = "checking"
-	InternalAccountAccountTypeGeneralLedger InternalAccountAccountType = "general_ledger"
-	InternalAccountAccountTypeLoan          InternalAccountAccountType = "loan"
-	InternalAccountAccountTypeNonResident   InternalAccountAccountType = "non_resident"
-	InternalAccountAccountTypeOther         InternalAccountAccountType = "other"
-	InternalAccountAccountTypeOverdraft     InternalAccountAccountType = "overdraft"
-	InternalAccountAccountTypeSavings       InternalAccountAccountType = "savings"
+	InternalAccountAccountTypeCash             InternalAccountAccountType = "cash"
+	InternalAccountAccountTypeChecking         InternalAccountAccountType = "checking"
+	InternalAccountAccountTypeGeneralLedger    InternalAccountAccountType = "general_ledger"
+	InternalAccountAccountTypeHostedWallet     InternalAccountAccountType = "hosted_wallet"
+	InternalAccountAccountTypeLoan             InternalAccountAccountType = "loan"
+	InternalAccountAccountTypeNonResident      InternalAccountAccountType = "non_resident"
+	InternalAccountAccountTypeOther            InternalAccountAccountType = "other"
+	InternalAccountAccountTypeOverdraft        InternalAccountAccountType = "overdraft"
+	InternalAccountAccountTypeSavings          InternalAccountAccountType = "savings"
+	InternalAccountAccountTypeSelfHostedWallet InternalAccountAccountType = "self_hosted_wallet"
 )
 
 func (r InternalAccountAccountType) IsKnown() bool {
 	switch r {
-	case InternalAccountAccountTypeCash, InternalAccountAccountTypeChecking, InternalAccountAccountTypeGeneralLedger, InternalAccountAccountTypeLoan, InternalAccountAccountTypeNonResident, InternalAccountAccountTypeOther, InternalAccountAccountTypeOverdraft, InternalAccountAccountTypeSavings:
+	case InternalAccountAccountTypeCash, InternalAccountAccountTypeChecking, InternalAccountAccountTypeGeneralLedger, InternalAccountAccountTypeHostedWallet, InternalAccountAccountTypeLoan, InternalAccountAccountTypeNonResident, InternalAccountAccountTypeOther, InternalAccountAccountTypeOverdraft, InternalAccountAccountTypeSavings, InternalAccountAccountTypeSelfHostedWallet:
 		return true
 	}
 	return false
