@@ -186,17 +186,57 @@ func (r AccountDetailAccountNumberType) IsKnown() bool {
 	return false
 }
 
-type AccountDetailNewParams struct {
+type AccountDetailCreateRequestParam struct {
 	// The account number for the bank account.
 	AccountNumber param.Field[string] `json:"account_number" api:"required"`
 	// The type of the account number. For wallet addresses, use the chain-specific
 	// type (e.g. `ethereum_address`). Use `other` if the account number is in a
 	// generic format.
-	AccountNumberType param.Field[AccountDetailNewParamsAccountNumberType] `json:"account_number_type"`
+	AccountNumberType param.Field[AccountDetailCreateRequestAccountNumberType] `json:"account_number_type"`
+}
+
+func (r AccountDetailCreateRequestParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+// The type of the account number. For wallet addresses, use the chain-specific
+// type (e.g. `ethereum_address`). Use `other` if the account number is in a
+// generic format.
+type AccountDetailCreateRequestAccountNumberType string
+
+const (
+	AccountDetailCreateRequestAccountNumberTypeArbitrumAddress  AccountDetailCreateRequestAccountNumberType = "arbitrum_address"
+	AccountDetailCreateRequestAccountNumberTypeAuNumber         AccountDetailCreateRequestAccountNumberType = "au_number"
+	AccountDetailCreateRequestAccountNumberTypeAvalancheAddress AccountDetailCreateRequestAccountNumberType = "avalanche_address"
+	AccountDetailCreateRequestAccountNumberTypeBaseAddress      AccountDetailCreateRequestAccountNumberType = "base_address"
+	AccountDetailCreateRequestAccountNumberTypeCardToken        AccountDetailCreateRequestAccountNumberType = "card_token"
+	AccountDetailCreateRequestAccountNumberTypeClabe            AccountDetailCreateRequestAccountNumberType = "clabe"
+	AccountDetailCreateRequestAccountNumberTypeEthereumAddress  AccountDetailCreateRequestAccountNumberType = "ethereum_address"
+	AccountDetailCreateRequestAccountNumberTypeHkNumber         AccountDetailCreateRequestAccountNumberType = "hk_number"
+	AccountDetailCreateRequestAccountNumberTypeIban             AccountDetailCreateRequestAccountNumberType = "iban"
+	AccountDetailCreateRequestAccountNumberTypeIDNumber         AccountDetailCreateRequestAccountNumberType = "id_number"
+	AccountDetailCreateRequestAccountNumberTypeNzNumber         AccountDetailCreateRequestAccountNumberType = "nz_number"
+	AccountDetailCreateRequestAccountNumberTypeOther            AccountDetailCreateRequestAccountNumberType = "other"
+	AccountDetailCreateRequestAccountNumberTypePan              AccountDetailCreateRequestAccountNumberType = "pan"
+	AccountDetailCreateRequestAccountNumberTypePolygonAddress   AccountDetailCreateRequestAccountNumberType = "polygon_address"
+	AccountDetailCreateRequestAccountNumberTypeSgNumber         AccountDetailCreateRequestAccountNumberType = "sg_number"
+	AccountDetailCreateRequestAccountNumberTypeSolanaAddress    AccountDetailCreateRequestAccountNumberType = "solana_address"
+)
+
+func (r AccountDetailCreateRequestAccountNumberType) IsKnown() bool {
+	switch r {
+	case AccountDetailCreateRequestAccountNumberTypeArbitrumAddress, AccountDetailCreateRequestAccountNumberTypeAuNumber, AccountDetailCreateRequestAccountNumberTypeAvalancheAddress, AccountDetailCreateRequestAccountNumberTypeBaseAddress, AccountDetailCreateRequestAccountNumberTypeCardToken, AccountDetailCreateRequestAccountNumberTypeClabe, AccountDetailCreateRequestAccountNumberTypeEthereumAddress, AccountDetailCreateRequestAccountNumberTypeHkNumber, AccountDetailCreateRequestAccountNumberTypeIban, AccountDetailCreateRequestAccountNumberTypeIDNumber, AccountDetailCreateRequestAccountNumberTypeNzNumber, AccountDetailCreateRequestAccountNumberTypeOther, AccountDetailCreateRequestAccountNumberTypePan, AccountDetailCreateRequestAccountNumberTypePolygonAddress, AccountDetailCreateRequestAccountNumberTypeSgNumber, AccountDetailCreateRequestAccountNumberTypeSolanaAddress:
+		return true
+	}
+	return false
+}
+
+type AccountDetailNewParams struct {
+	AccountDetailCreateRequest AccountDetailCreateRequestParam `json:"account_detail_create_request" api:"required"`
 }
 
 func (r AccountDetailNewParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+	return apijson.MarshalRoot(r.AccountDetailCreateRequest)
 }
 
 type AccountDetailNewParamsAccountsType string
@@ -208,38 +248,6 @@ const (
 func (r AccountDetailNewParamsAccountsType) IsKnown() bool {
 	switch r {
 	case AccountDetailNewParamsAccountsTypeExternalAccounts:
-		return true
-	}
-	return false
-}
-
-// The type of the account number. For wallet addresses, use the chain-specific
-// type (e.g. `ethereum_address`). Use `other` if the account number is in a
-// generic format.
-type AccountDetailNewParamsAccountNumberType string
-
-const (
-	AccountDetailNewParamsAccountNumberTypeArbitrumAddress  AccountDetailNewParamsAccountNumberType = "arbitrum_address"
-	AccountDetailNewParamsAccountNumberTypeAuNumber         AccountDetailNewParamsAccountNumberType = "au_number"
-	AccountDetailNewParamsAccountNumberTypeAvalancheAddress AccountDetailNewParamsAccountNumberType = "avalanche_address"
-	AccountDetailNewParamsAccountNumberTypeBaseAddress      AccountDetailNewParamsAccountNumberType = "base_address"
-	AccountDetailNewParamsAccountNumberTypeCardToken        AccountDetailNewParamsAccountNumberType = "card_token"
-	AccountDetailNewParamsAccountNumberTypeClabe            AccountDetailNewParamsAccountNumberType = "clabe"
-	AccountDetailNewParamsAccountNumberTypeEthereumAddress  AccountDetailNewParamsAccountNumberType = "ethereum_address"
-	AccountDetailNewParamsAccountNumberTypeHkNumber         AccountDetailNewParamsAccountNumberType = "hk_number"
-	AccountDetailNewParamsAccountNumberTypeIban             AccountDetailNewParamsAccountNumberType = "iban"
-	AccountDetailNewParamsAccountNumberTypeIDNumber         AccountDetailNewParamsAccountNumberType = "id_number"
-	AccountDetailNewParamsAccountNumberTypeNzNumber         AccountDetailNewParamsAccountNumberType = "nz_number"
-	AccountDetailNewParamsAccountNumberTypeOther            AccountDetailNewParamsAccountNumberType = "other"
-	AccountDetailNewParamsAccountNumberTypePan              AccountDetailNewParamsAccountNumberType = "pan"
-	AccountDetailNewParamsAccountNumberTypePolygonAddress   AccountDetailNewParamsAccountNumberType = "polygon_address"
-	AccountDetailNewParamsAccountNumberTypeSgNumber         AccountDetailNewParamsAccountNumberType = "sg_number"
-	AccountDetailNewParamsAccountNumberTypeSolanaAddress    AccountDetailNewParamsAccountNumberType = "solana_address"
-)
-
-func (r AccountDetailNewParamsAccountNumberType) IsKnown() bool {
-	switch r {
-	case AccountDetailNewParamsAccountNumberTypeArbitrumAddress, AccountDetailNewParamsAccountNumberTypeAuNumber, AccountDetailNewParamsAccountNumberTypeAvalancheAddress, AccountDetailNewParamsAccountNumberTypeBaseAddress, AccountDetailNewParamsAccountNumberTypeCardToken, AccountDetailNewParamsAccountNumberTypeClabe, AccountDetailNewParamsAccountNumberTypeEthereumAddress, AccountDetailNewParamsAccountNumberTypeHkNumber, AccountDetailNewParamsAccountNumberTypeIban, AccountDetailNewParamsAccountNumberTypeIDNumber, AccountDetailNewParamsAccountNumberTypeNzNumber, AccountDetailNewParamsAccountNumberTypeOther, AccountDetailNewParamsAccountNumberTypePan, AccountDetailNewParamsAccountNumberTypePolygonAddress, AccountDetailNewParamsAccountNumberTypeSgNumber, AccountDetailNewParamsAccountNumberTypeSolanaAddress:
 		return true
 	}
 	return false

@@ -308,7 +308,8 @@ func (r TransactionVendorCodeType) IsKnown() bool {
 	return false
 }
 
-type TransactionNewParams struct {
+// At least one of "amount" or "amount_string" is required.
+type TransactionCreateRequestParam struct {
 	// The date on which the transaction occurred.
 	AsOfDate param.Field[time.Time] `json:"as_of_date" api:"required" format:"date"`
 	// Either `credit` or `debit`.
@@ -336,7 +337,7 @@ type TransactionNewParams struct {
 	Posted param.Field[bool] `json:"posted"`
 	// The type of the transaction. Examples could be
 	// `card, `ach`, `wire`, `check`, `rtp`, or `book`.
-	Type param.Field[TransactionNewParamsType] `json:"type"`
+	Type param.Field[TransactionCreateRequestType] `json:"type"`
 	// An identifier given to this transaction by the bank, often `null`.
 	VendorCustomerID param.Field[string] `json:"vendor_customer_id"`
 	// The transaction detail text that often appears in on your bank statement and in
@@ -344,59 +345,78 @@ type TransactionNewParams struct {
 	VendorDescription param.Field[string] `json:"vendor_description"`
 }
 
-func (r TransactionNewParams) MarshalJSON() (data []byte, err error) {
+func (r TransactionCreateRequestParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+func (r TransactionCreateRequestParam) ImplementsBulkRequestNewParamsResourceUnion() {}
+
 // The type of the transaction. Examples could be
 // `card, `ach`, `wire`, `check`, `rtp`, or `book`.
-type TransactionNewParamsType string
+type TransactionCreateRequestType string
 
 const (
-	TransactionNewParamsTypeACH         TransactionNewParamsType = "ach"
-	TransactionNewParamsTypeAuBecs      TransactionNewParamsType = "au_becs"
-	TransactionNewParamsTypeBacs        TransactionNewParamsType = "bacs"
-	TransactionNewParamsTypeBook        TransactionNewParamsType = "book"
-	TransactionNewParamsTypeCard        TransactionNewParamsType = "card"
-	TransactionNewParamsTypeChats       TransactionNewParamsType = "chats"
-	TransactionNewParamsTypeCheck       TransactionNewParamsType = "check"
-	TransactionNewParamsTypeCrossBorder TransactionNewParamsType = "cross_border"
-	TransactionNewParamsTypeDkNets      TransactionNewParamsType = "dk_nets"
-	TransactionNewParamsTypeEft         TransactionNewParamsType = "eft"
-	TransactionNewParamsTypeGBFps       TransactionNewParamsType = "gb_fps"
-	TransactionNewParamsTypeMasav       TransactionNewParamsType = "masav"
-	TransactionNewParamsTypeMxCcen      TransactionNewParamsType = "mx_ccen"
-	TransactionNewParamsTypeNeft        TransactionNewParamsType = "neft"
-	TransactionNewParamsTypeNics        TransactionNewParamsType = "nics"
-	TransactionNewParamsTypeNzBecs      TransactionNewParamsType = "nz_becs"
-	TransactionNewParamsTypePlElixir    TransactionNewParamsType = "pl_elixir"
-	TransactionNewParamsTypeRtp         TransactionNewParamsType = "rtp"
-	TransactionNewParamsTypeSeBankgirot TransactionNewParamsType = "se_bankgirot"
-	TransactionNewParamsTypeSepa        TransactionNewParamsType = "sepa"
-	TransactionNewParamsTypeSgGiro      TransactionNewParamsType = "sg_giro"
-	TransactionNewParamsTypeSic         TransactionNewParamsType = "sic"
-	TransactionNewParamsTypeStablecoin  TransactionNewParamsType = "stablecoin"
-	TransactionNewParamsTypeWire        TransactionNewParamsType = "wire"
-	TransactionNewParamsTypeZengin      TransactionNewParamsType = "zengin"
-	TransactionNewParamsTypeOther       TransactionNewParamsType = "other"
+	TransactionCreateRequestTypeACH         TransactionCreateRequestType = "ach"
+	TransactionCreateRequestTypeAuBecs      TransactionCreateRequestType = "au_becs"
+	TransactionCreateRequestTypeBacs        TransactionCreateRequestType = "bacs"
+	TransactionCreateRequestTypeBook        TransactionCreateRequestType = "book"
+	TransactionCreateRequestTypeCard        TransactionCreateRequestType = "card"
+	TransactionCreateRequestTypeChats       TransactionCreateRequestType = "chats"
+	TransactionCreateRequestTypeCheck       TransactionCreateRequestType = "check"
+	TransactionCreateRequestTypeCrossBorder TransactionCreateRequestType = "cross_border"
+	TransactionCreateRequestTypeDkNets      TransactionCreateRequestType = "dk_nets"
+	TransactionCreateRequestTypeEft         TransactionCreateRequestType = "eft"
+	TransactionCreateRequestTypeGBFps       TransactionCreateRequestType = "gb_fps"
+	TransactionCreateRequestTypeMasav       TransactionCreateRequestType = "masav"
+	TransactionCreateRequestTypeMxCcen      TransactionCreateRequestType = "mx_ccen"
+	TransactionCreateRequestTypeNeft        TransactionCreateRequestType = "neft"
+	TransactionCreateRequestTypeNics        TransactionCreateRequestType = "nics"
+	TransactionCreateRequestTypeNzBecs      TransactionCreateRequestType = "nz_becs"
+	TransactionCreateRequestTypePlElixir    TransactionCreateRequestType = "pl_elixir"
+	TransactionCreateRequestTypeRtp         TransactionCreateRequestType = "rtp"
+	TransactionCreateRequestTypeSeBankgirot TransactionCreateRequestType = "se_bankgirot"
+	TransactionCreateRequestTypeSepa        TransactionCreateRequestType = "sepa"
+	TransactionCreateRequestTypeSgGiro      TransactionCreateRequestType = "sg_giro"
+	TransactionCreateRequestTypeSic         TransactionCreateRequestType = "sic"
+	TransactionCreateRequestTypeStablecoin  TransactionCreateRequestType = "stablecoin"
+	TransactionCreateRequestTypeWire        TransactionCreateRequestType = "wire"
+	TransactionCreateRequestTypeZengin      TransactionCreateRequestType = "zengin"
+	TransactionCreateRequestTypeOther       TransactionCreateRequestType = "other"
 )
 
-func (r TransactionNewParamsType) IsKnown() bool {
+func (r TransactionCreateRequestType) IsKnown() bool {
 	switch r {
-	case TransactionNewParamsTypeACH, TransactionNewParamsTypeAuBecs, TransactionNewParamsTypeBacs, TransactionNewParamsTypeBook, TransactionNewParamsTypeCard, TransactionNewParamsTypeChats, TransactionNewParamsTypeCheck, TransactionNewParamsTypeCrossBorder, TransactionNewParamsTypeDkNets, TransactionNewParamsTypeEft, TransactionNewParamsTypeGBFps, TransactionNewParamsTypeMasav, TransactionNewParamsTypeMxCcen, TransactionNewParamsTypeNeft, TransactionNewParamsTypeNics, TransactionNewParamsTypeNzBecs, TransactionNewParamsTypePlElixir, TransactionNewParamsTypeRtp, TransactionNewParamsTypeSeBankgirot, TransactionNewParamsTypeSepa, TransactionNewParamsTypeSgGiro, TransactionNewParamsTypeSic, TransactionNewParamsTypeStablecoin, TransactionNewParamsTypeWire, TransactionNewParamsTypeZengin, TransactionNewParamsTypeOther:
+	case TransactionCreateRequestTypeACH, TransactionCreateRequestTypeAuBecs, TransactionCreateRequestTypeBacs, TransactionCreateRequestTypeBook, TransactionCreateRequestTypeCard, TransactionCreateRequestTypeChats, TransactionCreateRequestTypeCheck, TransactionCreateRequestTypeCrossBorder, TransactionCreateRequestTypeDkNets, TransactionCreateRequestTypeEft, TransactionCreateRequestTypeGBFps, TransactionCreateRequestTypeMasav, TransactionCreateRequestTypeMxCcen, TransactionCreateRequestTypeNeft, TransactionCreateRequestTypeNics, TransactionCreateRequestTypeNzBecs, TransactionCreateRequestTypePlElixir, TransactionCreateRequestTypeRtp, TransactionCreateRequestTypeSeBankgirot, TransactionCreateRequestTypeSepa, TransactionCreateRequestTypeSgGiro, TransactionCreateRequestTypeSic, TransactionCreateRequestTypeStablecoin, TransactionCreateRequestTypeWire, TransactionCreateRequestTypeZengin, TransactionCreateRequestTypeOther:
 		return true
 	}
 	return false
 }
 
-type TransactionUpdateParams struct {
+type TransactionUpdateRequestParam struct {
 	// Additional data in the form of key-value pairs. Pairs can be removed by passing
 	// an empty string or `null` as the value.
 	Metadata param.Field[map[string]string] `json:"metadata"`
 }
 
-func (r TransactionUpdateParams) MarshalJSON() (data []byte, err error) {
+func (r TransactionUpdateRequestParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
+}
+
+type TransactionNewParams struct {
+	// At least one of "amount" or "amount_string" is required.
+	TransactionCreateRequest TransactionCreateRequestParam `json:"transaction_create_request" api:"required"`
+}
+
+func (r TransactionNewParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r.TransactionCreateRequest)
+}
+
+type TransactionUpdateParams struct {
+	TransactionUpdateRequest TransactionUpdateRequestParam `json:"transaction_update_request"`
+}
+
+func (r TransactionUpdateParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r.TransactionUpdateRequest)
 }
 
 type TransactionListParams struct {

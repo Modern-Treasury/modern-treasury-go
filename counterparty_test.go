@@ -88,8 +88,8 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 		Email:      moderntreasury.F("dev@stainless.com"),
 		ExternalID: moderntreasury.F("external_id"),
 		LedgerType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLedgerTypeCustomer),
-		LegalEntity: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntity{
-			LegalEntityType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalEntityTypeBusiness),
+		LegalEntity: moderntreasury.F(moderntreasury.LegalEntityCreateRequestParam{
+			LegalEntityType: moderntreasury.F(moderntreasury.LegalEntityCreateRequestLegalEntityTypeBusiness),
 			Addresses: moderntreasury.F([]shared.LegalEntityAddressCreateRequestParam{{
 				Country:      moderntreasury.F("country"),
 				Line1:        moderntreasury.F("line1"),
@@ -113,7 +113,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				UpdatedAt:                   moderntreasury.F(time.Now()),
 			}),
 			BusinessDescription:    moderntreasury.F("business_description"),
-			BusinessDesignation:    moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityBusinessDesignationExemptFinancialInstitution),
+			BusinessDesignation:    moderntreasury.F(moderntreasury.LegalEntityCreateRequestBusinessDesignationExemptFinancialInstitution),
 			BusinessName:           moderntreasury.F("business_name"),
 			CitizenshipCountry:     moderntreasury.F("citizenship_country"),
 			ComplianceDetails:      moderntreasury.F[any](map[string]interface{}{}),
@@ -121,8 +121,8 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			CountryOfIncorporation: moderntreasury.F("US"),
 			DateFormed:             moderntreasury.F(time.Now()),
 			DateOfBirth:            moderntreasury.F(time.Now()),
-			Documents: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityDocument{{
-				DocumentType: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityDocumentsDocumentTypeArticlesOfIncorporation),
+			Documents: moderntreasury.F([]moderntreasury.LegalEntityCreateRequestDocumentParam{{
+				DocumentType: moderntreasury.F(moderntreasury.LegalEntityCreateRequestDocumentsDocumentTypeArticlesOfIncorporation),
 				FileData:     moderntreasury.F("file_data"),
 				Filename:     moderntreasury.F("filename"),
 			}}),
@@ -241,7 +241,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 					PreferredName:            moderntreasury.F("preferred_name"),
 					Prefix:                   moderntreasury.F("prefix"),
 					PrimarySocialMediaSites:  moderntreasury.F([]string{"string"}),
-					Regulators: moderntreasury.F([]shared.ChildLegalEntityCreateRegulatorParam{{
+					Regulators: moderntreasury.F([]shared.LegalEntityRegulatorParam{{
 						Jurisdiction:       moderntreasury.F("jurisdiction"),
 						Name:               moderntreasury.F("name"),
 						RegistrationNumber: moderntreasury.F("registration_number"),
@@ -298,7 +298,7 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 				OwnershipPercentage: moderntreasury.F(int64(0)),
 				Title:               moderntreasury.F("title"),
 			}}),
-			LegalStructure: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityLegalStructureCorporation),
+			LegalStructure: moderntreasury.F(moderntreasury.LegalEntityCreateRequestLegalStructureCorporation),
 			ListedExchange: moderntreasury.F("listed_exchange"),
 			Metadata: moderntreasury.F(map[string]string{
 				"foo":    "bar",
@@ -307,23 +307,23 @@ func TestCounterpartyNewWithOptionalParams(t *testing.T) {
 			}),
 			MiddleName:             moderntreasury.F("middle_name"),
 			OperatingJurisdictions: moderntreasury.F([]string{"US", "CA"}),
-			PhoneNumbers: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityPhoneNumber{{
+			PhoneNumbers: moderntreasury.F([]moderntreasury.LegalEntityCreateRequestPhoneNumberParam{{
 				PhoneNumber: moderntreasury.F("phone_number"),
 			}}),
 			PoliticallyExposedPerson: moderntreasury.F(true),
 			PreferredName:            moderntreasury.F("preferred_name"),
 			Prefix:                   moderntreasury.F("prefix"),
 			PrimarySocialMediaSites:  moderntreasury.F([]string{"string"}),
-			Regulators: moderntreasury.F([]moderntreasury.CounterpartyNewParamsLegalEntityRegulator{{
+			Regulators: moderntreasury.F([]shared.LegalEntityRegulatorParam{{
 				Jurisdiction:       moderntreasury.F("jurisdiction"),
 				Name:               moderntreasury.F("name"),
 				RegistrationNumber: moderntreasury.F("registration_number"),
 			}}),
-			RiskRating:                   moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityRiskRatingLow),
+			RiskRating:                   moderntreasury.F(moderntreasury.LegalEntityCreateRequestRiskRatingLow),
 			ServiceProviderLegalEntityID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-			Status:                       moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityStatusDraft),
+			Status:                       moderntreasury.F(moderntreasury.LegalEntityCreateRequestStatusDraft),
 			Suffix:                       moderntreasury.F("suffix"),
-			TermsOfUse: moderntreasury.F(moderntreasury.CounterpartyNewParamsLegalEntityTermsOfUse{
+			TermsOfUse: moderntreasury.F(moderntreasury.LegalEntityCreateRequestTermsOfUseParam{
 				AcceptedAt: moderntreasury.F(time.Now()),
 				IPAddress:  moderntreasury.F("ip_address"),
 			}),

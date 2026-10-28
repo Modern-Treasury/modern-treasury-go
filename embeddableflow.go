@@ -389,101 +389,11 @@ func (r EmbeddableFlowNewParamsOptions) implementsEmbeddableFlowNewParamsOptions
 
 // The parameters for the selected template's flow.
 //
-// Satisfied by [EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequest],
-// [EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequest],
-// [EmbeddableFlowNewParamsOptionsType], [EmbeddableFlowNewParamsOptions].
+// Satisfied by [AccountCollectionFlowCreateRequestParam],
+// [PaymentFlowCreateRequestParam], [EmbeddableFlowNewParamsOptionsType],
+// [EmbeddableFlowNewParamsOptions].
 type EmbeddableFlowNewParamsOptionsUnion interface {
 	implementsEmbeddableFlowNewParamsOptionsUnion()
-}
-
-type EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequest struct {
-	// Required.
-	CounterpartyID     param.Field[string]                                                                             `json:"counterparty_id" api:"required" format:"uuid"`
-	PaymentTypes       param.Field[[]string]                                                                           `json:"payment_types" api:"required"`
-	ReceivingCountries param.Field[[]EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry] `json:"receiving_countries"`
-}
-
-func (r EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequest) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequest) implementsEmbeddableFlowNewParamsOptionsUnion() {
-}
-
-// Optional. Array of 3-digit ISO country codes.
-type EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry string
-
-const (
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryUsa EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "USA"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryAus EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "AUS"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryBel EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "BEL"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryCan EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "CAN"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryChl EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "CHL"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryChn EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "CHN"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryCol EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "COL"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryFra EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "FRA"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryDeu EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "DEU"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryHkg EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "HKG"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryInd EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "IND"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryIrl EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "IRL"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryIta EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "ITA"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryMex EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "MEX"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryNld EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "NLD"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryPer EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "PER"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryEsp EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "ESP"
-	EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryGbr EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry = "GBR"
-)
-
-func (r EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry) IsKnown() bool {
-	switch r {
-	case EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryUsa, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryAus, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryBel, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryCan, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryChl, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryChn, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryCol, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryFra, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryDeu, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryHkg, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryInd, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryIrl, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryIta, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryMex, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryNld, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryPer, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryEsp, EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryGbr:
-		return true
-	}
-	return false
-}
-
-type EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequest struct {
-	// Required. Value in specified currency's smallest unit. e.g. $10 would be
-	// represented as 1000. Can be any integer up to 36 digits.
-	Amount param.Field[int64] `json:"amount" api:"required"`
-	// Required. The ID of a counterparty associated with the payment. As part of the
-	// payment workflow an external account will be associated with this model.
-	CounterpartyID param.Field[string] `json:"counterparty_id" api:"required" format:"uuid"`
-	// Required. The currency of the payment.
-	Currency param.Field[string] `json:"currency" api:"required"`
-	// Required. Describes the direction money is flowing in the transaction. Can only
-	// be `debit`. A `debit` pulls money from someone else's account to your own.
-	Direction param.Field[EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequestDirection] `json:"direction" api:"required"`
-	// Required. The ID of one of your organization's internal accounts.
-	OriginatingAccountID param.Field[string] `json:"originating_account_id" api:"required" format:"uuid"`
-	// Optional. Can only be passed in when `effective_date_selection_enabled` is
-	// `true`. When set, the due date is shown to your end-user in the pre-built UI as
-	// they are selecting a payment `effective_date`.
-	DueDate param.Field[time.Time] `json:"due_date" format:"date"`
-}
-
-func (r EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequest) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-func (r EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequest) implementsEmbeddableFlowNewParamsOptionsUnion() {
-}
-
-// Required. Describes the direction money is flowing in the transaction. Can only
-// be `debit`. A `debit` pulls money from someone else's account to your own.
-type EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequestDirection string
-
-const (
-	EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequestDirectionCredit EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequestDirection = "credit"
-	EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequestDirectionDebit  EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequestDirection = "debit"
-)
-
-func (r EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequestDirection) IsKnown() bool {
-	switch r {
-	case EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequestDirectionCredit, EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequestDirectionDebit:
-		return true
-	}
-	return false
 }
 
 type EmbeddableFlowNewParamsOptionsType struct {

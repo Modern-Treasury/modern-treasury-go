@@ -222,7 +222,7 @@ type ChildLegalEntityCreateParam struct {
 	// A list of the entity's primary social media URLs.
 	PrimarySocialMediaSites param.Field[[]string] `json:"primary_social_media_sites"`
 	// Array of regulatory bodies overseeing this institution.
-	Regulators param.Field[[]ChildLegalEntityCreateRegulatorParam] `json:"regulators"`
+	Regulators param.Field[[]LegalEntityRegulatorParam] `json:"regulators"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating param.Field[ChildLegalEntityCreateRiskRating] `json:"risk_rating"`
 	// The UUID of the parent legal entity in the service provider tree.
@@ -343,20 +343,6 @@ type ChildLegalEntityCreatePhoneNumberParam struct {
 }
 
 func (r ChildLegalEntityCreatePhoneNumberParam) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-type ChildLegalEntityCreateRegulatorParam struct {
-	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
-	// (e.g., "US", "CA", "GB").
-	Jurisdiction param.Field[string] `json:"jurisdiction" api:"required"`
-	// Full name of the regulatory body.
-	Name param.Field[string] `json:"name" api:"required"`
-	// Registration or identification number with the regulator.
-	RegistrationNumber param.Field[string] `json:"registration_number" api:"required"`
-}
-
-func (r ChildLegalEntityCreateRegulatorParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
@@ -1474,6 +1460,49 @@ type LegalEntityIndustryClassificationParam struct {
 }
 
 func (r LegalEntityIndustryClassificationParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
+type LegalEntityRegulator struct {
+	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
+	// (e.g., "US", "CA", "GB").
+	Jurisdiction string `json:"jurisdiction" api:"required"`
+	// Full name of the regulatory body.
+	Name string `json:"name" api:"required"`
+	// Registration or identification number with the regulator.
+	RegistrationNumber string                   `json:"registration_number" api:"required"`
+	JSON               legalEntityRegulatorJSON `json:"-"`
+}
+
+// legalEntityRegulatorJSON contains the JSON metadata for the struct
+// [LegalEntityRegulator]
+type legalEntityRegulatorJSON struct {
+	Jurisdiction       apijson.Field
+	Name               apijson.Field
+	RegistrationNumber apijson.Field
+	raw                string
+	ExtraFields        map[string]apijson.Field
+}
+
+func (r *LegalEntityRegulator) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r legalEntityRegulatorJSON) RawJSON() string {
+	return r.raw
+}
+
+type LegalEntityRegulatorParam struct {
+	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
+	// (e.g., "US", "CA", "GB").
+	Jurisdiction param.Field[string] `json:"jurisdiction" api:"required"`
+	// Full name of the regulatory body.
+	Name param.Field[string] `json:"name" api:"required"`
+	// Registration or identification number with the regulator.
+	RegistrationNumber param.Field[string] `json:"registration_number" api:"required"`
+}
+
+func (r LegalEntityRegulatorParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 

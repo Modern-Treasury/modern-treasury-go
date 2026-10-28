@@ -28,22 +28,24 @@ func TestTransactionNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.Transactions.New(context.TODO(), moderntreasury.TransactionNewParams{
-		AsOfDate:          moderntreasury.F(time.Now()),
-		Direction:         moderntreasury.F("direction"),
-		InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
-		VendorCode:        moderntreasury.F("vendor_code"),
-		VendorCodeType:    moderntreasury.F("vendor_code_type"),
-		Amount:            moderntreasury.F(int64(0)),
-		AmountString:      moderntreasury.F("amount_string"),
-		Metadata: moderntreasury.F(map[string]string{
-			"foo":    "bar",
-			"key":    "value",
-			"modern": "treasury",
-		}),
-		Posted:            moderntreasury.F(true),
-		Type:              moderntreasury.F(moderntreasury.TransactionNewParamsTypeACH),
-		VendorCustomerID:  moderntreasury.F("vendor_customer_id"),
-		VendorDescription: moderntreasury.F("vendor_description"),
+		TransactionCreateRequest: moderntreasury.TransactionCreateRequestParam{
+			AsOfDate:          moderntreasury.F(time.Now()),
+			Direction:         moderntreasury.F("direction"),
+			InternalAccountID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			VendorCode:        moderntreasury.F("vendor_code"),
+			VendorCodeType:    moderntreasury.F("vendor_code_type"),
+			Amount:            moderntreasury.F(int64(0)),
+			AmountString:      moderntreasury.F("amount_string"),
+			Metadata: moderntreasury.F(map[string]string{
+				"foo":    "bar",
+				"key":    "value",
+				"modern": "treasury",
+			}),
+			Posted:            moderntreasury.F(true),
+			Type:              moderntreasury.F(moderntreasury.TransactionCreateRequestTypeACH),
+			VendorCustomerID:  moderntreasury.F("vendor_customer_id"),
+			VendorDescription: moderntreasury.F("vendor_description"),
+		},
 	})
 	if err != nil {
 		var apierr *moderntreasury.Error
@@ -94,9 +96,11 @@ func TestTransactionUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		moderntreasury.TransactionUpdateParams{
-			Metadata: moderntreasury.F(map[string]string{
-				"foo": "string",
-			}),
+			TransactionUpdateRequest: moderntreasury.TransactionUpdateRequestParam{
+				Metadata: moderntreasury.F(map[string]string{
+					"foo": "string",
+				}),
+			},
 		},
 	)
 	if err != nil {
