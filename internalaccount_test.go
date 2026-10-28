@@ -120,10 +120,11 @@ func TestInternalAccountUpdateWithOptionalParams(t *testing.T) {
 		context.TODO(),
 		"id",
 		moderntreasury.InternalAccountUpdateParams{
-			ContraLedgerAccountID: moderntreasury.F("contra_ledger_account_id"),
-			CounterpartyID:        moderntreasury.F("counterparty_id"),
-			ExternalID:            moderntreasury.F("external_id"),
-			LedgerAccountID:       moderntreasury.F("ledger_account_id"),
+			AllowedACHDebitCompanyIDs: moderntreasury.F([]string{"x"}),
+			ContraLedgerAccountID:     moderntreasury.F("contra_ledger_account_id"),
+			CounterpartyID:            moderntreasury.F("counterparty_id"),
+			ExternalID:                moderntreasury.F("external_id"),
+			LedgerAccountID:           moderntreasury.F("ledger_account_id"),
 			Metadata: moderntreasury.F(map[string]string{
 				"foo": "string",
 			}),
