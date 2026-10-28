@@ -27,10 +27,10 @@ func TestEmbeddableFlowNewWithOptionalParams(t *testing.T) {
 		option.WithOrganizationID("my-organization-ID"),
 	)
 	_, err := client.EmbeddableFlows.New(context.TODO(), moderntreasury.EmbeddableFlowNewParams{
-		Options: moderntreasury.F[moderntreasury.EmbeddableFlowNewParamsOptionsUnion](moderntreasury.EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequest{
+		Options: moderntreasury.F[moderntreasury.EmbeddableFlowNewParamsOptionsUnion](moderntreasury.AccountCollectionFlowCreateRequestParam{
 			CounterpartyID:     moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
 			PaymentTypes:       moderntreasury.F([]string{"string"}),
-			ReceivingCountries: moderntreasury.F([]moderntreasury.EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountry{moderntreasury.EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequestReceivingCountryUsa}),
+			ReceivingCountries: moderntreasury.F([]moderntreasury.AccountCollectionFlowCreateRequestReceivingCountry{moderntreasury.AccountCollectionFlowCreateRequestReceivingCountryUsa}),
 		}),
 		Template: moderntreasury.F(moderntreasury.EmbeddableFlowNewParamsTemplateLegalEntityOnboarding),
 	})
