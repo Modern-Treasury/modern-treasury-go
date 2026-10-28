@@ -112,9 +112,6 @@ const ChildLegalEntityCreateLegalStructureTrust = shared.ChildLegalEntityCreateL
 // This is an alias to an internal type.
 type ChildLegalEntityCreatePhoneNumberParam = shared.ChildLegalEntityCreatePhoneNumberParam
 
-// This is an alias to an internal type.
-type ChildLegalEntityCreateRegulatorParam = shared.ChildLegalEntityCreateRegulatorParam
-
 // The risk rating of the legal entity. One of low, medium, high.
 //
 // This is an alias to an internal type.
@@ -1604,6 +1601,12 @@ const LegalEntityIndustryClassificationClassificationTypeUnspsc = shared.LegalEn
 
 // This is an alias to an internal type.
 type LegalEntityIndustryClassificationParam = shared.LegalEntityIndustryClassificationParam
+
+// This is an alias to an internal type.
+type LegalEntityRegulator = shared.LegalEntityRegulator
+
+// This is an alias to an internal type.
+type LegalEntityRegulatorParam = shared.LegalEntityRegulatorParam
 
 // This is an alias to an internal type.
 type LegalEntityWealthEmploymentDetail = shared.LegalEntityWealthEmploymentDetail
