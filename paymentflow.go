@@ -251,7 +251,7 @@ func (r PaymentFlowStatus) IsKnown() bool {
 	return false
 }
 
-type PaymentFlowNewParams struct {
+type PaymentFlowCreateRequestParam struct {
 	// Required. Value in specified currency's smallest unit. e.g. $10 would be
 	// represented as 1000. Can be any integer up to 36 digits.
 	Amount param.Field[int64] `json:"amount" api:"required"`
@@ -262,7 +262,7 @@ type PaymentFlowNewParams struct {
 	Currency param.Field[string] `json:"currency" api:"required"`
 	// Required. Describes the direction money is flowing in the transaction. Can only
 	// be `debit`. A `debit` pulls money from someone else's account to your own.
-	Direction param.Field[PaymentFlowNewParamsDirection] `json:"direction" api:"required"`
+	Direction param.Field[PaymentFlowCreateRequestDirection] `json:"direction" api:"required"`
 	// Required. The ID of one of your organization's internal accounts.
 	OriginatingAccountID param.Field[string] `json:"originating_account_id" api:"required" format:"uuid"`
 	// Optional. Can only be passed in when `effective_date_selection_enabled` is
@@ -271,25 +271,35 @@ type PaymentFlowNewParams struct {
 	DueDate param.Field[time.Time] `json:"due_date" format:"date"`
 }
 
-func (r PaymentFlowNewParams) MarshalJSON() (data []byte, err error) {
+func (r PaymentFlowCreateRequestParam) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
+func (r PaymentFlowCreateRequestParam) implementsEmbeddableFlowNewParamsOptionsUnion() {}
+
 // Required. Describes the direction money is flowing in the transaction. Can only
 // be `debit`. A `debit` pulls money from someone else's account to your own.
-type PaymentFlowNewParamsDirection string
+type PaymentFlowCreateRequestDirection string
 
 const (
-	PaymentFlowNewParamsDirectionCredit PaymentFlowNewParamsDirection = "credit"
-	PaymentFlowNewParamsDirectionDebit  PaymentFlowNewParamsDirection = "debit"
+	PaymentFlowCreateRequestDirectionCredit PaymentFlowCreateRequestDirection = "credit"
+	PaymentFlowCreateRequestDirectionDebit  PaymentFlowCreateRequestDirection = "debit"
 )
 
-func (r PaymentFlowNewParamsDirection) IsKnown() bool {
+func (r PaymentFlowCreateRequestDirection) IsKnown() bool {
 	switch r {
-	case PaymentFlowNewParamsDirectionCredit, PaymentFlowNewParamsDirectionDebit:
+	case PaymentFlowCreateRequestDirectionCredit, PaymentFlowCreateRequestDirectionDebit:
 		return true
 	}
 	return false
+}
+
+type PaymentFlowNewParams struct {
+	PaymentFlowCreateRequest PaymentFlowCreateRequestParam `json:"payment_flow_create_request" api:"required"`
+}
+
+func (r PaymentFlowNewParams) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r.PaymentFlowCreateRequest)
 }
 
 type PaymentFlowUpdateParams struct {

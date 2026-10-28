@@ -241,6 +241,22 @@ func (r LedgerAccountLedgerableType) IsKnown() bool {
 	return false
 }
 
+type LedgerAccountUpdateRequestParam struct {
+	// The description of the ledger account.
+	Description param.Field[string] `json:"description"`
+	// An optional user-defined 180 character unique identifier.
+	ExternalID param.Field[string] `json:"external_id"`
+	// Additional data represented as key-value pairs. Both the key and value must be
+	// strings.
+	Metadata param.Field[map[string]string] `json:"metadata"`
+	// The name of the ledger account.
+	Name param.Field[string] `json:"name"`
+}
+
+func (r LedgerAccountUpdateRequestParam) MarshalJSON() (data []byte, err error) {
+	return apijson.MarshalRoot(r)
+}
+
 type LedgerAccountNewParams struct {
 	LedgerAccountCreateRequest shared.LedgerAccountCreateRequestParam `json:"ledger_account_create_request" api:"required"`
 }
@@ -291,19 +307,11 @@ func (r LedgerAccountGetParamsBalances) URLQuery() (v url.Values) {
 }
 
 type LedgerAccountUpdateParams struct {
-	// The description of the ledger account.
-	Description param.Field[string] `json:"description"`
-	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `json:"external_id"`
-	// Additional data represented as key-value pairs. Both the key and value must be
-	// strings.
-	Metadata param.Field[map[string]string] `json:"metadata"`
-	// The name of the ledger account.
-	Name param.Field[string] `json:"name"`
+	LedgerAccountUpdateRequest LedgerAccountUpdateRequestParam `json:"ledger_account_update_request"`
 }
 
 func (r LedgerAccountUpdateParams) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
+	return apijson.MarshalRoot(r.LedgerAccountUpdateRequest)
 }
 
 type LedgerAccountListParams struct {

@@ -128,7 +128,7 @@ type ChildLegalEntity struct {
 	// A list of the entity's primary social media URLs.
 	PrimarySocialMediaSites []string `json:"primary_social_media_sites" api:"required"`
 	// Array of regulatory bodies overseeing this institution.
-	Regulators []ChildLegalEntityRegulator `json:"regulators" api:"required,nullable"`
+	Regulators []shared.LegalEntityRegulator `json:"regulators" api:"required,nullable"`
 	// The risk rating of the legal entity. One of low, medium, high.
 	RiskRating ChildLegalEntityRiskRating `json:"risk_rating" api:"required,nullable"`
 	// The UUID of the parent legal entity in the service provider tree.
@@ -371,35 +371,6 @@ func (r *ChildLegalEntityPhoneNumber) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r childLegalEntityPhoneNumberJSON) RawJSON() string {
-	return r.raw
-}
-
-type ChildLegalEntityRegulator struct {
-	// The country code where the regulator operates in the ISO 3166-1 alpha-2 format
-	// (e.g., "US", "CA", "GB").
-	Jurisdiction string `json:"jurisdiction" api:"required"`
-	// Full name of the regulatory body.
-	Name string `json:"name" api:"required"`
-	// Registration or identification number with the regulator.
-	RegistrationNumber string                        `json:"registration_number" api:"required"`
-	JSON               childLegalEntityRegulatorJSON `json:"-"`
-}
-
-// childLegalEntityRegulatorJSON contains the JSON metadata for the struct
-// [ChildLegalEntityRegulator]
-type childLegalEntityRegulatorJSON struct {
-	Jurisdiction       apijson.Field
-	Name               apijson.Field
-	RegistrationNumber apijson.Field
-	raw                string
-	ExtraFields        map[string]apijson.Field
-}
-
-func (r *ChildLegalEntityRegulator) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r childLegalEntityRegulatorJSON) RawJSON() string {
 	return r.raw
 }
 
