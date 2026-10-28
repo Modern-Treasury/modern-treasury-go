@@ -81,9 +81,9 @@ type Case struct {
 	LiveMode bool   `json:"live_mode" api:"required"`
 	Object   string `json:"object" api:"required"`
 	// The pending actions requested to resolve the case.
-	RequestedActions []CaseRequestedAction `json:"requested_actions" api:"required"`
+	RequestedActions []RequestedAction `json:"requested_actions" api:"required"`
 	// The requested actions that have been resolved.
-	ResolvedActions []CaseResolvedAction `json:"resolved_actions" api:"required"`
+	ResolvedActions []RequestedAction `json:"resolved_actions" api:"required"`
 	// The status of the case.
 	Status CaseStatus `json:"status" api:"required"`
 	// The ID of the object the case is about.
@@ -118,168 +118,6 @@ func (r caseJSON) RawJSON() string {
 	return r.raw
 }
 
-type CaseRequestedAction struct {
-	ID string `json:"id" api:"required" format:"uuid"`
-	// The category of the requested action.
-	Category  CaseRequestedActionsCategory `json:"category" api:"required"`
-	CreatedAt time.Time                    `json:"created_at" api:"required" format:"date-time"`
-	// The field that needs to be corrected or provided, if any.
-	Field CaseRequestedActionsField `json:"field" api:"required,nullable"`
-	// Instructions on how to resolve the requested action.
-	Instructions string `json:"instructions" api:"required,nullable"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode" api:"required"`
-	Object   string `json:"object" api:"required"`
-	// The reasons the action was requested.
-	Reasons   []string                `json:"reasons" api:"required"`
-	UpdatedAt time.Time               `json:"updated_at" api:"required" format:"date-time"`
-	JSON      caseRequestedActionJSON `json:"-"`
-}
-
-// caseRequestedActionJSON contains the JSON metadata for the struct
-// [CaseRequestedAction]
-type caseRequestedActionJSON struct {
-	ID           apijson.Field
-	Category     apijson.Field
-	CreatedAt    apijson.Field
-	Field        apijson.Field
-	Instructions apijson.Field
-	LiveMode     apijson.Field
-	Object       apijson.Field
-	Reasons      apijson.Field
-	UpdatedAt    apijson.Field
-	raw          string
-	ExtraFields  map[string]apijson.Field
-}
-
-func (r *CaseRequestedAction) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r caseRequestedActionJSON) RawJSON() string {
-	return r.raw
-}
-
-// The category of the requested action.
-type CaseRequestedActionsCategory string
-
-const (
-	CaseRequestedActionsCategoryOnboardingArticlesOfIncorporationFailure      CaseRequestedActionsCategory = "onboarding_articles_of_incorporation_failure"
-	CaseRequestedActionsCategoryOnboardingBusinessRegistryVerificationFailure CaseRequestedActionsCategory = "onboarding_business_registry_verification_failure"
-	CaseRequestedActionsCategoryOnboardingDatabaseFailure                     CaseRequestedActionsCategory = "onboarding_database_failure"
-	CaseRequestedActionsCategoryOnboardingProofOfAddressFailure               CaseRequestedActionsCategory = "onboarding_proof_of_address_failure"
-	CaseRequestedActionsCategoryOnboardingSsnCheckFailure                     CaseRequestedActionsCategory = "onboarding_ssn_check_failure"
-	CaseRequestedActionsCategoryOnboardingTinCheckFailure                     CaseRequestedActionsCategory = "onboarding_tin_check_failure"
-)
-
-func (r CaseRequestedActionsCategory) IsKnown() bool {
-	switch r {
-	case CaseRequestedActionsCategoryOnboardingArticlesOfIncorporationFailure, CaseRequestedActionsCategoryOnboardingBusinessRegistryVerificationFailure, CaseRequestedActionsCategoryOnboardingDatabaseFailure, CaseRequestedActionsCategoryOnboardingProofOfAddressFailure, CaseRequestedActionsCategoryOnboardingSsnCheckFailure, CaseRequestedActionsCategoryOnboardingTinCheckFailure:
-		return true
-	}
-	return false
-}
-
-// The field that needs to be corrected or provided, if any.
-type CaseRequestedActionsField string
-
-const (
-	CaseRequestedActionsFieldArticlesOfIncorporation CaseRequestedActionsField = "articles_of_incorporation"
-	CaseRequestedActionsFieldEinLetter               CaseRequestedActionsField = "ein_letter"
-	CaseRequestedActionsFieldLegalEntityDetails      CaseRequestedActionsField = "legal_entity_details"
-	CaseRequestedActionsFieldProofOfAddress          CaseRequestedActionsField = "proof_of_address"
-)
-
-func (r CaseRequestedActionsField) IsKnown() bool {
-	switch r {
-	case CaseRequestedActionsFieldArticlesOfIncorporation, CaseRequestedActionsFieldEinLetter, CaseRequestedActionsFieldLegalEntityDetails, CaseRequestedActionsFieldProofOfAddress:
-		return true
-	}
-	return false
-}
-
-type CaseResolvedAction struct {
-	ID string `json:"id" api:"required" format:"uuid"`
-	// The category of the requested action.
-	Category  CaseResolvedActionsCategory `json:"category" api:"required"`
-	CreatedAt time.Time                   `json:"created_at" api:"required" format:"date-time"`
-	// The field that needs to be corrected or provided, if any.
-	Field CaseResolvedActionsField `json:"field" api:"required,nullable"`
-	// Instructions on how to resolve the requested action.
-	Instructions string `json:"instructions" api:"required,nullable"`
-	// This field will be true if this object exists in the live environment or false
-	// if it exists in the test environment.
-	LiveMode bool   `json:"live_mode" api:"required"`
-	Object   string `json:"object" api:"required"`
-	// The reasons the action was requested.
-	Reasons   []string               `json:"reasons" api:"required"`
-	UpdatedAt time.Time              `json:"updated_at" api:"required" format:"date-time"`
-	JSON      caseResolvedActionJSON `json:"-"`
-}
-
-// caseResolvedActionJSON contains the JSON metadata for the struct
-// [CaseResolvedAction]
-type caseResolvedActionJSON struct {
-	ID           apijson.Field
-	Category     apijson.Field
-	CreatedAt    apijson.Field
-	Field        apijson.Field
-	Instructions apijson.Field
-	LiveMode     apijson.Field
-	Object       apijson.Field
-	Reasons      apijson.Field
-	UpdatedAt    apijson.Field
-	raw          string
-	ExtraFields  map[string]apijson.Field
-}
-
-func (r *CaseResolvedAction) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r caseResolvedActionJSON) RawJSON() string {
-	return r.raw
-}
-
-// The category of the requested action.
-type CaseResolvedActionsCategory string
-
-const (
-	CaseResolvedActionsCategoryOnboardingArticlesOfIncorporationFailure      CaseResolvedActionsCategory = "onboarding_articles_of_incorporation_failure"
-	CaseResolvedActionsCategoryOnboardingBusinessRegistryVerificationFailure CaseResolvedActionsCategory = "onboarding_business_registry_verification_failure"
-	CaseResolvedActionsCategoryOnboardingDatabaseFailure                     CaseResolvedActionsCategory = "onboarding_database_failure"
-	CaseResolvedActionsCategoryOnboardingProofOfAddressFailure               CaseResolvedActionsCategory = "onboarding_proof_of_address_failure"
-	CaseResolvedActionsCategoryOnboardingSsnCheckFailure                     CaseResolvedActionsCategory = "onboarding_ssn_check_failure"
-	CaseResolvedActionsCategoryOnboardingTinCheckFailure                     CaseResolvedActionsCategory = "onboarding_tin_check_failure"
-)
-
-func (r CaseResolvedActionsCategory) IsKnown() bool {
-	switch r {
-	case CaseResolvedActionsCategoryOnboardingArticlesOfIncorporationFailure, CaseResolvedActionsCategoryOnboardingBusinessRegistryVerificationFailure, CaseResolvedActionsCategoryOnboardingDatabaseFailure, CaseResolvedActionsCategoryOnboardingProofOfAddressFailure, CaseResolvedActionsCategoryOnboardingSsnCheckFailure, CaseResolvedActionsCategoryOnboardingTinCheckFailure:
-		return true
-	}
-	return false
-}
-
-// The field that needs to be corrected or provided, if any.
-type CaseResolvedActionsField string
-
-const (
-	CaseResolvedActionsFieldArticlesOfIncorporation CaseResolvedActionsField = "articles_of_incorporation"
-	CaseResolvedActionsFieldEinLetter               CaseResolvedActionsField = "ein_letter"
-	CaseResolvedActionsFieldLegalEntityDetails      CaseResolvedActionsField = "legal_entity_details"
-	CaseResolvedActionsFieldProofOfAddress          CaseResolvedActionsField = "proof_of_address"
-)
-
-func (r CaseResolvedActionsField) IsKnown() bool {
-	switch r {
-	case CaseResolvedActionsFieldArticlesOfIncorporation, CaseResolvedActionsFieldEinLetter, CaseResolvedActionsFieldLegalEntityDetails, CaseResolvedActionsFieldProofOfAddress:
-		return true
-	}
-	return false
-}
-
 // The status of the case.
 type CaseStatus string
 
@@ -291,6 +129,86 @@ const (
 func (r CaseStatus) IsKnown() bool {
 	switch r {
 	case CaseStatusOpen, CaseStatusResolved:
+		return true
+	}
+	return false
+}
+
+type RequestedAction struct {
+	ID string `json:"id" api:"required" format:"uuid"`
+	// The category of the requested action.
+	Category  RequestedActionCategory `json:"category" api:"required"`
+	CreatedAt time.Time               `json:"created_at" api:"required" format:"date-time"`
+	// The field that needs to be corrected or provided, if any.
+	Field RequestedActionField `json:"field" api:"required,nullable"`
+	// Instructions on how to resolve the requested action.
+	Instructions string `json:"instructions" api:"required,nullable"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode bool   `json:"live_mode" api:"required"`
+	Object   string `json:"object" api:"required"`
+	// The reasons the action was requested.
+	Reasons   []string            `json:"reasons" api:"required"`
+	UpdatedAt time.Time           `json:"updated_at" api:"required" format:"date-time"`
+	JSON      requestedActionJSON `json:"-"`
+}
+
+// requestedActionJSON contains the JSON metadata for the struct [RequestedAction]
+type requestedActionJSON struct {
+	ID           apijson.Field
+	Category     apijson.Field
+	CreatedAt    apijson.Field
+	Field        apijson.Field
+	Instructions apijson.Field
+	LiveMode     apijson.Field
+	Object       apijson.Field
+	Reasons      apijson.Field
+	UpdatedAt    apijson.Field
+	raw          string
+	ExtraFields  map[string]apijson.Field
+}
+
+func (r *RequestedAction) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r requestedActionJSON) RawJSON() string {
+	return r.raw
+}
+
+// The category of the requested action.
+type RequestedActionCategory string
+
+const (
+	RequestedActionCategoryOnboardingArticlesOfIncorporationFailure      RequestedActionCategory = "onboarding_articles_of_incorporation_failure"
+	RequestedActionCategoryOnboardingBusinessRegistryVerificationFailure RequestedActionCategory = "onboarding_business_registry_verification_failure"
+	RequestedActionCategoryOnboardingDatabaseFailure                     RequestedActionCategory = "onboarding_database_failure"
+	RequestedActionCategoryOnboardingProofOfAddressFailure               RequestedActionCategory = "onboarding_proof_of_address_failure"
+	RequestedActionCategoryOnboardingSsnCheckFailure                     RequestedActionCategory = "onboarding_ssn_check_failure"
+	RequestedActionCategoryOnboardingTinCheckFailure                     RequestedActionCategory = "onboarding_tin_check_failure"
+)
+
+func (r RequestedActionCategory) IsKnown() bool {
+	switch r {
+	case RequestedActionCategoryOnboardingArticlesOfIncorporationFailure, RequestedActionCategoryOnboardingBusinessRegistryVerificationFailure, RequestedActionCategoryOnboardingDatabaseFailure, RequestedActionCategoryOnboardingProofOfAddressFailure, RequestedActionCategoryOnboardingSsnCheckFailure, RequestedActionCategoryOnboardingTinCheckFailure:
+		return true
+	}
+	return false
+}
+
+// The field that needs to be corrected or provided, if any.
+type RequestedActionField string
+
+const (
+	RequestedActionFieldArticlesOfIncorporation RequestedActionField = "articles_of_incorporation"
+	RequestedActionFieldEinLetter               RequestedActionField = "ein_letter"
+	RequestedActionFieldLegalEntityDetails      RequestedActionField = "legal_entity_details"
+	RequestedActionFieldProofOfAddress          RequestedActionField = "proof_of_address"
+)
+
+func (r RequestedActionField) IsKnown() bool {
+	switch r {
+	case RequestedActionFieldArticlesOfIncorporation, RequestedActionFieldEinLetter, RequestedActionFieldLegalEntityDetails, RequestedActionFieldProofOfAddress:
 		return true
 	}
 	return false

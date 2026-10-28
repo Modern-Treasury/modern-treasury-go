@@ -100,7 +100,7 @@ func (r *LineItemService) ListAutoPaging(ctx context.Context, itemizableType Lin
 type LineItem struct {
 	ID string `json:"id" api:"required" format:"uuid"`
 	// Deprecated: deprecated
-	Accounting LineItemAccounting `json:"accounting" api:"required"`
+	Accounting Accounting `json:"accounting" api:"required"`
 	// The ID of one of your accounting categories. Note that these will only be
 	// accessible if your accounting system has been connected.
 	//
@@ -157,39 +157,6 @@ func (r *LineItem) UnmarshalJSON(data []byte) (err error) {
 }
 
 func (r lineItemJSON) RawJSON() string {
-	return r.raw
-}
-
-// Deprecated: deprecated
-type LineItemAccounting struct {
-	// The ID of one of your accounting categories. Note that these will only be
-	// accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	AccountID string `json:"account_id" api:"nullable" format:"uuid"`
-	// The ID of one of the class objects in your accounting system. Class objects
-	// track segments of your business independent of client or project. Note that
-	// these will only be accessible if your accounting system has been connected.
-	//
-	// Deprecated: deprecated
-	ClassID string                 `json:"class_id" api:"nullable" format:"uuid"`
-	JSON    lineItemAccountingJSON `json:"-"`
-}
-
-// lineItemAccountingJSON contains the JSON metadata for the struct
-// [LineItemAccounting]
-type lineItemAccountingJSON struct {
-	AccountID   apijson.Field
-	ClassID     apijson.Field
-	raw         string
-	ExtraFields map[string]apijson.Field
-}
-
-func (r *LineItemAccounting) UnmarshalJSON(data []byte) (err error) {
-	return apijson.UnmarshalRoot(data, r)
-}
-
-func (r lineItemAccountingJSON) RawJSON() string {
 	return r.raw
 }
 
