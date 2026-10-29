@@ -312,6 +312,11 @@ type BulkRequestNewParamsResource struct {
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
+	// A unique identifier passed through to the receiving bank. Only supported for
+	// `ach` (maximum 15 characters) and `wire` (maximum 35 characters). If not
+	// provided, Modern Treasury generates one. Some banks may truncate this value or
+	// use their own identifier instead.
+	EndToEndID param.Field[string] `json:"end_to_end_id"`
 	// RFP payments require an expires_at. This value must be past the effective_date.
 	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
 	// An optional user-defined 180 character unique identifier.
@@ -516,6 +521,11 @@ type BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequest struct {
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
+	// A unique identifier passed through to the receiving bank. Only supported for
+	// `ach` (maximum 15 characters) and `wire` (maximum 35 characters). If not
+	// provided, Modern Treasury generates one. Some banks may truncate this value or
+	// use their own identifier instead.
+	EndToEndID param.Field[string] `json:"end_to_end_id"`
 	// RFP payments require an expires_at. This value must be past the effective_date.
 	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
 	// An optional user-defined 180 character unique identifier.
@@ -1271,6 +1281,11 @@ type BulkRequestNewParamsResourcesPaymentOrderUpdateRequestWithID struct {
 	// current business day or the next business day if the current day is a bank
 	// holiday or weekend. Format: yyyy-mm-dd.
 	EffectiveDate param.Field[time.Time] `json:"effective_date" format:"date"`
+	// A unique identifier passed through to the receiving bank. Only supported for
+	// `ach` (maximum 15 characters) and `wire` (maximum 35 characters). If not
+	// provided, Modern Treasury generates one. Some banks may truncate this value or
+	// use their own identifier instead.
+	EndToEndID param.Field[string] `json:"end_to_end_id"`
 	// RFP payments require an expires_at. This value must be past the effective_date.
 	ExpiresAt param.Field[time.Time] `json:"expires_at" format:"date-time"`
 	// An optional user-defined 180 character unique identifier.

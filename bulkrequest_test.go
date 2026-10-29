@@ -47,6 +47,7 @@ func TestBulkRequestNewWithOptionalParams(t *testing.T) {
 			Currency:                 moderntreasury.F(shared.CurrencyAed),
 			Description:              moderntreasury.F("description"),
 			EffectiveDate:            moderntreasury.F(time.Now()),
+			EndToEndID:               moderntreasury.F("end_to_end_id"),
 			ExpiresAt:                moderntreasury.F(time.Now()),
 			ExternalID:               moderntreasury.F("external_id"),
 			FallbackType:             moderntreasury.F(moderntreasury.BulkRequestNewParamsResourcesPaymentOrderAsyncCreateRequestFallbackTypeACH),
