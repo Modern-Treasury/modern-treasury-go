@@ -421,8 +421,7 @@ type TransactionListParams struct {
 	PaymentType param.Field[string]            `query:"payment_type"`
 	PerPage     param.Field[int64]             `query:"per_page"`
 	// Either `true` or `false`.
-	Posted           param.Field[bool]   `query:"posted"`
-	TransactableType param.Field[string] `query:"transactable_type"`
+	Posted param.Field[bool] `query:"posted"`
 	// Filters for transactions including the queried vendor id (an identifier given to
 	// transactions by the bank).
 	VendorID         param.Field[string] `query:"vendor_id"`
