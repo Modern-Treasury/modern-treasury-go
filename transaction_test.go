@@ -135,7 +135,6 @@ func TestTransactionListWithOptionalParams(t *testing.T) {
 		PaymentType:      moderntreasury.F("payment_type"),
 		PerPage:          moderntreasury.F(int64(0)),
 		Posted:           moderntreasury.F(true),
-		TransactableType: moderntreasury.F("transactable_type"),
 		VendorID:         moderntreasury.F("vendor_id"),
 		VirtualAccountID: moderntreasury.F("virtual_account_id"),
 	})
