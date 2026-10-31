@@ -333,17 +333,13 @@ func (r counterpartyCollectAccountResponseJSON) RawJSON() string {
 
 type CounterpartyNewParams struct {
 	// A human friendly name for this counterparty.
-	Name       param.Field[string]                          `json:"name" api:"required"`
-	Accounting param.Field[CounterpartyNewParamsAccounting] `json:"accounting"`
+	Name param.Field[string] `json:"name" api:"required"`
 	// The accounts for this counterparty.
 	Accounts param.Field[[]CounterpartyNewParamsAccount] `json:"accounts"`
 	// The counterparty's email.
 	Email param.Field[string] `json:"email" format:"email"`
 	// An optional user-defined 180 character unique identifier.
-	ExternalID param.Field[string] `json:"external_id"`
-	// An optional type to auto-sync the counterparty to your ledger. Either `customer`
-	// or `vendor`.
-	LedgerType  param.Field[CounterpartyNewParamsLedgerType]  `json:"ledger_type"`
+	ExternalID  param.Field[string]                           `json:"external_id"`
 	LegalEntity param.Field[CounterpartyNewParamsLegalEntity] `json:"legal_entity"`
 	// The id of the legal entity.
 	LegalEntityID param.Field[string] `json:"legal_entity_id" format:"uuid"`
@@ -361,34 +357,6 @@ type CounterpartyNewParams struct {
 
 func (r CounterpartyNewParams) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
-}
-
-// Deprecated: deprecated
-type CounterpartyNewParamsAccounting struct {
-	// An optional type to auto-sync the counterparty to your ledger. Either `customer`
-	// or `vendor`.
-	Type param.Field[CounterpartyNewParamsAccountingType] `json:"type"`
-}
-
-func (r CounterpartyNewParamsAccounting) MarshalJSON() (data []byte, err error) {
-	return apijson.MarshalRoot(r)
-}
-
-// An optional type to auto-sync the counterparty to your ledger. Either `customer`
-// or `vendor`.
-type CounterpartyNewParamsAccountingType string
-
-const (
-	CounterpartyNewParamsAccountingTypeCustomer CounterpartyNewParamsAccountingType = "customer"
-	CounterpartyNewParamsAccountingTypeVendor   CounterpartyNewParamsAccountingType = "vendor"
-)
-
-func (r CounterpartyNewParamsAccountingType) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsAccountingTypeCustomer, CounterpartyNewParamsAccountingTypeVendor:
-		return true
-	}
-	return false
 }
 
 type CounterpartyNewParamsAccount struct {
@@ -557,23 +525,6 @@ const (
 func (r CounterpartyNewParamsAccountsRoutingDetailsPaymentType) IsKnown() bool {
 	switch r {
 	case CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeACH, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeAuBecs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeBacs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeBook, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCard, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeChats, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCheck, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeCrossBorder, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeDkNets, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeEft, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeGBFps, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeMasav, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeMxCcen, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNeft, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNics, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeNzBecs, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypePlElixir, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeRtp, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSeBankgirot, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSepa, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSgGiro, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeSic, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeStablecoin, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeWire, CounterpartyNewParamsAccountsRoutingDetailsPaymentTypeZengin:
-		return true
-	}
-	return false
-}
-
-// An optional type to auto-sync the counterparty to your ledger. Either `customer`
-// or `vendor`.
-type CounterpartyNewParamsLedgerType string
-
-const (
-	CounterpartyNewParamsLedgerTypeCustomer CounterpartyNewParamsLedgerType = "customer"
-	CounterpartyNewParamsLedgerTypeVendor   CounterpartyNewParamsLedgerType = "vendor"
-)
-
-func (r CounterpartyNewParamsLedgerType) IsKnown() bool {
-	switch r {
-	case CounterpartyNewParamsLedgerTypeCustomer, CounterpartyNewParamsLedgerTypeVendor:
 		return true
 	}
 	return false
