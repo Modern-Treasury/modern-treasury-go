@@ -888,6 +888,8 @@ type PaymentOrderUltimateOriginatingAccount struct {
 	DiscardedAt time.Time `json:"discarded_at" api:"nullable" format:"date-time"`
 	// The ID of the internal account that the virtual account is in.
 	InternalAccountID string `json:"internal_account_id" format:"uuid"`
+	// This field can have the runtime type of [[]InternalAccountLatestBalance].
+	LatestBalances interface{} `json:"latest_balances"`
 	// The Legal Entity associated to this account.
 	LegalEntityID string `json:"legal_entity_id" api:"nullable" format:"uuid"`
 	// The parent InternalAccount of this account.
@@ -937,6 +939,7 @@ type paymentOrderUltimateOriginatingAccountJSON struct {
 	Description               apijson.Field
 	DiscardedAt               apijson.Field
 	InternalAccountID         apijson.Field
+	LatestBalances            apijson.Field
 	LegalEntityID             apijson.Field
 	ParentAccountID           apijson.Field
 	PartyName                 apijson.Field
