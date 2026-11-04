@@ -191,8 +191,10 @@ type InternalAccount struct {
 	Title     string    `json:"title" api:"required"`
 	UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
 	// The vendor ID associated with this account.
-	VendorID string              `json:"vendor_id" api:"required,nullable" format:"string"`
-	JSON     internalAccountJSON `json:"-"`
+	VendorID string `json:"vendor_id" api:"required,nullable" format:"string"`
+	// An array of `Balance` objects from the account's latest balance report.
+	LatestBalances []InternalAccountLatestBalance `json:"latest_balances"`
+	JSON           internalAccountJSON            `json:"-"`
 }
 
 // internalAccountJSON contains the JSON metadata for the struct [InternalAccount]
@@ -224,6 +226,7 @@ type internalAccountJSON struct {
 	Title                     apijson.Field
 	UpdatedAt                 apijson.Field
 	VendorID                  apijson.Field
+	LatestBalances            apijson.Field
 	raw                       string
 	ExtraFields               map[string]apijson.Field
 }
@@ -379,6 +382,104 @@ const (
 func (r InternalAccountStatus) IsKnown() bool {
 	switch r {
 	case InternalAccountStatusActive, InternalAccountStatusClosed, InternalAccountStatusPendingActivation, InternalAccountStatusPendingClosure, InternalAccountStatusSuspended:
+		return true
+	}
+	return false
+}
+
+type InternalAccountLatestBalance struct {
+	ID string `json:"id" api:"required" format:"uuid"`
+	// The balance amount.
+	Amount int64 `json:"amount" api:"required"`
+	// The amount of the balance as a string, preserving full precision for values that
+	// may exceed safe integer limits in some languages.
+	AmountString string `json:"amount_string" api:"required"`
+	// The date on which the balance became true for the account.
+	AsOfDate time.Time `json:"as_of_date" api:"required,nullable" format:"date"`
+	// The time on which the balance became true for the account.
+	AsOfTime string `json:"as_of_time" api:"required,nullable" format:"time"`
+	// The specific type of balance reported. One of `opening_ledger`,
+	// `closing_ledger`, `current_ledger`, `opening_available`,
+	// `opening_available_next_business_day`, `closing_available`,
+	// `closing_pending_inflows`, `closing_pending_outflows`, `current_available`,
+	// 'previously_closed_book', `current_pending_inflows`, `current_pending_outflows`,
+	// or `other`.
+	BalanceType InternalAccountLatestBalancesBalanceType `json:"balance_type" api:"required"`
+	CreatedAt   time.Time                                `json:"created_at" api:"required" format:"date-time"`
+	// The currency of the balance.
+	Currency shared.Currency `json:"currency" api:"required"`
+	// This field will be true if this object exists in the live environment or false
+	// if it exists in the test environment.
+	LiveMode  bool      `json:"live_mode" api:"required"`
+	Object    string    `json:"object" api:"required"`
+	UpdatedAt time.Time `json:"updated_at" api:"required" format:"date-time"`
+	// The date on which the balance becomes available.
+	ValueDate time.Time `json:"value_date" api:"required,nullable" format:"date"`
+	// The code used by the bank when reporting this specific balance.
+	VendorCode string `json:"vendor_code" api:"required"`
+	// The type of `vendor_code` being reported. Can be one of `bai2`, `bankprov`,
+	// `bnk_dev`, `cleartouch`, `currencycloud`, `cross_river`, `dwolla`, `evolve`,
+	// `goldman_sachs`, `iso20022`, `jpmc`, `mx`, `silvergate`, `swift`, or `us_bank`.
+	VendorCodeType string                           `json:"vendor_code_type" api:"required,nullable"`
+	JSON           internalAccountLatestBalanceJSON `json:"-"`
+}
+
+// internalAccountLatestBalanceJSON contains the JSON metadata for the struct
+// [InternalAccountLatestBalance]
+type internalAccountLatestBalanceJSON struct {
+	ID             apijson.Field
+	Amount         apijson.Field
+	AmountString   apijson.Field
+	AsOfDate       apijson.Field
+	AsOfTime       apijson.Field
+	BalanceType    apijson.Field
+	CreatedAt      apijson.Field
+	Currency       apijson.Field
+	LiveMode       apijson.Field
+	Object         apijson.Field
+	UpdatedAt      apijson.Field
+	ValueDate      apijson.Field
+	VendorCode     apijson.Field
+	VendorCodeType apijson.Field
+	raw            string
+	ExtraFields    map[string]apijson.Field
+}
+
+func (r *InternalAccountLatestBalance) UnmarshalJSON(data []byte) (err error) {
+	return apijson.UnmarshalRoot(data, r)
+}
+
+func (r internalAccountLatestBalanceJSON) RawJSON() string {
+	return r.raw
+}
+
+// The specific type of balance reported. One of `opening_ledger`,
+// `closing_ledger`, `current_ledger`, `opening_available`,
+// `opening_available_next_business_day`, `closing_available`,
+// `closing_pending_inflows`, `closing_pending_outflows`, `current_available`,
+// 'previously_closed_book', `current_pending_inflows`, `current_pending_outflows`,
+// or `other`.
+type InternalAccountLatestBalancesBalanceType string
+
+const (
+	InternalAccountLatestBalancesBalanceTypeClosingAvailable                InternalAccountLatestBalancesBalanceType = "closing_available"
+	InternalAccountLatestBalancesBalanceTypeClosingLedger                   InternalAccountLatestBalancesBalanceType = "closing_ledger"
+	InternalAccountLatestBalancesBalanceTypeClosingPendingInflows           InternalAccountLatestBalancesBalanceType = "closing_pending_inflows"
+	InternalAccountLatestBalancesBalanceTypeClosingPendingOutflows          InternalAccountLatestBalancesBalanceType = "closing_pending_outflows"
+	InternalAccountLatestBalancesBalanceTypeCurrentAvailable                InternalAccountLatestBalancesBalanceType = "current_available"
+	InternalAccountLatestBalancesBalanceTypeCurrentLedger                   InternalAccountLatestBalancesBalanceType = "current_ledger"
+	InternalAccountLatestBalancesBalanceTypeCurrentPendingInflows           InternalAccountLatestBalancesBalanceType = "current_pending_inflows"
+	InternalAccountLatestBalancesBalanceTypeCurrentPendingOutflows          InternalAccountLatestBalancesBalanceType = "current_pending_outflows"
+	InternalAccountLatestBalancesBalanceTypeOpeningAvailable                InternalAccountLatestBalancesBalanceType = "opening_available"
+	InternalAccountLatestBalancesBalanceTypeOpeningAvailableNextBusinessDay InternalAccountLatestBalancesBalanceType = "opening_available_next_business_day"
+	InternalAccountLatestBalancesBalanceTypeOpeningLedger                   InternalAccountLatestBalancesBalanceType = "opening_ledger"
+	InternalAccountLatestBalancesBalanceTypeOther                           InternalAccountLatestBalancesBalanceType = "other"
+	InternalAccountLatestBalancesBalanceTypePreviouslyClosedBook            InternalAccountLatestBalancesBalanceType = "previously_closed_book"
+)
+
+func (r InternalAccountLatestBalancesBalanceType) IsKnown() bool {
+	switch r {
+	case InternalAccountLatestBalancesBalanceTypeClosingAvailable, InternalAccountLatestBalancesBalanceTypeClosingLedger, InternalAccountLatestBalancesBalanceTypeClosingPendingInflows, InternalAccountLatestBalancesBalanceTypeClosingPendingOutflows, InternalAccountLatestBalancesBalanceTypeCurrentAvailable, InternalAccountLatestBalancesBalanceTypeCurrentLedger, InternalAccountLatestBalancesBalanceTypeCurrentPendingInflows, InternalAccountLatestBalancesBalanceTypeCurrentPendingOutflows, InternalAccountLatestBalancesBalanceTypeOpeningAvailable, InternalAccountLatestBalancesBalanceTypeOpeningAvailableNextBusinessDay, InternalAccountLatestBalancesBalanceTypeOpeningLedger, InternalAccountLatestBalancesBalanceTypeOther, InternalAccountLatestBalancesBalanceTypePreviouslyClosedBook:
 		return true
 	}
 	return false
