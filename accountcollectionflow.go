@@ -149,13 +149,15 @@ func (r accountCollectionFlowJSON) RawJSON() string {
 type AccountCollectionFlowPaymentType string
 
 const (
-	AccountCollectionFlowPaymentTypeACH  AccountCollectionFlowPaymentType = "ach"
-	AccountCollectionFlowPaymentTypeWire AccountCollectionFlowPaymentType = "wire"
+	AccountCollectionFlowPaymentTypeACH   AccountCollectionFlowPaymentType = "ach"
+	AccountCollectionFlowPaymentTypeWire  AccountCollectionFlowPaymentType = "wire"
+	AccountCollectionFlowPaymentTypeCheck AccountCollectionFlowPaymentType = "check"
+	AccountCollectionFlowPaymentTypeCard  AccountCollectionFlowPaymentType = "card"
 )
 
 func (r AccountCollectionFlowPaymentType) IsKnown() bool {
 	switch r {
-	case AccountCollectionFlowPaymentTypeACH, AccountCollectionFlowPaymentTypeWire:
+	case AccountCollectionFlowPaymentTypeACH, AccountCollectionFlowPaymentTypeWire, AccountCollectionFlowPaymentTypeCheck, AccountCollectionFlowPaymentTypeCard:
 		return true
 	}
 	return false
