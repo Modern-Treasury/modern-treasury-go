@@ -101,6 +101,10 @@ type EmbeddableFlow struct {
 	ClientToken string    `json:"client_token" api:"required"`
 	CreatedAt   time.Time `json:"created_at" api:"required" format:"date-time"`
 	ExpiresAt   time.Time `json:"expires_at" api:"required" format:"date-time"`
+	// The Modern Treasury hosted URL for completing the flow. Only present for
+	// legal_entity_onboarding flows. Each response mints a fresh link that expires
+	// after 7 days.
+	HostedURL string `json:"hosted_url" api:"required,nullable" format:"uri"`
 	// This field will be true if this object exists in the live environment or false
 	// if it exists in the test environment.
 	LiveMode bool                  `json:"live_mode" api:"required"`
@@ -119,6 +123,7 @@ type embeddableFlowJSON struct {
 	ClientToken apijson.Field
 	CreatedAt   apijson.Field
 	ExpiresAt   apijson.Field
+	HostedURL   apijson.Field
 	LiveMode    apijson.Field
 	Object      apijson.Field
 	Options     apijson.Field
@@ -155,6 +160,7 @@ type EmbeddableFlowOptions struct {
 	ReceivingAccountID string      `json:"receiving_account_id" api:"nullable" format:"uuid"`
 	// This field can have the runtime type of [[]string].
 	ReceivingCountries    interface{}               `json:"receiving_countries"`
+	ReturnURL             string                    `json:"return_url" format:"uri"`
 	SelectedEffectiveDate time.Time                 `json:"selected_effective_date" api:"nullable" format:"date"`
 	Type                  EmbeddableFlowOptionsType `json:"type"`
 	JSON                  embeddableFlowOptionsJSON `json:"-"`
@@ -179,6 +185,7 @@ type embeddableFlowOptionsJSON struct {
 	PaymentTypes                   apijson.Field
 	ReceivingAccountID             apijson.Field
 	ReceivingCountries             apijson.Field
+	ReturnURL                      apijson.Field
 	SelectedEffectiveDate          apijson.Field
 	Type                           apijson.Field
 	raw                            string
@@ -235,6 +242,7 @@ func init() {
 type EmbeddableFlowOptionsObject struct {
 	LegalEntityID string                          `json:"legal_entity_id" api:"required" format:"uuid"`
 	Type          EmbeddableFlowOptionsObjectType `json:"type" api:"required"`
+	ReturnURL     string                          `json:"return_url" format:"uri"`
 	JSON          embeddableFlowOptionsObjectJSON `json:"-"`
 }
 
@@ -243,6 +251,7 @@ type EmbeddableFlowOptionsObject struct {
 type embeddableFlowOptionsObjectJSON struct {
 	LegalEntityID apijson.Field
 	Type          apijson.Field
+	ReturnURL     apijson.Field
 	raw           string
 	ExtraFields   map[string]apijson.Field
 }
@@ -375,10 +384,13 @@ type EmbeddableFlowNewParamsOptions struct {
 	// they are selecting a payment `effective_date`.
 	DueDate param.Field[time.Time] `json:"due_date" format:"date"`
 	// Required. The ID of one of your organization's internal accounts.
-	OriginatingAccountID param.Field[string]                             `json:"originating_account_id" format:"uuid"`
-	PaymentTypes         param.Field[interface{}]                        `json:"payment_types"`
-	ReceivingCountries   param.Field[interface{}]                        `json:"receiving_countries"`
-	Type                 param.Field[EmbeddableFlowNewParamsOptionsType] `json:"type"`
+	OriginatingAccountID param.Field[string]      `json:"originating_account_id" format:"uuid"`
+	PaymentTypes         param.Field[interface{}] `json:"payment_types"`
+	ReceivingCountries   param.Field[interface{}] `json:"receiving_countries"`
+	// The URL you want your customer redirected to upon completing the flow. This must
+	// be a valid HTTPS URL if set.
+	ReturnURL param.Field[string]                             `json:"return_url" format:"uri"`
+	Type      param.Field[EmbeddableFlowNewParamsOptionsType] `json:"type"`
 }
 
 func (r EmbeddableFlowNewParamsOptions) MarshalJSON() (data []byte, err error) {
@@ -391,7 +403,7 @@ func (r EmbeddableFlowNewParamsOptions) implementsEmbeddableFlowNewParamsOptions
 //
 // Satisfied by [EmbeddableFlowNewParamsOptionsAccountCollectionFlowCreateRequest],
 // [EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequest],
-// [EmbeddableFlowNewParamsOptionsType], [EmbeddableFlowNewParamsOptions].
+// [EmbeddableFlowNewParamsOptionsObject], [EmbeddableFlowNewParamsOptions].
 type EmbeddableFlowNewParamsOptionsUnion interface {
 	implementsEmbeddableFlowNewParamsOptionsUnion()
 }
@@ -486,25 +498,28 @@ func (r EmbeddableFlowNewParamsOptionsPaymentFlowCreateRequestDirection) IsKnown
 	return false
 }
 
-type EmbeddableFlowNewParamsOptionsType struct {
-	Type param.Field[EmbeddableFlowNewParamsOptionsTypeType] `json:"type" api:"required"`
+type EmbeddableFlowNewParamsOptionsObject struct {
+	Type param.Field[EmbeddableFlowNewParamsOptionsObjectType] `json:"type" api:"required"`
+	// The URL you want your customer redirected to upon completing the flow. This must
+	// be a valid HTTPS URL if set.
+	ReturnURL param.Field[string] `json:"return_url" format:"uri"`
 }
 
-func (r EmbeddableFlowNewParamsOptionsType) MarshalJSON() (data []byte, err error) {
+func (r EmbeddableFlowNewParamsOptionsObject) MarshalJSON() (data []byte, err error) {
 	return apijson.MarshalRoot(r)
 }
 
-func (r EmbeddableFlowNewParamsOptionsType) implementsEmbeddableFlowNewParamsOptionsUnion() {}
+func (r EmbeddableFlowNewParamsOptionsObject) implementsEmbeddableFlowNewParamsOptionsUnion() {}
 
-type EmbeddableFlowNewParamsOptionsTypeType string
+type EmbeddableFlowNewParamsOptionsObjectType string
 
 const (
-	EmbeddableFlowNewParamsOptionsTypeTypeIndividual EmbeddableFlowNewParamsOptionsTypeType = "individual"
+	EmbeddableFlowNewParamsOptionsObjectTypeIndividual EmbeddableFlowNewParamsOptionsObjectType = "individual"
 )
 
-func (r EmbeddableFlowNewParamsOptionsTypeType) IsKnown() bool {
+func (r EmbeddableFlowNewParamsOptionsObjectType) IsKnown() bool {
 	switch r {
-	case EmbeddableFlowNewParamsOptionsTypeTypeIndividual:
+	case EmbeddableFlowNewParamsOptionsObjectTypeIndividual:
 		return true
 	}
 	return false
@@ -522,6 +537,20 @@ const (
 func (r EmbeddableFlowNewParamsOptionsDirection) IsKnown() bool {
 	switch r {
 	case EmbeddableFlowNewParamsOptionsDirectionCredit, EmbeddableFlowNewParamsOptionsDirectionDebit:
+		return true
+	}
+	return false
+}
+
+type EmbeddableFlowNewParamsOptionsType string
+
+const (
+	EmbeddableFlowNewParamsOptionsTypeIndividual EmbeddableFlowNewParamsOptionsType = "individual"
+)
+
+func (r EmbeddableFlowNewParamsOptionsType) IsKnown() bool {
+	switch r {
+	case EmbeddableFlowNewParamsOptionsTypeIndividual:
 		return true
 	}
 	return false
