@@ -168,6 +168,7 @@ const (
 	CaseRequestedActionsCategoryOnboardingArticlesOfIncorporationFailure      CaseRequestedActionsCategory = "onboarding_articles_of_incorporation_failure"
 	CaseRequestedActionsCategoryOnboardingBusinessRegistryVerificationFailure CaseRequestedActionsCategory = "onboarding_business_registry_verification_failure"
 	CaseRequestedActionsCategoryOnboardingDatabaseFailure                     CaseRequestedActionsCategory = "onboarding_database_failure"
+	CaseRequestedActionsCategoryOnboardingGovernmentIDFailure                 CaseRequestedActionsCategory = "onboarding_government_id_failure"
 	CaseRequestedActionsCategoryOnboardingProofOfAddressFailure               CaseRequestedActionsCategory = "onboarding_proof_of_address_failure"
 	CaseRequestedActionsCategoryOnboardingSsnCheckFailure                     CaseRequestedActionsCategory = "onboarding_ssn_check_failure"
 	CaseRequestedActionsCategoryOnboardingTinCheckFailure                     CaseRequestedActionsCategory = "onboarding_tin_check_failure"
@@ -175,7 +176,7 @@ const (
 
 func (r CaseRequestedActionsCategory) IsKnown() bool {
 	switch r {
-	case CaseRequestedActionsCategoryOnboardingArticlesOfIncorporationFailure, CaseRequestedActionsCategoryOnboardingBusinessRegistryVerificationFailure, CaseRequestedActionsCategoryOnboardingDatabaseFailure, CaseRequestedActionsCategoryOnboardingProofOfAddressFailure, CaseRequestedActionsCategoryOnboardingSsnCheckFailure, CaseRequestedActionsCategoryOnboardingTinCheckFailure:
+	case CaseRequestedActionsCategoryOnboardingArticlesOfIncorporationFailure, CaseRequestedActionsCategoryOnboardingBusinessRegistryVerificationFailure, CaseRequestedActionsCategoryOnboardingDatabaseFailure, CaseRequestedActionsCategoryOnboardingGovernmentIDFailure, CaseRequestedActionsCategoryOnboardingProofOfAddressFailure, CaseRequestedActionsCategoryOnboardingSsnCheckFailure, CaseRequestedActionsCategoryOnboardingTinCheckFailure:
 		return true
 	}
 	return false
@@ -187,13 +188,14 @@ type CaseRequestedActionsField string
 const (
 	CaseRequestedActionsFieldArticlesOfIncorporation CaseRequestedActionsField = "articles_of_incorporation"
 	CaseRequestedActionsFieldEinLetter               CaseRequestedActionsField = "ein_letter"
+	CaseRequestedActionsFieldGovernmentID            CaseRequestedActionsField = "government_id"
 	CaseRequestedActionsFieldLegalEntityDetails      CaseRequestedActionsField = "legal_entity_details"
 	CaseRequestedActionsFieldProofOfAddress          CaseRequestedActionsField = "proof_of_address"
 )
 
 func (r CaseRequestedActionsField) IsKnown() bool {
 	switch r {
-	case CaseRequestedActionsFieldArticlesOfIncorporation, CaseRequestedActionsFieldEinLetter, CaseRequestedActionsFieldLegalEntityDetails, CaseRequestedActionsFieldProofOfAddress:
+	case CaseRequestedActionsFieldArticlesOfIncorporation, CaseRequestedActionsFieldEinLetter, CaseRequestedActionsFieldGovernmentID, CaseRequestedActionsFieldLegalEntityDetails, CaseRequestedActionsFieldProofOfAddress:
 		return true
 	}
 	return false
@@ -249,6 +251,7 @@ const (
 	CaseResolvedActionsCategoryOnboardingArticlesOfIncorporationFailure      CaseResolvedActionsCategory = "onboarding_articles_of_incorporation_failure"
 	CaseResolvedActionsCategoryOnboardingBusinessRegistryVerificationFailure CaseResolvedActionsCategory = "onboarding_business_registry_verification_failure"
 	CaseResolvedActionsCategoryOnboardingDatabaseFailure                     CaseResolvedActionsCategory = "onboarding_database_failure"
+	CaseResolvedActionsCategoryOnboardingGovernmentIDFailure                 CaseResolvedActionsCategory = "onboarding_government_id_failure"
 	CaseResolvedActionsCategoryOnboardingProofOfAddressFailure               CaseResolvedActionsCategory = "onboarding_proof_of_address_failure"
 	CaseResolvedActionsCategoryOnboardingSsnCheckFailure                     CaseResolvedActionsCategory = "onboarding_ssn_check_failure"
 	CaseResolvedActionsCategoryOnboardingTinCheckFailure                     CaseResolvedActionsCategory = "onboarding_tin_check_failure"
@@ -256,7 +259,7 @@ const (
 
 func (r CaseResolvedActionsCategory) IsKnown() bool {
 	switch r {
-	case CaseResolvedActionsCategoryOnboardingArticlesOfIncorporationFailure, CaseResolvedActionsCategoryOnboardingBusinessRegistryVerificationFailure, CaseResolvedActionsCategoryOnboardingDatabaseFailure, CaseResolvedActionsCategoryOnboardingProofOfAddressFailure, CaseResolvedActionsCategoryOnboardingSsnCheckFailure, CaseResolvedActionsCategoryOnboardingTinCheckFailure:
+	case CaseResolvedActionsCategoryOnboardingArticlesOfIncorporationFailure, CaseResolvedActionsCategoryOnboardingBusinessRegistryVerificationFailure, CaseResolvedActionsCategoryOnboardingDatabaseFailure, CaseResolvedActionsCategoryOnboardingGovernmentIDFailure, CaseResolvedActionsCategoryOnboardingProofOfAddressFailure, CaseResolvedActionsCategoryOnboardingSsnCheckFailure, CaseResolvedActionsCategoryOnboardingTinCheckFailure:
 		return true
 	}
 	return false
@@ -268,13 +271,14 @@ type CaseResolvedActionsField string
 const (
 	CaseResolvedActionsFieldArticlesOfIncorporation CaseResolvedActionsField = "articles_of_incorporation"
 	CaseResolvedActionsFieldEinLetter               CaseResolvedActionsField = "ein_letter"
+	CaseResolvedActionsFieldGovernmentID            CaseResolvedActionsField = "government_id"
 	CaseResolvedActionsFieldLegalEntityDetails      CaseResolvedActionsField = "legal_entity_details"
 	CaseResolvedActionsFieldProofOfAddress          CaseResolvedActionsField = "proof_of_address"
 )
 
 func (r CaseResolvedActionsField) IsKnown() bool {
 	switch r {
-	case CaseResolvedActionsFieldArticlesOfIncorporation, CaseResolvedActionsFieldEinLetter, CaseResolvedActionsFieldLegalEntityDetails, CaseResolvedActionsFieldProofOfAddress:
+	case CaseResolvedActionsFieldArticlesOfIncorporation, CaseResolvedActionsFieldEinLetter, CaseResolvedActionsFieldGovernmentID, CaseResolvedActionsFieldLegalEntityDetails, CaseResolvedActionsFieldProofOfAddress:
 		return true
 	}
 	return false
