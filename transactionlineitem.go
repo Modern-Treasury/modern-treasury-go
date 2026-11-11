@@ -118,8 +118,8 @@ type TransactionLineItem struct {
 	// Describes whether this line item should be counted towards the corresponding
 	// transaction’s reconciliation.
 	Reconcilable bool `json:"reconcilable" api:"required"`
-	// The ID of the reconciliation group this line item belongs to, otherwise `null`.
-	ReconciliationGroupID string `json:"reconciliation_group_id" api:"required,nullable"`
+	// The ID of the reconciliation group this line item belongs to.
+	ReconciliationGroupID string `json:"reconciliation_group_id" api:"required"`
 	// If a matching object exists in Modern Treasury, the ID will be populated here,
 	// otherwise `null`.
 	TransactableID string `json:"transactable_id" api:"required,nullable"`
