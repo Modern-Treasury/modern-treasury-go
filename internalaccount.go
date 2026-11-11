@@ -96,21 +96,6 @@ func (r *InternalAccountService) ListAutoPaging(ctx context.Context, query Inter
 	return pagination.NewPageAutoPager(r.List(ctx, query, opts...))
 }
 
-// This endpoint has been deprecated. Request closure with PATCH
-// /api/internal_accounts/{id} and status: "pending_closure".
-//
-// Deprecated: deprecated
-func (r *InternalAccountService) RequestClosure(ctx context.Context, id string, opts ...option.RequestOption) (res *InternalAccount, err error) {
-	opts = slices.Concat(r.Options, opts)
-	if id == "" {
-		err = errors.New("missing required id parameter")
-		return nil, err
-	}
-	path := fmt.Sprintf("api/internal_accounts/%s/request_closure", id)
-	err = requestconfig.ExecuteNewRequest(ctx, http.MethodPost, path, nil, &res, opts...)
-	return res, err
-}
-
 // update account_capability
 func (r *InternalAccountService) UpdateAccountCapability(ctx context.Context, internalAccountID string, id string, body InternalAccountUpdateAccountCapabilityParams, opts ...option.RequestOption) (res *InternalAccountUpdateAccountCapabilityResponse, err error) {
 	opts = slices.Concat(r.Options, opts)
