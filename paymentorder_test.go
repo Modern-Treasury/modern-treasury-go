@@ -134,7 +134,8 @@ func TestPaymentOrderNewWithOptionalParams(t *testing.T) {
 				ContactIdentifier:     moderntreasury.F("contact_identifier"),
 				ContactIdentifierType: moderntreasury.F(moderntreasury.ContactDetailCreateRequestContactIdentifierTypeEmail),
 			}}),
-			ExternalID: moderntreasury.F("external_id"),
+			CounterpartyID: moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
+			ExternalID:     moderntreasury.F("external_id"),
 			LedgerAccount: moderntreasury.F(shared.LedgerAccountCreateRequestParam{
 				Currency:                 moderntreasury.F("currency"),
 				LedgerID:                 moderntreasury.F("182bd5e5-6e1a-4fe4-a799-aa6d9a6ab26e"),
