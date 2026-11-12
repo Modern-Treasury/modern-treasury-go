@@ -281,6 +281,7 @@ func (r ChildLegalEntityCreateDocumentParam) MarshalJSON() (data []byte, err err
 type ChildLegalEntityCreateDocumentsDocumentType string
 
 const (
+	ChildLegalEntityCreateDocumentsDocumentTypeAgentAuthorizationLetter  ChildLegalEntityCreateDocumentsDocumentType = "agent_authorization_letter"
 	ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation   ChildLegalEntityCreateDocumentsDocumentType = "articles_of_incorporation"
 	ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding ChildLegalEntityCreateDocumentsDocumentType = "certificate_of_good_standing"
 	ChildLegalEntityCreateDocumentsDocumentTypeEinLetter                 ChildLegalEntityCreateDocumentsDocumentType = "ein_letter"
@@ -292,7 +293,7 @@ const (
 
 func (r ChildLegalEntityCreateDocumentsDocumentType) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation, ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding, ChildLegalEntityCreateDocumentsDocumentTypeEinLetter, ChildLegalEntityCreateDocumentsDocumentTypeGeneric, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationFront, ChildLegalEntityCreateDocumentsDocumentTypeProofOfAddress:
+	case ChildLegalEntityCreateDocumentsDocumentTypeAgentAuthorizationLetter, ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation, ChildLegalEntityCreateDocumentsDocumentTypeCertificateOfGoodStanding, ChildLegalEntityCreateDocumentsDocumentTypeEinLetter, ChildLegalEntityCreateDocumentsDocumentTypeGeneric, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationBack, ChildLegalEntityCreateDocumentsDocumentTypeIdentificationFront, ChildLegalEntityCreateDocumentsDocumentTypeProofOfAddress:
 		return true
 	}
 	return false
@@ -319,6 +320,7 @@ type ChildLegalEntityCreateLegalStructure string
 
 const (
 	ChildLegalEntityCreateLegalStructureCorporation        ChildLegalEntityCreateLegalStructure = "corporation"
+	ChildLegalEntityCreateLegalStructureGovernmentEntity   ChildLegalEntityCreateLegalStructure = "government_entity"
 	ChildLegalEntityCreateLegalStructureLlc                ChildLegalEntityCreateLegalStructure = "llc"
 	ChildLegalEntityCreateLegalStructureNonProfit          ChildLegalEntityCreateLegalStructure = "non_profit"
 	ChildLegalEntityCreateLegalStructurePartnership        ChildLegalEntityCreateLegalStructure = "partnership"
@@ -328,7 +330,7 @@ const (
 
 func (r ChildLegalEntityCreateLegalStructure) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityCreateLegalStructureCorporation, ChildLegalEntityCreateLegalStructureLlc, ChildLegalEntityCreateLegalStructureNonProfit, ChildLegalEntityCreateLegalStructurePartnership, ChildLegalEntityCreateLegalStructureSoleProprietorship, ChildLegalEntityCreateLegalStructureTrust:
+	case ChildLegalEntityCreateLegalStructureCorporation, ChildLegalEntityCreateLegalStructureGovernmentEntity, ChildLegalEntityCreateLegalStructureLlc, ChildLegalEntityCreateLegalStructureNonProfit, ChildLegalEntityCreateLegalStructurePartnership, ChildLegalEntityCreateLegalStructureSoleProprietorship, ChildLegalEntityCreateLegalStructureTrust:
 		return true
 	}
 	return false
@@ -998,6 +1000,7 @@ func (r IdentificationCreateRequestDocumentParam) MarshalJSON() (data []byte, er
 type IdentificationCreateRequestDocumentsDocumentType string
 
 const (
+	IdentificationCreateRequestDocumentsDocumentTypeAgentAuthorizationLetter  IdentificationCreateRequestDocumentsDocumentType = "agent_authorization_letter"
 	IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation   IdentificationCreateRequestDocumentsDocumentType = "articles_of_incorporation"
 	IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding IdentificationCreateRequestDocumentsDocumentType = "certificate_of_good_standing"
 	IdentificationCreateRequestDocumentsDocumentTypeEinLetter                 IdentificationCreateRequestDocumentsDocumentType = "ein_letter"
@@ -1009,7 +1012,7 @@ const (
 
 func (r IdentificationCreateRequestDocumentsDocumentType) IsKnown() bool {
 	switch r {
-	case IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation, IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding, IdentificationCreateRequestDocumentsDocumentTypeEinLetter, IdentificationCreateRequestDocumentsDocumentTypeGeneric, IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack, IdentificationCreateRequestDocumentsDocumentTypeIdentificationFront, IdentificationCreateRequestDocumentsDocumentTypeProofOfAddress:
+	case IdentificationCreateRequestDocumentsDocumentTypeAgentAuthorizationLetter, IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation, IdentificationCreateRequestDocumentsDocumentTypeCertificateOfGoodStanding, IdentificationCreateRequestDocumentsDocumentTypeEinLetter, IdentificationCreateRequestDocumentsDocumentTypeGeneric, IdentificationCreateRequestDocumentsDocumentTypeIdentificationBack, IdentificationCreateRequestDocumentsDocumentTypeIdentificationFront, IdentificationCreateRequestDocumentsDocumentTypeProofOfAddress:
 		return true
 	}
 	return false
