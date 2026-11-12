@@ -1520,6 +1520,7 @@ type PaymentOrderNewParamsReceivingAccount struct {
 	// Can be `checking`, `savings` or `other`.
 	AccountType    param.Field[ExternalAccountType]               `json:"account_type"`
 	ContactDetails param.Field[[]ContactDetailCreateRequestParam] `json:"contact_details"`
+	CounterpartyID param.Field[string]                            `json:"counterparty_id" format:"uuid"`
 	// An optional user-defined 180 character unique identifier.
 	ExternalID param.Field[string] `json:"external_id"`
 	// Specifies a ledger account object that will be created with the external
