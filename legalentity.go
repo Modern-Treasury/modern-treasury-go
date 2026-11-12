@@ -383,6 +383,7 @@ type LegalEntityLegalStructure string
 
 const (
 	LegalEntityLegalStructureCorporation        LegalEntityLegalStructure = "corporation"
+	LegalEntityLegalStructureGovernmentEntity   LegalEntityLegalStructure = "government_entity"
 	LegalEntityLegalStructureLlc                LegalEntityLegalStructure = "llc"
 	LegalEntityLegalStructureNonProfit          LegalEntityLegalStructure = "non_profit"
 	LegalEntityLegalStructurePartnership        LegalEntityLegalStructure = "partnership"
@@ -392,7 +393,7 @@ const (
 
 func (r LegalEntityLegalStructure) IsKnown() bool {
 	switch r {
-	case LegalEntityLegalStructureCorporation, LegalEntityLegalStructureLlc, LegalEntityLegalStructureNonProfit, LegalEntityLegalStructurePartnership, LegalEntityLegalStructureSoleProprietorship, LegalEntityLegalStructureTrust:
+	case LegalEntityLegalStructureCorporation, LegalEntityLegalStructureGovernmentEntity, LegalEntityLegalStructureLlc, LegalEntityLegalStructureNonProfit, LegalEntityLegalStructurePartnership, LegalEntityLegalStructureSoleProprietorship, LegalEntityLegalStructureTrust:
 		return true
 	}
 	return false
@@ -664,6 +665,7 @@ func (r LegalEntityNewParamsDocument) MarshalJSON() (data []byte, err error) {
 type LegalEntityNewParamsDocumentsDocumentType string
 
 const (
+	LegalEntityNewParamsDocumentsDocumentTypeAgentAuthorizationLetter  LegalEntityNewParamsDocumentsDocumentType = "agent_authorization_letter"
 	LegalEntityNewParamsDocumentsDocumentTypeArticlesOfIncorporation   LegalEntityNewParamsDocumentsDocumentType = "articles_of_incorporation"
 	LegalEntityNewParamsDocumentsDocumentTypeCertificateOfGoodStanding LegalEntityNewParamsDocumentsDocumentType = "certificate_of_good_standing"
 	LegalEntityNewParamsDocumentsDocumentTypeEinLetter                 LegalEntityNewParamsDocumentsDocumentType = "ein_letter"
@@ -675,7 +677,7 @@ const (
 
 func (r LegalEntityNewParamsDocumentsDocumentType) IsKnown() bool {
 	switch r {
-	case LegalEntityNewParamsDocumentsDocumentTypeArticlesOfIncorporation, LegalEntityNewParamsDocumentsDocumentTypeCertificateOfGoodStanding, LegalEntityNewParamsDocumentsDocumentTypeEinLetter, LegalEntityNewParamsDocumentsDocumentTypeGeneric, LegalEntityNewParamsDocumentsDocumentTypeIdentificationBack, LegalEntityNewParamsDocumentsDocumentTypeIdentificationFront, LegalEntityNewParamsDocumentsDocumentTypeProofOfAddress:
+	case LegalEntityNewParamsDocumentsDocumentTypeAgentAuthorizationLetter, LegalEntityNewParamsDocumentsDocumentTypeArticlesOfIncorporation, LegalEntityNewParamsDocumentsDocumentTypeCertificateOfGoodStanding, LegalEntityNewParamsDocumentsDocumentTypeEinLetter, LegalEntityNewParamsDocumentsDocumentTypeGeneric, LegalEntityNewParamsDocumentsDocumentTypeIdentificationBack, LegalEntityNewParamsDocumentsDocumentTypeIdentificationFront, LegalEntityNewParamsDocumentsDocumentTypeProofOfAddress:
 		return true
 	}
 	return false
@@ -686,6 +688,7 @@ type LegalEntityNewParamsLegalStructure string
 
 const (
 	LegalEntityNewParamsLegalStructureCorporation        LegalEntityNewParamsLegalStructure = "corporation"
+	LegalEntityNewParamsLegalStructureGovernmentEntity   LegalEntityNewParamsLegalStructure = "government_entity"
 	LegalEntityNewParamsLegalStructureLlc                LegalEntityNewParamsLegalStructure = "llc"
 	LegalEntityNewParamsLegalStructureNonProfit          LegalEntityNewParamsLegalStructure = "non_profit"
 	LegalEntityNewParamsLegalStructurePartnership        LegalEntityNewParamsLegalStructure = "partnership"
@@ -695,7 +698,7 @@ const (
 
 func (r LegalEntityNewParamsLegalStructure) IsKnown() bool {
 	switch r {
-	case LegalEntityNewParamsLegalStructureCorporation, LegalEntityNewParamsLegalStructureLlc, LegalEntityNewParamsLegalStructureNonProfit, LegalEntityNewParamsLegalStructurePartnership, LegalEntityNewParamsLegalStructureSoleProprietorship, LegalEntityNewParamsLegalStructureTrust:
+	case LegalEntityNewParamsLegalStructureCorporation, LegalEntityNewParamsLegalStructureGovernmentEntity, LegalEntityNewParamsLegalStructureLlc, LegalEntityNewParamsLegalStructureNonProfit, LegalEntityNewParamsLegalStructurePartnership, LegalEntityNewParamsLegalStructureSoleProprietorship, LegalEntityNewParamsLegalStructureTrust:
 		return true
 	}
 	return false
@@ -880,6 +883,7 @@ type LegalEntityUpdateParamsLegalStructure string
 
 const (
 	LegalEntityUpdateParamsLegalStructureCorporation        LegalEntityUpdateParamsLegalStructure = "corporation"
+	LegalEntityUpdateParamsLegalStructureGovernmentEntity   LegalEntityUpdateParamsLegalStructure = "government_entity"
 	LegalEntityUpdateParamsLegalStructureLlc                LegalEntityUpdateParamsLegalStructure = "llc"
 	LegalEntityUpdateParamsLegalStructureNonProfit          LegalEntityUpdateParamsLegalStructure = "non_profit"
 	LegalEntityUpdateParamsLegalStructurePartnership        LegalEntityUpdateParamsLegalStructure = "partnership"
@@ -889,7 +893,7 @@ const (
 
 func (r LegalEntityUpdateParamsLegalStructure) IsKnown() bool {
 	switch r {
-	case LegalEntityUpdateParamsLegalStructureCorporation, LegalEntityUpdateParamsLegalStructureLlc, LegalEntityUpdateParamsLegalStructureNonProfit, LegalEntityUpdateParamsLegalStructurePartnership, LegalEntityUpdateParamsLegalStructureSoleProprietorship, LegalEntityUpdateParamsLegalStructureTrust:
+	case LegalEntityUpdateParamsLegalStructureCorporation, LegalEntityUpdateParamsLegalStructureGovernmentEntity, LegalEntityUpdateParamsLegalStructureLlc, LegalEntityUpdateParamsLegalStructureNonProfit, LegalEntityUpdateParamsLegalStructurePartnership, LegalEntityUpdateParamsLegalStructureSoleProprietorship, LegalEntityUpdateParamsLegalStructureTrust:
 		return true
 	}
 	return false

@@ -53,6 +53,9 @@ type ChildLegalEntityCreateDocumentParam = shared.ChildLegalEntityCreateDocument
 type ChildLegalEntityCreateDocumentsDocumentType = shared.ChildLegalEntityCreateDocumentsDocumentType
 
 // This is an alias to an internal value.
+const ChildLegalEntityCreateDocumentsDocumentTypeAgentAuthorizationLetter = shared.ChildLegalEntityCreateDocumentsDocumentTypeAgentAuthorizationLetter
+
+// This is an alias to an internal value.
 const ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation = shared.ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation
 
 // This is an alias to an internal value.
@@ -91,6 +94,9 @@ type ChildLegalEntityCreateLegalStructure = shared.ChildLegalEntityCreateLegalSt
 
 // This is an alias to an internal value.
 const ChildLegalEntityCreateLegalStructureCorporation = shared.ChildLegalEntityCreateLegalStructureCorporation
+
+// This is an alias to an internal value.
+const ChildLegalEntityCreateLegalStructureGovernmentEntity = shared.ChildLegalEntityCreateLegalStructureGovernmentEntity
 
 // This is an alias to an internal value.
 const ChildLegalEntityCreateLegalStructureLlc = shared.ChildLegalEntityCreateLegalStructureLlc
@@ -1462,6 +1468,9 @@ type IdentificationCreateRequestDocumentParam = shared.IdentificationCreateReque
 //
 // This is an alias to an internal type.
 type IdentificationCreateRequestDocumentsDocumentType = shared.IdentificationCreateRequestDocumentsDocumentType
+
+// This is an alias to an internal value.
+const IdentificationCreateRequestDocumentsDocumentTypeAgentAuthorizationLetter = shared.IdentificationCreateRequestDocumentsDocumentTypeAgentAuthorizationLetter
 
 // This is an alias to an internal value.
 const IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation = shared.IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation

@@ -63,7 +63,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 			DateFormed:             moderntreasury.F(time.Now()),
 			DateOfBirth:            moderntreasury.F(time.Now()),
 			Documents: moderntreasury.F([]moderntreasury.ConnectionLegalEntityNewParamsLegalEntityDocument{{
-				DocumentType: moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeArticlesOfIncorporation),
+				DocumentType: moderntreasury.F(moderntreasury.ConnectionLegalEntityNewParamsLegalEntityDocumentsDocumentTypeAgentAuthorizationLetter),
 				FileData:     moderntreasury.F("file_data"),
 				Filename:     moderntreasury.F("filename"),
 			}}),
@@ -76,7 +76,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 				IDNumber: moderntreasury.F("id_number"),
 				IDType:   moderntreasury.F(shared.IdentificationCreateRequestIDTypeAdNrt),
 				Documents: moderntreasury.F([]shared.IdentificationCreateRequestDocumentParam{{
-					DocumentType: moderntreasury.F(shared.IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation),
+					DocumentType: moderntreasury.F(shared.IdentificationCreateRequestDocumentsDocumentTypeAgentAuthorizationLetter),
 					FileData:     moderntreasury.F("file_data"),
 					Filename:     moderntreasury.F("filename"),
 				}}),
@@ -131,7 +131,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 					DateFormed:             moderntreasury.F(time.Now()),
 					DateOfBirth:            moderntreasury.F(time.Now()),
 					Documents: moderntreasury.F([]shared.ChildLegalEntityCreateDocumentParam{{
-						DocumentType: moderntreasury.F(shared.ChildLegalEntityCreateDocumentsDocumentTypeArticlesOfIncorporation),
+						DocumentType: moderntreasury.F(shared.ChildLegalEntityCreateDocumentsDocumentTypeAgentAuthorizationLetter),
 						FileData:     moderntreasury.F("file_data"),
 						Filename:     moderntreasury.F("filename"),
 					}}),
@@ -144,7 +144,7 @@ func TestConnectionLegalEntityNewWithOptionalParams(t *testing.T) {
 						IDNumber: moderntreasury.F("id_number"),
 						IDType:   moderntreasury.F(shared.IdentificationCreateRequestIDTypeAdNrt),
 						Documents: moderntreasury.F([]shared.IdentificationCreateRequestDocumentParam{{
-							DocumentType: moderntreasury.F(shared.IdentificationCreateRequestDocumentsDocumentTypeArticlesOfIncorporation),
+							DocumentType: moderntreasury.F(shared.IdentificationCreateRequestDocumentsDocumentTypeAgentAuthorizationLetter),
 							FileData:     moderntreasury.F("file_data"),
 							Filename:     moderntreasury.F("filename"),
 						}}),
