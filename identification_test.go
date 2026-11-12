@@ -32,7 +32,7 @@ func TestIdentificationNewWithOptionalParams(t *testing.T) {
 		IDType:        moderntreasury.F(moderntreasury.IdentificationNewParamsIDTypeAdNrt),
 		LegalEntityID: moderntreasury.F("legal_entity_id"),
 		Documents: moderntreasury.F([]moderntreasury.IdentificationNewParamsDocument{{
-			DocumentType: moderntreasury.F(moderntreasury.IdentificationNewParamsDocumentsDocumentTypeArticlesOfIncorporation),
+			DocumentType: moderntreasury.F(moderntreasury.IdentificationNewParamsDocumentsDocumentTypeAgentAuthorizationLetter),
 			FileData:     moderntreasury.F("file_data"),
 			Filename:     moderntreasury.F("filename"),
 		}}),
