@@ -1,5 +1,31 @@
 # Changelog
 
+## [2.64.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.63.0...v2.64.0) (2026-11-13)
+
+
+### Features
+
+* regenerate SDKs from 11f2562009a4940f5a37d51396048ef2951c5e0f ([322e508](https://github.com/Modern-Treasury/modern-treasury-go/commit/322e508c76536667839bc1d753daa319d9b73d46))
+* regenerate SDKs from 176269eb5098cfc524613566c8e9ea10851696ed ([7f5d4c4](https://github.com/Modern-Treasury/modern-treasury-go/commit/7f5d4c43af17e173b8eb4525616fa75085fb01d7))
+* regenerate SDKs from 1b98627bc3fb6fba36199f351d17a128b60bc444 ([7f68416](https://github.com/Modern-Treasury/modern-treasury-go/commit/7f68416bb8bf59648835272bb693969b3451b2b5))
+* regenerate SDKs from 220853728a2987cdb8532eacd4eb46a269dc34ad ([a864261](https://github.com/Modern-Treasury/modern-treasury-go/commit/a864261da0239d07d28d322a446be4ae7e28a5ad))
+* regenerate SDKs from 2452f7368bd3790a6909c655cd13f257d2810a2e ([3930062](https://github.com/Modern-Treasury/modern-treasury-go/commit/3930062a7c587d36f63a844cea6cfcbbfda83730))
+* regenerate SDKs from 459a937930048f5badaf1a4533a89dd01bdd80b4 ([ccd5576](https://github.com/Modern-Treasury/modern-treasury-go/commit/ccd557663b489b322283b05ac0b090e991aef1a1))
+* regenerate SDKs from 5beabb2d52a32c2adc15de73b048899afb5444da ([b21cef1](https://github.com/Modern-Treasury/modern-treasury-go/commit/b21cef188504c991016240308b71a927dfdd7448))
+* regenerate SDKs from 63071125f6951ec66ee60d220567de6b3f3edf2a ([73f68bd](https://github.com/Modern-Treasury/modern-treasury-go/commit/73f68bdd9209f641cfd8c52644ba4b52aa23977f))
+* regenerate SDKs from 83df0ba9df810223a51b2216cfee38189f69e0b5 ([e57f60e](https://github.com/Modern-Treasury/modern-treasury-go/commit/e57f60e1ab1ee7874ec373a2772f29dfcee96b65))
+* regenerate SDKs from 854e6ca8ee0d4fcbc920723911a39b1acb617730 ([2571633](https://github.com/Modern-Treasury/modern-treasury-go/commit/2571633eb2b9478c26ba7e9ef432887946aea7f0))
+* regenerate SDKs from 8f63f2a3d03d7313666f5107d08bed47f5ecf25f ([09e2abd](https://github.com/Modern-Treasury/modern-treasury-go/commit/09e2abd08654257a6220ed64597ff156c70e9660))
+* regenerate SDKs from 9cf51b3a94a3f9422d837156bc4f041cbbed073f ([3d7a6f2](https://github.com/Modern-Treasury/modern-treasury-go/commit/3d7a6f202d964c90697c46d36b2fe63bb3c97397))
+* regenerate SDKs from 9f3b6161d7918cabb9c9fb7ca5c1316a7d04c985 ([2d1bdae](https://github.com/Modern-Treasury/modern-treasury-go/commit/2d1bdaebf27954af3b5fa7ad9f3ddb95c58b2d21))
+* regenerate SDKs from a3780cfef61e2467da889269d05e9d4215f3feea ([95a1d71](https://github.com/Modern-Treasury/modern-treasury-go/commit/95a1d71e190abe64ebcce88e33cb219dc6aa41dd))
+* regenerate SDKs from a8b553149cee66731fec169c27e01accee0545f1 ([f39824e](https://github.com/Modern-Treasury/modern-treasury-go/commit/f39824eac4506d0fb7d14308408bc0ba2e2460de))
+* regenerate SDKs from b3f37ee51a6ce85eeac3fe8978e93f8225df9c97 ([c06296e](https://github.com/Modern-Treasury/modern-treasury-go/commit/c06296ebd19dbb85b74e51a57eb9aca3c568e78e))
+* regenerate SDKs from ce6d5678c5b1c924057f27c2e5c4727471be3278 ([64486e2](https://github.com/Modern-Treasury/modern-treasury-go/commit/64486e24888579a079ac7f0a19787feb962ec873))
+* regenerate SDKs from d2935cd71face53670a01682bf856dbf3b5d6e7d ([631ab0a](https://github.com/Modern-Treasury/modern-treasury-go/commit/631ab0ae8c7b583bd7fe5abd924b9608ff053c68))
+* regenerate SDKs from e1f1308c2744a99b5337c20649d3b1d89efd1f11 ([a6d9cf9](https://github.com/Modern-Treasury/modern-treasury-go/commit/a6d9cf9f52d3d21e11ee78c07a44f94fe09bd8a1))
+* regenerate SDKs from f4ddde497e6ae20ffb517b9e9b6eb91ecb7e9897 ([10346aa](https://github.com/Modern-Treasury/modern-treasury-go/commit/10346aa2ca1868c2ecf8e0461ebf04c139ec9c01))
+
 ## [2.63.0](https://github.com/Modern-Treasury/modern-treasury-go/compare/v2.62.0...v2.63.0) (2026-10-28)
 
 
