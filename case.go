@@ -165,7 +165,6 @@ func (r caseRequestedActionJSON) RawJSON() string {
 type CaseRequestedActionsCategory string
 
 const (
-	CaseRequestedActionsCategoryOnboardingArticlesOfIncorporationFailure      CaseRequestedActionsCategory = "onboarding_articles_of_incorporation_failure"
 	CaseRequestedActionsCategoryOnboardingBusinessRegistryVerificationFailure CaseRequestedActionsCategory = "onboarding_business_registry_verification_failure"
 	CaseRequestedActionsCategoryOnboardingDatabaseFailure                     CaseRequestedActionsCategory = "onboarding_database_failure"
 	CaseRequestedActionsCategoryOnboardingGovernmentIDFailure                 CaseRequestedActionsCategory = "onboarding_government_id_failure"
@@ -176,7 +175,7 @@ const (
 
 func (r CaseRequestedActionsCategory) IsKnown() bool {
 	switch r {
-	case CaseRequestedActionsCategoryOnboardingArticlesOfIncorporationFailure, CaseRequestedActionsCategoryOnboardingBusinessRegistryVerificationFailure, CaseRequestedActionsCategoryOnboardingDatabaseFailure, CaseRequestedActionsCategoryOnboardingGovernmentIDFailure, CaseRequestedActionsCategoryOnboardingProofOfAddressFailure, CaseRequestedActionsCategoryOnboardingSsnCheckFailure, CaseRequestedActionsCategoryOnboardingTinCheckFailure:
+	case CaseRequestedActionsCategoryOnboardingBusinessRegistryVerificationFailure, CaseRequestedActionsCategoryOnboardingDatabaseFailure, CaseRequestedActionsCategoryOnboardingGovernmentIDFailure, CaseRequestedActionsCategoryOnboardingProofOfAddressFailure, CaseRequestedActionsCategoryOnboardingSsnCheckFailure, CaseRequestedActionsCategoryOnboardingTinCheckFailure:
 		return true
 	}
 	return false
@@ -248,7 +247,6 @@ func (r caseResolvedActionJSON) RawJSON() string {
 type CaseResolvedActionsCategory string
 
 const (
-	CaseResolvedActionsCategoryOnboardingArticlesOfIncorporationFailure      CaseResolvedActionsCategory = "onboarding_articles_of_incorporation_failure"
 	CaseResolvedActionsCategoryOnboardingBusinessRegistryVerificationFailure CaseResolvedActionsCategory = "onboarding_business_registry_verification_failure"
 	CaseResolvedActionsCategoryOnboardingDatabaseFailure                     CaseResolvedActionsCategory = "onboarding_database_failure"
 	CaseResolvedActionsCategoryOnboardingGovernmentIDFailure                 CaseResolvedActionsCategory = "onboarding_government_id_failure"
@@ -259,7 +257,7 @@ const (
 
 func (r CaseResolvedActionsCategory) IsKnown() bool {
 	switch r {
-	case CaseResolvedActionsCategoryOnboardingArticlesOfIncorporationFailure, CaseResolvedActionsCategoryOnboardingBusinessRegistryVerificationFailure, CaseResolvedActionsCategoryOnboardingDatabaseFailure, CaseResolvedActionsCategoryOnboardingGovernmentIDFailure, CaseResolvedActionsCategoryOnboardingProofOfAddressFailure, CaseResolvedActionsCategoryOnboardingSsnCheckFailure, CaseResolvedActionsCategoryOnboardingTinCheckFailure:
+	case CaseResolvedActionsCategoryOnboardingBusinessRegistryVerificationFailure, CaseResolvedActionsCategoryOnboardingDatabaseFailure, CaseResolvedActionsCategoryOnboardingGovernmentIDFailure, CaseResolvedActionsCategoryOnboardingProofOfAddressFailure, CaseResolvedActionsCategoryOnboardingSsnCheckFailure, CaseResolvedActionsCategoryOnboardingTinCheckFailure:
 		return true
 	}
 	return false
