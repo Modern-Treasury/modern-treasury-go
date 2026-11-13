@@ -334,6 +334,8 @@ type ChildLegalEntityLegalStructure string
 
 const (
 	ChildLegalEntityLegalStructureCorporation        ChildLegalEntityLegalStructure = "corporation"
+	ChildLegalEntityLegalStructureEstate             ChildLegalEntityLegalStructure = "estate"
+	ChildLegalEntityLegalStructureGovernmentEntity   ChildLegalEntityLegalStructure = "government_entity"
 	ChildLegalEntityLegalStructureLlc                ChildLegalEntityLegalStructure = "llc"
 	ChildLegalEntityLegalStructureNonProfit          ChildLegalEntityLegalStructure = "non_profit"
 	ChildLegalEntityLegalStructurePartnership        ChildLegalEntityLegalStructure = "partnership"
@@ -343,7 +345,7 @@ const (
 
 func (r ChildLegalEntityLegalStructure) IsKnown() bool {
 	switch r {
-	case ChildLegalEntityLegalStructureCorporation, ChildLegalEntityLegalStructureLlc, ChildLegalEntityLegalStructureNonProfit, ChildLegalEntityLegalStructurePartnership, ChildLegalEntityLegalStructureSoleProprietorship, ChildLegalEntityLegalStructureTrust:
+	case ChildLegalEntityLegalStructureCorporation, ChildLegalEntityLegalStructureEstate, ChildLegalEntityLegalStructureGovernmentEntity, ChildLegalEntityLegalStructureLlc, ChildLegalEntityLegalStructureNonProfit, ChildLegalEntityLegalStructurePartnership, ChildLegalEntityLegalStructureSoleProprietorship, ChildLegalEntityLegalStructureTrust:
 		return true
 	}
 	return false
